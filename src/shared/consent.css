@@ -1,0 +1,27 @@
+.ds-consent {
+  position: fixed; z-index: 100; left: 16px; right: 16px; bottom: 16px;
+  max-width: 560px; margin: 0 auto; padding: 18px 18px 16px;
+  border-radius: 20px; background: #111729; color: #E7EAF3;
+  font: 500 14px/1.55 "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 24px 60px -20px rgba(0,0,0,.6);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 260ms cubic-bezier(.23,1,.32,1), transform 260ms cubic-bezier(.23,1,.32,1);
+}
+.ds-consent.is-in { opacity: 1; transform: none; }
+.ds-consent.is-leaving { opacity: 0; transform: translateY(8px); transition-duration: 180ms; }
+.ds-consent p { margin: 0; color: #B6BFD3; }
+.ds-consent a { color: #7EE0FF; text-decoration: underline; text-underline-offset: 2px; }
+.ds-consent-actions { display: flex; gap: 8px; margin-top: 14px; justify-content: flex-end; }
+.ds-consent button {
+  height: 40px; padding: 0 18px; border-radius: 999px; border: 0; cursor: pointer;
+  font: 600 14px "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
+  background: rgba(255,255,255,.08); color: #E7EAF3;
+  transition: transform 160ms cubic-bezier(.23,1,.32,1), background-color 150ms ease;
+}
+.ds-consent button[data-v="granted"] { background: #2563EB; color: #fff; }
+.ds-consent button:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .ds-consent button:hover { background: rgba(255,255,255,.14); }
+  .ds-consent button[data-v="granted"]:hover { background: #1D4ED8; }
+}
+@media (prefers-reduced-motion: reduce) { .ds-consent { transition: none; } }

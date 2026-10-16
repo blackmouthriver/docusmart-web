@@ -1,0 +1,6 @@
+# Política de reporte de vulnerabilidades de DocuSmart (RFC 9116)
+Contact: mailto:jblackmouthr@gmail.com
+Expires: 2027-10-16T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://docusmart.online/.well-known/security.txt
+Policy: https://docusmart.online/privacidad
