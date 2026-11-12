@@ -48,10 +48,15 @@ export function parsePageRanges(input: string, pageCount: number): number[] | nu
   for (const raw of input.split(',')) {
     const part = raw.trim()
     if (!part) continue
-    const m = part.match(/^(\d+)?\s*(-)?\s*(\d+)?$/)
-    if (!m || (!m[1] && !m[3])) return null
-    const start = m[1] ? Number(m[1]) : 1
-    const end = m[2] ? (m[3] ? Number(m[3]) : pageCount) : start
+    // Sin expresiones regulares con retroceso: "a", "a-b", "a-" o "-b".
+    const dash = part.indexOf('-')
+    const left = (dash === -1 ? part : part.slice(0, dash)).trim()
+    const right = dash === -1 ? '' : part.slice(dash + 1).trim()
+    const isNum = (s: string) => /^\d+$/.test(s)
+    if ((left && !isNum(left)) || (right && !isNum(right)) || (!left && !right)) return null
+    const start = left ? Number(left) : 1
+    let end = start
+    if (dash !== -1) end = right ? Number(right) : pageCount
     if (start < 1 || end > pageCount || start > end) return null
     for (let p = start; p <= end; p++) out.add(p - 1)
   }

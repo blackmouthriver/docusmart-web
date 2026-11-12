@@ -138,7 +138,7 @@ function ReadAloud() {
         <button type="button" className="btn btn-soft btn-sm" onClick={() => fileInput.current?.click()} disabled={loading}>
           {loading ? <span className="spinner" /> : <Icon name="open" />} Cargar PDF o TXT
         </button>
-        <input ref={fileInput} type="file" hidden accept="application/pdf,text/plain,.txt,.md" onChange={(e) => { loadFile(e.target.files?.[0]); e.target.value = '' }} />
+        <input ref={fileInput} type="file" hidden accept="application/pdf,text/plain,.txt,.md" onChange={(e) => { void loadFile(e.target.files?.[0]); e.target.value = '' }} />
       </div>
 
       {state === 'idle' ? (
