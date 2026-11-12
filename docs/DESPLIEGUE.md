@@ -31,7 +31,7 @@ Cada push a `main` que pasa el CI se publica en Firebase Hosting (proyecto `docu
    npx firebase-tools login
    npx firebase-tools init hosting:github
    ```
-   Elige el repo `blackmouthriver/docusmart-web`. Responde **No** a sobrescribir `firebase.json` y a crear workflows (ya existen). El asistente crea el secreto `FIREBASE_SERVICE_ACCOUNT_DOCUSMART_8904E`: crea otro con el mismo valor llamado `FIREBASE_SERVICE_ACCOUNT` (o ajusta el nombre en `.github/workflows/ci.yml`).
+   Elige el repo `blackmouthriver/docusmart-web`. Responde **No** a sobrescribir `firebase.json` y a crear workflows (ya existen). El asistente crea en GitHub el secreto `FIREBASE_SERVICE_ACCOUNT_DOCUSMART_8904E`, que es el que usa el workflow; no hay que renombrar nada.
 2. **Secretos de analítica** (opcional): `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_APP_ID` y `VITE_FIREBASE_MEASUREMENT_ID`, en el entorno `produccion` de GitHub.
 3. **Dominio:** en Firebase Console → *Hosting → Agregar dominio personalizado* → `docusmart.online` (y luego `www.docusmart.online`, redirigido al principal). Firebase te muestra los registros DNS.
 4. **DNS en Hostinger:** en hPanel → *Dominios → docusmart.online → DNS / Nameservers*:
