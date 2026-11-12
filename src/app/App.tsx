@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useState, type ReactNode } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon, type IconName } from './components/Icon'
 import { trackScreen } from '../shared/analytics'
 import { AppContext, parseHash, type Route } from './state'
@@ -48,8 +48,9 @@ export function App() {
     if (route.section === '') document.title = 'DocuSmart Web'
   }, [route.section, route.sub])
 
+  const nextToastId = useRef(0)
   const toast = useCallback((msg: string) => {
-    const id = Date.now() + Math.random()
+    const id = ++nextToastId.current
     setToasts((t) => [...t, { id, msg }])
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3200)
   }, [])

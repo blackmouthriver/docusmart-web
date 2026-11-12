@@ -64,7 +64,7 @@ function PdfView({ file }: { file: File }) {
     el.replaceChildren()
     setError(null)
     setProgress(0)
-    ;(async () => {
+    void (async () => {
       try {
         const doc = await openPdf(await file.arrayBuffer())
         if (cancelled) return void closePdf(doc)
@@ -122,8 +122,14 @@ function ImageView({ file }: { file: File }) {
 
 function TextView({ file }: { file: File }) {
   const [text, setText] = useState('')
+  const [failed, setFailed] = useState(false)
   useEffect(() => {
-    file.text().then(setText)
+    setFailed(false)
+    file
+      .text()
+      .then(setText)
+      .catch(() => setFailed(true))
   }, [file])
+  if (failed) return <Notice kind="error">No se pudo leer el archivo de texto.</Notice>
   return <pre className="text-view">{text}</pre>
 }

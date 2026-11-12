@@ -187,7 +187,7 @@ function ReadQr() {
       ) : (
         <div className="row">
           <button type="button" className="btn btn-primary" onClick={() => fileInput.current?.click()}><Icon name="image" /> Elegir imagen</button>
-          <input ref={fileInput} type="file" accept="image/*" hidden onChange={(e) => { fromImage(e.target.files?.[0]); e.target.value = '' }} />
+          <input ref={fileInput} type="file" accept="image/*" hidden onChange={(e) => { void fromImage(e.target.files?.[0]); e.target.value = '' }} />
         </div>
       )}
 

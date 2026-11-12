@@ -131,7 +131,7 @@ function useThumbs(file: File | null) {
     setError(null)
     if (!file) return
     let cancelled = false
-    ;(async () => {
+    void (async () => {
       try {
         const doc = await openPdf(await file.arrayBuffer())
         const urls: string[] = []
