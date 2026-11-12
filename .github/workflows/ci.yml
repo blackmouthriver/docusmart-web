@@ -74,11 +74,12 @@ jobs:
       name: produccion
       url: https://docusmart.online
     env:
-      HAS_FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
+      # `firebase init hosting:github` crea el secreto con este nombre.
+      HAS_FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DOCUSMART_8904E != '' }}
     steps:
       - name: Aviso si falta la cuenta de servicio
         if: env.HAS_FIREBASE_SA != 'true'
-        run: echo "::warning::Falta el secreto FIREBASE_SERVICE_ACCOUNT; se omitió el despliegue."
+        run: echo "::warning::Falta el secreto FIREBASE_SERVICE_ACCOUNT_DOCUSMART_8904E; se omitió el despliegue."
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: env.HAS_FIREBASE_SA == 'true'
@@ -107,6 +108,6 @@ jobs:
         if: env.HAS_FIREBASE_SA == 'true'
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DOCUSMART_8904E }}
           projectId: docusmart-8904e
           channelId: live
