@@ -17,6 +17,7 @@
 | Seguridad | Security Headers **A+**: CSP estricta con **Trusted Types**, HSTS con `preload` (enviado a hstspreload.org, pendiente), fuentes y pdf.js servidos desde el propio dominio, `security.txt` | inicial, #11 |
 | DNS | `docusmart.online` y `www` (redirige) en Firebase Hosting con HTTPS; CAA (`pki.goog`, `letsencrypt.org`), SPF `-all`, DMARC `reject` | — |
 | Descargas | `download()` re-empaqueta con tipos seguros (nunca `text/html`/SVG), verifica que la URL sea `blob:` propia y limpia el nombre (W-02, alerta alta de CodeQL) | #13 |
+| Dependabot | `SONAR_TOKEN` también como secreto de Dependabot en la web y en la app: sus PR ya pasan SonarCloud (W-01). Fusionados #2 (sonarqube-scan-action 8.4.0) y #3 (pdf.js 6.5, Vite 8.3.7, Firebase 0.16.5), con visor, miniaturas y PDF→imagen/texto probados con Trusted Types (W-04). En la app, los PR de Dependabot además necesitan regenerar `gradle/verification-metadata.xml` (ver el backlog de la app) | #2, #3 |
 | Play Store | La app está **en producción**: el botón "Disponible en Google Play" es correcto (W-03, cerrado sin cambios) | — |
 | Repo y CI | Auditoría de dependencias, pruebas (29) con cobertura, build, SonarCloud (gate OK, 0 hallazgos, 59 % cobertura), Gitleaks, CodeQL, escaneo de secretos con bloqueo de push, Dependabot, `main` protegida; cada push a `main` despliega solo | #4–#11 |
 
@@ -24,16 +25,12 @@
 
 ## P0 — Bloquea o es un riesgo
 
-### W-01 · Dependabot no puede fusionar nunca 🛠️👤
-La protección de `main` exige el chequeo **SonarCloud Code Analysis**, pero GitHub no les entrega los secretos del repo a los PR de Dependabot. Sin `SONAR_TOKEN` el análisis no corre, el chequeo nunca llega y el PR queda **BLOCKED** (pasa hoy con #3). Lo mismo ocurre en el repo de la app (#122, #123).
-- **Hacer:** 👤 crear `SONAR_TOKEN` también como **secreto de Dependabot** (*Settings → Secrets and variables → Dependabot*). Con ese mismo valor no hace falta tocar el código.
-- **Listo cuando:** #3 muestra "SonarCloud Code Analysis: pass" y queda **CLEAN**.
+_Sin pendientes P0._
 
 ## P1 — Pendientes de configuración y calidad
 
 | ID | Ítem | Quién | Listo cuando |
 |---|---|---|---|
-| W-04 | Revisar y fusionar Dependabot **#2** (sonarqube-scan-action 8.4.0) y **#3** (pdf.js 6.5, Vite 8.3.7, Firebase…). Probar a mano que el visor y PDF→imagen sigan funcionando, porque pdf.js cambia de versión menor (worker y wasm). Depende de W-01. | 🛠️ | Ambos fusionados y los flujos de PDF verificados en producción |
 | W-05 | **Google Search Console**: verificar el dominio (TXT en Hostinger) y enviar `sitemap.xml` | 👤 (te guío) | Search Console muestra las 10 URL descubiertas |
 | W-06 | Restringir la **API key web** de Firebase a `docusmart.online`, `www` y `docusmart-8904e.web.app` (sin tocar las claves Android) | 👤 | La clave tiene la restricción "Sitios web" y la analítica sigue llegando |
 | W-07 | Borrar la **cuenta de servicio sobrante** `github-action-…` (la que dice "Sin claves") del primer `firebase init` fallido | 👤 | Queda una sola cuenta `github-action-…` y el despliegue sigue funcionando |
