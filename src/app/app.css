@@ -73,6 +73,10 @@ p { margin: 0; }
 .side-foot .privacy-note { display: flex; gap: 8px; align-items: flex-start; }
 .side-foot .privacy-note svg { width: 16px; height: 16px; color: var(--scan); flex: none; margin-top: 2px; }
 .side-foot a { color: var(--on-night); text-decoration: none; font-weight: 600; }
+.link-btn { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
+.side-foot .link-btn { color: var(--on-night-soft); font-size: 12.5px; }
+.home-foot { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 28px; color: var(--ink-faint); font-size: 13px; }
+.home-foot a { color: inherit; }
 
 .main { margin-left: var(--sidebar); min-height: 100dvh; }
 .content { max-width: 1040px; margin: 0 auto; padding: 28px 32px 64px; }

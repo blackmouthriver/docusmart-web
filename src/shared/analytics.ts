@@ -47,8 +47,36 @@ export function setConsent(value: Consent) {
   } catch {
     /* almacenamiento bloqueado: el consentimiento dura solo esta visita */
   }
-  if (value === 'granted') void load()
-  else queue.length = 0
+  if (value === 'granted') {
+    if (analytics) void setCollection(true)
+    else void load()
+    return
+  }
+  queue.length = 0
+  if (analytics) void setCollection(false)
+  clearAnalyticsCookies()
+}
+
+async function setCollection(enabled: boolean) {
+  try {
+    const { setAnalyticsCollectionEnabled } = await import('@firebase/analytics')
+    if (analytics) setAnalyticsCollectionEnabled(analytics, enabled)
+  } catch {
+    /* sin analítica cargada: nada que apagar */
+  }
+}
+
+/** Borra las cookies _ga / _ga_* del dominio actual y del dominio raíz. */
+function clearAnalyticsCookies() {
+  const host = location.hostname
+  const domains = ['', host, '.' + host, '.' + host.split('.').slice(-2).join('.')]
+  for (const c of document.cookie.split(';')) {
+    const name = c.split('=')[0].trim()
+    if (!name.startsWith('_ga')) continue
+    for (const d of domains) {
+      document.cookie = `${name}=; Max-Age=0; path=/${d ? '; domain=' + d : ''}`
+    }
+  }
 }
 
 async function load() {

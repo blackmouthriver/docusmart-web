@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { go, useApp } from '../state'
 import { Icon, type IconName } from '../components/Icon'
 import { HeroCard } from '../components/ui'
-import { track } from '../../shared/analytics'
+import { analyticsConfigured, track } from '../../shared/analytics'
 import { kindOf } from '../lib/files'
 
 const QUICK: Array<{ label: string; hint: string; icon: IconName; cls: string; to: [string, string?] }> = [
@@ -85,6 +85,15 @@ export function Home() {
           Conocer la app
         </a>
       </div>
+
+      <footer className="home-foot">
+        <a href="/privacidad.html">Política de privacidad</a>
+        {analyticsConfigured && (
+          <button type="button" className="link-btn" data-consent-open>
+            Preferencias de analítica
+          </button>
+        )}
+      </footer>
     </>
   )
 }

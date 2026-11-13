@@ -439,7 +439,8 @@
   footer { border-top: 1px solid var(--line); padding: 40px 0 48px; color: var(--ink-faint); font-size: 14px; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; }
   .foot nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
-  @media (hover: hover) and (pointer: fine) { .foot nav a:hover { color: var(--ink); } }
+  .foot-link { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+  @media (hover: hover) and (pointer: fine) { .foot nav a:hover, .foot-link:hover { color: var(--ink); } }
   .foot .brand { color: var(--ink); font-size: 17px; }
   .foot .brand img { width: 28px; height: 28px; }
 
@@ -769,6 +770,7 @@
     <a class="brand" href="#top"><img src="/img/icon.svg" alt="" width="28" height="28">DocuSmart</a>
     <nav aria-label="Pie de página">
       <a href="privacidad.html">Política de privacidad</a>
+      <button type="button" class="foot-link" data-consent-open hidden>Preferencias de analítica</button>
       <a href="/app/" data-track="web_app_footer">DocuSmart Web</a>
       <a href="mailto:jblackmouthr@gmail.com">Contacto</a>
       <a href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_6">Google Play</a>
