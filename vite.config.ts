@@ -1,8 +1,9 @@
 /// <reference types="vitest/config" />
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+import { pages as toolPages } from './tools/pages.mjs'
 
 // `npm run preview` usa las mismas cabeceras de seguridad que producción (firebase.json),
 // para detectar en local cualquier recurso que la CSP bloquee.
@@ -15,15 +16,32 @@ const prodHeaders = Object.fromEntries(
     .map((h) => [h.key, h.key === 'Content-Security-Policy' ? h.value.replace('; upgrade-insecure-requests', '') : h.value]),
 )
 
-// Multipágina: la landing en "/", la política en "/privacidad.html" y la app web en "/app/".
+// En local, /unir-pdf o /privacidad sirven su .html igual que Firebase con cleanUrls.
+const cleanUrls = (): Plugin => {
+  const rewrite = (req: { url?: string }, _res: unknown, next: () => void) => {
+    const [path, query = ''] = (req.url ?? '').split('?')
+    if (/^\/[a-z0-9-]+$/.test(path) && existsSync(resolve(import.meta.dirname, `.${path}.html`))) {
+      req.url = `${path}.html${query ? `?${query}` : ''}`
+    }
+    next()
+  }
+  return {
+    name: 'clean-urls',
+    configureServer: (server) => void server.middlewares.use(rewrite),
+    configurePreviewServer: (server) => void server.middlewares.use(rewrite),
+  }
+}
+
+// Multipágina: landing en "/", política en "/privacidad", app web en "/app/" y una página por herramienta.
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), cleanUrls()],
   build: {
     rollupOptions: {
       input: {
         landing: resolve(import.meta.dirname, 'index.html'),
         privacidad: resolve(import.meta.dirname, 'privacidad.html'),
         app: resolve(import.meta.dirname, 'app/index.html'),
+        ...Object.fromEntries(toolPages.map((p) => [p.slug, resolve(import.meta.dirname, `${p.slug}.html`)])),
       },
     },
   },

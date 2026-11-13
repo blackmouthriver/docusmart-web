@@ -33,6 +33,9 @@ jobs:
       - name: Auditoría de dependencias de producción
         run: npm run audit
 
+      - name: Páginas de herramientas al día
+        run: npm run pages:check
+
       - name: Pruebas con cobertura
         run: npm run test:coverage
 

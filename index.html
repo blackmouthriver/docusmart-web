@@ -307,6 +307,13 @@
   /* Herramientas PDF */
   .t-pdf { padding-right: 0; flex-direction: row; gap: 20px; }
   .t-pdf .copy { flex: 1; display: flex; flex-direction: column; padding-right: 4px; min-width: 0; }
+  .web-tools { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+  .web-tools a { display: block; height: 100%; padding: 20px; border-radius: 20px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; text-decoration: none; transition: transform 200ms var(--ease-out), box-shadow 200ms ease; }
+  .web-tools b { display: block; font-family: var(--font-display); font-size: 19px; letter-spacing: -0.015em; }
+  .web-tools span { display: block; margin-top: 4px; font-size: 14px; color: var(--ink-faint); }
+  @media (hover: hover) and (pointer: fine) { .web-tools a:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--line) inset, 0 14px 30px -18px rgba(28,27,26,.35); } }
+  @media (max-width: 960px) { .web-tools { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 420px) { .web-tools { grid-template-columns: 1fr; } }
   .tool-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 24px; }
   .tool-chips span { padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; }
   .mini-phone { flex: none; width: 170px; align-self: flex-end; margin-bottom: -60px; border-radius: 26px 0 0 0; padding: 7px 0 0 7px; background: #1a2036; }
@@ -470,6 +477,7 @@
     <li><a href="#privacidad">Privacidad</a></li>
     <li><a href="#planes">Planes</a></li>
     <li><a href="#preguntas">Preguntas</a></li>
+    <li><a href="#herramientas">Herramientas</a></li>
     <li><a href="/app/" data-track="web_app_nav">Usar en la web</a></li>
   </ul>
   <a class="btn btn-primary nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_1">Descargar</a>
@@ -714,6 +722,30 @@
   </section>
 
   <!-- ── Preguntas ── -->
+  <!-- ── Herramientas web ── -->
+  <section class="section" id="herramientas" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="reveal">
+          <span class="eyebrow">En el navegador</span>
+          <h2>Herramientas gratis, sin subir tus archivos.</h2>
+        </div>
+        <p class="reveal" style="--d:100ms">Úsalas desde cualquier computadora o celular, sin instalar nada ni crear cuenta. Todo se procesa en tu equipo.</p>
+      </div>
+      <ul class="web-tools reveal">
+<!-- tools:start -->
+        <li><a href="/unir-pdf"><b>Unir PDF</b><span>Combina varios PDF en uno</span></a></li>
+        <li><a href="/dividir-pdf"><b>Dividir PDF</b><span>Extrae páginas o sepáralas</span></a></li>
+        <li><a href="/rotar-pdf"><b>Rotar PDF</b><span>Endereza páginas giradas</span></a></li>
+        <li><a href="/imagen-a-pdf"><b>Imagen a PDF</b><span>Junta fotos en un PDF</span></a></li>
+        <li><a href="/pdf-a-jpg"><b>PDF a JPG</b><span>Cada página como imagen</span></a></li>
+        <li><a href="/pdf-a-texto"><b>PDF a texto</b><span>Extrae el texto de un PDF</span></a></li>
+        <li><a href="/crear-codigo-qr"><b>Crear y leer códigos QR</b><span>Genera y escanea QR</span></a></li>
+<!-- tools:end -->
+      </ul>
+    </div>
+  </section>
+
   <section class="section" id="preguntas" style="padding-top:0">
     <div class="wrap faq">
       <div class="reveal">

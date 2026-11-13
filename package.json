@@ -5,14 +5,16 @@
   "type": "module",
   "description": "Landing y versión web de DocuSmart. Todo el procesamiento ocurre en el navegador.",
   "scripts": {
-    "predev": "node scripts/copy-pdfjs-assets.mjs",
+    "predev": "node scripts/copy-pdfjs-assets.mjs && npm run pages",
     "dev": "vite",
-    "prebuild": "node scripts/copy-pdfjs-assets.mjs",
+    "prebuild": "node scripts/copy-pdfjs-assets.mjs && npm run pages",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "audit": "npm audit --omit=dev --audit-level=high"
+    "audit": "npm audit --omit=dev --audit-level=high",
+    "pages": "node scripts/generate-tool-pages.mjs",
+    "pages:check": "node scripts/generate-tool-pages.mjs --check"
   },
   "dependencies": {
     "@firebase/analytics": "^0.10.25",

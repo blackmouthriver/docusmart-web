@@ -1,0 +1,64 @@
+/* Páginas propias de cada herramienta (/unir-pdf…). Usa los tokens de app.css. */
+.tool-page { background: var(--paper); }
+.tp-wrap { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 20px; }
+
+.tp-nav { position: sticky; top: 0; z-index: 30; background: rgba(11, 16, 32, .92); color: var(--on-night); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.tp-nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 60px; }
+.tp-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -0.02em; text-decoration: none; color: #fff; }
+.tp-brand img { border-radius: 8px; }
+.tp-nav nav { display: flex; align-items: center; gap: 4px; }
+.tp-nav nav a { padding: 8px 12px; border-radius: 999px; color: var(--on-night-soft); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 150ms ease, background-color 150ms ease; }
+.tp-nav nav a.tp-nav-cta { background: var(--blue); color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .tp-nav nav a:hover { color: #fff; background: rgba(255, 255, 255, .08); }
+  .tp-nav nav a.tp-nav-cta:hover { background: var(--blue-deep); }
+}
+@media (max-width: 560px) { .tp-nav nav a:not(.tp-nav-cta) { display: none; } }
+
+.tp-hero { background: var(--night); color: var(--on-night); padding: 28px 0 88px; position: relative; overflow: hidden; }
+.tp-hero::after { content: ""; position: absolute; width: 520px; height: 520px; right: -160px; top: -220px; border-radius: 50%; background: radial-gradient(circle, rgba(37, 99, 235, .45), transparent 65%); pointer-events: none; }
+.tp-crumbs { display: flex; gap: 8px; font-size: 13px; color: var(--on-night-soft); }
+.tp-crumbs a { color: var(--on-night-soft); }
+.tp-hero h1 { margin-top: 18px; font-size: clamp(36px, 6vw, 60px); font-weight: 800; letter-spacing: -0.035em; color: #fff; }
+.tp-lead { margin-top: 12px; max-width: 620px; font-size: 17px; color: var(--on-night-soft); }
+.tp-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0; padding: 0; list-style: none; }
+.tp-badges li { padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: rgba(126, 224, 255, .1); color: var(--scan); }
+
+/* La herramienta se superpone al final del hero, como una tarjeta. */
+.tp-tool { position: relative; z-index: 2; margin-top: -60px; }
+.tp-tool > div > .card, .tp-tool .two-col > .card { box-shadow: 0 0 0 1px var(--line) inset, 0 24px 48px -28px rgba(11, 16, 32, .35); }
+.tp-noscript { padding: 24px; border-radius: var(--radius); background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; }
+
+.tp-section { margin-top: 56px; }
+.tp-section h2 { font-size: clamp(24px, 3.4vw, 32px); font-weight: 700; margin-bottom: 18px; }
+.tp-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: paso; }
+.tp-steps li { counter-increment: paso; padding: 20px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; color: var(--ink-soft); }
+.tp-steps li::before { content: counter(paso); display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: 12px; border-radius: 10px; background: var(--blue-soft); color: var(--blue); font-family: var(--font-display); font-weight: 700; }
+@media (max-width: 760px) { .tp-steps { grid-template-columns: 1fr; } }
+
+.tp-privacy p { max-width: 720px; color: var(--ink-soft); font-size: 16px; }
+
+.tp-faq { border-top: 1px solid var(--line); }
+.tp-faq details { border-bottom: 1px solid var(--line); }
+.tp-faq summary { cursor: pointer; padding: 18px 0; font-weight: 600; font-size: 16.5px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.tp-faq summary::-webkit-details-marker { display: none; }
+.tp-faq summary::after { content: "+"; flex: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: var(--paper-2); font-weight: 700; transition: transform 250ms var(--ease-out); }
+.tp-faq details[open] summary::after { transform: rotate(45deg); }
+.tp-faq details p { padding: 0 40px 18px 0; color: var(--ink-soft); }
+
+.tp-related { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.tp-related a { display: block; height: 100%; padding: 16px; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; text-decoration: none; transition: box-shadow 200ms ease, transform 200ms var(--ease-out); }
+.tp-related b { display: block; font-size: 15px; }
+.tp-related span { display: block; margin-top: 2px; font-size: 13px; color: var(--ink-faint); }
+@media (hover: hover) and (pointer: fine) { .tp-related a:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--line-strong) inset, 0 12px 24px -16px rgba(28, 27, 26, .3); } }
+@media (max-width: 860px) { .tp-related { grid-template-columns: repeat(2, 1fr); } }
+
+.tp-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 28px; border-radius: 24px; background: var(--night); color: var(--on-night); }
+.tp-cta h2 { color: #fff; margin-bottom: 8px; }
+.tp-cta p { max-width: 520px; color: var(--on-night-soft); }
+
+.tp-foot { margin-top: 64px; padding: 28px 0 40px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 14px; }
+.tp-foot-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
+.tp-foot nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.tp-foot a { color: inherit; }
+.tool-page .toast-wrap { bottom: 24px; }
