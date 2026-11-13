@@ -57,6 +57,10 @@ Cómo funciona (`src/shared/analytics.ts`):
 
 > La política de privacidad debe mencionar la analítica del sitio web antes de activarla en producción.
 
+## Backlog
+
+Lo hecho, lo pendiente y su prioridad: [`docs/BACKLOG.md`](docs/BACKLOG.md).
+
 ## Seguridad, SonarCloud y despliegue
 
 Publicado en **https://docusmart.online** con Firebase Hosting. Cabeceras de seguridad, análisis en SonarCloud, CI y los pasos para conectar el dominio de Hostinger: ver [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md).
