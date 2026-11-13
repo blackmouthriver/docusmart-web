@@ -22,7 +22,7 @@ export function QrScreen() {
   )
 }
 
-function CreateQr() {
+export function CreateQr() {
   const { toast } = useApp()
   const [text, setText] = useState('')
   const [protect, setProtect] = useState(false)
@@ -88,7 +88,7 @@ function CreateQr() {
   )
 }
 
-function ReadQr() {
+export function ReadQr() {
   const { toast } = useApp()
   const [mode, setMode] = useState<'camera' | 'image'>('camera')
   const [result, setResult] = useState<string | null>(null)

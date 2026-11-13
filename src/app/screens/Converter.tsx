@@ -43,6 +43,9 @@ const APP_ONLY = [
 ]
 const ALL = [...IMAGE_CONVS, ...PDF_CONVS]
 
+/** Conversión por id (img-pdf, pdf-img…), para las páginas propias de cada herramienta. */
+export const findConversion = (id: string) => ALL.find((x) => x.id === id)
+
 function Pair({ conv }: { conv: Conv }) {
   return (
     <span className="fmt-pair">
@@ -101,7 +104,8 @@ export function Converter({ sub }: { sub?: string }) {
   )
 }
 
-function ConvertJob({ conv }: { conv: Conv }) {
+/** `embedded`: dentro de una página de herramienta, sin encabezado ni "Volver". */
+export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: boolean }) {
   const { toast } = useApp()
   const isImageInput = conv.from === 'IMG'
   const [files, setFiles] = useState<File[]>([])
@@ -158,8 +162,12 @@ function ConvertJob({ conv }: { conv: Conv }) {
   const title = `${conv.from === 'IMG' ? 'Imagen' : conv.from} → ${conv.to === 'IMG' ? 'Imagen' : conv.to}`
   return (
     <>
-      <HeroCard title="Convertidor" subtitle="Convierte tus documentos fácilmente, sin salir del navegador." />
-      <BackButton label="Volver al convertidor" onClick={() => go('convertir')} />
+      {!embedded && (
+        <>
+          <HeroCard title="Convertidor" subtitle="Convierte tus documentos fácilmente, sin salir del navegador." />
+          <BackButton label="Volver al convertidor" onClick={() => go('convertir')} />
+        </>
+      )}
       <div className="card stack">
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <h3 style={{ fontSize: 24 }}>{title}</h3>

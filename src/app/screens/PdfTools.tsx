@@ -72,7 +72,7 @@ function useRun(toolName: string) {
   return { busy, error, run }
 }
 
-function MergeTool() {
+export function MergeTool() {
   const [files, setFiles] = useState<File[]>([])
   const { busy, error, run } = useRun('merge')
   const move = (i: number, j: number) =>
@@ -152,7 +152,7 @@ function useThumbs(file: File | null) {
   return { thumbs, error }
 }
 
-function SingleFileTool({ toolId }: { toolId: string }) {
+export function SingleFileTool({ toolId }: { toolId: string }) {
   const [file, setFile] = useState<File | null>(null)
   const { thumbs, error: loadError } = useThumbs(file)
   const { busy, error, run } = useRun(
