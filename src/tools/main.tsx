@@ -1,3 +1,4 @@
+import '../shared/trustedTypes'
 // Monta la herramienta de una página propia (/unir-pdf, /imagen-a-pdf…) dentro
 // de #tool. El texto de la página ya viene en el HTML generado; aquí solo se
 // agrega la parte interactiva, reutilizando los componentes de la app web.

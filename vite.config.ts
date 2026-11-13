@@ -36,6 +36,9 @@ const cleanUrls = (): Plugin => {
 export default defineConfig({
   plugins: [react(), cleanUrls()],
   build: {
+    // Vite incrusta como data: los archivos chicos, pero la CSP (`font-src 'self'`)
+    // bloquea fuentes data:. Las fuentes siempre van como archivo aparte.
+    assetsInlineLimit: (file) => (/\.(woff2?|ttf|otf)$/.test(file) ? false : undefined),
     rollupOptions: {
       input: {
         landing: resolve(import.meta.dirname, 'index.html'),

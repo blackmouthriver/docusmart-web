@@ -12,20 +12,39 @@ const PRIVACY_HREF = '/privacidad.html#sitio-web'
 function showBanner() {
   document.querySelector('.ds-consent')?.remove()
   const current = getConsent()
-  const status =
-    current === 'granted' ? ' Ahora mismo la tienes <b>activada</b>.' : current === 'denied' ? ' Ahora mismo la tienes <b>desactivada</b>.' : ''
 
+  // Se arma con APIs del DOM (no innerHTML): compatible con Trusted Types.
   const el = document.createElement('div')
   el.className = 'ds-consent'
   el.setAttribute('role', 'dialog')
   el.setAttribute('aria-live', 'polite')
   el.setAttribute('aria-label', 'Preferencias de analítica')
-  el.innerHTML = `
-    <p>Usamos Google Analytics (Firebase) para saber qué funciones se usan y mejorar DocuSmart. Nunca enviamos tus archivos ni su contenido.${status} <a href="${PRIVACY_HREF}">Más información</a></p>
-    <div class="ds-consent-actions">
-      <button type="button" data-v="denied">Rechazar</button>
-      <button type="button" data-v="granted">Aceptar</button>
-    </div>`
+
+  const p = document.createElement('p')
+  p.append('Usamos Google Analytics (Firebase) para saber qué funciones se usan y mejorar DocuSmart. Nunca enviamos tus archivos ni su contenido.')
+  if (current) {
+    const state = document.createElement('b')
+    state.textContent = current === 'granted' ? 'activada' : 'desactivada'
+    p.append(' Ahora mismo la tienes ', state, '.')
+  }
+  const more = document.createElement('a')
+  more.href = PRIVACY_HREF
+  more.textContent = 'Más información'
+  p.append(' ', more)
+
+  const actions = document.createElement('div')
+  actions.className = 'ds-consent-actions'
+  for (const [value, label] of [
+    ['denied', 'Rechazar'],
+    ['granted', 'Aceptar'],
+  ] as const) {
+    const b = document.createElement('button')
+    b.type = 'button'
+    b.dataset.v = value
+    b.textContent = label
+    actions.append(b)
+  }
+  el.append(p, actions)
   el.addEventListener('click', (e) => {
     const v = (e.target as HTMLElement).closest('button')?.dataset.v
     if (v !== 'granted' && v !== 'denied') return
