@@ -1,6 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon, type IconName } from './components/Icon'
-import { trackScreen } from '../shared/analytics'
+import { analyticsConfigured, trackScreen } from '../shared/analytics'
 import { AppContext, parseHash, type Route } from './state'
 import { Home } from './screens/Home'
 // Cada pantalla se descarga al entrar: pdf.js y las librerías de QR no frenan el Inicio.
@@ -99,6 +99,11 @@ export function App() {
               <span>Tus archivos se procesan en este navegador. No se suben a ningún servidor.</span>
             </div>
             <a href="/">¿Más funciones? Descarga la app →</a>
+            {analyticsConfigured && (
+              <button type="button" className="link-btn" data-consent-open>
+                Preferencias de analítica
+              </button>
+            )}
           </div>
         </aside>
 
