@@ -20,12 +20,46 @@ export function baseName(name: string) {
   return name.replace(/\.[^.]+$/, '')
 }
 
+// Tipos que el sitio genera a propósito. Cualquier otro (text/html, image/svg+xml…)
+// se descarga como binario: aunque alguien abriera el blob, el navegador no lo interpreta.
+const SAFE_DOWNLOAD_TYPES = new Set([
+  'application/pdf',
+  'application/zip',
+  'text/plain',
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'image/bmp',
+  'image/gif',
+])
+
+export function safeMimeType(type: string): string {
+  const base = type.split(';')[0].trim().toLowerCase()
+  return SAFE_DOWNLOAD_TYPES.has(base) ? type : 'application/octet-stream'
+}
+
+/** Nombre de archivo sin rutas ni caracteres de control. */
+export function safeFilename(name: string): string {
+  // eslint-disable-next-line no-control-regex
+  const clean = name.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]/g, '_').trim()
+  return (clean || 'archivo').slice(0, 180)
+}
+
+/** Solo URLs blob: creadas por este mismo sitio. */
+export function isOwnBlobUrl(url: string, origin = location.origin): boolean {
+  return url.startsWith(`blob:${origin}/`)
+}
+
 export function download(data: Blob | Uint8Array, filename: string, type = 'application/octet-stream') {
-  const blob = data instanceof Blob ? data : new Blob([data as BlobPart], { type })
+  const source = data instanceof Blob ? data : new Blob([data as BlobPart], { type })
+  // El contenido puede venir de archivos o textos del usuario: se re-empaqueta con un tipo seguro.
+  const blob = new Blob([source], { type: safeMimeType(source.type || type) })
   const url = URL.createObjectURL(blob)
+  if (!isOwnBlobUrl(url)) throw new Error('URL de descarga inesperada')
   const a = document.createElement('a')
   a.href = url
-  a.download = filename
+  a.download = safeFilename(filename)
+  a.rel = 'noopener'
   document.body.appendChild(a)
   a.click()
   a.remove()
