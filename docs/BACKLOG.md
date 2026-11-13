@@ -16,6 +16,8 @@
 | Legal | Política de privacidad vigente en `/privacidad` (sincronizada con `legal/` de la app); `app-ads.txt` de AdMob | #7, #8, DocuSmart#161 |
 | Seguridad | Security Headers **A+**: CSP estricta con **Trusted Types**, HSTS con `preload` (enviado a hstspreload.org, pendiente), fuentes y pdf.js servidos desde el propio dominio, `security.txt` | inicial, #11 |
 | DNS | `docusmart.online` y `www` (redirige) en Firebase Hosting con HTTPS; CAA (`pki.goog`, `letsencrypt.org`), SPF `-all`, DMARC `reject` | — |
+| Descargas | `download()` re-empaqueta con tipos seguros (nunca `text/html`/SVG), verifica que la URL sea `blob:` propia y limpia el nombre (W-02, alerta alta de CodeQL) | #13 |
+| Play Store | La app está **en producción**: el botón "Disponible en Google Play" es correcto (W-03, cerrado sin cambios) | — |
 | Repo y CI | Auditoría de dependencias, pruebas (29) con cobertura, build, SonarCloud (gate OK, 0 hallazgos, 59 % cobertura), Gitleaks, CodeQL, escaneo de secretos con bloqueo de push, Dependabot, `main` protegida; cada push a `main` despliega solo | #4–#11 |
 
 ---
@@ -26,15 +28,6 @@
 La protección de `main` exige el chequeo **SonarCloud Code Analysis**, pero GitHub no les entrega los secretos del repo a los PR de Dependabot. Sin `SONAR_TOKEN` el análisis no corre, el chequeo nunca llega y el PR queda **BLOCKED** (pasa hoy con #3). Lo mismo ocurre en el repo de la app (#122, #123).
 - **Hacer:** 👤 crear `SONAR_TOKEN` también como **secreto de Dependabot** (*Settings → Secrets and variables → Dependabot*). Con ese mismo valor no hace falta tocar el código.
 - **Listo cuando:** #3 muestra "SonarCloud Code Analysis: pass" y queda **CLEAN**.
-
-### W-02 · Alerta de CodeQL alta: `js/xss-through-dom` en `src/app/lib/files.ts:27` 🛠️
-`download()` crea un enlace `blob:` (mismo origen) con contenido que viene de archivos del usuario. Con `a.download` el navegador descarga el archivo y no lo abre, así que el riesgo real es bajo. Aun así, conviene cerrarla: forzar un tipo MIME no ejecutable salvo los formatos esperados (PDF, imágenes, texto, zip) y no aceptar `text/html`.
-- **Listo cuando:** la alerta queda cerrada en *Security → Code scanning*, corregida o descartada con una justificación escrita.
-
-### W-03 · La landing dice "Disponible en Google Play", pero la app está en Prueba cerrada 👤🛠️
-Según la memoria del proyecto (octubre de 2026), la app sigue en **Prueba cerrada**: un visitante que no sea tester abre la ficha de Play y no puede instalar.
-- **Hacer:** 👤 confirmar en qué pista está hoy. Si sigue en prueba cerrada: 🛠️ cambiar los botones a "Únete a la prueba" (con el enlace de testers) o a "Próximamente en Google Play", y volver a "Disponible en" al pasar a producción.
-- **Listo cuando:** el texto del botón coincide con lo que puede hacer cualquier visitante.
 
 ## P1 — Pendientes de configuración y calidad
 
