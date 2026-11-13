@@ -1,3 +1,4 @@
+import '../shared/trustedTypes'
 import '../shared/fonts'
 import { initAnalytics, track } from '../shared/analytics'
 import { mountConsentBanner } from '../shared/consent'
