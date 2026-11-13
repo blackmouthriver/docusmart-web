@@ -55,7 +55,7 @@ Cómo funciona (`src/shared/analytics.ts`):
 - Eventos con los mismos nombres que `DocuSmartAnalytics.kt`: `screen_view`, `document_opened`, `conversion_started` / `conversion_success` / `conversion_error` (con los mismos `conversion_type` de `ConversionType`), `pdf_tool_used`, `qr_created`, `qr_scanned`, `study_session_started`, `note_created`, `pomodoro_completed`, `app_error`.
 - Solo de la landing: `landing_cta_click` (destino `play_store` o `web_app`), `landing_section_view`, `landing_faq_open`.
 
-> La política de privacidad debe mencionar la analítica del sitio web antes de activarla en producción.
+La política de privacidad ([`/privacidad`](privacidad.html), sección 10) describe esta analítica y las cookies que usa.
 
 ## Backlog
 
