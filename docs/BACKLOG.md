@@ -70,15 +70,16 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-33 **Comparar PDF** (página `/comparar-pdf`): diff de Myers de todo el documento, primero por líneas y luego palabra por palabra dentro de cada cambio; un párrafo nuevo no desordena el resto y los cambios de salto de línea no cuentan. Muestra cada cambio con contexto y la página en cada versión, y descarga un informe .txt. Avisa si un PDF no tiene texto (sugiere OCR). Mejora la de la app, que compara página contra página.
 
+**Hecho:** W-34 **Extraer imágenes** (página `/extraer-imagenes-pdf`): se leen los XObject de imagen con pdf-lib (también dentro de Form XObjects y sin repetir). Las JPEG se copian byte por byte; las demás (Flate, LZW, RunLength, predictores PNG; gris, RGB, CMYK, indexado, ICC, máscaras y SMask) se decodifican y se guardan como PNG armado sin canvas. JPEG 2000, CCITT y JBIG2 se avisan como no soportadas. Galería con selección y descarga en ZIP.
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-34.
+Los de la tabla de abajo, en su orden, empezando por W-35.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-34 | **Extraer imágenes de un PDF** | ✅ | ✅ (en "PDF a JPG") | Lista de operadores de pdf.js |
 | W-35 | **Editar PDF**: agregar texto, imágenes y formas | ✅ (texto) | ✅ | pdf-lib |
 | W-36 | **Formularios PDF**: detectar y llenar campos | ✅ | ✅ | AcroForm de pdf-lib |
 | W-37 | **Herramientas de imagen**: comprimir, redimensionar, recortar y rotar | — | (iLoveIMG) | canvas; entradas nuevas en `tools/pages.mjs` |
