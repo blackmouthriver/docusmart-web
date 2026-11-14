@@ -359,3 +359,10 @@ p { margin: 0; }
 .sign-del { top: -13px; right: -13px; width: 26px; height: 26px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: var(--danger); color: #fff; cursor: pointer; }
 .sign-del svg { width: 14px; height: 14px; }
 .sign-resize { right: -9px; bottom: -9px; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid var(--blue); cursor: nwse-resize; }
+
+/* Censurar PDF */
+.redact-stage { cursor: crosshair; }
+.redact-box { position: absolute; background: rgba(0, 0, 0, 0.82); outline: 1.5px solid rgba(220, 38, 38, 0.7); cursor: move; touch-action: none; }
+.redact-box.is-draft { background: rgba(0, 0, 0, 0.45); outline: 1.5px dashed var(--danger); pointer-events: none; }
+.redact-box.is-selected, .redact-box:focus-visible { outline: 2px solid var(--blue-light); outline-offset: 1px; }
+.redact-box.is-selected .sign-del, .redact-box:focus-visible .sign-del { display: grid; }

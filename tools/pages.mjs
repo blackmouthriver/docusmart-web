@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -69,6 +69,28 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'censurar-pdf',
+    tool: { kind: 'pdf', id: 'censurar' },
+    title: 'Censurar PDF online gratis: tachar datos de verdad | DocuSmart',
+    description:
+      'Tapa nombres, cédulas, teléfonos o correos en un PDF y elimínalos de verdad, no solo con un recuadro encima. Busca y marca todo de una vez. Gratis y sin subir el archivo.',
+    h1: 'Censurar PDF',
+    lead: 'Oculta datos personales antes de compartir un documento: lo que tapas desaparece del archivo, no queda escondido debajo de un recuadro.',
+    short: 'Elimina datos sensibles',
+    howTo: 'Cómo censurar un PDF en 3 pasos',
+    steps: [
+      'Elige el PDF.',
+      'Busca una palabra o marca todos los correos o números largos; también puedes arrastrar sobre la página para tapar cualquier zona.',
+      'Revisa las páginas y pulsa "Censurar y descargar".',
+    ],
+    faq: [
+      ['¿Por qué no basta con poner un recuadro negro?', 'Porque el texto sigue debajo: cualquiera puede copiarlo o quitar el recuadro. DocuSmart vuelve a dibujar cada página censurada como imagen, con las zonas en negro, y así el texto original desaparece del archivo.'],
+      ['¿Qué pasa con el resto del documento?', 'Las páginas sin zonas marcadas quedan exactamente igual. En las páginas censuradas el texto ya no se puede seleccionar. Además, el PDF nuevo no conserva los metadatos del original, como el autor o el título.'],
+      ['¿La búsqueda funciona con documentos escaneados?', 'No: un escaneo es una imagen y no tiene texto que buscar. En ese caso marca las zonas arrastrando sobre la página.'],
+      ['¿Mis documentos se suben a internet?', 'No. Todo se hace dentro de tu navegador; ni el PDF ni lo que censuras sale de tu equipo.'],
     ],
   },
   {

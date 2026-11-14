@@ -66,15 +66,16 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-31 **Firmar PDF** (página `/firmar-pdf`): la firma se dibuja (dedo, lápiz o mouse), se escribe con letra manuscrita (Dancing Script, OFL) o se sube como foto (el fondo claro se quita solo). Se arrastra y redimensiona sobre la vista previa, en una o varias páginas ("Repetir en todas las páginas"), también con teclado, y se estampa como PNG con pdf-lib, derecha aunque la página esté rotada. Es una firma visual, no digital con certificado (lo aclaran la pantalla y la FAQ). Mejora la de la app, que solo la pone en la esquina inferior derecha.
 
+**Hecho:** W-32 **Censurar PDF** (página `/censurar-pdf`): zonas dibujadas a mano o marcadas buscando texto (una frase sin importar tildes, todos los correos o todos los números largos). Las páginas con zonas se vuelven a dibujar como imagen a 200 ppp con las zonas en negro y el PDF se arma en un documento nuevo, sin los metadatos del original. Verificado: al extraer el texto del resultado no queda ningún dato tapado y las páginas sin zonas conservan su texto.
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-32.
+Los de la tabla de abajo, en su orden, empezando por W-33.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-32 | **Censurar PDF** (tapar datos sensibles de verdad) | ✅ | ✅ | Re-dibujar la página como imagen con el área tapada, para que el texto no quede debajo |
 | W-33 | **Comparar PDF** (dos versiones) | ✅ | ✅ | Diferencias de texto con pdf.js |
 | W-34 | **Extraer imágenes de un PDF** | ✅ | ✅ (en "PDF a JPG") | Lista de operadores de pdf.js |
 | W-35 | **Editar PDF**: agregar texto, imágenes y formas | ✅ (texto) | ✅ | pdf-lib |
