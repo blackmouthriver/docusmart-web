@@ -8,12 +8,14 @@ import { extractPages, merge, numberPages, rotate, splitEach, watermark } from '
 import { track } from '../../shared/analytics'
 import { CompressTool, ProtectTool, RepairTool, UnlockTool } from './PdfSecurityTools'
 import { OcrTool } from './OcrTool'
+import { CropTool } from './CropTool'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'unir', name: 'Unir PDFs', desc: 'Combina 2 o más PDFs en uno solo', icon: 'merge', cls: 'ico-red' },
   { id: 'dividir', name: 'Dividir PDF', desc: 'Extrae páginas o separa cada una', icon: 'split', cls: 'ico-violet' },
   { id: 'rotar', name: 'Rotar páginas', desc: 'Endereza páginas escaneadas de lado', icon: 'rotate', cls: 'ico-blue' },
   { id: 'reordenar', name: 'Reordenar páginas', desc: 'Cambia el orden o elimina páginas', icon: 'reorder', cls: 'ico-cyan' },
+  { id: 'recortar', name: 'Recortar PDF', desc: 'Quita márgenes o deja solo una zona', icon: 'crop', cls: 'ico-amber' },
   { id: 'numerar', name: 'Numerar páginas', desc: 'Agrega el número al pie de cada página', icon: 'hash', cls: 'ico-green' },
   { id: 'marca', name: 'Marca de agua', desc: 'Un texto en diagonal sobre cada página', icon: 'stamp', cls: 'ico-amber' },
   { id: 'comprimir', name: 'Comprimir PDF', desc: 'Reduce el peso sin perder calidad, o al máximo', icon: 'compress', cls: 'ico-green' },
@@ -31,6 +33,7 @@ export const OWN_TOOLS: Record<string, ComponentType> = {
   desbloquear: UnlockTool,
   reparar: RepairTool,
   ocr: OcrTool,
+  recortar: CropTool,
 }
 
 export function PdfTools({ sub }: { sub?: string }) {

@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -69,6 +69,28 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'recortar-pdf',
+    tool: { kind: 'pdf', id: 'recortar' },
+    title: 'Recortar PDF online gratis: quitar márgenes | DocuSmart',
+    description:
+      'Recorta las páginas de un PDF: quita los márgenes en blanco con un toque o elige a mano la zona que quieres conservar. Gratis y sin subir el archivo.',
+    h1: 'Recortar PDF',
+    lead: 'Quita márgenes sobrantes o deja solo la parte de la página que te interesa, en todas las páginas o en una sola.',
+    short: 'Quita márgenes o deja una zona',
+    howTo: 'Cómo recortar un PDF en 3 pasos',
+    steps: [
+      'Elige el PDF.',
+      'Arrastra los bordes del recuadro sobre la vista previa, o pulsa "Quitar márgenes en blanco".',
+      'Elige si se recortan todas las páginas o solo la actual y pulsa "Recortar y descargar".',
+    ],
+    faq: [
+      ['¿Se pierde calidad al recortar?', 'No. El recorte solo cambia la zona visible de cada página: el texto y las imágenes quedan iguales y el texto se puede seguir seleccionando.'],
+      ['¿Lo que recorto se borra del archivo?', 'No: queda oculto, pero sigue dentro del PDF. Si necesitas eliminar información sensible, recortar no basta; usa una herramienta de censura.'],
+      ['¿Puedo recortar solo una página?', 'Sí. Navega hasta la página, ajusta el recuadro y elige "Solo la página" antes de descargar.'],
+      ['¿Mis archivos se suben a internet?', 'No. Todo se hace dentro de tu navegador, sin registro.'],
     ],
   },
   {
