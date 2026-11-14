@@ -181,7 +181,7 @@ export function Progress({ value }: { value: number }) {
 export function errorMessage(e: unknown): string {
   const msg = e instanceof Error ? e.message : String(e)
   if (/encrypt/i.test(msg) || /password/i.test(msg))
-    return 'Este PDF está protegido con contraseña. Quítala primero en la app de DocuSmart.'
+    return 'Este PDF tiene contraseña. Quítala primero con la herramienta "Desbloquear PDF".'
   if (/Invalid PDF|No PDF header|InvalidPDF/i.test(msg)) return 'El archivo no parece un PDF válido.'
   return 'No se pudo procesar el archivo. Intenta con otro.'
 }

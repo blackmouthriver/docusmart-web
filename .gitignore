@@ -6,3 +6,4 @@ dist/
 public/pdfjs/
 coverage/
 .firebase/
+public/qpdf/

@@ -57,6 +57,13 @@ Cómo funciona (`src/shared/analytics.ts`):
 
 La política de privacidad ([`/privacidad`](privacidad.html), sección 10) describe esta analítica y las cookies que usa.
 
+## Licencias de terceros
+
+Todo se procesa en el navegador con librerías de código abierto, servidas desde el propio dominio:
+- [pdf.js](https://github.com/mozilla/pdf.js) (Apache-2.0) para ver y dibujar PDF.
+- [pdf-lib](https://github.com/Hopding/pdf-lib) (MIT) para crear y editar PDF.
+- [qpdf](https://github.com/qpdf/qpdf) (Apache-2.0), compilado a wasm por [@neslinesli93/qpdf-wasm](https://github.com/neslinesli93/qpdf-wasm) (ISC), para comprimir, proteger y desbloquear PDF. Su licencia se publica en `/qpdf/LICENSE.txt`.
+
 ## Backlog
 
 Lo hecho, lo pendiente y su prioridad: [`docs/BACKLOG.md`](docs/BACKLOG.md).

@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 
@@ -68,6 +68,87 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'comprimir-pdf',
+    tool: { kind: 'pdf', id: 'comprimir' },
+    title: 'Comprimir PDF gratis, sin subir el archivo | DocuSmart',
+    description:
+      'Reduce el peso de un PDF desde el navegador: sin pérdida de calidad o al máximo para escaneos. Gratis, sin registro y sin subir tu archivo.',
+    h1: 'Comprimir PDF',
+    lead: 'Haz que tu PDF pese menos para enviarlo por correo o WhatsApp. Elige entre conservar la calidad o reducirlo al máximo.',
+    short: 'Reduce el peso de un PDF',
+    steps: [
+      'Elige o arrastra el PDF.',
+      'Escoge el nivel: "Sin pérdida" conserva todo; "Media" y "Alta" reducen mucho más el peso de escaneos y fotos.',
+      'Pulsa "Comprimir PDF": verás cuánto se redujo y se descarga el archivo.',
+    ],
+    faq: [
+      ['¿Qué nivel de compresión elijo?', '"Sin pérdida" optimiza el archivo sin tocar la calidad y el texto sigue siendo seleccionable. Si el PDF es un escaneo o tiene muchas fotos, "Media" o "Alta" lo reducen mucho más, a cambio de que el texto quede como imagen.'],
+      ['¿Mi PDF se sube a internet?', 'No. La compresión se hace dentro de tu navegador: el archivo nunca sale de tu equipo.'],
+      ['¿Por qué a veces no se reduce?', 'Algunos PDF ya vienen optimizados. En ese caso DocuSmart te avisa y no descarga un archivo igual o más pesado.'],
+      ['¿Hay límite de tamaño?', 'No hay un límite fijo; depende de la memoria de tu equipo. Los PDF muy grandes pueden tardar un poco más.'],
+    ],
+  },
+  {
+    slug: 'proteger-pdf',
+    tool: { kind: 'pdf', id: 'proteger' },
+    title: 'Proteger PDF con contraseña (AES-256) gratis | DocuSmart',
+    description:
+      'Pon contraseña a un PDF con cifrado AES-256 y decide si se puede imprimir, copiar o modificar. Gratis, sin registro y sin subir el archivo.',
+    h1: 'Proteger PDF con contraseña',
+    lead: 'Cifra tu PDF para que solo pueda abrirlo quien tenga la contraseña, y controla qué se puede hacer con él.',
+    short: 'Ponle contraseña a un PDF',
+    steps: [
+      'Elige el PDF que quieres proteger.',
+      'Escribe la contraseña dos veces y marca si quieres permitir imprimir, copiar o modificar.',
+      'Pulsa "Proteger PDF" y se descarga el documento cifrado.',
+    ],
+    faq: [
+      ['¿Qué tan seguro es?', 'Usa cifrado AES-256, el estándar más fuerte de los PDF. Lo abren Adobe Acrobat, Chrome, Edge y la app de DocuSmart.'],
+      ['¿Qué pasa si olvido la contraseña?', 'No se puede recuperar: ni nosotros podemos abrir el PDF, porque la contraseña nunca sale de tu equipo. Guárdala en un lugar seguro.'],
+      ['¿Se sube mi documento a algún servidor?', 'No. El cifrado se hace en tu navegador; ni el archivo ni la contraseña se envían a internet.'],
+    ],
+  },
+  {
+    slug: 'desbloquear-pdf',
+    tool: { kind: 'pdf', id: 'desbloquear' },
+    title: 'Desbloquear PDF: quitar contraseña gratis | DocuSmart',
+    description:
+      'Quita la contraseña o las restricciones de impresión y copia de un PDF del que conoces la clave. Gratis, sin registro y sin subir el archivo.',
+    h1: 'Desbloquear PDF',
+    lead: 'Quita la contraseña de un PDF tuyo para no tener que escribirla cada vez, o elimina las restricciones de imprimir y copiar.',
+    short: 'Quita la contraseña de un PDF',
+    steps: [
+      'Elige el PDF protegido.',
+      'Escribe su contraseña. Si abre sin contraseña pero no deja imprimir o copiar, déjala vacía.',
+      'Pulsa "Desbloquear PDF" y se descarga una copia sin contraseña.',
+    ],
+    faq: [
+      ['¿Puede abrir un PDF sin saber la contraseña?', 'No. Para quitar la contraseña de apertura necesitas conocerla. Lo que sí se puede quitar sin contraseña son las restricciones de impresión y copia.'],
+      ['¿Es legal?', 'Úsalo solo con documentos propios o que tengas derecho a modificar.'],
+      ['¿La contraseña se envía a algún lado?', 'No. Todo ocurre en tu navegador: ni el PDF ni la contraseña salen de tu equipo.'],
+    ],
+  },
+  {
+    slug: 'reparar-pdf',
+    tool: { kind: 'pdf', id: 'reparar' },
+    title: 'Reparar PDF dañado gratis, en el navegador | DocuSmart',
+    description:
+      'Recupera PDF dañados que no abren o dan error: reconstruye su estructura interna desde el navegador. Gratis, sin registro y sin subir el archivo.',
+    h1: 'Reparar PDF',
+    lead: 'Si un PDF no abre, se ve en blanco o da error, intenta recuperarlo reconstruyendo su estructura interna.',
+    short: 'Recupera PDF que no abren',
+    steps: [
+      'Elige el PDF dañado.',
+      'Pulsa "Reparar PDF".',
+      'Se descarga una copia reconstruida y te contamos si se encontraron problemas.',
+    ],
+    faq: [
+      ['¿Qué tipo de daños puede reparar?', 'Sobre todo problemas de estructura: la tabla interna de referencias perdida o corrida, o el final del archivo dañado. Si faltan partes del contenido (por ejemplo, una descarga que se cortó a la mitad), puede que no se recupere.'],
+      ['¿Funciona con PDF con contraseña?', 'Primero quítale la contraseña con "Desbloquear PDF" y luego repáralo.'],
+      ['¿Se sube el archivo?', 'No. La reparación ocurre en tu navegador.'],
     ],
   },
   {

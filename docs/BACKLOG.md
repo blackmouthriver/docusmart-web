@@ -52,17 +52,36 @@ _Sin pendientes P0._
 | W-18 | **Android App Links** (`/.well-known/assetlinks.json`): que los enlaces a docusmart.online abran la app si está instalada. Requiere el SHA-256 del certificado de firma de Play | 🛠️👤 |
 | W-19 | **Contenido**: guías breves ("cómo unir PDF en el celular sin subirlos", "cómo pasar fotos a PDF") que enlacen a las herramientas; publicar en AlternativeTo, Product Hunt y Uptodown | 👤🛠️ |
 
-## P3 — Funciones nuevas en la web (paridad con la app)
+## Funciones nuevas en la web
 
-Todo en el navegador, sin servidor, para mantener la promesa de privacidad. Cada ítem pide antes un análisis de peso: el tamaño de la librería y si conviene cargarla solo en su página.
+Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad. Las librerías pesadas (wasm) se cargan solo en la página que las usa y se sirven desde el propio dominio.
 
-| ID | Ítem | Notas |
-|---|---|---|
-| W-20 | **Comprimir PDF** | Re-encodar imágenes con canvas y pdf-lib |
-| W-21 | **Proteger o quitar contraseña de PDF** | pdf-lib no cifra; evaluar qpdf en WebAssembly |
-| W-22 | **OCR en el navegador** | tesseract.js (wasm, local); librería pesada, cargarla solo en su página |
-| W-23 | **Word/Excel/PowerPoint → PDF** | Evaluar librerías de lectura de Office en el navegador; puede no ser viable con buena fidelidad |
-| W-24 | **Escáner con cámara** con detección de bordes | OpenCV.js o un detector propio; hoy solo existe en la app |
+**Análisis del 2026-11-14.** Se cruzaron las herramientas de la app móvil (`features/pdftools`, `converter`, `security`, `scanner`, `study`, `agenda`) con las de iLovePDF. Las herramientas de IA en la nube de la competencia (resumir, traducir) quedan fuera: contradicen "nada sale de tu equipo".
+
+**Hecho:** W-20 Comprimir PDF (sin pérdida con qpdf; "media" y "alta" re-dibujando páginas), W-21 Proteger y desbloquear PDF (qpdf, AES-256) y, de paso, Reparar PDF (pdf-lib reconstruye la estructura; el modo de recuperación de qpdf no funciona en wasm). Son 4 herramientas nuevas con su página propia. Ver #15.
+
+### Siguientes (en este orden)
+
+| ID | Ítem | Cómo | Notas |
+|---|---|---|---|
+| W-29 | **Compresor de archivos** tipo WinRAR/WinZip: crear **ZIP** y **7Z** (con contraseña AES-256 opcional) y **extraer ZIP, RAR, 7Z, TAR y GZ** | 7-Zip compilado a wasm (`7z-wasm`, 1,6 MB, LGPL + restricción unRAR) | **No se pueden crear .RAR**: el formato es propietario y su licencia lo prohíbe. 7Z es la alternativa y comprime igual o mejor |
+| W-22 | **OCR**: imagen o PDF escaneado → texto y PDF buscable, en español e inglés | tesseract.js (Apache-2.0; motor de ~3 MB más los datos de cada idioma, servidos desde el propio dominio) | La app ya tiene OCR; en la web completaría "PDF a texto" para escaneos |
+
+### Después (paridad con la app e iLovePDF)
+
+| ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
+|---|---|---|---|---|
+| W-30 | **Recortar PDF** (márgenes o área) | ✅ | ✅ | pdf-lib `setCropBox` + vista previa con pdf.js |
+| W-31 | **Firmar PDF** (dibujar o subir la firma) | ✅ | ✅ | canvas → PNG → pdf-lib |
+| W-32 | **Censurar PDF** (tapar datos sensibles de verdad) | ✅ | ✅ | Re-dibujar la página como imagen con el área tapada, para que el texto no quede debajo |
+| W-33 | **Comparar PDF** (dos versiones) | ✅ | ✅ | Diferencias de texto con pdf.js |
+| W-34 | **Extraer imágenes de un PDF** | ✅ | ✅ (en "PDF a JPG") | Lista de operadores de pdf.js |
+| W-35 | **Editar PDF**: agregar texto, imágenes y formas | ✅ (texto) | ✅ | pdf-lib |
+| W-36 | **Formularios PDF**: detectar y llenar campos | ✅ | ✅ | AcroForm de pdf-lib |
+| W-37 | **Herramientas de imagen**: comprimir, redimensionar, recortar y rotar | — | (iLoveIMG) | canvas; entradas nuevas en `tools/pages.mjs` |
+| W-23 | **Word/Excel/PowerPoint → PDF** | ✅ | ✅ | Evaluar librerías de lectura de Office en el navegador; puede no ser viable con buena fidelidad |
+| W-24 | **Escáner con cámara** con detección de bordes | ✅ | ✅ | OpenCV.js o un detector propio |
+| W-38 | **PDF a PDF/A** (archivo a largo plazo) | — | ✅ | Requiere incrustar fuentes y perfiles de color; evaluar viabilidad |
 
 ## Mantenimiento y limpieza
 
