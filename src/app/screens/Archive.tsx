@@ -261,7 +261,7 @@ export function ExtractArchiveTool() {
   const downloadAll = () => {
     if (!extracted || !file) return
     const zip = zipSync(Object.fromEntries(extracted.map((f) => [f.path, f.data])), { level: 0 })
-    download(zip, `${baseName(file.name).replace(/\.tar$/i, '')}.zip`, 'application/zip')
+    download(zip, `${baseName(file.name).replace(/\.tar$/i, '')}-extraido.zip`, 'application/zip')
   }
 
   const files = entries?.filter((e) => !e.isDir) ?? []
