@@ -72,15 +72,16 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-34 **Extraer imágenes** (página `/extraer-imagenes-pdf`): se leen los XObject de imagen con pdf-lib (también dentro de Form XObjects y sin repetir). Las JPEG se copian byte por byte; las demás (Flate, LZW, RunLength, predictores PNG; gris, RGB, CMYK, indexado, ICC, máscaras y SMask) se decodifican y se guardan como PNG armado sin canvas. JPEG 2000, CCITT y JBIG2 se avisan como no soportadas. Galería con selección y descarga en ZIP.
 
+**Hecho:** W-35 **Editar PDF** (página `/editar-pdf`): texto (3 familias estándar, negrita, tamaño y color; varias líneas), imágenes, rectángulos, círculos, resaltado y "Tapar" (recuadro blanco para escribir encima). Se colocan tocando o arrastrando sobre la vista previa, se mueven, se redimensionan y se borran (también con teclado), y se graban con pdf-lib como capas nuevas respetando la rotación de cada página. Mejora la de la app, que solo agrega texto.
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-35.
+Los de la tabla de abajo, en su orden, empezando por W-36.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-35 | **Editar PDF**: agregar texto, imágenes y formas | ✅ (texto) | ✅ | pdf-lib |
 | W-36 | **Formularios PDF**: detectar y llenar campos | ✅ | ✅ | AcroForm de pdf-lib |
 | W-37 | **Herramientas de imagen**: comprimir, redimensionar, recortar y rotar | — | (iLoveIMG) | canvas; entradas nuevas en `tools/pages.mjs` |
 | W-23 | **Word/Excel/PowerPoint → PDF** | ✅ | ✅ | Evaluar librerías de lectura de Office en el navegador; puede no ser viable con buena fidelidad |
