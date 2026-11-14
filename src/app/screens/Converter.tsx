@@ -143,7 +143,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         const t = await pdfToText(await files[0].arrayBuffer())
         setText(t)
         if (!t.trim()) {
-          setError('No se encontró texto. Si es un PDF escaneado, usa el OCR de la app.')
+          setError('No se encontró texto: parece un PDF escaneado. Usa la herramienta "OCR: reconocer texto" en Herramientas PDF.')
           track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
           return
         }

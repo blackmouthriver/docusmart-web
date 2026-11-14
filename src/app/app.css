@@ -155,6 +155,8 @@ p { margin: 0; }
 }
 .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .row-end { justify-content: flex-end; }
+.check { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
+.check input { margin-top: 0.3em; flex-shrink: 0; }
 .stack { display: grid; gap: 14px; }
 
 .field { display: grid; gap: 6px; }

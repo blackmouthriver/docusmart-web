@@ -7,6 +7,9 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { SITE, pages } from '../tools/pages.mjs'
 
+/** Primera letra en minúscula para "Cómo unir PDF…", salvo siglas como OCR. */
+const lowerFirst = (s) => (/^\p{Lu}{2}/u.test(s) ? s : s.charAt(0).toLowerCase() + s.slice(1))
+
 const root = join(import.meta.dirname, '..')
 const check = process.argv.includes('--check')
 
@@ -108,7 +111,7 @@ ${jsonLd(structured)}
   </section>
 
   <section class="tp-wrap tp-section">
-    <h2>Cómo ${esc(page.h1.charAt(0).toLowerCase() + page.h1.slice(1))} en 3 pasos</h2>
+    <h2>${esc(page.howTo ?? `Cómo ${lowerFirst(page.h1)} en 3 pasos`)}</h2>
     <ol class="tp-steps">
 ${page.steps.map((s) => `      <li>${esc(s)}</li>`).join('\n')}
     </ol>

@@ -42,7 +42,30 @@ const sevenZipOut = fresh(join(pub, '7z'))
 cpSync(join(sevenZip, '7zz.wasm'), join(sevenZipOut, '7zz.wasm'))
 cpSync(join(sevenZip, 'License.txt'), join(sevenZipOut, 'License.txt'))
 
-for (const f of [join(pdfjsOut, 'standard_fonts'), join(qpdfOut, 'qpdf.wasm'), join(sevenZipOut, '7zz.wasm')]) {
+// ── Tesseract (OCR) ────────────────────────────────────────────────
+// public/ocr-worker.js (versionado) instala la política de Trusted Types y carga
+// este worker. Solo las variantes LSTM del motor (las que usa el OCR moderno) y
+// los modelos compactos "best_int" de español e inglés (~2 MB cada uno).
+const ocrOut = fresh(join(pub, 'ocr'))
+cpSync(join(modules, 'tesseract.js', 'dist', 'worker.min.js'), join(ocrOut, 'tesseract-worker.min.js'))
+cpSync(join(modules, 'tesseract.js', 'LICENSE.md'), join(ocrOut, 'LICENSE-tesseract.js.txt'))
+mkdirSync(join(ocrOut, 'core'))
+for (const f of ['tesseract-core-lstm.wasm.js', 'tesseract-core-simd-lstm.wasm.js', 'tesseract-core-relaxedsimd-lstm.wasm.js']) {
+  cpSync(join(modules, 'tesseract.js-core', f), join(ocrOut, 'core', f))
+}
+cpSync(join(modules, 'tesseract.js-core', 'LICENSE'), join(ocrOut, 'LICENSE-tesseract-core.txt'))
+mkdirSync(join(ocrOut, 'lang'))
+for (const lang of ['spa', 'eng']) {
+  cpSync(join(modules, '@tesseract.js-data', lang, '4.0.0_best_int', `${lang}.traineddata.gz`), join(ocrOut, 'lang', `${lang}.traineddata.gz`))
+}
+
+for (const f of [
+  join(pdfjsOut, 'standard_fonts'),
+  join(qpdfOut, 'qpdf.wasm'),
+  join(sevenZipOut, '7zz.wasm'),
+  join(ocrOut, 'core', 'tesseract-core-lstm.wasm.js'),
+  join(ocrOut, 'lang', 'spa.traineddata.gz'),
+]) {
   if (!existsSync(f)) throw new Error(`Falta un recurso: ${f}`)
 }
-console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/ y public/7z/')
+console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/, public/7z/ y public/ocr/')

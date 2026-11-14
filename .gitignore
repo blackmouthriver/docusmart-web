@@ -8,3 +8,4 @@ coverage/
 .firebase/
 public/qpdf/
 public/7z/
+public/ocr/

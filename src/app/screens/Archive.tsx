@@ -165,8 +165,9 @@ export function CreateArchiveTool() {
         <input className="input" value={name} maxLength={80} onChange={(e) => setName(e.target.value)} />
       </label>
 
-      <label className="row" style={{ gap: 8 }}>
-        <input type="checkbox" checked={usePw} onChange={(e) => setUsePw(e.target.checked)} /> Proteger con contraseña (AES-256)
+      <label className="check">
+        <input type="checkbox" checked={usePw} onChange={(e) => setUsePw(e.target.checked)} />
+        <span>Proteger con contraseña (AES-256)</span>
       </label>
       {usePw && (
         <>
