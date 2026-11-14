@@ -5,6 +5,7 @@
 // tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
+//       { kind: 'archive', id: 'crear'|'extraer' }
 
 export const SITE = 'https://docusmart.online'
 
@@ -149,6 +150,48 @@ export const pages = [
       ['¿Qué tipo de daños puede reparar?', 'Sobre todo problemas de estructura: la tabla interna de referencias perdida o corrida, o el final del archivo dañado. Si faltan partes del contenido (por ejemplo, una descarga que se cortó a la mitad), puede que no se recupere.'],
       ['¿Funciona con PDF con contraseña?', 'Primero quítale la contraseña con "Desbloquear PDF" y luego repáralo.'],
       ['¿Se sube el archivo?', 'No. La reparación ocurre en tu navegador.'],
+    ],
+  },
+  {
+    slug: 'comprimir-archivos',
+    tool: { kind: 'archive', id: 'crear' },
+    title: 'Comprimir archivos en ZIP o 7Z online, con contraseña | DocuSmart',
+    description:
+      'Crea un ZIP o 7Z con tus archivos o carpetas desde el navegador, con contraseña AES-256 opcional. Gratis, sin registro y sin subir nada.',
+    h1: 'Comprimir archivos (ZIP y 7Z)',
+    lead: 'Junta archivos y carpetas en un solo ZIP o 7Z para enviarlos o guardarlos, y protégelos con contraseña si quieres.',
+    short: 'Crea un ZIP o 7Z',
+    steps: [
+      'Agrega los archivos o una carpeta completa.',
+      'Elige el formato (ZIP o 7Z), el nivel de compresión y, si quieres, una contraseña.',
+      'Pulsa "Crear" y se descarga el archivo comprimido.',
+    ],
+    faq: [
+      ['¿ZIP o 7Z?', 'ZIP se abre en cualquier equipo sin instalar nada. 7Z comprime más y, con contraseña, también oculta los nombres de los archivos; para abrirlo se usa 7-Zip, WinRAR o DocuSmart.'],
+      ['¿Puedo crear un archivo RAR?', 'No. RAR es un formato propietario y su licencia no permite que otros programas lo creen. 7Z es la alternativa libre y suele comprimir igual o mejor.'],
+      ['¿Qué tan segura es la contraseña?', 'Se usa cifrado AES-256. En ZIP la contraseña solo puede tener letras sin tildes, números y símbolos; en 7Z puedes usar tildes y ñ.'],
+      ['¿Mis archivos se suben a internet?', 'No. La compresión se hace dentro de tu navegador: tus archivos nunca salen de tu equipo.'],
+    ],
+  },
+  {
+    slug: 'descomprimir-archivos',
+    tool: { kind: 'archive', id: 'extraer' },
+    title: 'Abrir RAR, ZIP y 7Z online: descomprimir gratis | DocuSmart',
+    description:
+      'Descomprime archivos RAR, ZIP, 7Z, TAR y GZ desde el navegador, también con contraseña. Gratis, sin instalar nada y sin subir el archivo.',
+    h1: 'Descomprimir RAR, ZIP y 7Z',
+    lead: 'Abre un archivo comprimido sin instalar WinRAR ni 7-Zip: mira qué contiene y descarga lo que necesites.',
+    short: 'Abre RAR, ZIP y 7Z',
+    steps: [
+      'Elige el archivo comprimido (RAR, ZIP, 7Z, TAR, GZ, BZ2 o XZ).',
+      'Si tiene contraseña, escríbela. Verás la lista de archivos que contiene.',
+      'Pulsa "Extraer archivos" y descarga cada uno o todo junto en un ZIP.',
+    ],
+    faq: [
+      ['¿Qué formatos puedo abrir?', 'RAR (incluido RAR5), ZIP, 7Z, TAR, GZ, BZ2, XZ y TAR.GZ. El motor es 7-Zip, el mismo de la aplicación de escritorio.'],
+      ['¿Funciona con archivos con contraseña?', 'Sí, si conoces la contraseña. En los 7Z que también ocultan los nombres, primero te la pedirá para mostrar el contenido.'],
+      ['¿Necesito instalar algo?', 'No. Funciona en el navegador de tu computadora o celular.'],
+      ['¿Se suben mis archivos?', 'No. Todo se descomprime dentro de tu navegador.'],
     ],
   },
   {

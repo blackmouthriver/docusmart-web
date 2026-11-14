@@ -9,13 +9,16 @@ const Converter = lazy(() => import('./screens/Converter').then((m) => ({ defaul
 const PdfTools = lazy(() => import('./screens/PdfTools').then((m) => ({ default: m.PdfTools })))
 const QrScreen = lazy(() => import('./screens/Qr').then((m) => ({ default: m.QrScreen })))
 const Study = lazy(() => import('./screens/Study').then((m) => ({ default: m.Study })))
+const ArchiveScreen = lazy(() => import('./screens/Archive').then((m) => ({ default: m.ArchiveScreen })))
 
-const NAV: Array<{ section: string; label: string; short: string; icon: IconName }> = [
+// `mobile: false`: solo en la barra lateral; la barra inferior del celular tiene 5 lugares.
+const NAV: Array<{ section: string; label: string; short: string; icon: IconName; mobile?: boolean }> = [
   { section: '', label: 'Inicio', short: 'Inicio', icon: 'home' },
   { section: 'convertir', label: 'Convertir', short: 'Convertir', icon: 'convert' },
   { section: 'pdf', label: 'Herramientas PDF', short: 'PDF', icon: 'pdf' },
   { section: 'qr', label: 'Códigos QR', short: 'QR', icon: 'qr' },
   { section: 'estudio', label: 'Modo Estudio', short: 'Estudio', icon: 'study' },
+  { section: 'archivos', label: 'Comprimir archivos', short: 'Archivos', icon: 'archive', mobile: false },
 ]
 
 const SCREEN_NAMES: Record<string, string> = {
@@ -25,6 +28,7 @@ const SCREEN_NAMES: Record<string, string> = {
   pdf: 'PdfTools',
   qr: 'Qr',
   estudio: 'Study',
+  archivos: 'Archive',
 }
 
 export function App() {
@@ -69,6 +73,9 @@ export function App() {
       break
     case 'qr':
       screen = <QrScreen />
+      break
+    case 'archivos':
+      screen = <ArchiveScreen sub={route.sub} />
       break
     case 'estudio':
       screen = <Study />
@@ -116,7 +123,7 @@ export function App() {
         </main>
 
         <nav className="bottom-nav" aria-label="Secciones">
-          {NAV.map((n) => (
+          {NAV.filter((n) => n.mobile !== false).map((n) => (
             <a key={n.section} href={'#/' + n.section} aria-current={active === n.section ? 'page' : undefined}>
               <span className="bn-pill">
                 <Icon name={n.icon} />

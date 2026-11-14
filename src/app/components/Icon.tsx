@@ -42,6 +42,9 @@ const paths = {
   compress: 'M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7',
   unlock: 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 7.5-2',
   wrench: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
+  archive: 'M3 4h18v4H3zM5 8v12h14V8M10 12h4',
+  folder: 'M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z',
+  file: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5',
 } as const
 
 export type IconName = keyof typeof paths

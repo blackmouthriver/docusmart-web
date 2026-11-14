@@ -22,6 +22,7 @@
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@neslinesli93/qpdf-wasm": "^0.3.1",
+    "7z-wasm": "^1.2.0",
     "fflate": "^0.8.3",
     "jsqr": "^1.4.0",
     "pdf-lib": "^1.17.1",
