@@ -14,6 +14,7 @@ const QUICK: Array<{ label: string; hint: string; icon: IconName; cls: string; t
   { label: 'Crear QR', hint: 'También protegido', icon: 'qr', cls: 'ico-cyan', to: ['qr'] },
   { label: 'Lectura', hint: 'Escucha tus textos', icon: 'volume', cls: 'ico-green', to: ['estudio'] },
   { label: 'Pomodoro', hint: 'Bloques de 25 minutos', icon: 'timer', cls: 'ico-amber', to: ['estudio'] },
+  { label: 'Editar PDF', hint: 'Texto, formas y resaltado', icon: 'edit', cls: 'ico-blue', to: ['pdf', 'editar'] },
   { label: 'Firmar PDF', hint: 'Dibuja o sube tu firma', icon: 'pen', cls: 'ico-blue', to: ['pdf', 'firmar'] },
   { label: 'Comprimir PDF', hint: 'Reduce el peso de un PDF', icon: 'compress', cls: 'ico-green', to: ['pdf', 'comprimir'] },
   { label: 'ZIP y RAR', hint: 'Comprime o descomprime archivos', icon: 'archive', cls: 'ico-violet', to: ['archivos'] },

@@ -49,6 +49,13 @@ const paths = {
   redact: 'M4 5h16v5H4zM4 14h6M14 14h6M4 19h16',
   compare: 'M9 4H5v16h4M15 4h4v16h-4M12 2v20',
   images: 'M8 3h13v13H8zM8 12l3.5-3.5L16 13l2-2 3 3M3 8v13h13',
+  cursor: 'M5 3l14 7-6 2-2 6z',
+  type: 'M5 7V4h14v3M12 4v16M9 20h6',
+  square: 'M4 4h16v16H4z',
+  circle: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18',
+  marker: 'M9 15l-5 5h6l2-2M15 4l5 5-8 8-5-5z',
+  eraser: 'M3 16l9-9 6 6-6 6H6zM13 19h8',
+  edit: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
   crop: 'M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14',
 } as const
 

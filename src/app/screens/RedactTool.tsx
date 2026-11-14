@@ -191,7 +191,13 @@ function RedactStage({
   onRemove: (i: number) => void
 }) {
   const stage = useRef<HTMLDivElement>(null)
-  const [draft, setDraft] = useState<Area | null>(null)
+  const [draft, setDraftState] = useState<Area | null>(null)
+  // Copia en una ref: al soltar puede que React todavía no haya vuelto a dibujar con el último borrador.
+  const draftRef = useRef(draft)
+  const setDraft = (d: Area | null) => {
+    draftRef.current = d
+    setDraftState(d)
+  }
   const drag = useRef<{ kind: 'new'; x: number; y: number } | { kind: 'move'; i: number; x: number; y: number; start: Area } | null>(null)
 
   const frac = (e: PointerEvent) => {
@@ -223,6 +229,7 @@ function RedactStage({
     else onChange(d.i, clampArea({ ...d.start, x: d.start.x + x - d.x, y: d.start.y + y - d.y }))
   }
   const end = () => {
+    const draft = draftRef.current
     if (drag.current?.kind === 'new' && draft && draft.w >= MIN_SIZE && draft.h >= MIN_SIZE) onAdd(draft)
     drag.current = null
     setDraft(null)

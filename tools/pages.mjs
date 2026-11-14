@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -69,6 +69,28 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'editar-pdf',
+    tool: { kind: 'pdf', id: 'editar' },
+    title: 'Editar PDF online gratis: agregar texto, imágenes y formas | DocuSmart',
+    description:
+      'Escribe sobre un PDF, agrega imágenes, rectángulos y círculos, resalta texto o tapa lo que no quieres que se vea. Gratis, sin registro y sin subir el archivo.',
+    h1: 'Editar PDF',
+    lead: 'Llena un formulario que no es editable, corrige un dato, marca lo importante o agrega tu logo, directo sobre las páginas del PDF.',
+    short: 'Texto, imágenes y formas',
+    howTo: 'Cómo editar un PDF en 3 pasos',
+    steps: [
+      'Elige el PDF.',
+      'Usa la barra de herramientas: Texto, Imagen, Rectángulo, Círculo, Resaltar o Tapar. Toca o arrastra sobre la página para agregarlos.',
+      'Ajusta tamaño, color y posición, y pulsa "Guardar y descargar".',
+    ],
+    faq: [
+      ['¿Puedo cambiar el texto que ya tiene el PDF?', 'Puedes taparlo con la herramienta "Tapar" (un recuadro blanco) y escribir el texto nuevo encima con "Texto". El resultado se ve como si lo hubieras corregido.'],
+      ['¿"Tapar" borra lo que hay debajo?', 'No: lo cubre, pero el texto original sigue dentro del archivo. Si necesitas eliminar datos sensibles de verdad, usa "Censurar PDF".'],
+      ['¿Qué letras puedo usar?', 'Tres familias estándar de PDF (sans, serif y monoespaciada), en normal o negrita, con tildes y ñ. Los emojis y otros alfabetos no se pueden guardar con esas fuentes.'],
+      ['¿Mis archivos se suben a internet?', 'No. Todo se hace dentro de tu navegador, sin registro.'],
     ],
   },
   {
