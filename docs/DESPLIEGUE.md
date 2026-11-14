@@ -3,6 +3,7 @@
 ## Seguridad
 
 - **Cabeceras** (en `firebase.json`): CSP estricta (sin scripts en línea, solo `'self'` + Google Analytics), HSTS, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` (solo cámara, para leer QR), COOP/CORP.
+- **Caché**: `/assets/**` (con hash en el nombre) se guarda un año; el HTML (`/`, `/app/`, las URL limpias como `/unir-pdf` y cualquier `*.html`) va con `no-cache`, para que tras cada despliegue el navegador pida la versión nueva y nunca quede un HTML viejo apuntando a archivos JS que ya no existen. Ojo: Firebase aplica por defecto `max-age=3600` a lo que ninguna regla cubre.
 - **Sin recursos de terceros**: las fuentes y los recursos de pdf.js (fuentes estándar, cmaps, wasm) se sirven desde el propio dominio. El motor de JavaScript de PDFs (quickjs) no se incluye.
 - `npm run preview` aplica las mismas cabeceras que producción, para detectar en local cualquier bloqueo de la CSP.
 - `/.well-known/security.txt` (RFC 9116) con el contacto para reportar vulnerabilidades. Vence el 2027-10-16: renuévalo antes.
