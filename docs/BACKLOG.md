@@ -62,15 +62,16 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-22 **OCR** (página `/ocr-pdf`): imagen o PDF escaneado → texto (copiar o .txt) y PDF buscable, en español, inglés o ambos, con tesseract.js 7. El motor (variantes LSTM), los modelos `best_int` y el worker se sirven desde el propio dominio; el worker instala su propia política de Trusted Types, así que la CSP no se relajó. Avisa si la confianza del reconocimiento es baja (<60 %). "PDF a texto" ahora remite al OCR cuando el PDF no tiene texto.
 
+**Hecho:** W-30 **Recortar PDF** (página `/recortar-pdf`): recuadro arrastrable sobre la vista previa (bordes, esquinas, mover; también con teclado), "Quitar márgenes en blanco" automático, todas las páginas o solo una. Cambia la CropBox con pdf-lib respetando la rotación de cada página; lo recortado queda oculto, no borrado (lo dice la FAQ).
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-30.
+Los de la tabla de abajo, en su orden, empezando por W-31.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-30 | **Recortar PDF** (márgenes o área) | ✅ | ✅ | pdf-lib `setCropBox` + vista previa con pdf.js |
 | W-31 | **Firmar PDF** (dibujar o subir la firma) | ✅ | ✅ | canvas → PNG → pdf-lib |
 | W-32 | **Censurar PDF** (tapar datos sensibles de verdad) | ✅ | ✅ | Re-dibujar la página como imagen con el área tapada, para que el texto no quede debajo |
 | W-33 | **Comparar PDF** (dos versiones) | ✅ | ✅ | Diferencias de texto con pdf.js |

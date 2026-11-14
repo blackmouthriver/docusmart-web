@@ -314,3 +314,27 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Recortar PDF */
+.crop-frame { display: flex; justify-content: center; padding: 14px; border-radius: 14px; overflow: hidden; background: var(--night); }
+.crop-stage { position: relative; line-height: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+.crop-stage img { display: block; max-width: 100%; max-height: 68vh; width: auto; height: auto; background: #fff; }
+.crop-rect { position: absolute; outline: 2px solid var(--blue-light); box-shadow: 0 0 0 9999px rgba(11, 16, 32, 0.62); cursor: move; }
+.crop-h, .crop-c { position: absolute; outline: none; touch-action: none; }
+.crop-h::after, .crop-c::after { content: ""; position: absolute; background: #fff; border: 2px solid var(--blue); transition: background 150ms ease, transform 150ms var(--ease-out); }
+.crop-h-top, .crop-h-bottom { left: 14px; right: 14px; height: 28px; cursor: ns-resize; }
+.crop-h-top { top: -14px; }
+.crop-h-bottom { bottom: -14px; }
+.crop-h-left, .crop-h-right { top: 14px; bottom: 14px; width: 28px; cursor: ew-resize; }
+.crop-h-left { left: -14px; }
+.crop-h-right { right: -14px; }
+.crop-h-top::after, .crop-h-bottom::after { left: 50%; top: 50%; width: 34px; height: 8px; border-radius: 999px; transform: translate(-50%, -50%); }
+.crop-h-left::after, .crop-h-right::after { left: 50%; top: 50%; width: 8px; height: 34px; border-radius: 999px; transform: translate(-50%, -50%); }
+.crop-h:focus-visible::after { background: var(--blue); box-shadow: 0 0 0 3px var(--blue-light); }
+.crop-c { width: 28px; height: 28px; z-index: 1; }
+.crop-c::after { inset: 8px; border-radius: 3px; }
+.crop-c-top-left { top: -14px; left: -14px; cursor: nwse-resize; }
+.crop-c-top-right { top: -14px; right: -14px; cursor: nesw-resize; }
+.crop-c-bottom-left { bottom: -14px; left: -14px; cursor: nesw-resize; }
+.crop-c-bottom-right { bottom: -14px; right: -14px; cursor: nwse-resize; }
+@media (hover: hover) { .crop-h:hover::after, .crop-c:hover::after { background: var(--blue-soft); } }
