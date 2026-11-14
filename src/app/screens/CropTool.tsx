@@ -1,76 +1,31 @@
 // Recortar PDF: el usuario ajusta un rectángulo sobre la vista previa de una página.
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
-import type { PDFDocumentProxy } from 'pdfjs-dist'
 import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Segmented, errorMessage } from '../components/ui'
 import { baseName, download } from '../lib/files'
-import { closePdf, openPdf, renderPage } from '../lib/pdf'
 import { MIN_KEEP, NO_MARGINS, cropPdf, detectContentMargins, isNoCrop, ptToMm, type Margins } from '../lib/pdfCrop'
 import { track } from '../../shared/analytics'
+import { PageNav, usePdfPreview } from './PdfPreview'
 
 type Edge = 'top' | 'right' | 'bottom' | 'left'
 type Handle = Edge | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'move'
 
-const PREVIEW_WIDTH = 900
 const STEP = 0.01
 
 export function CropTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
-  const [doc, setDoc] = useState<PDFDocumentProxy | null>(null)
-  const [pageNo, setPageNo] = useState(1)
-  const [preview, setPreview] = useState<{ url: string; widthPt: number; heightPt: number } | null>(null)
+  const { pages, ready, pageNo, setPageNo, preview, canvas, error, setError } = usePdfPreview(file)
   const [margins, setMargins] = useState<Margins>(NO_MARGINS)
   const [scope, setScope] = useState<'all' | 'this'>('all')
   const [busy, setBusy] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
-  // Abrir el PDF (y cerrarlo al cambiar de archivo o salir).
-  useEffect(() => {
-    setDoc(null)
-    setPreview(null)
-    setPageNo(1)
-    setMargins(NO_MARGINS)
-    setError(null)
-    if (!file) return
-    let cancelled = false
-    let opened: PDFDocumentProxy | null = null
-    void (async () => {
-      try {
-        opened = await openPdf(await file.arrayBuffer())
-        if (cancelled) await closePdf(opened)
-        else setDoc(opened)
-      } catch (e) {
-        if (!cancelled) setError(/password/i.test(String(e)) ? 'Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".' : errorMessage(e))
-      }
-    })()
-    return () => {
-      cancelled = true
-      if (opened) void closePdf(opened)
-    }
-  }, [file])
-
-  // Dibujar la página de la vista previa.
-  useEffect(() => {
-    if (!doc) return
-    let cancelled = false
-    void (async () => {
-      const page = await doc.getPage(pageNo)
-      const vp = page.getViewport({ scale: 1 })
-      const canvas = await renderPage(doc, pageNo, PREVIEW_WIDTH, 'print')
-      if (cancelled) return
-      canvasRef.current = canvas
-      setPreview({ url: canvas.toDataURL('image/jpeg', 0.85), widthPt: vp.width, heightPt: vp.height })
-    })().catch((e) => !cancelled && setError(errorMessage(e)))
-    return () => {
-      cancelled = true
-    }
-  }, [doc, pageNo])
+  // Cada archivo empieza sin recorte.
+  useEffect(() => setMargins(NO_MARGINS), [file])
 
   const detect = () => {
-    const c = canvasRef.current
+    const c = canvas.current
     const ctx = c?.getContext('2d', { willReadFrequently: true })
     if (!c || !ctx) return
     const found = detectContentMargins(ctx.getImageData(0, 0, c.width, c.height))
@@ -79,7 +34,7 @@ export function CropTool() {
   }
 
   const save = async () => {
-    if (!file || !doc) return
+    if (!file || !ready) return
     setBusy(true)
     setError(null)
     try {
@@ -103,7 +58,6 @@ export function CropTool() {
     )
   }
 
-  const pages = doc?.numPages ?? 0
   const keptW = preview ? ptToMm(preview.widthPt * (1 - margins.left - margins.right)) : 0
   const keptH = preview ? ptToMm(preview.heightPt * (1 - margins.top - margins.bottom)) : 0
 
@@ -122,13 +76,7 @@ export function CropTool() {
           <p className="faint" style={{ margin: 0 }}>Arrastra los bordes o las esquinas del recuadro. Lo oscurecido se recorta.</p>
           <CropStage url={preview.url} margins={margins} onChange={setMargins} />
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            {pages > 1 ? (
-              <div className="row" style={{ gap: 4 }}>
-                <button type="button" className="icon-btn" aria-label="Página anterior" disabled={pageNo === 1} onClick={() => setPageNo((p) => p - 1)}><Icon name="back" /></button>
-                <span className="faint">Página {pageNo} de {pages}</span>
-                <button type="button" className="icon-btn" aria-label="Página siguiente" disabled={pageNo === pages} onClick={() => setPageNo((p) => p + 1)} style={{ transform: 'scaleX(-1)' }}><Icon name="back" /></button>
-              </div>
-            ) : <span />}
+            <PageNav pageNo={pageNo} pages={pages} onChange={setPageNo} />
             <span className="faint">Queda: {keptW} × {keptH} mm</span>
           </div>
           <div className="row">
