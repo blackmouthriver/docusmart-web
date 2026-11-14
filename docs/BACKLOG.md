@@ -68,15 +68,16 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-32 **Censurar PDF** (página `/censurar-pdf`): zonas dibujadas a mano o marcadas buscando texto (una frase sin importar tildes, todos los correos o todos los números largos). Las páginas con zonas se vuelven a dibujar como imagen a 200 ppp con las zonas en negro y el PDF se arma en un documento nuevo, sin los metadatos del original. Verificado: al extraer el texto del resultado no queda ningún dato tapado y las páginas sin zonas conservan su texto.
 
+**Hecho:** W-33 **Comparar PDF** (página `/comparar-pdf`): diff de Myers de todo el documento, primero por líneas y luego palabra por palabra dentro de cada cambio; un párrafo nuevo no desordena el resto y los cambios de salto de línea no cuentan. Muestra cada cambio con contexto y la página en cada versión, y descarga un informe .txt. Avisa si un PDF no tiene texto (sugiere OCR). Mejora la de la app, que compara página contra página.
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-33.
+Los de la tabla de abajo, en su orden, empezando por W-34.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-33 | **Comparar PDF** (dos versiones) | ✅ | ✅ | Diferencias de texto con pdf.js |
 | W-34 | **Extraer imágenes de un PDF** | ✅ | ✅ (en "PDF a JPG") | Lista de operadores de pdf.js |
 | W-35 | **Editar PDF**: agregar texto, imágenes y formas | ✅ (texto) | ✅ | pdf-lib |
 | W-36 | **Formularios PDF**: detectar y llenar campos | ✅ | ✅ | AcroForm de pdf-lib |

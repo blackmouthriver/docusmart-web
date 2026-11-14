@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -69,6 +69,28 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'comparar-pdf',
+    tool: { kind: 'pdf', id: 'comparar' },
+    title: 'Comparar PDF online gratis: ver qué cambió | DocuSmart',
+    description:
+      'Compara dos versiones de un PDF y mira palabra por palabra qué se agregó y qué se quitó, con la página de cada cambio. Gratis y sin subir los archivos.',
+    h1: 'Comparar PDF',
+    lead: 'Encuentra en segundos qué cambió entre dos versiones de un contrato, una propuesta o un trabajo, sin leerlos de punta a punta.',
+    short: 'Qué cambió entre dos versiones',
+    howTo: 'Cómo comparar dos PDF en 3 pasos',
+    steps: [
+      'Elige el PDF original y la nueva versión.',
+      'Pulsa "Comparar".',
+      'Revisa cada cambio: en verde lo agregado y tachado en rojo lo quitado. Descarga el informe si lo necesitas.',
+    ],
+    faq: [
+      ['¿Qué tipo de cambios detecta?', 'Cambios en el texto: palabras, números o párrafos agregados, quitados o modificados. Si solo cambió el salto de línea o el espaciado, no lo cuenta como cambio. Los cambios en imágenes o en el diseño no se detectan.'],
+      ['¿Funciona con documentos escaneados?', 'Un escaneo es una imagen y no tiene texto para comparar. Pasa primero cada versión por la herramienta OCR y compara los PDF buscables que genera.'],
+      ['¿Importa que las páginas no coincidan?', 'No. Se compara el documento completo, así que si un párrafo nuevo corre todo a la página siguiente, solo se marca ese párrafo. Cada cambio indica en qué página está en cada versión.'],
+      ['¿Mis documentos se suben a internet?', 'No. La comparación se hace dentro de tu navegador.'],
     ],
   },
   {

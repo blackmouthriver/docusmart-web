@@ -47,6 +47,7 @@ const paths = {
   file: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5',
   pen: 'M15 4l5 5L9 20H4v-5zM13 6l5 5M4 22h16',
   redact: 'M4 5h16v5H4zM4 14h6M14 14h6M4 19h16',
+  compare: 'M9 4H5v16h4M15 4h4v16h-4M12 2v20',
   crop: 'M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14',
 } as const
 
