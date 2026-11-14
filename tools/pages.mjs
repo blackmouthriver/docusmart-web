@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -69,6 +69,28 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'firmar-pdf',
+    tool: { kind: 'pdf', id: 'firmar' },
+    title: 'Firmar PDF online gratis, sin registrarte | DocuSmart',
+    description:
+      'Firma un PDF desde el navegador: dibuja tu firma con el dedo o el mouse, escríbela o sube una foto, y colócala donde quieras. Gratis y sin subir el archivo.',
+    h1: 'Firmar PDF',
+    lead: 'Pon tu firma en contratos, formularios o cartas sin imprimir ni escanear: dibújala, escríbela o usa una foto de tu firma en papel.',
+    short: 'Dibuja o sube tu firma',
+    howTo: 'Cómo firmar un PDF en 3 pasos',
+    steps: [
+      'Elige el PDF que quieres firmar.',
+      'Crea tu firma: dibújala, escribe tu nombre o sube una foto de tu firma en papel.',
+      'Arrástrala a su lugar, ajusta el tamaño (puedes repetirla en todas las páginas) y pulsa "Firmar y descargar".',
+    ],
+    faq: [
+      ['¿Tiene validez legal?', 'Es una firma electrónica simple: la imagen de tu firma sobre el documento, como firmar a mano. Sirve para la mayoría de los trámites cotidianos; cuando se exige una firma digital con certificado, necesitas el servicio de una entidad certificadora.'],
+      ['¿Se guarda mi firma en algún lado?', 'No. La firma y el PDF se procesan dentro de tu navegador y no se suben a ningún servidor. Al cerrar la página, la firma se borra.'],
+      ['¿Puedo firmar varias páginas?', 'Sí. Agrega la firma en cada página que quieras, o usa "Repetir en todas las páginas" para poner tus iniciales en todo el documento.'],
+      ['¿Cómo saco una buena foto de mi firma?', 'Firma con tinta oscura sobre papel blanco y toma la foto con buena luz y sin sombras. DocuSmart quita el fondo blanco automáticamente.'],
     ],
   },
   {

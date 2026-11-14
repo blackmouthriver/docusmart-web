@@ -20,6 +20,7 @@
     "@firebase/analytics": "^0.10.25",
     "@firebase/app": "^0.16.5",
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/dancing-script": "^5.3.0",
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@neslinesli93/qpdf-wasm": "^0.3.1",
     "@tesseract.js-data/eng": "^1.0.0",

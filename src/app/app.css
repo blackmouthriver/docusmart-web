@@ -338,3 +338,24 @@ p { margin: 0; }
 .crop-c-bottom-left { bottom: -14px; left: -14px; cursor: nesw-resize; }
 .crop-c-bottom-right { bottom: -14px; right: -14px; cursor: nwse-resize; }
 @media (hover: hover) { .crop-h:hover::after, .crop-c:hover::after { background: var(--blue-soft); } }
+
+/* Firmar PDF */
+.sign-current { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-radius: 14px; background: var(--paper); }
+.sign-current img { max-height: 56px; max-width: 60%; }
+.sign-pad-wrap { position: relative; }
+.sign-pad { display: block; width: 100%; height: 190px; border-radius: 14px; background: var(--card); border: 1.5px dashed var(--line-strong); touch-action: none; cursor: crosshair; }
+.sign-pad-line { position: absolute; left: 8%; right: 8%; bottom: 46px; border-bottom: 1.5px solid var(--line-strong); pointer-events: none; }
+.sign-pad-clear { position: absolute; top: 8px; right: 8px; }
+.sign-typed { min-height: 96px; display: flex; align-items: center; justify-content: center; padding: 8px 16px; border-radius: 14px; background: var(--paper); font-size: clamp(34px, 8vw, 56px); font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; text-align: center; }
+.sign-frame { display: flex; justify-content: center; padding: 14px; border-radius: 14px; background: var(--paper-2); }
+.sign-stage { position: relative; line-height: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sign-stage > img { display: block; max-width: 100%; max-height: 68vh; width: auto; height: auto; background: #fff; box-shadow: 0 1px 4px rgba(28, 27, 26, 0.18); }
+.sign-box { position: absolute; cursor: move; outline: 1.5px dashed transparent; border-radius: 4px; touch-action: none; }
+.sign-box img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.sign-box:hover, .sign-box.is-selected, .sign-box:focus-visible { outline-color: var(--blue); background: rgba(37, 99, 235, 0.06); }
+.sign-box:focus-visible { outline-style: solid; }
+.sign-del, .sign-resize { position: absolute; display: none; }
+.sign-box.is-selected .sign-del, .sign-box.is-selected .sign-resize, .sign-box:focus-visible .sign-del, .sign-box:focus-visible .sign-resize { display: grid; }
+.sign-del { top: -13px; right: -13px; width: 26px; height: 26px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: var(--danger); color: #fff; cursor: pointer; }
+.sign-del svg { width: 14px; height: 14px; }
+.sign-resize { right: -9px; bottom: -9px; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid var(--blue); cursor: nwse-resize; }

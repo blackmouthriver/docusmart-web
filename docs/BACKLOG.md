@@ -64,15 +64,16 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-30 **Recortar PDF** (página `/recortar-pdf`): recuadro arrastrable sobre la vista previa (bordes, esquinas, mover; también con teclado), "Quitar márgenes en blanco" automático, todas las páginas o solo una. Cambia la CropBox con pdf-lib respetando la rotación de cada página; lo recortado queda oculto, no borrado (lo dice la FAQ).
 
+**Hecho:** W-31 **Firmar PDF** (página `/firmar-pdf`): la firma se dibuja (dedo, lápiz o mouse), se escribe con letra manuscrita (Dancing Script, OFL) o se sube como foto (el fondo claro se quita solo). Se arrastra y redimensiona sobre la vista previa, en una o varias páginas ("Repetir en todas las páginas"), también con teclado, y se estampa como PNG con pdf-lib, derecha aunque la página esté rotada. Es una firma visual, no digital con certificado (lo aclaran la pantalla y la FAQ). Mejora la de la app, que solo la pone en la esquina inferior derecha.
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-31.
+Los de la tabla de abajo, en su orden, empezando por W-32.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-31 | **Firmar PDF** (dibujar o subir la firma) | ✅ | ✅ | canvas → PNG → pdf-lib |
 | W-32 | **Censurar PDF** (tapar datos sensibles de verdad) | ✅ | ✅ | Re-dibujar la página como imagen con el área tapada, para que el texto no quede debajo |
 | W-33 | **Comparar PDF** (dos versiones) | ✅ | ✅ | Diferencias de texto con pdf.js |
 | W-34 | **Extraer imágenes de un PDF** | ✅ | ✅ (en "PDF a JPG") | Lista de operadores de pdf.js |
