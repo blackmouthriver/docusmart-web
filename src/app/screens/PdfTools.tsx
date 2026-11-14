@@ -10,6 +10,7 @@ import { CompressTool, ProtectTool, RepairTool, UnlockTool } from './PdfSecurity
 import { OcrTool } from './OcrTool'
 import { CropTool } from './CropTool'
 import { SignTool } from './SignTool'
+import { RedactTool } from './RedactTool'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'unir', name: 'Unir PDFs', desc: 'Combina 2 o más PDFs en uno solo', icon: 'merge', cls: 'ico-red' },
@@ -18,6 +19,7 @@ const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls
   { id: 'reordenar', name: 'Reordenar páginas', desc: 'Cambia el orden o elimina páginas', icon: 'reorder', cls: 'ico-cyan' },
   { id: 'recortar', name: 'Recortar PDF', desc: 'Quita márgenes o deja solo una zona', icon: 'crop', cls: 'ico-amber' },
   { id: 'firmar', name: 'Firmar PDF', desc: 'Dibuja, escribe o sube tu firma y colócala', icon: 'pen', cls: 'ico-blue' },
+  { id: 'censurar', name: 'Censurar PDF', desc: 'Tapa y elimina datos sensibles de verdad', icon: 'redact', cls: 'ico-red' },
   { id: 'numerar', name: 'Numerar páginas', desc: 'Agrega el número al pie de cada página', icon: 'hash', cls: 'ico-green' },
   { id: 'marca', name: 'Marca de agua', desc: 'Un texto en diagonal sobre cada página', icon: 'stamp', cls: 'ico-amber' },
   { id: 'comprimir', name: 'Comprimir PDF', desc: 'Reduce el peso sin perder calidad, o al máximo', icon: 'compress', cls: 'ico-green' },
@@ -37,6 +39,7 @@ export const OWN_TOOLS: Record<string, ComponentType> = {
   ocr: OcrTool,
   recortar: CropTool,
   firmar: SignTool,
+  censurar: RedactTool,
 }
 
 export function PdfTools({ sub }: { sub?: string }) {
@@ -67,7 +70,7 @@ export function PdfTools({ sub }: { sub?: string }) {
             ))}
           </div>
           <div style={{ marginTop: 16 }}>
-            <Notice kind="plain">Escanear con detección de bordes y censurar PDF están en la app Android.</Notice>
+            <Notice kind="plain">Escanear con detección de bordes está en la app Android.</Notice>
           </div>
         </>
       )}

@@ -54,7 +54,7 @@ export function usePdfPreview(file: File | null, previewWidth = 900) {
     }
   }, [doc, pageNo, previewWidth])
 
-  return { pages: doc?.numPages ?? 0, ready: !!doc, pageNo, setPageNo, preview, canvas, error, setError }
+  return { doc, pages: doc?.numPages ?? 0, ready: !!doc, pageNo, setPageNo, preview, canvas, error, setError }
 }
 
 /** "‹ Página 2 de 5 ›" para recorrer las páginas de la vista previa. */
