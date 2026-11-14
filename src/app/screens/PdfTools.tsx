@@ -12,6 +12,7 @@ import { CropTool } from './CropTool'
 import { SignTool } from './SignTool'
 import { RedactTool } from './RedactTool'
 import { CompareTool } from './CompareTool'
+import { ExtractImagesTool } from './ExtractImagesTool'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'unir', name: 'Unir PDFs', desc: 'Combina 2 o más PDFs en uno solo', icon: 'merge', cls: 'ico-red' },
@@ -22,6 +23,7 @@ const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls
   { id: 'firmar', name: 'Firmar PDF', desc: 'Dibuja, escribe o sube tu firma y colócala', icon: 'pen', cls: 'ico-blue' },
   { id: 'censurar', name: 'Censurar PDF', desc: 'Tapa y elimina datos sensibles de verdad', icon: 'redact', cls: 'ico-red' },
   { id: 'comparar', name: 'Comparar PDF', desc: 'Qué cambió entre dos versiones', icon: 'compare', cls: 'ico-violet' },
+  { id: 'imagenes', name: 'Extraer imágenes', desc: 'Saca las fotos de un PDF en su calidad original', icon: 'images', cls: 'ico-violet' },
   { id: 'numerar', name: 'Numerar páginas', desc: 'Agrega el número al pie de cada página', icon: 'hash', cls: 'ico-green' },
   { id: 'marca', name: 'Marca de agua', desc: 'Un texto en diagonal sobre cada página', icon: 'stamp', cls: 'ico-amber' },
   { id: 'comprimir', name: 'Comprimir PDF', desc: 'Reduce el peso sin perder calidad, o al máximo', icon: 'compress', cls: 'ico-green' },
@@ -43,6 +45,7 @@ export const OWN_TOOLS: Record<string, ComponentType> = {
   firmar: SignTool,
   censurar: RedactTool,
   comparar: CompareTool,
+  imagenes: ExtractImagesTool,
 }
 
 export function PdfTools({ sub }: { sub?: string }) {

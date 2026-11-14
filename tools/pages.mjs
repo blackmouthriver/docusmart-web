@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -69,6 +69,28 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'extraer-imagenes-pdf',
+    tool: { kind: 'pdf', id: 'imagenes' },
+    title: 'Extraer imágenes de un PDF gratis, en calidad original | DocuSmart',
+    description:
+      'Saca todas las fotos y gráficos de un PDF con su resolución original: las JPEG salen idénticas y las demás como PNG. Descárgalas una por una o en ZIP, sin subir el archivo.',
+    h1: 'Extraer imágenes de un PDF',
+    lead: 'Recupera las fotos, logos y gráficos que vienen dentro de un PDF, tal como se guardaron, sin capturas de pantalla ni pérdida de calidad.',
+    short: 'Fotos en su calidad original',
+    howTo: 'Cómo extraer las imágenes de un PDF en 3 pasos',
+    steps: [
+      'Elige el PDF.',
+      'Pulsa "Buscar imágenes": aparecen todas las fotos y gráficos que contiene.',
+      'Elige las que quieras y descárgalas una por una o todas juntas en un ZIP.',
+    ],
+    faq: [
+      ['¿Pierden calidad las imágenes?', 'No. Las fotos JPEG se copian byte por byte, idénticas a las originales, y las demás se guardan como PNG, que no pierde calidad.'],
+      ['¿Qué diferencia hay con "PDF a JPG"?', '"PDF a JPG" convierte cada página completa en una imagen. "Extraer imágenes" saca solo las fotos y gráficos que hay dentro, cada uno por separado y con su tamaño original.'],
+      ['¿Por qué no aparece nada en un PDF escaneado?', 'Porque en un escaneo cada página es una sola imagen grande; para eso usa "PDF a JPG". Si una imagen usa un formato poco común (JPEG 2000, fax o JBIG2), DocuSmart te lo avisa.'],
+      ['¿Mis archivos se suben a internet?', 'No. Todo se hace dentro de tu navegador.'],
     ],
   },
   {

@@ -48,6 +48,7 @@ const paths = {
   pen: 'M15 4l5 5L9 20H4v-5zM13 6l5 5M4 22h16',
   redact: 'M4 5h16v5H4zM4 14h6M14 14h6M4 19h16',
   compare: 'M9 4H5v16h4M15 4h4v16h-4M12 2v20',
+  images: 'M8 3h13v13H8zM8 12l3.5-3.5L16 13l2-2 3 3M3 8v13h13',
   crop: 'M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14',
 } as const
 
