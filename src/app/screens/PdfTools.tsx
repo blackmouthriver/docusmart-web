@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ComponentType } from 'react'
 import { go, useApp } from '../state'
 import { Icon, type IconName } from '../components/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Segmented, errorMessage } from '../components/ui'
@@ -6,6 +6,7 @@ import { baseName, download, downloadMany, parsePageRanges } from '../lib/files'
 import { closePdf, openPdf, renderPage } from '../lib/pdf'
 import { extractPages, merge, numberPages, rotate, splitEach, watermark } from '../lib/pdfTools'
 import { track } from '../../shared/analytics'
+import { CompressTool, ProtectTool, RepairTool, UnlockTool } from './PdfSecurityTools'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'unir', name: 'Unir PDFs', desc: 'Combina 2 o más PDFs en uno solo', icon: 'merge', cls: 'ico-red' },
@@ -14,10 +15,24 @@ const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls
   { id: 'reordenar', name: 'Reordenar páginas', desc: 'Cambia el orden o elimina páginas', icon: 'reorder', cls: 'ico-cyan' },
   { id: 'numerar', name: 'Numerar páginas', desc: 'Agrega el número al pie de cada página', icon: 'hash', cls: 'ico-green' },
   { id: 'marca', name: 'Marca de agua', desc: 'Un texto en diagonal sobre cada página', icon: 'stamp', cls: 'ico-amber' },
+  { id: 'comprimir', name: 'Comprimir PDF', desc: 'Reduce el peso sin perder calidad, o al máximo', icon: 'compress', cls: 'ico-green' },
+  { id: 'proteger', name: 'Proteger PDF', desc: 'Contraseña con cifrado AES-256 y permisos', icon: 'lock', cls: 'ico-amber' },
+  { id: 'desbloquear', name: 'Desbloquear PDF', desc: 'Quita la contraseña o las restricciones', icon: 'unlock', cls: 'ico-blue' },
+  { id: 'reparar', name: 'Reparar PDF', desc: 'Recupera PDF dañados que no abren', icon: 'wrench', cls: 'ico-violet' },
 ]
+
+/** Herramientas con su propio componente (las demás usan SingleFileTool). */
+export const OWN_TOOLS: Record<string, ComponentType> = {
+  unir: MergeTool,
+  comprimir: CompressTool,
+  proteger: ProtectTool,
+  desbloquear: UnlockTool,
+  reparar: RepairTool,
+}
 
 export function PdfTools({ sub }: { sub?: string }) {
   const tool = TOOLS.find((t) => t.id === sub)
+  const Own = tool ? OWN_TOOLS[tool.id] : undefined
   return (
     <>
       <HeroCard title="Herramientas PDF" subtitle="Gestiona tus PDFs de forma rápida, directo en el navegador." />
@@ -26,7 +41,7 @@ export function PdfTools({ sub }: { sub?: string }) {
           <BackButton label="Volver a herramientas" onClick={() => go('pdf')} />
           <h2 style={{ fontSize: 26, margin: '6px 0 4px' }}>{tool.name}</h2>
           <p className="muted" style={{ marginBottom: 16 }}>{tool.desc}</p>
-          {tool.id === 'unir' ? <MergeTool /> : <SingleFileTool toolId={tool.id} />}
+          {Own ? <Own /> : <SingleFileTool toolId={tool.id} />}
         </>
       ) : (
         <>
@@ -43,7 +58,7 @@ export function PdfTools({ sub }: { sub?: string }) {
             ))}
           </div>
           <div style={{ marginTop: 16 }}>
-            <Notice kind="plain">Comprimir, proteger con contraseña y OCR están en la app Android.</Notice>
+            <Notice kind="plain">Escanear con detección de bordes, firmar y censurar PDF están en la app Android.</Notice>
           </div>
         </>
       )}

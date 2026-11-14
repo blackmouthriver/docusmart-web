@@ -11,8 +11,14 @@ import '../shared/fonts'
 import '../app/app.css'
 import './tools.css'
 
-const MergeTool = lazy(() => import('../app/screens/PdfTools').then((m) => ({ default: m.MergeTool })))
-const SingleFileTool = lazy(() => import('../app/screens/PdfTools').then((m) => ({ default: m.SingleFileTool })))
+const PdfTool = lazy(() =>
+  import('../app/screens/PdfTools').then((m) => ({
+    default: ({ id }: { id: string }) => {
+      const Own = m.OWN_TOOLS[id]
+      return Own ? <Own /> : <m.SingleFileTool toolId={id} />
+    },
+  })),
+)
 const ConvertTool = lazy(() =>
   import('../app/screens/Converter').then((m) => ({
     default: ({ id }: { id: string }) => {
@@ -59,8 +65,7 @@ function ToolHost({ children }: { children: ReactNode }) {
 }
 
 function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
-  if (kind === 'pdf' && id === 'unir') return <MergeTool />
-  if (kind === 'pdf' && id) return <SingleFileTool toolId={id} />
+  if (kind === 'pdf' && id) return <PdfTool id={id} />
   if (kind === 'conv' && id) return <ConvertTool id={id} />
   if (kind === 'qr') return <QrTools />
   return null
