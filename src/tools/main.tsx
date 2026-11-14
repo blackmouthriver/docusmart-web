@@ -27,6 +27,11 @@ const ConvertTool = lazy(() =>
     },
   })),
 )
+const ArchiveTool = lazy(() =>
+  import('../app/screens/Archive').then((m) => ({
+    default: ({ id }: { id?: string }) => (id === 'extraer' ? <m.ExtractArchiveTool /> : <m.CreateArchiveTool />),
+  })),
+)
 const QrTools = lazy(() =>
   import('../app/screens/Qr').then((m) => ({
     default: () => (
@@ -68,6 +73,7 @@ function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
   if (kind === 'pdf' && id) return <PdfTool id={id} />
   if (kind === 'conv' && id) return <ConvertTool id={id} />
   if (kind === 'qr') return <QrTools />
+  if (kind === 'archive') return <ArchiveTool id={id} />
   return null
 }
 

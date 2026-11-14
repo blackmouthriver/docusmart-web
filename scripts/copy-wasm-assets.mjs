@@ -35,7 +35,14 @@ const qpdfOut = fresh(join(pub, 'qpdf'))
 cpSync(join(qpdf, 'dist', 'qpdf.wasm'), join(qpdfOut, 'qpdf.wasm'))
 cpSync(join(qpdf, 'LICENSE'), join(qpdfOut, 'LICENSE.txt'))
 
-for (const f of [join(pdfjsOut, 'standard_fonts'), join(qpdfOut, 'qpdf.wasm')]) {
+// ── 7-Zip ───────────────────────────────────────────────────────────
+// LGPL + restricción unRAR: se distribuye sin modificar y con su licencia.
+const sevenZip = join(modules, '7z-wasm')
+const sevenZipOut = fresh(join(pub, '7z'))
+cpSync(join(sevenZip, '7zz.wasm'), join(sevenZipOut, '7zz.wasm'))
+cpSync(join(sevenZip, 'License.txt'), join(sevenZipOut, 'License.txt'))
+
+for (const f of [join(pdfjsOut, 'standard_fonts'), join(qpdfOut, 'qpdf.wasm'), join(sevenZipOut, '7zz.wasm')]) {
   if (!existsSync(f)) throw new Error(`Falta un recurso: ${f}`)
 }
-console.log('Recursos wasm copiados a public/pdfjs/ y public/qpdf/')
+console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/ y public/7z/')

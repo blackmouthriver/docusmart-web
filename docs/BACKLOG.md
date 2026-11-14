@@ -58,13 +58,12 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Análisis del 2026-11-14.** Se cruzaron las herramientas de la app móvil (`features/pdftools`, `converter`, `security`, `scanner`, `study`, `agenda`) con las de iLovePDF. Las herramientas de IA en la nube de la competencia (resumir, traducir) quedan fuera: contradicen "nada sale de tu equipo".
 
-**Hecho:** W-20 Comprimir PDF (sin pérdida con qpdf; "media" y "alta" re-dibujando páginas), W-21 Proteger y desbloquear PDF (qpdf, AES-256) y, de paso, Reparar PDF (pdf-lib reconstruye la estructura; el modo de recuperación de qpdf no funciona en wasm). Son 4 herramientas nuevas con su página propia. Ver #15.
+**Hecho:** W-20 Comprimir PDF (sin pérdida con qpdf; "media" y "alta" re-dibujando páginas), W-21 Proteger y desbloquear PDF (qpdf, AES-256) y, de paso, Reparar PDF (pdf-lib reconstruye la estructura; el modo de recuperación de qpdf no funciona en wasm). Son 4 herramientas nuevas con su página propia. Ver #15. Además, W-29 **Compresor de archivos**: crear ZIP y 7Z (AES-256 opcional; en 7Z también cifra los nombres) y extraer ZIP, RAR, 7Z, TAR, GZ, BZ2 y XZ con 7-Zip en wasm, con las páginas `/comprimir-archivos` y `/descomprimir-archivos`. No se pueden crear .rar (formato propietario) y en ZIP la contraseña no admite tildes ni ñ (limitación del formato).
 
 ### Siguientes (en este orden)
 
 | ID | Ítem | Cómo | Notas |
 |---|---|---|---|
-| W-29 | **Compresor de archivos** tipo WinRAR/WinZip: crear **ZIP** y **7Z** (con contraseña AES-256 opcional) y **extraer ZIP, RAR, 7Z, TAR y GZ** | 7-Zip compilado a wasm (`7z-wasm`, 1,6 MB, LGPL + restricción unRAR) | **No se pueden crear .RAR**: el formato es propietario y su licencia lo prohíbe. 7Z es la alternativa y comprime igual o mejor |
 | W-22 | **OCR**: imagen o PDF escaneado → texto y PDF buscable, en español e inglés | tesseract.js (Apache-2.0; motor de ~3 MB más los datos de cada idioma, servidos desde el propio dominio) | La app ya tiene OCR; en la web completaría "PDF a texto" para escaneos |
 
 ### Después (paridad con la app e iLovePDF)
