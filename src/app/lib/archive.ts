@@ -61,10 +61,12 @@ async function instance(messages: string[]): Promise<SevenZipModule> {
 }
 
 // Con "-p" vacío 7-Zip intenta pedir la clave por teclado (no hay en el navegador).
-// Sin contraseña se manda una de relleno: un archivo sin cifrar la ignora y uno
-// cifrado responde "Wrong password", que se traduce en pedir la clave.
-const NO_PASSWORD = 'docusmart-sin-clave'
-const passwordArg = (password: string) => `-p${password || NO_PASSWORD}`
+// Sin contraseña se manda un valor aleatorio de relleno: un archivo sin cifrar lo
+// ignora y uno cifrado lo rechaza, lo que se traduce en pedir la clave.
+function placeholderPassword() {
+  return Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => b.toString(16).padStart(2, '0')).join('')
+}
+const passwordArg = (password: string) => `-p${password || placeholderPassword()}`
 
 const SEVEN_Z_SIGNATURE = [0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c]
 const AES_CODER_ID = [0x06, 0xf1, 0x07, 0x01]
