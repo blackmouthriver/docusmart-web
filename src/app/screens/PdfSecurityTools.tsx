@@ -178,7 +178,7 @@ export function ProtectTool() {
           ['Copiar texto e imágenes', allowCopy, setAllowCopy],
           ['Modificar el documento', allowModify, setAllowModify],
         ].map(([label, value, set]) => (
-          <label key={label as string} className="row" style={{ gap: 8 }}>
+          <label key={label as string} className="check">
             <input type="checkbox" checked={value as boolean} onChange={(e) => (set as (v: boolean) => void)(e.target.checked)} />
             {label as string}
           </label>

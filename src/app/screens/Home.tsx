@@ -18,6 +18,7 @@ const QUICK: Array<{ label: string; hint: string; icon: IconName; cls: string; t
   { label: 'ZIP y RAR', hint: 'Comprime o descomprime archivos', icon: 'archive', cls: 'ico-violet', to: ['archivos'] },
   { label: 'Proteger PDF', hint: 'Ponle contraseña', icon: 'lock', cls: 'ico-amber', to: ['pdf', 'proteger'] },
   { label: 'Desbloquear PDF', hint: 'Quita la contraseña', icon: 'unlock', cls: 'ico-blue', to: ['pdf', 'desbloquear'] },
+  { label: 'OCR', hint: 'Texto de escaneos y fotos', icon: 'text', cls: 'ico-cyan', to: ['pdf', 'ocr'] },
 ]
 
 export function Home() {

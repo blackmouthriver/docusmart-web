@@ -64,6 +64,7 @@ Todo se procesa en el navegador con librerías de código abierto, servidas desd
 - [pdf-lib](https://github.com/Hopding/pdf-lib) (MIT) para crear y editar PDF.
 - [qpdf](https://github.com/qpdf/qpdf) (Apache-2.0), compilado a wasm por [@neslinesli93/qpdf-wasm](https://github.com/neslinesli93/qpdf-wasm) (ISC), para comprimir, proteger y desbloquear PDF. Su licencia se publica en `/qpdf/LICENSE.txt`.
 - [7-Zip](https://www.7-zip.org) (GNU LGPL + restricción unRAR), compilado a wasm por [7z-wasm](https://github.com/use-strict/7z-wasm), para crear ZIP/7Z y extraer ZIP, RAR, 7Z, TAR y GZ. Se distribuye sin modificar; su licencia se publica en `/7z/License.txt`. La restricción unRAR prohíbe usar ese código para crear archivos RAR: la web solo los abre.
+- [Tesseract](https://github.com/tesseract-ocr/tesseract) (Apache-2.0), compilado a wasm por [tesseract.js-core](https://github.com/naptha/tesseract.js-core) y usado con [tesseract.js](https://github.com/naptha/tesseract.js) (Apache-2.0), para el OCR. Los modelos de español e inglés vienen de [tessdata](https://github.com/tesseract-ocr/tessdata) (Apache-2.0). Sus licencias se publican en `/ocr/LICENSE-tesseract.js.txt` y `/ocr/LICENSE-tesseract-core.txt`.
 
 ## Backlog
 

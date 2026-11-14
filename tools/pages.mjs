@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -195,6 +195,28 @@ export const pages = [
     ],
   },
   {
+    slug: 'ocr-pdf',
+    tool: { kind: 'pdf', id: 'ocr' },
+    title: 'OCR online gratis: texto de PDF escaneados e imágenes | DocuSmart',
+    description:
+      'Reconoce el texto de un PDF escaneado o una foto y conviértelo en texto editable o en un PDF buscable. En español e inglés, gratis y sin subir el archivo.',
+    h1: 'OCR: reconocer texto',
+    howTo: 'Cómo reconocer el texto con OCR en 3 pasos',
+    lead: 'Convierte un escaneo o una foto de un documento en texto que puedes copiar, editar o buscar, sin volver a escribirlo.',
+    short: 'Texto de escaneos y fotos',
+    steps: [
+      'Elige un PDF escaneado o una imagen (JPG, PNG o WebP).',
+      'Escoge el idioma del documento: español, inglés o ambos.',
+      'Pulsa "Reconocer texto": copia el resultado o descárgalo como .txt o como PDF buscable.',
+    ],
+    faq: [
+      ['¿Qué es un PDF buscable?', 'Es el mismo documento escaneado, con una capa de texto invisible encima: se ve igual, pero puedes seleccionar, copiar y buscar palabras.'],
+      ['¿Mis documentos se suben a internet?', 'No. El reconocimiento se hace con Tesseract dentro de tu navegador. La primera vez se descarga el modelo del idioma desde docusmart.online y queda guardado en tu navegador para las próximas veces.'],
+      ['¿Qué tan preciso es?', 'Con escaneos nítidos y derechos, muy preciso. Fotos borrosas, torcidas o con poca luz bajan la calidad: DocuSmart te avisa si el resultado es dudoso.'],
+      ['¿Reconoce letra manuscrita?', 'Funciona con texto impreso. La letra a mano suele reconocerse mal.'],
+    ],
+  },
+  {
     slug: 'imagen-a-pdf',
     tool: { kind: 'conv', id: 'img-pdf' },
     title: 'Convertir imagen a PDF (JPG, PNG, foto a PDF) | DocuSmart',
@@ -250,7 +272,7 @@ export const pages = [
       'También puedes ver el texto en pantalla y copiarlo con un clic.',
     ],
     faq: [
-      ['¿Funciona con PDF escaneados?', 'Solo si el PDF ya tiene texto. Para fotos o escaneos sin texto, la app de DocuSmart tiene OCR, que reconoce el texto de la imagen.'],
+      ['¿Funciona con PDF escaneados?', 'Solo si el PDF ya tiene texto. Para fotos o escaneos sin texto usa la herramienta OCR de DocuSmart, que reconoce el texto de la imagen.'],
       ['¿Se mantiene el formato?', 'Se conserva el texto y los saltos de línea; el diseño visual (columnas, tablas) se convierte en texto plano.'],
       ['¿Es privado?', 'Sí. El archivo se lee en tu navegador y no se envía a ningún servidor.'],
     ],

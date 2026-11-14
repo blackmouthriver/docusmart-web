@@ -7,6 +7,7 @@ import { closePdf, openPdf, renderPage } from '../lib/pdf'
 import { extractPages, merge, numberPages, rotate, splitEach, watermark } from '../lib/pdfTools'
 import { track } from '../../shared/analytics'
 import { CompressTool, ProtectTool, RepairTool, UnlockTool } from './PdfSecurityTools'
+import { OcrTool } from './OcrTool'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'unir', name: 'Unir PDFs', desc: 'Combina 2 o más PDFs en uno solo', icon: 'merge', cls: 'ico-red' },
@@ -19,6 +20,7 @@ const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls
   { id: 'proteger', name: 'Proteger PDF', desc: 'Contraseña con cifrado AES-256 y permisos', icon: 'lock', cls: 'ico-amber' },
   { id: 'desbloquear', name: 'Desbloquear PDF', desc: 'Quita la contraseña o las restricciones', icon: 'unlock', cls: 'ico-blue' },
   { id: 'reparar', name: 'Reparar PDF', desc: 'Recupera PDF dañados que no abren', icon: 'wrench', cls: 'ico-violet' },
+  { id: 'ocr', name: 'OCR: reconocer texto', desc: 'Saca el texto de escaneos y fotos', icon: 'text', cls: 'ico-cyan' },
 ]
 
 /** Herramientas con su propio componente (las demás usan SingleFileTool). */
@@ -28,6 +30,7 @@ export const OWN_TOOLS: Record<string, ComponentType> = {
   proteger: ProtectTool,
   desbloquear: UnlockTool,
   reparar: RepairTool,
+  ocr: OcrTool,
 }
 
 export function PdfTools({ sub }: { sub?: string }) {
