@@ -9,3 +9,5 @@ coverage/
 public/qpdf/
 public/7z/
 public/ocr/
+# Caché de `tsc -b`
+*.tsbuildinfo
