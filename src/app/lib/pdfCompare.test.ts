@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { compareTexts, myersDiff, normalizeLine, reportText, type Line, type Op } from './pdfCompare'
+import { MAX_LINE_EDITS, compareTexts, myersDiff, normalizeLine, reportText, type Line, type Op } from './pdfCompare'
 
 const chars = (s: string) => s.split('')
 /** Reconstruye ambas secuencias desde las operaciones, para verificar que el diff es correcto. */
@@ -106,11 +106,12 @@ describe('compareTexts', () => {
   })
 
   it('documentos completamente distintos y enormes se reportan sin colgar', () => {
-    const a = Array.from({ length: 7000 }, (_, i) => ({ text: `a${i}`, page: 1 }))
-    const b = Array.from({ length: 7000 }, (_, i) => ({ text: `b${i}`, page: 1 }))
+    const n = MAX_LINE_EDITS + 500
+    const a = Array.from({ length: n }, (_, i) => ({ text: `a${i}`, page: 1 }))
+    const b = Array.from({ length: n }, (_, i) => ({ text: `b${i}`, page: 1 }))
     const c = compareTexts(a, b)
     expect(c.tooDifferent).toBe(true)
-    expect([c.added, c.removed]).toEqual([7000, 7000])
+    expect([c.added, c.removed]).toEqual([n, n])
   })
 
   it('normaliza los espacios', () => {

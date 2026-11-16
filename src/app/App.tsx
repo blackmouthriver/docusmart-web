@@ -10,6 +10,7 @@ const PdfTools = lazy(() => import('./screens/PdfTools').then((m) => ({ default:
 const QrScreen = lazy(() => import('./screens/Qr').then((m) => ({ default: m.QrScreen })))
 const Study = lazy(() => import('./screens/Study').then((m) => ({ default: m.Study })))
 const ArchiveScreen = lazy(() => import('./screens/Archive').then((m) => ({ default: m.ArchiveScreen })))
+const ImageToolsScreen = lazy(() => import('./screens/ImageTools').then((m) => ({ default: m.ImageToolsScreen })))
 
 // `mobile: false`: solo en la barra lateral; la barra inferior del celular tiene 5 lugares.
 const NAV: Array<{ section: string; label: string; short: string; icon: IconName; mobile?: boolean }> = [
@@ -18,6 +19,7 @@ const NAV: Array<{ section: string; label: string; short: string; icon: IconName
   { section: 'pdf', label: 'Herramientas PDF', short: 'PDF', icon: 'pdf' },
   { section: 'qr', label: 'Códigos QR', short: 'QR', icon: 'qr' },
   { section: 'estudio', label: 'Modo Estudio', short: 'Estudio', icon: 'study' },
+  { section: 'imagen', label: 'Herramientas de imagen', short: 'Imagen', icon: 'image', mobile: false },
   { section: 'archivos', label: 'Comprimir archivos', short: 'Archivos', icon: 'archive', mobile: false },
 ]
 
@@ -29,6 +31,7 @@ const SCREEN_NAMES: Record<string, string> = {
   qr: 'Qr',
   estudio: 'Study',
   archivos: 'Archive',
+  imagen: 'ImageTools',
 }
 
 export function App() {
@@ -76,6 +79,9 @@ export function App() {
       break
     case 'archivos':
       screen = <ArchiveScreen sub={route.sub} />
+      break
+    case 'imagen':
+      screen = <ImageToolsScreen sub={route.sub} />
       break
     case 'estudio':
       screen = <Study />

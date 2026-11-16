@@ -32,6 +32,14 @@ const ArchiveTool = lazy(() =>
     default: ({ id }: { id?: string }) => (id === 'extraer' ? <m.ExtractArchiveTool /> : <m.CreateArchiveTool />),
   })),
 )
+const ImageTool = lazy(() =>
+  import('../app/screens/ImageTools').then((m) => ({
+    default: ({ id }: { id: string }) => {
+      const Tool = m.IMAGE_TOOLS[id]
+      return Tool ? <Tool /> : null
+    },
+  })),
+)
 const QrTools = lazy(() =>
   import('../app/screens/Qr').then((m) => ({
     default: () => (
@@ -74,6 +82,7 @@ function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
   if (kind === 'conv' && id) return <ConvertTool id={id} />
   if (kind === 'qr') return <QrTools />
   if (kind === 'archive') return <ArchiveTool id={id} />
+  if (kind === 'img' && id) return <ImageTool id={id} />
   return null
 }
 
