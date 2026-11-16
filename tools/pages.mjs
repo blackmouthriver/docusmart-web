@@ -3,7 +3,7 @@
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
 // tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario'|'escanear' }
-//       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt'|'pdf-word'|'pdf-excel' }
+//       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt'|'pdf-word'|'pdf-excel'|'word-pdf'|'excel-pdf' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
 //       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar' }
@@ -561,6 +561,40 @@ export const pages = [
       ['¿Con qué PDF funciona mejor?', 'Con PDF digitales que tienen tablas bien alineadas: extractos bancarios, facturas, reportes o listados exportados desde un sistema. DocuSmart arma las columnas según la posición del texto.'],
       ['¿Los números quedan como números?', 'Sí. Valores como 1.500.000, $ 2.000, 3,5 o 45 % se guardan como números de Excel con su formato, así que puedes sumarlos o usarlos en fórmulas.'],
       ['¿Funciona con PDF escaneados?', 'Un escaneo es una imagen sin texto. Pásalo primero por la herramienta OCR marcando "PDF buscable" y convierte ese PDF.'],
+      ['¿Mis archivos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
+    ],
+  },
+  {
+    slug: 'word-a-pdf',
+    tool: { kind: 'conv', id: 'word-pdf' },
+    title: 'Word a PDF gratis: convertir DOCX a PDF online | DocuSmart',
+    description:
+      'Convierte un documento de Word (.docx) en PDF desde el navegador: títulos, negritas, listas, tablas e imágenes. Gratis, sin registro y sin subir el archivo.',
+    h1: 'Word a PDF',
+    lead: 'Pasa tus documentos de Word a PDF para enviarlos o imprimirlos tal como deben verse, sin instalar nada.',
+    short: 'Documento .docx a PDF',
+    howTo: 'Cómo convertir Word a PDF en 3 pasos',
+    steps: ['Elige el documento de Word (.docx).', 'Pulsa "Convertir y descargar".', 'Listo: el PDF se descarga con títulos, listas, tablas e imágenes.'],
+    faq: [
+      ['¿Queda igual que en Word?', 'Conserva el contenido y la estructura: títulos, negrita, cursiva, subrayado, listas, tablas, imágenes y saltos de página. La fuente y algunos detalles de diseño pueden variar, porque se usan fuentes estándar de PDF.'],
+      ['¿Sirve con archivos .doc antiguos?', 'No: solo .docx (Word 2007 en adelante). Abre el .doc en Word y guárdalo como .docx.'],
+      ['¿Mis documentos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
+    ],
+  },
+  {
+    slug: 'excel-a-pdf',
+    tool: { kind: 'conv', id: 'excel-pdf' },
+    title: 'Excel a PDF gratis: convertir XLSX a PDF online | DocuSmart',
+    description:
+      'Convierte un libro de Excel (.xlsx) en PDF: cada hoja como una tabla, con encabezado repetido en cada página y página horizontal si hay muchas columnas. Gratis y sin subir el archivo.',
+    h1: 'Excel a PDF',
+    lead: 'Convierte tus hojas de cálculo en un PDF ordenado y fácil de leer o imprimir, hoja por hoja.',
+    short: 'Hojas .xlsx a PDF',
+    howTo: 'Cómo convertir Excel a PDF en 3 pasos',
+    steps: ['Elige el libro de Excel (.xlsx).', 'Pulsa "Convertir y descargar".', 'Cada hoja queda como una tabla en el PDF, con su encabezado en cada página.'],
+    faq: [
+      ['¿Qué pasa si la hoja es muy ancha?', 'Con más de 6 columnas el PDF usa página horizontal, y con más de 10 una letra más pequeña, para que todo quepa.'],
+      ['¿Se conservan los colores y las fórmulas?', 'Se conservan los valores (los resultados de las fórmulas), con los números alineados a la derecha. Los colores, bordes y gráficos de Excel no se incluyen.'],
       ['¿Mis archivos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
     ],
   },
