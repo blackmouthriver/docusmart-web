@@ -3,7 +3,7 @@
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
 // tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario'|'escanear' }
-//       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
+//       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt'|'pdf-word' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
 //       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar' }
@@ -518,6 +518,28 @@ export const pages = [
       ['¿Qué resolución tienen las imágenes?', 'Cada página se exporta a 1600 píxeles de ancho, suficiente para leer, imprimir o publicar.'],
       ['¿JPG o PNG?', 'PNG conserva la calidad exacta y es mejor para texto; JPG pesa menos y es ideal para compartir.'],
       ['¿El PDF se sube a algún servidor?', 'No. Las páginas se dibujan y convierten dentro de tu navegador.'],
+    ],
+  },
+  {
+    slug: 'pdf-a-word',
+    tool: { kind: 'conv', id: 'pdf-word' },
+    title: 'PDF a Word gratis: convertir PDF a DOCX editable | DocuSmart',
+    description:
+      'Convierte un PDF en un documento de Word (.docx) editable: conserva títulos, negritas, listas, tablas e imágenes. Gratis, sin registro y sin subir el archivo.',
+    h1: 'PDF a Word',
+    lead: 'Recupera un documento en Word a partir de su PDF para corregirlo o reutilizarlo, sin volver a escribirlo.',
+    short: 'Documento editable (.docx)',
+    howTo: 'Cómo convertir un PDF a Word en 3 pasos',
+    steps: [
+      'Elige el PDF.',
+      'Pulsa "Convertir y descargar".',
+      'Abre el .docx en Word, Google Docs o LibreOffice y revisa el resultado.',
+    ],
+    faq: [
+      ['¿Queda idéntico al PDF?', 'Muy parecido, pero no idéntico: un PDF no guarda párrafos ni tablas, solo letras con su posición, así que DocuSmart los reconstruye. Conserva títulos, negrita, cursiva, tamaños, listas, tablas sencillas e imágenes; diseños complejos (columnas, cuadros de texto) pueden variar.'],
+      ['¿Funciona con PDF escaneados?', 'Un escaneo es una imagen sin texto. Pásalo primero por la herramienta OCR marcando "PDF buscable" y convierte ese PDF.'],
+      ['¿Con qué programas abro el archivo?', 'Con Microsoft Word, Google Docs, LibreOffice, Pages o WPS: es un .docx estándar.'],
+      ['¿Mis archivos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
     ],
   },
   {
