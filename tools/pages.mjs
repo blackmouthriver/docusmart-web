@@ -3,7 +3,7 @@
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
 // tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario'|'escanear' }
-//       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt'|'pdf-word' }
+//       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt'|'pdf-word'|'pdf-excel' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
 //       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar' }
@@ -539,6 +539,28 @@ export const pages = [
       ['¿Queda idéntico al PDF?', 'Muy parecido, pero no idéntico: un PDF no guarda párrafos ni tablas, solo letras con su posición, así que DocuSmart los reconstruye. Conserva títulos, negrita, cursiva, tamaños, listas, tablas sencillas e imágenes; diseños complejos (columnas, cuadros de texto) pueden variar.'],
       ['¿Funciona con PDF escaneados?', 'Un escaneo es una imagen sin texto. Pásalo primero por la herramienta OCR marcando "PDF buscable" y convierte ese PDF.'],
       ['¿Con qué programas abro el archivo?', 'Con Microsoft Word, Google Docs, LibreOffice, Pages o WPS: es un .docx estándar.'],
+      ['¿Mis archivos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
+    ],
+  },
+  {
+    slug: 'pdf-a-excel',
+    tool: { kind: 'conv', id: 'pdf-excel' },
+    title: 'PDF a Excel gratis: convertir tablas de PDF a XLSX | DocuSmart',
+    description:
+      'Convierte las tablas de un PDF en una hoja de Excel (.xlsx): columnas en su lugar y números listos para sumar. Ideal para extractos, facturas y reportes. Gratis y sin subir el archivo.',
+    h1: 'PDF a Excel',
+    lead: 'Pasa extractos bancarios, facturas o reportes en PDF a una hoja de cálculo para filtrarlos, sumarlos o graficarlos, sin copiar celda por celda.',
+    short: 'Tablas a hoja de cálculo',
+    howTo: 'Cómo convertir un PDF a Excel en 3 pasos',
+    steps: [
+      'Elige el PDF.',
+      'Escoge si quieres una hoja por página o todo en una sola hoja, y pulsa "Convertir y descargar".',
+      'Abre el .xlsx en Excel, Google Sheets o LibreOffice: los números ya se pueden sumar.',
+    ],
+    faq: [
+      ['¿Con qué PDF funciona mejor?', 'Con PDF digitales que tienen tablas bien alineadas: extractos bancarios, facturas, reportes o listados exportados desde un sistema. DocuSmart arma las columnas según la posición del texto.'],
+      ['¿Los números quedan como números?', 'Sí. Valores como 1.500.000, $ 2.000, 3,5 o 45 % se guardan como números de Excel con su formato, así que puedes sumarlos o usarlos en fórmulas.'],
+      ['¿Funciona con PDF escaneados?', 'Un escaneo es una imagen sin texto. Pásalo primero por la herramienta OCR marcando "PDF buscable" y convierte ese PDF.'],
       ['¿Mis archivos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
     ],
   },

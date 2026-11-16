@@ -26,6 +26,7 @@ const SAFE_DOWNLOAD_TYPES = new Set([
   'application/pdf',
   'application/zip',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   'text/plain',
   'image/png',
   'image/jpeg',

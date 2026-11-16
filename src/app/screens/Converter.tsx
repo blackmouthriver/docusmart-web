@@ -35,6 +35,7 @@ const PDF_CONVS = [
   c('pdf-img', 'PDF_TO_IMAGE', 'PDF', 'IMG', 'Cada página como imagen'),
   c('pdf-txt', 'PDF_TO_TXT', 'PDF', 'TXT', 'Extrae el texto del documento'),
   c('pdf-word', 'PDF_TO_WORD', 'PDF', 'WORD', 'Documento editable, con su formato'),
+  c('pdf-excel', 'PDF_TO_EXCEL', 'PDF', 'EXCEL', 'Tablas a una hoja de cálculo'),
 ]
 const APP_ONLY = [
   c('', 'WORD_TO_PDF', 'WORD', 'PDF', ''),
@@ -115,12 +116,15 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   const [pdfImgFormat, setPdfImgFormat] = useState<'png' | 'jpg'>('png')
   const [text, setText] = useState<string | null>(null)
   const [wordInfo, setWordInfo] = useState<{ paragraphs: number; tables: number; images: number; headings: number } | null>(null)
+  const [excelInfo, setExcelInfo] = useState<{ sheets: number; rows: number; numbers: number } | null>(null)
+  const [sheetMode, setSheetMode] = useState<'pages' | 'single'>('pages')
 
   const run = async () => {
     setBusy(true)
     setError(null)
     setProgress(0)
     setWordInfo(null)
+    setExcelInfo(null)
     track('conversion_started', { conversion_type: conv.type })
     const totalKb = Math.round(files.reduce((s, f) => s + f.size, 0) / 1024)
     try {
@@ -152,6 +156,17 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         const doc = buildDocument(ex.pages, ex.texts, ex.images)
         download(writeDocx(doc), `${baseName(files[0].name)}.docx`, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
         setWordInfo(summarize(doc))
+      } else if (conv.id === 'pdf-excel') {
+        const [{ extractForWord }, { buildSheets, writeXlsx, summarizeSheets }] = await Promise.all([import('../lib/pdfWordSources'), import('../lib/pdfExcel')])
+        const ex = await extractForWord(files[0], (d, t) => setProgress(d / t), { images: false })
+        if (!ex.texts.length) {
+          setError('No se encontró texto: parece un PDF escaneado. Pásalo primero por "OCR: reconocer texto" (con "PDF buscable") y convierte ese PDF.')
+          track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
+          return
+        }
+        const sheets = buildSheets(ex.pages, ex.texts, sheetMode)
+        download(writeXlsx(sheets), `${baseName(files[0].name)}.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        setExcelInfo(summarizeSheets(sheets))
       } else if (conv.id === 'pdf-txt') {
         const t = await pdfToText(await files[0].arrayBuffer())
         setText(t)
@@ -236,9 +251,21 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         {conv.id === 'pdf-word' && !wordInfo && !error && (
           <small className="faint">Un PDF no guarda párrafos ni tablas: DocuSmart los reconstruye. Funciona mejor con PDF creados desde Word o un programa similar; los escaneados necesitan OCR primero.</small>
         )}
+        {conv.id === 'pdf-excel' && (
+          <div className="field">
+            <span>Hojas</span>
+            <Segmented label="Hojas" value={sheetMode} onChange={setSheetMode} options={[{ value: 'pages', label: 'Una por página' }, { value: 'single', label: 'Todo en una hoja' }]} />
+            {!excelInfo && !error && <small className="faint">Funciona mejor con tablas de PDF digitales (extractos, facturas, reportes). Los números quedan como números para poder sumarlos.</small>}
+          </div>
+        )}
+        {excelInfo && (
+          <Notice kind="success">
+            Listo: {excelInfo.rows} filas en {excelInfo.sheets} {excelInfo.sheets === 1 ? 'hoja' : 'hojas'}, con {excelInfo.numbers} {excelInfo.numbers === 1 ? 'número' : 'números'}. Revisa las columnas: dependen de cómo esté alineado el PDF.
+          </Notice>
+        )}
         {wordInfo && (
           <Notice kind="success">
-            Listo: {wordInfo.paragraphs} párrafos{wordInfo.headings ? `, ${wordInfo.headings} títulos` : ''}{wordInfo.tables ? `, ${wordInfo.tables} ${wordInfo.tables === 1 ? 'tabla' : 'tablas'}` : ''}{wordInfo.images ? `, ${wordInfo.images} ${wordInfo.images === 1 ? 'imagen' : 'imágenes'}` : ''}. Revisa el documento: el diseño puede variar un poco respecto del PDF.
+            Listo: {wordInfo.paragraphs} párrafos{wordInfo.headings ? `, ${wordInfo.headings} ${wordInfo.headings === 1 ? 'título' : 'títulos'}` : ''}{wordInfo.tables ? `, ${wordInfo.tables} ${wordInfo.tables === 1 ? 'tabla' : 'tablas'}` : ''}{wordInfo.images ? `, ${wordInfo.images} ${wordInfo.images === 1 ? 'imagen' : 'imágenes'}` : ''}. Revisa el documento: el diseño puede variar un poco respecto del PDF.
           </Notice>
         )}
         <div className="row row-end">
