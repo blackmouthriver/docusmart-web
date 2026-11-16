@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState, type ComponentType, type ReactNode } from
 import { go, useApp } from '../state'
 import { Icon, type IconName } from '../components/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Progress, Segmented, errorMessage } from '../components/ui'
-import { download, downloadMany, formatBytes } from '../lib/files'
+import { download, downloadMany, formatBytes, isOwnBlobUrl } from '../lib/files'
 import {
   ASPECTS,
   IDENTITY,
@@ -183,7 +183,14 @@ function useObjectUrl(blob: Blob | null) {
   const [url, setUrl] = useState<string | null>(null)
   useEffect(() => {
     if (!blob) return setUrl(null)
-    const u = URL.createObjectURL(blob)
+    // El archivo lo elige el usuario: se re-empaqueta con un tipo de imagen y solo se
+    // usa una URL blob: de este mismo sitio (nunca texto del archivo como HTML).
+    const type = /^image\/(jpeg|png|webp|gif|bmp|avif)$/.test(blob.type) ? blob.type : 'image/png'
+    const u = URL.createObjectURL(new Blob([blob], { type }))
+    if (!isOwnBlobUrl(u)) {
+      URL.revokeObjectURL(u)
+      return setUrl(null)
+    }
     setUrl(u)
     return () => URL.revokeObjectURL(u)
   }, [blob])
