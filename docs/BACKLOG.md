@@ -84,11 +84,13 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 Los de la tabla de abajo, en su orden, W-23 (Office) y W-38 (PDF/A) requieren evaluar viabilidad.
 
+**Hecho:** **PDF a Word** (página `/pdf-a-word`, en el Convertidor): reconstruye párrafos, títulos por tamaño, negrita y cursiva (nombre real de la fuente vía `fontExtraProperties` de pdf.js), listas, tablas por columnas alineadas, imágenes en su lugar, centrado y saltos de página; escribe el .docx a mano con fflate. Probado con un PDF exportado por Word y reabierto en Word: estructura, fuente, tamaños y tabla iguales. No reproduce colores del texto ni bordes decorativos. Pendiente: PDF a Excel.
+
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-23 | **Word/Excel/PowerPoint → PDF** | ✅ | ✅ | Evaluar librerías de lectura de Office en el navegador; puede no ser viable con buena fidelidad |
+| W-23 | **Word/Excel → PDF** | ✅ (solo texto) | ✅ | Evaluado el 2026-11-16: Word con mammoth (BSD-2, 99 KB gzip) y Excel con read-excel-file (MIT, 20 KB gzip), ambos probados bajo nuestra CSP. Descartados: docx-preview y pptx-preview (innerHTML/DOMParser), SheetJS de npm (vulnerabilidades altas), LibreOffice en wasm (>100 MB). PowerPoint con diseño no es viable; solo texto por diapositiva |
 | W-38 | **PDF a PDF/A** (archivo a largo plazo) | — | ✅ | Requiere incrustar fuentes y perfiles de color; evaluar viabilidad |
 
 ## Mantenimiento y limpieza

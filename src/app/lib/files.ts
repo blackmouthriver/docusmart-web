@@ -25,6 +25,7 @@ export function baseName(name: string) {
 const SAFE_DOWNLOAD_TYPES = new Set([
   'application/pdf',
   'application/zip',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'text/plain',
   'image/png',
   'image/jpeg',

@@ -34,9 +34,9 @@ const IMAGE_CONVS = [
 const PDF_CONVS = [
   c('pdf-img', 'PDF_TO_IMAGE', 'PDF', 'IMG', 'Cada página como imagen'),
   c('pdf-txt', 'PDF_TO_TXT', 'PDF', 'TXT', 'Extrae el texto del documento'),
+  c('pdf-word', 'PDF_TO_WORD', 'PDF', 'WORD', 'Documento editable, con su formato'),
 ]
 const APP_ONLY = [
-  c('', 'PDF_TO_WORD', 'PDF', 'WORD', ''),
   c('', 'WORD_TO_PDF', 'WORD', 'PDF', ''),
   c('', 'EXCEL_TO_PDF', 'EXCEL', 'PDF', ''),
   c('', 'PPT_TO_PDF', 'PPT', 'PDF', ''),
@@ -96,7 +96,7 @@ export function Converter({ sub }: { sub?: string }) {
             {APP_ONLY.map((x) => <Pair key={x.type} conv={x} />)}
           </div>
           <p className="muted" style={{ marginTop: 12 }}>
-            Word, Excel y PowerPoint se convierten en la app, junto con el resto de las 17 combinaciones.
+            Word, Excel y PowerPoint a PDF se convierten en la app, junto con el resto de las 17 combinaciones.
           </p>
         </div>
       </section>
@@ -114,11 +114,13 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   const [error, setError] = useState<string | null>(null)
   const [pdfImgFormat, setPdfImgFormat] = useState<'png' | 'jpg'>('png')
   const [text, setText] = useState<string | null>(null)
+  const [wordInfo, setWordInfo] = useState<{ paragraphs: number; tables: number; images: number; headings: number } | null>(null)
 
   const run = async () => {
     setBusy(true)
     setError(null)
     setProgress(0)
+    setWordInfo(null)
     track('conversion_started', { conversion_type: conv.type })
     const totalKb = Math.round(files.reduce((s, f) => s + f.size, 0) / 1024)
     try {
@@ -139,6 +141,17 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
           blobs.map((b, i) => ({ name: `${name}-pagina-${i + 1}.${pdfImgFormat}`, data: b })),
           `${name}-imagenes.zip`,
         )
+      } else if (conv.id === 'pdf-word') {
+        const [{ extractForWord }, { buildDocument, writeDocx, summarize }] = await Promise.all([import('../lib/pdfWordSources'), import('../lib/pdfWord')])
+        const ex = await extractForWord(files[0], (d, t) => setProgress(d / t))
+        if (!ex.texts.length) {
+          setError('No se encontró texto: parece un PDF escaneado. Pásalo primero por "OCR: reconocer texto" (con "PDF buscable") y convierte ese PDF.')
+          track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
+          return
+        }
+        const doc = buildDocument(ex.pages, ex.texts, ex.images)
+        download(writeDocx(doc), `${baseName(files[0].name)}.docx`, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        setWordInfo(summarize(doc))
       } else if (conv.id === 'pdf-txt') {
         const t = await pdfToText(await files[0].arrayBuffer())
         setText(t)
@@ -220,6 +233,14 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         )}
         {busy && progress > 0 && <Progress value={progress} />}
         {error && <Notice kind="error">{error}</Notice>}
+        {conv.id === 'pdf-word' && !wordInfo && !error && (
+          <small className="faint">Un PDF no guarda párrafos ni tablas: DocuSmart los reconstruye. Funciona mejor con PDF creados desde Word o un programa similar; los escaneados necesitan OCR primero.</small>
+        )}
+        {wordInfo && (
+          <Notice kind="success">
+            Listo: {wordInfo.paragraphs} párrafos{wordInfo.headings ? `, ${wordInfo.headings} títulos` : ''}{wordInfo.tables ? `, ${wordInfo.tables} ${wordInfo.tables === 1 ? 'tabla' : 'tablas'}` : ''}{wordInfo.images ? `, ${wordInfo.images} ${wordInfo.images === 1 ? 'imagen' : 'imágenes'}` : ''}. Revisa el documento: el diseño puede variar un poco respecto del PDF.
+          </Notice>
+        )}
         <div className="row row-end">
           <BusyButton busy={busy} disabled={!files.length} onClick={run} icon="download">
             Convertir y descargar

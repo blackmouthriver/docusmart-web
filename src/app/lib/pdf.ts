@@ -7,7 +7,8 @@ GlobalWorkerOptions.workerSrc = workerUrl
 // En pdf.js 6 se libera la tarea de carga, no el documento: se guarda la relación.
 const tasks = new WeakMap<PDFDocumentProxy, ReturnType<typeof getDocument>>()
 
-export async function openPdf(data: ArrayBuffer | Uint8Array, password?: string): Promise<PDFDocumentProxy> {
+/** `fontExtraProperties`: incluye el nombre real de cada fuente (lo necesita PDF a Word para saber si es negrita o cursiva). */
+export async function openPdf(data: ArrayBuffer | Uint8Array, password?: string, opts: { fontExtraProperties?: boolean } = {}): Promise<PDFDocumentProxy> {
   // pdf.js transfiere el buffer al worker: se pasa una copia para no invalidar el original.
   const bytes = data instanceof Uint8Array ? data.slice() : new Uint8Array(data.slice(0))
   // Recursos servidos desde el propio dominio (scripts/copy-pdfjs-assets.mjs).
@@ -19,6 +20,7 @@ export async function openPdf(data: ArrayBuffer | Uint8Array, password?: string)
     standardFontDataUrl: '/pdfjs/standard_fonts/',
     iccUrl: '/pdfjs/iccs/',
     wasmUrl: '/pdfjs/wasm/',
+    fontExtraProperties: opts.fontExtraProperties ?? false,
   })
   const doc = await task.promise
   tasks.set(doc, task)
