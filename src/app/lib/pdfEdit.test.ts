@@ -93,6 +93,18 @@ describe('applyEdits', () => {
     expect(ops).toContain(' c\n') // curvas de la elipse
   })
 
+  it('ignora elementos con posiciones inválidas en vez de fallar', async () => {
+    const out = await applyEdits(await makePdf(), [
+      { kind: 'text', page: 0, x: Number.NaN, y: 0.1, text: 'mal', size: 12, color: '#000', font: 'helvetica', bold: false },
+      { kind: 'rect', page: 0, x: 0.1, y: 0.1, w: Number.POSITIVE_INFINITY, h: 0.1, stroke: '#000', fill: null, strokeWidth: 1 },
+      { kind: 'text', page: 0, x: 0.1, y: 0.1, text: 'bien', size: 12, color: '#000', font: 'helvetica', bold: false },
+    ])
+    const ops = await pageOps(out, 0)
+    expect(ops).toContain('<6269656E> Tj') // "bien"
+    expect(ops).not.toContain('<6D616C> Tj') // "mal"
+    expect(ops).not.toMatch(/ re\n/)
+  })
+
   it('exige al menos un elemento', async () => {
     await expect(applyEdits(await makePdf(), [])).rejects.toThrow('al menos')
   })
