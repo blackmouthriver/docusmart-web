@@ -83,9 +83,9 @@ export function buildLines(frags: TextFrag[]): Line[] {
 }
 
 function trimRuns(runs: Run[]) {
-  if (runs[0]) runs[0].text = runs[0].text.replace(/^\s+/, '')
+  if (runs[0]) runs[0].text = runs[0].text.trimStart()
   const last = runs[runs.length - 1]
-  if (last) last.text = last.text.replace(/\s+$/, '')
+  if (last) last.text = last.text.trimEnd()
   for (let i = runs.length - 1; i >= 0; i--) if (!runs[i].text) runs.splice(i, 1)
 }
 

@@ -9,8 +9,8 @@ type Matrix = number[]
 // Con fontExtraProperties, pdf.js copia al objeto de la fuente su nombre real (p. ej. "ABCDEF+Calibri-Bold").
 type FontInfo = { bold?: boolean; italic?: boolean; black?: boolean; fallbackName?: string; name?: string; isSerifFont?: boolean; isMonospace?: boolean }
 
-const BOLD = /bold|black|heavy|semibold|demibold|extrabold|ultrabold|-bd/i
-const ITALIC = /italic|oblique|-it/i
+const BOLD = /bold|black|heavy|semibold|demibold|extrabold|ultrabold|-bd\b/i
+const ITALIC = /italic|oblique|-it\b/i
 
 const familyOf = (name: string | undefined): Family => (/mono|courier/i.test(name ?? '') ? 'mono' : /serif|times|georgia|garamond|cambria/i.test(name ?? '') && !/sans/i.test(name ?? '') ? 'serif' : 'sans')
 
