@@ -14,9 +14,11 @@ import { RedactTool } from './RedactTool'
 import { CompareTool } from './CompareTool'
 import { ExtractImagesTool } from './ExtractImagesTool'
 import { EditTool } from './EditTool'
+import { FormTool } from './FormTool'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'editar', name: 'Editar PDF', desc: 'Agrega texto, imágenes, formas y resaltado', icon: 'edit', cls: 'ico-blue' },
+  { id: 'formulario', name: 'Llenar formulario', desc: 'Completa los campos de un PDF rellenable', icon: 'form', cls: 'ico-green' },
   { id: 'unir', name: 'Unir PDFs', desc: 'Combina 2 o más PDFs en uno solo', icon: 'merge', cls: 'ico-red' },
   { id: 'dividir', name: 'Dividir PDF', desc: 'Extrae páginas o separa cada una', icon: 'split', cls: 'ico-violet' },
   { id: 'rotar', name: 'Rotar páginas', desc: 'Endereza páginas escaneadas de lado', icon: 'rotate', cls: 'ico-blue' },
@@ -49,6 +51,7 @@ export const OWN_TOOLS: Record<string, ComponentType> = {
   comparar: CompareTool,
   imagenes: ExtractImagesTool,
   editar: EditTool,
+  formulario: FormTool,
 }
 
 export function PdfTools({ sub }: { sub?: string }) {

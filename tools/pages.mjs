@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -69,6 +69,28 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'llenar-formulario-pdf',
+    tool: { kind: 'pdf', id: 'formulario' },
+    title: 'Llenar formulario PDF online gratis | DocuSmart',
+    description:
+      'Completa los campos de un formulario PDF desde el navegador: textos, casillas, opciones y listas, con la página a la vista. Aplánalo para enviarlo. Gratis y sin subir el archivo.',
+    h1: 'Llenar formulario PDF',
+    lead: 'Completa solicitudes, inscripciones y formatos PDF rellenables sin imprimirlos ni instalar programas, viendo en la página dónde va cada respuesta.',
+    short: 'Completa PDF rellenables',
+    howTo: 'Cómo llenar un formulario PDF en 3 pasos',
+    steps: [
+      'Elige el formulario PDF: DocuSmart encuentra sus campos y los marca sobre la página.',
+      'Escribe tus respuestas; al tocar un recuadro de la página se abre su campo, y al revés.',
+      'Si lo vas a enviar, marca "Aplanar" para que las respuestas queden fijas, y pulsa "Guardar y descargar".',
+    ],
+    faq: [
+      ['¿Qué formularios funcionan?', 'Los PDF con campos rellenables (AcroForm), que son la gran mayoría: cuadros de texto, casillas, opciones, listas desplegables y listas. Si un PDF no tiene campos, puedes escribir encima con "Editar PDF".'],
+      ['¿Qué significa aplanar?', 'Convierte las respuestas en parte fija del documento: se ven igual en cualquier lector y nadie puede cambiarlas sin dejar rastro. Sin aplanar, el formulario sigue siendo editable.'],
+      ['¿Puedo seguir llenándolo después?', 'Sí, si no lo aplanas: abre el PDF guardado de nuevo aquí o en cualquier lector y tus respuestas seguirán en los campos.'],
+      ['¿Mis datos se suben a internet?', 'No. El formulario y tus respuestas se procesan dentro de tu navegador.'],
     ],
   },
   {

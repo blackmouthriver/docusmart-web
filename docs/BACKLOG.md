@@ -74,15 +74,16 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-35 **Editar PDF** (página `/editar-pdf`): texto (3 familias estándar, negrita, tamaño y color; varias líneas), imágenes, rectángulos, círculos, resaltado y "Tapar" (recuadro blanco para escribir encima). Se colocan tocando o arrastrando sobre la vista previa, se mueven, se redimensionan y se borran (también con teclado), y se graban con pdf-lib como capas nuevas respetando la rotación de cada página. Mejora la de la app, que solo agrega texto.
 
+**Hecho:** W-36 **Llenar formulario** (página `/llenar-formulario-pdf`): lee los campos AcroForm con pdf-lib (texto, casillas, opciones, desplegables y listas; obligatorios y de solo lectura), con etiquetas legibles (TU o el nombre sin prefijos como `txt`/`chk`) y sus recuadros marcados sobre la vista previa; tocar un recuadro abre su campo y al revés. Guarda con la opción de aplanar. Corrige el tamaño de letra desmedido en campos de varias líneas. Los formularios XFA y los PDF sin campos remiten a "Editar PDF".
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-36.
+Los de la tabla de abajo, en su orden, empezando por W-37.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-36 | **Formularios PDF**: detectar y llenar campos | ✅ | ✅ | AcroForm de pdf-lib |
 | W-37 | **Herramientas de imagen**: comprimir, redimensionar, recortar y rotar | — | (iLoveIMG) | canvas; entradas nuevas en `tools/pages.mjs` |
 | W-23 | **Word/Excel/PowerPoint → PDF** | ✅ | ✅ | Evaluar librerías de lectura de Office en el navegador; puede no ser viable con buena fidelidad |
 | W-24 | **Escáner con cámara** con detección de bordes | ✅ | ✅ | OpenCV.js o un detector propio |
