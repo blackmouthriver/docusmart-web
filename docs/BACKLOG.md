@@ -82,17 +82,18 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, W-23 (Office) y W-38 (PDF/A) requieren evaluar viabilidad.
+W-38 (PDF/A) requiere evaluar viabilidad.
 
 **Hecho:** **PDF a Word** (página `/pdf-a-word`, en el Convertidor): reconstruye párrafos, títulos por tamaño, negrita y cursiva (nombre real de la fuente vía `fontExtraProperties` de pdf.js), listas, tablas por columnas alineadas, imágenes en su lugar, centrado y saltos de página; escribe el .docx a mano con fflate. Probado con un PDF exportado por Word y reabierto en Word: estructura, fuente, tamaños y tabla iguales. No reproduce colores del texto ni bordes decorativos. 
 
 **Hecho:** **PDF a Excel** (página `/pdf-a-excel`): cada línea es una fila y las columnas salen de la alineación (umbral fino); celdas de dos líneas unidas; números (1.500.000, $ 2.000, 3,5, 45 %) como números de Excel con formato; una hoja por página o todo en una; .xlsx escrito a mano. Probado con un extracto exportado por Word y abierto en Excel: columnas correctas y sumas exactas.
 
+**Hecho:** W-23 **Word y Excel a PDF** (páginas `/word-a-pdf` y `/excel-a-pdf`, en el Convertidor): Word con mammoth (se usa su árbol de documento, no su HTML, por la CSP) y Excel con read-excel-file; diagramador propio con pdf-lib: títulos, negrita/cursiva/subrayado, listas numeradas y con viñetas, tablas con encabezado repetido en cada página, imágenes PNG/JPEG, saltos de página; Excel: una tabla por hoja, números con formato colombiano a la derecha, página horizontal con más de 6 columnas. Usa fuentes estándar de PDF (Helvetica), así que el diseño exacto puede variar. Rechaza .doc/.xls con un mensaje claro. PowerPoint a PDF sigue solo en la app (no hay forma viable de reproducir el diseño en el navegador).
+
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-23 | **Word/Excel → PDF** | ✅ (solo texto) | ✅ | Evaluado el 2026-11-16: Word con mammoth (BSD-2, 99 KB gzip) y Excel con read-excel-file (MIT, 20 KB gzip), ambos probados bajo nuestra CSP. Descartados: docx-preview y pptx-preview (innerHTML/DOMParser), SheetJS de npm (vulnerabilidades altas), LibreOffice en wasm (>100 MB). PowerPoint con diseño no es viable; solo texto por diapositiva |
 | W-38 | **PDF a PDF/A** (archivo a largo plazo) | — | ✅ | Requiere incrustar fuentes y perfiles de color; evaluar viabilidad |
 
 ## Mantenimiento y limpieza

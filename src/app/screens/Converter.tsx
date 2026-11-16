@@ -5,6 +5,15 @@ import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Progress, 
 import { baseName, download, downloadMany } from '../lib/files'
 import { convertImage, imagesToPdf, pdfToImages, pdfToText, type ImageTarget } from '../lib/convert'
 import { track } from '../../shared/analytics'
+import type { MNode, SheetData } from '../lib/officeModels'
+
+/** Archivo de Office en un formato antiguo (.doc, .xls) que no se puede leer. */
+class OfficeFormatError extends Error {
+  constructor(app: 'Word' | 'Excel') {
+    super(app === 'Word' ? 'Solo se pueden convertir documentos .docx. Si tienes un .doc antiguo, ábrelo en Word y guárdalo como .docx.' : 'Solo se pueden convertir libros .xlsx. Si tienes un .xls antiguo, ábrelo en Excel y guárdalo como .xlsx.')
+    this.name = 'OfficeFormatError'
+  }
+}
 
 type Conv = {
   id: string
@@ -37,12 +46,14 @@ const PDF_CONVS = [
   c('pdf-word', 'PDF_TO_WORD', 'PDF', 'WORD', 'Documento editable, con su formato'),
   c('pdf-excel', 'PDF_TO_EXCEL', 'PDF', 'EXCEL', 'Tablas a una hoja de cálculo'),
 ]
+const OFFICE_CONVS = [
+  c('word-pdf', 'WORD_TO_PDF', 'WORD', 'PDF', 'Documento .docx a PDF'),
+  c('excel-pdf', 'EXCEL_TO_PDF', 'EXCEL', 'PDF', 'Hojas de cálculo .xlsx a PDF'),
+]
 const APP_ONLY = [
-  c('', 'WORD_TO_PDF', 'WORD', 'PDF', ''),
-  c('', 'EXCEL_TO_PDF', 'EXCEL', 'PDF', ''),
   c('', 'PPT_TO_PDF', 'PPT', 'PDF', ''),
 ]
-const ALL = [...IMAGE_CONVS, ...PDF_CONVS]
+const ALL = [...IMAGE_CONVS, ...PDF_CONVS, ...OFFICE_CONVS]
 
 /** Conversión por id (img-pdf, pdf-img…), para las páginas propias de cada herramienta. */
 export const findConversion = (id: string) => ALL.find((x) => x.id === id)
@@ -68,6 +79,7 @@ export function Converter({ sub }: { sub?: string }) {
       {[
         { title: 'Imagen', cls: 'ico-violet', icon: 'image' as const, list: IMAGE_CONVS },
         { title: 'PDF', cls: 'ico-red', icon: 'pdf' as const, list: PDF_CONVS },
+        { title: 'Word y Excel', cls: 'ico-blue', icon: 'file' as const, list: OFFICE_CONVS },
       ].map((g) => (
         <section className="conv-group" key={g.title}>
           <h3>
@@ -97,7 +109,7 @@ export function Converter({ sub }: { sub?: string }) {
             {APP_ONLY.map((x) => <Pair key={x.type} conv={x} />)}
           </div>
           <p className="muted" style={{ marginTop: 12 }}>
-            Word, Excel y PowerPoint a PDF se convierten en la app, junto con el resto de las 17 combinaciones.
+            PowerPoint a PDF se convierte en la app, junto con el resto de las 17 combinaciones.
           </p>
         </div>
       </section>
@@ -117,6 +129,8 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   const [text, setText] = useState<string | null>(null)
   const [wordInfo, setWordInfo] = useState<{ paragraphs: number; tables: number; images: number; headings: number } | null>(null)
   const [excelInfo, setExcelInfo] = useState<{ sheets: number; rows: number; numbers: number } | null>(null)
+  const [officeInfo, setOfficeInfo] = useState<{ skippedImages: number } | null>(null)
+  const isOffice = conv.id === 'word-pdf' || conv.id === 'excel-pdf'
   const [sheetMode, setSheetMode] = useState<'pages' | 'single'>('pages')
 
   const run = async () => {
@@ -125,6 +139,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
     setProgress(0)
     setWordInfo(null)
     setExcelInfo(null)
+    setOfficeInfo(null)
     track('conversion_started', { conversion_type: conv.type })
     const totalKb = Math.round(files.reduce((s, f) => s + f.size, 0) / 1024)
     try {
@@ -167,6 +182,27 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         const sheets = buildSheets(ex.pages, ex.texts, sheetMode)
         download(writeXlsx(sheets), `${baseName(files[0].name)}.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         setExcelInfo(summarizeSheets(sheets))
+      } else if (conv.id === 'word-pdf') {
+        const name = files[0].name.toLowerCase()
+        if (!name.endsWith('.docx')) throw new OfficeFormatError('Word')
+        const [{ default: mammoth }, { fromMammoth }, { layoutPdf }] = await Promise.all([import('mammoth'), import('../lib/officeModels'), import('../lib/officePdf')])
+        // Se usa el árbol del documento que arma mammoth, no su HTML.
+        let tree: MNode = { type: 'document' }
+        await mammoth.convertToHtml({ arrayBuffer: await files[0].arrayBuffer() }, { transformDocument: (d: MNode) => (tree = d) } as never)
+        const { blocks, skippedImages } = await fromMammoth(tree)
+        if (!blocks.length) throw new Error('El documento no tiene contenido que convertir.')
+        download(await layoutPdf(blocks, { title: baseName(files[0].name) }), `${baseName(files[0].name)}.pdf`, 'application/pdf')
+        setOfficeInfo({ skippedImages })
+      } else if (conv.id === 'excel-pdf') {
+        if (!files[0].name.toLowerCase().endsWith('.xlsx')) throw new OfficeFormatError('Excel')
+        const [{ default: readXlsxFile }, { fromSheets }, { layoutPdf }] = await Promise.all([import('read-excel-file/browser'), import('../lib/officeModels'), import('../lib/officePdf')])
+        const sheets = (await readXlsxFile(files[0])) as unknown as SheetData[]
+        const { blocks, maxColumns } = fromSheets(sheets)
+        if (!blocks.length) throw new Error('El libro no tiene datos que convertir.')
+        // Muchas columnas: página horizontal y letra más chica.
+        const wide = maxColumns > 6
+        download(await layoutPdf(blocks, { title: baseName(files[0].name), pageSize: wide ? [841.89, 595.28] : undefined, baseSize: maxColumns > 10 ? 7.5 : wide ? 9 : 10, margin: 40 }), `${baseName(files[0].name)}.pdf`, 'application/pdf')
+        setOfficeInfo({ skippedImages: 0 })
       } else if (conv.id === 'pdf-txt') {
         const t = await pdfToText(await files[0].arrayBuffer())
         setText(t)
@@ -180,7 +216,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
       track('conversion_success', { conversion_type: conv.type, file_size_kb: totalKb })
       toast('Listo. El archivo se descargó.')
     } catch (e) {
-      setError(errorMessage(e))
+      setError(e instanceof OfficeFormatError || (e instanceof Error && /^El (documento|libro) no tiene/.test(e.message)) ? e.message : errorMessage(e))
       track('conversion_error', { conversion_type: conv.type, error_message: e instanceof Error ? e.name : 'error' })
     } finally {
       setBusy(false)
@@ -203,9 +239,9 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         </div>
         <p className="muted">{conv.desc}</p>
         <DropZone
-          accept={isImageInput ? 'image/*' : 'application/pdf'}
+          accept={isImageInput ? 'image/*' : conv.id === 'word-pdf' ? '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document' : conv.id === 'excel-pdf' ? '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf'}
           multiple={isImageInput}
-          title={isImageInput ? 'Toca para seleccionar imágenes' : 'Toca para seleccionar un PDF'}
+          title={isImageInput ? 'Toca para seleccionar imágenes' : conv.id === 'word-pdf' ? 'Toca para seleccionar un documento de Word (.docx)' : conv.id === 'excel-pdf' ? 'Toca para seleccionar un libro de Excel (.xlsx)' : 'Toca para seleccionar un PDF'}
           hint="O arrastra los archivos aquí"
           onFiles={(f) => {
             setFiles((prev) => (isImageInput ? [...prev, ...f] : f))
@@ -257,6 +293,14 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
             <Segmented label="Hojas" value={sheetMode} onChange={setSheetMode} options={[{ value: 'pages', label: 'Una por página' }, { value: 'single', label: 'Todo en una hoja' }]} />
             {!excelInfo && !error && <small className="faint">Funciona mejor con tablas de PDF digitales (extractos, facturas, reportes). Los números quedan como números para poder sumarlos.</small>}
           </div>
+        )}
+        {isOffice && !officeInfo && !error && (
+          <small className="faint">El PDF conserva el contenido y la estructura (títulos, negritas, listas, tablas e imágenes); las fuentes y el diseño exacto pueden variar un poco.</small>
+        )}
+        {officeInfo && (
+          <Notice kind="success">
+            Listo, el PDF se descargó.{officeInfo.skippedImages ? ` ${officeInfo.skippedImages === 1 ? 'Una imagen usa' : `${officeInfo.skippedImages} imágenes usan`} un formato que no se pudo incluir (por ejemplo EMF o GIF).` : ''}
+          </Notice>
         )}
         {excelInfo && (
           <Notice kind="success">
