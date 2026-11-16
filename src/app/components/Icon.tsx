@@ -56,6 +56,7 @@ const paths = {
   marker: 'M9 15l-5 5h6l2-2M15 4l5 5-8 8-5-5z',
   eraser: 'M3 16l9-9 6 6-6 6H6zM13 19h8',
   edit: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+  form: 'M5 3h14v18H5zM8 8h8M8 12h8M8 16h4',
   crop: 'M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14',
 } as const
 
