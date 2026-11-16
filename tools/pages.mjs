@@ -6,6 +6,7 @@
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
+//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar' }
 
 export const SITE = 'https://docusmart.online'
 
@@ -304,6 +305,92 @@ export const pages = [
       ['¿Qué tipo de daños puede reparar?', 'Sobre todo problemas de estructura: la tabla interna de referencias perdida o corrida, o el final del archivo dañado. Si faltan partes del contenido (por ejemplo, una descarga que se cortó a la mitad), puede que no se recupere.'],
       ['¿Funciona con PDF con contraseña?', 'Primero quítale la contraseña con "Desbloquear PDF" y luego repáralo.'],
       ['¿Se sube el archivo?', 'No. La reparación ocurre en tu navegador.'],
+    ],
+  },
+  {
+    slug: 'comprimir-imagen',
+    tool: { kind: 'img', id: 'comprimir' },
+    title: 'Comprimir imagen online gratis: JPG, PNG y WebP | DocuSmart',
+    description:
+      'Reduce el peso de tus fotos e imágenes sin que se note: JPG, PNG y WebP, varias a la vez. Gratis, sin registro y sin subir las imágenes a ningún servidor.',
+    h1: 'Comprimir imagen',
+    lead: 'Haz tus fotos más livianas para enviarlas por correo o WhatsApp, subirlas a una página o ahorrar espacio, sin perder calidad visible.',
+    short: 'Fotos más livianas',
+    howTo: 'Cómo comprimir imágenes en 3 pasos',
+    steps: [
+      'Elige una o varias imágenes (JPG, PNG, WebP, GIF o BMP).',
+      'Escoge el nivel: baja, recomendada o máxima.',
+      'Pulsa "Comprimir" y descarga cada imagen o todas en un ZIP; verás cuánto peso ahorraste.',
+    ],
+    faq: [
+      ['¿Cuánto se reduce el peso?', 'Depende de la foto: con el nivel recomendado, una foto de celular suele bajar entre 60 % y 90 %. Si una imagen ya estaba optimizada y no se puede reducir, DocuSmart te devuelve la original.'],
+      ['¿Se nota la diferencia?', 'Con los niveles baja y recomendada, a simple vista casi no. El nivel máximo también reduce el tamaño a 1600 px de lado, ideal para mensajería y correo.'],
+      ['¿Qué pasa con las imágenes con fondo transparente?', 'Se guardan como WebP, que conserva la transparencia y pesa mucho menos que PNG.'],
+      ['¿Mis fotos se suben a internet?', 'No. La compresión se hace dentro de tu navegador. Además se quitan los datos ocultos de la foto (EXIF), como la ubicación GPS.'],
+    ],
+  },
+  {
+    slug: 'redimensionar-imagen',
+    tool: { kind: 'img', id: 'redimensionar' },
+    title: 'Redimensionar imagen online gratis, en pixeles o porcentaje | DocuSmart',
+    description:
+      'Cambia el tamaño de una o varias imágenes a los pixeles exactos o a un porcentaje, conservando la proporción. Gratis y sin subir las fotos.',
+    h1: 'Redimensionar imagen',
+    lead: 'Ajusta tus fotos al tamaño que pide un formulario, una red social o tu página web, de una en una o todas a la vez.',
+    short: 'Cambia el tamaño de fotos',
+    howTo: 'Cómo redimensionar imágenes en 3 pasos',
+    steps: [
+      'Elige una o varias imágenes.',
+      'Escoge un porcentaje o escribe el ancho y el alto en pixeles (con o sin conservar la proporción).',
+      'Pulsa "Redimensionar" y descarga el resultado.',
+    ],
+    faq: [
+      ['¿Se deforma la imagen?', 'No, si dejas marcado "Conservar la proporción": basta con escribir el ancho o el alto y el otro lado se calcula solo.'],
+      ['¿Puedo agrandar una imagen?', 'Sí, hasta el 200 % o el tamaño en pixeles que indiques, aunque agrandar no agrega detalle: la foto se verá más suave.'],
+      ['¿En qué formato se guarda?', 'En el mismo de la original si es JPG, PNG o WebP; los demás formatos se guardan como PNG.'],
+      ['¿Mis fotos se suben a internet?', 'No. Todo se hace dentro de tu navegador.'],
+    ],
+  },
+  {
+    slug: 'recortar-imagen',
+    tool: { kind: 'img', id: 'recortar' },
+    title: 'Recortar imagen online gratis: libre, 1:1, 4:3 o 16:9 | DocuSmart',
+    description:
+      'Recorta una foto arrastrando el recuadro o con una proporción fija (cuadrada para perfil, 16:9 para portadas). Gratis, rápido y sin subir la imagen.',
+    h1: 'Recortar imagen',
+    lead: 'Quita lo que sobra de una foto o déjala en el formato exacto que necesitas: cuadrada para tu perfil, 16:9 para una portada o 4:3 para imprimir.',
+    short: 'Libre o en 1:1, 4:3, 16:9…',
+    howTo: 'Cómo recortar una imagen en 3 pasos',
+    steps: [
+      'Elige la imagen.',
+      'Escoge una proporción (o "Libre") y ajusta el recuadro arrastrando sus bordes, esquinas o el recuadro entero.',
+      'Pulsa "Recortar y descargar".',
+    ],
+    faq: [
+      ['¿Qué proporción uso para una foto de perfil?', '1:1 (cuadrada). Para portadas y videos, 16:9; para historias, 9:16; y para fotos impresas, 4:3 o 3:4.'],
+      ['¿Pierde calidad?', 'No: solo se quita la parte de afuera del recuadro; la parte que conservas mantiene su resolución.'],
+      ['¿Mis fotos se suben a internet?', 'No. Todo se hace dentro de tu navegador.'],
+    ],
+  },
+  {
+    slug: 'rotar-imagen',
+    tool: { kind: 'img', id: 'rotar' },
+    title: 'Rotar imagen online gratis: girar 90° o voltear | DocuSmart',
+    description:
+      'Gira fotos 90° a la izquierda o a la derecha, o voltéalas como en un espejo, una o varias a la vez. Gratis y sin subir las imágenes.',
+    h1: 'Rotar y voltear imagen',
+    lead: 'Endereza fotos que quedaron de lado o al revés, o refléjalas en horizontal o vertical, sin instalar ningún programa.',
+    short: 'Gira 90° o voltea',
+    howTo: 'Cómo rotar una imagen en 3 pasos',
+    steps: [
+      'Elige una o varias imágenes.',
+      'Gira a la izquierda o a la derecha, o voltea en horizontal (espejo) o vertical, mirando la vista previa.',
+      'Pulsa "Aplicar y guardar" y descarga el resultado.',
+    ],
+    faq: [
+      ['¿Por qué mi foto se ve girada en algunos programas?', 'Muchas cámaras guardan la orientación como un dato aparte (EXIF) que no todos los programas leen. DocuSmart aplica ese dato y guarda la foto ya derecha, sin depender de él.'],
+      ['¿Puedo girar varias fotos a la vez?', 'Sí: el mismo giro se aplica a todas las imágenes que elijas y puedes descargarlas juntas en un ZIP.'],
+      ['¿Mis fotos se suben a internet?', 'No. Todo se hace dentro de tu navegador.'],
     ],
   },
   {

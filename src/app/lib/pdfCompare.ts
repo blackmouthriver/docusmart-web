@@ -127,6 +127,14 @@ export type Comparison = {
   tooDifferent: boolean
 }
 
+/**
+ * Límites de cambios antes de rendirse. La traza de Myers ocupa ~d² enteros:
+ * 3000 cambios son ~36 MB, aceptable incluso en un celular; más allá, los
+ * documentos son tan distintos que marcarlos palabra por palabra no sirve.
+ */
+export const MAX_LINE_EDITS = 3000
+export const MAX_WORD_EDITS = 2500
+
 export const normalizeLine = (s: string) => s.replace(/\s+/g, ' ').trim()
 const words = (lines: Line[]) => lines.flatMap((l) => l.text.split(' ')).filter(Boolean)
 
@@ -134,7 +142,7 @@ const words = (lines: Line[]) => lines.flatMap((l) => l.text.split(' ')).filter(
 function wordSegments(del: Line[], ins: Line[]): Segment[] {
   const a = words(del)
   const b = words(ins)
-  const ops = myersDiff(a, b, undefined, 4000) ?? [
+  const ops = myersDiff(a, b, undefined, MAX_WORD_EDITS) ?? [
     { type: 'del' as const, items: a },
     { type: 'ins' as const, items: b },
   ]
@@ -145,7 +153,7 @@ export function compareTexts(linesA: Line[], linesB: Line[], context = 2): Compa
   const clean = (ls: Line[]) => ls.map((l) => ({ ...l, text: normalizeLine(l.text) })).filter((l) => l.text)
   const A = clean(linesA)
   const B = clean(linesB)
-  const ops = myersDiff(A, B, (x, y) => x.text === y.text, 6000)
+  const ops = myersDiff(A, B, (x, y) => x.text === y.text, MAX_LINE_EDITS)
   if (!ops) return { identical: false, hunks: [], added: words(B).length, removed: words(A).length, tooDifferent: true }
 
   const hunks: Hunk[] = []

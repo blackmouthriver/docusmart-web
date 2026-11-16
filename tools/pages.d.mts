@@ -4,6 +4,7 @@ export type ToolSpec =
   | { kind: 'conv'; id: 'img-pdf' | 'img-jpg' | 'img-png' | 'img-webp' | 'img-bmp' | 'pdf-img' | 'pdf-txt' }
   | { kind: 'qr'; id?: undefined }
   | { kind: 'archive'; id: 'crear' | 'extraer' }
+  | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' }
 
 export interface ToolPage {
   slug: string

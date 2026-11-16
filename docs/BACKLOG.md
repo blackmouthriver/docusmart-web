@@ -76,15 +76,16 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-36 **Llenar formulario** (página `/llenar-formulario-pdf`): lee los campos AcroForm con pdf-lib (texto, casillas, opciones, desplegables y listas; obligatorios y de solo lectura), con etiquetas legibles (TU o el nombre sin prefijos como `txt`/`chk`) y sus recuadros marcados sobre la vista previa; tocar un recuadro abre su campo y al revés. Guarda con la opción de aplanar. Corrige el tamaño de letra desmedido en campos de varias líneas. Los formularios XFA y los PDF sin campos remiten a "Editar PDF".
 
+**Hecho:** W-37 **Herramientas de imagen** (sección `#/imagen` y páginas `/comprimir-imagen`, `/redimensionar-imagen`, `/recortar-imagen`, `/rotar-imagen`): comprimir en 3 niveles (JPEG, o WebP si hay transparencia; si no se gana nada devuelve la original), redimensionar por porcentaje o pixeles, recortar libre o 1:1/4:3/3:4/16:9/9:16 (reutiliza el editor de Recortar PDF) y rotar/voltear, varias imágenes a la vez con descarga en ZIP. Respetan la orientación EXIF y quitan los metadatos (GPS). De paso: `.stack > *` y `.file-list > *` con `min-width: 0`, porque un nombre de archivo largo desbordaba las tarjetas en el celular en todas las herramientas.
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-37.
+Los de la tabla de abajo, en su orden, empezando por W-23.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
-| W-37 | **Herramientas de imagen**: comprimir, redimensionar, recortar y rotar | — | (iLoveIMG) | canvas; entradas nuevas en `tools/pages.mjs` |
 | W-23 | **Word/Excel/PowerPoint → PDF** | ✅ | ✅ | Evaluar librerías de lectura de Office en el navegador; puede no ser viable con buena fidelidad |
 | W-24 | **Escáner con cámara** con detección de bordes | ✅ | ✅ | OpenCV.js o un detector propio |
 | W-38 | **PDF a PDF/A** (archivo a largo plazo) | — | ✅ | Requiere incrustar fuentes y perfiles de color; evaluar viabilidad |

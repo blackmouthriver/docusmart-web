@@ -17,6 +17,8 @@ const QUICK: Array<{ label: string; hint: string; icon: IconName; cls: string; t
   { label: 'Editar PDF', hint: 'Texto, formas y resaltado', icon: 'edit', cls: 'ico-blue', to: ['pdf', 'editar'] },
   { label: 'Firmar PDF', hint: 'Dibuja o sube tu firma', icon: 'pen', cls: 'ico-blue', to: ['pdf', 'firmar'] },
   { label: 'Comprimir PDF', hint: 'Reduce el peso de un PDF', icon: 'compress', cls: 'ico-green', to: ['pdf', 'comprimir'] },
+  { label: 'Comprimir imagen', hint: 'Fotos más livianas', icon: 'compress', cls: 'ico-green', to: ['imagen', 'comprimir'] },
+  { label: 'Redimensionar', hint: 'Cambia el tamaño de fotos', icon: 'resize', cls: 'ico-blue', to: ['imagen', 'redimensionar'] },
   { label: 'ZIP y RAR', hint: 'Comprime o descomprime archivos', icon: 'archive', cls: 'ico-violet', to: ['archivos'] },
   { label: 'Proteger PDF', hint: 'Ponle contraseña', icon: 'lock', cls: 'ico-amber', to: ['pdf', 'proteger'] },
   { label: 'Desbloquear PDF', hint: 'Quita la contraseña', icon: 'unlock', cls: 'ico-blue', to: ['pdf', 'desbloquear'] },

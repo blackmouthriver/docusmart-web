@@ -105,7 +105,7 @@ export function CropTool() {
 }
 
 /** Página con el recuadro de recorte encima; funciona con mouse, dedo y teclado. */
-function CropStage({ url, margins, onChange }: { url: string; margins: Margins; onChange: (m: Margins) => void }) {
+export function CropStage({ url, margins, onChange }: { url: string; margins: Margins; onChange: (m: Margins) => void }) {
   const stage = useRef<HTMLDivElement>(null)
   const drag = useRef<{ handle: Handle; x: number; y: number; start: Margins } | null>(null)
 
