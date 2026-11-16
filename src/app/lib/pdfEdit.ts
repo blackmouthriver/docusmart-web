@@ -58,6 +58,7 @@ export async function applyEdits(bytes: ArrayBuffer | Uint8Array, items: EditIte
   const images = new Map<Uint8Array, PDFImage>()
 
   for (const item of items) {
+    if (!isPlaceable(item)) continue
     const page = doc.getPage(item.page)
     const box = page.getCropBox()
     const rotation = page.getRotation().angle
@@ -90,6 +91,12 @@ export async function applyEdits(bytes: ArrayBuffer | Uint8Array, items: EditIte
     }
   }
   return doc.save()
+}
+
+/** Posición y tamaño numéricos y dentro de la página (una posición inválida haría fallar todo el guardado). */
+export function isPlaceable(item: EditItem): boolean {
+  const nums = item.kind === 'text' ? [item.x, item.y, item.size] : [item.x, item.y, item.w, item.h]
+  return nums.every(Number.isFinite) && item.x >= 0 && item.y >= 0 && item.x <= 1 && item.y <= 1
 }
 
 function boxStyle(item: BoxItem) {

@@ -259,6 +259,8 @@ function EditStage({
 
   const down = (e: PointerEvent<HTMLDivElement>) => {
     const [x, y] = frac(e)
+    // Mientras la vista previa no tiene tamaño, la posición no es válida.
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return
     if (tool === 'text') {
       onAdd({ kind: 'text', page, x, y, text: 'Escribe aquí', size: 14, color: '#1C1B1A', font: 'helvetica', bold: false })
       return
@@ -289,6 +291,7 @@ function EditStage({
     const d = drag.current
     if (!d) return
     const [x, y] = frac(e)
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return
     if (d.mode === 'new') {
       const a = areaFromCorners(page, d.x, d.y, x, y)
       setDraft({ x: a.x, y: a.y, w: a.w, h: a.h })
