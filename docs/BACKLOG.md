@@ -78,16 +78,17 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 **Hecho:** W-37 **Herramientas de imagen** (sección `#/imagen` y páginas `/comprimir-imagen`, `/redimensionar-imagen`, `/recortar-imagen`, `/rotar-imagen`): comprimir en 3 niveles (JPEG, o WebP si hay transparencia; si no se gana nada devuelve la original), redimensionar por porcentaje o pixeles, recortar libre o 1:1/4:3/3:4/16:9/9:16 (reutiliza el editor de Recortar PDF) y rotar/voltear, varias imágenes a la vez con descarga en ZIP. Respetan la orientación EXIF y quitan los metadatos (GPS). De paso: `.stack > *` y `.file-list > *` con `min-width: 0`, porque un nombre de archivo largo desbordaba las tarjetas en el celular en todas las herramientas.
 
+**Hecho:** W-24 **Escáner** (página `/escanear-documento`): foto con la cámara del celular (`capture="environment"`) o desde la galería; detector propio sin OpenCV (umbral de Otsu + zona clara más grande + esquinas extremas), esquinas ajustables (arrastre y teclado), enderezado con homografía e interpolación bilineal, giro, filtros Documento (blanquea el papel dividiendo por el fondo), B/N adaptativo, Gris y Color; varias páginas reordenables → PDF de ancho A4 o JPG, y PDF buscable con el OCR existente.
+
 ### Siguientes
 
-Los de la tabla de abajo, en su orden, empezando por W-23.
+Los de la tabla de abajo, en su orden, W-23 (Office) y W-38 (PDF/A) requieren evaluar viabilidad.
 
 ### Después (paridad con la app e iLovePDF)
 
 | ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
 |---|---|---|---|---|
 | W-23 | **Word/Excel/PowerPoint → PDF** | ✅ | ✅ | Evaluar librerías de lectura de Office en el navegador; puede no ser viable con buena fidelidad |
-| W-24 | **Escáner con cámara** con detección de bordes | ✅ | ✅ | OpenCV.js o un detector propio |
 | W-38 | **PDF a PDF/A** (archivo a largo plazo) | — | ✅ | Requiere incrustar fuentes y perfiles de color; evaluar viabilidad |
 
 ## Mantenimiento y limpieza

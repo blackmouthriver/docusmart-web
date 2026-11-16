@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario'|'escanear' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -70,6 +70,28 @@ export const pages = [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
       ['¿La rotación es permanente?', 'Sí, queda guardada en el PDF nuevo y se verá igual en cualquier lector.'],
       ['¿Necesito instalar algo?', 'No. Funciona en el navegador, sin registro y sin subir el archivo.'],
+    ],
+  },
+  {
+    slug: 'escanear-documento',
+    tool: { kind: 'pdf', id: 'escanear' },
+    title: 'Escáner online gratis: de foto a PDF con el celular | DocuSmart',
+    description:
+      'Convierte fotos de documentos en un PDF que parece escaneado: detecta la hoja, endereza la perspectiva y blanquea el papel. Varias páginas y OCR opcional. Sin instalar nada.',
+    h1: 'Escanear documento',
+    lead: 'Toma una foto de tu contrato, recibo o tarea con el celular y DocuSmart la convierte en un escaneo derecho y limpio, listo para enviar en PDF.',
+    short: 'Foto → PDF limpio',
+    howTo: 'Cómo escanear un documento en 3 pasos',
+    steps: [
+      'Pulsa "Tomar foto" (en el celular se abre la cámara) o elige fotos que ya tengas. Pon la hoja sobre una superficie oscura y con buena luz.',
+      'Revisa las esquinas que encontró DocuSmart y elige un filtro: Documento blanquea el papel y quita sombras. Agrega más páginas si quieres.',
+      'Pulsa "Guardar PDF" (marca "Hacer el PDF buscable" para poder buscar el texto) o descarga las páginas como JPG.',
+    ],
+    faq: [
+      ['¿Necesito instalar una app?', 'No. Funciona en el navegador del celular o del computador. Si escaneas seguido, la app Android de DocuSmart también lo hace sin conexión.'],
+      ['¿Qué hago si no encuentra bien los bordes?', 'Arrastra cada esquina hasta la punta de la hoja, o usa "Toda la foto". Funciona mejor si el papel contrasta con el fondo (una mesa oscura).'],
+      ['¿Qué es un PDF buscable?', 'Uno en el que, además de la imagen, se reconoce el texto (OCR): puedes buscar palabras, seleccionarlas y copiarlas.'],
+      ['¿Mis fotos se suben a internet?', 'No. La detección, el enderezado, los filtros y el OCR se hacen dentro de tu navegador.'],
     ],
   },
   {

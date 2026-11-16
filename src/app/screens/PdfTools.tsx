@@ -15,10 +15,12 @@ import { CompareTool } from './CompareTool'
 import { ExtractImagesTool } from './ExtractImagesTool'
 import { EditTool } from './EditTool'
 import { FormTool } from './FormTool'
+import { ScanTool } from './ScanTool'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'editar', name: 'Editar PDF', desc: 'Agrega texto, imágenes, formas y resaltado', icon: 'edit', cls: 'ico-blue' },
   { id: 'formulario', name: 'Llenar formulario', desc: 'Completa los campos de un PDF rellenable', icon: 'form', cls: 'ico-green' },
+  { id: 'escanear', name: 'Escanear documento', desc: 'Foto → PDF derecho y limpio, como un escáner', icon: 'camera', cls: 'ico-cyan' },
   { id: 'unir', name: 'Unir PDFs', desc: 'Combina 2 o más PDFs en uno solo', icon: 'merge', cls: 'ico-red' },
   { id: 'dividir', name: 'Dividir PDF', desc: 'Extrae páginas o separa cada una', icon: 'split', cls: 'ico-violet' },
   { id: 'rotar', name: 'Rotar páginas', desc: 'Endereza páginas escaneadas de lado', icon: 'rotate', cls: 'ico-blue' },
@@ -52,6 +54,7 @@ export const OWN_TOOLS: Record<string, ComponentType> = {
   imagenes: ExtractImagesTool,
   editar: EditTool,
   formulario: FormTool,
+  escanear: ScanTool,
 }
 
 export function PdfTools({ sub }: { sub?: string }) {
@@ -80,9 +83,6 @@ export function PdfTools({ sub }: { sub?: string }) {
                 </span>
               </button>
             ))}
-          </div>
-          <div style={{ marginTop: 16 }}>
-            <Notice kind="plain">Escanear con detección de bordes está en la app Android.</Notice>
           </div>
         </>
       )}
