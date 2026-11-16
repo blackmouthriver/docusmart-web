@@ -98,7 +98,7 @@ async function pageImages(page: PDFPageProxy, index: number, viewport: Matrix): 
   return out
 }
 
-export async function extractForWord(file: File, onProgress?: (done: number, total: number) => void) {
+export async function extractForWord(file: File, onProgress?: (done: number, total: number) => void, opts: { images?: boolean } = {}) {
   const doc: PDFDocumentProxy = await openPdf(await file.arrayBuffer(), undefined, { fontExtraProperties: true })
   try {
     const pages: PageInfo[] = []
@@ -109,7 +109,9 @@ export async function extractForWord(file: File, onProgress?: (done: number, tot
       const vp = page.getViewport({ scale: 1 })
       pages.push({ width: vp.width, height: vp.height })
       // La lista de operadores carga las fuentes (negrita/cursiva) y las imágenes.
-      images.push(...(await pageImages(page, n - 1, vp.transform)))
+      if (opts.images !== false) images.push(...(await pageImages(page, n - 1, vp.transform)))
+      // Sin imágenes igual hace falta la lista de operadores: carga las fuentes (negrita).
+      else await page.getOperatorList()
       const content = await page.getTextContent()
       const fonts = new Map<string, FontInfo | null>()
       for (const item of content.items) {

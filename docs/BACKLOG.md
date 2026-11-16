@@ -84,7 +84,9 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 Los de la tabla de abajo, en su orden, W-23 (Office) y W-38 (PDF/A) requieren evaluar viabilidad.
 
-**Hecho:** **PDF a Word** (página `/pdf-a-word`, en el Convertidor): reconstruye párrafos, títulos por tamaño, negrita y cursiva (nombre real de la fuente vía `fontExtraProperties` de pdf.js), listas, tablas por columnas alineadas, imágenes en su lugar, centrado y saltos de página; escribe el .docx a mano con fflate. Probado con un PDF exportado por Word y reabierto en Word: estructura, fuente, tamaños y tabla iguales. No reproduce colores del texto ni bordes decorativos. Pendiente: PDF a Excel.
+**Hecho:** **PDF a Word** (página `/pdf-a-word`, en el Convertidor): reconstruye párrafos, títulos por tamaño, negrita y cursiva (nombre real de la fuente vía `fontExtraProperties` de pdf.js), listas, tablas por columnas alineadas, imágenes en su lugar, centrado y saltos de página; escribe el .docx a mano con fflate. Probado con un PDF exportado por Word y reabierto en Word: estructura, fuente, tamaños y tabla iguales. No reproduce colores del texto ni bordes decorativos. 
+
+**Hecho:** **PDF a Excel** (página `/pdf-a-excel`): cada línea es una fila y las columnas salen de la alineación (umbral fino); celdas de dos líneas unidas; números (1.500.000, $ 2.000, 3,5, 45 %) como números de Excel con formato; una hoja por página o todo en una; .xlsx escrito a mano. Probado con un extracto exportado por Word y abierto en Excel: columnas correctas y sumas exactas.
 
 ### Después (paridad con la app e iLovePDF)
 

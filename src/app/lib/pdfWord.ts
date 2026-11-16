@@ -22,8 +22,8 @@ export type WordDoc = { blocks: Block[]; page: PageInfo; margins: { top: number;
 
 /* ───────────── Líneas ───────────── */
 
-type Segment = { x0: number; x1: number; runs: Run[] }
-type Line = { page: number; y: number; x0: number; x1: number; size: number; segments: Segment[] }
+export type Segment = { x0: number; x1: number; runs: Run[] }
+export type Line = { page: number; y: number; x0: number; x1: number; size: number; segments: Segment[] }
 
 const sameStyle = (a: Run, b: Run) => a.bold === b.bold && a.italic === b.italic && a.family === b.family && a.font === b.font && Math.abs(a.size - b.size) < 0.6
 
@@ -45,8 +45,11 @@ function pushRun(runs: Run[], r: Run) {
   else runs.push({ ...r })
 }
 
-/** Agrupa los fragmentos de una página en líneas, y cada línea en segmentos separados por huecos grandes. */
-export function buildLines(frags: TextFrag[]): Line[] {
+/**
+ * Agrupa los fragmentos de una página en líneas, y cada línea en segmentos separados por huecos
+ * mayores que `splitGap` tamaños de letra (2 para Word: no parte párrafos justificados).
+ */
+export function buildLines(frags: TextFrag[], splitGap = 2): Line[] {
   // Los fragmentos que son solo espacios no cuentan para la geometría: Word los usa para
   // rellenar el hueco entre columnas de una tabla y ocultarían ese hueco.
   const sorted = frags.filter((f) => f.str.trim()).sort((a, b) => a.y - b.y || a.x - b.x)
@@ -65,7 +68,7 @@ export function buildLines(frags: TextFrag[]): Line[] {
     let prev: TextFrag | null = null
     for (const f of g) {
       const gap = prev ? f.x - (prev.x + prev.w) : 0
-      if (!seg || gap > 2 * size) {
+      if (!seg || gap > splitGap * size) {
         seg = { x0: f.x, x1: f.x + f.w, runs: [] }
         segments.push(seg)
       } else if (gap > 0.15 * f.size && !/\s$/.test(seg.runs[seg.runs.length - 1]?.text ?? '') && !/^\s/.test(f.str)) {
@@ -104,7 +107,7 @@ export function dominant<T extends string | number>(frags: TextFrag[], key: (f: 
 /* ───────────── Tablas ───────────── */
 
 /** Columnas: agrupa los inicios de segmento que caen cerca (tolerancia en puntos). */
-function columnAnchors(lines: Line[], tol: number): number[] {
+export function columnAnchors(lines: Line[], tol: number): number[] {
   const xs = lines.flatMap((l) => l.segments.map((s) => s.x0)).sort((a, b) => a - b)
   const clusters: number[][] = []
   for (const x of xs) {
