@@ -58,8 +58,8 @@ export type QrSize = keyof typeof QR_SIZES
 const LOGO_DATA_URL = /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/
 
 /**
- * SVG del QR (W-86, vector para imprimir sin perder calidad) con el logo encima: el mismo
- * recuadro blanco y la misma proporción (22 %) que el PNG, en las unidades del viewBox.
+ * SVG del QR (W-86, vector para imprimir sin perder calidad) con el logo encima, circular como
+ * en el PNG (W-85b) y en la misma proporción (22 %), en las unidades del viewBox.
  */
 export function svgWithLogo(svg: string, logoDataUrl: string | null): string {
   if (!logoDataUrl) return svg
@@ -71,8 +71,21 @@ export function svgWithLogo(svg: string, logoDataUrl: string | null): string {
   const x = (size - side) / 2
   const pad = side * 0.1
   const n = (v: number) => +v.toFixed(3)
+  const c = x + side / 2
+  // Logo circular (W-85b): un círculo blanco de fondo y la imagen recortada en círculo.
   const extra =
-    `<rect x="${n(x - pad)}" y="${n(x - pad)}" width="${n(side + pad * 2)}" height="${n(side + pad * 2)}" rx="${n(pad)}" fill="#FFFFFF"/>` +
-    `<image x="${n(x)}" y="${n(x)}" width="${n(side)}" height="${n(side)}" preserveAspectRatio="xMidYMid meet" href="${logoDataUrl}"/>`
+    `<circle cx="${n(c)}" cy="${n(c)}" r="${n(side / 2 + pad)}" fill="#FFFFFF"/>` +
+    `<clipPath id="ds-qr-logo"><circle cx="${n(c)}" cy="${n(c)}" r="${n(side / 2)}"/></clipPath>` +
+    `<image x="${n(x)}" y="${n(x)}" width="${n(side)}" height="${n(side)}" preserveAspectRatio="xMidYMid slice" clip-path="url(#ds-qr-logo)" href="${logoDataUrl}"/>`
   return svg.replace(/<\/svg>\s*$/, `${extra}</svg>`)
+}
+
+/**
+ * Recorte cuadrado del logo (W-85b): con zoom 1 toma el cuadrado más grande centrado; al
+ * acercar se achica y el desplazamiento (en pixeles de la imagen) lo mueve sin salirse.
+ */
+export function cropSquare(width: number, height: number, zoom: number, offsetX: number, offsetY: number): { sx: number; sy: number; size: number } {
+  const size = Math.min(width, height) / Math.max(1, zoom)
+  const clamp = (v: number, max: number) => Math.min(Math.max(v, 0), Math.max(0, max))
+  return { sx: clamp((width - size) / 2 + offsetX, width - size), sy: clamp((height - size) / 2 + offsetY, height - size), size }
 }

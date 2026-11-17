@@ -12,7 +12,7 @@ import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, i
 import { download, isOwnBlobUrl, safeMimeType } from '../../../shared/files/files'
 import { previewOf, type QrHistoryEntry, type QrHistoryKind } from '../core/qrHistory'
 import { clearQrHistory, forgetQr, getQrHistory, recordQr, subscribeQrHistory } from '../infra/historyStore'
-import { QR_COLORS, QR_SIZES, errorLevels, hasSufficientContrast, logoBox, svgWithLogo, type QrColorId, type QrSize } from '../core/qrDesign'
+import { QR_COLORS, QR_SIZES, cropSquare, errorLevels, hasSufficientContrast, logoBox, svgWithLogo, type QrColorId, type QrSize } from '../core/qrDesign'
 import { useT } from '../../../shared/i18n/I18n'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -107,15 +107,23 @@ async function renderQr(payload: string, opts: { color: string; size: number; lo
     const bmp = await createImageBitmap(opts.logo)
     const ctx = canvas.getContext('2d')!
     const box = logoBox(canvas.width)
+    // Logo circular (W-85b): círculo blanco de fondo y la imagen recortada en círculo, cubriéndolo.
+    const r = box.side / 2
+    const cx = box.x + r
+    const cy = box.y + r
     ctx.fillStyle = '#FFFFFF'
     ctx.beginPath()
-    if (ctx.roundRect) ctx.roundRect(box.x - box.pad, box.y - box.pad, box.side + box.pad * 2, box.side + box.pad * 2, box.pad)
-    else ctx.rect(box.x - box.pad, box.y - box.pad, box.side + box.pad * 2, box.side + box.pad * 2)
+    ctx.arc(cx, cy, r + box.pad, 0, Math.PI * 2)
     ctx.fill()
-    const fit = box.side / Math.max(bmp.width, bmp.height)
+    ctx.save()
+    ctx.beginPath()
+    ctx.arc(cx, cy, r, 0, Math.PI * 2)
+    ctx.clip()
+    const fit = box.side / Math.min(bmp.width, bmp.height)
     const w = bmp.width * fit
     const h = bmp.height * fit
-    ctx.drawImage(bmp, box.x + (box.side - w) / 2, box.y + (box.side - h) / 2, w, h)
+    ctx.drawImage(bmp, cx - w / 2, cy - h / 2, w, h)
+    ctx.restore()
     bmp.close()
   }
   const url = canvas.toDataURL('image/png')
@@ -153,6 +161,83 @@ async function renderQrSvg(payload: string, opts: { color: string; logo: File | 
   return svgWithLogo(svg, logoUrl)
 }
 
+/** Ajustar el logo (W-85b): arrastrar para mover, acercar con el control (o la rueda), vista previa circular. */
+function LogoCropper({ file, onDone, onCancel }: { file: File; onDone: (f: File) => void; onCancel: () => void }) {
+  const canvas = useRef<HTMLCanvasElement>(null)
+  const [bmp, setBmp] = useState<ImageBitmap | null>(null)
+  const [zoom, setZoom] = useState(1)
+  const [off, setOff] = useState({ x: 0, y: 0 })
+  const drag = useRef<{ x: number; y: number; ox: number; oy: number } | null>(null)
+  useEffect(() => {
+    let alive = true
+    let loaded: ImageBitmap | null = null
+    void createImageBitmap(file).then((b) => {
+      if (alive) {
+        loaded = b
+        setBmp(b)
+      } else b.close()
+    })
+    return () => {
+      alive = false
+      loaded?.close()
+    }
+  }, [file])
+  const crop = bmp ? cropSquare(bmp.width, bmp.height, zoom, off.x, off.y) : null
+  useEffect(() => {
+    const c = canvas.current
+    if (!c || !bmp || !crop) return
+    const ctx = c.getContext('2d')!
+    ctx.clearRect(0, 0, c.width, c.height)
+    ctx.drawImage(bmp, crop.sx, crop.sy, crop.size, crop.size, 0, 0, c.width, c.height)
+  }, [bmp, crop?.sx, crop?.sy, crop?.size]) // eslint-disable-line react-hooks/exhaustive-deps
+  // El desplazamiento real (ya ajustado a los bordes), para que arrastrar siempre responda.
+  const realOffset = () => (bmp && crop ? { x: crop.sx - (bmp.width - crop.size) / 2, y: crop.sy - (bmp.height - crop.size) / 2 } : { x: 0, y: 0 })
+  const done = async () => {
+    if (!bmp || !crop) return
+    const out = document.createElement('canvas')
+    out.width = out.height = 512
+    out.getContext('2d')!.drawImage(bmp, crop.sx, crop.sy, crop.size, crop.size, 0, 0, 512, 512)
+    const blob = await new Promise<Blob | null>((resolve) => out.toBlob(resolve, 'image/png'))
+    out.width = out.height = 0
+    if (blob) onDone(new File([blob], 'logo.png', { type: 'image/png' }))
+  }
+  return (
+    <div className="logo-cropper">
+      <p className="faint">{tr('qr.cropHint')}</p>
+      <canvas
+        ref={canvas}
+        width={480}
+        height={480}
+        className="logo-crop-canvas"
+        role="img"
+        aria-label={tr('qr.cropLogo')}
+        onPointerDown={(e) => {
+          e.currentTarget.setPointerCapture(e.pointerId)
+          const o = realOffset()
+          drag.current = { x: e.clientX, y: e.clientY, ox: o.x, oy: o.y }
+        }}
+        onPointerMove={(e) => {
+          const d = drag.current
+          if (!d || !crop) return
+          const k = crop.size / e.currentTarget.clientWidth
+          setOff({ x: d.ox - (e.clientX - d.x) * k, y: d.oy - (e.clientY - d.y) * k })
+        }}
+        onPointerUp={() => (drag.current = null)}
+        onPointerCancel={() => (drag.current = null)}
+        onWheel={(e) => setZoom((z) => Math.min(4, Math.max(1, z * (e.deltaY < 0 ? 1.08 : 1 / 1.08))))}
+      />
+      <label className="field">
+        <span>{tr('qr.zoom')}</span>
+        <input type="range" min={1} max={4} step={0.05} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} />
+      </label>
+      <div className="row" style={{ gap: 8 }}>
+        <button type="button" className="btn btn-primary btn-sm" disabled={!bmp} onClick={() => void done()}><Icon name="check" /> {tr('qr.cropDone')}</button>
+        <button type="button" className="btn btn-ghost btn-sm" onClick={onCancel}>{tr('qr.cancel')}</button>
+      </div>
+    </div>
+  )
+}
+
 export function CreateQr() {
   const { toast } = useApp()
   const [form, setForm] = useState<QrForm>(emptyForm)
@@ -169,6 +254,9 @@ export function CreateQr() {
   // Diseño (W-85): color, logo y tamaño, como en la app.
   const [color, setColor] = useState<QrColorId>('black')
   const [logo, setLogo] = useState<File | null>(null)
+  // Imagen original elegida (para volver a ajustarla) y si el recortador está abierto.
+  const [logoSource, setLogoSource] = useState<File | null>(null)
+  const [cropping, setCropping] = useState(false)
   const [logoUrl, setLogoUrl] = useState('')
   const [size, setSize] = useState<QrSize>('m')
   const logoInput = useRef<HTMLInputElement>(null)
@@ -186,8 +274,8 @@ export function CreateQr() {
     try {
       const bmp = await createImageBitmap(file) // comprueba que sea una imagen válida
       bmp.close()
-      setLogo(file)
-      setImg(null)
+      setLogoSource(file)
+      setCropping(true)
     } catch {
       toast(tr('qr.logoError'))
     }
@@ -325,11 +413,19 @@ export function CreateQr() {
           <div className="field">
             <span>{tr('qr.logo')}</span>
             <div className="row" style={{ gap: 10 }}>
-              {logoUrl && <img className="qr-logo-thumb" src={logoUrl} alt="" />}
-              <button type="button" className="btn btn-soft btn-sm" onClick={() => logoInput.current?.click()}><Icon name="image" /> {logo ? tr('qr.changeLogo') : tr('qr.addLogo')}</button>
-              {logo && <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setLogo(null); setImg(null) }}><Icon name="close" /> {tr('qr.removeLogo')}</button>}
+              {logoUrl && !cropping && <img className="qr-logo-thumb" src={logoUrl} alt="" />}
+              {!cropping && <button type="button" className="btn btn-soft btn-sm" onClick={() => logoInput.current?.click()}><Icon name="image" /> {logo ? tr('qr.changeLogo') : tr('qr.addLogo')}</button>}
+              {logo && logoSource && !cropping && <button type="button" className="btn btn-soft btn-sm" onClick={() => setCropping(true)}><Icon name="crop" /> {tr('qr.cropLogo')}</button>}
+              {logo && !cropping && <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setLogo(null); setLogoSource(null); setImg(null) }}><Icon name="close" /> {tr('qr.removeLogo')}</button>}
               <input ref={logoInput} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={(e) => { void pickLogo(e.target.files?.[0]); e.target.value = '' }} />
             </div>
+            {cropping && logoSource && (
+              <LogoCropper
+                file={logoSource}
+                onDone={(f) => { setLogo(f); setCropping(false); setImg(null) }}
+                onCancel={() => { setCropping(false); if (!logo) setLogoSource(null) }}
+              />
+            )}
             <small className="faint">{tr('qr.logoHint')}</small>
           </div>
           <Segmented

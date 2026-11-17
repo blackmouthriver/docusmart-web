@@ -30,11 +30,12 @@ describe('SVG del QR (W-86)', () => {
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25"><path d="M0 0h25v25H0z"/></svg>\n'
   const logo = 'data:image/png;base64,iVBORw0KGgo='
 
-  it('agrega el recuadro blanco y el logo en el centro', async () => {
+  it('agrega el círculo blanco y el logo recortado en círculo en el centro', async () => {
     const { svgWithLogo } = await import('../../../../../src/features/qr/core/qrDesign')
     const out = svgWithLogo(svg, logo)
-    expect(out).toContain('<rect x="9.2" y="9.2" width="6.6" height="6.6" rx="0.55" fill="#FFFFFF"/>')
-    expect(out).toContain(`<image x="9.75" y="9.75" width="5.5" height="5.5" preserveAspectRatio="xMidYMid meet" href="${logo}"/></svg>`)
+    expect(out).toContain('<circle cx="12.5" cy="12.5" r="3.3" fill="#FFFFFF"/>')
+    expect(out).toContain('<clipPath id="ds-qr-logo"><circle cx="12.5" cy="12.5" r="2.75"/></clipPath>')
+    expect(out).toContain(`<image x="9.75" y="9.75" width="5.5" height="5.5" preserveAspectRatio="xMidYMid slice" clip-path="url(#ds-qr-logo)" href="${logo}"/></svg>`)
     expect(out.endsWith('</svg>')).toBe(true)
   })
 
@@ -55,4 +56,12 @@ it('arma un SVG real con la librería de QR y el logo encima', async () => {
   expect(out).toContain('stroke="#1976D2"')
   expect(out.indexOf('<image')).toBeGreaterThan(out.indexOf('<path'))
   expect(out.trim().endsWith('</svg>')).toBe(true)
+})
+
+it('recorta un cuadrado del logo con zoom y desplazamiento sin salirse de la imagen', async () => {
+  const { cropSquare } = await import('../../../../../src/features/qr/core/qrDesign')
+  expect(cropSquare(400, 200, 1, 0, 0)).toEqual({ sx: 100, sy: 0, size: 200 })
+  expect(cropSquare(400, 200, 2, 0, 0)).toEqual({ sx: 150, sy: 50, size: 100 })
+  expect(cropSquare(400, 200, 2, 1000, -1000)).toEqual({ sx: 300, sy: 0, size: 100 })
+  expect(cropSquare(400, 200, 0.5, 0, 0)).toEqual({ sx: 100, sy: 0, size: 200 })
 })
