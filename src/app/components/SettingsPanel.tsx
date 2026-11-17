@@ -34,7 +34,9 @@ export function SettingsPanel({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="settings-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="settings-backdrop">
+      {/* Tocar fuera del panel lo cierra (botón nativo, fuera del orden de tabulación: Esc y "Cerrar" ya existen). */}
+      <button type="button" className="settings-scrim" aria-label={t('settings.close')} tabIndex={-1} onClick={onClose} />
       <div ref={panel} className="settings-panel stack" role="dialog" aria-modal="true" aria-labelledby="settings-title">
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <h2 id="settings-title">{t('settings.title')}</h2>
