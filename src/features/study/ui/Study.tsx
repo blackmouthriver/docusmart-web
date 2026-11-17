@@ -11,6 +11,7 @@ import { loadFile as loadStoredFile, loadHistory, pruneFiles, saveHistory, store
 import { groupByDoc, isHighlighted, quoteNote, removeDocHighlights, removeHighlight, toggleHighlight, type Highlight } from '../core/highlights'
 import { getHighlights, setHighlights, subscribeHighlights } from '../infra/highlightsStore'
 import { summarize } from '../core/summarize'
+import { readerKeyAction, silentWav, type ReaderKeyAction } from '../core/controls'
 import { firstDayOfWeek, hoursMinutes, weekCounts, weekDays } from '../core/stats'
 import { getStats, recordPomodoro, recordReading, subscribeStats } from '../infra/statsStore'
 import { MAX_NOTE_IMAGES, exportName, notesToBlocks, notesToText, orphanImages, parseNotes, upsertNote, type NoteLabels, type StudyNote } from '../core/notes'
@@ -51,7 +52,7 @@ export function Study({ sub }: { sub?: string }) {
   }, [])
 
   const section = (id: StudyTab) => {
-    if (id === 'lectura') return <ReadAloud onStatus={reporters.lectura} />
+    if (id === 'lectura') return <ReadAloud onStatus={reporters.lectura} visible={tab === 'lectura'} />
     if (id === 'notas') return <Notes />
     if (id === 'estadisticas') return <Stats />
     return <Pomodoro onStatus={reporters.pomodoro} />
@@ -94,7 +95,7 @@ export function Study({ sub }: { sub?: string }) {
 // ── Lectura en voz alta por párrafos (W-60) ─────────────────────────
 type Pos = { p: number; c: number }
 
-function ReadAloud({ onStatus }: { onStatus: Report }) {
+function ReadAloud({ onStatus, visible }: { onStatus: Report; visible: boolean }) {
   const { toast } = useApp()
   const { lang: uiLang } = useT()
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
@@ -123,6 +124,8 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const [ocrOffer, setOcrOffer] = useState<File | null>(null)
   const [ocrProgress, setOcrProgress] = useState<OcrProgress | null>(null)
   const [dragging, setDragging] = useState(false)
+  // Los atajos solo se sugieren con teclado y mouse (no en celulares).
+  const finePointer = useMemo(() => typeof window !== 'undefined' && !!window.matchMedia?.('(pointer: fine)').matches, [])
   const [summaryOpen, setSummaryOpen] = useState(false)
   const [summaryAt, setSummaryAt] = useState(-1)
   const summary = useMemo(() => (summaryOpen ? summarize(text) : null), [summaryOpen, text])
@@ -152,6 +155,97 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     const [reading, paused] = totalPages ? (['study.statusReadingPage', 'study.statusPausedPage'] as const) : (['study.statusReading', 'study.statusPaused'] as const)
     onStatus(state === 'playing' ? tr(reading, vars) : state === 'paused' ? tr(paused, vars) : '')
   }, [state, pos.p, paragraphs.length, totalPages, currentPage, onStatus])
+
+  // ── W-67: atajos de teclado, controles del sistema y pantalla encendida ──
+  // Las acciones se actualizan en cada render (ver más abajo); los efectos las leen de la ref.
+  const keyActions = useRef<Record<ReaderKeyAction, () => void> | null>(null)
+  const mediaStop = useRef<() => void>(() => {})
+  const mediaTitle = useRef('')
+  useEffect(() => {
+    if (!visible) return
+    const onKey = (e: KeyboardEvent) => {
+      const action = readerKeyAction(e as KeyboardEvent & { target: HTMLElement | null })
+      if (!action || !keyActions.current) return
+      e.preventDefault()
+      keyActions.current[action]()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [visible])
+
+  // Auriculares y pantalla bloqueada: el sistema solo muestra los controles si suena un audio,
+  // así que mientras se lee suena un audio silencioso y se registran las acciones.
+  const silentAudio = useRef<HTMLAudioElement | null>(null)
+  useEffect(() => {
+    const ms = typeof navigator === 'undefined' ? undefined : navigator.mediaSession
+    if (!ms) return
+    if (state === 'idle') {
+      silentAudio.current?.pause()
+      ms.playbackState = 'none'
+      return
+    }
+    if (!silentAudio.current) {
+      const audio = new Audio(URL.createObjectURL(new Blob([silentWav(2) as BlobPart], { type: 'audio/wav' })))
+      audio.loop = true
+      silentAudio.current = audio
+    }
+    if (state === 'playing') void silentAudio.current.play().catch(() => {})
+    else silentAudio.current.pause()
+    ms.playbackState = state === 'playing' ? 'playing' : 'paused'
+    try {
+      ms.metadata = new MediaMetadata({ title: mediaTitle.current, artist: 'DocuSmart', artwork: [{ src: '/img/icon.svg', sizes: '512x512', type: 'image/svg+xml' }] })
+    } catch {
+      /* navegador sin metadatos multimedia */
+    }
+    const actions: Array<[MediaSessionAction, () => void]> = [
+      ['play', () => keyActions.current?.toggle()],
+      ['pause', () => keyActions.current?.toggle()],
+      ['previoustrack', () => keyActions.current?.prev()],
+      ['nexttrack', () => keyActions.current?.next()],
+      ['stop', () => mediaStop.current()],
+    ]
+    for (const [action, handler] of actions) {
+      try {
+        ms.setActionHandler(action, handler)
+      } catch {
+        /* acción no soportada */
+      }
+    }
+  }, [state])
+  useEffect(
+    () => () => {
+      const audio = silentAudio.current
+      if (!audio) return
+      audio.pause()
+      URL.revokeObjectURL(audio.src)
+    },
+    [],
+  )
+
+  // La pantalla no se apaga mientras se lee (se vuelve a pedir al regresar a la pestaña).
+  useEffect(() => {
+    if (state !== 'playing' || typeof navigator === 'undefined' || !('wakeLock' in navigator)) return
+    let lock: WakeLockSentinel | null = null
+    let alive = true
+    const request = () =>
+      void navigator.wakeLock
+        .request('screen')
+        .then((l) => {
+          if (alive) lock = l
+          else void l.release()
+        })
+        .catch(() => {})
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') request()
+    }
+    request()
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      alive = false
+      document.removeEventListener('visibilitychange', onVisible)
+      void lock?.release().catch(() => {})
+    }
+  }, [state])
 
   // Estadísticas (W-66): el tiempo que suena la lectura se suma al total escuchado.
   useEffect(() => {
@@ -418,6 +512,18 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     if (!para) return
     setHighlights(toggleHighlight(getHighlights(), { docId: docKey, docName: docLabel, paragraph: pos.p, page: para.page ?? 0, text: para.text, at: Date.now() }))
   }
+  keyActions.current = {
+    toggle: () => {
+      if (state === 'playing') pause()
+      else if (state === 'paused') speak(pos)
+      else if (total) start(view === 'read' && !finished ? pos.p : 0)
+    },
+    prev: () => view === 'read' && jump(-1),
+    next: () => view === 'read' && jump(1),
+    mark: () => view === 'read' && toggleMark(),
+  }
+  mediaStop.current = stop
+  mediaTitle.current = doc?.name ?? pdf?.file.name ?? tr('study.readAloud')
   const pages = pageProgress(currentPage, totalPages, finished)
   const percent = totalPages ? pages.percent : listenedPercent(pos.p, total, finished)
   const active = state !== 'idle' || finished
@@ -480,6 +586,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
         )}
       </div>
       {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
+      {view === 'read' && total > 0 && finePointer && <small className="faint kbd-hint">{tr('study.keysHint')}</small>}
     </div>
   )
   const resumedNotice = resumed && !finished && state === 'idle' && (
@@ -1208,6 +1315,7 @@ function Pomodoro({ onStatus }: { onStatus: Report }) {
         beep()
         if (phase === 'focus') {
           const count = done + 1
+          notifyEnd(tr('study.notifyFocusTitle'), tr('study.notifyFocusBody', { n: count % 4 === 0 ? 15 : 5 }))
           setDone(count)
           track('pomodoro_completed', { pomodoro_count: count })
           recordPomodoro()
@@ -1215,6 +1323,7 @@ function Pomodoro({ onStatus }: { onStatus: Report }) {
           setPhase(next)
           setLeft(next === 'long' ? LONG : SHORT)
         } else {
+          notifyEnd(tr('study.notifyBreakTitle'), tr('study.notifyBreakBody'))
           setPhase('focus')
           setLeft(FOCUS)
         }
@@ -1265,6 +1374,8 @@ function Pomodoro({ onStatus }: { onStatus: Report }) {
               className="btn btn-primary"
               onClick={() => {
                 if (phase === 'focus' && left === FOCUS) track('study_session_started', { mode: 'pomodoro' })
+                // Se pide permiso con el toque del usuario, la primera vez, para avisar al terminar.
+                if (typeof Notification !== 'undefined' && Notification.permission === 'default') void Notification.requestPermission().catch(() => {})
                 setRunning(true)
               }}
             >
@@ -1279,9 +1390,21 @@ function Pomodoro({ onStatus }: { onStatus: Report }) {
           </span>
         </div>
         <span className="faint">{tr('study.every4')}</span>
+        {typeof Notification !== 'undefined' && Notification.permission === 'denied' && <small className="faint">{tr('study.notifyDenied')}</small>}
       </div>
     </div>
   )
+}
+
+/** Aviso del navegador al terminar un bloque, si la pestaña no está a la vista y hay permiso. */
+function notifyEnd(title: string, body: string) {
+  if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return
+  if (document.visibilityState === 'visible' && document.hasFocus()) return
+  try {
+    new Notification(title, { body, icon: '/img/icon.svg', tag: 'ds-pomodoro' })
+  } catch {
+    /* en Android el navegador exige un service worker: queda el sonido */
+  }
 }
 
 const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
