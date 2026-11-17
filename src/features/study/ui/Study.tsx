@@ -6,6 +6,8 @@ import { kindOf } from '../../../shared/files/files'
 import { pdfToText } from '../../convert/core/convert'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
+import { useT } from '../../../shared/i18n/I18n'
+import { guessFeminine, personaAvatar, personasForVoices, voicesForLanguage, type VoicePersona } from '../core/voicePersonas'
 
 export function Study() {
   const [tab, setTab] = useState<'read' | 'notes' | 'pomodoro'>('read')
@@ -41,10 +43,11 @@ const splitSentences = (text: string) =>
 
 function ReadAloud() {
   const { toast } = useApp()
+  const { lang: uiLang } = useT()
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
   const [text, setText] = useState('')
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
-  const [voiceURI, setVoiceURI] = useState('')
+  const [voiceURI, setVoiceURI] = useState(readSavedVoice)
   const [rate, setRate] = useState(1)
   const [current, setCurrent] = useState(-1)
   const [state, setState] = useState<'idle' | 'playing' | 'paused'>('idle')
@@ -58,11 +61,6 @@ function ReadAloud() {
     const load = () => {
       const list = speechSynthesis.getVoices()
       setVoices(list)
-      if (list.length) {
-        // Idioma del navegador primero, como la app usa el del dispositivo.
-        const lang = navigator.language.slice(0, 2)
-        setVoiceURI((v) => v || (list.find((x) => x.lang.startsWith(lang)) ?? list[0]).voiceURI)
-      }
     }
     load()
     speechSynthesis.addEventListener('voiceschanged', load)
@@ -72,6 +70,15 @@ function ReadAloud() {
     }
   }, [supported])
 
+  const chooseVoice = (uri: string) => {
+    setVoiceURI(uri)
+    try {
+      localStorage.setItem(VOICE_KEY, uri)
+    } catch {
+      /* almacenamiento bloqueado: se elige de nuevo la próxima vez */
+    }
+  }
+
   const speakFrom = (i: number) => {
     if (i >= sentences.length || stopped.current) {
       setState('idle')
@@ -79,7 +86,7 @@ function ReadAloud() {
       return
     }
     const u = new SpeechSynthesisUtterance(sentences[i])
-    const voice = voices.find((v) => v.voiceURI === voiceURI)
+    const voice = voices.find((v) => v.voiceURI === voiceURI) ?? defaultVoice(voices, uiLang)
     if (voice) {
       u.voice = voice
       u.lang = voice.lang
@@ -155,15 +162,9 @@ function ReadAloud() {
         </div>
       )}
 
+      <VoicePicker voices={voices} value={voiceURI} onChange={chooseVoice} disabled={state !== 'idle'} />
+
       <div className="row">
-        <label className="field" style={{ flex: '2 1 220px' }}>
-          <span>{tr('study.voice')}</span>
-          <select className="select" value={voiceURI} onChange={(e) => setVoiceURI(e.target.value)} disabled={state !== 'idle'}>
-            {voices.map((v) => (
-              <option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang})</option>
-            ))}
-          </select>
-        </label>
         <label className="field" style={{ flex: '1 1 160px' }}>
           <span>{tr('study.speed', { n: rate.toFixed(1) })}</span>
           <input type="range" min={0.6} max={1.8} step={0.1} value={rate} disabled={state !== 'idle'} onChange={(e) => setRate(Number(e.target.value))} />
@@ -179,6 +180,107 @@ function ReadAloud() {
         {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('study.stop')}</button>}
         {sentences.length > 0 && <span className="faint">{tr('study.sentences', { n: sentences.length })}</span>}
       </div>
+    </div>
+  )
+}
+
+// ── Personajes de voz (W-58): los mismos de la app ───────────────────
+const VOICE_KEY = 'ds-study-voice'
+const readSavedVoice = () => {
+  try {
+    return localStorage.getItem(VOICE_KEY) ?? ''
+  } catch {
+    return ''
+  }
+}
+
+/** Voces que muestra el selector: las del idioma de la web o, si no hay, todas. */
+function shownVoices(voices: SpeechSynthesisVoice[], lang: string, all: boolean) {
+  const own = all ? [] : voicesForLanguage(voices, lang)
+  return own.length ? own : voicesForLanguage(voices, null)
+}
+const defaultVoice = (voices: SpeechSynthesisVoice[], lang: string): SpeechSynthesisVoice | undefined => shownVoices(voices, lang, false)[0]
+
+function languageName(code: string, uiLang: string) {
+  try {
+    return new Intl.DisplayNames([uiLang], { type: 'language' }).of(code) ?? code
+  } catch {
+    return code
+  }
+}
+
+function VoiceAvatar({ persona, size }: { persona: VoicePersona; size: number }) {
+  return <img className="voice-avatar" src={personaAvatar(persona)} alt="" width={size} height={size} style={{ borderColor: persona.color }} />
+}
+
+function VoicePicker({ voices, value, onChange, disabled }: { voices: SpeechSynthesisVoice[]; value: string; onChange: (uri: string) => void; disabled: boolean }) {
+  const { lang } = useT()
+  const [open, setOpen] = useState(false)
+  const [all, setAll] = useState(false)
+  const [previewing, setPreviewing] = useState('')
+  const shown = useMemo(() => shownVoices(voices, lang, all), [voices, lang, all])
+  const personas = useMemo(() => personasForVoices(shown.map((v) => ({ id: v.voiceURI, feminine: guessFeminine(v.name) }))), [shown])
+  const selected = voices.find((v) => v.voiceURI === value) ?? shown[0]
+  // La voz guardada puede no estar en la lista visible (otro idioma): su personaje se calcula aparte.
+  const selectedPersona = selected && (personas.get(selected.voiceURI) ?? personasForVoices([{ id: selected.voiceURI, feminine: guessFeminine(selected.name) }]).get(selected.voiceURI))
+
+  const detail = (v: SpeechSynthesisVoice) => `${languageName(v.lang, lang)}${v.localService ? '' : ` · ${tr('study.voiceOnline')}`}`
+
+  const preview = (v: SpeechSynthesisVoice, persona: VoicePersona) => {
+    speechSynthesis.cancel()
+    const u = new SpeechSynthesisUtterance(tr('study.voiceSample', { name: persona.name }))
+    u.voice = v
+    u.lang = v.lang
+    u.onend = () => setPreviewing('')
+    u.onerror = () => setPreviewing('')
+    setPreviewing(v.voiceURI)
+    speechSynthesis.speak(u)
+  }
+
+  if (!voices.length) return <p className="faint">{tr('study.noVoices')}</p>
+  if (!selected || !selectedPersona) return null
+
+  return (
+    <div className="voice-picker">
+      <div className="voice-current">
+        <VoiceAvatar persona={selectedPersona} size={56} />
+        <div className="voice-text">
+          <span className="faint">{tr('study.voice')}</span>
+          <b>{selectedPersona.name}</b>
+          <span className="faint">{detail(selected)}</span>
+        </div>
+        <button type="button" className="btn btn-soft btn-sm" aria-expanded={open} disabled={disabled} onClick={() => setOpen((o) => !o)}>
+          {open ? tr('study.doneChoosing') : tr('study.changeVoice')}
+        </button>
+      </div>
+      {open && !disabled && (
+        <div className="voice-list" role="radiogroup" aria-label={tr('study.chooseVoice')}>
+          {shown.map((v) => {
+            const p = personas.get(v.voiceURI)
+            if (!p) return null
+            const isSel = v.voiceURI === selected.voiceURI
+            return (
+              <div key={v.voiceURI} className={'voice-row' + (isSel ? ' is-selected' : '')}>
+                <label className="voice-choice">
+                  <input type="radio" name="study-voice" checked={isSel} onChange={() => onChange(v.voiceURI)} />
+                  <VoiceAvatar persona={p} size={40} />
+                  <span className="voice-text">
+                    <b>{p.name}</b>
+                    <span className="faint" title={v.name}>{detail(v)}</span>
+                  </span>
+                </label>
+                <button type="button" className="icon-btn" aria-label={`${tr('study.voicePreview')}: ${p.name}`} disabled={previewing === v.voiceURI} onClick={() => preview(v, p)}>
+                  <Icon name={previewing === v.voiceURI ? 'volume' : 'play'} />
+                </button>
+              </div>
+            )
+          })}
+          <label className="voice-all faint">
+            <input type="checkbox" checked={all} onChange={(e) => setAll(e.target.checked)} />
+            {tr('study.allVoices')}
+          </label>
+        </div>
+      )}
     </div>
   )
 }
