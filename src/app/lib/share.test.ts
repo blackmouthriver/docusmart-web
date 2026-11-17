@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { appShareLinks, canShareFile, docSummary, feedbackMailto, resultFile, shareFile, sizeChange } from './share'
+import { appShareLinks, canShareFile, docSummary, feedbackMailto, resultFile, shareFile, sizeChange, toolShareUrl } from './share'
 import { formatBytes } from './files'
 
 describe('resultFile', () => {
@@ -57,4 +57,10 @@ describe('recomendar DocuSmart', () => {
     expect(appShareLinks()[1].href).toContain(encodeURIComponent('https://docusmart.online'))
     expect(feedbackMailto('compress')).toMatch(/^mailto:.+\?subject=Opini%C3%B3n%20sobre%20DocuSmart%20Web%20\(compress\)$/)
   })
+})
+
+it('página pública de cada herramienta', () => {
+  expect(toolShareUrl('compress')).toBe('https://docusmart.online/comprimir-pdf')
+  expect(toolShareUrl('form')).toBe('https://docusmart.online/llenar-formulario-pdf')
+  expect(toolShareUrl('number_pages')).toBe('https://docusmart.online/app')
 })

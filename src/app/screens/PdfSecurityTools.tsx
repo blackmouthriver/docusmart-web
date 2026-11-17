@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../components/ui'
-import { baseName, download, formatBytes } from '../lib/files'
+import { baseName, formatBytes } from '../lib/files'
 import { WrongPasswordError, compressLossless, isEncrypted, protect, repair, unlock, type CompressResult } from '../lib/pdfSecurity'
 import { track } from '../../shared/analytics'
 import { BeforeAfter } from '../components/DocPreview'
@@ -169,6 +169,7 @@ export function ProtectTool() {
   const [allowCopy, setAllowCopy] = useState(true)
   const [allowModify, setAllowModify] = useState(true)
   const { busy, error, run } = useJob('protect')
+  const [output, setOutput] = useState<{ file: File; password: string } | null>(null)
   const mismatch = pw2.length > 0 && pw !== pw2
   const tooShort = pw.length > 0 && pw.length < 4
 
@@ -177,14 +178,26 @@ export function ProtectTool() {
       const bytes = new Uint8Array(await file!.arrayBuffer())
       if (await isEncrypted(bytes)) throw new Error('Este PDF ya tiene contraseña. Quítala primero con "Desbloquear PDF".')
       const out = await protect(bytes, { userPassword: pw, allowPrint, allowCopy, allowModify })
-      download(out, `${baseName(file!.name)}-protegido.pdf`, PDF)
+      setOutput({ file: resultFile(out, `${baseName(file!.name)}-protegido.pdf`, PDF), password: pw })
       setPw('')
       setPw2('')
-    })
+    }, 'Listo. Revisa el resultado y guárdalo.')
 
   return (
     <div className="card stack">
-      <PickPdf file={file} onFile={setFile} />
+      <PickPdf file={file} onFile={(f) => { setFile(f); setOutput(null) }} />
+      {file && (
+        <BeforeAfter
+          original={file}
+          result={output?.file ?? null}
+          resultPassword={output?.password}
+          toolName="protect"
+          title="Así quedó tu PDF protegido"
+          previewTitle="Vista previa de tu PDF"
+          placeholder={busy ? 'Protegiendo…' : 'Escribe la contraseña y pulsa Proteger PDF'}
+          summary={<Notice kind="success">Listo: para abrir este PDF se pedirá la contraseña. Guárdala bien.</Notice>}
+        />
+      )}
       <PasswordInput label="Contraseña para abrir el PDF" value={pw} onChange={setPw} autoComplete="new-password" />
       <PasswordInput label="Repite la contraseña" value={pw2} onChange={setPw2} autoComplete="new-password" />
       {tooShort && <small style={{ color: 'var(--danger)' }}>Usa al menos 4 caracteres.</small>}
@@ -219,12 +232,14 @@ export function UnlockTool() {
   const [encrypted, setEncrypted] = useState<boolean | null>(null)
   const [pw, setPw] = useState('')
   const { busy, error, setError, run } = useJob('unlock')
+  const [output, setOutput] = useState<{ file: File; password: string } | null>(null)
 
   const pick = async (f: File | null) => {
     setFile(f)
     setEncrypted(null)
     setError(null)
     setPw('')
+    setOutput(null)
     if (!f) return
     try {
       setEncrypted(await isEncrypted(new Uint8Array(await f.arrayBuffer())))
@@ -236,9 +251,9 @@ export function UnlockTool() {
   const go = () =>
     run(async () => {
       const out = await unlock(new Uint8Array(await file!.arrayBuffer()), pw)
-      download(out, `${baseName(file!.name)}-desbloqueado.pdf`, PDF)
+      setOutput({ file: resultFile(out, `${baseName(file!.name)}-desbloqueado.pdf`, PDF), password: pw })
       setPw('')
-    })
+    }, 'Listo. Revisa el resultado y guárdalo.')
 
   return (
     <div className="card stack">
@@ -256,6 +271,16 @@ export function UnlockTool() {
           Desbloquear PDF
         </BusyButton>
       </div>
+      {file && output && (
+        <BeforeAfter
+          original={file}
+          originalPassword={output.password || undefined}
+          result={output.file}
+          toolName="unlock"
+          title="Así quedó tu PDF desbloqueado"
+          summary={<Notice kind="success">Listo: el PDF ya abre sin contraseña y sin restricciones.</Notice>}
+        />
+      )}
     </div>
   )
 }
@@ -264,22 +289,38 @@ export function UnlockTool() {
 export function RepairTool() {
   const [file, setFile] = useState<File | null>(null)
   const [done, setDone] = useState<null | boolean>(null)
+  const [output, setOutput] = useState<File | null>(null)
   const { busy, error, run } = useJob('repair')
 
   const go = () =>
     run(async () => {
       setDone(null)
       const r = await repair(new Uint8Array(await file!.arrayBuffer()))
-      download(r.bytes, `${baseName(file!.name)}-reparado.pdf`, PDF)
+      setOutput(resultFile(r.bytes, `${baseName(file!.name)}-reparado.pdf`, PDF))
       setDone(r.hadProblems)
-    })
+    }, 'Listo. Revisa el resultado y guárdalo.')
 
   return (
     <div className="card stack">
-      <PickPdf file={file} onFile={(f) => { setFile(f); setDone(null) }} />
+      <PickPdf file={file} onFile={(f) => { setFile(f); setDone(null); setOutput(null) }} />
+      {file && (
+        <BeforeAfter
+          original={file}
+          result={output}
+          toolName="repair"
+          title="Así quedó tu PDF reparado"
+          previewTitle="Vista previa de tu PDF"
+          placeholder={busy ? 'Reparando…' : 'Pulsa Reparar PDF'}
+          summary={
+            done ? (
+              <Notice kind="success">Se encontraron y corrigieron problemas en la estructura del PDF.</Notice>
+            ) : (
+              <Notice kind="info">No se encontraron problemas; esta es una copia reescrita del PDF.</Notice>
+            )
+          }
+        />
+      )}
       {error && <Notice kind="error">{error}</Notice>}
-      {done === true && <Notice kind="success">Se encontraron y corrigieron problemas en la estructura del PDF. El archivo reparado se descargó.</Notice>}
-      {done === false && <Notice kind="info">No se encontraron problemas; igual se descargó una copia reescrita del PDF.</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!file} onClick={go} icon="wrench">
           Reparar PDF

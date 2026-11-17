@@ -2,7 +2,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useApp } from '../state'
 import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../components/ui'
-import { baseName, download } from '../lib/files'
+import { baseName } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import type { FormField, FormInfo, FormValues } from '../lib/pdfForm'
 import { track } from '../../shared/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
@@ -12,6 +14,9 @@ const inputId = (name: string) => 'campo-' + name.replace(/[^\w-]/g, '_')
 export function FormTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
+  /** Resultado listo para ver y guardar (ya no se descarga solo). */
+  const [output, setOutput] = useState<File | null>(null)
+  useEffect(() => setOutput(null), [file])
   const { pages, ready, pageNo, setPageNo, preview, error, setError } = usePdfPreview(file)
   const [info, setInfo] = useState<FormInfo | null>(null)
   const [values, setValues] = useState<FormValues>({})
@@ -66,9 +71,9 @@ export function FormTool() {
     setError(null)
     try {
       const { fillForm } = await import('../lib/pdfForm')
-      download(await fillForm(await file.arrayBuffer(), values, { flatten }), `${baseName(file.name)}-relleno.pdf`, 'application/pdf')
+      setOutput(resultFile(await fillForm(await file.arrayBuffer(), values, { flatten }), `${baseName(file.name)}-relleno.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'fill_form' })
-      toast('Listo. El archivo se descargó.')
+      toast('Listo. Revisa el resultado y guárdalo.')
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_fill_form', error_message: e instanceof Error ? e.name : 'error' })
@@ -159,11 +164,16 @@ export function FormTool() {
             {missing.length > 0 && <Notice kind="plain">Campos obligatorios sin llenar: {missing.map((f) => f.label).join(', ')}.</Notice>}
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <span className="faint">{filled} de {info.fields.length} con respuesta</span>
-              <BusyButton busy={busy} disabled={!ready} onClick={save} icon="download">
-                Guardar y descargar
+              <BusyButton busy={busy} disabled={!ready} onClick={save} icon="check">
+                Llenar formulario
               </BusyButton>
             </div>
           </div>
+        </div>
+      )}
+      {file && output && (
+        <div className="card">
+          <BeforeAfter original={file} result={output} toolName="form" title="Así quedó tu formulario" />
         </div>
       )}
     </div>

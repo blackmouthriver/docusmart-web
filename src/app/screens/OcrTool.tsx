@@ -1,9 +1,11 @@
 // OCR: reconocer el texto de imágenes y PDF escaneados (Tesseract en el navegador).
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../components/ui'
 import { baseName, download } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import type { OcrLang, OcrProgress, OcrResult } from '../lib/ocr'
 import { track } from '../../shared/analytics'
 
@@ -16,6 +18,7 @@ export function OcrTool() {
   const [result, setResult] = useState<OcrResult | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const output = useMemo(() => (result?.pdf && file ? resultFile(result.pdf, `${baseName(file.name)}-buscable.pdf`, 'application/pdf') : null), [result, file])
 
   const run = async () => {
     if (!file) return
@@ -93,6 +96,19 @@ export function OcrTool() {
         </div>
       </div>
 
+      {file && wantPdf && (
+        <div className="card">
+          <BeforeAfter
+            original={file}
+            result={output}
+            toolName="ocr"
+            title="Así quedó tu PDF con texto reconocido"
+            previewTitle="Vista previa de tu documento"
+            placeholder={busy ? 'Reconociendo el texto…' : 'Aquí verás el PDF con texto que se puede buscar y copiar'}
+          />
+        </div>
+      )}
+
       {result && result.text.trim() && (
         <div className="card stack">
           <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -104,11 +120,6 @@ export function OcrTool() {
               <button type="button" className="btn btn-soft btn-sm" onClick={() => download(new Blob([result.text], { type: 'text/plain;charset=utf-8' }), `${baseName(file!.name)}-ocr.txt`)}>
                 <Icon name="download" /> .txt
               </button>
-              {result.pdf && (
-                <button type="button" className="btn btn-primary btn-sm" onClick={() => download(result.pdf!, `${baseName(file!.name)}-buscable.pdf`, 'application/pdf')}>
-                  <Icon name="download" /> PDF buscable
-                </button>
-              )}
             </div>
           </div>
           {result.confidence < 60 && (

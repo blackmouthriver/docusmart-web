@@ -3,7 +3,9 @@ import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } fr
 import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Segmented, errorMessage } from '../components/ui'
-import { baseName, download } from '../lib/files'
+import { baseName } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import { MIN_KEEP, NO_MARGINS, cropPdf, detectContentMargins, isNoCrop, ptToMm, type Margins } from '../lib/pdfCrop'
 import { track } from '../../shared/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
@@ -16,6 +18,9 @@ const STEP = 0.01
 export function CropTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
+  /** Resultado listo para ver y guardar (ya no se descarga solo). */
+  const [output, setOutput] = useState<File | null>(null)
+  useEffect(() => setOutput(null), [file])
   const { pages, ready, pageNo, setPageNo, preview, canvas, error, setError } = usePdfPreview(file)
   const [margins, setMargins] = useState<Margins>(NO_MARGINS)
   const [scope, setScope] = useState<'all' | 'this'>('all')
@@ -39,9 +44,9 @@ export function CropTool() {
     setError(null)
     try {
       const out = await cropPdf(await file.arrayBuffer(), margins, scope === 'this' ? [pageNo - 1] : undefined)
-      download(out, `${baseName(file.name)}-recortado.pdf`, 'application/pdf')
+      setOutput(resultFile(out, `${baseName(file.name)}-recortado.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'crop' })
-      toast('Listo. El archivo se descargó.')
+      toast('Listo. Revisa el resultado y guárdalo.')
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_crop', error_message: e instanceof Error ? e.name : 'error' })
@@ -96,10 +101,15 @@ export function CropTool() {
 
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={!preview || isNoCrop(margins)} onClick={save} icon="download">
-          Recortar y descargar
+        <BusyButton busy={busy} disabled={!preview || isNoCrop(margins)} onClick={save} icon="check">
+          Recortar PDF
         </BusyButton>
       </div>
+      {file && output && (
+        <>
+          <BeforeAfter original={file} result={output} toolName="crop" title="Así quedó tu PDF recortado" />
+        </>
+      )}
     </div>
   )
 }

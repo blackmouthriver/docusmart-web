@@ -3,18 +3,47 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon } from './Icon'
 import { Notice } from './ui'
-import { download, formatBytes } from '../lib/files'
-import { PLAY_URL, SITE_URL, appShareLinks, canShareFile, docSummary, feedbackMailto, shareFile } from '../lib/share'
+import { download, formatBytes, isOwnBlobUrl, safeMimeType } from '../lib/files'
+import { PLAY_URL, SITE_URL, appShareLinks, toolShareUrl, canShareFile, docSummary, feedbackMailto, shareFile } from '../lib/share'
 import { PageNav, usePdfPreview } from '../screens/PdfPreview'
 import { useApp } from '../state'
 import { track } from '../../shared/analytics'
 
+type PreviewProps = { source: Blob; page: number; label: string; onPages?: (n: number) => void; password?: string }
+
 /**
- * Un PDF con su etiqueta, número de páginas, peso y la página `page` dibujada.
- * La página la controla quien lo usa (así dos vistas avanzan juntas).
+ * Un documento (PDF o imagen) con su etiqueta, número de páginas, peso y la página
+ * `page` dibujada. La página la controla quien lo usa (así dos vistas avanzan juntas).
  */
-export function DocPreview({ source, page, label, onPages }: { source: Blob; page: number; label: string; onPages?: (n: number) => void }) {
-  const { pages, pageNo, setPageNo, preview, error } = usePdfPreview(source, 640, page)
+export function DocPreview(props: PreviewProps) {
+  return props.source.type.startsWith('image/') ? <ImagePreview {...props} /> : <PdfPreview {...props} />
+}
+
+/** Una imagen: una sola "página". */
+function ImagePreview({ source, page, label, onPages }: PreviewProps) {
+  const [url, setUrl] = useState<string | null>(null)
+  useEffect(() => {
+    // Se re-empaqueta con un tipo de imagen y se comprueba que la URL sea del propio sitio.
+    const u = URL.createObjectURL(new Blob([source], { type: safeMimeType(source.type).startsWith('image/') ? source.type : 'image/png' }))
+    setUrl(isOwnBlobUrl(u) ? u : null)
+    onPages?.(1)
+    return () => URL.revokeObjectURL(u)
+  }, [source, onPages])
+  return (
+    <figure className="doc-preview">
+      <figcaption className="doc-preview-meta">
+        <b>{label}</b>
+        <span className="faint">{docSummary(1, source.size, formatBytes)}</span>
+      </figcaption>
+      <div className="doc-preview-stage">
+        {page > 1 ? <span className="faint">Este documento tiene 1 página.</span> : url ? <img src={url} alt={label} /> : <span className="spinner" aria-label="Cargando vista previa" />}
+      </div>
+    </figure>
+  )
+}
+
+function PdfPreview({ source, page, label, onPages, password }: PreviewProps) {
+  const { pages, pageNo, setPageNo, preview, error } = usePdfPreview(source, 640, page, password)
   useEffect(() => {
     if (pages) onPages?.(pages)
   }, [pages, onPages])
@@ -212,6 +241,8 @@ export function BeforeAfter({
   previewTitle = 'Vista previa de tu documento',
   placeholder = 'Aquí verás el resultado',
   shareUrl,
+  resultPassword,
+  originalPassword,
 }: {
   original: Blob
   result: File | null
@@ -223,6 +254,10 @@ export function BeforeAfter({
   placeholder?: string
   /** Página de la herramienta, para recomendarla. */
   shareUrl?: string
+  /** Contraseña del resultado (Proteger PDF), para poder mostrarlo. */
+  resultPassword?: string
+  /** Contraseña del original (Desbloquear PDF). */
+  originalPassword?: string
 }) {
   const [page, setPage] = useState(1)
   const [pagesBefore, setPagesBefore] = useState(0)
@@ -251,9 +286,9 @@ export function BeforeAfter({
         <PageNav pageNo={page} pages={Math.max(pagesBefore, pagesAfter)} onChange={setPage} />
       </div>
       <div className="before-after">
-        <DocPreview source={original} page={page} label="Antes" onPages={setPagesBefore} />
+        <DocPreview source={original} page={page} label="Antes" onPages={setPagesBefore} password={originalPassword} />
         {result ? (
-          <DocPreview source={result} page={page} label="Después" onPages={setPagesAfter} />
+          <DocPreview source={result} page={page} label="Después" onPages={setPagesAfter} password={resultPassword} />
         ) : (
           <figure className="doc-preview">
             <figcaption className="doc-preview-meta">
@@ -267,7 +302,7 @@ export function BeforeAfter({
       </div>
       {result && summary}
       {result && <SaveOptions file={result} toolName={toolName} />}
-      {result && <ShareApp url={shareUrl} toolName={toolName} />}
+      {result && <ShareApp url={shareUrl ?? toolShareUrl(toolName)} toolName={toolName} />}
     </section>
   )
 }

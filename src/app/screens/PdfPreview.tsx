@@ -7,7 +7,7 @@ import { closePdf, openPdf, renderPage } from '../lib/pdf'
 
 export type PagePreview = { url: string; widthPt: number; heightPt: number }
 
-export function usePdfPreview(file: Blob | null, previewWidth = 900, initialPage = 1) {
+export function usePdfPreview(file: Blob | null, previewWidth = 900, initialPage = 1, password?: string) {
   const [doc, setDoc] = useState<PDFDocumentProxy | null>(null)
   const [pageNo, setPageNo] = useState(initialPage)
   const [preview, setPreview] = useState<PagePreview | null>(null)
@@ -25,7 +25,7 @@ export function usePdfPreview(file: Blob | null, previewWidth = 900, initialPage
     let opened: PDFDocumentProxy | null = null
     void (async () => {
       try {
-        opened = await openPdf(await file.arrayBuffer())
+        opened = await openPdf(await file.arrayBuffer(), password)
         if (cancelled) await closePdf(opened)
         else {
           setPageNo((n) => Math.min(Math.max(1, n), opened!.numPages))

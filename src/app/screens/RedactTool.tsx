@@ -3,7 +3,9 @@ import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } fr
 import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../components/ui'
-import { baseName, download } from '../lib/files'
+import { baseName } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import { PRESETS, areaFromCorners, clampArea, groupByPage, phraseMatcher, redactPdf, type Area, type Matcher } from '../lib/pdfRedact'
 import { track } from '../../shared/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
@@ -13,6 +15,9 @@ const MIN_SIZE = 0.006
 export function RedactTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
+  /** Resultado listo para ver y guardar (ya no se descarga solo). */
+  const [output, setOutput] = useState<File | null>(null)
+  useEffect(() => setOutput(null), [file])
   const { doc, pages, ready, pageNo, setPageNo, preview, error, setError } = usePdfPreview(file)
   const [areas, setAreas] = useState<Area[]>([])
   const [selected, setSelected] = useState<number | null>(null)
@@ -61,9 +66,9 @@ export function RedactTool() {
         setStatus(`Censurando página ${++done} de ${total}…`)
         return raster(i, a)
       })
-      download(out, `${baseName(file.name)}-censurado.pdf`, 'application/pdf')
+      setOutput(resultFile(out, `${baseName(file.name)}-censurado.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'redact' })
-      toast('Listo. El archivo se descargó.')
+      toast('Listo. Revisa el resultado y guárdalo.')
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_redact', error_message: e instanceof Error ? e.name : 'error' })
@@ -159,11 +164,16 @@ export function RedactTool() {
         {status && <small className="faint">{status}</small>}
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
-          <BusyButton busy={busy} disabled={!ready || !areas.length} onClick={save} icon="download">
-            Censurar y descargar
+          <BusyButton busy={busy} disabled={!ready || !areas.length} onClick={save} icon="check">
+            Censurar PDF
           </BusyButton>
         </div>
       </div>
+      {file && output && (
+        <div className="card">
+          <BeforeAfter original={file} result={output} toolName="redact" title="Así quedó tu PDF censurado" />
+        </div>
+      )}
     </div>
   )
 }

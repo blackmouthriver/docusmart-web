@@ -4,7 +4,9 @@ import '@fontsource-variable/dancing-script'
 import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Segmented, errorMessage } from '../components/ui'
-import { baseName, download } from '../lib/files'
+import { baseName } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import { canvasToBlob } from '../lib/pdf'
 import { clampPlacement, defaultPlacement, opaqueBounds, removeLightBackground, signPdf, type Placement } from '../lib/pdfSign'
 import { track } from '../../shared/analytics'
@@ -20,6 +22,9 @@ const SCRIPT_FONT = '"Dancing Script Variable", cursive'
 export function SignTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
+  /** Resultado listo para ver y guardar (ya no se descarga solo). */
+  const [output, setOutput] = useState<File | null>(null)
+  useEffect(() => setOutput(null), [file])
   const { pages, ready, pageNo, setPageNo, preview, error, setError } = usePdfPreview(file)
   const [signature, setSignature] = useState<Signature | null>(null)
   const [editing, setEditing] = useState(true)
@@ -63,9 +68,9 @@ export function SignTool() {
     setBusy(true)
     setError(null)
     try {
-      download(await signPdf(await file.arrayBuffer(), signature.png, placements), `${baseName(file.name)}-firmado.pdf`, 'application/pdf')
+      setOutput(resultFile(await signPdf(await file.arrayBuffer(), signature.png, placements), `${baseName(file.name)}-firmado.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'sign' })
-      toast('Listo. El archivo se descargó.')
+      toast('Listo. Revisa el resultado y guárdalo.')
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_sign', error_message: e instanceof Error ? e.name : 'error' })
@@ -149,13 +154,18 @@ export function SignTool() {
           {error && <Notice kind="error">{error}</Notice>}
           <Notice kind="plain">Es una firma visual, como firmar a mano sobre el papel. No es una firma digital con certificado.</Notice>
           <div className="row row-end">
-            <BusyButton busy={busy} disabled={!ready || !placements.length} onClick={save} icon="download">
-              Firmar y descargar
+            <BusyButton busy={busy} disabled={!ready || !placements.length} onClick={save} icon="check">
+              Firmar PDF
             </BusyButton>
           </div>
         </div>
       )}
       {error && (editing || !signature) && <Notice kind="error">{error}</Notice>}
+      {file && output && (
+        <div className="card">
+          <BeforeAfter original={file} result={output} toolName="sign" title="Así quedó tu PDF firmado" />
+        </div>
+      )}
     </div>
   )
 }

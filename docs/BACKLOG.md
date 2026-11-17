@@ -98,12 +98,14 @@ Sin pendientes: todas las herramientas de la app y de iLovePDF que se pueden hac
 
 ## Vista previa del documento y más formas de guardar (2026-11-17)
 
+Tus pendientes (cuentas, consolas y decisiones) están reunidos en [`PENDIENTES.md`](PENDIENTES.md).
+
 Objetivo: en todas las herramientas, (1) al subir el archivo se ve el documento con su número de páginas y su peso; (2) al usar la herramienta se ve el **resultado** antes de guardarlo (con la opción de alternar con el original); (3) además de descargar, hay más formas de guardar o enviar. Primero un piloto; con el visto bueno se extiende al resto.
 
 | ID | Ítem | Quién | Estado / qué hace falta |
 |---|---|---|---|
-| W-40 | **Piloto en Comprimir PDF**: **antes y después lado a lado** con título propio de la herramienta ("Así quedó tu PDF comprimido"), un solo control de páginas para las dos vistas y comparación de peso; guardar con **Descargar**, **Compartir** (hoja del sistema), **Google Drive** y **Dropbox**; al final, sección para **recomendar DocuSmart** (WhatsApp, Facebook, X, LinkedIn, copiar enlace, calificar en Google Play, enviar opinión). Ya no se descarga solo | 🤖 | En revisión (PR #34) |
-| W-41 | Extender a las herramientas PDF de **un archivo → un PDF**: rotar, reordenar, numerar, marca de agua, proteger, desbloquear, reparar, OCR, recortar, firmar, censurar, editar, formulario, PDF/A | 🤖 | Tras el visto bueno de W-40 |
+| W-40 | **Piloto en Comprimir PDF**: **antes y después lado a lado** con título propio de la herramienta ("Así quedó tu PDF comprimido"), un solo control de páginas para las dos vistas y comparación de peso; guardar con **Descargar**, **Compartir** (hoja del sistema), **Google Drive** y **Dropbox**; al final, sección para **recomendar DocuSmart** (WhatsApp, Facebook, X, LinkedIn, copiar enlace, calificar en Google Play, enviar opinión). Ya no se descarga solo | 🤖 | Hecho (PR #34, 2026-11-17) |
+| W-41 | Extender a las herramientas PDF de **un archivo → un PDF**: dividir (extraer páginas), rotar, reordenar, numerar, marca de agua, proteger (el resultado se muestra con la contraseña), desbloquear, reparar, OCR (también con fotos), recortar, firmar, censurar, editar, formulario y PDF/A | 🤖 | En revisión (PR) |
 | W-42 | Herramientas con **varios archivos** de entrada o salida: Unir (vista de cada PDF y del resultado), Dividir y Extraer imágenes (lista de archivos con miniaturas antes del ZIP), Comparar | 🤖 | Tras W-41 |
 | W-43 | **Convertidor**: vista previa de la entrada para PDF, imágenes, Word (se diagrama a PDF para mostrar páginas) y Excel (hojas y filas); vista del resultado: páginas en imagen, PDF generado, contenido del Word/Excel/texto | 🤖 | Tras W-41 |
 | W-44 | **Imagen, escáner, archivos y QR**: antes/después de la imagen, páginas del escaneo, contenido del ZIP/7Z, QR generado | 🤖 | Tras W-41 |
