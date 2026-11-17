@@ -82,7 +82,7 @@ Todo corre en el navegador, sin servidor, para mantener la promesa de privacidad
 
 ### Siguientes
 
-W-38 (PDF/A) requiere evaluar viabilidad.
+Con W-38 queda cubierta la paridad con la app e iLovePDF en herramientas de PDF.
 
 **Hecho:** **PDF a Word** (página `/pdf-a-word`, en el Convertidor): reconstruye párrafos, títulos por tamaño, negrita y cursiva (nombre real de la fuente vía `fontExtraProperties` de pdf.js), listas, tablas por columnas alineadas, imágenes en su lugar, centrado y saltos de página; escribe el .docx a mano con fflate. Probado con un PDF exportado por Word y reabierto en Word: estructura, fuente, tamaños y tabla iguales. No reproduce colores del texto ni bordes decorativos. 
 
@@ -90,11 +90,11 @@ W-38 (PDF/A) requiere evaluar viabilidad.
 
 **Hecho:** W-23 **Word y Excel a PDF** (páginas `/word-a-pdf` y `/excel-a-pdf`, en el Convertidor): Word con mammoth (se usa su árbol de documento, no su HTML, por la CSP) y Excel con read-excel-file; diagramador propio con pdf-lib: títulos, negrita/cursiva/subrayado, listas numeradas y con viñetas, tablas con encabezado repetido en cada página, imágenes PNG/JPEG, saltos de página; Excel: una tabla por hoja, números con formato colombiano a la derecha, página horizontal con más de 6 columnas. Usa fuentes estándar de PDF (Helvetica), así que el diseño exacto puede variar. Rechaza .doc/.xls con un mensaje claro. PowerPoint a PDF sigue solo en la app (no hay forma viable de reproducir el diseño en el navegador).
 
+**Hecho:** W-38 **PDF a PDF/A** (página `/pdf-a-pdfa`, en Herramientas PDF): crea PDF/A-2b con pdf-lib, validado con veraPDF (PDF de Word, Excel y Edge, formularios, escaneos y PDF con fuentes estándar). Perfil sRGB escrito a mano, XMP coherente con Info, sin JavaScript/adjuntos/acciones prohibidas, anotaciones imprimibles, campos sin apariencia regenerados; las 14 fuentes estándar se incrustan con las libres de pdf.js (anchos leídos de las propias fuentes con `scripts/std-font-widths.mjs` → `pdfaFonts.json`); las páginas con CMYK o fuentes no incluidas que no son estándar pasan a imagen (avisando).
+
 ### Después (paridad con la app e iLovePDF)
 
-| ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
-|---|---|---|---|---|
-| W-38 | **PDF a PDF/A** (archivo a largo plazo) | — | ✅ | Requiere incrustar fuentes y perfiles de color; evaluar viabilidad |
+Sin pendientes: todas las herramientas de la app y de iLovePDF que se pueden hacer en el navegador ya están (PowerPoint a PDF sigue solo en la app).
 
 ## Mantenimiento y limpieza
 

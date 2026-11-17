@@ -2,7 +2,7 @@
 // scripts/generate-tool-pages.mjs genera un HTML por entrada (/<slug>) y
 // vite.config.ts las agrega al build. Para sumar una herramienta, agrégala aquí.
 //
-// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario'|'escanear' }
+// tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario'|'escanear'|'pdfa' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt'|'pdf-word'|'pdf-excel'|'word-pdf'|'excel-pdf' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
@@ -327,6 +327,27 @@ export const pages = [
       ['¿Qué tipo de daños puede reparar?', 'Sobre todo problemas de estructura: la tabla interna de referencias perdida o corrida, o el final del archivo dañado. Si faltan partes del contenido (por ejemplo, una descarga que se cortó a la mitad), puede que no se recupere.'],
       ['¿Funciona con PDF con contraseña?', 'Primero quítale la contraseña con "Desbloquear PDF" y luego repáralo.'],
       ['¿Se sube el archivo?', 'No. La reparación ocurre en tu navegador.'],
+    ],
+  },
+  {
+    slug: 'pdf-a-pdfa',
+    tool: { kind: 'pdf', id: 'pdfa' },
+    title: 'Convertir PDF a PDF/A gratis (PDF/A-2b) | DocuSmart',
+    description:
+      'Convierte un PDF al formato de archivo PDF/A-2b que piden entidades públicas, juzgados y universidades: fuentes y colores incluidos. Gratis, sin registro y sin subir el archivo.',
+    h1: 'PDF a PDF/A',
+    lead: 'Pasa tus documentos al formato estándar de archivo para que se vean igual dentro de muchos años, sin depender de fuentes ni programas externos.',
+    short: 'Formato de archivo a largo plazo',
+    steps: [
+      'Elige el PDF.',
+      'Pulsa "Convertir a PDF/A".',
+      'Se descarga el PDF/A-2b y te contamos qué se ajustó para cumplir la norma.',
+    ],
+    faq: [
+      ['¿Qué es PDF/A?', 'Es la versión de PDF pensada para archivar (norma ISO 19005): el archivo lleva dentro sus fuentes, su perfil de color y sus metadatos, y no puede depender de nada externo. Lo piden muchos trámites con entidades públicas, juzgados y universidades.'],
+      ['¿Qué nivel de PDF/A crea?', 'PDF/A-2b, el nivel más usado: garantiza que el documento se vea igual en el futuro. Lo validamos con veraPDF, el validador de referencia de la PDF Association.'],
+      ['¿Cambia algo de mi documento?', 'Se incluyen las fuentes que faltaban y se quitan cosas que la norma no permite, como scripts, adjuntos o sonidos. Si una página usa colores de imprenta (CMYK) o fuentes que no vienen en el archivo, esa página se guarda como imagen.'],
+      ['¿Se sube el archivo?', 'No. La conversión ocurre en tu navegador.'],
     ],
   },
   {
