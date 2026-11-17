@@ -1,10 +1,12 @@
 // Compresor y extractor de archivos (7-Zip en wasm): crear ZIP/7Z y abrir ZIP, RAR, 7Z, TAR y GZ.
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { zipSync } from 'fflate'
 import { go, useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, HeroCard, Notice, Segmented } from '../components/ui'
 import { baseName, download, formatBytes } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import {
   EXTRACT_ACCEPT,
   WrongArchivePasswordError,
@@ -22,6 +24,13 @@ import { track } from '../../shared/analytics'
 
 // Por encima de esto el navegador puede quedarse sin memoria (todo se procesa en RAM).
 const BIG = 700 * 1024 * 1024
+
+/** Tipo por extensión, para que la vista previa reconozca PDF, imágenes y textos. */
+function mimeFor(path: string): string {
+  const e = path.toLowerCase().split('.').pop() ?? ''
+  const map: Record<string, string> = { pdf: 'application/pdf', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif', bmp: 'image/bmp', txt: 'text/plain', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', zip: 'application/zip' }
+  return map[e] ?? 'application/octet-stream'
+}
 
 function friendly(e: unknown): string {
   if (e instanceof WrongArchivePasswordError) return 'La contraseña no es correcta.'
@@ -66,6 +75,12 @@ export function CreateArchiveTool() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState<{ before: number; after: number } | null>(null)
+  const [output, setOutput] = useState<File | null>(null)
+  const inputFiles = useMemo(() => items.map((i) => i.file), [items])
+  useEffect(() => {
+    setOutput(null)
+    setDone(null)
+  }, [items, format, level, usePw])
   const folderInput = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -91,10 +106,10 @@ export function CreateArchiveTool() {
     try {
       const inputs: ArchiveInput[] = await Promise.all(items.map(async (i) => ({ path: i.path, data: new Uint8Array(await i.file.arrayBuffer()) })))
       const out = await createArchive(inputs, { format, level, password: usePw ? pw : undefined })
-      download(out, `${(name.trim() || 'archivos').replace(/\.(zip|7z)$/i, '')}.${format}`, format === 'zip' ? 'application/zip' : 'application/octet-stream')
+      setOutput(resultFile(out, `${(name.trim() || 'archivos').replace(/\.(zip|7z)$/i, '')}.${format}`, format === 'zip' ? 'application/zip' : 'application/octet-stream'))
       setDone({ before: total, after: out.length })
       track('archive_created', { format, level, files: items.length, encrypted: usePw })
-      toast('Listo. El archivo comprimido se descargó.')
+      toast('Listo. Revisa el resultado y guárdalo.')
     } catch (e) {
       setError(friendly(e))
       track('app_error', { error_context: 'archive_create', error_message: e instanceof Error ? e.name : 'error' })
@@ -186,17 +201,30 @@ export function CreateArchiveTool() {
       )}
 
       {error && <Notice kind="error">{error}</Notice>}
-      {done && (
-        <Notice kind="success">
-          {formatBytes(done.before)} → <b>{formatBytes(done.after)}</b>
-          {done.after < done.before ? ` (${Math.round((1 - done.after / done.before) * 100)}% menos)` : ' (estos archivos ya venían comprimidos)'}. El archivo se descargó.
-        </Notice>
-      )}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={items.length === 0 || !pwOk} onClick={create} icon="archive">
           {`Crear ${format.toUpperCase()}`}
         </BusyButton>
       </div>
+      {items.length > 0 && (
+        <BeforeAfter
+          originals={inputFiles}
+          result={output}
+          labels={['Tus archivos', format.toUpperCase()]}
+          toolName="archive_create"
+          title={`Así quedó tu ${format.toUpperCase()}`}
+          previewTitle="Los archivos que vas a comprimir"
+          placeholder={busy ? 'Comprimiendo…' : `Pulsa Crear ${format.toUpperCase()}`}
+          summary={
+            done && (
+              <Notice kind="success">
+                {formatBytes(done.before)} → <b>{formatBytes(done.after)}</b>
+                {done.after < done.before ? ` (${Math.round((1 - done.after / done.before) * 100)}% menos)` : ' (estos archivos ya venían comprimidos)'}.
+              </Notice>
+            )
+          }
+        />
+      )}
     </div>
   )
 }
@@ -209,6 +237,9 @@ export function ExtractArchiveTool() {
   const [needsPw, setNeedsPw] = useState(false)
   const [pw, setPw] = useState('')
   const [extracted, setExtracted] = useState<ArchiveInput[] | null>(null)
+  /** Lo extraído como archivos y el ZIP para guardarlo todo junto. */
+  const extractedFiles = useMemo(() => (extracted ?? []).map((f) => resultFile(f.data, f.path.split('/').pop() || 'archivo', mimeFor(f.path))), [extracted])
+  const [bundle, setBundle] = useState<File | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -259,11 +290,15 @@ export function ExtractArchiveTool() {
     }
   }
 
-  const downloadAll = () => {
-    if (!extracted || !file) return
+  // Todo lo extraído en un ZIP (con sus carpetas) para guardarlo de una vez.
+  useEffect(() => {
+    if (!extracted || !file) {
+      setBundle(null)
+      return
+    }
     const zip = zipSync(Object.fromEntries(extracted.map((f) => [f.path, f.data])), { level: 0 })
-    download(zip, `${baseName(file.name).replace(/\.tar$/i, '')}-extraido.zip`, 'application/zip')
-  }
+    setBundle(extracted.length === 1 ? extractedFiles[0] : resultFile(zip, `${baseName(file.name).replace(/\.tar$/i, '')}-extraido.zip`, 'application/zip'))
+  }, [extracted, extractedFiles, file])
 
   const files = entries?.filter((e) => !e.isDir) ?? []
 
@@ -338,16 +373,24 @@ export function ExtractArchiveTool() {
       {file && ext(file) === 'rar' && !error && <small className="faint">Los RAR se pueden abrir aquí; para crear uno nuevo usa ZIP o 7Z (el formato RAR es propietario).</small>}
 
       <div className="row row-end">
-        {extracted ? (
-          <button type="button" className="btn btn-primary" onClick={downloadAll}>
-            <Icon name="download" /> Descargar todo (ZIP)
-          </button>
-        ) : (
+        {!extracted && (
           <BusyButton busy={busy} disabled={!file || (needsPw && !pw)} onClick={extract} icon="archive">
             Extraer archivos
           </BusyButton>
         )}
       </div>
+      {file && extracted && extractedFiles.length > 0 && (
+        <BeforeAfter
+          original={file}
+          result={null}
+          results={extractedFiles}
+          saveAs={bundle}
+          labels={['Comprimido', 'Extraído']}
+          toolName="archive_extract"
+          title="Esto es lo que había dentro"
+          summary={extractedFiles.length > 1 ? <Notice kind="success">{extractedFiles.length} archivos. Se guardan todos juntos en un ZIP, con sus carpetas; también puedes descargarlos uno por uno arriba.</Notice> : undefined}
+        />
+      )}
     </div>
   )
 }

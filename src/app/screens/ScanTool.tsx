@@ -1,9 +1,10 @@
 // Escáner: fotos de documentos → páginas derechas y limpias → PDF (opcionalmente buscable) o JPG.
-import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, Notice, Progress, Segmented, errorMessage } from '../components/ui'
-import { download, downloadMany } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { bundleFiles, resultFile } from '../lib/share'
 import type { Quad, ScanFilter } from '../lib/scan'
 import type { Photo } from '../lib/scanCanvas'
 import { track } from '../../shared/analytics'
@@ -110,6 +111,10 @@ export function ScanTool() {
     })
 
   const ready = pages.filter((p) => p.result)
+  /** Las páginas escaneadas como imágenes (el "antes" del PDF). */
+  const scans = useMemo(() => ready.map((p, i) => resultFile(p.result!.blob, `escaneo-${today()}-${i + 1}.jpg`, 'image/jpeg')), [pages])
+  const [output, setOutput] = useState<{ result: File | null; results?: File[]; saveAs?: File | null } | null>(null)
+  useEffect(() => setOutput(null), [pages])
   const pending = pages.length - ready.length
 
   const savePdf = async () => {
@@ -130,9 +135,9 @@ export function ScanTool() {
         const { scansToPdf } = await import('../lib/scan')
         pdf = await scansToPdf(items)
       }
-      download(pdf, `escaneo-${today()}.pdf`, 'application/pdf')
+      setOutput({ result: resultFile(pdf, `escaneo-${today()}.pdf`, 'application/pdf') })
       track('scan_saved', { pages: ready.length, format: 'pdf', searchable })
-      toast('Listo. El PDF se descargó.')
+      toast('Listo. Revisa el resultado y guárdalo.')
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'scan', error_message: e instanceof Error ? e.name : 'error' })
@@ -143,10 +148,9 @@ export function ScanTool() {
   }
 
   const saveJpgs = async () => {
-    await downloadMany(
-      ready.map((p, i) => ({ name: `escaneo-${today()}-${i + 1}.jpg`, data: p.result!.blob })),
-      `escaneo-${today()}.zip`,
-    )
+    const images = scans
+    setOutput(images.length === 1 ? { result: images[0] } : { result: null, results: images, saveAs: await bundleFiles(images, `escaneo-${today()}.zip`) })
+    toast('Listo. Revisa el resultado y guárdalo.')
     track('scan_saved', { pages: ready.length, format: 'jpg', searchable: false })
   }
 
@@ -252,10 +256,22 @@ export function ScanTool() {
             <button type="button" className="btn btn-soft" disabled={!ready.length || busy} onClick={() => void saveJpgs()}>
               <Icon name="image" /> {ready.length > 1 ? 'Imágenes (ZIP)' : 'Imagen JPG'}
             </button>
-            <BusyButton busy={busy && !current} disabled={!ready.length || busy} onClick={savePdf} icon="download">
-              Guardar PDF{ready.length > 1 ? ` (${ready.length} páginas)` : ''}
+            <BusyButton busy={busy && !current} disabled={!ready.length || busy} onClick={savePdf} icon="pdf">
+              Crear PDF{ready.length > 1 ? ` (${ready.length} páginas)` : ''}
             </BusyButton>
           </div>
+          {output && scans.length > 0 && (
+            <BeforeAfter
+              original={scans.length === 1 ? scans[0] : undefined}
+              originals={scans.length > 1 ? scans : undefined}
+              result={output.result}
+              results={output.results}
+              saveAs={output.saveAs}
+              labels={['Escaneos', output.result?.type === 'application/pdf' ? 'PDF' : 'Imágenes']}
+              toolName="scan"
+              title={output.result?.type === 'application/pdf' ? 'Así quedó tu PDF escaneado' : 'Así quedaron tus escaneos'}
+            />
+          )}
         </div>
       )}
       {!pages.length && error && <Notice kind="error">{error}</Notice>}

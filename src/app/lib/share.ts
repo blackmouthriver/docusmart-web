@@ -95,6 +95,14 @@ const TOOL_PAGES: Record<string, string> = {
   'pdf-excel': 'pdf-a-excel',
   'word-pdf': 'word-a-pdf',
   'excel-pdf': 'excel-a-pdf',
+  compress_image: 'comprimir-imagen',
+  resize_image: 'redimensionar-imagen',
+  rotate_image: 'rotar-imagen',
+  crop_image: 'recortar-imagen',
+  scan: 'escanear-documento',
+  archive_create: 'comprimir-archivos',
+  archive_extract: 'descomprimir-archivos',
+  qr: 'crear-codigo-qr',
 }
 export const toolShareUrl = (tool: string) => `${SITE_URL}/${TOOL_PAGES[tool] ?? 'app'}`
 
