@@ -133,6 +133,31 @@ Objetivo: la web en los **12 idiomas de la app** (español, inglés, portugués,
 | W-56 | Textos que van **dentro de los archivos** generados (numeración "Página N", informes) en el idioma elegido | 🤖 | Hecho (PR #47, 2026-11-17) |
 | W-57 | Los enlaces de **compartir/recomendar** (`toolShareUrl`) apuntan a la página en español; que lleven a la del idioma del usuario (`/en/merge-pdf`…) | 🤖 | Hecho (PR #49) |
 
+## Modo Estudio, como en la app y mejor para la web (2026-11-17)
+
+Referencia: Modo Estudio de la app (`docsmart/app/.../features/study`), solo de consulta. Hoy la web tiene un
+lector de oraciones con lista de voces técnicas, notas de texto y Pomodoro. La app tiene **10 personajes de voz
+ilustrados** (Sofía, Mateo, Valentina, Diego, Camila, Sebastián, Isabella, Emilio, Lucía, Nicolás), lectura
+por párrafos con progreso y retomar, resaltados, resumen local, notas completas, estadísticas y agenda.
+Todo sigue siendo local: nada de IA ni voces en la nube.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-58 | **Personajes de voz**: los 10 personajes de la app (mismo nombre, ilustración y color de anillo) en vez de nombres técnicos. Selector visual con avatar, idioma y botón "Escuchar muestra" ("Hola, soy Sofía…"); voz elegida guardada. Un personaje distinto por voz y del mismo género: tabla de voces conocidas de navegador (Microsoft Sabina/Helena/Raúl/Pablo…, Google, Apple) y asignación estable sin repetir; voces de género desconocido toman cualquier personaje libre. Lógica pura en `features/study/core` con pruebas; imágenes en `public/img/voices/` | 🤖 | Pendiente |
+| W-59 | **Menú del Modo Estudio** con tarjetas (Lectura, Notas, Pomodoro, Resumen) como en la app, en vez de pestañas; el estado del Pomodoro no se pierde al cambiar de sección | 🤖 | Pendiente |
+| W-60 | **Lector por párrafos**: barra de reproducción con anterior/siguiente párrafo, tocar un párrafo para leer desde ahí, velocidad cambiable durante la lectura, barra de "% escuchado", desplazamiento automático y aviso "Terminaste de leer" con "Volver a leer". Párrafos cortos para evitar el corte de Chrome en textos largos | 🤖 | Pendiente |
+| W-61 | **Abrir más documentos para leer**: Word (`.docx`) además de PDF y TXT; PDF escaneado → ofrecer OCR (ya existe en la web) en vez de "sin texto"; arrastrar y soltar | 🤖 | Pendiente |
+| W-62 | **Retomar lectura**: lista de documentos recientes con su progreso ("Página 3 de 12 · Continuar leyendo"), guardada solo en el navegador; quitar de la lista | 🤖 | Pendiente |
+| W-63 | **Resaltar párrafos** mientras se escucha ("Marcar párrafo actual") y pasarlos a Notas | 🤖 | Pendiente |
+| W-64 | **Resumen local** (extractivo, port de `TextSummarizer` de la app): elige las oraciones más relevantes, sin IA en la nube; copiar, descargar o leer en voz alta. Mejora web: palabras vacías en los 12 idiomas | 🤖 | Pendiente |
+| W-65 | **Notas completas**: título, editar, exportar todas o una (TXT y PDF) e imágenes adjuntas (guardadas en IndexedDB). Dictado por voz **descartado**: en Chrome el reconocimiento envía el audio a Google y rompe la promesa de privacidad | 🤖 | Pendiente |
+| W-66 | **Estadísticas de estudio**: tiempo total escuchado, pomodoros de la semana con barras por día y total | 🤖 | Pendiente |
+| W-67 | **Mejoras propias de la web**: atajos de teclado (espacio = leer/pausar, flechas = párrafo), controles desde auriculares y pantalla bloqueada (Media Session), pantalla encendida mientras se lee (Wake Lock) y aviso del navegador al terminar un Pomodoro (Notification, con permiso) | 🤖 | Pendiente |
+| W-68 | **Agenda y recordatorios** (en la app: agenda/calendario y "recordarme repasar"). En la web solo avisaría con la pestaña abierta; evaluar después de W-58..W-67 | 👤 decidir | Pendiente |
+
+Orden sugerido: W-58 → W-60 → W-59 → W-62/W-63 → W-64 → W-61 → W-65 → W-66 → W-67. Cada ítem en su PR, en los 12
+idiomas, con revisión de punta a punta en el navegador.
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |
