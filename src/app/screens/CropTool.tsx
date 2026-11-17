@@ -6,6 +6,7 @@ import { BusyButton, DropZone, FileRow, Notice, Segmented, errorMessage } from '
 import { baseName } from '../lib/files'
 import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
 import { MIN_KEEP, NO_MARGINS, cropPdf, detectContentMargins, isNoCrop, ptToMm, type Margins } from '../lib/pdfCrop'
 import { track } from '../../shared/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
@@ -34,7 +35,7 @@ export function CropTool() {
     const ctx = c?.getContext('2d', { willReadFrequently: true })
     if (!c || !ctx) return
     const found = detectContentMargins(ctx.getImageData(0, 0, c.width, c.height))
-    if (isNoCrop(found)) toast('No se encontraron márgenes en blanco en esta página.')
+    if (isNoCrop(found)) toast(tr('crop.noMargins'))
     setMargins(found)
   }
 
@@ -46,7 +47,7 @@ export function CropTool() {
       const out = await cropPdf(await file.arrayBuffer(), margins, scope === 'this' ? [pageNo - 1] : undefined)
       setOutput(resultFile(out, `${baseName(file.name)}-recortado.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'crop' })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_crop', error_message: e instanceof Error ? e.name : 'error' })
@@ -58,7 +59,7 @@ export function CropTool() {
   if (!file) {
     return (
       <div className="card">
-        <DropZone accept="application/pdf" title="Toca para seleccionar un PDF" hint="O arrástralo aquí" onFiles={([f]) => setFile(f)} />
+        <DropZone accept="application/pdf" title={tr('common.pickPdf')} hint={tr('common.dragHere')} onFiles={([f]) => setFile(f)} />
       </div>
     )
   }
@@ -71,43 +72,43 @@ export function CropTool() {
       <ul className="file-list" style={{ marginTop: 0 }}>
         <FileRow
           file={file}
-          extra={pages ? `${pages} ${pages === 1 ? 'página' : 'páginas'}` : 'Leyendo…'}
-          actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>Cambiar</button>}
+          extra={pages ? pages === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pages }) : tr('common.reading')}
+          actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>{tr('common.change')}</button>}
         />
       </ul>
 
       {preview ? (
         <>
-          <p className="faint" style={{ margin: 0 }}>Arrastra los bordes o las esquinas del recuadro. Lo oscurecido se recorta.</p>
+          <p className="faint" style={{ margin: 0 }}>{tr('crop.help')}</p>
           <CropStage url={preview.url} margins={margins} onChange={setMargins} />
           <div className="row" style={{ justifyContent: 'space-between' }}>
             <PageNav pageNo={pageNo} pages={pages} onChange={setPageNo} />
-            <span className="faint">Queda: {keptW} × {keptH} mm</span>
+            <span className="faint">{tr('crop.kept', { w: keptW, h: keptH })}</span>
           </div>
           <div className="row">
-            <button type="button" className="btn btn-soft btn-sm" onClick={detect}><Icon name="compress" /> Quitar márgenes en blanco</button>
-            <button type="button" className="btn btn-ghost btn-sm" disabled={isNoCrop(margins)} onClick={() => setMargins(NO_MARGINS)}><Icon name="reset" /> Restablecer</button>
+            <button type="button" className="btn btn-soft btn-sm" onClick={detect}><Icon name="compress" /> {tr('crop.trim')}</button>
+            <button type="button" className="btn btn-ghost btn-sm" disabled={isNoCrop(margins)} onClick={() => setMargins(NO_MARGINS)}><Icon name="reset" /> {tr('crop.reset')}</button>
           </div>
           {pages > 1 && (
             <div className="field">
-              <span>Aplicar a</span>
-              <Segmented label="Páginas a recortar" value={scope} onChange={setScope} options={[{ value: 'all', label: 'Todas las páginas' }, { value: 'this', label: `Solo la página ${pageNo}` }]} />
+              <span>{tr('crop.applyTo')}</span>
+              <Segmented label={tr('crop.scope')} value={scope} onChange={setScope} options={[{ value: 'all', label: tr('crop.allPages') }, { value: 'this', label: tr('crop.onlyPage', { n: pageNo }) }]} />
             </div>
           )}
         </>
       ) : (
-        !error && <p className="faint">Preparando la vista previa…</p>
+        !error && <p className="faint">{tr('common.preparingPreview')}</p>
       )}
 
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!preview || isNoCrop(margins)} onClick={save} icon="check">
-          Recortar PDF
+          {tr('crop.go')}
         </BusyButton>
       </div>
       {file && output && (
         <>
-          <BeforeAfter original={file} result={output} toolName="crop" title="Así quedó tu PDF recortado" />
+          <BeforeAfter original={file} result={output} toolName="crop" title={tr('crop.title')} />
         </>
       )}
     </div>
@@ -154,12 +155,12 @@ export function CropStage({ url, margins, onChange }: { url: string; margins: Ma
     right: `${margins.right * 100}%`,
     bottom: `${margins.bottom * 100}%`,
   }
-  const edgeLabel: Record<Edge, string> = { top: 'Borde superior', right: 'Borde derecho', bottom: 'Borde inferior', left: 'Borde izquierdo' }
+  const edgeLabel: Record<Edge, string> = { top: tr('crop.top'), right: tr('crop.right'), bottom: tr('crop.bottom'), left: tr('crop.left') }
 
   return (
     <div className="crop-frame">
       <div className="crop-stage" ref={stage}>
-        <img src={url} alt="Vista previa de la página" draggable={false} />
+        <img src={url} alt={tr('crop.previewAlt')} draggable={false} />
         <div className="crop-rect" style={rect} onPointerDown={begin('move')} onPointerMove={move} onPointerUp={end} onPointerCancel={end}>
           {(['top', 'right', 'bottom', 'left'] as const).map((edge) => (
             <span

@@ -5,6 +5,7 @@ import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../componen
 import { baseName, download, formatBytes } from '../lib/files'
 import { BeforeAfter } from '../components/DocPreview'
 import { bundleFiles, resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
 import type { ExtractResult } from '../lib/pdfImages'
 import { track } from '../../shared/analytics'
 
@@ -48,7 +49,7 @@ export function ExtractImagesTool() {
       setSelected(new Set(list.map((_, i) => i)))
       track('pdf_tool_used', { tool_name: 'extract_images' })
     } catch (e) {
-      setError(/encrypt|password/i.test(String(e)) ? 'Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".' : errorMessage(e))
+      setError(/encrypt|password/i.test(String(e)) ? tr('err.lockedPdf') : errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_extract_images', error_message: e instanceof Error ? e.name : 'error' })
     } finally {
       setBusy(false)
@@ -83,30 +84,30 @@ export function ExtractImagesTool() {
       <div className="card stack">
         {file ? (
           <ul className="file-list" style={{ marginTop: 0 }}>
-            <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => reset(null)}>Cambiar</button>} />
+            <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => reset(null)}>{tr('common.change')}</button>} />
           </ul>
         ) : (
-          <DropZone accept="application/pdf" title="Toca para seleccionar un PDF" hint="O arrástralo aquí" onFiles={([f]) => reset(f)} />
+          <DropZone accept="application/pdf" title={tr('common.pickPdf')} hint={tr('common.dragHere')} onFiles={([f]) => reset(f)} />
         )}
         <label className="check">
           <input type="checkbox" checked={skipSmall} onChange={(e) => { setSkipSmall(e.target.checked); setItems(null) }} />
-          <span>Omitir imágenes pequeñas (íconos, viñetas y adornos de menos de {MIN_SIZE} px)</span>
+          <span>{tr('img.skipSmall', { n: MIN_SIZE })}</span>
         </label>
-        <small className="faint">Las fotos JPEG salen idénticas a las originales; las demás, como PNG sin pérdida.</small>
+        <small className="faint">{tr('img.jpegNote')}</small>
         {file && (
           <BeforeAfter
             original={file}
             result={null}
             results={items ? chosenFiles : undefined}
             saveAs={bundle}
-            labels={['Tu PDF', 'Imágenes']}
+            labels={[tr('img.labelPdf'), tr('img.labelImages')]}
             toolName="extract_images"
-            title="Estas son las imágenes de tu PDF"
-            previewTitle="Vista previa de tu PDF"
-            placeholder={busy ? 'Buscando imágenes…' : items && !items.length ? 'No se encontraron imágenes' : 'Pulsa Buscar imágenes'}
+            title={tr('img.title')}
+            previewTitle={tr('common.previewPdf')}
+            placeholder={busy ? tr('img.busy') : items && !items.length ? tr('img.noneFound') : tr('img.press')}
             summary={
               <Notice kind="success">
-                {chosenFiles.length === 1 ? 'Se guardará 1 imagen.' : `Se guardarán ${chosenFiles.length} imágenes en un ZIP.`} Abajo puedes elegir cuáles.
+                {chosenFiles.length === 1 ? tr('img.willSaveOne') : tr('img.willSaveMany', { n: chosenFiles.length })}
               </Notice>
             }
           />
@@ -114,7 +115,7 @@ export function ExtractImagesTool() {
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
           <BusyButton busy={busy} disabled={!file} onClick={run} icon="image">
-            Buscar imágenes
+            {tr('img.go')}
           </BusyButton>
         </div>
       </div>
@@ -124,26 +125,26 @@ export function ExtractImagesTool() {
           {items.length ? (
             <>
               <div className="row" style={{ justifyContent: 'space-between' }}>
-                <h3>{items.length} {items.length === 1 ? 'imagen' : 'imágenes'}</h3>
+                <h3>{items.length === 1 ? tr('img.countOne') : tr('img.countMany', { n: items.length })}</h3>
                 <div className="row" style={{ gap: 6 }}>
                   <button type="button" className="btn btn-ghost btn-sm" onClick={() => setSelected(selected.size === items.length ? new Set() : new Set(items.map((_, i) => i)))}>
-                    {selected.size === items.length ? 'Quitar selección' : 'Seleccionar todas'}
+                    {selected.size === items.length ? tr('img.unselect') : tr('img.selectAll')}
                   </button>
-                  <span className="faint">{chosen.length} elegidas</span>
+                  <span className="faint">{tr('img.chosen', { n: chosen.length })}</span>
                 </div>
               </div>
               <div className="img-grid">
                 {items.map((img, i) => (
                   <figure key={img.name} className={'img-card' + (selected.has(i) ? ' is-selected' : '')}>
-                    <button type="button" className="img-thumb" aria-pressed={selected.has(i)} aria-label={`${selected.has(i) ? 'Quitar' : 'Elegir'} imagen ${i + 1}`} onClick={() => toggle(i)}>
-                      <img src={img.url} alt={`Imagen ${img.index} de la página ${img.page}`} loading="lazy" />
+                    <button type="button" className="img-thumb" aria-pressed={selected.has(i)} aria-label={tr('img.toggle', { n: i + 1 })} onClick={() => toggle(i)}>
+                      <img src={img.url} alt={tr('img.alt', { n: img.index, page: img.page })} loading="lazy" />
                       <span className="img-check" aria-hidden="true"><Icon name="check" /></span>
                     </button>
                     <figcaption>
                       <span>
                         <b>Pág. {img.page}</b> · {img.width}×{img.height} · {img.format.toUpperCase()} · {formatBytes(img.data.length)}
                       </span>
-                      <button type="button" className="icon-btn" aria-label={`Descargar ${img.name}`} onClick={() => download(img.data, img.name, img.format === 'jpg' ? 'image/jpeg' : 'image/png')}>
+                      <button type="button" className="icon-btn" aria-label={tr('img.downloadOne', { name: img.name })} onClick={() => download(img.data, img.name, img.format === 'jpg' ? 'image/jpeg' : 'image/png')}>
                         <Icon name="download" />
                       </button>
                     </figcaption>
@@ -153,16 +154,16 @@ export function ExtractImagesTool() {
             </>
           ) : (
             <Notice kind="info">
-              No se encontraron imágenes{info.small ? ' grandes' : ''} en este PDF. Si es un documento escaneado, cada página es una sola imagen: usa{' '}
-              <a href="/pdf-a-jpg">PDF a imagen</a>.
+              {info.small ? tr('img.noBigImages') : tr('img.noImages')}{' '}
+              <a href="/pdf-a-jpg">{tr('img.pdfToImage')}</a>.
             </Notice>
           )}
           {info.skipped > 0 && (
             <Notice kind="plain">
-              {info.skipped === 1 ? '1 imagen usa' : `${info.skipped} imágenes usan`} un formato que el navegador no puede convertir (JPEG 2000, fax o JBIG2). Para verlas, convierte las páginas con "PDF a imagen".
+              {info.skipped === 1 ? tr('img.skippedOne') : tr('img.skippedMany', { n: info.skipped })}
             </Notice>
           )}
-          {info.small > 0 && items.length > 0 && <small className="faint">{info.small === 1 ? 'Se omitió 1 imagen pequeña.' : `Se omitieron ${info.small} imágenes pequeñas.`}</small>}
+          {info.small > 0 && items.length > 0 && <small className="faint">{info.small === 1 ? tr('img.smallOne') : tr('img.smallMany', { n: info.small })}</small>}
         </div>
       )}
     </div>

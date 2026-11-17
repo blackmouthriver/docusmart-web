@@ -6,6 +6,8 @@ import { BusyButton, DropZone, FileRow, Notice, Segmented, errorMessage } from '
 import { baseName } from '../lib/files'
 import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
+import type { MessageKey } from '../i18n/messages/es'
 import { canvasToBlob } from '../lib/pdf'
 import { applyEdits, type BoxKind, type EditItem, type FontName } from '../lib/pdfEdit'
 import { areaFromCorners } from '../lib/pdfRedact'
@@ -15,13 +17,13 @@ import { PageNav, usePdfPreview } from './PdfPreview'
 type Item = EditItem & { id: number }
 type Tool = 'select' | 'text' | BoxKind
 
-const TOOLS: Array<{ id: Tool; label: string; icon: IconName }> = [
-  { id: 'select', label: 'Seleccionar', icon: 'cursor' },
-  { id: 'text', label: 'Texto', icon: 'type' },
-  { id: 'rect', label: 'Rectángulo', icon: 'square' },
-  { id: 'ellipse', label: 'Círculo', icon: 'circle' },
-  { id: 'highlight', label: 'Resaltar', icon: 'marker' },
-  { id: 'whiteout', label: 'Tapar', icon: 'eraser' },
+const TOOLS: Array<{ id: Tool; icon: IconName }> = [
+  { id: 'select', icon: 'cursor' },
+  { id: 'text', icon: 'type' },
+  { id: 'rect', icon: 'square' },
+  { id: 'ellipse', icon: 'circle' },
+  { id: 'highlight', icon: 'marker' },
+  { id: 'whiteout', icon: 'eraser' },
 ]
 const COLORS = ['#1C1B1A', '#DC2626', '#2563EB', '#16A34A', '#F59E0B', '#FFFFFF']
 const HIGHLIGHTS = ['#FDE047', '#86EFAC', '#F9A8D4', '#93C5FD']
@@ -30,13 +32,13 @@ const CSS_FONT: Record<FontName, string> = {
   times: '"Times New Roman", Times, serif',
   courier: '"Courier New", Courier, monospace',
 }
-const HINT: Record<Tool, string> = {
-  select: 'Toca un elemento para moverlo o editarlo. La esquina inferior derecha cambia el tamaño.',
-  text: 'Toca la página donde quieres escribir.',
-  rect: 'Arrastra sobre la página para dibujar un rectángulo.',
-  ellipse: 'Arrastra sobre la página para dibujar un círculo o un óvalo.',
-  highlight: 'Arrastra sobre el texto que quieres resaltar.',
-  whiteout: 'Arrastra para tapar con blanco; luego puedes escribir encima con "Texto".',
+const HINT: Record<Tool, MessageKey> = {
+  select: 'edit.hint.select',
+  text: 'edit.hint.text',
+  rect: 'edit.hint.rect',
+  ellipse: 'edit.hint.ellipse',
+  highlight: 'edit.hint.highlight',
+  whiteout: 'edit.hint.whiteout',
 }
 
 let nextId = 1
@@ -103,7 +105,7 @@ export function EditTool() {
       add({ kind: 'image', page: pageNo - 1, x: (1 - w) / 2, y: (1 - h) / 2, w, h, data, format })
       setTool('select')
     } catch {
-      setError('No se pudo leer la imagen. Usa un archivo JPG, PNG o WebP.')
+      setError(tr('edit.badImage'))
     }
   }
 
@@ -114,7 +116,7 @@ export function EditTool() {
     try {
       setOutput(resultFile(await applyEdits(await file.arrayBuffer(), items.map(({ id: _id, ...rest }) => rest as EditItem)), `${baseName(file.name)}-editado.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'edit' })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_edit', error_message: e instanceof Error ? e.name : 'error' })
@@ -126,7 +128,7 @@ export function EditTool() {
   if (!file) {
     return (
       <div className="card">
-        <DropZone accept="application/pdf" title="Toca para seleccionar el PDF a editar" hint="O arrástralo aquí" onFiles={([f]) => setFile(f)} />
+        <DropZone accept="application/pdf" title={tr('edit.pick')} hint={tr('common.dragHere')} onFiles={([f]) => setFile(f)} />
       </div>
     )
   }
@@ -140,20 +142,20 @@ export function EditTool() {
         <ul className="file-list" style={{ marginTop: 0 }}>
           <FileRow
             file={file}
-            extra={pages ? `${pages} ${pages === 1 ? 'página' : 'páginas'}` : 'Leyendo…'}
-            actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>Cambiar</button>}
+            extra={pages ? pages === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pages }) : tr('common.reading')}
+            actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>{tr('common.change')}</button>}
           />
         </ul>
-        <div className="edit-toolbar" role="toolbar" aria-label="Herramientas de edición">
+        <div className="edit-toolbar" role="toolbar" aria-label={tr('edit.toolbar')}>
           {TOOLS.map((t) => (
             <button key={t.id} type="button" className="edit-tool" aria-pressed={tool === t.id} onClick={() => setTool(t.id)}>
               <Icon name={t.icon} />
-              <span>{t.label}</span>
+              <span>{tr(`edit.${t.id}` as MessageKey)}</span>
             </button>
           ))}
           <button type="button" className="edit-tool" onClick={() => imageInput.current?.click()}>
             <Icon name="image" />
-            <span>Imagen</span>
+            <span>{tr('edit.image')}</span>
           </button>
           <input
             ref={imageInput}
@@ -167,7 +169,7 @@ export function EditTool() {
             }}
           />
         </div>
-        <p className="faint" style={{ margin: 0 }}>{HINT[tool]}</p>
+        <p className="faint" style={{ margin: 0 }}>{tr(HINT[tool])}</p>
       </div>
 
       <div className="card stack">
@@ -193,11 +195,11 @@ export function EditTool() {
             </div>
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <PageNav pageNo={pageNo} pages={pages} onChange={(n) => { setPageNo(n); setSelected(null) }} />
-              <span className="faint">{hasItems ? `${items.length} ${items.length === 1 ? 'elemento' : 'elementos'}` : 'Sin cambios todavía'}</span>
+              <span className="faint">{hasItems ? (items.length === 1 ? tr('edit.oneItem') : tr('edit.items', { n: items.length })) : tr('edit.noChanges')}</span>
             </div>
           </>
         ) : (
-          !error && <p className="faint">Preparando la vista previa…</p>
+          !error && <p className="faint">{tr('common.preparingPreview')}</p>
         )}
 
         {current && <Properties item={current} textArea={textArea} onChange={(p) => update(current.id, p)} onRemove={() => remove(current.id)} />}
@@ -205,13 +207,13 @@ export function EditTool() {
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
           <BusyButton busy={busy} disabled={!ready || !hasItems} onClick={save} icon="check">
-            Aplicar cambios
+            {tr('edit.go')}
           </BusyButton>
         </div>
       </div>
       {file && output && (
         <div className="card">
-          <BeforeAfter original={file} result={output} toolName="edit" title="Así quedó tu PDF editado" />
+          <BeforeAfter original={file} result={output} toolName="edit" title={tr('edit.title')} />
         </div>
       )}
     </div>
@@ -272,7 +274,7 @@ function EditStage({
     // Mientras la vista previa no tiene tamaño, la posición no es válida.
     if (!Number.isFinite(x) || !Number.isFinite(y)) return
     if (tool === 'text') {
-      onAdd({ kind: 'text', page, x, y, text: 'Escribe aquí', size: 14, color: '#1C1B1A', font: 'helvetica', bold: false })
+      onAdd({ kind: 'text', page, x, y, text: tr('edit.writeHere'), size: 14, color: '#1C1B1A', font: 'helvetica', bold: false })
       return
     }
     if (tool === 'select') {
@@ -347,7 +349,7 @@ function EditStage({
 
   return (
     <div className={'sign-stage edit-stage tool-' + tool} ref={stage} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
-      <img src={url} alt={`Página ${page + 1}`} draggable={false} />
+      <img src={url} alt={tr('single.pageAlt', { n: page + 1 })} draggable={false} />
       {items.map((it) => (
         <div
           key={it.id}
@@ -355,7 +357,7 @@ function EditStage({
           style={itemStyle(it, scale)}
           role="group"
           tabIndex={0}
-          aria-label={labelOf(it) + '. Flechas para mover, Suprimir para quitarlo.'}
+          aria-label={tr('edit.itemAria', { item: labelOf(it) })}
           onFocus={() => onSelect(it.id)}
           onKeyDown={keys(it)}
           onPointerDown={startItem(it, 'move')}
@@ -367,7 +369,7 @@ function EditStage({
           {it.kind === 'image' && <ImagePreview item={it} />}
           {selected === it.id && (
             <>
-              <button type="button" className="sign-del" style={{ display: 'grid' }} aria-label="Quitar" onPointerDown={(e) => e.stopPropagation()} onClick={() => onRemove(it.id)}>
+              <button type="button" className="sign-del" style={{ display: 'grid' }} aria-label={tr('edit.remove')} onPointerDown={(e) => e.stopPropagation()} onClick={() => onRemove(it.id)}>
                 <Icon name="close" />
               </button>
               {it.kind !== 'text' && <span className="sign-resize" style={{ display: 'block' }} aria-hidden="true" onPointerDown={startItem(it, 'resize')} onPointerMove={move} onPointerUp={up} onPointerCancel={up} />}
@@ -391,7 +393,7 @@ function ImagePreview({ item }: { item: Extract<Item, { kind: 'image' }> }) {
 }
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
-const labelOf = (it: Item) => ({ text: 'Texto', image: 'Imagen', rect: 'Rectángulo', ellipse: 'Círculo', highlight: 'Resaltado', whiteout: 'Tapado' })[it.kind]
+const labelOf = (it: Item) => tr(`edit.kind.${it.kind}` as MessageKey)
 
 function itemStyle(it: Item, scale: number): CSSProperties {
   const pos: CSSProperties = { left: `${it.x * 100}%`, top: `${it.y * 100}%` }
@@ -418,7 +420,7 @@ function Swatches({ label, colors, value, onChange, allowNone }: { label: string
       <span>{label}</span>
       <div className="row" style={{ gap: 6 }} role="radiogroup" aria-label={label}>
         {allowNone && (
-          <button type="button" className="swatch swatch-none" role="radio" aria-checked={value === null} aria-label="Sin color" onClick={() => onChange(null)} />
+          <button type="button" className="swatch swatch-none" role="radio" aria-checked={value === null} aria-label={tr('edit.noColor')} onClick={() => onChange(null)} />
         )}
         {colors.map((c) => (
           <button key={c} type="button" className="swatch" role="radio" aria-checked={value?.toLowerCase() === c.toLowerCase()} aria-label={c} style={{ background: c }} onClick={() => onChange(c)} />
@@ -433,40 +435,40 @@ function Properties({ item, textArea, onChange, onRemove }: { item: Item; textAr
     <div className="edit-props">
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <b>{labelOf(item)}</b>
-        <button type="button" className="btn btn-ghost btn-sm" onClick={onRemove}><Icon name="trash" /> Quitar</button>
+        <button type="button" className="btn btn-ghost btn-sm" onClick={onRemove}><Icon name="trash" /> {tr('edit.remove')}</button>
       </div>
       {item.kind === 'text' && (
         <>
           <label className="field">
-            <span>Texto</span>
+            <span>{tr('edit.text')}</span>
             <textarea ref={textArea} className="input" rows={2} value={item.text} onChange={(e) => onChange({ text: e.target.value })} />
           </label>
           <div className="row">
-            <Segmented label="Letra" value={item.font} onChange={(font) => onChange({ font })} options={[{ value: 'helvetica', label: 'Sans' }, { value: 'times', label: 'Serif' }, { value: 'courier', label: 'Mono' }]} />
+            <Segmented label={tr('edit.font')} value={item.font} onChange={(font) => onChange({ font })} options={[{ value: 'helvetica', label: 'Sans' }, { value: 'times', label: 'Serif' }, { value: 'courier', label: 'Mono' }]} />
             <label className="row" style={{ gap: 6 }}>
-              <span className="faint">Tamaño</span>
+              <span className="faint">{tr('edit.size')}</span>
               <input className="input edit-size" type="number" min={6} max={96} value={item.size} onChange={(e) => onChange({ size: clamp(Number(e.target.value) || 12, 6, 96) })} />
             </label>
             <button type="button" className="btn btn-soft btn-sm" aria-pressed={item.bold} onClick={() => onChange({ bold: !item.bold })} style={{ fontWeight: 700 }}>
-              N
+              {tr('edit.boldShort')}
             </button>
           </div>
-          <Swatches label="Color" colors={COLORS} value={item.color} onChange={(c) => onChange({ color: c ?? '#1C1B1A' })} />
-          <small className="faint">Las fuentes estándar de PDF solo incluyen letras latinas: los emojis y otros alfabetos no se guardan.</small>
+          <Swatches label={tr('edit.color')} colors={COLORS} value={item.color} onChange={(c) => onChange({ color: c ?? '#1C1B1A' })} />
+          <small className="faint">{tr('edit.latinOnly')}</small>
         </>
       )}
       {(item.kind === 'rect' || item.kind === 'ellipse') && (
         <>
-          <Swatches label="Borde" colors={COLORS} value={item.stroke} allowNone onChange={(stroke) => onChange({ stroke })} />
-          <Swatches label="Relleno" colors={COLORS} value={item.fill} allowNone onChange={(fill) => onChange({ fill })} />
+          <Swatches label={tr('edit.stroke')} colors={COLORS} value={item.stroke} allowNone onChange={(stroke) => onChange({ stroke })} />
+          <Swatches label={tr('edit.fill')} colors={COLORS} value={item.fill} allowNone onChange={(fill) => onChange({ fill })} />
           <label className="row" style={{ gap: 8 }}>
-            <span className="faint">Grosor del borde</span>
+            <span className="faint">{tr('edit.strokeWidth')}</span>
             <input type="range" min={1} max={8} value={item.strokeWidth} onChange={(e) => onChange({ strokeWidth: Number(e.target.value) })} />
           </label>
         </>
       )}
-      {item.kind === 'highlight' && <Swatches label="Color del resaltador" colors={HIGHLIGHTS} value={item.fill} onChange={(fill) => onChange({ fill: fill ?? '#FDE047' })} />}
-      {item.kind === 'whiteout' && <small className="faint">Tapa con blanco lo que hay debajo. Para borrar datos sensibles de verdad, usa "Censurar PDF".</small>}
+      {item.kind === 'highlight' && <Swatches label={tr('edit.highlighter')} colors={HIGHLIGHTS} value={item.fill} onChange={(fill) => onChange({ fill: fill ?? '#FDE047' })} />}
+      {item.kind === 'whiteout' && <small className="faint">{tr('edit.whiteoutHint')}</small>}
     </div>
   )
 }

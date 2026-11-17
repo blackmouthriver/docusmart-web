@@ -7,6 +7,7 @@ import { BusyButton, DropZone, FileRow, Notice, Segmented, errorMessage } from '
 import { baseName } from '../lib/files'
 import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
 import { canvasToBlob } from '../lib/pdf'
 import { clampPlacement, defaultPlacement, opaqueBounds, removeLightBackground, signPdf, type Placement } from '../lib/pdfSign'
 import { track } from '../../shared/analytics'
@@ -60,7 +61,7 @@ export function SignTool() {
     const copies = [...Array(pages).keys()].filter((i) => i !== pageNo - 1).flatMap((page) => here.map((p) => ({ ...p, page })))
     setSelected(null)
     setPlacements([...here, ...copies])
-    toast(`Firma copiada en las ${pages} páginas.`)
+    toast(tr('sign.copied', { n: pages }))
   }
 
   const save = async () => {
@@ -70,7 +71,7 @@ export function SignTool() {
     try {
       setOutput(resultFile(await signPdf(await file.arrayBuffer(), signature.png, placements), `${baseName(file.name)}-firmado.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'sign' })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_sign', error_message: e instanceof Error ? e.name : 'error' })
@@ -82,7 +83,7 @@ export function SignTool() {
   if (!file) {
     return (
       <div className="card">
-        <DropZone accept="application/pdf" title="Toca para seleccionar el PDF a firmar" hint="O arrástralo aquí" onFiles={([f]) => setFile(f)} />
+        <DropZone accept="application/pdf" title={tr('sign.pick')} hint={tr('common.dragHere')} onFiles={([f]) => setFile(f)} />
       </div>
     )
   }
@@ -96,8 +97,8 @@ export function SignTool() {
         <ul className="file-list" style={{ marginTop: 0 }}>
           <FileRow
             file={file}
-            extra={pages ? `${pages} ${pages === 1 ? 'página' : 'páginas'}` : 'Leyendo…'}
-            actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>Cambiar</button>}
+            extra={pages ? pages === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pages }) : tr('common.reading')}
+            actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>{tr('common.change')}</button>}
           />
         </ul>
 
@@ -105,8 +106,8 @@ export function SignTool() {
           <SignatureEditor onDone={useSignature} onCancel={signature ? () => setEditing(false) : undefined} />
         ) : (
           <div className="sign-current">
-            <img src={signature.url} alt="Tu firma" />
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditing(true)}><Icon name="note" /> Cambiar firma</button>
+            <img src={signature.url} alt={tr('sign.yours')} />
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditing(true)}><Icon name="note" /> {tr('sign.change')}</button>
           </div>
         )}
       </div>
@@ -115,10 +116,10 @@ export function SignTool() {
         <div className="card stack">
           {preview ? (
             <>
-              <p className="faint" style={{ margin: 0 }}>Arrastra la firma a su lugar. La esquina inferior derecha cambia el tamaño.</p>
+              <p className="faint" style={{ margin: 0 }}>{tr('sign.help')}</p>
               <div className="sign-frame">
                 <div className="sign-stage">
-                  <img src={preview.url} alt={`Página ${pageNo}`} draggable={false} onPointerDown={() => setSelected(null)} />
+                  <img src={preview.url} alt={tr('single.pageAlt', { n: pageNo })} draggable={false} onPointerDown={() => setSelected(null)} />
                   {onPage.map(({ p, i }) => (
                     <PlacedSignature
                       key={i}
@@ -138,24 +139,24 @@ export function SignTool() {
               <div className="row" style={{ justifyContent: 'space-between' }}>
                 <PageNav pageNo={pageNo} pages={pages} onChange={setPageNo} />
                 <span className="faint">
-                  {placements.length ? `${placements.length} ${placements.length === 1 ? 'firma' : 'firmas'} en ${pagesSigned} ${pagesSigned === 1 ? 'página' : 'páginas'}` : 'Sin firmas todavía'}
+                  {placements.length ? tr('sign.countIn', { signs: placements.length === 1 ? tr('sign.one') : tr('sign.many', { n: placements.length }), pages: pagesSigned === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pagesSigned }) }) : tr('sign.none')}
                 </span>
               </div>
               <div className="row">
-                <button type="button" className="btn btn-soft btn-sm" onClick={() => addHere()}><Icon name="plus" /> Agregar firma en esta página</button>
+                <button type="button" className="btn btn-soft btn-sm" onClick={() => addHere()}><Icon name="plus" /> {tr('sign.addHere')}</button>
                 {pages > 1 && (
-                  <button type="button" className="btn btn-ghost btn-sm" disabled={!onPage.length} onClick={copyToAllPages}><Icon name="copy" /> Repetir en todas las páginas</button>
+                  <button type="button" className="btn btn-ghost btn-sm" disabled={!onPage.length} onClick={copyToAllPages}><Icon name="copy" /> {tr('sign.repeat')}</button>
                 )}
               </div>
             </>
           ) : (
-            !error && <p className="faint">Preparando la vista previa…</p>
+            !error && <p className="faint">{tr('common.preparingPreview')}</p>
           )}
           {error && <Notice kind="error">{error}</Notice>}
-          <Notice kind="plain">Es una firma visual, como firmar a mano sobre el papel. No es una firma digital con certificado.</Notice>
+          <Notice kind="plain">{tr('sign.visual')}</Notice>
           <div className="row row-end">
             <BusyButton busy={busy} disabled={!ready || !placements.length} onClick={save} icon="check">
-              Firmar PDF
+              {tr('sign.go')}
             </BusyButton>
           </div>
         </div>
@@ -163,7 +164,7 @@ export function SignTool() {
       {error && (editing || !signature) && <Notice kind="error">{error}</Notice>}
       {file && output && (
         <div className="card">
-          <BeforeAfter original={file} result={output} toolName="sign" title="Así quedó tu PDF firmado" />
+          <BeforeAfter original={file} result={output} toolName="sign" title={tr('sign.title')} />
         </div>
       )}
     </div>
@@ -228,7 +229,7 @@ function PlacedSignature({
       style={{ left: `${p.x * 100}%`, top: `${p.y * 100}%`, width: `${p.w * 100}%`, height: `${p.h * 100}%` }}
       role="group"
       tabIndex={0}
-      aria-label="Firma colocada. Flechas para mover, + y − para cambiar el tamaño, Suprimir para quitarla."
+      aria-label={tr('sign.placedAria')}
       onFocus={onSelect}
       onKeyDown={keys}
       onPointerDown={begin('move')}
@@ -237,7 +238,7 @@ function PlacedSignature({
       onPointerCancel={end}
     >
       <img src={url} alt="" draggable={false} />
-      <button type="button" className="sign-del" aria-label="Quitar esta firma" onPointerDown={(e) => e.stopPropagation()} onClick={onRemove}>
+      <button type="button" className="sign-del" aria-label={tr('sign.remove')} onPointerDown={(e) => e.stopPropagation()} onClick={onRemove}>
         <Icon name="close" />
       </button>
       <span className="sign-resize" aria-hidden="true" onPointerDown={begin('resize')} onPointerMove={move} onPointerUp={end} onPointerCancel={end} />
@@ -276,7 +277,7 @@ function SignatureEditor({ onDone, onCancel }: { onDone: (s: Signature) => void;
       else if (mode === 'type') source = await renderTyped(name.trim(), INK[ink])
       else source = await renderPhoto(photo!)
       const sig = await toSignature(source)
-      if (!sig) throw new Error(mode === 'image' ? 'No se distingue una firma en la imagen. Usa una foto con fondo claro y buena luz.' : 'La firma está vacía.')
+      if (!sig) throw new Error(mode === 'image' ? tr('sign.notFound') : tr('sign.empty'))
       onDone(sig)
     } catch (e) {
       setError(errorMessage(e))
@@ -288,18 +289,18 @@ function SignatureEditor({ onDone, onCancel }: { onDone: (s: Signature) => void;
   return (
     <div className="stack">
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <h3>Tu firma</h3>
+        <h3>{tr('sign.yours')}</h3>
         <Segmented
-          label="Cómo crear la firma"
+          label={tr('sign.how')}
           value={mode}
           onChange={(m) => {
             setMode(m)
             setError(null)
           }}
           options={[
-            { value: 'draw', label: 'Dibujar' },
-            { value: 'type', label: 'Escribir' },
-            { value: 'image', label: 'Imagen' },
+            { value: 'draw', label: tr('sign.draw') },
+            { value: 'type', label: tr('sign.type') },
+            { value: 'image', label: tr('sign.image') },
           ]}
         />
       </div>
@@ -308,32 +309,32 @@ function SignatureEditor({ onDone, onCancel }: { onDone: (s: Signature) => void;
       {mode === 'type' && (
         <>
           <label className="field">
-            <span>Tu nombre</span>
-            <input className="input" value={name} maxLength={40} autoComplete="name" placeholder="Ej.: Ana María Pérez" onChange={(e) => setName(e.target.value)} />
+            <span>{tr('sign.name')}</span>
+            <input className="input" value={name} maxLength={40} autoComplete="name" placeholder={tr('sign.namePh')} onChange={(e) => setName(e.target.value)} />
           </label>
-          <div className="sign-typed" style={{ color: INK[ink], fontFamily: SCRIPT_FONT }}>{name.trim() || 'Tu firma'}</div>
+          <div className="sign-typed" style={{ color: INK[ink], fontFamily: SCRIPT_FONT }}>{name.trim() || tr('sign.yours')}</div>
         </>
       )}
       {mode === 'image' &&
         (photo ? (
           <ul className="file-list" style={{ marginTop: 0 }}>
-            <FileRow file={photo} actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => setPhoto(null)}>Cambiar</button>} />
+            <FileRow file={photo} actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => setPhoto(null)}>{tr('common.change')}</button>} />
           </ul>
         ) : (
-          <DropZone accept="image/png,image/jpeg,image/webp" title="Sube una foto de tu firma" hint="Sobre papel blanco y con buena luz: el fondo se quita solo" onFiles={([f]) => setPhoto(f)} />
+          <DropZone accept="image/png,image/jpeg,image/webp" title={tr('sign.upload')} hint={tr('sign.uploadHint')} onFiles={([f]) => setPhoto(f)} />
         ))}
 
       {mode !== 'image' && (
         <div className="row">
-          <span className="faint">Color</span>
-          <Segmented label="Color de la tinta" value={ink} onChange={setInk} options={[{ value: 'negro', label: 'Negro' }, { value: 'azul', label: 'Azul' }]} />
+          <span className="faint">{tr('sign.color')}</span>
+          <Segmented label={tr('sign.ink')} value={ink} onChange={setInk} options={[{ value: 'negro', label: tr('sign.black') }, { value: 'azul', label: tr('sign.blue') }]} />
         </div>
       )}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        {onCancel && <button type="button" className="btn btn-ghost" onClick={onCancel}>Cancelar</button>}
+        {onCancel && <button type="button" className="btn btn-ghost" onClick={onCancel}>{tr('sign.cancel')}</button>}
         <BusyButton busy={busy} disabled={!ready} onClick={finish} icon="check">
-          Usar esta firma
+          {tr('sign.use')}
         </BusyButton>
       </div>
     </div>
@@ -384,7 +385,7 @@ function DrawPad({ canvasRef, color, onStroke }: { canvasRef: RefObject<HTMLCanv
       <canvas
         ref={canvasRef}
         className="sign-pad"
-        aria-label="Área para dibujar la firma"
+        aria-label={tr('sign.padAria')}
         onPointerDown={(e) => {
           e.currentTarget.setPointerCapture(e.pointerId)
           last.current = null
@@ -396,7 +397,7 @@ function DrawPad({ canvasRef, color, onStroke }: { canvasRef: RefObject<HTMLCanv
         onPointerCancel={() => (last.current = null)}
       />
       <span className="sign-pad-line" aria-hidden="true" />
-      <button type="button" className="btn btn-ghost btn-sm sign-pad-clear" onClick={clear}><Icon name="reset" /> Borrar</button>
+      <button type="button" className="btn btn-ghost btn-sm sign-pad-clear" onClick={clear}><Icon name="reset" /> {tr('sign.clear')}</button>
     </div>
   )
 }

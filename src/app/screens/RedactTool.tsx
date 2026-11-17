@@ -6,6 +6,7 @@ import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../componen
 import { baseName } from '../lib/files'
 import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
 import { PRESETS, areaFromCorners, clampArea, groupByPage, phraseMatcher, redactPdf, type Area, type Matcher } from '../lib/pdfRedact'
 import { track } from '../../shared/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
@@ -40,9 +41,9 @@ export function RedactTool() {
       const found = await searchAreas(doc, match)
       setAreas((prev) => [...prev, ...found])
       const inPages = groupByPage(found).size
-      if (!found.length) toast(`No se encontró ${label}. Si el PDF es escaneado, márcalo a mano.`)
+      if (!found.length) toast(tr('redact.notFound', { what: label }))
       else {
-        toast(`${found.length === 1 ? 'Se marcó 1 coincidencia' : `Se marcaron ${found.length} coincidencias`} en ${inPages} ${inPages === 1 ? 'página' : 'páginas'}.`)
+        toast(tr(found.length === 1 ? 'redact.foundOne' : 'redact.foundMany', { n: found.length, pages: inPages === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: inPages }) }))
         // Llevar la vista a la primera página con coincidencias.
         setPageNo(Math.min(...found.map((a) => a.page)) + 1)
       }
@@ -63,12 +64,12 @@ export function RedactTool() {
       const total = groupByPage(areas).size
       let done = 0
       const out = await redactPdf(await file.arrayBuffer(), areas, async (i, a) => {
-        setStatus(`Censurando página ${++done} de ${total}…`)
+        setStatus(tr('redact.progress', { n: ++done, total }))
         return raster(i, a)
       })
       setOutput(resultFile(out, `${baseName(file.name)}-censurado.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'redact' })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_redact', error_message: e instanceof Error ? e.name : 'error' })
@@ -81,7 +82,7 @@ export function RedactTool() {
   if (!file) {
     return (
       <div className="card">
-        <DropZone accept="application/pdf" title="Toca para seleccionar el PDF a censurar" hint="O arrástralo aquí" onFiles={([f]) => setFile(f)} />
+        <DropZone accept="application/pdf" title={tr('redact.pick')} hint={tr('common.dragHere')} onFiles={([f]) => setFile(f)} />
       </div>
     )
   }
@@ -95,8 +96,8 @@ export function RedactTool() {
         <ul className="file-list" style={{ marginTop: 0 }}>
           <FileRow
             file={file}
-            extra={pages ? `${pages} ${pages === 1 ? 'página' : 'páginas'}` : 'Leyendo…'}
-            actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>Cambiar</button>}
+            extra={pages ? pages === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pages }) : tr('common.reading')}
+            actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>{tr('common.change')}</button>}
           />
         </ul>
 
@@ -107,23 +108,23 @@ export function RedactTool() {
             if (query.trim()) void search(phraseMatcher(query), `"${query.trim()}"`)
           }}
         >
-          <span>Buscar y marcar en todas las páginas</span>
+          <span>{tr('redact.search')}</span>
           <div className="row" style={{ flexWrap: 'nowrap' }}>
-            <input className="input" value={query} placeholder="Un nombre, un número, una palabra…" onChange={(e) => setQuery(e.target.value)} style={{ flex: 1, minWidth: 0 }} />
-            <button type="submit" className="btn btn-soft" disabled={!ready || searching || !query.trim()}><Icon name="eye" /> Buscar</button>
+            <input className="input" value={query} placeholder={tr('redact.searchPh')} onChange={(e) => setQuery(e.target.value)} style={{ flex: 1, minWidth: 0 }} />
+            <button type="submit" className="btn btn-soft" disabled={!ready || searching || !query.trim()}><Icon name="eye" /> {tr('redact.searchBtn')}</button>
           </div>
         </form>
         <div className="row">
-          <span className="faint">O marca todos los</span>
-          <button type="button" className="btn btn-ghost btn-sm" disabled={!ready || searching} onClick={() => search(PRESETS.correos, 'ningún correo')}>Correos</button>
-          <button type="button" className="btn btn-ghost btn-sm" disabled={!ready || searching} onClick={() => search(PRESETS.numeros, 'ningún número largo')}>Números (cédulas, teléfonos, cuentas)</button>
+          <span className="faint">{tr('redact.orAll')}</span>
+          <button type="button" className="btn btn-ghost btn-sm" disabled={!ready || searching} onClick={() => search(PRESETS.correos, tr('redact.noEmail'))}>{tr('redact.emails')}</button>
+          <button type="button" className="btn btn-ghost btn-sm" disabled={!ready || searching} onClick={() => search(PRESETS.numeros, tr('redact.noNumber'))}>{tr('redact.numbers')}</button>
         </div>
       </div>
 
       <div className="card stack">
         {preview ? (
           <>
-            <p className="faint" style={{ margin: 0 }}>Arrastra sobre la página para tapar una zona. Toca una zona para moverla o quitarla.</p>
+            <p className="faint" style={{ margin: 0 }}>{tr('redact.help')}</p>
             <div className="sign-frame">
               <RedactStage
                 url={preview.url}
@@ -145,33 +146,33 @@ export function RedactTool() {
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <PageNav pageNo={pageNo} pages={pages} onChange={setPageNo} />
               <span className="faint">
-                {areas.length ? `${areas.length} ${areas.length === 1 ? 'zona' : 'zonas'} en ${pagesWithAreas} ${pagesWithAreas === 1 ? 'página' : 'páginas'}` : 'Sin zonas marcadas'}
+                {areas.length ? tr('redact.zonesIn', { zones: areas.length === 1 ? tr('redact.zoneOne') : tr('redact.zones', { n: areas.length }), pages: pagesWithAreas === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pagesWithAreas }) }) : tr('redact.noZones')}
               </span>
             </div>
             {areas.length > 0 && (
               <div className="row">
-                <button type="button" className="btn btn-ghost btn-sm" disabled={!onPage.length} onClick={() => setAreas((prev) => prev.filter((a) => a.page !== pageNo - 1))}><Icon name="reset" /> Quitar las de esta página</button>
-                <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setAreas([]); setSelected(null) }}><Icon name="trash" /> Quitar todas</button>
+                <button type="button" className="btn btn-ghost btn-sm" disabled={!onPage.length} onClick={() => setAreas((prev) => prev.filter((a) => a.page !== pageNo - 1))}><Icon name="reset" /> {tr('redact.clearPage')}</button>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setAreas([]); setSelected(null) }}><Icon name="trash" /> {tr('redact.clearAll')}</button>
               </div>
             )}
           </>
         ) : (
-          !error && <p className="faint">Preparando la vista previa…</p>
+          !error && <p className="faint">{tr('common.preparingPreview')}</p>
         )}
         <Notice kind="info">
-          Lo tapado se elimina de verdad: las páginas con zonas marcadas se convierten en imagen, así que su texto ya no se puede copiar ni buscar. Las demás páginas quedan igual. Revisa todas las páginas antes de descargar.
+          {tr('redact.warning')}
         </Notice>
         {status && <small className="faint">{status}</small>}
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
           <BusyButton busy={busy} disabled={!ready || !areas.length} onClick={save} icon="check">
-            Censurar PDF
+            {tr('redact.go')}
           </BusyButton>
         </div>
       </div>
       {file && output && (
         <div className="card">
-          <BeforeAfter original={file} result={output} toolName="redact" title="Así quedó tu PDF censurado" />
+          <BeforeAfter original={file} result={output} toolName="redact" title={tr('redact.title')} />
         </div>
       )}
     </div>
@@ -258,7 +259,7 @@ function RedactStage({
 
   return (
     <div className="sign-stage redact-stage" ref={stage} onPointerDown={startNew} onPointerMove={move} onPointerUp={end} onPointerCancel={end}>
-      <img src={url} alt={`Página ${page + 1}`} draggable={false} />
+      <img src={url} alt={tr('single.pageAlt', { n: page + 1 })} draggable={false} />
       {areas.map(({ a, i }) => (
         <div
           key={i}
@@ -266,7 +267,7 @@ function RedactStage({
           style={pos(a)}
           role="group"
           tabIndex={0}
-          aria-label="Zona a censurar. Flechas para mover, Suprimir para quitarla."
+          aria-label={tr('redact.zoneAria')}
           onFocus={() => onSelect(i)}
           onKeyDown={keys(i, a)}
           onPointerDown={startMove(i, a)}
@@ -274,7 +275,7 @@ function RedactStage({
           onPointerUp={end}
           onPointerCancel={end}
         >
-          <button type="button" className="sign-del" aria-label="Quitar esta zona" onPointerDown={(e) => e.stopPropagation()} onClick={() => onRemove(i)}>
+          <button type="button" className="sign-del" aria-label={tr('redact.removeZone')} onPointerDown={(e) => e.stopPropagation()} onClick={() => onRemove(i)}>
             <Icon name="close" />
           </button>
         </div>
