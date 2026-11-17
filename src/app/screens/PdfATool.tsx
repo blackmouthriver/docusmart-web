@@ -7,39 +7,30 @@ import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
 import type { PdfAReport, RasterReason } from '../lib/pdfA'
 import { track } from '../../shared/analytics'
+import { tr } from '../i18n/translate'
+import type { MessageKey } from '../i18n/messages/es'
 
 const PDF = 'application/pdf'
 
-const list = (items: string[]) => (items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')} y ${items.at(-1)}`)
+const list = (items: string[]) => (items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')}${tr('pdfa.and')}${items.at(-1)}`)
 
-const REASONS: Record<RasterReason, [string, string]> = {
-  cmyk: ['usaba colores de imprenta (CMYK)', 'usaban colores de imprenta (CMYK)'],
-  font: ['usaba fuentes que no venían dentro del archivo', 'usaban fuentes que no venían dentro del archivo'],
-  other: ['tenía contenido que PDF/A no admite', 'tenían contenido que PDF/A no admite'],
-}
+const reason = (r: RasterReason, many: boolean) => tr(`pdfa.reason.${r}.${many ? 'many' : 'one'}` as MessageKey)
 
 /** Lo que cambió, en palabras simples. */
 export function describeReport(r: PdfAReport): string[] {
   const out: string[] = []
-  if (r.fonts.length) {
-    const families = [...new Set(r.fonts.map((f) => f.split('-')[0]))]
-    out.push(`Se incluyeron dentro del archivo las fuentes que faltaban (${list(families)}).`)
-  }
-  if (r.formAppearances) out.push('Se dibujó la apariencia de campos del formulario que no la tenían.')
+  if (r.fonts.length) out.push(tr('pdfa.fonts', { list: list([...new Set(r.fonts.map((f) => f.split('-')[0]))]) }))
+  if (r.formAppearances) out.push(tr('pdfa.formAp'))
   const removed = [
-    r.removed.actions && `${r.removed.actions === 1 ? 'una acción o script' : `${r.removed.actions} acciones o scripts`}`,
-    r.removed.attachments && `${r.removed.attachments === 1 ? 'un archivo adjunto' : `${r.removed.attachments} archivos adjuntos`}`,
-    r.removed.annotations && `${r.removed.annotations === 1 ? 'una anotación' : `${r.removed.annotations} anotaciones`} que PDF/A no admite`,
+    r.removed.actions && (r.removed.actions === 1 ? tr('pdfa.actionOne') : tr('pdfa.actionsN', { n: r.removed.actions })),
+    r.removed.attachments && (r.removed.attachments === 1 ? tr('pdfa.attachOne') : tr('pdfa.attachN', { n: r.removed.attachments })),
+    r.removed.annotations && (r.removed.annotations === 1 ? tr('pdfa.annotOne') : tr('pdfa.annotN', { n: r.removed.annotations })),
   ].filter(Boolean) as string[]
-  if (removed.length) out.push(`Se quitaron ${list(removed)}.`)
-  for (const reason of ['cmyk', 'font', 'other'] as RasterReason[]) {
-    const pages = r.rasterPages.filter((p) => p.reason === reason).map((p) => String(p.page))
+  if (removed.length) out.push(tr('pdfa.removed', { list: list(removed) }))
+  for (const why of ['cmyk', 'font', 'other'] as RasterReason[]) {
+    const pages = r.rasterPages.filter((p) => p.reason === why).map((p) => String(p.page))
     if (!pages.length) continue
-    out.push(
-      pages.length === 1
-        ? `La página ${pages[0]} se guardó como imagen porque ${REASONS[reason][0]}: se ve igual, pero su texto ya no se puede seleccionar (puedes recuperarlo con "OCR: reconocer texto").`
-        : `Las páginas ${list(pages)} se guardaron como imagen porque ${REASONS[reason][1]}: se ven igual, pero su texto ya no se puede seleccionar (puedes recuperarlo con "OCR: reconocer texto").`,
-    )
+    out.push(pages.length === 1 ? tr('pdfa.pageRaster', { page: pages[0], reason: reason(why, false) }) : tr('pdfa.pagesRaster', { pages: list(pages), reason: reason(why, true) }))
   }
   return out
 }
@@ -73,7 +64,7 @@ export function PdfATool() {
         const { pdf: out, report: r } = await convertToPdfA(bytes, {
           loadFont: async (name) => {
             const res = await fetch(`/pdfjs/standard_fonts/${name}`)
-            if (!res.ok) throw new Error('No se pudo cargar una fuente.')
+            if (!res.ok) throw new Error(tr('pdfa.fontError'))
             return new Uint8Array(await res.arrayBuffer())
           },
           // Solo se abre con pdf.js si alguna página hay que pasarla a imagen.
@@ -85,13 +76,13 @@ export function PdfATool() {
         setOutput(resultFile(out, `${baseName(file.name)}-pdfa.pdf`, PDF))
         setReport(r)
         track('pdf_tool_used', { tool_name: 'pdfa' })
-        toast('Listo. Revisa el resultado y guárdalo.')
+        toast(tr('common.doneReview'))
       } catch (e) {
         if (e instanceof PdfAEncryptedError) throw e
-        throw new Error('No se pudo convertir el archivo. Revisa que sea un PDF válido.', { cause: e })
+        throw new Error(tr('pdfa.convertError'), { cause: e })
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'No se pudo convertir el archivo.')
+      setError(e instanceof Error ? e.message : tr('pdfa.convertError'))
       track('app_error', { error_context: 'pdf_tool_pdfa', error_message: e instanceof Error ? e.name : 'error' })
     } finally {
       if (pdfDoc) await (await import('../lib/pdf')).closePdf(pdfDoc)
@@ -103,22 +94,22 @@ export function PdfATool() {
     <div className="card stack">
       {file ? (
         <ul className="file-list" style={{ marginTop: 0 }}>
-          <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => pick(null)}>Cambiar</button>} />
+          <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => pick(null)}>{tr('common.change')}</button>} />
         </ul>
       ) : (
-        <DropZone accept={PDF} title="Toca para seleccionar un PDF" hint="O arrástralo aquí" onFiles={([f]) => pick(f)} />
+        <DropZone accept={PDF} title={tr('common.pickPdf')} hint={tr('common.dragHere')} onFiles={([f]) => pick(f)} />
       )}
       {file && (
         <BeforeAfter
           original={file}
           result={report ? output : null}
           toolName="pdfa"
-          title="Así quedó tu PDF/A"
-          previewTitle="Vista previa de tu PDF"
-          placeholder={busy ? 'Convirtiendo…' : 'Pulsa Convertir a PDF/A'}
+          title={tr('pdfa.title')}
+          previewTitle={tr('common.previewPdf')}
+          placeholder={busy ? tr('pdfa.busy') : tr('pdfa.placeholder')}
           summary={
             report && <Notice kind="success">
-              <strong>Listo: el PDF cumple PDF/A-2b.</strong>
+              <strong>{tr('pdfa.done')}</strong>
               {describeReport(report).map((line) => (
                 <span key={line} style={{ display: 'block', marginTop: 6 }}>{line}</span>
               ))}
@@ -128,13 +119,13 @@ export function PdfATool() {
       )}
       {!report && !error && (
         <small className="faint">
-          PDF/A es el formato para archivar documentos que piden entidades públicas, juzgados y universidades: lleva las fuentes y los colores dentro del archivo para que se vea igual dentro de muchos años. DocuSmart crea PDF/A-2b.
+          {tr('pdfa.intro')}
         </small>
       )}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!file} onClick={convert} icon="archive">
-          Convertir a PDF/A
+          {tr('pdfa.go')}
         </BusyButton>
       </div>
     </div>

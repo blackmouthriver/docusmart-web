@@ -6,6 +6,7 @@ import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../c
 import { baseName, download } from '../lib/files'
 import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
 import type { OcrLang, OcrProgress, OcrResult } from '../lib/ocr'
 import { track } from '../../shared/analytics'
 
@@ -33,11 +34,11 @@ export function OcrTool() {
       const r = await runOcr(source.pages, { lang, wantPdf, onProgress: setProgress })
       setResult(r)
       track('ocr_done', { lang, pages: r.pages, pdf: wantPdf, confidence: r.confidence })
-      if (!r.text.trim()) setError('No se encontró texto. Prueba con una imagen más nítida o con más resolución.')
-      else toast('Texto reconocido.')
+      if (!r.text.trim()) setError(tr('ocr.noText'))
+      else toast(tr('ocr.recognized'))
     } catch (e) {
       const msg = e instanceof Error ? e.message : ''
-      setError(/password|encrypt/i.test(msg) ? 'Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".' : 'No se pudo reconocer el archivo. Revisa que sea una imagen o un PDF válido.')
+      setError(/password|encrypt/i.test(msg) ? tr('err.lockedPdf') : tr('ocr.cantRead'))
       track('app_error', { error_context: 'ocr', error_message: e instanceof Error ? e.name : 'error' })
     } finally {
       await source?.close()
@@ -48,40 +49,40 @@ export function OcrTool() {
 
   const status = progress
     ? progress.stage === 'preparando'
-      ? 'Preparando el motor de OCR (la primera vez descarga el idioma, unos segundos)…'
+      ? tr('ocr.preparing')
       : progress.pages > 1
-        ? `Reconociendo página ${progress.page} de ${progress.pages}…`
-        : 'Reconociendo el texto…'
+        ? tr('ocr.pageOf', { n: progress.page, total: progress.pages })
+        : tr('ocr.recognizing')
     : ''
 
   return (
     <div className="stack">
       <div className="card stack">
         {!file ? (
-          <DropZone accept="application/pdf,image/*" title="Toca para elegir un PDF escaneado o una imagen" hint="JPG, PNG, WebP o PDF" onFiles={([f]) => { setFile(f); setResult(null); setError(null) }} />
+          <DropZone accept="application/pdf,image/*" title={tr('ocr.pick')} hint={tr('ocr.pickHint')} onFiles={([f]) => { setFile(f); setResult(null); setError(null) }} />
         ) : (
           <ul className="file-list" style={{ marginTop: 0 }}>
-            <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => { setFile(null); setResult(null); setError(null) }}>Cambiar</button>} />
+            <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => { setFile(null); setResult(null); setError(null) }}>{tr('common.change')}</button>} />
           </ul>
         )}
         <div className="field">
-          <span>Idioma del documento</span>
+          <span>{tr('ocr.docLang')}</span>
           <Segmented
-            label="Idioma"
+            label={tr('ocr.lang')}
             value={lang}
             onChange={setLang}
             options={[
-              { value: 'spa', label: 'Español' },
-              { value: 'eng', label: 'Inglés' },
-              { value: 'spa+eng', label: 'Ambos' },
+              { value: 'spa', label: tr('ocr.spanish') },
+              { value: 'eng', label: tr('ocr.english') },
+              { value: 'spa+eng', label: tr('ocr.both') },
             ]}
           />
         </div>
         <label className="check">
           <input type="checkbox" checked={wantPdf} onChange={(e) => setWantPdf(e.target.checked)} />
-          <span>Generar también un PDF buscable (texto seleccionable sobre la imagen)</span>
+          <span>{tr('ocr.wantPdf')}</span>
         </label>
-        <small className="faint">El reconocimiento ocurre en tu navegador: el archivo no se sube a ningún servidor.</small>
+        <small className="faint">{tr('ocr.local')}</small>
         {progress && (
           <>
             <Progress value={progress.fraction} />
@@ -91,7 +92,7 @@ export function OcrTool() {
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
           <BusyButton busy={busy} disabled={!file} onClick={run} icon="text">
-            Reconocer texto
+            {tr('ocr.go')}
           </BusyButton>
         </div>
       </div>
@@ -102,9 +103,9 @@ export function OcrTool() {
             original={file}
             result={output}
             toolName="ocr"
-            title="Así quedó tu PDF con texto reconocido"
-            previewTitle="Vista previa de tu documento"
-            placeholder={busy ? 'Reconociendo el texto…' : 'Aquí verás el PDF con texto que se puede buscar y copiar'}
+            title={tr('ocr.title')}
+            previewTitle={tr('dp.previewTitle')}
+            placeholder={busy ? tr('ocr.recognizing') : tr('ocr.placeholder')}
           />
         </div>
       )}
@@ -112,10 +113,10 @@ export function OcrTool() {
       {result && result.text.trim() && (
         <div className="card stack">
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <h3>Texto reconocido</h3>
+            <h3>{tr('ocr.textTitle')}</h3>
             <div className="row" style={{ gap: 6 }}>
-              <button type="button" className="btn btn-soft btn-sm" onClick={() => navigator.clipboard.writeText(result.text).then(() => toast('Texto copiado'))}>
-                <Icon name="copy" /> Copiar
+              <button type="button" className="btn btn-soft btn-sm" onClick={() => navigator.clipboard.writeText(result.text).then(() => toast(tr('ocr.copied')))}>
+                <Icon name="copy" /> {tr('ocr.copy')}
               </button>
               <button type="button" className="btn btn-soft btn-sm" onClick={() => download(new Blob([result.text], { type: 'text/plain;charset=utf-8' }), `${baseName(file!.name)}-ocr.txt`)}>
                 <Icon name="download" /> .txt
@@ -123,7 +124,7 @@ export function OcrTool() {
             </div>
           </div>
           {result.confidence < 60 && (
-            <Notice kind="info">La calidad del reconocimiento es baja ({result.confidence}%). Revisa el texto: una imagen más nítida o derecha da mejores resultados.</Notice>
+            <Notice kind="info">{tr('ocr.lowQuality', { n: result.confidence })}</Notice>
           )}
           <pre className="text-view">{result.text}</pre>
         </div>

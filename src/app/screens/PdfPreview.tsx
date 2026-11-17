@@ -4,6 +4,7 @@ import type { PDFDocumentProxy } from 'pdfjs-dist'
 import { errorMessage } from '../components/ui'
 import { Icon } from '../components/Icon'
 import { closePdf, openPdf, renderPage } from '../lib/pdf'
+import { tr } from '../i18n/translate'
 
 export type PagePreview = { url: string; widthPt: number; heightPt: number }
 
@@ -32,7 +33,7 @@ export function usePdfPreview(file: Blob | null, previewWidth = 900, initialPage
           setDoc(opened)
         }
       } catch (e) {
-        if (!cancelled) setError(/password/i.test(String(e)) ? 'Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".' : errorMessage(e))
+        if (!cancelled) setError(/password/i.test(String(e)) ? tr('err.lockedPdf') : errorMessage(e))
       }
     })()
     return () => {
@@ -65,9 +66,9 @@ export function PageNav({ pageNo, pages, onChange }: { pageNo: number; pages: nu
   if (pages < 2) return <span />
   return (
     <div className="row" style={{ gap: 4 }}>
-      <button type="button" className="icon-btn" aria-label="Página anterior" disabled={pageNo === 1} onClick={() => onChange(pageNo - 1)}><Icon name="back" /></button>
-      <span className="faint">Página {pageNo} de {pages}</span>
-      <button type="button" className="icon-btn" aria-label="Página siguiente" disabled={pageNo === pages} onClick={() => onChange(pageNo + 1)} style={{ transform: 'scaleX(-1)' }}><Icon name="back" /></button>
+      <button type="button" className="icon-btn" aria-label={tr('nav.prevPage')} disabled={pageNo === 1} onClick={() => onChange(pageNo - 1)}><Icon name="back" /></button>
+      <span className="faint">{tr('nav.pageOf', { n: pageNo, total: pages })}</span>
+      <button type="button" className="icon-btn" aria-label={tr('nav.nextPage')} disabled={pageNo === pages} onClick={() => onChange(pageNo + 1)} style={{ transform: 'scaleX(-1)' }}><Icon name="back" /></button>
     </div>
   )
 }

@@ -17,42 +17,42 @@ import { EditTool } from './EditTool'
 import { FormTool } from './FormTool'
 import { ScanTool } from './ScanTool'
 import { PdfATool } from './PdfATool'
+import { tr } from '../i18n/translate'
+import type { MessageKey } from '../i18n/messages/es'
+
+/** Nombre y descripción de cada herramienta, en el idioma de la página. */
+export const toolName = (id: string) => tr(`tool.${id}` as MessageKey)
+export const toolDesc = (id: string) => tr(`tool.${id}.desc` as MessageKey)
 import { BeforeAfter } from '../components/DocPreview'
 import { bundleFiles, resultFile } from '../lib/share'
 
-const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
-  { id: 'editar', name: 'Editar PDF', desc: 'Agrega texto, imágenes, formas y resaltado', icon: 'edit', cls: 'ico-blue' },
-  { id: 'formulario', name: 'Llenar formulario', desc: 'Completa los campos de un PDF rellenable', icon: 'form', cls: 'ico-green' },
-  { id: 'escanear', name: 'Escanear documento', desc: 'Foto → PDF derecho y limpio, como un escáner', icon: 'camera', cls: 'ico-cyan' },
-  { id: 'unir', name: 'Unir PDFs', desc: 'Combina 2 o más PDFs en uno solo', icon: 'merge', cls: 'ico-red' },
-  { id: 'dividir', name: 'Dividir PDF', desc: 'Extrae páginas o separa cada una', icon: 'split', cls: 'ico-violet' },
-  { id: 'rotar', name: 'Rotar páginas', desc: 'Endereza páginas escaneadas de lado', icon: 'rotate', cls: 'ico-blue' },
-  { id: 'reordenar', name: 'Reordenar páginas', desc: 'Cambia el orden o elimina páginas', icon: 'reorder', cls: 'ico-cyan' },
-  { id: 'recortar', name: 'Recortar PDF', desc: 'Quita márgenes o deja solo una zona', icon: 'crop', cls: 'ico-amber' },
-  { id: 'firmar', name: 'Firmar PDF', desc: 'Dibuja, escribe o sube tu firma y colócala', icon: 'pen', cls: 'ico-blue' },
-  { id: 'censurar', name: 'Censurar PDF', desc: 'Tapa y elimina datos sensibles de verdad', icon: 'redact', cls: 'ico-red' },
-  { id: 'comparar', name: 'Comparar PDF', desc: 'Qué cambió entre dos versiones', icon: 'compare', cls: 'ico-violet' },
-  { id: 'imagenes', name: 'Extraer imágenes', desc: 'Saca las fotos de un PDF en su calidad original', icon: 'images', cls: 'ico-violet' },
-  { id: 'numerar', name: 'Numerar páginas', desc: 'Agrega el número al pie de cada página', icon: 'hash', cls: 'ico-green' },
-  { id: 'marca', name: 'Marca de agua', desc: 'Un texto en diagonal sobre cada página', icon: 'stamp', cls: 'ico-amber' },
-  { id: 'comprimir', name: 'Comprimir PDF', desc: 'Reduce el peso sin perder calidad, o al máximo', icon: 'compress', cls: 'ico-green' },
-  { id: 'proteger', name: 'Proteger PDF', desc: 'Contraseña con cifrado AES-256 y permisos', icon: 'lock', cls: 'ico-amber' },
-  { id: 'desbloquear', name: 'Desbloquear PDF', desc: 'Quita la contraseña o las restricciones', icon: 'unlock', cls: 'ico-blue' },
-  { id: 'reparar', name: 'Reparar PDF', desc: 'Recupera PDF dañados que no abren', icon: 'wrench', cls: 'ico-violet' },
-  { id: 'pdfa', name: 'PDF a PDF/A', desc: 'Formato de archivo a largo plazo (PDF/A-2b)', icon: 'archive', cls: 'ico-cyan' },
-  { id: 'ocr', name: 'OCR: reconocer texto', desc: 'Saca el texto de escaneos y fotos', icon: 'text', cls: 'ico-cyan' },
+const TOOLS: Array<{ id: string; icon: IconName; cls: string }> = [
+  { id: 'editar', icon: 'edit', cls: 'ico-blue' },
+  { id: 'formulario', icon: 'form', cls: 'ico-green' },
+  { id: 'escanear', icon: 'camera', cls: 'ico-cyan' },
+  { id: 'unir', icon: 'merge', cls: 'ico-red' },
+  { id: 'dividir', icon: 'split', cls: 'ico-violet' },
+  { id: 'rotar', icon: 'rotate', cls: 'ico-blue' },
+  { id: 'reordenar', icon: 'reorder', cls: 'ico-cyan' },
+  { id: 'recortar', icon: 'crop', cls: 'ico-amber' },
+  { id: 'firmar', icon: 'pen', cls: 'ico-blue' },
+  { id: 'censurar', icon: 'redact', cls: 'ico-red' },
+  { id: 'comparar', icon: 'compare', cls: 'ico-violet' },
+  { id: 'imagenes', icon: 'images', cls: 'ico-violet' },
+  { id: 'numerar', icon: 'hash', cls: 'ico-green' },
+  { id: 'marca', icon: 'stamp', cls: 'ico-amber' },
+  { id: 'comprimir', icon: 'compress', cls: 'ico-green' },
+  { id: 'proteger', icon: 'lock', cls: 'ico-amber' },
+  { id: 'desbloquear', icon: 'unlock', cls: 'ico-blue' },
+  { id: 'reparar', icon: 'wrench', cls: 'ico-violet' },
+  { id: 'pdfa', icon: 'archive', cls: 'ico-cyan' },
+  { id: 'ocr', icon: 'text', cls: 'ico-cyan' },
 ]
 
 const PDF_TYPE = 'application/pdf'
 
 /** Título del resultado, propio de cada herramienta. */
-const TITLES: Record<string, string> = {
-  dividir: 'Así quedaron las páginas extraídas',
-  rotar: 'Así quedó tu PDF rotado',
-  reordenar: 'Así quedó el nuevo orden',
-  numerar: 'Así quedó tu PDF numerado',
-  marca: 'Así quedó tu PDF con marca de agua',
-}
+const title = (toolId: string) => tr(`single.title.${toolId}` as MessageKey)
 
 /** Herramientas con su propio componente (las demás usan SingleFileTool). */
 export const OWN_TOOLS: Record<string, ComponentType> = {
@@ -78,24 +78,24 @@ export function PdfTools({ sub }: { sub?: string }) {
   const Own = tool ? OWN_TOOLS[tool.id] : undefined
   return (
     <>
-      <HeroCard title="Herramientas PDF" subtitle="Gestiona tus PDFs de forma rápida, directo en el navegador." />
+      <HeroCard title={tr('pdf.heroTitle')} subtitle={tr('pdf.heroSub')} />
       {tool ? (
         <>
-          <BackButton label="Volver a herramientas" onClick={() => go('pdf')} />
-          <h2 style={{ fontSize: 26, margin: '6px 0 4px' }}>{tool.name}</h2>
-          <p className="muted" style={{ marginBottom: 16 }}>{tool.desc}</p>
+          <BackButton label={tr('pdf.back')} onClick={() => go('pdf')} />
+          <h2 style={{ fontSize: 26, margin: '6px 0 4px' }}>{toolName(tool.id)}</h2>
+          <p className="muted" style={{ marginBottom: 16 }}>{toolDesc(tool.id)}</p>
           {Own ? <Own /> : <SingleFileTool toolId={tool.id} />}
         </>
       ) : (
         <>
-          <h2 className="section-title">Elige una herramienta</h2>
+          <h2 className="section-title">{tr('pdf.choose')}</h2>
           <div className="tool-grid">
             {TOOLS.map((t) => (
               <button key={t.id} type="button" className="tool-card" onClick={() => go('pdf', t.id)}>
                 <span className={'ico ' + t.cls}><Icon name={t.icon} /></span>
                 <span>
-                  <b>{t.name}</b>
-                  <small>{t.desc}</small>
+                  <b>{toolName(t.id)}</b>
+                  <small>{toolDesc(t.id)}</small>
                 </span>
               </button>
             ))}
@@ -110,7 +110,7 @@ function useRun(toolName: string) {
   const { toast } = useApp()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const run = async (fn: () => Promise<void>, okMsg = 'Listo. El archivo se descargó.') => {
+  const run = async (fn: () => Promise<void>, okMsg = tr('pdf.downloadedToast')) => {
     setBusy(true)
     setError(null)
     try {
@@ -141,7 +141,7 @@ export function MergeTool() {
     })
   return (
     <div className="card stack">
-      <DropZone accept="application/pdf" multiple title="Toca para seleccionar PDFs" hint="Puedes agregar varios a la vez y luego ordenarlos" onFiles={(f) => setFiles((p) => [...p, ...f])} />
+      <DropZone accept="application/pdf" multiple title={tr('merge.pick')} hint={tr('merge.pickHint')} onFiles={(f) => setFiles((p) => [...p, ...f])} />
       {files.length > 0 && (
         <ul className="file-list">
           {files.map((f, i) => (
@@ -151,9 +151,9 @@ export function MergeTool() {
               extra={`#${i + 1}`}
               actions={
                 <>
-                  <button type="button" className="icon-btn" aria-label="Subir" disabled={i === 0} onClick={() => move(i, i - 1)}><Icon name="up" /></button>
-                  <button type="button" className="icon-btn" aria-label="Bajar" disabled={i === files.length - 1} onClick={() => move(i, i + 1)}><Icon name="downArrow" /></button>
-                  <button type="button" className="icon-btn" aria-label={`Quitar ${f.name}`} onClick={() => setFiles((p) => p.filter((_, j) => j !== i))}><Icon name="close" /></button>
+                  <button type="button" className="icon-btn" aria-label={tr('merge.up')} disabled={i === 0} onClick={() => move(i, i - 1)}><Icon name="up" /></button>
+                  <button type="button" className="icon-btn" aria-label={tr('merge.down')} disabled={i === files.length - 1} onClick={() => move(i, i + 1)}><Icon name="downArrow" /></button>
+                  <button type="button" className="icon-btn" aria-label={tr('merge.remove', { name: f.name })} onClick={() => setFiles((p) => p.filter((_, j) => j !== i))}><Icon name="close" /></button>
                 </>
               }
             />
@@ -170,21 +170,21 @@ export function MergeTool() {
             run(async () => {
               const out = await merge(await Promise.all(files.map((f) => f.arrayBuffer())))
               setOutput(resultFile(out, `${baseName(files[0].name)}-unido.pdf`, PDF_TYPE))
-            }, 'Listo. Revisa el resultado y guárdalo.')
+            }, tr('common.doneReview'))
           }
         >
-          {files.length < 2 ? 'Selecciona al menos 2 PDFs' : `Unir ${files.length} PDFs`}
+          {files.length < 2 ? tr('merge.needTwo') : tr('merge.go', { n: files.length })}
         </BusyButton>
       </div>
       {files.length > 0 && (
         <BeforeAfter
           originals={files}
           result={output}
-          labels={['Los PDF', 'Unido']}
+          labels={[tr('merge.labelIn'), tr('merge.labelOut')]}
           toolName="merge"
-          title="Así quedó tu PDF unido"
-          previewTitle="Los PDF que vas a unir"
-          placeholder={busy ? 'Uniendo…' : files.length < 2 ? 'Agrega al menos otro PDF' : `Pulsa Unir ${files.length} PDFs`}
+          title={tr('merge.title')}
+          previewTitle={tr('merge.previewTitle')}
+          placeholder={busy ? tr('merge.busy') : files.length < 2 ? tr('merge.addAnother') : tr('merge.press', { n: files.length })}
         />
       )}
     </div>
@@ -268,7 +268,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
     action =
       splitMode === 'each'
         ? {
-            label: `Separar ${count} páginas`,
+            label: tr('single.splitEach', { n: count }),
             disabled: count < 2,
             go: async () => {
               const files = (await splitEach(await bytes())).map((d, i) => resultFile(d, `${name}-pagina-${i + 1}.pdf`, PDF_TYPE))
@@ -276,14 +276,14 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
             },
           }
         : {
-            label: 'Extraer páginas',
+            label: tr('single.extract'),
             disabled: !(ranges ?? pagesFromSelection).length,
             go: async () => setOutput(resultFile(await extractPages(await bytes(), ranges ?? pagesFromSelection), `${name}-extracto.pdf`, PDF_TYPE)),
           }
   } else if (toolId === 'rotar') {
     const changed = rotations.some((r) => r % 360 !== 0)
     action = {
-      label: 'Rotar PDF',
+      label: tr('single.rotate'),
       disabled: !changed,
       go: async () => {
         let data: ArrayBuffer | Uint8Array = await bytes()
@@ -297,19 +297,19 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   } else if (toolId === 'reordenar') {
     const same = order.length === count && order.every((p, i) => p === i)
     action = {
-      label: 'Aplicar nuevo orden',
+      label: tr('single.reorder'),
       disabled: same || order.length === 0,
       go: async () => setOutput(resultFile(await extractPages(await bytes(), order), `${name}-reordenado.pdf`, PDF_TYPE)),
     }
   } else if (toolId === 'numerar') {
     action = {
-      label: 'Numerar páginas',
+      label: tr('single.number'),
       disabled: !count,
       go: async () => setOutput(resultFile(await numberPages(await bytes(), { position, format }), `${name}-numerado.pdf`, PDF_TYPE)),
     }
   } else if (toolId === 'marca') {
     action = {
-      label: 'Aplicar marca de agua',
+      label: tr('single.watermark'),
       disabled: !count || !mark.trim(),
       go: async () => setOutput(resultFile(await watermark(await bytes(), mark), `${name}-marca.pdf`, PDF_TYPE)),
     }
@@ -318,7 +318,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   if (!file) {
     return (
       <div className="card">
-        <DropZone accept="application/pdf" title="Toca para seleccionar un PDF" hint="O arrástralo aquí" onFiles={([f]) => setFile(f)} />
+        <DropZone accept="application/pdf" title={tr('common.pickPdf')} hint={tr('common.dragHere')} onFiles={([f]) => setFile(f)} />
       </div>
     )
   }
@@ -336,8 +336,8 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
       <ul className="file-list" style={{ marginTop: 0 }}>
         <FileRow
           file={file}
-          extra={count ? `${count} páginas` : 'Leyendo…'}
-          actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => setFile(null)}>Cambiar</button>}
+          extra={count ? tr('single.pagesN', { n: count }) : tr('single.reading')}
+          actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => setFile(null)}>{tr('common.change')}</button>}
         />
       </ul>
 
@@ -347,20 +347,20 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
           original={file}
           result={output}
           toolName={trackName}
-          title={TITLES[toolId]}
-          previewTitle="Vista previa de tu PDF"
-          placeholder={busy ? 'Procesando…' : 'Elige las opciones y aplica la herramienta'}
+          title={title(toolId)}
+          previewTitle={tr('common.previewPdf')}
+          placeholder={busy ? tr('common.processing') : tr('common.chooseApply')}
         />
       )}
 
       {toolId === 'dividir' && (
         <>
-          <Segmented label="Modo de división" value={splitMode} onChange={setSplitMode} options={[{ value: 'range', label: 'Elegir páginas' }, { value: 'each', label: 'Cada página por separado' }]} />
+          <Segmented label={tr('single.splitMode')} value={splitMode} onChange={setSplitMode} options={[{ value: 'range', label: tr('single.splitPick') }, { value: 'each', label: tr('single.splitEachOpt') }]} />
           {splitMode === 'range' && (
             <label className="field">
-              <span>Páginas (ej. 1-3, 5) o tócalas abajo</span>
+              <span>{tr('single.rangeLabel')}</span>
               <input className="input" value={range} placeholder="1-3, 5, 8-" onChange={(e) => setRange(e.target.value)} />
-              {range.trim() && !ranges && <small style={{ color: 'var(--danger)' }}>Rango no válido para un PDF de {count} páginas.</small>}
+              {range.trim() && !ranges && <small style={{ color: 'var(--danger)' }}>{tr('single.rangeBad', { n: count })}</small>}
             </label>
           )}
         </>
@@ -368,14 +368,14 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
 
       {toolId === 'numerar' && (
         <div className="row">
-          <Segmented label="Posición" value={position} onChange={setPosition} options={[{ value: 'bottom-center', label: 'Centro' }, { value: 'bottom-right', label: 'Derecha' }]} />
-          <Segmented label="Formato" value={format} onChange={setFormat} options={[{ value: 'n', label: '1, 2, 3' }, { value: 'n-of-total', label: '1 / 10' }]} />
+          <Segmented label={tr('single.position')} value={position} onChange={setPosition} options={[{ value: 'bottom-center', label: tr('single.center') }, { value: 'bottom-right', label: tr('single.right') }]} />
+          <Segmented label={tr('single.format')} value={format} onChange={setFormat} options={[{ value: 'n', label: '1, 2, 3' }, { value: 'n-of-total', label: '1 / 10' }]} />
         </div>
       )}
 
       {toolId === 'marca' && (
         <label className="field">
-          <span>Texto de la marca de agua</span>
+          <span>{tr('single.markText')}</span>
           <input className="input" value={mark} maxLength={40} onChange={(e) => setMark(e.target.value)} />
         </label>
       )}
@@ -390,25 +390,25 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
             if (toolId === 'dividir')
               return (
                 <button key={pageIdx} type="button" className="thumb" aria-pressed={selected.has(pageIdx)} onClick={() => { setRange(''); toggle(pageIdx) }}>
-                  <img src={src} alt={`Página ${pageIdx + 1}`} />
+                  <img src={src} alt={tr('single.pageAlt', { n: pageIdx + 1 })} />
                   <span>{pageIdx + 1}</span>
                 </button>
               )
             if (toolId === 'rotar')
               return (
-                <button key={pageIdx} type="button" className="thumb" onClick={() => setRotations((r) => r.map((v, i) => (i === pageIdx ? v + 90 : v)))} aria-label={`Rotar página ${pageIdx + 1}`}>
+                <button key={pageIdx} type="button" className="thumb" onClick={() => setRotations((r) => r.map((v, i) => (i === pageIdx ? v + 90 : v)))} aria-label={tr('single.rotatePage', { n: pageIdx + 1 })}>
                   <img src={src} alt="" style={{ transform: `rotate(${rotations[pageIdx] ?? 0}deg) scale(${(rotations[pageIdx] ?? 0) % 180 ? 0.72 : 1})` }} />
                   <span>{pageIdx + 1} · {(rotations[pageIdx] ?? 0) % 360}°</span>
                 </button>
               )
             return (
               <div key={pageIdx} className="thumb">
-                <img src={src} alt={`Página ${pageIdx + 1}`} />
-                <span>Pág. {pageIdx + 1}</span>
+                <img src={src} alt={tr('single.pageAlt', { n: pageIdx + 1 })} />
+                <span>{tr('single.pageShort', { n: pageIdx + 1 })}</span>
                 <div className="thumb-actions">
-                  <button type="button" className="icon-btn" aria-label="Mover antes" disabled={pos === 0} onClick={() => setOrder((o) => swap(o, pos, pos - 1))}><Icon name="back" /></button>
-                  <button type="button" className="icon-btn" aria-label="Quitar página" disabled={order.length === 1} onClick={() => setOrder((o) => o.filter((_, j) => j !== pos))}><Icon name="trash" /></button>
-                  <button type="button" className="icon-btn" aria-label="Mover después" disabled={pos === order.length - 1} onClick={() => setOrder((o) => swap(o, pos, pos + 1))} style={{ transform: 'scaleX(-1)' }}><Icon name="back" /></button>
+                  <button type="button" className="icon-btn" aria-label={tr('single.moveBefore')} disabled={pos === 0} onClick={() => setOrder((o) => swap(o, pos, pos - 1))}><Icon name="back" /></button>
+                  <button type="button" className="icon-btn" aria-label={tr('single.removePage')} disabled={order.length === 1} onClick={() => setOrder((o) => o.filter((_, j) => j !== pos))}><Icon name="trash" /></button>
+                  <button type="button" className="icon-btn" aria-label={tr('single.moveAfter')} disabled={pos === order.length - 1} onClick={() => setOrder((o) => swap(o, pos, pos + 1))} style={{ transform: 'scaleX(-1)' }}><Icon name="back" /></button>
                 </div>
               </div>
             )
@@ -418,20 +418,20 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
 
       {toolId === 'rotar' && count > 0 && (
         <div className="row">
-          <span className="faint">Toca una página para girarla 90°.</span>
+          <span className="faint">{tr('single.tapRotate')}</span>
           <button type="button" className="btn btn-soft btn-sm" onClick={() => setRotations((r) => r.map((v) => v + 90))}>
-            <Icon name="rotate" /> Rotar todas
+            <Icon name="rotate" /> {tr('single.rotateAll')}
           </button>
         </div>
       )}
 
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={action.disabled} onClick={() => run(action.go, 'Listo. Revisa el resultado y guárdalo.')} icon="check">
+        <BusyButton busy={busy} disabled={action.disabled} onClick={() => run(action.go, tr('common.doneReview'))} icon="check">
           {action.label}
         </BusyButton>
       </div>
-      {withThumbs && output && <BeforeAfter original={file} result={output} toolName={trackName} title={TITLES[toolId]} />}
+      {withThumbs && output && <BeforeAfter original={file} result={output} toolName={trackName} title={title(toolId)} />}
       {parts && (
         <BeforeAfter
           original={file}
@@ -439,8 +439,8 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
           results={parts.files}
           saveAs={parts.zip}
           toolName={trackName}
-          title="Así quedaron las páginas separadas"
-          summary={<Notice kind="success">{parts.files.length} PDF, uno por página. Se guardan juntos en un ZIP.</Notice>}
+          title={tr('single.partsTitle')}
+          summary={<Notice kind="success">{tr('single.partsSummary', { n: parts.files.length })}</Notice>}
         />
       )}
     </div>

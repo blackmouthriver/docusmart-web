@@ -33,11 +33,19 @@ export class CloudCancelled extends Error {
 }
 
 /** Abre la ventana ya (dentro del clic, para que no la bloqueen) y luego la lleva a `url`. */
+/** El navegador bloqueó la ventana emergente. */
+export class PopupBlockedError extends Error {
+  constructor() {
+    super('El navegador bloqueó la ventana de autorización.')
+    this.name = 'PopupBlockedError'
+  }
+}
+
 function openPopup(): Window {
   const w = 520
   const h = 680
   const popup = window.open('about:blank', 'docusmart-oauth', `popup=yes,width=${w},height=${h},left=${Math.max(0, (screen.width - w) / 2)},top=${Math.max(0, (screen.height - h) / 2)}`)
-  if (!popup) throw new Error('El navegador bloqueó la ventana de autorización. Permite las ventanas emergentes de docusmart.online.')
+  if (!popup) throw new PopupBlockedError()
   return popup
 }
 
