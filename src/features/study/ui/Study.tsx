@@ -1,35 +1,76 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useApp } from '../../../app/state'
-import { Icon } from '../../../shared/ui/Icon'
-import { HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
+import { go, useApp } from '../../../app/state'
+import { Icon, type IconName } from '../../../shared/ui/Icon'
+import { BackButton, HeroCard, Notice } from '../../../shared/ui/ui'
 import { kindOf } from '../../../shared/files/files'
 import { pdfToText } from '../../convert/core/convert'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import { useT } from '../../../shared/i18n/I18n'
+import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { listenedPercent, nextPosition, toParagraphs } from '../core/reading'
 import { guessFeminine, personaAvatar, personasForVoices, voicesForLanguage, type VoicePersona } from '../core/voicePersonas'
 
-export function Study() {
-  const [tab, setTab] = useState<'read' | 'notes' | 'pomodoro'>('read')
+// ── Menú del Modo Estudio (W-59): una tarjeta por función, como en la app ──
+type StudyTab = 'lectura' | 'notas' | 'pomodoro'
+type Report = (status: string) => void
+
+const STUDY_TABS: Array<{ id: StudyTab; icon: IconName; cls: string; title: MessageKey; desc: MessageKey }> = [
+  { id: 'lectura', icon: 'volume', cls: 'ico-green', title: 'study.readAloud', desc: 'study.menuReadDesc' },
+  { id: 'notas', icon: 'note', cls: 'ico-blue', title: 'study.notes', desc: 'study.menuNotesDesc' },
+  { id: 'pomodoro', icon: 'timer', cls: 'ico-amber', title: 'study.pomodoro', desc: 'study.menuPomodoroDesc' },
+]
+
+export function Study({ sub }: { sub?: string }) {
+  const tab = STUDY_TABS.find((t) => t.id === sub)?.id
+  // Las secciones abiertas siguen montadas (ocultas) al volver al menú o cambiar de sección:
+  // el Pomodoro sigue contando y la lectura sigue sonando.
+  const [opened, setOpened] = useState<ReadonlySet<StudyTab>>(() => new Set(tab ? [tab] : []))
+  const [status, setStatus] = useState<Partial<Record<StudyTab, string>>>({})
+  useEffect(() => {
+    if (tab) setOpened((o) => (o.has(tab) ? o : new Set([...o, tab])))
+  }, [tab])
+  const reporters = useMemo(() => {
+    const make = (id: StudyTab): Report => (s) => setStatus((cur) => (cur[id] === s ? cur : { ...cur, [id]: s }))
+    return { lectura: make('lectura'), notas: make('notas'), pomodoro: make('pomodoro') }
+  }, [])
+
+  const section = (id: StudyTab) => {
+    if (id === 'lectura') return <ReadAloud onStatus={reporters.lectura} />
+    if (id === 'notas') return <Notes />
+    return <Pomodoro onStatus={reporters.pomodoro} />
+  }
+
   return (
     <>
       <HeroCard title={tr('nav.study')} subtitle={tr('study.heroSub')} />
-      <div style={{ margin: '18px 0 14px' }}>
-        <Segmented
-          label={tr('study.tool')}
-          value={tab}
-          onChange={setTab}
-          options={[
-            { value: 'read', label: tr('study.readAloud') },
-            { value: 'notes', label: tr('study.notes') },
-            { value: 'pomodoro', label: tr('study.pomodoro') },
-          ]}
-        />
-      </div>
-      {tab === 'read' && <ReadAloud />}
-      {tab === 'notes' && <Notes />}
-      {tab === 'pomodoro' && <Pomodoro />}
+      {tab ? (
+        <div style={{ margin: '14px 0' }}>
+          <BackButton label={tr('nav.study')} onClick={() => go('estudio')} />
+        </div>
+      ) : (
+        <>
+          <h2 className="section-title">{tr('study.menuPrompt')}</h2>
+          <div className="study-menu">
+            {STUDY_TABS.map((t) => (
+              <button key={t.id} type="button" className="tool-card study-card" onClick={() => go('estudio', t.id)}>
+                <span className={'ico ' + t.cls}><Icon name={t.icon} /></span>
+                <span className="study-card-text">
+                  <b>{tr(t.title)}</b>
+                  <small>{tr(t.desc)}</small>
+                  {status[t.id] && <span className="study-live">{status[t.id]}</span>}
+                </span>
+                <span className="study-card-arrow"><Icon name="back" /></span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      {STUDY_TABS.filter((t) => opened.has(t.id)).map((t) => (
+        <div key={t.id} hidden={t.id !== tab}>
+          {section(t.id)}
+        </div>
+      ))}
     </>
   )
 }
@@ -37,7 +78,7 @@ export function Study() {
 // ── Lectura en voz alta por párrafos (W-60) ─────────────────────────
 type Pos = { p: number; c: number }
 
-function ReadAloud() {
+function ReadAloud({ onStatus }: { onStatus: Report }) {
   const { toast } = useApp()
   const { lang: uiLang } = useT()
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
@@ -67,6 +108,12 @@ function ReadAloud() {
       speechSynthesis.cancel()
     }
   }, [supported])
+
+  // Estado para la tarjeta del menú ("Leyendo · párrafo 3 de 18").
+  useEffect(() => {
+    const vars = { i: Math.min(pos.p + 1, paragraphs.length), n: paragraphs.length }
+    onStatus(state === 'playing' ? tr('study.statusReading', vars) : state === 'paused' ? tr('study.statusPaused', vars) : '')
+  }, [state, pos.p, paragraphs.length, onStatus])
 
   // El párrafo que se lee queda siempre a la vista.
   useEffect(() => {
@@ -445,7 +492,7 @@ const SHORT = 5 * 60
 const LONG = 15 * 60
 const CIRC = 2 * Math.PI * 100
 
-function Pomodoro() {
+function Pomodoro({ onStatus }: { onStatus: Report }) {
   const [phase, setPhase] = useState<'focus' | 'short' | 'long'>('focus')
   const [left, setLeft] = useState(FOCUS)
   const [running, setRunning] = useState(false)
@@ -488,6 +535,10 @@ function Pomodoro() {
       document.title = base
     }
   }, [left, running, phase])
+
+  useEffect(() => {
+    onStatus(running ? `${fmt(left)} · ${phase === 'focus' ? tr('study.focused') : phase === 'short' ? tr('study.shortBreak') : tr('study.longBreak')}` : '')
+  }, [running, left, phase, onStatus])
 
   const reset = () => {
     setRunning(false)
