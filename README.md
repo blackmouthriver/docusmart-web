@@ -6,9 +6,37 @@ Todo el procesamiento de documentos ocurre **en el navegador**: los archivos nun
 
 | Ruta | Qué es |
 |---|---|
-| `/` | Landing (`index.html` + `src/landing/`) |
-| `/app/` | DocuSmart Web (`app/index.html` + `src/app/`, React) |
-| `/privacidad.html` | Política de privacidad (copia de `docsmart/legal/privacy-policy.html`) |
+| `/` y `/en/`, `/pt/`… | Landing (`site/index.html` + `src/entries/landing.ts`); las traducciones se generan |
+| `/app/` | DocuSmart Web (`site/app/index.html` + `src/entries/app.tsx`, React) |
+| `/unir-pdf`, `/en/merge-pdf`… | Página de cada herramienta para buscadores (generada en `site/`, monta `src/entries/tool-page.tsx`) |
+| `/privacidad` | Política de privacidad (`site/privacidad.html`, copia de `docsmart/legal/privacy-policy.html`) |
+
+## Estructura del proyecto
+
+```
+site/              Páginas HTML (raíz de Vite): portada, app, privacidad y las 372
+                   páginas generadas por idioma. No editar las generadas a mano.
+src/
+├─ entries/        Puntos de entrada de cada tipo de página (app, landing, tool-page)
+├─ app/            Armazón de la app web: App.tsx, navegación (state.ts), apariencia
+├─ features/       Un dominio por carpeta, cada uno con sus capas:
+│  └─ <dominio>/   pdf · security · pdfa · ocr · convert · image · scan · archive · qr · study · viewer · home
+│     ├─ ui/       Pantallas React del dominio
+│     ├─ core/     Lógica pura y testeable (pdf-lib, algoritmos, formatos)
+│     └─ infra/    Adaptadores del navegador: canvas, wasm, pdf.js
+└─ shared/         Lo común a varios dominios
+   ├─ ui/          Componentes (ui.tsx, Icon, DocPreview, SettingsPanel)
+   ├─ i18n/        Idiomas, traducción y messages/<idioma>.ts
+   ├─ files/       Archivos y compartir · cloud/ Drive y Dropbox · pdf/ lectura con pdf.js
+   └─ platform/    Analítica, consentimiento, Trusted Types, fuentes, idioma elegido
+tests/unit/        Pruebas unitarias; reflejan la ruta de src/ (tests/unit/features/pdf/core/…)
+tools/             Datos de las páginas para buscadores: pages.mjs (español) y locales/<idioma>.mjs
+scripts/           Automatización: generar páginas, copiar wasm, medir fuentes estándar
+public/            Archivos estáticos (wasm, modelos OCR, pdf.js, sitemap.xml)
+docs/              Backlog, pendientes del usuario y despliegue
+```
+
+Regla de dependencias: `ui` usa `core` e `infra`; `core` no conoce React ni el DOM; `shared` no importa de `features`.
 
 ## Correr en local
 
@@ -32,7 +60,7 @@ npm test          # pruebas (compatibilidad del QR protegido con la app)
 - **Visor:** PDF (pdf.js), imágenes y texto.
 - **Convertidor:** Imagen → PDF/JPG/PNG/WebP/BMP, PDF → Imagen, PDF → TXT.
 - **Herramientas PDF:** unir, dividir, rotar, reordenar/eliminar páginas, numerar, marca de agua (pdf-lib).
-- **QR:** crear, leer con cámara o desde imagen, y QR protegido con contraseña **compatible con la app** (mismo formato que `QrCrypto.kt`: `PROTECTED:` + Base64(salt 16 + IV 12 + AES-256-GCM), PBKDF2-SHA256 100 000 iteraciones). La prueba `qrCrypto.test.ts` descifra un payload generado con la misma lógica JVM de la app.
+- **QR:** crear, leer con cámara o desde imagen, y QR protegido con contraseña **compatible con la app** (mismo formato que `QrCrypto.kt`: `PROTECTED:` + Base64(salt 16 + IV 12 + AES-256-GCM), PBKDF2-SHA256 100 000 iteraciones). La prueba `tests/unit/features/qr/core/qrCrypto.test.ts` descifra un payload generado con la misma lógica JVM de la app.
 - **Modo Estudio:** lectura en voz alta (Web Speech), notas (guardadas solo en el navegador) y Pomodoro.
 
 Quedan solo en la app: escáner con detección de bordes, carpeta segura, Word/Excel/PowerPoint, OCR, PDF → Word, compresión y contraseña de PDF.
@@ -47,15 +75,15 @@ Usa el mismo proyecto Firebase de la app (`docusmart-8904e`), así ves web y And
 
 Sin esos valores el sitio funciona igual y no carga nada de Google.
 
-Cómo funciona (`src/shared/analytics.ts`):
+Cómo funciona (`src/shared/platform/analytics.ts`):
 
-- Firebase se descarga **solo** si hay configuración **y** el visitante pulsa *Aceptar* en el banner de consentimiento (`src/shared/consent.ts`). *Rechazar* tiene el mismo peso visual.
+- Firebase se descarga **solo** si hay configuración **y** el visitante pulsa *Aceptar* en el banner de consentimiento (`src/shared/platform/consent.ts`). *Rechazar* tiene el mismo peso visual.
 - IP anonimizada, sin Google Signals ni personalización de anuncios.
 - Nunca se envían nombres de archivo ni contenido, solo tipos y conteos.
 - Eventos con los mismos nombres que `DocuSmartAnalytics.kt`: `screen_view`, `document_opened`, `conversion_started` / `conversion_success` / `conversion_error` (con los mismos `conversion_type` de `ConversionType`), `pdf_tool_used`, `image_tool_used` y `scan_saved` (solo web: herramientas de imagen y escáner), `qr_created`, `qr_scanned`, `study_session_started`, `note_created`, `pomodoro_completed`, `app_error`.
 - Solo de la landing: `landing_cta_click` (destino `play_store` o `web_app`), `landing_section_view`, `landing_faq_open`.
 
-La política de privacidad ([`/privacidad`](privacidad.html), sección 10) describe esta analítica y las cookies que usa.
+La política de privacidad ([`/privacidad`](site/privacidad.html), sección 10) describe esta analítica y las cookies que usa.
 
 ## Licencias de terceros
 
