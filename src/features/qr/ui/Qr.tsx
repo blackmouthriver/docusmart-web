@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import QRCode from 'qrcode'
 import jsQR from 'jsqr'
 import { go, useApp } from '../../../app/state'
@@ -8,6 +8,7 @@ import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { SaveOptions, ShareApp } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
+import { buildPayload, type QrForm, type QrKind } from '../core/qrContent'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 
@@ -53,25 +54,63 @@ export function QrScreen({ sub }: { sub?: string }) {
   )
 }
 
+// ── Crear QR (W-83): un tipo de contenido por formulario, como en la app ──
+const KINDS: Array<{ id: QrKind; icon: IconName }> = [
+  { id: 'url', icon: 'link' },
+  { id: 'text', icon: 'text' },
+  { id: 'email', icon: 'mail' },
+  { id: 'phone', icon: 'phone' },
+  { id: 'wifi', icon: 'wifi' },
+  { id: 'contact', icon: 'user' },
+  { id: 'event', icon: 'calendar' },
+]
+
+/** Fecha y hora local para <input type="datetime-local">, redondeada a la hora siguiente. */
+function nextHour(addHours = 0): string {
+  const d = new Date()
+  d.setMinutes(0, 0, 0)
+  d.setHours(d.getHours() + 1 + addHours)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:00`
+}
+
+const emptyForm = (): QrForm => ({
+  kind: 'url',
+  value: '',
+  wifi: { ssid: '', password: '', security: 'WPA' },
+  contact: { name: '', phone: '', email: '' },
+  event: { title: '', location: '', start: nextHour(), end: nextHour(1) },
+})
+
 export function CreateQr() {
   const { toast } = useApp()
-  const [text, setText] = useState('')
+  const [form, setForm] = useState<QrForm>(emptyForm)
   const [protect, setProtect] = useState(false)
   const [password, setPassword] = useState('')
   const [img, setImg] = useState<string | null>(null)
+  const [tried, setTried] = useState(false)
   /** El QR como archivo PNG, para guardarlo o compartirlo. */
   const qrFile = useMemo(
     () => (img ? resultFile(Uint8Array.from(atob(img.split(',')[1] ?? ''), (c) => c.charCodeAt(0)), protect ? `docusmart-qr-${tr('file.protected')}.png` : 'docusmart-qr.png', 'image/png') : null),
     [img, protect],
   )
   const [busy, setBusy] = useState(false)
+  const built = buildPayload(form)
+  const error = 'error' in built ? built.error : null
+
+  const change = (patch: Partial<QrForm>) => {
+    setForm((f) => ({ ...f, ...patch }))
+    setImg(null)
+  }
 
   const create = async () => {
+    setTried(true)
+    if (!('payload' in built)) return
     setBusy(true)
     try {
-      const payload = protect ? PREFIX + (await encrypt(text, password)) : text
+      const payload = protect ? PREFIX + (await encrypt(built.payload, password)) : built.payload
       setImg(await QRCode.toDataURL(payload, { width: 640, margin: 2, errorCorrectionLevel: 'M', color: { dark: '#0B1020', light: '#FFFFFF' } }))
-      track('qr_created', { qr_content_type: contentType(text), has_password: protect })
+      track('qr_created', { qr_content_type: form.kind, has_password: protect })
     } catch {
       toast(tr('qr.tooLong'))
     } finally {
@@ -79,16 +118,61 @@ export function CreateQr() {
     }
   }
 
+  const field = (label: MessageKey, input: ReactNode) => (
+    <label className="field">
+      <span>{tr(label)}</span>
+      {input}
+    </label>
+  )
+
   return (
     <section className="card stack" aria-labelledby="qr-create">
       <div className="row">
         <span className="ico ico-cyan"><Icon name="qr" /></span>
         <h3 id="qr-create">{tr('qr.create')}</h3>
       </div>
-      <label className="field">
-        <span>{tr('qr.textOrLink')}</span>
-        <textarea className="textarea" style={{ minHeight: 96 }} value={text} maxLength={900} placeholder={tr('qr.placeholder')} onChange={(e) => { setText(e.target.value); setImg(null) }} />
-      </label>
+      <div className="qr-kinds" role="radiogroup" aria-label={tr('qr.kindLabel')}>
+        {KINDS.map((k) => (
+          <button key={k.id} type="button" role="radio" aria-checked={form.kind === k.id} className="qr-kind" onClick={() => { change({ kind: k.id }); setTried(false) }}>
+            <Icon name={k.icon} /> {tr(`qr.kind.${k.id}` as MessageKey)}
+          </button>
+        ))}
+      </div>
+
+      {form.kind === 'url' && field('qr.label.url', <input className="input" type="url" inputMode="url" value={form.value} placeholder="https://docusmart.online" onChange={(e) => change({ value: e.target.value })} />)}
+      {form.kind === 'text' && field('qr.label.text', <textarea className="textarea" style={{ minHeight: 96 }} value={form.value} maxLength={900} placeholder={tr('qr.ph.text')} onChange={(e) => change({ value: e.target.value })} />)}
+      {form.kind === 'email' && field('qr.label.email', <input className="input" type="email" inputMode="email" value={form.value} placeholder={tr('qr.ph.email')} onChange={(e) => change({ value: e.target.value })} />)}
+      {form.kind === 'phone' && field('qr.label.phone', <input className="input" type="tel" inputMode="tel" value={form.value} placeholder="+57 300 000 0000" onChange={(e) => change({ value: e.target.value })} />)}
+      {form.kind === 'wifi' && (
+        <>
+          {field('qr.label.ssid', <input className="input" value={form.wifi.ssid} autoComplete="off" onChange={(e) => change({ wifi: { ...form.wifi, ssid: e.target.value } })} />)}
+          <Segmented
+            label={tr('qr.label.security')}
+            value={form.wifi.security}
+            onChange={(security) => change({ wifi: { ...form.wifi, security } })}
+            options={[{ value: 'WPA', label: 'WPA/WPA2' }, { value: 'WEP', label: 'WEP' }, { value: 'NONE', label: tr('qr.sec.none') }]}
+          />
+          {form.wifi.security !== 'NONE' && field('qr.label.wifiKey', <input className="input" type="text" autoComplete="off" spellCheck={false} value={form.wifi.password} onChange={(e) => change({ wifi: { ...form.wifi, password: e.target.value } })} />)}
+        </>
+      )}
+      {form.kind === 'contact' && (
+        <>
+          {field('qr.label.name', <input className="input" autoComplete="name" value={form.contact.name} onChange={(e) => change({ contact: { ...form.contact, name: e.target.value } })} />)}
+          {field('qr.label.phone', <input className="input" type="tel" inputMode="tel" value={form.contact.phone} onChange={(e) => change({ contact: { ...form.contact, phone: e.target.value } })} />)}
+          {field('qr.label.email', <input className="input" type="email" inputMode="email" value={form.contact.email} onChange={(e) => change({ contact: { ...form.contact, email: e.target.value } })} />)}
+        </>
+      )}
+      {form.kind === 'event' && (
+        <>
+          {field('qr.label.eventTitle', <input className="input" value={form.event.title} onChange={(e) => change({ event: { ...form.event, title: e.target.value } })} />)}
+          {field('qr.label.location', <input className="input" value={form.event.location} onChange={(e) => change({ event: { ...form.event, location: e.target.value } })} />)}
+          <div className="row qr-dates">
+            {field('qr.label.start', <input className="input" type="datetime-local" value={form.event.start} onChange={(e) => change({ event: { ...form.event, start: e.target.value } })} />)}
+            {field('qr.label.end', <input className="input" type="datetime-local" value={form.event.end} onChange={(e) => change({ event: { ...form.event, end: e.target.value } })} />)}
+          </div>
+        </>
+      )}
+
       <Segmented
         label={tr('qr.type')}
         value={protect ? 'protected' : 'open'}
@@ -102,8 +186,9 @@ export function CreateQr() {
           <small className="faint">{tr('qr.aesNote')}</small>
         </label>
       )}
+      {tried && error && <Notice kind="error">{tr(`qr.err.${error}` as MessageKey)}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={!text.trim() || (protect && password.length < 4)} onClick={create} icon="qr">
+        <BusyButton busy={busy} disabled={protect && password.length < 4} onClick={create} icon="qr">
           {tr('qr.generate')}
         </BusyButton>
       </div>
