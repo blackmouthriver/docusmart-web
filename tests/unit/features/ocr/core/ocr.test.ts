@@ -47,6 +47,7 @@ describe('ocr', () => {
     expect(r.confidence).toBe(82)
     expect(r.pdf).toBeNull()
     expect(r.pages).toBe(2)
+    expect(r.pageTexts).toEqual(['Página uno', 'Página dos'])
     expect(calls).toEqual({ lang: 'spa+eng', terminated: true })
     expect(progress).toHaveBeenCalledWith(expect.objectContaining({ stage: 'preparando' }))
     expect(progress).toHaveBeenLastCalledWith({ page: 2, pages: 2, fraction: 1, stage: 'reconociendo' })
