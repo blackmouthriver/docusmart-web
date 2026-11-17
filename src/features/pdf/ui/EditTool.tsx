@@ -11,16 +11,20 @@ import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { applyEdits, type BoxKind, type EditItem, type FontName } from '../core/pdfEdit'
 import { areaFromCorners } from '../core/pdfRedact'
+import { groupLines, inkColor, lineFrame, replacementFor, type TextLineBox } from '../core/pdfReplace'
 import { track } from '../../../shared/platform/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
 import { EDIT_PDF, clearHandOff, peekHandOff } from '../../../shared/files/handoff'
 
 type Item = EditItem & { id: number }
-type Tool = 'select' | 'text' | BoxKind
+type Tool = 'select' | 'text' | 'replace' | BoxKind
+/** Línea del PDF que se puede reemplazar, con su caja en fracciones de la página. */
+type ReplaceTarget = { key: string; text: string; frame: { x: number; y: number; w: number; h: number } }
 
 const TOOLS: Array<{ id: Tool; icon: IconName }> = [
   { id: 'select', icon: 'cursor' },
   { id: 'text', icon: 'type' },
+  { id: 'replace', icon: 'pen' },
   { id: 'rect', icon: 'square' },
   { id: 'ellipse', icon: 'circle' },
   { id: 'highlight', icon: 'marker' },
@@ -36,6 +40,7 @@ const CSS_FONT: Record<FontName, string> = {
 const HINT: Record<Tool, MessageKey> = {
   select: 'edit.hint.select',
   text: 'edit.hint.text',
+  replace: 'edit.hint.replace',
   rect: 'edit.hint.rect',
   ellipse: 'edit.hint.ellipse',
   highlight: 'edit.hint.highlight',
@@ -52,7 +57,7 @@ export function EditTool() {
   /** Resultado listo para ver y guardar (ya no se descarga solo). */
   const [output, setOutput] = useState<File | null>(null)
   useEffect(() => setOutput(null), [file])
-  const { pages, ready, pageNo, setPageNo, preview, error, setError } = usePdfPreview(file)
+  const { pages, ready, pageNo, setPageNo, preview, canvas, error, setError } = usePdfPreview(file)
   const [items, setItems] = useState<Item[]>([])
   const [selected, setSelected] = useState<number | null>(null)
   const [tool, setTool] = useState<Tool>('text')
@@ -60,10 +65,77 @@ export function EditTool() {
   const imageInput = useRef<HTMLInputElement>(null)
   const textArea = useRef<HTMLTextAreaElement>(null)
 
+  // Reemplazar texto (W-81): las líneas de cada página se leen la primera vez que se usa.
+  const [lines, setLines] = useState<{ byPage: Map<number, TextLineBox[]>; sizes: Array<{ width: number; height: number }> } | null>(null)
+  const [linesBusy, setLinesBusy] = useState(false)
+  const [replaced, setReplaced] = useState<ReadonlySet<string>>(new Set())
+
   useEffect(() => {
     setItems([])
     setSelected(null)
+    setLines(null)
+    setReplaced(new Set())
   }, [file])
+
+  useEffect(() => {
+    if (tool !== 'replace' || !file || lines || linesBusy) return
+    let cancelled = false
+    setLinesBusy(true)
+    void import('../../convert/infra/pdfWordSources')
+      .then((m) => m.extractForWord(file, undefined, { images: false }))
+      .then(({ pages: sizes, texts }) => {
+        if (cancelled) return
+        const byPage = new Map<number, TextLineBox[]>()
+        sizes.forEach((_, i) => byPage.set(i, groupLines(texts.filter((t) => t.page === i))))
+        setLines({ byPage, sizes })
+      })
+      .catch((e) => !cancelled && setError(errorMessage(e)))
+      .finally(() => !cancelled && setLinesBusy(false))
+    return () => {
+      cancelled = true
+      setLinesBusy(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tool, file, lines])
+
+  const pageLines = lines?.byPage.get(pageNo - 1) ?? []
+  const pageSize = lines?.sizes[pageNo - 1]
+  const targets: ReplaceTarget[] =
+    tool === 'replace' && pageSize
+      ? pageLines.flatMap((l, i) => {
+          const key = `${pageNo - 1}:${i}`
+          return replaced.has(key) ? [] : [{ key, text: l.text, frame: lineFrame(l, pageSize.width, pageSize.height) }]
+        })
+      : []
+
+  /** Color del texto original, medido en la vista previa de la página (si está dibujada). */
+  const lineInk = (f: { x: number; y: number; w: number; h: number }) => {
+    const c = canvas.current
+    const ctx = c?.getContext('2d', { willReadFrequently: true })
+    if (!c || !ctx) return '#1C1B1A'
+    const x = Math.max(0, Math.floor(f.x * c.width))
+    const y = Math.max(0, Math.floor(f.y * c.height))
+    const w = Math.max(1, Math.min(c.width - x, Math.ceil(f.w * c.width)))
+    const h = Math.max(1, Math.min(c.height - y, Math.ceil(f.h * c.height)))
+    try {
+      return inkColor(ctx.getImageData(x, y, w, h).data)
+    } catch {
+      return '#1C1B1A'
+    }
+  }
+
+  const replaceLine = (key: string) => {
+    const [page, index] = key.split(':').map(Number)
+    const line = lines?.byPage.get(page)?.[index]
+    const size = lines?.sizes[page]
+    if (!line || !size) return
+    const [box, text] = replacementFor(line, page, size.width, size.height)
+    add(box)
+    add({ ...text, color: lineInk(lineFrame(line, size.width, size.height)) })
+    setReplaced((r) => new Set([...r, key]))
+    setTool('select')
+    setTimeout(() => textArea.current?.select(), 0)
+  }
 
   const current = items.find((i) => i.id === selected) ?? null
   const update = (id: number, patch: Partial<EditItem>) => setItems((list) => list.map((i) => (i.id === id ? ({ ...i, ...patch } as Item) : i)))
@@ -172,7 +244,9 @@ export function EditTool() {
             }}
           />
         </div>
-        <p className="faint" style={{ margin: 0 }}>{tr(HINT[tool])}</p>
+        <p className="faint" style={{ margin: 0 }}>
+          {tool === 'replace' && linesBusy ? tr('edit.readingText') : tool === 'replace' && lines && !pageLines.length ? tr('edit.noTextOnPage') : tr(HINT[tool])}
+        </p>
       </div>
 
       <div className="card stack">
@@ -185,6 +259,8 @@ export function EditTool() {
                 viewWidthPt={preview.widthPt}
                 tool={tool}
                 items={onPage}
+                targets={targets}
+                onReplace={replaceLine}
                 selected={selected}
                 onSelect={setSelected}
                 onAdd={(item) => {
@@ -231,6 +307,8 @@ function EditStage({
   viewWidthPt,
   tool,
   items,
+  targets,
+  onReplace,
   selected,
   onSelect,
   onAdd,
@@ -242,6 +320,8 @@ function EditStage({
   viewWidthPt: number
   tool: Tool
   items: Item[]
+  targets: ReplaceTarget[]
+  onReplace: (key: string) => void
   selected: number | null
   onSelect: (id: number | null) => void
   onAdd: (item: EditItem) => void
@@ -280,7 +360,7 @@ function EditStage({
       onAdd({ kind: 'text', page, x, y, text: tr('edit.writeHere'), size: 14, color: '#1C1B1A', font: 'helvetica', bold: false })
       return
     }
-    if (tool === 'select') {
+    if (tool === 'select' || tool === 'replace') {
       onSelect(null)
       return
     }
@@ -327,7 +407,7 @@ function EditStage({
   const up = () => {
     const d = drag.current
     const draft = draftRef.current
-    if (d?.mode === 'new' && draft && draft.w > 0.01 && draft.h > 0.005 && tool !== 'select' && tool !== 'text') {
+    if (d?.mode === 'new' && draft && draft.w > 0.01 && draft.h > 0.005 && tool !== 'select' && tool !== 'text' && tool !== 'replace') {
       onAdd({
         kind: tool,
         page,
@@ -379,6 +459,18 @@ function EditStage({
             </>
           )}
         </div>
+      ))}
+      {targets.map((t) => (
+        <button
+          key={t.key}
+          type="button"
+          className="edit-line"
+          style={{ left: `${t.frame.x * 100}%`, top: `${t.frame.y * 100}%`, width: `${t.frame.w * 100}%`, height: `${t.frame.h * 100}%` }}
+          aria-label={tr('edit.replaceLine', { text: t.text })}
+          title={t.text}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={() => onReplace(t.key)}
+        />
       ))}
       {draft && <div className={'edit-item edit-draft edit-' + tool} style={{ left: `${draft.x * 100}%`, top: `${draft.y * 100}%`, width: `${draft.w * 100}%`, height: `${draft.h * 100}%` }} />}
     </div>
