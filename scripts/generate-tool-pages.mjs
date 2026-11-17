@@ -1,45 +1,99 @@
-// Genera un HTML por herramienta (unir-pdf.html, imagen-a-pdf.html…) a partir
-// de tools/pages.mjs. El texto queda en el HTML para que los buscadores lo lean
-// sin ejecutar JavaScript; la herramienta se monta encima con src/tools/main.tsx.
+// Genera las páginas para buscadores a partir de tools/pages.mjs (español) y de
+// tools/locales/<idioma>.mjs (traducciones):
+//   - Una página por herramienta: /unir-pdf (español) y /en/merge-pdf, etc.
+//   - La portada en cada idioma: /en/ se arma desde index.html con la tabla de
+//     reemplazos del idioma, así hay una sola portada que mantener.
+//   - hreflang entre todas las versiones, selector de idioma y sitemap.xml.
+// El texto queda en el HTML para que los buscadores lo lean sin ejecutar
+// JavaScript; la herramienta se monta encima con src/tools/main.tsx.
 // Se ejecuta antes de `dev` y `build`; los archivos generados se versionan y el
 // CI verifica que estén al día (`npm run pages:check`).
-import { readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 import { SITE, pages } from '../tools/pages.mjs'
-
-/** Primera letra en minúscula para "Cómo unir PDF…", salvo siglas como OCR. */
-const lowerFirst = (s) => (/^\p{Lu}{2}/u.test(s) ? s : s.charAt(0).toLowerCase() + s.slice(1))
+import { ES, LANGS, LOCALES, filePath, homePath, localized, pagePath } from '../tools/locales/index.mjs'
 
 const root = join(import.meta.dirname, '..')
 const check = process.argv.includes('--check')
+const stale = []
 
+/** Escribe el archivo si cambió (o lo anota como desactualizado con --check). */
+function emit(rel, content) {
+  const file = join(root, rel)
+  let current = null
+  try {
+    current = readFileSync(file, 'utf-8')
+  } catch {
+    /* todavía no existe */
+  }
+  if (current === content) return
+  if (check) stale.push(rel)
+  else {
+    mkdirSync(dirname(file), { recursive: true })
+    writeFileSync(file, content)
+  }
+}
+
+/** Primera letra en minúscula para "Cómo unir PDF…", salvo siglas como OCR. */
+const lowerFirst = (s) => (/^\p{Lu}{2}/u.test(s) ? s : s.charAt(0).toLowerCase() + s.slice(1))
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 // JSON-LD dentro de <script>: evita que un "</" del texto cierre la etiqueta.
 const jsonLd = (obj) => JSON.stringify(obj, null, 2).replace(/</g, '\\u003c')
 
-function render(page) {
-  const url = `${SITE}/${page.slug}`
-  const related = pages.filter((p) => p.slug !== page.slug)
+/** <link rel="alternate" hreflang> de una página en todos los idiomas (más x-default = español). */
+function alternates(pathFor) {
+  return [
+    ...LANGS.map((l) => `<link rel="alternate" hreflang="${l.lang}" href="${SITE}${pathFor(l)}">`),
+    `<link rel="alternate" hreflang="x-default" href="${SITE}${pathFor(ES)}">`,
+  ].join('\n')
+}
+
+/** Selector de idioma sin JavaScript: enlaces a la misma página en cada idioma. */
+function langMenu(current, pathFor, cls, indent) {
+  const items = LANGS.map(
+    (l) =>
+      `    <li><a href="${pathFor(l)}" hreflang="${l.lang}" lang="${l.lang}" data-set-lang="${l.lang}"${l.lang === current.lang ? ' aria-current="page"' : ''}>${esc(l.label)}</a></li>`,
+  )
+  return [
+    `<details class="${cls}">`,
+    `  <summary aria-label="${esc(current.ui.langMenu)}: ${esc(current.label)}"><span aria-hidden="true">🌐</span> ${current.lang.toUpperCase()}</summary>`,
+    '  <ul>',
+    ...items,
+    '  </ul>',
+    '</details>',
+  ]
+    .map((l) => indent + l)
+    .join('\n')
+}
+
+// ── Página de cada herramienta ───────────────────────────────────────────────
+function render(page, loc) {
+  const p = localized(page, loc)
+  const ui = loc.ui
+  const url = `${SITE}${pagePath(page, loc)}`
+  const pathFor = (l) => pagePath(page, l)
+  const related = pages.filter((x) => x.slug !== page.slug)
   const toolAttrs = `data-kind="${esc(page.tool.kind)}"${page.tool.id ? ` data-id="${esc(page.tool.id)}"` : ''} data-slug="${esc(page.slug)}"`
+  const home = homePath(loc)
 
   const structured = [
     {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
-      name: `${page.h1} · DocuSmart`,
+      name: `${p.h1} · DocuSmart`,
       url,
-      description: page.description,
+      description: p.description,
       applicationCategory: 'UtilitiesApplication',
-      operatingSystem: 'Cualquiera (navegador web)',
+      operatingSystem: ui.os,
       isAccessibleForFree: true,
-      inLanguage: 'es',
+      inLanguage: loc.lang,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       publisher: { '@type': 'Organization', name: 'DocuSmart', url: SITE },
     },
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: page.faq.map(([q, a]) => ({
+      mainEntity: p.faq.map(([q, a]) => ({
         '@type': 'Question',
         name: q,
         acceptedAnswer: { '@type': 'Answer', text: a },
@@ -49,28 +103,29 @@ function render(page) {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'DocuSmart', item: `${SITE}/` },
-        { '@type': 'ListItem', position: 2, name: page.h1, item: url },
+        { '@type': 'ListItem', position: 1, name: 'DocuSmart', item: `${SITE}${home}` },
+        { '@type': 'ListItem', position: 2, name: p.h1, item: url },
       ],
     },
   ]
 
   return `<!doctype html>
 <!-- Generado por scripts/generate-tool-pages.mjs desde tools/pages.mjs. No editar a mano. -->
-<html lang="es">
+<html lang="${loc.lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${esc(page.title)}</title>
-<meta name="description" content="${esc(page.description)}">
+<title>${esc(p.title)}</title>
+<meta name="description" content="${esc(p.description)}">
 <meta name="theme-color" content="#0B1020">
 <link rel="canonical" href="${url}">
+${alternates(pathFor)}
 <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DocuSmart">
-<meta property="og:locale" content="es_ES">
-<meta property="og:title" content="${esc(page.title)}">
-<meta property="og:description" content="${esc(page.description)}">
+<meta property="og:locale" content="${loc.ogLocale}">
+<meta property="og:title" content="${esc(p.title)}">
+<meta property="og:description" content="${esc(p.description)}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${SITE}/img/screen-home.webp">
 <meta name="twitter:card" content="summary">
@@ -81,11 +136,12 @@ ${jsonLd(structured)}
 <body class="tool-page">
 <header class="tp-nav">
   <div class="tp-wrap tp-nav-inner">
-    <a class="tp-brand" href="/"><img src="/img/icon.svg" alt="" width="30" height="30">DocuSmart</a>
-    <nav aria-label="Principal">
-      <a href="#herramientas">Herramientas</a>
-      <a href="/app/">App web</a>
-      <a class="tp-nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool">Descargar app</a>
+    <a class="tp-brand" href="${home}"><img src="/img/icon.svg" alt="" width="30" height="30">DocuSmart</a>
+    <nav aria-label="${esc(ui.navMain)}">
+      <a href="#herramientas">${esc(ui.navTools)}</a>
+      <a href="/app/">${esc(ui.navWebApp)}</a>
+${langMenu(loc, pathFor, 'tp-lang', '      ')}
+      <a class="tp-nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool">${esc(ui.navDownload)}</a>
     </nav>
   </div>
 </header>
@@ -93,57 +149,55 @@ ${jsonLd(structured)}
 <main>
   <section class="tp-hero">
     <div class="tp-wrap">
-      <nav class="tp-crumbs" aria-label="Ruta"><a href="/">DocuSmart</a><span aria-hidden="true">›</span><span>${esc(page.h1)}</span></nav>
-      <h1>${esc(page.h1)}</h1>
-      <p class="tp-lead">${esc(page.lead)}</p>
+      <nav class="tp-crumbs" aria-label="${esc(ui.crumbs)}"><a href="${home}">DocuSmart</a><span aria-hidden="true">›</span><span>${esc(p.h1)}</span></nav>
+      <h1>${esc(p.h1)}</h1>
+      <p class="tp-lead">${esc(p.lead)}</p>
       <ul class="tp-badges">
-        <li>Sin subir tus archivos</li>
-        <li>Gratis y sin registro</li>
-        <li>Funciona en el navegador</li>
+${ui.badges.map((b) => `        <li>${esc(b)}</li>`).join('\n')}
       </ul>
     </div>
   </section>
 
-  <section class="tp-wrap tp-tool" aria-label="Herramienta">
+  <section class="tp-wrap tp-tool" aria-label="${esc(ui.toolAria)}">
     <div id="tool" ${toolAttrs}>
-      <noscript><p class="tp-noscript">Para usar esta herramienta activa JavaScript en tu navegador. Todo el proceso ocurre en tu equipo.</p></noscript>
+      <noscript><p class="tp-noscript">${esc(ui.noscript)}</p></noscript>
     </div>
   </section>
 
   <section class="tp-wrap tp-section">
-    <h2>${esc(page.howTo ?? `Cómo ${lowerFirst(page.h1)} en 3 pasos`)}</h2>
+    <h2>${esc(p.howTo ?? ui.howTo.replace('{tool}', lowerFirst(p.h1)))}</h2>
     <ol class="tp-steps">
-${page.steps.map((s) => `      <li>${esc(s)}</li>`).join('\n')}
+${p.steps.map((s) => `      <li>${esc(s)}</li>`).join('\n')}
     </ol>
   </section>
 
   <section class="tp-wrap tp-section tp-privacy">
-    <h2>Tus archivos no salen de tu equipo</h2>
-    <p>A diferencia de otras herramientas en línea, DocuSmart no sube tus documentos a ningún servidor: todo se procesa dentro de tu navegador. Puedes usarla con contratos, facturas o documentos de identidad con total tranquilidad. <a href="/privacidad">Lee nuestra política de privacidad</a>.</p>
+    <h2>${esc(ui.privacyTitle)}</h2>
+    <p>${esc(ui.privacyText)} <a href="/privacidad">${esc(ui.privacyLink)}</a>.</p>
   </section>
 
   <section class="tp-wrap tp-section">
-    <h2>Preguntas frecuentes</h2>
+    <h2>${esc(ui.faqTitle)}</h2>
     <div class="tp-faq">
-${page.faq.map(([q, a]) => `      <details>\n        <summary>${esc(q)}</summary>\n        <p>${esc(a)}</p>\n      </details>`).join('\n')}
+${p.faq.map(([q, a]) => `      <details>\n        <summary>${esc(q)}</summary>\n        <p>${esc(a)}</p>\n      </details>`).join('\n')}
     </div>
   </section>
 
   <section class="tp-wrap tp-section" id="herramientas">
-    <h2>Más herramientas gratis</h2>
+    <h2>${esc(ui.moreTools)}</h2>
     <ul class="tp-related">
-${related.map((p) => `      <li><a href="/${p.slug}"><b>${esc(p.h1)}</b><span>${esc(p.short)}</span></a></li>`).join('\n')}
-      <li><a href="/app/"><b>Todas las herramientas</b><span>Abre DocuSmart Web</span></a></li>
+${related.map((r) => `      <li><a href="${pagePath(r, loc)}"><b>${esc(localized(r, loc).h1)}</b><span>${esc(localized(r, loc).short)}</span></a></li>`).join('\n')}
+      <li><a href="/app/"><b>${esc(ui.allTools)}</b><span>${esc(ui.openWeb)}</span></a></li>
     </ul>
   </section>
 
   <section class="tp-wrap tp-section">
     <div class="tp-cta">
       <div>
-        <h2>Lleva DocuSmart en tu celular</h2>
-        <p>La app para Android suma escáner con detección de bordes, carpeta segura con PIN, Word, Excel y PowerPoint, y OCR. Funciona sin conexión.</p>
+        <h2>${esc(ui.ctaTitle)}</h2>
+        <p>${esc(ui.ctaText)}</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Descargar en Google Play</a>
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">${esc(ui.ctaBtn)}</a>
     </div>
   </section>
 </main>
@@ -151,11 +205,11 @@ ${related.map((p) => `      <li><a href="/${p.slug}"><b>${esc(p.h1)}</b><span>${
 <footer class="tp-foot">
   <div class="tp-wrap tp-foot-inner">
     <span>© DocuSmart</span>
-    <nav aria-label="Pie de página">
-      <a href="/">Inicio</a>
+    <nav aria-label="${esc(ui.footAria)}">
+      <a href="${home}">${esc(ui.footHome)}</a>
       <a href="/app/">DocuSmart Web</a>
-      <a href="/privacidad">Política de privacidad</a>
-      <button type="button" class="link-btn" data-consent-open hidden>Preferencias de analítica</button>
+      <a href="/privacidad">${esc(ui.footPrivacy)}</a>
+      <button type="button" class="link-btn" data-consent-open hidden>${esc(ui.footConsent)}</button>
     </nav>
   </div>
 </footer>
@@ -165,63 +219,66 @@ ${related.map((p) => `      <li><a href="/${p.slug}"><b>${esc(p.h1)}</b><span>${
 `
 }
 
-let stale = []
-for (const page of pages) {
-  const file = join(root, `${page.slug}.html`)
-  const html = render(page)
-  let current = null
-  try {
-    current = readFileSync(file, 'utf-8')
-  } catch {
-    /* todavía no existe */
+for (const loc of LANGS) for (const page of pages) emit(filePath(page, loc), render(page, loc))
+
+// ── Portada ──────────────────────────────────────────────────────────────────
+/** Reemplaza el bloque entre <!-- name:start --> y <!-- name:end -->. */
+function block(html, name, content, file) {
+  const re = new RegExp(`<!-- ${name}:start -->[\\s\\S]*?<!-- ${name}:end -->`)
+  if (!re.test(html)) throw new Error(`${file} no tiene los marcadores ${name}:start/${name}:end`)
+  return html.replace(re, () => `<!-- ${name}:start -->\n${content}\n<!-- ${name}:end -->`)
+}
+
+function landingBlocks(html, loc, file) {
+  const items = pages
+    .map((p) => `        <li><a href="${pagePath(p, loc)}"><b>${esc(localized(p, loc).h1)}</b><span>${esc(localized(p, loc).short)}</span></a></li>`)
+    .join('\n')
+  let out = block(html, 'tools', items, file)
+  out = block(out, 'hreflang', alternates(homePath), file)
+  out = block(out, 'langs', langMenu(loc, homePath, 'lang-menu', '  '), file)
+  return out
+}
+
+const landingEs = landingBlocks(readFileSync(join(root, 'index.html'), 'utf-8'), ES, 'index.html')
+emit('index.html', landingEs)
+
+for (const loc of LOCALES) {
+  let html = landingEs
+  // Primero los textos más largos, para que uno corto no pise parte de otro.
+  const pairs = [...loc.landing].sort((a, b) => b[0].length - a[0].length)
+  for (const [from, to] of pairs) {
+    if (!html.includes(from)) throw new Error(`tools/locales/${loc.lang}.mjs: la portada ya no contiene ${JSON.stringify(from)}`)
+    html = html.split(from).join(to)
   }
-  if (current === html) continue
-  if (check) stale.push(`${page.slug}.html`)
-  else writeFileSync(file, html)
+  html = html
+    .replace('<html lang="es">', `<html lang="${loc.lang}">`)
+    .replace(`<link rel="canonical" href="${SITE}/">`, `<link rel="canonical" href="${SITE}/${loc.lang}/">`)
+    .replace(`<meta property="og:url" content="${SITE}/">`, `<meta property="og:url" content="${SITE}/${loc.lang}/">`)
+    .replace('<meta property="og:locale" content="es_ES">', `<meta property="og:locale" content="${loc.ogLocale}">`)
+    .replace('<!doctype html>', '<!doctype html>\n<!-- Generado por scripts/generate-tool-pages.mjs desde index.html. No editar a mano. -->')
+  emit(`${loc.lang}/index.html`, landingBlocks(html, loc, `${loc.lang}/index.html`))
 }
 
-// Lista de herramientas de la landing, entre <!-- tools:start --> y <!-- tools:end -->.
-const landingFile = join(root, 'index.html')
-const landing = readFileSync(landingFile, 'utf-8')
-const items = pages
-  .map((p) => `        <li><a href="/${p.slug}"><b>${esc(p.h1)}</b><span>${esc(p.short)}</span></a></li>`)
-  .join('\n')
-const landingNext = landing.replace(/<!-- tools:start -->[\s\S]*?<!-- tools:end -->/, `<!-- tools:start -->
-${items}
-<!-- tools:end -->`)
-if (!landing.includes('<!-- tools:start -->')) throw new Error('index.html no tiene los marcadores tools:start/tools:end')
-if (landingNext !== landing) {
-  if (check) stale.push('index.html (lista de herramientas)')
-  else writeFileSync(landingFile, landingNext)
+// ── sitemap.xml con las versiones de cada página ─────────────────────────────
+const entry = (pathFor, freq, prio) => {
+  const links = [...LANGS.map((l) => [l.lang, pathFor(l)]), ['x-default', pathFor(ES)]]
+    .map(([hl, p]) => `    <xhtml:link rel="alternate" hreflang="${hl}" href="${SITE}${p}"/>`)
+    .join('\n')
+  return LANGS.map((l) => `  <url>\n    <loc>${SITE}${pathFor(l)}</loc>\n${links}\n    <changefreq>${freq}</changefreq>\n    <priority>${prio}</priority>\n  </url>`).join('\n')
 }
-
-// sitemap.xml: páginas fijas + una entrada por herramienta.
-const sitemapFile = join(root, 'public', 'sitemap.xml')
-const urls = [
-  ['/', 'monthly', '1.0'],
-  ...pages.map((p) => [`/${p.slug}`, 'monthly', '0.9']),
-  ['/app/', 'monthly', '0.8'],
-  ['/privacidad', 'yearly', '0.3'],
-]
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <!-- Generado por scripts/generate-tool-pages.mjs. No editar a mano. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(([u, f, pr]) => `  <url><loc>${SITE}${u}</loc><changefreq>${f}</changefreq><priority>${pr}</priority></url>`).join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${entry(homePath, 'monthly', '1.0')}
+${pages.map((p) => entry((l) => pagePath(p, l), 'monthly', '0.9')).join('\n')}
+  <url><loc>${SITE}/app/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>${SITE}/privacidad</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
 `
-let currentSitemap = null
-try {
-  currentSitemap = readFileSync(sitemapFile, 'utf-8')
-} catch {
-  /* todavía no existe */
-}
-if (currentSitemap !== sitemap) {
-  if (check) stale.push('public/sitemap.xml')
-  else writeFileSync(sitemapFile, sitemap)
-}
+emit('public/sitemap.xml', sitemap)
 
 if (check && stale.length) {
-  console.error(`Páginas de herramientas desactualizadas: ${stale.join(', ')}. Ejecuta: npm run pages`)
+  console.error(`Páginas desactualizadas: ${stale.join(', ')}. Ejecuta: npm run pages`)
   process.exit(1)
 }
-console.log(`Páginas de herramientas: ${pages.length} ${check ? 'al día' : 'generadas'}`)
+console.log(`Páginas: ${pages.length} herramientas × ${LANGS.length} idiomas ${check ? 'al día' : 'generadas'}`)

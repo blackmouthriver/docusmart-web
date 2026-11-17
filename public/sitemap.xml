@@ -1,38 +1,518 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generado por scripts/generate-tool-pages.mjs. No editar a mano. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://docusmart.online/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://docusmart.online/unir-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/dividir-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/rotar-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/escanear-documento</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/llenar-formulario-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/editar-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/extraer-imagenes-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/comparar-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/censurar-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/firmar-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/recortar-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/comprimir-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/proteger-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/desbloquear-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/reparar-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/pdf-a-pdfa</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/comprimir-imagen</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/redimensionar-imagen</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/recortar-imagen</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/rotar-imagen</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/comprimir-archivos</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/descomprimir-archivos</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/ocr-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/imagen-a-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/pdf-a-jpg</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/pdf-a-word</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/pdf-a-excel</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/word-a-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/excel-a-pdf</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/pdf-a-texto</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://docusmart.online/crear-codigo-qr</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://docusmart.online/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/"/>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/"/>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/unir-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/unir-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/merge-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/unir-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/merge-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/unir-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/merge-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/unir-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/dividir-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/dividir-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/split-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/dividir-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/split-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/dividir-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/split-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/dividir-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/rotar-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/rotar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/rotate-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/rotar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/rotate-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/rotar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/rotate-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/rotar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/escanear-documento</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/escanear-documento"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/scan-document"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/escanear-documento"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/scan-document</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/escanear-documento"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/scan-document"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/escanear-documento"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/llenar-formulario-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/llenar-formulario-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/fill-pdf-form"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/llenar-formulario-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/fill-pdf-form</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/llenar-formulario-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/fill-pdf-form"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/llenar-formulario-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/editar-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/editar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/edit-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/editar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/edit-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/editar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/edit-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/editar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/extraer-imagenes-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/extraer-imagenes-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/extract-images-from-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/extraer-imagenes-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/extract-images-from-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/extraer-imagenes-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/extract-images-from-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/extraer-imagenes-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/comparar-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/comparar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/compare-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/comparar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/compare-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/comparar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/compare-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/comparar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/censurar-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/censurar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/redact-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/censurar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/redact-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/censurar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/redact-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/censurar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/firmar-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/firmar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/sign-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/firmar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/sign-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/firmar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/sign-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/firmar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/recortar-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/recortar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/crop-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/recortar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/crop-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/recortar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/crop-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/recortar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/comprimir-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/comprimir-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/compress-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/comprimir-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/compress-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/comprimir-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/compress-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/comprimir-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/proteger-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/proteger-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/proteger-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/protect-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/proteger-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/proteger-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/desbloquear-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/desbloquear-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/unlock-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/desbloquear-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/unlock-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/desbloquear-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/unlock-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/desbloquear-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/reparar-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/reparar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/repair-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/reparar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/repair-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/reparar-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/repair-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/reparar-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pdf-a-pdfa</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-pdfa"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-pdfa"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-pdfa"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/pdf-to-pdfa</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-pdfa"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-pdfa"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-pdfa"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/comprimir-imagen</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/comprimir-imagen"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/compress-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/comprimir-imagen"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/compress-image</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/comprimir-imagen"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/compress-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/comprimir-imagen"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/redimensionar-imagen</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/redimensionar-imagen"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/resize-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/redimensionar-imagen"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/resize-image</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/redimensionar-imagen"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/resize-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/redimensionar-imagen"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/recortar-imagen</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/recortar-imagen"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/crop-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/recortar-imagen"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/crop-image</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/recortar-imagen"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/crop-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/recortar-imagen"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/rotar-imagen</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/rotar-imagen"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/rotate-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/rotar-imagen"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/rotate-image</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/rotar-imagen"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/rotate-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/rotar-imagen"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/comprimir-archivos</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/comprimir-archivos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/zip-files"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/comprimir-archivos"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/zip-files</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/comprimir-archivos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/zip-files"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/comprimir-archivos"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/descomprimir-archivos</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/descomprimir-archivos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/unzip-files"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/descomprimir-archivos"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/unzip-files</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/descomprimir-archivos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/unzip-files"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/descomprimir-archivos"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ocr-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/ocr-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/ocr-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/ocr-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/ocr-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/ocr-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/ocr-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/ocr-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/imagen-a-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/imagen-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/image-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/imagen-a-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/image-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/imagen-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/image-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/imagen-a-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pdf-a-jpg</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-jpg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-jpg"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/pdf-to-jpg</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-jpg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-jpg"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pdf-a-word</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-word"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-word"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-word"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/pdf-to-word</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-word"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-word"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-word"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pdf-a-excel</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-excel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-excel"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-excel"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/pdf-to-excel</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-excel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-excel"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-excel"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/word-a-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/word-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/word-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/word-a-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/word-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/word-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/word-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/word-a-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/excel-a-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/excel-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/excel-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/excel-a-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/excel-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/excel-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/excel-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/excel-a-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pdf-a-texto</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-texto"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-text"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-texto"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/pdf-to-text</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/pdf-a-texto"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/pdf-to-text"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/pdf-a-texto"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/crear-codigo-qr</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/crear-codigo-qr"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/qr-code-generator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/crear-codigo-qr"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/qr-code-generator</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/crear-codigo-qr"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/qr-code-generator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/crear-codigo-qr"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
   <url><loc>https://docusmart.online/app/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://docusmart.online/privacidad</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

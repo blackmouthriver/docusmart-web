@@ -5,8 +5,12 @@ import '../shared/trustedTypes'
 import { StrictMode, lazy, Suspense, useCallback, useRef, useState, type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AppContext } from '../app/state'
+import { I18nProvider } from '../app/i18n/I18n'
+import { DEFAULT_LANG, isLang } from '../app/i18n/languages'
+import { loadMessages, tr } from '../app/i18n/translate'
 import { initAnalytics, track, trackScreen } from '../shared/analytics'
 import { mountConsentBanner } from '../shared/consent'
+import { rememberLangChoice } from '../shared/langChoice'
 import '../shared/fonts'
 import '../app/app.css'
 import './tools.css'
@@ -67,7 +71,7 @@ function ToolHost({ children }: { children: ReactNode }) {
   const openAppSettings = () => (location.href = '/app/')
   return (
     <AppContext.Provider value={{ openFile: null, setOpenFile, toast, openSettings: openAppSettings }}>
-      <Suspense fallback={<p className="faint">Cargando herramienta…</p>}>{children}</Suspense>
+      <Suspense fallback={<p className="faint">{tr('common.loading')}</p>}>{children}</Suspense>
       <div className="toast-wrap" aria-live="polite">
         {toasts.map((t) => (
           <div key={t.id} className="toast">
@@ -90,15 +94,23 @@ function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
 
 initAnalytics()
 mountConsentBanner()
+rememberLangChoice()
 
+// La herramienta habla el idioma de la página (/en/merge-pdf → inglés), no el guardado.
+const pageLang = document.documentElement.lang
+const lang = isLang(pageLang) ? pageLang : DEFAULT_LANG
 const host = document.getElementById('tool')
 if (host) {
   const { kind, id, slug } = host.dataset
   trackScreen(`Tool/${slug ?? kind}`)
-  createRoot(host).render(
-    <StrictMode>
-      <ToolHost>{toolFor(kind, id)}</ToolHost>
-    </StrictMode>,
+  void loadMessages(lang).then((dict) =>
+    createRoot(host).render(
+      <StrictMode>
+        <I18nProvider initialLang={lang} initialDict={dict}>
+          <ToolHost>{toolFor(kind, id)}</ToolHost>
+        </I18nProvider>
+      </StrictMode>,
+    ),
   )
 }
 

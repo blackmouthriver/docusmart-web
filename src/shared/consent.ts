@@ -5,6 +5,7 @@
  * su decisión. "Rechazar" tiene el mismo peso visual que "Aceptar".
  */
 import { analyticsConfigured, getConsent, setConsent } from './analytics'
+import { consentText } from './consentText'
 import './consent.css'
 
 const PRIVACY_HREF = '/privacidad.html#sitio-web'
@@ -12,31 +13,34 @@ const PRIVACY_HREF = '/privacidad.html#sitio-web'
 function showBanner() {
   document.querySelector('.ds-consent')?.remove()
   const current = getConsent()
+  // El idioma de la página: el de la portada o herramienta (/en/…) o el elegido en la app.
+  const t = consentText(document.documentElement.lang)
 
   // Se arma con APIs del DOM (no innerHTML): compatible con Trusted Types.
   const el = document.createElement('div')
   el.className = 'ds-consent'
   el.setAttribute('role', 'dialog')
   el.setAttribute('aria-live', 'polite')
-  el.setAttribute('aria-label', 'Preferencias de analítica')
+  el.setAttribute('aria-label', t.title)
 
   const p = document.createElement('p')
-  p.append('Usamos Google Analytics (Firebase) para saber qué funciones se usan y mejorar DocuSmart. Nunca enviamos tus archivos ni su contenido.')
+  p.append(t.body)
   if (current) {
     const state = document.createElement('b')
-    state.textContent = current === 'granted' ? 'activada' : 'desactivada'
-    p.append(' Ahora mismo la tienes ', state, '.')
+    state.textContent = current === 'granted' ? t.on : t.off
+    const [before, after = ''] = t.current.split('{state}')
+    p.append(' ', before, state, after)
   }
   const more = document.createElement('a')
   more.href = PRIVACY_HREF
-  more.textContent = 'Más información'
+  more.textContent = t.more
   p.append(' ', more)
 
   const actions = document.createElement('div')
   actions.className = 'ds-consent-actions'
   for (const [value, label] of [
-    ['denied', 'Rechazar'],
-    ['granted', 'Aceptar'],
+    ['denied', t.deny],
+    ['granted', t.accept],
   ] as const) {
     const b = document.createElement('button')
     b.type = 'button'

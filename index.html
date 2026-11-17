@@ -11,7 +11,13 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://docusmart.online/">
 <meta property="og:image" content="https://docusmart.online/img/screen-home.webp">
+<meta property="og:locale" content="es_ES">
 <link rel="canonical" href="https://docusmart.online/">
+<!-- hreflang:start -->
+<link rel="alternate" hreflang="es" href="https://docusmart.online/">
+<link rel="alternate" hreflang="en" href="https://docusmart.online/en/">
+<link rel="alternate" hreflang="x-default" href="https://docusmart.online/">
+<!-- hreflang:end -->
 <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
 <style>
   :root {
@@ -112,6 +118,15 @@
   .nav-links a { display: block; padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; opacity: .78; transition: opacity 150ms ease, background-color 150ms ease; }
   @media (hover: hover) and (pointer: fine) { .nav-links a:hover { opacity: 1; background: rgba(127,127,127,.12); } }
   .nav .btn { height: 42px; padding: 0 18px; font-size: 14px; }
+  /* Selector de idioma: enlaces a la portada en cada idioma, sin JavaScript. */
+  .lang-menu { position: relative; border-bottom: 0; }
+  .lang-menu summary { list-style: none; display: flex; align-items: center; gap: 6px; height: 42px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; opacity: .85; }
+  .lang-menu summary::-webkit-details-marker { display: none; }
+  .lang-menu[open] summary, .lang-menu summary:focus-visible { opacity: 1; background: rgba(127,127,127,.14); }
+  .lang-menu ul { position: absolute; right: 0; top: calc(100% + 8px); min-width: 170px; margin: 0; padding: 6px; list-style: none; border-radius: 16px; background: var(--card); color: var(--ink); box-shadow: 0 0 0 1px var(--line), 0 20px 40px -16px rgba(11,16,32,.35); }
+  .lang-menu a { display: block; padding: 8px 12px; border-radius: 10px; font-size: 14px; }
+  .lang-menu a[aria-current] { font-weight: 700; color: var(--blue); }
+  @media (hover: hover) and (pointer: fine) { .lang-menu a:hover { background: var(--paper-2); } }
   .menu-toggle { display: none; width: 42px; height: 42px; border-radius: 999px; border: 0; background: rgba(127,127,127,.14); cursor: pointer; place-items: center; }
   .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after { display: block; width: 16px; height: 1.5px; background: currentColor; border-radius: 2px; position: relative; transition: transform 250ms var(--ease-out), opacity 150ms ease; }
   .menu-toggle span::before, .menu-toggle span::after { content: ""; position: absolute; left: 0; }
@@ -480,8 +495,17 @@
     <li><a href="#herramientas">Herramientas</a></li>
     <li><a href="/app/" data-track="web_app_nav">Usar en la web</a></li>
   </ul>
+  <!-- langs:start -->
+  <details class="lang-menu">
+    <summary aria-label="Idioma: Español"><span aria-hidden="true">🌐</span> ES</summary>
+    <ul>
+      <li><a href="/" hreflang="es" lang="es" data-set-lang="es" aria-current="page">Español</a></li>
+      <li><a href="/en/" hreflang="en" lang="en" data-set-lang="en">English</a></li>
+    </ul>
+  </details>
+<!-- langs:end -->
   <a class="btn btn-primary nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_1">Descargar</a>
-  <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+  <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" data-open-label="Abrir menú" data-close-label="Cerrar menú" aria-expanded="false" aria-controls="nav-links"><span></span></button>
 </header>
 
 <main id="top">
@@ -825,7 +849,7 @@
   <div class="wrap foot">
     <a class="brand" href="#top"><img src="/img/icon.svg" alt="" width="28" height="28">DocuSmart</a>
     <nav aria-label="Pie de página">
-      <a href="privacidad.html">Política de privacidad</a>
+      <a href="/privacidad">Política de privacidad</a>
       <button type="button" class="foot-link" data-consent-open hidden>Preferencias de analítica</button>
       <a href="/app/" data-track="web_app_footer">DocuSmart Web</a>
       <a href="mailto:jblackmouthr@gmail.com">Contacto</a>

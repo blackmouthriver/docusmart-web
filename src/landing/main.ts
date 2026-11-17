@@ -2,6 +2,9 @@ import '../shared/trustedTypes'
 import '../shared/fonts'
 import { initAnalytics, track } from '../shared/analytics'
 import { mountConsentBanner } from '../shared/consent'
+import { rememberLangChoice } from '../shared/langChoice'
+
+rememberLangChoice()
 
 document.documentElement.classList.add('js')
 
@@ -34,15 +37,18 @@ addEventListener(
 )
 updateNav()
 
+// Las etiquetas vienen en el HTML, ya traducidas en cada portada (/en/…).
+const openLabel = toggle.dataset.openLabel ?? 'Abrir menú'
+const closeLabel = toggle.dataset.closeLabel ?? 'Cerrar menú'
 const closeMenu = () => {
   nav.classList.remove('is-open')
   toggle.setAttribute('aria-expanded', 'false')
-  toggle.setAttribute('aria-label', 'Abrir menú')
+  toggle.setAttribute('aria-label', openLabel)
 }
 toggle.addEventListener('click', () => {
   const open = nav.classList.toggle('is-open')
   toggle.setAttribute('aria-expanded', String(open))
-  toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú')
+  toggle.setAttribute('aria-label', open ? closeLabel : openLabel)
 })
 document.querySelectorAll('.nav-links a').forEach((a) => a.addEventListener('click', closeMenu))
 addEventListener('keydown', (e) => {
