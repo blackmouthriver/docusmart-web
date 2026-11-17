@@ -13,6 +13,7 @@ import { applyEdits, type BoxKind, type EditItem, type FontName } from '../core/
 import { areaFromCorners } from '../core/pdfRedact'
 import { track } from '../../../shared/platform/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
+import { EDIT_PDF, clearHandOff, peekHandOff } from '../../../shared/files/handoff'
 
 type Item = EditItem & { id: number }
 type Tool = 'select' | 'text' | BoxKind
@@ -45,7 +46,9 @@ let nextId = 1
 
 export function EditTool() {
   const { toast } = useApp()
-  const [file, setFile] = useState<File | null>(null)
+  // Si llega desde Lectura ("Editar documento"), abre ese mismo PDF.
+  const [file, setFile] = useState<File | null>(() => peekHandOff(EDIT_PDF))
+  useEffect(() => clearHandOff(EDIT_PDF), [])
   /** Resultado listo para ver y guardar (ya no se descarga solo). */
   const [output, setOutput] = useState<File | null>(null)
   useEffect(() => setOutput(null), [file])
