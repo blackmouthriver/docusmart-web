@@ -186,3 +186,53 @@ export function buildPayload(f: QrForm): { payload: string } | { error: QrFormEr
       return { payload: eventPayload(f.event) }
   }
 }
+
+// ── Lector inteligente (W-84) ──────────────────────────────────────────
+
+export type ReadType = 'url' | 'email' | 'phone' | 'wifi' | 'contact' | 'event' | 'text'
+
+/** Tipo de un QR leído (como detectQrContentType de la app; los archivos locales del celular cuentan como texto). */
+export function detectType(value: string): ReadType {
+  const t = value.trim()
+  if (/^https?:\/\//i.test(t)) return 'url'
+  if (/^mailto:/i.test(t)) return 'email'
+  if (/^tel:/i.test(t)) return 'phone'
+  if (/^wifi:/i.test(t)) return 'wifi'
+  if (/BEGIN:VCARD/i.test(t)) return 'contact'
+  if (/BEGIN:VEVENT/i.test(t)) return 'event'
+  return 'text'
+}
+
+export type SafeLink = { href: string; host: string; secure: boolean; lookalike: boolean }
+
+/**
+ * Enlace que se puede abrir: solo http/https (nunca javascript:, data:, file:…). Devuelve el
+ * dominio para mostrarlo antes de abrir y avisa si no está cifrado o si el dominio usa
+ * caracteres de otros alfabetos (punycode, `xn--`) que pueden imitar a otro sitio.
+ */
+export function safeLink(value: string): SafeLink | null {
+  let url: URL
+  try {
+    url = new URL(value.trim())
+  } catch {
+    return null
+  }
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return null
+  if (!url.hostname) return null
+  return { href: url.href, host: url.hostname, secure: url.protocol === 'https:', lookalike: url.hostname.split('.').some((p) => p.startsWith('xn--')) }
+}
+
+/** Dirección de un `mailto:` (sin asunto ni otros parámetros). */
+export function emailAddress(payload: string): string {
+  const raw = payload.trim().replace(/^mailto:/i, '').split('?')[0]
+  try {
+    return decodeURIComponent(raw)
+  } catch {
+    return raw
+  }
+}
+
+export const phoneNumber = (payload: string) => payload.trim().replace(/^tel:/i, '').trim()
+
+/** Un `mailto:`/`tel:` solo se usa como enlace si no trae nada raro (sin espacios ni comillas). */
+export const isPlainScheme = (payload: string) => /^(mailto|tel):[^\s"'<>]+$/i.test(payload.trim())

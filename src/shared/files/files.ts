@@ -28,6 +28,8 @@ const SAFE_DOWNLOAD_TYPES = new Set([
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   'text/plain',
+  'text/vcard',
+  'text/calendar',
   'image/png',
   'image/jpeg',
   'image/webp',
