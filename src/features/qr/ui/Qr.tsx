@@ -10,7 +10,7 @@ import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
 import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, isPlainScheme, parseContact, parseEvent, parseWifi, phoneNumber, safeLink, type QrForm, type QrKind, type ReadType } from '../core/qrContent'
 import { download, isOwnBlobUrl, safeMimeType } from '../../../shared/files/files'
-import { QR_COLORS, QR_SIZES, errorLevels, hasSufficientContrast, logoBox, type QrColorId, type QrSize } from '../core/qrDesign'
+import { QR_COLORS, QR_SIZES, errorLevels, hasSufficientContrast, logoBox, svgWithLogo, type QrColorId, type QrSize } from '../core/qrDesign'
 import { useT } from '../../../shared/i18n/I18n'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -120,6 +120,36 @@ async function renderQr(payload: string, opts: { color: string; size: number; lo
   return url
 }
 
+/** El mismo QR en SVG (W-86): vectorial, para imprimir nítido en cualquier tamaño. */
+async function renderQrSvg(payload: string, opts: { color: string; logo: File | null }): Promise<string> {
+  let svg = ''
+  let failure: unknown = null
+  for (const level of errorLevels(!!opts.logo)) {
+    try {
+      svg = await QRCode.toString(payload, { type: 'svg', margin: 2, errorCorrectionLevel: level, color: { dark: opts.color, light: '#FFFFFF' } })
+      failure = null
+      break
+    } catch (e) {
+      failure = e
+    }
+  }
+  if (failure) throw failure
+  let logoUrl: string | null = null
+  if (opts.logo) {
+    // El logo se vuelve a dibujar como PNG: dentro del SVG solo va una imagen limpia.
+    const bmp = await createImageBitmap(opts.logo)
+    const k = Math.min(1, 512 / Math.max(bmp.width, bmp.height))
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.round(bmp.width * k)
+    canvas.height = Math.round(bmp.height * k)
+    canvas.getContext('2d')!.drawImage(bmp, 0, 0, canvas.width, canvas.height)
+    bmp.close()
+    logoUrl = canvas.toDataURL('image/png')
+    canvas.width = canvas.height = 0
+  }
+  return svgWithLogo(svg, logoUrl)
+}
+
 export function CreateQr() {
   const { toast } = useApp()
   const [form, setForm] = useState<QrForm>(emptyForm)
@@ -167,6 +197,34 @@ export function CreateQr() {
     setImg(null)
   }
 
+  // Guardar y compartir (W-86): SVG, copiar la imagen e imprimir solo el QR.
+  const [lastPayload, setLastPayload] = useState('')
+  const canCopyImage = typeof window !== 'undefined' && 'ClipboardItem' in window && !!navigator.clipboard?.write
+  const baseName = protect ? `docusmart-qr-${tr('file.protected')}` : 'docusmart-qr'
+  const downloadSvg = async () => {
+    try {
+      const svg = await renderQrSvg(lastPayload, { color: hex, logo })
+      download(new Blob([svg], { type: 'image/svg+xml' }), `${baseName}.svg`)
+      track('qr_exported', { format: 'svg' })
+    } catch {
+      toast(tr('qr.tooLong'))
+    }
+  }
+  const copyImage = async () => {
+    if (!qrFile) return
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': qrFile })])
+      toast(tr('qr.imageCopied'))
+      track('qr_exported', { format: 'clipboard' })
+    } catch {
+      toast(tr('qr.copyFailed'))
+    }
+  }
+  const printQr = () => {
+    track('qr_exported', { format: 'print' })
+    window.print()
+  }
+
   const create = async () => {
     setTried(true)
     if (!('payload' in built)) return
@@ -174,6 +232,7 @@ export function CreateQr() {
     try {
       const payload = protect ? PREFIX + (await encrypt(built.payload, password)) : built.payload
       setImg(await renderQr(payload, { color: hex, size: QR_SIZES[size], logo }))
+      setLastPayload(payload)
       track('qr_created', { qr_content_type: form.kind, has_password: protect, color, has_logo: !!logo, size })
     } catch {
       toast(tr('qr.tooLong'))
@@ -304,6 +363,14 @@ export function CreateQr() {
       )}
       {qrFile && (
         <>
+          <div className="row qr-extra">
+            <button type="button" className="btn btn-outline btn-sm" onClick={() => void downloadSvg()}><Icon name="download" /> {tr('qr.svg')}</button>
+            {canCopyImage && <button type="button" className="btn btn-outline btn-sm" onClick={() => void copyImage()}><Icon name="copy" /> {tr('qr.copyImage')}</button>}
+            <button type="button" className="btn btn-outline btn-sm" onClick={printQr}><Icon name="file" /> {tr('qr.print')}</button>
+          </div>
+          <small className="faint">{tr('qr.svgHint')}</small>
+          {/* Solo esto sale al imprimir (ver @media print en app.css). */}
+          {img && <div className="qr-print" aria-hidden="true"><img src={img} alt="" /></div>}
           <SaveOptions file={qrFile} toolName="qr" />
           <ShareApp toolName="qr" />
         </>

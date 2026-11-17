@@ -338,6 +338,15 @@ p { margin: 0; }
 .qr-color[aria-checked="true"] { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--blue); }
 .qr-logo-thumb { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; box-shadow: 0 0 0 1px var(--line); }
 .qr-preview img { max-width: min(100%, 360px); height: auto; }
+.qr-extra { gap: 8px; flex-wrap: wrap; }
+.qr-print { display: none; }
+/* Imprimir el QR: solo el código, centrado en la hoja (W-86). */
+@media print {
+  body:has(.qr-print) * { visibility: hidden !important; }
+  body:has(.qr-print) .qr-print, body:has(.qr-print) .qr-print * { visibility: visible !important; }
+  .qr-print { display: flex !important; position: fixed; inset: 0; align-items: center; justify-content: center; background: #fff; }
+  .qr-print img { width: 9cm; height: 9cm; }
+}
 .qr-result { padding: 14px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; animation: page-in 240ms var(--ease-out); }
 .qr-result-head { display: flex; align-items: center; gap: 10px; }
 .qr-result-head .ico { width: 36px; height: 36px; border-radius: 10px; }
