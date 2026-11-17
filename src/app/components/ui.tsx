@@ -3,6 +3,7 @@ import { Icon, type IconName } from './Icon'
 import { formatBytes, kindOf } from '../lib/files'
 import { AppContext } from '../state'
 import { useT } from '../i18n/I18n'
+import { tr } from '../i18n/translate'
 
 export function HeroCard({ title, subtitle }: { title: string; subtitle: string }) {
   const app = useContext(AppContext)
@@ -191,7 +192,7 @@ export function Progress({ value }: { value: number }) {
 export function errorMessage(e: unknown): string {
   const msg = e instanceof Error ? e.message : String(e)
   if (/encrypt/i.test(msg) || /password/i.test(msg))
-    return 'Este PDF tiene contraseña. Quítala primero con la herramienta "Desbloquear PDF".'
-  if (/Invalid PDF|No PDF header|InvalidPDF/i.test(msg)) return 'El archivo no parece un PDF válido.'
-  return 'No se pudo procesar el archivo. Intenta con otro.'
+    return tr('err.passwordPdf')
+  if (/Invalid PDF|No PDF header|InvalidPDF/i.test(msg)) return tr('err.invalidPdf')
+  return tr('err.generic')
 }

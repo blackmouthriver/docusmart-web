@@ -5,6 +5,7 @@ import { Icon } from './Icon'
 import { Notice } from './ui'
 import { download, formatBytes, isOwnBlobUrl, safeMimeType } from '../lib/files'
 import { PLAY_URL, SITE_URL, appShareLinks, toolShareUrl, canShareFile, docSummary, feedbackMailto, shareFile } from '../lib/share'
+import { tr } from '../i18n/translate'
 import { PageNav, usePdfPreview } from '../screens/PdfPreview'
 import { isDocx, isXlsx } from '../lib/officeRender'
 import { useApp } from '../state'
@@ -67,11 +68,11 @@ function TextPreview({ source, label, onPages }: PreviewProps) {
       <figcaption className="doc-preview-meta">
         <b>{label}</b>
         <span className="faint">
-          {source.size > 20_000 ? 'Texto' : `${lines} ${lines === 1 ? 'línea' : 'líneas'}`} · {formatBytes(source.size)}
+          {source.size > 20_000 ? tr('dp.text') : lines === 1 ? tr('dp.line') : tr('dp.lines', { n: lines })} · {formatBytes(source.size)}
         </span>
       </figcaption>
       <div className="doc-preview-stage text-preview-stage">
-        {text === null ? <span className="spinner" aria-label="Cargando vista previa" /> : <pre className="text-view">{text}{source.size > 20_000 ? '\n…' : ''}</pre>}
+        {text === null ? <span className="spinner" aria-label={tr('dp.loading')} /> : <pre className="text-view">{text}{source.size > 20_000 ? '\n…' : ''}</pre>}
       </div>
     </figure>
   )
@@ -89,19 +90,19 @@ function OfficePreview(props: PreviewProps) {
     void import('../lib/officeRender')
       .then(async (m) => (isDocx(source) ? (await m.docxToPdf(source, label)).pdf : await m.xlsxToPdf(source, label)))
       .then((bytes) => alive && setPdf(new Blob([bytes as BlobPart], { type: 'application/pdf' })))
-      .catch(() => alive && setError('No se pudo mostrar la vista previa de este archivo.'))
+      .catch(() => alive && setError(tr('dp.noPreview')))
     return () => {
       alive = false
     }
   }, [source, label])
-  if (pdf) return <PdfPreview {...props} source={pdf} displaySize={source.size} note="vista aproximada" />
+  if (pdf) return <PdfPreview {...props} source={pdf} displaySize={source.size} note={tr('dp.approx')} />
   return (
     <figure className="doc-preview">
       <figcaption className="doc-preview-meta">
         <b>{label}</b>
         <span className="faint">{formatBytes(source.size)}</span>
       </figcaption>
-      <div className="doc-preview-stage">{error ? <span className="faint">{error}</span> : <span className="spinner" aria-label="Preparando la vista previa" />}</div>
+      <div className="doc-preview-stage">{error ? <span className="faint">{error}</span> : <span className="spinner" aria-label={tr('dp.preparing')} />}</div>
     </figure>
   )
 }
@@ -120,10 +121,10 @@ function ImagePreview({ source, page, label, onPages }: PreviewProps) {
     <figure className="doc-preview">
       <figcaption className="doc-preview-meta">
         <b>{label}</b>
-        <span className="faint">Imagen · {formatBytes(source.size)}</span>
+        <span className="faint">{tr('dp.image')} · {formatBytes(source.size)}</span>
       </figcaption>
       <div className="doc-preview-stage">
-        {page > 1 ? <span className="faint">Este documento tiene 1 página.</span> : url ? <img src={url} alt={label} /> : <span className="spinner" aria-label="Cargando vista previa" />}
+        {page > 1 ? <span className="faint">{tr('dp.docHas', { pages: tr('dp.page') })}</span> : url ? <img src={url} alt={label} /> : <span className="spinner" aria-label={tr('dp.loading')} />}
       </div>
     </figure>
   )
@@ -151,11 +152,11 @@ function PdfPreview({ source, page, label, onPages, password, displaySize, note 
         {error ? (
           <Notice kind="error">{error}</Notice>
         ) : missing ? (
-          <span className="faint">Este documento tiene {pages === 1 ? '1 página' : `${pages} páginas`}.</span>
+          <span className="faint">{tr('dp.docHas', { pages: pages === 1 ? tr('dp.page') : tr('dp.pages', { n: pages }) })}</span>
         ) : preview ? (
-          <img src={preview.url} alt={`${label}: página ${pageNo} de ${pages}`} />
+          <img src={preview.url} alt={tr('dp.pageAlt', { label, n: pageNo, total: pages })} />
         ) : (
-          <span className="spinner" aria-label="Cargando vista previa" />
+          <span className="spinner" aria-label={tr('dp.loading')} />
         )}
       </div>
     </figure>
@@ -191,7 +192,7 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
   const save = () => {
     download(file, file.name, file.type)
     track('result_saved', { tool_name: toolName, method: 'download' })
-    toast('El archivo se descargó.')
+    toast(tr('save.downloaded'))
   }
   const share = async () => {
     setError(null)
@@ -199,7 +200,7 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
       const r = await shareFile(file)
       if (r === 'shared') track('result_saved', { tool_name: toolName, method: 'share' })
     } catch {
-      setError('No se pudo compartir el archivo. Descárgalo y envíalo desde tu dispositivo.')
+      setError(tr('save.shareError'))
     }
   }
   const toCloud = async (kind: 'drive' | 'dropbox') => {
@@ -214,16 +215,17 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
     try {
       if (kind === 'drive') {
         const r = await m.saveToDrive(file, abort.current.signal)
-        setCloud({ kind, status: 'done', text: `Guardado en tu Google Drive como "${r.name}".`, link: r.link })
+        setCloud({ kind, status: 'done', text: tr('save.driveDone', { name: r.name }), link: r.link })
       } else {
         const r = await m.saveToDropbox(file, abort.current.signal)
-        setCloud({ kind, status: 'done', text: `Guardado en tu Dropbox, en Aplicaciones › DocuSmart${r.path}.`, link: 'https://www.dropbox.com/home' })
+        setCloud({ kind, status: 'done', text: tr('save.dropboxDone', { path: r.path }), link: 'https://www.dropbox.com/home' })
       }
       track('result_saved', { tool_name: toolName, method: kind })
     } catch (e) {
       setCloud(null)
       if (e instanceof m.CloudCancelled) return
-      setError(e instanceof Error && /^(No se|El navegador|La autorización)/.test(e.message) ? e.message : `No se pudo guardar en ${kind === 'drive' ? 'Google Drive' : 'Dropbox'}.`)
+      const name = e instanceof Error ? e.name : ''
+      setError(name === 'PopupBlockedError' ? tr('save.popupBlocked') : name === 'CloudAuthError' ? tr('save.authExpired') : tr('save.cloudError', { service: kind === 'drive' ? 'Google Drive' : 'Dropbox' }))
     }
   }
   const busy = cloud?.status === 'busy'
@@ -233,12 +235,12 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
       <div className="save-options">
         <button type="button" className="btn btn-primary save-main" onClick={save}>
           <Icon name="download" />
-          Descargar
+          {tr('save.download')}
         </button>
         {shareable && (
           <button type="button" className="btn btn-outline" onClick={() => void share()}>
             <Icon name="share" />
-            Compartir
+            {tr('save.share')}
           </button>
         )}
         {enabled.drive && (
@@ -256,8 +258,8 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
       </div>
       {busy && (
         <small className="faint">
-          Autoriza a DocuSmart en la ventana que se abrió. Solo podrá ver los archivos que guarde ahí.{' '}
-          <button type="button" className="link-btn" onClick={() => abort.current?.abort()}>Cancelar</button>
+          {tr('save.authorize')}{' '}
+          <button type="button" className="link-btn" onClick={() => abort.current?.abort()}>{tr('save.cancel')}</button>
         </small>
       )}
       {cloud?.status === 'done' && (
@@ -265,12 +267,12 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
           {cloud.text}{' '}
           {cloud.link && (
             <a href={cloud.link} target="_blank" rel="noopener noreferrer">
-              Abrir
+              {tr('save.open')}
             </a>
           )}
         </Notice>
       )}
-      {shareable && !busy && <small className="faint">Con "Compartir" puedes enviarlo por WhatsApp, correo u otras apps de tu dispositivo.</small>}
+      {shareable && !busy && <small className="faint">{tr('save.shareHint')}</small>}
       {error && <Notice kind="error">{error}</Notice>}
     </div>
   )
@@ -282,35 +284,35 @@ export function ShareApp({ url = SITE_URL, toolName }: { url?: string; toolName:
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(url)
-      toast('Enlace copiado.')
+      toast(tr('shareApp.copied'))
       track('app_shared', { tool_name: toolName, channel: 'copy' })
     } catch {
-      toast('No se pudo copiar el enlace.')
+      toast(tr('shareApp.copyError'))
     }
   }
   return (
-    <aside className="share-app" aria-label="Recomienda DocuSmart">
-      <p className="share-app-title">¿Te sirvió? ¡Ayúdanos a que más personas conozcan DocuSmart!</p>
-      <p className="faint" style={{ margin: 0 }}>Compártelo con quien trabaje con documentos: es gratis y los archivos nunca salen de su dispositivo.</p>
+    <aside className="share-app" aria-label={tr('shareApp.aria')}>
+      <p className="share-app-title">{tr('shareApp.title')}</p>
+      <p className="faint" style={{ margin: 0 }}>{tr('shareApp.text')}</p>
       <div className="share-app-links">
-        {appShareLinks(url).map((l) => (
+        {appShareLinks(url, tr('shareApp.message')).map((l) => (
           <a key={l.id} className="btn btn-outline btn-sm" href={l.href} target="_blank" rel="noopener noreferrer" onClick={() => track('app_shared', { tool_name: toolName, channel: l.id })}>
             {l.label}
           </a>
         ))}
         <button type="button" className="btn btn-outline btn-sm" onClick={() => void copy()}>
           <Icon name="link" />
-          Copiar enlace
+          {tr('shareApp.copy')}
         </button>
       </div>
       <div className="share-app-links">
         <a className="btn btn-soft btn-sm" href={PLAY_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('app_shared', { tool_name: toolName, channel: 'play_rating' })}>
           <Icon name="star" />
-          Califica la app en Google Play
+          {tr('shareApp.rate')}
         </a>
         <a className="btn btn-soft btn-sm" href={feedbackMailto(toolName)} onClick={() => track('app_shared', { tool_name: toolName, channel: 'feedback' })}>
           <Icon name="mail" />
-          Envíanos tu opinión
+          {tr('shareApp.feedback')}
         </a>
       </div>
     </aside>
@@ -325,7 +327,7 @@ function FileTiles({ files, label, max = 12 }: { files: File[]; label: string; m
       <figcaption className="doc-preview-meta">
         <b>{label}</b>
         <span className="faint">
-          {files.length === 1 ? '1 archivo' : `${files.length} archivos`} · {formatBytes(total)}
+          {files.length === 1 ? tr('dp.file') : tr('dp.files', { n: files.length })} · {formatBytes(total)}
         </span>
       </figcaption>
       <div className="doc-preview-stage file-tiles-stage">
@@ -337,7 +339,7 @@ function FileTiles({ files, label, max = 12 }: { files: File[]; label: string; m
             </li>
           ))}
         </ul>
-        {files.length > max && <small className="faint">y {files.length - max} más</small>}
+        {files.length > max && <small className="faint">{tr('dp.more', { n: files.length - max })}</small>}
       </div>
     </figure>
   )
@@ -380,12 +382,12 @@ export function BeforeAfter({
   result,
   results,
   saveAs,
-  labels = ['Antes', 'Después'],
+  labels = [tr('dp.before'), tr('dp.after')],
   summary,
   toolName,
   title,
-  previewTitle = 'Vista previa de tu documento',
-  placeholder = 'Aquí verás el resultado',
+  previewTitle = tr('dp.previewTitle'),
+  placeholder = tr('dp.placeholder'),
   shareUrl,
   resultPassword,
   originalPassword,

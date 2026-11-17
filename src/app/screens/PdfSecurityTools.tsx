@@ -6,27 +6,28 @@ import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../c
 import { baseName, formatBytes } from '../lib/files'
 import { WrongPasswordError, compressLossless, isEncrypted, protect, repair, unlock, type CompressResult } from '../lib/pdfSecurity'
 import { track } from '../../shared/analytics'
+import { tr } from '../i18n/translate'
 import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
 
 const PDF = 'application/pdf'
 
 function friendly(e: unknown): string {
-  if (e instanceof WrongPasswordError) return 'La contraseña no es correcta.'
+  if (e instanceof WrongPasswordError) return tr('sec.wrongPassword')
   const msg = e instanceof Error ? e.message : ''
-  if (/encrypt|password/i.test(msg)) return 'Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".'
+  if (/encrypt|password/i.test(msg)) return tr('err.passwordPdf')
   if (/^(El |La |No |Falta |Este )/.test(msg)) return msg
-  return 'No se pudo procesar el archivo. Revisa que sea un PDF válido.'
+  return tr('sec.invalidPdfCheck')
 }
 
 /** Selector de un PDF con la fila del archivo elegido y botón para cambiarlo. */
 function PickPdf({ file, onFile }: { file: File | null; onFile: (f: File | null) => void }) {
   if (!file) {
-    return <DropZone accept={PDF} title="Toca para seleccionar un PDF" hint="O arrástralo aquí" onFiles={([f]) => onFile(f)} />
+    return <DropZone accept={PDF} title={tr('common.pickPdf')} hint={tr('common.dragHere')} onFiles={([f]) => onFile(f)} />
   }
   return (
     <ul className="file-list" style={{ marginTop: 0 }}>
-      <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => onFile(null)}>Cambiar</button>} />
+      <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => onFile(null)}>{tr('common.change')}</button>} />
     </ul>
   )
 }
@@ -35,7 +36,7 @@ function useJob(toolName: string) {
   const { toast } = useApp()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const run = async (fn: () => Promise<void>, okMsg = 'Listo. El archivo se descargó.') => {
+  const run = async (fn: () => Promise<void>, okMsg = tr('pdf.downloadedToast')) => {
     setBusy(true)
     setError(null)
     try {
@@ -69,7 +70,7 @@ export function CompressTool() {
       setOutput(null)
       setProgress(0)
       const bytes = new Uint8Array(await file!.arrayBuffer())
-      if (await isEncrypted(bytes)) throw new Error('Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".')
+      if (await isEncrypted(bytes)) throw new Error(tr('err.passwordPdf'))
       let r: CompressResult
       if (level === 'sin-perdida') {
         r = await compressLossless(bytes)
@@ -86,7 +87,7 @@ export function CompressTool() {
       // Ya no se descarga solo: primero se ve el resultado y luego se elige cómo guardarlo.
       if (r.improved) setOutput(resultFile(r.bytes, `${baseName(file!.name)}-comprimido.pdf`, PDF))
       track('pdf_compress_result', { level, before_kb: Math.round(r.before / 1024), after_kb: Math.round(r.after / 1024) })
-    }, 'Listo. Revisa el resultado y guárdalo.')
+    }, tr('common.doneReview'))
 
   const saved = result && result.before > 0 ? Math.round((1 - result.after / result.before) * 100) : 0
 
@@ -98,47 +99,47 @@ export function CompressTool() {
           original={file}
           result={output}
           toolName="compress"
-          title="Así quedó tu PDF comprimido"
-          previewTitle="Vista previa de tu PDF"
+          title={tr('compress.title')}
+          previewTitle={tr('common.previewPdf')}
           shareUrl="https://docusmart.online/comprimir-pdf"
-          placeholder={busy ? "Comprimiendo…" : "Elige el nivel y pulsa Comprimir PDF"}
+          placeholder={busy ? tr('compress.busy') : tr('compress.placeholder')}
           summary={
             result && (
               <Notice kind="success">
-                {formatBytes(result.before)} → <b>{formatBytes(result.after)}</b> ({saved}% menos). Compara las dos versiones y guárdalo.
+                {formatBytes(result.before)} → <b>{formatBytes(result.after)}</b> ({tr('common.lessPct', { n: saved })}). {tr('compress.summary')}
               </Notice>
             )
           }
         />
       )}
       <div className="field">
-        <span>Nivel de compresión</span>
+        <span>{tr('compress.level')}</span>
         <Segmented
-          label="Nivel de compresión"
+          label={tr('compress.level')}
           value={level}
           onChange={(v) => { setLevel(v); setResult(null); setOutput(null) }}
           options={[
-            { value: 'sin-perdida', label: 'Sin pérdida' },
-            { value: 'media', label: 'Media' },
-            { value: 'alta', label: 'Alta' },
+            { value: 'sin-perdida', label: tr('compress.lossless') },
+            { value: 'media', label: tr('compress.medium') },
+            { value: 'alta', label: tr('compress.high') },
           ]}
         />
         <small className="faint">
           {level === 'sin-perdida'
-            ? 'Optimiza la estructura del archivo sin tocar la calidad. El texto sigue siendo seleccionable.'
-            : 'Vuelve a dibujar cada página como imagen: reduce mucho el peso de PDF escaneados o con fotos, pero el texto deja de ser seleccionable.'}
+            ? tr('compress.losslessHint')
+            : tr('compress.strongHint')}
         </small>
       </div>
       {busy && level !== 'sin-perdida' && progress > 0 && <Progress value={progress} />}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!file} onClick={go} icon="compress">
-          Comprimir PDF
+          {tr('compress.go')}
         </BusyButton>
       </div>
       {result && !result.improved && (
         <Notice kind="info">
-          Este PDF ya estaba optimizado: no se pudo reducir más{level === 'sin-perdida' ? '. Prueba con el nivel "Media" o "Alta".' : '.'}
+          {tr('compress.already')}{level === 'sin-perdida' ? ` ${tr('compress.tryStronger')}` : ''}
         </Notice>
       )}
     </div>
@@ -153,7 +154,7 @@ function PasswordInput({ label, value, onChange, autoComplete }: { label: string
       <span>{label}</span>
       <div className="row" style={{ flexWrap: 'nowrap', gap: 6 }}>
         <input className="input" type={show ? 'text' : 'password'} autoComplete={autoComplete} value={value} onChange={(e) => onChange(e.target.value)} />
-        <button type="button" className="icon-btn" aria-label={show ? 'Ocultar contraseña' : 'Mostrar contraseña'} onClick={() => setShow((s) => !s)}>
+        <button type="button" className="icon-btn" aria-label={show ? tr('protect.hide') : tr('protect.show')} onClick={() => setShow((s) => !s)}>
           <Icon name={show ? 'eyeOff' : 'eye'} />
         </button>
       </div>
@@ -176,12 +177,12 @@ export function ProtectTool() {
   const go = () =>
     run(async () => {
       const bytes = new Uint8Array(await file!.arrayBuffer())
-      if (await isEncrypted(bytes)) throw new Error('Este PDF ya tiene contraseña. Quítala primero con "Desbloquear PDF".')
+      if (await isEncrypted(bytes)) throw new Error(tr('sec.alreadyProtected'))
       const out = await protect(bytes, { userPassword: pw, allowPrint, allowCopy, allowModify })
       setOutput({ file: resultFile(out, `${baseName(file!.name)}-protegido.pdf`, PDF), password: pw })
       setPw('')
       setPw2('')
-    }, 'Listo. Revisa el resultado y guárdalo.')
+    }, tr('common.doneReview'))
 
   return (
     <div className="card stack">
@@ -192,22 +193,22 @@ export function ProtectTool() {
           result={output?.file ?? null}
           resultPassword={output?.password}
           toolName="protect"
-          title="Así quedó tu PDF protegido"
-          previewTitle="Vista previa de tu PDF"
-          placeholder={busy ? 'Protegiendo…' : 'Escribe la contraseña y pulsa Proteger PDF'}
-          summary={<Notice kind="success">Listo: para abrir este PDF se pedirá la contraseña. Guárdala bien.</Notice>}
+          title={tr('protect.title')}
+          previewTitle={tr('common.previewPdf')}
+          placeholder={busy ? tr('protect.busy') : tr('protect.placeholder')}
+          summary={<Notice kind="success">{tr('protect.summary')}</Notice>}
         />
       )}
-      <PasswordInput label="Contraseña para abrir el PDF" value={pw} onChange={setPw} autoComplete="new-password" />
-      <PasswordInput label="Repite la contraseña" value={pw2} onChange={setPw2} autoComplete="new-password" />
-      {tooShort && <small style={{ color: 'var(--danger)' }}>Usa al menos 4 caracteres.</small>}
-      {mismatch && <small style={{ color: 'var(--danger)' }}>Las contraseñas no coinciden.</small>}
+      <PasswordInput label={tr('protect.pw')} value={pw} onChange={setPw} autoComplete="new-password" />
+      <PasswordInput label={tr('protect.pw2')} value={pw2} onChange={setPw2} autoComplete="new-password" />
+      {tooShort && <small style={{ color: 'var(--danger)' }}>{tr('protect.tooShort')}</small>}
+      {mismatch && <small style={{ color: 'var(--danger)' }}>{tr('protect.mismatch')}</small>}
       <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0, gap: 8 }}>
-        <legend className="faint" style={{ marginBottom: 6 }}>Permisos de quien abra el PDF</legend>
+        <legend className="faint" style={{ marginBottom: 6 }}>{tr('protect.perms')}</legend>
         {[
-          ['Imprimir', allowPrint, setAllowPrint],
-          ['Copiar texto e imágenes', allowCopy, setAllowCopy],
-          ['Modificar el documento', allowModify, setAllowModify],
+          [tr('protect.print'), allowPrint, setAllowPrint],
+          [tr('protect.copy'), allowCopy, setAllowCopy],
+          [tr('protect.modify'), allowModify, setAllowModify],
         ].map(([label, value, set]) => (
           <label key={label as string} className="check">
             <input type="checkbox" checked={value as boolean} onChange={(e) => (set as (v: boolean) => void)(e.target.checked)} />
@@ -215,11 +216,11 @@ export function ProtectTool() {
           </label>
         ))}
       </fieldset>
-      <Notice kind="info">Cifrado AES-256. Guarda bien la contraseña: si la olvidas, nadie puede recuperar el PDF.</Notice>
+      <Notice kind="info">{tr('protect.aes')}</Notice>
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!file || pw.length < 4 || pw !== pw2} onClick={go} icon="lock">
-          Proteger PDF
+          {tr('protect.go')}
         </BusyButton>
       </div>
     </div>
@@ -244,7 +245,7 @@ export function UnlockTool() {
     try {
       setEncrypted(await isEncrypted(new Uint8Array(await f.arrayBuffer())))
     } catch {
-      setError('El archivo no parece un PDF válido.')
+      setError(tr('err.invalidPdf'))
     }
   }
 
@@ -253,22 +254,22 @@ export function UnlockTool() {
       const out = await unlock(new Uint8Array(await file!.arrayBuffer()), pw)
       setOutput({ file: resultFile(out, `${baseName(file!.name)}-desbloqueado.pdf`, PDF), password: pw })
       setPw('')
-    }, 'Listo. Revisa el resultado y guárdalo.')
+    }, tr('common.doneReview'))
 
   return (
     <div className="card stack">
       <PickPdf file={file} onFile={pick} />
-      {encrypted === false && <Notice kind="info">Este PDF no tiene contraseña ni restricciones: no hace falta desbloquearlo.</Notice>}
+      {encrypted === false && <Notice kind="info">{tr('unlock.notLocked')}</Notice>}
       {encrypted && (
         <>
-          <PasswordInput label="Contraseña del PDF" value={pw} onChange={setPw} autoComplete="current-password" />
-          <small className="faint">Si el PDF abre sin contraseña pero no deja imprimir o copiar, déjala vacía.</small>
+          <PasswordInput label={tr('unlock.pw')} value={pw} onChange={setPw} autoComplete="current-password" />
+          <small className="faint">{tr('unlock.hint')}</small>
         </>
       )}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!file || !encrypted} onClick={go} icon="unlock">
-          Desbloquear PDF
+          {tr('unlock.go')}
         </BusyButton>
       </div>
       {file && output && (
@@ -277,8 +278,8 @@ export function UnlockTool() {
           originalPassword={output.password || undefined}
           result={output.file}
           toolName="unlock"
-          title="Así quedó tu PDF desbloqueado"
-          summary={<Notice kind="success">Listo: el PDF ya abre sin contraseña y sin restricciones.</Notice>}
+          title={tr('unlock.title')}
+          summary={<Notice kind="success">{tr('unlock.summary')}</Notice>}
         />
       )}
     </div>
@@ -298,7 +299,7 @@ export function RepairTool() {
       const r = await repair(new Uint8Array(await file!.arrayBuffer()))
       setOutput(resultFile(r.bytes, `${baseName(file!.name)}-reparado.pdf`, PDF))
       setDone(r.hadProblems)
-    }, 'Listo. Revisa el resultado y guárdalo.')
+    }, tr('common.doneReview'))
 
   return (
     <div className="card stack">
@@ -308,14 +309,14 @@ export function RepairTool() {
           original={file}
           result={output}
           toolName="repair"
-          title="Así quedó tu PDF reparado"
-          previewTitle="Vista previa de tu PDF"
-          placeholder={busy ? 'Reparando…' : 'Pulsa Reparar PDF'}
+          title={tr('repair.title')}
+          previewTitle={tr('common.previewPdf')}
+          placeholder={busy ? tr('repair.busy') : tr('repair.placeholder')}
           summary={
             done ? (
-              <Notice kind="success">Se encontraron y corrigieron problemas en la estructura del PDF.</Notice>
+              <Notice kind="success">{tr('repair.fixed')}</Notice>
             ) : (
-              <Notice kind="info">No se encontraron problemas; esta es una copia reescrita del PDF.</Notice>
+              <Notice kind="info">{tr('repair.ok')}</Notice>
             )
           }
         />
@@ -323,7 +324,7 @@ export function RepairTool() {
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!file} onClick={go} icon="wrench">
-          Reparar PDF
+          {tr('repair.go')}
         </BusyButton>
       </div>
     </div>

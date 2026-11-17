@@ -1,7 +1,7 @@
 // Contexto de idioma de DocuSmart Web: `useT()` devuelve t(), el idioma y setLang().
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import { detectLanguage, type Lang } from './languages'
-import { loadMessages, translate, type Dict, type Vars } from './translate'
+import { loadMessages, setCurrentDict, translate, type Dict, type Vars } from './translate'
 import type { MessageKey } from './messages/es'
 
 const STORAGE_KEY = 'ds-lang'
@@ -29,9 +29,13 @@ export function initialLanguage(): Lang {
 }
 
 export function I18nProvider({ initialLang, initialDict, children }: { initialLang: Lang; initialDict: Dict; children: ReactNode }) {
-  const [state, setState] = useState({ lang: initialLang, dict: initialDict })
+  const [state, setState] = useState(() => {
+    setCurrentDict(initialDict)
+    return { lang: initialLang, dict: initialDict }
+  })
   const setLang = useCallback(async (lang: Lang) => {
     const dict = await loadMessages(lang)
+    setCurrentDict(dict)
     setState({ lang, dict })
     document.documentElement.lang = lang
     try {

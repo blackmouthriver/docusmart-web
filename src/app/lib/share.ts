@@ -5,6 +5,7 @@
  */
 import { zipSync } from 'fflate'
 import { safeFilename, safeMimeType } from './files'
+import { tr } from '../i18n/translate'
 
 export type ShareOutcome = 'shared' | 'cancelled' | 'unsupported'
 type ShareNav = { share?: (data: ShareData) => Promise<void>; canShare?: (data: ShareData) => boolean }
@@ -36,9 +37,9 @@ export async function shareFile(file: File, nav: ShareNav = navigator): Promise<
   }
 }
 
-/** "3 páginas · 1.2 MB" */
+/** "3 páginas · 1.2 MB" (en el idioma de la página). */
 export function docSummary(pages: number, bytes: number, formatBytes: (n: number) => string): string {
-  const p = pages === 1 ? '1 página' : `${pages} páginas`
+  const p = pages === 1 ? tr('dp.page') : tr('dp.pages', { n: pages })
   return pages > 0 ? `${p} · ${formatBytes(bytes)}` : formatBytes(bytes)
 }
 
@@ -47,7 +48,7 @@ export function sizeChange(before: number, after: number): string | null {
   if (!before || before === after) return null
   const pct = Math.round((Math.abs(before - after) / before) * 100)
   if (!pct) return null
-  return after < before ? `${pct}% menos` : `${pct}% más`
+  return after < before ? tr('common.lessPct', { n: pct }) : tr('common.morePct', { n: pct })
 }
 
 /* ───────────── Invitar a compartir DocuSmart ───────────── */

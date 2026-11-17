@@ -6,6 +6,13 @@ import type { Lang } from './languages'
 export type Dict = Partial<Messages>
 export type Vars = Record<string, string | number>
 
+/** Diccionario del idioma actual, para funciones que no son componentes (mensajes de error, resúmenes). */
+let current: Dict = es
+export const setCurrentDict = (d: Dict) => {
+  current = d
+}
+export const tr = (key: MessageKey, vars?: Vars) => translate(current, key, vars)
+
 export function translate(dict: Dict, key: MessageKey, vars?: Vars): string {
   const text = dict[key] ?? es[key] ?? key
   return vars ? text.replace(/\{(\w+)\}/g, (m, name: string) => (name in vars ? String(vars[name]) : m)) : text
