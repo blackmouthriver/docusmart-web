@@ -25,11 +25,16 @@ const STUDY_SUBS: NavSub[] = [
   { sub: 'pomodoro', label: 'study.pomodoro', icon: 'timer' },
   { sub: 'estadisticas', label: 'study.stats', icon: 'chart' },
 ]
+// Códigos QR también se despliega con sus vistas (W-82).
+const QR_SUBS: NavSub[] = [
+  { sub: 'crear', label: 'qr.create', icon: 'qr' },
+  { sub: 'leer', label: 'qr.read', icon: 'camera' },
+]
 const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: IconName; mobile?: boolean; subs?: NavSub[] }> = [
   { section: '', label: 'nav.home', short: 'nav.short.home', icon: 'home' },
   { section: 'convertir', label: 'nav.convert', short: 'nav.short.convert', icon: 'convert' },
   { section: 'pdf', label: 'nav.pdf', short: 'nav.short.pdf', icon: 'pdf' },
-  { section: 'qr', label: 'nav.qr', short: 'nav.short.qr', icon: 'qr' },
+  { section: 'qr', label: 'nav.qr', short: 'nav.short.qr', icon: 'qr', subs: QR_SUBS },
   { section: 'estudio', label: 'nav.study', short: 'nav.short.study', icon: 'study', subs: STUDY_SUBS },
   { section: 'imagen', label: 'nav.image', short: 'nav.image', icon: 'image', mobile: false },
   { section: 'archivos', label: 'nav.archive', short: 'nav.archive', icon: 'archive', mobile: false },
@@ -92,7 +97,7 @@ export function App() {
       screen = <PdfTools sub={route.sub} />
       break
     case 'qr':
-      screen = <QrScreen />
+      screen = <QrScreen sub={route.sub} />
       break
     case 'archivos':
       screen = <ArchiveScreen sub={route.sub} />

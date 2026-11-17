@@ -320,6 +320,7 @@ p { margin: 0; }
 .reading mark { background: #FEF08A; border-radius: 4px; padding: 0 1px; }
 
 /* Menú del Modo Estudio (W-59) */
+.qr-view { max-width: 720px; }
 .study-menu { display: grid; gap: 12px; max-width: 720px; }
 .study-card { align-items: center; padding: 20px; width: 100%; }
 .study-card .ico { width: 56px; height: 56px; border-radius: 18px; }

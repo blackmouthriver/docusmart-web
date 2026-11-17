@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import QRCode from 'qrcode'
 import jsQR from 'jsqr'
-import { useApp } from '../../../app/state'
-import { Icon } from '../../../shared/ui/Icon'
-import { BusyButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
+import { go, useApp } from '../../../app/state'
+import { Icon, type IconName } from '../../../shared/ui/Icon'
+import { BackButton, BusyButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
+import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { SaveOptions, ShareApp } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
@@ -12,14 +13,42 @@ import { tr } from '../../../shared/i18n/translate'
 
 const contentType = (s: string) => (/^https?:\/\//i.test(s) ? 'url' : /^WIFI:/i.test(s) ? 'wifi' : 'text')
 
-export function QrScreen() {
+// Menú de QR (W-82): una vista por función, como el Modo Estudio.
+type QrView = 'crear' | 'leer'
+const QR_VIEWS: Array<{ id: QrView; icon: IconName; cls: string; title: MessageKey; desc: MessageKey }> = [
+  { id: 'crear', icon: 'qr', cls: 'ico-blue', title: 'qr.create', desc: 'qr.menuCreateDesc' },
+  { id: 'leer', icon: 'camera', cls: 'ico-green', title: 'qr.read', desc: 'qr.menuReadDesc' },
+]
+
+export function QrScreen({ sub }: { sub?: string }) {
+  const view = QR_VIEWS.find((v) => v.id === sub)?.id
   return (
     <>
       <HeroCard title={tr('nav.qr')} subtitle={tr('qr.heroSub')} />
-      <div className="two-col" style={{ marginTop: 16 }}>
-        <CreateQr />
-        <ReadQr />
-      </div>
+      {view ? (
+        <>
+          <div style={{ margin: '14px 0' }}>
+            <BackButton label={tr('nav.qr')} onClick={() => go('qr')} />
+          </div>
+          <div className="qr-view">{view === 'crear' ? <CreateQr /> : <ReadQr />}</div>
+        </>
+      ) : (
+        <>
+          <h2 className="section-title">{tr('qr.menuPrompt')}</h2>
+          <div className="study-menu">
+            {QR_VIEWS.map((v) => (
+              <button key={v.id} type="button" className="tool-card study-card" onClick={() => go('qr', v.id)}>
+                <span className={'ico ' + v.cls}><Icon name={v.icon} /></span>
+                <span className="study-card-text">
+                  <b>{tr(v.title)}</b>
+                  <small>{tr(v.desc)}</small>
+                </span>
+                <span className="study-card-arrow"><Icon name="back" /></span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </>
   )
 }
