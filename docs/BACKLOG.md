@@ -96,6 +96,22 @@ Con W-38 queda cubierta la paridad con la app e iLovePDF en herramientas de PDF.
 
 Sin pendientes: todas las herramientas de la app y de iLovePDF que se pueden hacer en el navegador ya están (PowerPoint a PDF sigue solo en la app).
 
+## Vista previa del documento y más formas de guardar (2026-11-17)
+
+Objetivo: en todas las herramientas, (1) al subir el archivo se ve el documento con su número de páginas y su peso; (2) al usar la herramienta se ve el **resultado** antes de guardarlo (con la opción de alternar con el original); (3) además de descargar, hay más formas de guardar o enviar. Primero un piloto; con el visto bueno se extiende al resto.
+
+| ID | Ítem | Quién | Estado / qué hace falta |
+|---|---|---|---|
+| W-40 | **Piloto en Comprimir PDF**: **antes y después lado a lado** con título propio de la herramienta ("Así quedó tu PDF comprimido"), un solo control de páginas para las dos vistas y comparación de peso; guardar con **Descargar**, **Compartir** (hoja del sistema), **Google Drive** y **Dropbox**; al final, sección para **recomendar DocuSmart** (WhatsApp, Facebook, X, LinkedIn, copiar enlace, calificar en Google Play, enviar opinión). Ya no se descarga solo | 🤖 | En revisión (PR #34) |
+| W-41 | Extender a las herramientas PDF de **un archivo → un PDF**: rotar, reordenar, numerar, marca de agua, proteger, desbloquear, reparar, OCR, recortar, firmar, censurar, editar, formulario, PDF/A | 🤖 | Tras el visto bueno de W-40 |
+| W-42 | Herramientas con **varios archivos** de entrada o salida: Unir (vista de cada PDF y del resultado), Dividir y Extraer imágenes (lista de archivos con miniaturas antes del ZIP), Comparar | 🤖 | Tras W-41 |
+| W-43 | **Convertidor**: vista previa de la entrada para PDF, imágenes, Word (se diagrama a PDF para mostrar páginas) y Excel (hojas y filas); vista del resultado: páginas en imagen, PDF generado, contenido del Word/Excel/texto | 🤖 | Tras W-41 |
+| W-44 | **Imagen, escáner, archivos y QR**: antes/después de la imagen, páginas del escaneo, contenido del ZIP/7Z, QR generado | 🤖 | Tras W-41 |
+| W-45 | **Guardar en Google Drive** directo: OAuth en ventana emergente (sin SDK, compatible con la CSP) y subida con el permiso mínimo `drive.file` | 👤 + 🤖 | **Código listo** (PR #34); el botón aparece cuando pongas el **ID de cliente OAuth** en `src/app/lib/cloudConfig.ts`. Falta que lo crees en Google Cloud (proyecto de Firebase): tipo "Aplicación web", origen `https://docusmart.online`, redirección `https://docusmart.online/oauth`, pantalla de consentimiento con el permiso `drive.file` |
+| W-46 | **Guardar en Dropbox** directo: OAuth con PKCE en ventana emergente y subida a Aplicaciones/DocuSmart | 👤 + 🤖 | **Código listo** (PR #34); falta que crees la app en Dropbox Developers (Scoped access, "App folder", permiso `files.content.write`, redirección `https://docusmart.online/oauth`) y pongas la **App key** en `cloudConfig.ts` |
+| W-47 | **Enlace y código QR** para abrir el resultado en otro dispositivo | 👤 decide | Implica **subir el archivo** a un servidor, lo que cambia la promesa "tus archivos no salen del navegador". Propuesta: cifrado de extremo a extremo en el navegador (AES-GCM, la clave va en el `#` del enlace y el servidor nunca la ve), Firebase Storage con borrado automático a las 24 h, límite de tamaño y App Check. Requiere plan Blaze y actualizar la política de privacidad. Alternativa sin guardar nada: QR con transferencia directa entre dispositivos (WebRTC, ambos abiertos a la vez; necesita un servidor de señalización) |
+| W-48 | **WhatsApp en computador**: la web no puede adjuntar un archivo a WhatsApp Web; solo se puede mandar un enlace | 🤖 | Depende de W-47 (en el celular ya funciona con Compartir) |
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |

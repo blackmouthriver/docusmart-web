@@ -7,9 +7,9 @@ import { closePdf, openPdf, renderPage } from '../lib/pdf'
 
 export type PagePreview = { url: string; widthPt: number; heightPt: number }
 
-export function usePdfPreview(file: File | null, previewWidth = 900) {
+export function usePdfPreview(file: Blob | null, previewWidth = 900, initialPage = 1) {
   const [doc, setDoc] = useState<PDFDocumentProxy | null>(null)
-  const [pageNo, setPageNo] = useState(1)
+  const [pageNo, setPageNo] = useState(initialPage)
   const [preview, setPreview] = useState<PagePreview | null>(null)
   const [error, setError] = useState<string | null>(null)
   /** El canvas de la página actual, por si hay que leer sus pixeles. */
@@ -18,7 +18,7 @@ export function usePdfPreview(file: File | null, previewWidth = 900) {
   useEffect(() => {
     setDoc(null)
     setPreview(null)
-    setPageNo(1)
+    setPageNo(initialPage)
     setError(null)
     if (!file) return
     let cancelled = false
@@ -27,7 +27,10 @@ export function usePdfPreview(file: File | null, previewWidth = 900) {
       try {
         opened = await openPdf(await file.arrayBuffer())
         if (cancelled) await closePdf(opened)
-        else setDoc(opened)
+        else {
+          setPageNo((n) => Math.min(Math.max(1, n), opened!.numPages))
+          setDoc(opened)
+        }
       } catch (e) {
         if (!cancelled) setError(/password/i.test(String(e)) ? 'Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".' : errorMessage(e))
       }
