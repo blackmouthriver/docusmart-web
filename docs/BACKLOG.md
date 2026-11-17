@@ -164,6 +164,54 @@ idiomas, con revisión de punta a punta en el navegador.
 |---|---|---|---|
 | W-69 | **Revisar y refinar la creación de códigos QR** frente a la app (tipos de contenido, diseño, QR protegido, leer) y proponer mejoras propias de la web; el análisis se convierte en ítems W-xx aquí. Se hace **después** del Modo Estudio (W-58..W-67) | 🤖 | Pendiente |
 
+## Asistente de chat en todo el sitio
+
+Análisis completo, con requisitos funcionales y no funcionales, criterios de aceptación, tecnologías y costos, en
+[`docs/CHATBOT.md`](CHATBOT.md). Asistente **local** (nada sale del navegador), **USD 0 al mes**; sin widgets de
+terceros ni IA en la nube.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-70 | **Aprobar la propuesta** de `docs/CHATBOT.md` (opción A local; B con la IA del navegador como fase 2) | 👤 decidir | Pendiente |
+| W-70a | Base de conocimiento por idioma generada desde `tools/` + preguntas propias (es, en); validación en el CI | 🤖 | Pendiente |
+| W-70b | Motor de búsqueda local (tildes, sinónimos, tipeos) en `core/` con pruebas y preguntas de prueba | 🤖 | Pendiente |
+| W-70c | Widget en la app web: botón, panel accesible, sugerencias por pantalla y acciones que abren herramientas | 🤖 | Pendiente |
+| W-70d | Widget en la portada y las páginas de herramientas, cargado bajo demanda, en los 12 idiomas | 🤖 | Pendiente |
+| W-70e | Base traducida a los 10 idiomas restantes, analítica con consentimiento (solo IDs) y párrafo en la política de privacidad | 🤖 | Pendiente |
+| W-70f | (Opcional) Respuestas redactadas con la IA local del navegador (Chrome Prompt API) cuando esté disponible | 🤖 | Pendiente |
+
+## Diseño visual y animaciones de todo el sitio
+
+Hoy la portada tiene animaciones y el resto se ve plano. Se empieza por la **política de privacidad** y desde ahí se
+revisa página por página con el usuario. Reglas para todas: animaciones con `transform` y `opacity`, respetar
+`prefers-reduced-motion`, nada de librerías ni recursos externos (por la CSP), modo oscuro y sin empeorar el
+rendimiento (Lighthouse).
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-71 | **Política de privacidad con diseño propio**: encabezado con degradado e ícono como la portada; resumen "en 30 segundos" con tarjetas (qué se procesa, qué no se sube, analítica opcional, contacto); índice lateral fijo que marca la sección visible; cada sección como tarjeta con ícono; aparición suave al desplazar; botón "volver arriba"; ancho de lectura cómodo; modo oscuro; versión para imprimir. **El texto legal no cambia** (sigue sincronizado con la app) | 🤖 | Pendiente |
+| W-72 | **Sistema de movimiento común**: duraciones y curvas compartidas, utilidad de aparición al desplazar (IntersectionObserver), transiciones entre páginas (View Transitions API, donde exista) y microinteracciones de botones y tarjetas, para reutilizar en todo el sitio | 🤖 | Pendiente |
+| W-73 | **Páginas de herramientas** (372): encabezado animado, pasos ilustrados, FAQ con apertura animada y herramienta con entrada suave | 🤖 | Pendiente |
+| W-74 | **App web**: transiciones entre pantallas, estados de carga con esqueletos, animación al terminar un proceso (éxito/descarga) y menús/paneles con movimiento | 🤖 | Pendiente |
+| W-75 | **Portada**: revisión con el usuario de lo que ya tiene y ajustes de coherencia con lo nuevo | 🤖 + 👤 | Pendiente |
+
+Orden: W-71 → revisar con el usuario → W-72 → W-73/W-74 → W-75.
+
+## Herramientas ordenadas por categoría
+
+Hoy la portada lista las 31 herramientas una tras otra, y la app las muestra repartidas sin un orden claro. La idea:
+la portada solo **presenta** que hay herramientas y lleva a ellas; el orden y la elección se hacen en una vista de
+herramientas **por categoría** y **en orden alfabético** dentro de cada una.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-76 | **Catálogo único de herramientas** (fuente de verdad compartida por portada, páginas y app): id, categoría, ícono, enlace a su página y a la app. Categorías propuestas, a validar con el usuario: *Organizar PDF* (unir, dividir, rotar, reordenar, numerar), *Editar y firmar* (editar, firmar, llenar formulario, marca de agua, recortar, censurar), *Seguridad* (proteger, desbloquear, reparar), *Optimizar y archivar* (comprimir, PDF/A, comparar, extraer imágenes), *Convertir* (de y a PDF, Word, Excel, imagen, texto), *Imagen* (comprimir, redimensionar, recortar, rotar), *Escanear y OCR*, *Archivos comprimidos*, *QR y estudio* | 🤖 + 👤 | Pendiente |
+| W-77 | **Portada**: la sección de herramientas deja de listar las 31 y muestra un resumen claro ("31 herramientas gratis") con una tarjeta animada por categoría (ícono, nombre, cantidad) que lleva a esa categoría, y un botón "Ver todas las herramientas". En los 12 idiomas | 🤖 | Pendiente |
+| W-78 | **Página "Todas las herramientas"** (`/herramientas`, `/en/tools`… en los 12 idiomas, indexable y en el sitemap): herramientas agrupadas por categoría, **orden alfabético dentro de cada categoría según el idioma** (`Intl.Collator`), accesos rápidos a cada categoría y un buscador que filtra mientras se escribe. "Más herramientas" de cada página de herramienta lleva aquí | 🤖 | Pendiente |
+| W-79 | **App web**: la pantalla de herramientas usa las mismas categorías y el mismo orden alfabético, con buscador; el inicio muestra las categorías como accesos | 🤖 | Pendiente |
+
+Orden: W-76 (validar categorías) → W-78 → W-77 → W-79. Encaja con el diseño visual (W-72) para las animaciones.
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |
