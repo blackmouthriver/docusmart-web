@@ -38,7 +38,7 @@ export function OcrTool() {
       else toast(tr('ocr.recognized'))
     } catch (e) {
       const msg = e instanceof Error ? e.message : ''
-      setError(/password|encrypt/i.test(msg) ? tr('err.passwordPdf') : tr('ocr.cantRead'))
+      setError(/password|encrypt/i.test(msg) ? tr('err.lockedPdf') : tr('ocr.cantRead'))
       track('app_error', { error_context: 'ocr', error_message: e instanceof Error ? e.name : 'error' })
     } finally {
       await source?.close()

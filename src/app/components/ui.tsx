@@ -192,7 +192,7 @@ export function Progress({ value }: { value: number }) {
 export function errorMessage(e: unknown): string {
   const msg = e instanceof Error ? e.message : String(e)
   if (/encrypt/i.test(msg) || /password/i.test(msg))
-    return tr('err.passwordPdf')
+    return tr('err.lockedPdf')
   if (/Invalid PDF|No PDF header|InvalidPDF/i.test(msg)) return tr('err.invalidPdf')
   return tr('err.generic')
 }

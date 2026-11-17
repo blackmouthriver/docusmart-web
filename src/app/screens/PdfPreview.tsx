@@ -33,7 +33,7 @@ export function usePdfPreview(file: Blob | null, previewWidth = 900, initialPage
           setDoc(opened)
         }
       } catch (e) {
-        if (!cancelled) setError(/password/i.test(String(e)) ? tr('err.passwordPdf') : errorMessage(e))
+        if (!cancelled) setError(/password/i.test(String(e)) ? tr('err.lockedPdf') : errorMessage(e))
       }
     })()
     return () => {

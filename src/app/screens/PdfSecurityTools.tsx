@@ -13,9 +13,9 @@ import { resultFile } from '../lib/share'
 const PDF = 'application/pdf'
 
 function friendly(e: unknown): string {
-  if (e instanceof WrongPasswordError) return tr('sec.wrongPassword')
+  if (e instanceof WrongPasswordError) return tr('sec.wrongKey')
   const msg = e instanceof Error ? e.message : ''
-  if (/encrypt|password/i.test(msg)) return tr('err.passwordPdf')
+  if (/encrypt|password/i.test(msg)) return tr('err.lockedPdf')
   if (/^(El |La |No |Falta |Este )/.test(msg)) return msg
   return tr('sec.invalidPdfCheck')
 }
@@ -70,7 +70,7 @@ export function CompressTool() {
       setOutput(null)
       setProgress(0)
       const bytes = new Uint8Array(await file!.arrayBuffer())
-      if (await isEncrypted(bytes)) throw new Error(tr('err.passwordPdf'))
+      if (await isEncrypted(bytes)) throw new Error(tr('err.lockedPdf'))
       let r: CompressResult
       if (level === 'sin-perdida') {
         r = await compressLossless(bytes)
