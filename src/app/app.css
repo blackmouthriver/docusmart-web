@@ -340,17 +340,13 @@ p { margin: 0; }
 .para-btn:hover { background: color-mix(in srgb, var(--blue-soft) 60%, transparent); }
 .para-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .player { display: grid; gap: 12px; }
-.player.is-sticky { position: sticky; z-index: 5; bottom: 12px; padding: 12px 14px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 10px 30px -12px rgba(15, 23, 42, .25); }
-@media (max-width: 860px) {
-  .player.is-sticky { bottom: calc(84px + env(safe-area-inset-bottom)); }
-  .reading-paras { max-height: 42vh; }
-}
+.player.is-card { padding: 12px 14px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 10px 30px -16px rgba(15, 23, 42, .25); }
+@media (max-width: 860px) { .reading-paras { max-height: 42vh; } }
 .player-progress { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
 .progress { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
 .progress i { display: block; height: 100%; background: var(--blue); border-radius: inherit; transition: width 300ms var(--ease-out); }
 .player-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .icon-flip svg { transform: scaleX(-1); }
-.player-speed { max-width: 320px; }
 @media (max-width: 520px) { .player-progress { grid-template-columns: 1fr auto; } .player-progress .progress { grid-column: 1 / -1; grid-row: 2; } }
 
 /* Vista del documento al leer (W-60b) */

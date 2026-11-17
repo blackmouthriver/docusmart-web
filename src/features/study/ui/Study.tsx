@@ -268,6 +268,46 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     </div>
   )
 
+  // Barra de progreso y controles: debajo del nombre del documento al leer.
+  const playerBar = (
+    <div className={'player' + (view === 'read' ? ' is-card' : '')}>
+      {view === 'read' && total > 0 && (
+        <div className="player-progress">
+          <span className="faint">{totalPages ? tr('study.pageOf', { i: currentPage, n: totalPages }) : tr('study.paragraphOf', { i: Math.min(pos.p + 1, total), n: total })}</span>
+          <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={tr('study.listened', { n: percent })}>
+            <i style={{ width: `${percent}%` }} />
+          </div>
+          <span className="faint">{totalPages ? tr('study.pagesRead', { r: pages.read, n: totalPages, p: percent }) : tr('study.listened', { n: percent })}</span>
+        </div>
+      )}
+      <div className="player-controls">
+        <button type="button" className="icon-btn" aria-label={tr('study.prevParagraph')} disabled={view !== 'read' || pos.p === 0} onClick={() => jump(-1)}>
+          <Icon name="back" />
+        </button>
+        {state === 'playing' ? (
+          <button type="button" className="btn btn-primary" onClick={pause}><Icon name="pause" /> {tr('study.pause')}</button>
+        ) : (
+          <button type="button" className="btn btn-primary" onClick={() => (state === 'paused' ? speak(pos) : start(view === 'read' && !finished ? pos.p : 0))} disabled={!total}>
+            <Icon name="play" /> {state === 'paused' ? tr('study.resume') : tr('study.read')}
+          </button>
+        )}
+        <button type="button" className="icon-btn icon-flip" aria-label={tr('study.nextParagraph')} disabled={view !== 'read' || pos.p >= total - 1} onClick={() => jump(1)}>
+          <Icon name="back" />
+        </button>
+        {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('study.stop')}</button>}
+      </div>
+      {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
+    </div>
+  )
+  const finishedNotice = finished && (
+    <Notice kind="success">
+      {tr('study.finished')}{' '}
+      <button type="button" className="btn btn-soft btn-sm" onClick={() => start(0)}>
+        <Icon name="reset" /> {tr('study.readAgain')}
+      </button>
+    </Notice>
+  )
+
   return (
     <div className="card stack">
       <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -287,10 +327,13 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       </div>
 
       {view === 'edit' ? (
-        <label className="field">
-          <span>{tr('study.textToRead')}</span>
-          <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => { setText(e.target.value); setPdf(null) }} />
-        </label>
+        <>
+          <label className="field">
+            <span>{tr('study.textToRead')}</span>
+            <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => { setText(e.target.value); setPdf(null) }} />
+          </label>
+          {playerBar}
+        </>
       ) : pdf ? (
         <>
           <div className="doc-banner">
@@ -309,6 +352,8 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
               ]}
             />
           </div>
+          {playerBar}
+          {finishedNotice}
           {docView === 'document' ? (
             <DocPages file={pdf.file} readingPage={active ? currentPage : null} follow={state === 'playing'} onReadPage={(n) => { const i = firstParagraphOfPage(paragraphs, n); if (i >= 0) start(i) }} />
           ) : (
@@ -316,46 +361,12 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
           )}
         </>
       ) : (
-        paragraphList
+        <>
+          {playerBar}
+          {finishedNotice}
+          {paragraphList}
+        </>
       )}
-
-      {finished && (
-        <Notice kind="success">
-          {tr('study.finished')}{' '}
-          <button type="button" className="btn btn-soft btn-sm" onClick={() => start(0)}>
-            <Icon name="reset" /> {tr('study.readAgain')}
-          </button>
-        </Notice>
-      )}
-
-      <div className={'player' + (view === 'read' ? ' is-sticky' : '')}>
-        {view === 'read' && total > 0 && (
-          <div className="player-progress">
-            <span className="faint">{totalPages ? tr('study.pageOf', { i: currentPage, n: totalPages }) : tr('study.paragraphOf', { i: Math.min(pos.p + 1, total), n: total })}</span>
-            <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={tr('study.listened', { n: percent })}>
-              <i style={{ width: `${percent}%` }} />
-            </div>
-            <span className="faint">{totalPages ? tr('study.pagesRead', { r: pages.read, n: totalPages, p: percent }) : tr('study.listened', { n: percent })}</span>
-          </div>
-        )}
-        <div className="player-controls">
-          <button type="button" className="icon-btn" aria-label={tr('study.prevParagraph')} disabled={view !== 'read' || pos.p === 0} onClick={() => jump(-1)}>
-            <Icon name="back" />
-          </button>
-          {state === 'playing' ? (
-            <button type="button" className="btn btn-primary" onClick={pause}><Icon name="pause" /> {tr('study.pause')}</button>
-          ) : (
-            <button type="button" className="btn btn-primary" onClick={() => (state === 'paused' ? speak(pos) : start(view === 'read' && !finished ? pos.p : 0))} disabled={!total}>
-              <Icon name="play" /> {state === 'paused' ? tr('study.resume') : tr('study.read')}
-            </button>
-          )}
-          <button type="button" className="icon-btn icon-flip" aria-label={tr('study.nextParagraph')} disabled={view !== 'read' || pos.p >= total - 1} onClick={() => jump(1)}>
-            <Icon name="back" />
-          </button>
-          {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('study.stop')}</button>}
-        </div>
-        {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
-      </div>
     </div>
   )
 }
