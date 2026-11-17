@@ -340,20 +340,55 @@ p { margin: 0; }
 .para-btn:hover { background: color-mix(in srgb, var(--blue-soft) 60%, transparent); }
 .para-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .player { display: grid; gap: 12px; }
-.player.is-sticky { position: sticky; z-index: 5; bottom: 12px; padding: 12px 14px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 10px 30px -12px rgba(15, 23, 42, .25); }
-@media (max-width: 860px) {
-  .player.is-sticky { bottom: calc(84px + env(safe-area-inset-bottom)); }
-  .reading-paras { max-height: 42vh; }
-}
+.player.is-card { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; padding: 10px 14px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 10px 30px -16px rgba(15, 23, 42, .25); }
+/* Leer y los controles en la misma fila que la barra de progreso. */
+.player.is-card .player-controls { order: -1; flex: none; flex-wrap: nowrap; }
+.player.is-card .player-progress { flex: 1 1 300px; }
+@media (max-width: 860px) { .reading-paras { max-height: 42vh; } }
 .player-progress { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
 .progress { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
 .progress i { display: block; height: 100%; background: var(--blue); border-radius: inherit; transition: width 300ms var(--ease-out); }
 .player-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .icon-flip svg { transform: scaleX(-1); }
-.player-speed { max-width: 320px; }
 @media (max-width: 520px) { .player-progress { grid-template-columns: 1fr auto; } .player-progress .progress { grid-column: 1 / -1; grid-row: 2; } }
 
+/* Vista del documento al leer (W-60b) */
+.doc-banner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 14px; border-radius: 16px; background: linear-gradient(135deg, var(--blue-soft), var(--paper)); }
+.doc-banner > svg { width: 28px; height: 28px; color: var(--c-pdf); flex: none; }
+.doc-banner-text { display: grid; flex: 1 1 160px; min-width: 0; line-height: 1.3; }
+.doc-banner-text b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.doc-pages { display: grid; gap: 10px; }
+.doc-page { position: relative; display: grid; place-items: center; min-height: 240px; max-height: 62vh; overflow: auto; padding: 14px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; transition: box-shadow 250ms ease; }
+.doc-page.is-reading { box-shadow: 0 0 0 2px var(--blue) inset; }
+.doc-page img { display: block; width: 100%; max-width: 680px; height: auto; border-radius: 6px; background: #fff; box-shadow: 0 6px 24px -10px rgba(15, 23, 42, .35); animation: page-in 260ms var(--ease-out); }
+@keyframes page-in { from { opacity: 0; transform: translateY(6px); } }
+.doc-page-badge { position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; background: var(--blue); color: #fff; font-size: 12.5px; font-weight: 600; }
+.doc-page-badge svg { width: 15px; height: 15px; }
+.page-sep { margin: 10px 10px 2px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); }
+.page-sep:first-child { margin-top: 0; }
+@media (max-width: 860px) { .doc-page { max-height: 48vh; padding: 8px; } }
+
 /* Personajes de voz del Modo Estudio (W-58) */
+.read-actions { gap: 8px; flex-wrap: wrap; }
+.voice-menu { position: relative; }
+.voice-chip { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px 0 4px; border: 0; border-radius: 99px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; color: var(--ink); cursor: pointer; transition: box-shadow 150ms ease; }
+.voice-chip:hover:not(:disabled) { box-shadow: 0 0 0 1px var(--line-strong) inset; }
+.voice-chip[aria-expanded="true"] { box-shadow: 0 0 0 2px var(--blue) inset; }
+.voice-chip:disabled { opacity: .6; cursor: default; }
+.voice-chip-text { display: grid; line-height: 1.1; text-align: left; }
+.voice-chip-text b { font-size: 14px; }
+.voice-chip-text small { font-size: 11.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.voice-chip-empty { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); }
+.voice-chip-empty svg, .voice-chip-caret svg { width: 16px; height: 16px; }
+.voice-chip-caret { display: grid; color: var(--ink-faint); }
+.voice-chip-caret svg { transform: rotate(-90deg); transition: transform 200ms var(--ease-out); }
+.voice-chip[aria-expanded="true"] .voice-chip-caret svg { transform: rotate(90deg); }
+.voice-pop { position: absolute; z-index: 30; top: calc(100% + 8px); right: 0; width: min(380px, calc(100vw - 32px)); max-height: min(70vh, 560px); overflow: auto; display: grid; gap: 12px; padding: 14px; border-radius: 20px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 24px 48px -20px rgba(15, 23, 42, .4); animation: pop-in 180ms var(--ease-out); transform-origin: top right; }
+.voice-pop .voice-list { max-height: 260px; }
+@keyframes pop-in { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
+@media (max-width: 560px) {
+  .voice-pop { position: fixed; left: 16px; right: 16px; top: auto; bottom: calc(92px + env(safe-area-inset-bottom)); width: auto; transform-origin: bottom center; }
+}
 .voice-picker { display: grid; gap: 10px; }
 .voice-current { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; background: var(--paper); flex-wrap: wrap; }
 .voice-current .voice-text { flex: 1 1 140px; }

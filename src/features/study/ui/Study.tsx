@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
-import { BackButton, HeroCard, Notice } from '../../../shared/ui/ui'
+import { BackButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
 import { kindOf } from '../../../shared/files/files'
-import { pdfToText } from '../../convert/core/convert'
+import { closePdf, extractPagesText, openPdf } from '../../../shared/pdf/pdf'
+import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import { useT } from '../../../shared/i18n/I18n'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
-import { listenedPercent, nextPosition, toParagraphs } from '../core/reading'
+import { firstParagraphOfPage, listenedPercent, nextPosition, pageProgress, toPagedParagraphs, toParagraphs } from '../core/reading'
 import { guessFeminine, personaAvatar, personasForVoices, voicesForLanguage, type VoicePersona } from '../core/voicePersonas'
 
 // ── Menú del Modo Estudio (W-59): una tarjeta por función, como en la app ──
@@ -91,7 +92,12 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const [state, setState] = useState<'idle' | 'playing' | 'paused'>('idle')
   const [finished, setFinished] = useState(false)
   const [loading, setLoading] = useState(false)
-  const paragraphs = useMemo(() => toParagraphs(text), [text])
+  // PDF cargado: su texto por página, para mostrar el documento y el avance por páginas (W-60b).
+  const [pdf, setPdf] = useState<{ file: File; pages: string[] } | null>(null)
+  const [docView, setDocView] = useState<'document' | 'text'>('document')
+  const paragraphs = useMemo(() => (pdf ? toPagedParagraphs(pdf.pages) : toParagraphs(text)), [pdf, text])
+  const totalPages = pdf?.pages.length ?? 0
+  const currentPage = paragraphs[pos.p]?.page ?? 1
   // Cada lectura lleva un número: al cancelar, los avisos de la anterior se ignoran.
   const run = useRef(0)
   const fileInput = useRef<HTMLInputElement>(null)
@@ -111,9 +117,10 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
 
   // Estado para la tarjeta del menú ("Leyendo · párrafo 3 de 18").
   useEffect(() => {
-    const vars = { i: Math.min(pos.p + 1, paragraphs.length), n: paragraphs.length }
-    onStatus(state === 'playing' ? tr('study.statusReading', vars) : state === 'paused' ? tr('study.statusPaused', vars) : '')
-  }, [state, pos.p, paragraphs.length, onStatus])
+    const vars = totalPages ? { i: currentPage, n: totalPages } : { i: Math.min(pos.p + 1, paragraphs.length), n: paragraphs.length }
+    const [reading, paused] = totalPages ? (['study.statusReadingPage', 'study.statusPausedPage'] as const) : (['study.statusReading', 'study.statusPaused'] as const)
+    onStatus(state === 'playing' ? tr(reading, vars) : state === 'paused' ? tr(paused, vars) : '')
+  }, [state, pos.p, paragraphs.length, totalPages, currentPage, onStatus])
 
   // El párrafo que se lee queda siempre a la vista.
   useEffect(() => {
@@ -125,6 +132,8 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
 
   const chooseVoice = (uri: string) => {
     setVoiceURI(uri)
+    // Con la lectura en marcha, el trozo actual se repite con la voz nueva.
+    if (state === 'playing') speak(pos, rate, uri)
     try {
       localStorage.setItem(VOICE_KEY, uri)
     } catch {
@@ -132,13 +141,13 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     }
   }
 
-  const speak = (at: Pos, speed = rate) => {
+  const speak = (at: Pos, speed = rate, uri = voiceURI) => {
     const id = ++run.current
     speechSynthesis.cancel()
     const chunk = paragraphs[at.p]?.chunks[at.c]
     if (!chunk) return
     const u = new SpeechSynthesisUtterance(chunk)
-    const voice = voices.find((v) => v.voiceURI === voiceURI) ?? defaultVoice(voices, uiLang)
+    const voice = voices.find((v) => v.voiceURI === uri) ?? defaultVoice(voices, uiLang)
     if (voice) {
       u.voice = voice
       u.lang = voice.lang
@@ -147,7 +156,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     u.onend = () => {
       if (id !== run.current) return
       const next = nextPosition(paragraphs, at.p, at.c)
-      if (next) speak(next, speed)
+      if (next) speak(next, speed, uri)
       else {
         setState('idle')
         setFinished(true)
@@ -206,9 +215,20 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     try {
       const kind = kindOf(file)
       let loaded: string | null = null
-      if (kind === 'pdf') loaded = await pdfToText(await file.arrayBuffer())
-      else if (kind === 'text') loaded = await file.text()
-      else toast(tr('study.pickPdfTxt'))
+      if (kind === 'pdf') {
+        const doc = await openPdf(await file.arrayBuffer())
+        try {
+          const pages = await extractPagesText(doc)
+          loaded = pages.join('\n\n')
+          setPdf({ file, pages })
+          setDocView('document')
+        } finally {
+          await closePdf(doc)
+        }
+      } else if (kind === 'text') {
+        loaded = await file.text()
+        setPdf(null)
+      } else toast(tr('study.pickPdfTxt'))
       if (loaded !== null) {
         setText(loaded)
         setPos({ p: 0, c: 0 })
@@ -225,13 +245,75 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   if (!supported) return <Notice kind="error">{tr('study.unsupported')}</Notice>
 
   const total = paragraphs.length
-  const percent = listenedPercent(pos.p, total, finished)
+  const pages = pageProgress(currentPage, totalPages, finished)
+  const percent = totalPages ? pages.percent : listenedPercent(pos.p, total, finished)
+  const active = state !== 'idle' || finished
+
+  const paragraphList = (
+    <div className="reading reading-paras" ref={listRef} aria-live="off">
+      {paragraphs.map((para, i) => (
+        <Fragment key={i}>
+          {para.page && para.page !== paragraphs[i - 1]?.page && <div className="page-sep">{tr('study.pageLabel', { n: para.page })}</div>}
+          <p data-p={i} className={i === pos.p && active ? 'is-current' : undefined}>
+            <button type="button" className="para-btn" title={tr('study.readFromHere', { n: i + 1 })} onClick={() => start(i)}>
+              {i === pos.p && state === 'playing'
+                ? para.chunks.map((ch, j) => (
+                    <span key={j}>{j === pos.c ? <mark>{ch}</mark> : ch} </span>
+                  ))
+                : para.text}
+            </button>
+          </p>
+        </Fragment>
+      ))}
+    </div>
+  )
+
+  // Barra de progreso y controles: debajo del nombre del documento al leer.
+  const playerBar = (
+    <div className={'player' + (view === 'read' ? ' is-card' : '')}>
+      {view === 'read' && total > 0 && (
+        <div className="player-progress">
+          <span className="faint">{totalPages ? tr('study.pageOf', { i: currentPage, n: totalPages }) : tr('study.paragraphOf', { i: Math.min(pos.p + 1, total), n: total })}</span>
+          <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={tr('study.listened', { n: percent })}>
+            <i style={{ width: `${percent}%` }} />
+          </div>
+          <span className="faint">{totalPages ? tr('study.pagesRead', { r: pages.read, n: totalPages, p: percent }) : tr('study.listened', { n: percent })}</span>
+        </div>
+      )}
+      <div className="player-controls">
+        <button type="button" className="icon-btn" aria-label={tr('study.prevParagraph')} disabled={view !== 'read' || pos.p === 0} onClick={() => jump(-1)}>
+          <Icon name="back" />
+        </button>
+        {state === 'playing' ? (
+          <button type="button" className="btn btn-primary" onClick={pause}><Icon name="pause" /> {tr('study.pause')}</button>
+        ) : (
+          <button type="button" className="btn btn-primary" onClick={() => (state === 'paused' ? speak(pos) : start(view === 'read' && !finished ? pos.p : 0))} disabled={!total}>
+            <Icon name="play" /> {state === 'paused' ? tr('study.resume') : tr('study.read')}
+          </button>
+        )}
+        <button type="button" className="icon-btn icon-flip" aria-label={tr('study.nextParagraph')} disabled={view !== 'read' || pos.p >= total - 1} onClick={() => jump(1)}>
+          <Icon name="back" />
+        </button>
+        {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('study.stop')}</button>}
+      </div>
+      {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
+    </div>
+  )
+  const finishedNotice = finished && (
+    <Notice kind="success">
+      {tr('study.finished')}{' '}
+      <button type="button" className="btn btn-soft btn-sm" onClick={() => start(0)}>
+        <Icon name="reset" /> {tr('study.readAgain')}
+      </button>
+    </Notice>
+  )
 
   return (
     <div className="card stack">
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <h3>{tr('study.readAloud')}</h3>
-        <div className="row" style={{ gap: 8 }}>
+        <div className="row read-actions">
+          <VoiceMenu voices={voices} value={voiceURI} onChange={chooseVoice} rate={rate} onRate={changeRate} playing={state === 'playing'} />
           {view === 'read' && (
             <button type="button" className="btn btn-outline btn-sm" onClick={edit}>
               <Icon name="edit" /> {tr('study.editText')}
@@ -245,68 +327,77 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       </div>
 
       {view === 'edit' ? (
-        <label className="field">
-          <span>{tr('study.textToRead')}</span>
-          <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => setText(e.target.value)} />
-        </label>
-      ) : (
-        <div className="reading reading-paras" ref={listRef} aria-live="off">
-          {paragraphs.map((para, i) => (
-            <p key={i} data-p={i} className={i === pos.p && (state !== 'idle' || finished) ? 'is-current' : undefined}>
-              <button type="button" className="para-btn" title={tr('study.readFromHere', { n: i + 1 })} onClick={() => start(i)}>
-                {i === pos.p && state === 'playing'
-                  ? para.chunks.map((ch, j) => (
-                      <span key={j}>{j === pos.c ? <mark>{ch}</mark> : ch} </span>
-                    ))
-                  : para.text}
-              </button>
-            </p>
-          ))}
-        </div>
-      )}
-
-      <VoicePicker voices={voices} value={voiceURI} onChange={chooseVoice} disabled={state === 'playing'} />
-
-      {finished && (
-        <Notice kind="success">
-          {tr('study.finished')}{' '}
-          <button type="button" className="btn btn-soft btn-sm" onClick={() => start(0)}>
-            <Icon name="reset" /> {tr('study.readAgain')}
-          </button>
-        </Notice>
-      )}
-
-      <div className={'player' + (view === 'read' ? ' is-sticky' : '')}>
-        {view === 'read' && total > 0 && (
-          <div className="player-progress">
-            <span className="faint">{tr('study.paragraphOf', { i: Math.min(pos.p + 1, total), n: total })}</span>
-            <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={tr('study.listened', { n: percent })}>
-              <i style={{ width: `${percent}%` }} />
-            </div>
-            <span className="faint">{tr('study.listened', { n: percent })}</span>
+        <>
+          <label className="field">
+            <span>{tr('study.textToRead')}</span>
+            <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => { setText(e.target.value); setPdf(null) }} />
+          </label>
+          {playerBar}
+        </>
+      ) : pdf ? (
+        <>
+          <div className="doc-banner">
+            <Icon name="pdf" />
+            <span className="doc-banner-text">
+              <b title={pdf.file.name}>{pdf.file.name}</b>
+              <span className="faint">{tr('study.pagesCount', { n: totalPages })}</span>
+            </span>
+            <Segmented
+              label={tr('study.viewMode')}
+              value={docView}
+              onChange={setDocView}
+              options={[
+                { value: 'document', label: tr('study.viewDocument') },
+                { value: 'text', label: tr('study.viewText') },
+              ]}
+            />
           </div>
-        )}
-        <div className="player-controls">
-          <button type="button" className="icon-btn" aria-label={tr('study.prevParagraph')} disabled={view !== 'read' || pos.p === 0} onClick={() => jump(-1)}>
-            <Icon name="back" />
-          </button>
-          {state === 'playing' ? (
-            <button type="button" className="btn btn-primary" onClick={pause}><Icon name="pause" /> {tr('study.pause')}</button>
+          {playerBar}
+          {finishedNotice}
+          {docView === 'document' ? (
+            <DocPages file={pdf.file} readingPage={active ? currentPage : null} follow={state === 'playing'} onReadPage={(n) => { const i = firstParagraphOfPage(paragraphs, n); if (i >= 0) start(i) }} />
           ) : (
-            <button type="button" className="btn btn-primary" onClick={() => (state === 'paused' ? speak(pos) : start(view === 'read' && !finished ? pos.p : 0))} disabled={!total}>
-              <Icon name="play" /> {state === 'paused' ? tr('study.resume') : tr('study.read')}
-            </button>
+            paragraphList
           )}
-          <button type="button" className="icon-btn icon-flip" aria-label={tr('study.nextParagraph')} disabled={view !== 'read' || pos.p >= total - 1} onClick={() => jump(1)}>
-            <Icon name="back" />
+        </>
+      ) : (
+        <>
+          {playerBar}
+          {finishedNotice}
+          {paragraphList}
+        </>
+      )}
+    </div>
+  )
+}
+
+// ── Vista del documento al leer (W-60b): la página que se lee, como en la app ──
+function DocPages({ file, readingPage, follow, onReadPage }: { file: File; readingPage: number | null; follow: boolean; onReadPage: (page: number) => void }) {
+  const { pages, pageNo, setPageNo, preview, error } = usePdfPreview(file, 900)
+  // Mientras suena, la vista sigue a la página que se lee; en pausa se puede recorrer libre.
+  useEffect(() => {
+    if (follow && readingPage) setPageNo(readingPage)
+  }, [follow, readingPage, setPageNo])
+
+  if (error) return <Notice kind="error">{error}</Notice>
+  const isReading = readingPage === pageNo
+  return (
+    <div className="doc-pages">
+      <div className={'doc-page' + (isReading ? ' is-reading' : '')}>
+        {preview ? (
+          <img src={preview.url} alt={tr('study.pageLabel', { n: pageNo })} style={{ aspectRatio: `${preview.widthPt} / ${preview.heightPt}` }} />
+        ) : (
+          <span className="spinner" />
+        )}
+        {isReading && <span className="doc-page-badge"><Icon name="volume" /> {tr('study.pageLabel', { n: pageNo })}</span>}
+      </div>
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <PageNav pageNo={pageNo} pages={pages} onChange={setPageNo} />
+        {!isReading && (
+          <button type="button" className="btn btn-soft btn-sm" onClick={() => onReadPage(pageNo)}>
+            <Icon name="play" /> {tr('study.readThisPage')}
           </button>
-          {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('study.stop')}</button>}
-        </div>
-        <label className="field player-speed">
-          <span>{tr('study.speed', { n: rate.toFixed(1) })}</span>
-          <input type="range" min={0.6} max={1.8} step={0.1} value={rate} onChange={(e) => changeRate(Number(e.target.value))} />
-        </label>
-        {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
+        )}
       </div>
     </div>
   )
@@ -341,16 +432,35 @@ function VoiceAvatar({ persona, size }: { persona: VoicePersona; size: number })
   return <img className="voice-avatar" src={personaAvatar(persona)} alt="" width={size} height={size} style={{ borderColor: persona.color }} />
 }
 
-function VoicePicker({ voices, value, onChange, disabled }: { voices: SpeechSynthesisVoice[]; value: string; onChange: (uri: string) => void; disabled: boolean }) {
+/** Avatar de la voz en la cabecera de Lectura: al tocarlo se despliega un panel para elegir voz y velocidad. */
+function VoiceMenu({ voices, value, onChange, rate, onRate, playing }: { voices: SpeechSynthesisVoice[]; value: string; onChange: (uri: string) => void; rate: number; onRate: (r: number) => void; playing: boolean }) {
   const { lang } = useT()
   const [open, setOpen] = useState(false)
   const [all, setAll] = useState(false)
   const [previewing, setPreviewing] = useState('')
+  const box = useRef<HTMLDivElement>(null)
   const shown = useMemo(() => shownVoices(voices, lang, all), [voices, lang, all])
   const personas = useMemo(() => personasForVoices(shown.map((v) => ({ id: v.voiceURI, feminine: guessFeminine(v.name) }))), [shown])
   const selected = voices.find((v) => v.voiceURI === value) ?? shown[0]
   // La voz guardada puede no estar en la lista visible (otro idioma): su personaje se calcula aparte.
   const selectedPersona = selected && (personas.get(selected.voiceURI) ?? personasForVoices([{ id: selected.voiceURI, feminine: guessFeminine(selected.name) }]).get(selected.voiceURI))
+
+  // Se cierra al tocar fuera o con Esc.
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: PointerEvent) => {
+      if (!box.current?.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('pointerdown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
 
   const detail = (v: SpeechSynthesisVoice) => `${languageName(v.lang, lang)}${v.localService ? '' : ` · ${tr('study.voiceOnline')}`}`
 
@@ -359,54 +469,74 @@ function VoicePicker({ voices, value, onChange, disabled }: { voices: SpeechSynt
     const u = new SpeechSynthesisUtterance(tr('study.voiceSample', { name: persona.name }))
     u.voice = v
     u.lang = v.lang
+    u.rate = rate
     u.onend = () => setPreviewing('')
     u.onerror = () => setPreviewing('')
     setPreviewing(v.voiceURI)
     speechSynthesis.speak(u)
   }
 
-  if (!voices.length) return <p className="faint">{tr('study.noVoices')}</p>
-  if (!selected || !selectedPersona) return null
+  if (!voices.length || !selected || !selectedPersona) {
+    return (
+      <button type="button" className="voice-chip" disabled title={tr('study.noVoices')}>
+        <span className="voice-chip-empty"><Icon name="volume" /></span>
+        <span className="voice-chip-text"><b>{tr('study.voice')}</b></span>
+      </button>
+    )
+  }
 
   return (
-    <div className="voice-picker">
-      <div className="voice-current">
-        <VoiceAvatar persona={selectedPersona} size={56} />
-        <div className="voice-text">
-          <span className="faint">{tr('study.voice')}</span>
+    <div className="voice-menu" ref={box}>
+      <button type="button" className="voice-chip" aria-expanded={open} aria-haspopup="dialog" aria-label={`${tr('study.voiceSettings')}: ${selectedPersona.name}, ${rate.toFixed(1)}×`} onClick={() => setOpen((o) => !o)}>
+        <VoiceAvatar persona={selectedPersona} size={32} />
+        <span className="voice-chip-text">
           <b>{selectedPersona.name}</b>
-          <span className="faint">{detail(selected)}</span>
-        </div>
-        <button type="button" className="btn btn-soft btn-sm" aria-expanded={open} disabled={disabled} onClick={() => setOpen((o) => !o)}>
-          {open ? tr('study.doneChoosing') : tr('study.changeVoice')}
-        </button>
-      </div>
-      {open && !disabled && (
-        <div className="voice-list" role="radiogroup" aria-label={tr('study.chooseVoice')}>
-          {shown.map((v) => {
-            const p = personas.get(v.voiceURI)
-            if (!p) return null
-            const isSel = v.voiceURI === selected.voiceURI
-            return (
-              <div key={v.voiceURI} className={'voice-row' + (isSel ? ' is-selected' : '')}>
-                <label className="voice-choice">
-                  <input type="radio" name="study-voice" checked={isSel} onChange={() => onChange(v.voiceURI)} />
-                  <VoiceAvatar persona={p} size={40} />
-                  <span className="voice-text">
-                    <b>{p.name}</b>
-                    <span className="faint" title={v.name}>{detail(v)}</span>
-                  </span>
-                </label>
-                <button type="button" className="icon-btn" aria-label={`${tr('study.voicePreview')}: ${p.name}`} disabled={previewing === v.voiceURI} onClick={() => preview(v, p)}>
-                  <Icon name={previewing === v.voiceURI ? 'volume' : 'play'} />
-                </button>
-              </div>
-            )
-          })}
-          <label className="voice-all faint">
-            <input type="checkbox" checked={all} onChange={(e) => setAll(e.target.checked)} />
-            {tr('study.allVoices')}
+          <small>{rate.toFixed(1)}×</small>
+        </span>
+        <span className="voice-chip-caret" aria-hidden="true"><Icon name="back" /></span>
+      </button>
+      {open && (
+        <div className="voice-pop" role="dialog" aria-label={tr('study.voiceSettings')}>
+          <div className="voice-current">
+            <VoiceAvatar persona={selectedPersona} size={56} />
+            <div className="voice-text">
+              <span className="faint">{tr('study.voice')}</span>
+              <b>{selectedPersona.name}</b>
+              <span className="faint">{detail(selected)}</span>
+            </div>
+          </div>
+          <label className="field">
+            <span>{tr('study.speed', { n: rate.toFixed(1) })}</span>
+            <input type="range" min={0.6} max={1.8} step={0.1} value={rate} onChange={(e) => onRate(Number(e.target.value))} />
           </label>
+          <div className="voice-list" role="radiogroup" aria-label={tr('study.chooseVoice')}>
+            {shown.map((v) => {
+              const p = personas.get(v.voiceURI)
+              if (!p) return null
+              const isSel = v.voiceURI === selected.voiceURI
+              return (
+                <div key={v.voiceURI} className={'voice-row' + (isSel ? ' is-selected' : '')}>
+                  <label className="voice-choice">
+                    <input type="radio" name="study-voice" checked={isSel} onChange={() => onChange(v.voiceURI)} />
+                    <VoiceAvatar persona={p} size={40} />
+                    <span className="voice-text">
+                      <b>{p.name}</b>
+                      <span className="faint" title={v.name}>{detail(v)}</span>
+                    </span>
+                  </label>
+                  {/* Con la lectura en marcha no hay muestra: cortaría la lectura. */}
+                  <button type="button" className="icon-btn" aria-label={`${tr('study.voicePreview')}: ${p.name}`} disabled={playing || previewing === v.voiceURI} onClick={() => preview(v, p)}>
+                    <Icon name={previewing === v.voiceURI ? 'volume' : 'play'} />
+                  </button>
+                </div>
+              )
+            })}
+            <label className="voice-all faint">
+              <input type="checkbox" checked={all} onChange={(e) => setAll(e.target.checked)} />
+              {tr('study.allVoices')}
+            </label>
+          </div>
+          <button type="button" className="btn btn-primary btn-sm" onClick={() => setOpen(false)}>{tr('study.doneChoosing')}</button>
         </div>
       )}
     </div>
