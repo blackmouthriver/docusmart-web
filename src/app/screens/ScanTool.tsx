@@ -114,7 +114,7 @@ export function ScanTool() {
 
   const ready = pages.filter((p) => p.result)
   /** Las páginas escaneadas como imágenes (el "antes" del PDF). */
-  const scans = useMemo(() => ready.map((p, i) => resultFile(p.result!.blob, `escaneo-${today()}-${i + 1}.jpg`, 'image/jpeg')), [pages])
+  const scans = useMemo(() => ready.map((p, i) => resultFile(p.result!.blob, `${tr('file.scan')}-${today()}-${i + 1}.jpg`, 'image/jpeg')), [pages])
   const [output, setOutput] = useState<{ result: File | null; results?: File[]; saveAs?: File | null } | null>(null)
   useEffect(() => setOutput(null), [pages])
   const pending = pages.length - ready.length
@@ -137,7 +137,7 @@ export function ScanTool() {
         const { scansToPdf } = await import('../lib/scan')
         pdf = await scansToPdf(items)
       }
-      setOutput({ result: resultFile(pdf, `escaneo-${today()}.pdf`, 'application/pdf') })
+      setOutput({ result: resultFile(pdf, `${tr('file.scan')}-${today()}.pdf`, 'application/pdf') })
       track('scan_saved', { pages: ready.length, format: 'pdf', searchable })
       toast(tr('common.doneReview'))
     } catch (e) {
@@ -151,7 +151,7 @@ export function ScanTool() {
 
   const saveJpgs = async () => {
     const images = scans
-    setOutput(images.length === 1 ? { result: images[0] } : { result: null, results: images, saveAs: await bundleFiles(images, `escaneo-${today()}.zip`) })
+    setOutput(images.length === 1 ? { result: images[0] } : { result: null, results: images, saveAs: await bundleFiles(images, `${tr('file.scan')}-${today()}.zip`) })
     toast(tr('common.doneReview'))
     track('scan_saved', { pages: ready.length, format: 'jpg', searchable: false })
   }

@@ -282,7 +282,7 @@ export type ScannedPage = { jpg: Uint8Array; width: number; height: number }
 export async function scansToPdf(pages: ScannedPage[]): Promise<Uint8Array> {
   if (!pages.length) throw new Error(tr('libErr.scanAddPage'))
   const doc = await PDFDocument.create()
-  doc.setTitle('Documento escaneado con DocuSmart')
+  doc.setTitle(tr('out.scanTitle'))
   for (const p of pages) {
     const img = await doc.embedJpg(p.jpg)
     const width = 595

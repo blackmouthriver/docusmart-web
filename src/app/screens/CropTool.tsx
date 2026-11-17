@@ -45,7 +45,7 @@ export function CropTool() {
     setError(null)
     try {
       const out = await cropPdf(await file.arrayBuffer(), margins, scope === 'this' ? [pageNo - 1] : undefined)
-      setOutput(resultFile(out, `${baseName(file.name)}-recortado.pdf`, 'application/pdf'))
+      setOutput(resultFile(out, `${baseName(file.name)}-${tr('file.cropped')}.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'crop' })
       toast(tr('common.doneReview'))
     } catch (e) {

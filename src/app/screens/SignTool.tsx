@@ -69,7 +69,7 @@ export function SignTool() {
     setBusy(true)
     setError(null)
     try {
-      setOutput(resultFile(await signPdf(await file.arrayBuffer(), signature.png, placements), `${baseName(file.name)}-firmado.pdf`, 'application/pdf'))
+      setOutput(resultFile(await signPdf(await file.arrayBuffer(), signature.png, placements), `${baseName(file.name)}-${tr('file.signed')}.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'sign' })
       toast(tr('common.doneReview'))
     } catch (e) {

@@ -159,8 +159,8 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
       } else if (conv.id === 'pdf-img') {
         const blobs = await pdfToImages(await files[0].arrayBuffer(), pdfImgFormat, 1600, (d, t) => setProgress(d / t))
         const name = baseName(files[0].name)
-        const images = blobs.map((b, i) => resultFile(b, `${name}-pagina-${i + 1}.${pdfImgFormat}`, pdfImgFormat === 'jpg' ? 'image/jpeg' : 'image/png'))
-        setOut({ result: null, results: images, saveAs: await bundleFiles(images, `${name}-imagenes.zip`) })
+        const images = blobs.map((b, i) => resultFile(b, `${name}-${tr('file.page')}-${i + 1}.${pdfImgFormat}`, pdfImgFormat === 'jpg' ? 'image/jpeg' : 'image/png'))
+        setOut({ result: null, results: images, saveAs: await bundleFiles(images, `${name}-${tr('file.images')}.zip`) })
       } else if (conv.id === 'pdf-word') {
         const [{ extractForWord }, { buildDocument, writeDocx, summarize }] = await Promise.all([import('../lib/pdfWordSources'), import('../lib/pdfWord')])
         const ex = await extractForWord(files[0], (d, t) => setProgress(d / t))

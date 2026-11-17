@@ -85,7 +85,7 @@ export function CompressTool() {
       }
       setResult(r)
       // Ya no se descarga solo: primero se ve el resultado y luego se elige cómo guardarlo.
-      if (r.improved) setOutput(resultFile(r.bytes, `${baseName(file!.name)}-comprimido.pdf`, PDF))
+      if (r.improved) setOutput(resultFile(r.bytes, `${baseName(file!.name)}-${tr('file.compressed')}.pdf`, PDF))
       track('pdf_compress_result', { level, before_kb: Math.round(r.before / 1024), after_kb: Math.round(r.after / 1024) })
     }, tr('common.doneReview'))
 
@@ -179,7 +179,7 @@ export function ProtectTool() {
       const bytes = new Uint8Array(await file!.arrayBuffer())
       if (await isEncrypted(bytes)) throw new Error(tr('sec.alreadyProtected'))
       const out = await protect(bytes, { userPassword: pw, allowPrint, allowCopy, allowModify })
-      setOutput({ file: resultFile(out, `${baseName(file!.name)}-protegido.pdf`, PDF), password: pw })
+      setOutput({ file: resultFile(out, `${baseName(file!.name)}-${tr('file.protected')}.pdf`, PDF), password: pw })
       setPw('')
       setPw2('')
     }, tr('common.doneReview'))
@@ -252,7 +252,7 @@ export function UnlockTool() {
   const go = () =>
     run(async () => {
       const out = await unlock(new Uint8Array(await file!.arrayBuffer()), pw)
-      setOutput({ file: resultFile(out, `${baseName(file!.name)}-desbloqueado.pdf`, PDF), password: pw })
+      setOutput({ file: resultFile(out, `${baseName(file!.name)}-${tr('file.unlocked')}.pdf`, PDF), password: pw })
       setPw('')
     }, tr('common.doneReview'))
 
@@ -297,7 +297,7 @@ export function RepairTool() {
     run(async () => {
       setDone(null)
       const r = await repair(new Uint8Array(await file!.arrayBuffer()))
-      setOutput(resultFile(r.bytes, `${baseName(file!.name)}-reparado.pdf`, PDF))
+      setOutput(resultFile(r.bytes, `${baseName(file!.name)}-${tr('file.repaired')}.pdf`, PDF))
       setDone(r.hadProblems)
     }, tr('common.doneReview'))
 

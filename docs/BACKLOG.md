@@ -129,8 +129,9 @@ Objetivo: la web en los **12 idiomas de la app** (español, inglés, portugués,
 | W-55a | Páginas para buscadores por idioma: generador con `tools/locales/<idioma>.mjs`, `hreflang`, sitemap con alternativas, selector de idioma, herramienta y banner de analítica en el idioma de la página. **Inglés completo** (`/en/` y 31 herramientas) | 🤖 | Hecho (PR #43, 2026-11-17) |
 | W-55b | Las mismas páginas en **portugués, francés e italiano** (`/pt/`, `/fr/`, `/it/`) | 🤖 | Hecho (PR #44, 2026-11-17) |
 | W-55c | Las mismas páginas en **alemán, catalán y euskera** (`/de/`, `/ca/`, `/eu/`) | 🤖 | Hecho (PR #45, 2026-11-17) |
-| W-55d | Las mismas páginas en **ruso, japonés, coreano y chino** (slugs en inglés) | 🤖 | En revisión (PR) |
-| W-56 | Textos que van **dentro de los archivos** generados (numeración "Página N", informes) en el idioma elegido | 🤖 | Tras W-54 |
+| W-55d | Las mismas páginas en **ruso, japonés, coreano y chino** (slugs en inglés) | 🤖 | Hecho (PR #46, 2026-11-17) |
+| W-56 | Textos que van **dentro de los archivos** generados (numeración "Página N", informes) en el idioma elegido | 🤖 | En revisión (PR) |
+| W-57 | Los enlaces de **compartir/recomendar** (`toolShareUrl`) apuntan a la página en español; que lleven a la del idioma del usuario (`/en/merge-pdf`…) | 🤖 | Pendiente |
 
 ## Mantenimiento y limpieza
 

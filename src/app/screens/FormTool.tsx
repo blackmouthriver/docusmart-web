@@ -72,7 +72,7 @@ export function FormTool() {
     setError(null)
     try {
       const { fillForm } = await import('../lib/pdfForm')
-      setOutput(resultFile(await fillForm(await file.arrayBuffer(), values, { flatten }), `${baseName(file.name)}-relleno.pdf`, 'application/pdf'))
+      setOutput(resultFile(await fillForm(await file.arrayBuffer(), values, { flatten }), `${baseName(file.name)}-${tr('file.filled')}.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'fill_form' })
       toast(tr('common.doneReview'))
     } catch (e) {

@@ -23,7 +23,7 @@ export function CompareTool() {
   const [shown, setShown] = useState(PAGE_SIZE)
   /** Lo que se guarda: el informe de cambios (si hay cambios). */
   const report = useMemo(
-    () => (result && !result.identical ? resultFile(new Blob([reportText(result, result.nameA, result.nameB)], { type: 'text/plain;charset=utf-8' }), `comparacion-${baseName(result.nameA)}.txt`, 'text/plain;charset=utf-8') : null),
+    () => (result && !result.identical ? resultFile(new Blob([reportText(result, result.nameA, result.nameB)], { type: 'text/plain;charset=utf-8' }), `${tr('file.comparison')}-${baseName(result.nameA)}.txt`, 'text/plain;charset=utf-8') : null),
     [result],
   )
 

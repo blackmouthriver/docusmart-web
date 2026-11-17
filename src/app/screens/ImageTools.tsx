@@ -246,8 +246,8 @@ function CompressImageTool() {
         const size = capSize(img.width, img.height, plan.maxSide)
         const blob = await renderImage(img, { ...size, mime: plan.mime, quality: plan.quality })
         // Si no se gana nada, se devuelve la original.
-        if (blob.size >= file.size) return { name: outputName(file.name, 'optimizada', outputMime(file.type)), blob: file, width: img.width, height: img.height }
-        return { name: outputName(file.name, 'comprimida', plan.mime), blob, ...size }
+        if (blob.size >= file.size) return { name: outputName(file.name, tr('file.imgOptimized'), outputMime(file.type)), blob: file, width: img.width, height: img.height }
+        return { name: outputName(file.name, tr('file.imgCompressed'), plan.mime), blob, ...size }
       } finally {
         img.bmp.close()
       }
@@ -271,7 +271,7 @@ function CompressImageTool() {
           </BusyButton>
         </div>
       </Panel>
-      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-comprimidas.zip" showSavings toolName="compress_image" title={b.files.length > 1 ? tr('imgt.title.compressMany') : tr('imgt.title.compressOne')} />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipCompressedImages')}.zip`} showSavings toolName="compress_image" title={b.files.length > 1 ? tr('imgt.title.compressMany') : tr('imgt.title.compressOne')} />}
     </div>
   )
 }
@@ -335,7 +335,7 @@ function ResizeImageTool() {
           </BusyButton>
         </div>
       </Panel>
-      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-redimensionadas.zip" toolName="resize_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.resizeOne')} />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipResizedImages')}.zip`} toolName="resize_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.resizeOne')} />}
     </div>
   )
 }
@@ -357,7 +357,7 @@ function RotateImageTool() {
       const img = await loadImage(file)
       try {
         const mime = outputMime(file.type)
-        return { name: outputName(file.name, 'girada', mime), blob: await renderImage(img, { transform: t, mime, quality: 0.92 }), ...rotatedSize(img.width, img.height, t) }
+        return { name: outputName(file.name, tr('file.imgRotated'), mime), blob: await renderImage(img, { transform: t, mime, quality: 0.92 }), ...rotatedSize(img.width, img.height, t) }
       } finally {
         img.bmp.close()
       }
@@ -387,7 +387,7 @@ function RotateImageTool() {
           </BusyButton>
         </div>
       </Panel>
-      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-giradas.zip" toolName="rotate_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.rotateOne')} />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipRotatedImages')}.zip`} toolName="rotate_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.rotateOne')} />}
     </div>
   )
 }
@@ -460,7 +460,7 @@ function CropImageTool() {
       const mime = outputMime(file.type)
       const blob = await renderImage(img, { crop: px, mime, quality: 0.92 })
       img.bmp.close()
-      setOutput(resultFile(blob, outputName(file.name, 'recortada', mime), mime))
+      setOutput(resultFile(blob, outputName(file.name, tr('file.imgCropped'), mime), mime))
       track('image_tool_used', { tool_name: 'crop', files: 1, ok: 1 })
       toast(tr('common.doneReview'))
     } catch (e) {

@@ -4,6 +4,7 @@
  * bloque de líneas distintas se comparan las palabras. Así, un párrafo que solo
  * cambió de salto de línea no cuenta como cambio.
  */
+import { tr } from '../i18n/translate'
 
 export type DiffType = 'same' | 'del' | 'ins'
 export type Op<T> = { type: DiffType; items: T[] }
@@ -199,13 +200,13 @@ export function compareTexts(linesA: Line[], linesB: Line[], context = 2): Compa
 
 /** Informe en texto plano: "-" lo que se quitó y "+" lo que se agregó. */
 export function reportText(c: Comparison, nameA: string, nameB: string): string {
-  const out = [`Comparación de "${nameA}" (original) con "${nameB}" (nueva versión)`, '']
-  if (c.tooDifferent) out.push('Los documentos son demasiado distintos para compararlos en detalle.')
-  else if (c.identical) out.push('El texto de los dos documentos es igual.')
+  const out = [tr('out.cmp.header', { a: nameA, b: nameB }), '']
+  if (c.tooDifferent) out.push(tr('out.cmp.tooDifferent'))
+  else if (c.identical) out.push(tr('out.cmp.identical'))
   else {
-    out.push(`${c.hunks.length} ${c.hunks.length === 1 ? 'cambio' : 'cambios'}: ${c.added} palabras agregadas y ${c.removed} quitadas.`)
+    out.push(tr(c.hunks.length === 1 ? 'out.cmp.summaryOne' : 'out.cmp.summaryMany', { n: c.hunks.length, added: c.added, removed: c.removed }))
     c.hunks.forEach((h, i) => {
-      out.push('', `── Cambio ${i + 1} · página ${h.pageA} del original, ${h.pageB} de la nueva versión`)
+      out.push('', tr('out.cmp.change', { n: i + 1, a: h.pageA, b: h.pageB }))
       for (const s of h.segments) if (s.type !== 'same') out.push(`${s.type === 'del' ? '-' : '+'} ${s.text}`)
     })
   }

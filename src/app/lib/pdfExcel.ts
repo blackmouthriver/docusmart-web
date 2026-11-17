@@ -6,6 +6,7 @@
  */
 import { strToU8, zipSync } from 'fflate'
 import { buildLines, columnAnchors, xmlText, type Line, type PageInfo, type TextFrag } from './pdfWord'
+import { tr } from '../i18n/translate'
 
 export type NumFmt = 'integer' | 'decimal' | 'currency' | 'currency2' | 'percent'
 export type Cell = { v: string | number; bold?: boolean; fmt?: NumFmt }
@@ -120,7 +121,7 @@ export function buildSheets(pages: PageInfo[], texts: TextFrag[], mode: 'pages' 
     const rows = perPage.flatMap((r, i) => (i > 0 && r.length ? [[], ...r] : r))
     return [{ name: 'Hoja 1', rows }]
   }
-  return perPage.map((rows, i) => ({ name: sheetName(`Página ${i + 1}`), rows }))
+  return perPage.map((rows, i) => ({ name: sheetName(tr('out.sheetPage', { n: i + 1 })), rows }))
 }
 
 /* ───────────── Escribir el .xlsx ───────────── */

@@ -71,7 +71,7 @@ export function CreateArchiveTool() {
   const [usePw, setUsePw] = useState(false)
   const [pw, setPw] = useState('')
   const [pw2, setPw2] = useState('')
-  const [name, setName] = useState('archivos')
+  const [name, setName] = useState(() => tr('file.files'))
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState<{ before: number; after: number } | null>(null)
@@ -106,7 +106,7 @@ export function CreateArchiveTool() {
     try {
       const inputs: ArchiveInput[] = await Promise.all(items.map(async (i) => ({ path: i.path, data: new Uint8Array(await i.file.arrayBuffer()) })))
       const out = await createArchive(inputs, { format, level, password: usePw ? pw : undefined })
-      setOutput(resultFile(out, `${(name.trim() || 'archivos').replace(/\.(zip|7z)$/i, '')}.${format}`, format === 'zip' ? 'application/zip' : 'application/octet-stream'))
+      setOutput(resultFile(out, `${(name.trim() || tr('file.files')).replace(/\.(zip|7z)$/i, '')}.${format}`, format === 'zip' ? 'application/zip' : 'application/octet-stream'))
       setDone({ before: total, after: out.length })
       track('archive_created', { format, level, files: items.length, encrypted: usePw })
       toast(tr('common.doneReview'))
@@ -297,7 +297,7 @@ export function ExtractArchiveTool() {
       return
     }
     const zip = zipSync(Object.fromEntries(extracted.map((f) => [f.path, f.data])), { level: 0 })
-    setBundle(extracted.length === 1 ? extractedFiles[0] : resultFile(zip, `${baseName(file.name).replace(/\.tar$/i, '')}-extraido.zip`, 'application/zip'))
+    setBundle(extracted.length === 1 ? extractedFiles[0] : resultFile(zip, `${baseName(file.name).replace(/\.tar$/i, '')}-${tr('file.extracted')}.zip`, 'application/zip'))
   }, [extracted, extractedFiles, file])
 
   const files = entries?.filter((e) => !e.isDir) ?? []
