@@ -155,7 +155,7 @@ Todo sigue siendo local: nada de IA ni voces en la nube.
 | W-64 | **Resumen local** (extractivo, port de `TextSummarizer` de la app): elige las oraciones más relevantes, sin IA en la nube; copiar, descargar o leer en voz alta. Mejora web: palabras vacías en los 12 idiomas | 🤖 | Hecho (PR #66) |
 | W-65 | **Notas completas**: título, editar, exportar todas o una (TXT y PDF) e imágenes adjuntas (guardadas en IndexedDB). Dictado por voz **descartado**: en Chrome el reconocimiento envía el audio a Google y rompe la promesa de privacidad | 🤖 | Hecho (PR #68) |
 | W-66 | **Estadísticas de estudio**: tiempo total escuchado, pomodoros de la semana con barras por día y total | 🤖 | Hecho (PR #69) |
-| W-67 | **Mejoras propias de la web**: atajos de teclado (espacio = leer/pausar, flechas = párrafo), controles desde auriculares y pantalla bloqueada (Media Session), pantalla encendida mientras se lee (Wake Lock) y aviso del navegador al terminar un Pomodoro (Notification, con permiso) | 🤖 | En revisión |
+| W-67 | **Mejoras propias de la web**: atajos de teclado (espacio = leer/pausar, flechas = párrafo), controles desde auriculares y pantalla bloqueada (Media Session), pantalla encendida mientras se lee (Wake Lock) y aviso del navegador al terminar un Pomodoro (Notification, con permiso) | 🤖 | Hecho (PR #70) |
 | W-68 | **Agenda y recordatorios** (en la app: agenda/calendario y "recordarme repasar"). En la web solo avisaría con la pestaña abierta; evaluar después de W-58..W-67 | 👤 decidir | Pendiente |
 
 Orden sugerido: W-58 → W-60 → W-59 → W-62/W-63 → W-64 → W-61 → W-65 → W-66 → W-67. Cada ítem en su PR, en los 12
@@ -165,7 +165,28 @@ idiomas, con revisión de punta a punta en el navegador.
 
 | ID | Ítem | Quién | Estado |
 |---|---|---|---|
-| W-69 | **Revisar y refinar la creación de códigos QR** frente a la app (tipos de contenido, diseño, QR protegido, leer) y proponer mejoras propias de la web; el análisis se convierte en ítems W-xx aquí. Se hace **después** del Modo Estudio (W-58..W-67) | 🤖 | Pendiente |
+| W-69 | **Revisar y refinar la creación de códigos QR** frente a la app (tipos de contenido, diseño, QR protegido, leer) y proponer mejoras propias de la web; el análisis se convierte en ítems W-xx aquí. Se hace **después** del Modo Estudio (W-58..W-67) | 🤖 | Hecho (análisis, 2026-11-17): ítems W-82 a W-88 |
+
+### Resultado del análisis (W-69)
+
+Referencia: QR de la app (`docsmart/.../features/scanner`: `QrContentFormat.kt`, `QrScreen.kt`, `QrDesignSection.kt`,
+`QrHistoryScreen.kt`), solo de consulta. **Hoy la web** tiene una sola pantalla: crear un QR de texto o enlace (normal o
+protegido con contraseña, compatible con la app) y leer con la cámara o desde una imagen. **La app** además tiene 9 tipos
+de contenido, un lector que reconoce el tipo y ofrece acciones, diseño (8 colores con aviso de contraste y logo) e
+historial de creados y leídos.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-82 | **Menú de QR con vistas** *Crear*, *Leer* e *Historial* (`#/qr/crear`, `/leer`, `/historial`) y submenú lateral, igual que el Modo Estudio | 🤖 | Pendiente |
+| W-83 | **Tipos de contenido al crear**, con los mismos formatos estándar de la app para que cualquier lector los entienda: URL, Texto, Email (`mailto:`), Teléfono (`tel:`), **Wi-Fi** (`WIFI:T:WPA;S:…;P:…;;`, con escape de `\ ; , : "`), **Contacto** (vCard 3.0) y **Evento** (iCalendar `VEVENT`); validaciones como en la app (clave Wi-Fi, nombre del contacto, fin después del inicio). Se mantiene la opción *Protegido* | 🤖 | Pendiente |
+| W-84 | **Lector inteligente**: reconoce el tipo y ofrece la acción que corresponde (abrir enlace mostrando el **dominio** antes de abrir, escribir correo, llamar, copiar; Wi-Fi: nombre de red y copiar clave; contacto: descargar `.vcf`; evento: descargar `.ics`). Mejoras web: bloquea esquemas peligrosos (`javascript:`, `data:`), usa el lector nativo del navegador (`BarcodeDetector`) cuando existe y permite **pegar una imagen** con Ctrl+V | 🤖 | Pendiente |
+| W-85 | **Diseño del QR**: los 8 colores de la app con el aviso de contraste (no deja generar uno que la cámara no leería), **logo centrado** (con corrección de errores alta para que siga leyéndose) y tamaño | 🤖 | Pendiente |
+| W-86 | **Guardar y compartir**: PNG en alta resolución, **SVG** (vector para imprimir sin perder calidad), copiar la imagen, imprimir, y Descargar/Compartir/nube con las opciones de siempre | 🤖 | Pendiente |
+| W-87 | **Historial local** de QR creados y leídos (como la app), solo en este navegador: la vista previa oculta el contenido protegido, la clave Wi-Fi y los datos de contacto; volver a abrir, borrar uno o vaciar todo | 🤖 | Pendiente |
+| W-88 | **QR de una imagen o un documento** (en la app apunta a un archivo del propio celular y solo funciona ahí). En la web solo es posible subiendo el archivo: **depende de la decisión de W-47** | 👤 decidir | Pendiente |
+
+Orden sugerido: W-82 → W-83 → W-84 → W-85 → W-86 → W-87. Cada ítem en su PR, en los 12 idiomas y con prueba de punta a
+punta (crear con la web y leer con la app y con otro lector).
 
 ## Asistente de chat en todo el sitio
 
