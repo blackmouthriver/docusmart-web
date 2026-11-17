@@ -102,7 +102,7 @@ Objetivo: en todas las herramientas, (1) al subir el archivo se ve el documento 
 
 | ID | Ítem | Quién | Estado / qué hace falta |
 |---|---|---|---|
-| W-40 | **Piloto en Comprimir PDF**: vista previa del original (páginas, peso, recorrer páginas), resultado con vista previa y botón Original/Resultado en la misma página, comparación de peso, botones **Descargar** y **Compartir** (WhatsApp, Drive, Gmail… con la hoja de compartir del sistema). Ya no se descarga solo | 🤖 | En revisión (PR) |
+| W-40 | **Piloto en Comprimir PDF**: **antes y después lado a lado**: al subir se ve el original (páginas y peso) y al aplicar la herramienta el resultado aparece al lado en la misma fila, con un solo control de páginas para los dos; comparación de peso; botones **Descargar** y **Compartir** (WhatsApp, Drive, Gmail… con la hoja de compartir del sistema). Ya no se descarga solo | 🤖 | En revisión (PR) |
 | W-41 | Extender a las herramientas PDF de **un archivo → un PDF**: rotar, reordenar, numerar, marca de agua, proteger, desbloquear, reparar, OCR, recortar, firmar, censurar, editar, formulario, PDF/A | 🤖 | Tras el visto bueno de W-40 |
 | W-42 | Herramientas con **varios archivos** de entrada o salida: Unir (vista de cada PDF y del resultado), Dividir y Extraer imágenes (lista de archivos con miniaturas antes del ZIP), Comparar | 🤖 | Tras W-41 |
 | W-43 | **Convertidor**: vista previa de la entrada para PDF, imágenes, Word (se diagrama a PDF para mostrar páginas) y Excel (hojas y filas); vista del resultado: páginas en imagen, PDF generado, contenido del Word/Excel/texto | 🤖 | Tras W-41 |

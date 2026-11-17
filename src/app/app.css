@@ -466,11 +466,20 @@ p { margin: 0; }
 .scan-badge { position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 2px 6px; border-radius: 999px; background: rgba(245, 158, 11, 0.95); color: #1C1B1A; font-size: 11px; font-weight: 700; }
 .scan-page-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--ink-soft); }
 
-/* Vista previa del documento y del resultado */
-.doc-preview { display: grid; gap: 10px; min-width: 0; }
-.doc-preview-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; min-height: 36px; }
-.doc-preview-stage { display: grid; place-items: center; padding: 14px; border-radius: 14px; background: var(--paper-2); min-height: 240px; }
-.doc-preview-stage img { display: block; max-width: 100%; max-height: 60vh; width: auto; height: auto; background: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(28, 27, 26, 0.2); }
-.result-panel { border-top: 1px solid var(--line); padding-top: 16px; }
+/* Vista previa: antes y después lado a lado */
+.compare-panel { min-width: 0; }
+.before-after { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.doc-preview { display: grid; gap: 8px; min-width: 0; margin: 0; }
+.doc-preview-meta { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; font-size: 14px; }
+.doc-preview-meta .faint { font-size: 13px; }
+.doc-preview-stage { display: grid; place-items: center; padding: 12px; border-radius: 14px; background: var(--paper-2); min-height: 240px; text-align: center; }
+.doc-preview-stage img { display: block; max-width: 100%; max-height: 56vh; width: auto; height: auto; background: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(28, 27, 26, 0.2); }
+.doc-placeholder { border: 2px dashed var(--line-strong); background: transparent; }
 .save-options { display: flex; flex-wrap: wrap; gap: 8px; }
 .save-options .btn { flex: 1 1 160px; justify-content: center; }
+@media (max-width: 480px) {
+  .before-after { gap: 8px; }
+  .doc-preview-stage { padding: 6px; min-height: 170px; border-radius: 10px; }
+  .doc-preview-meta { font-size: 13px; }
+  .doc-preview-meta .faint { font-size: 12px; flex-basis: 100%; }
+}

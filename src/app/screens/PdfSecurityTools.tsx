@@ -6,7 +6,7 @@ import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../c
 import { baseName, download, formatBytes } from '../lib/files'
 import { WrongPasswordError, compressLossless, isEncrypted, protect, repair, unlock, type CompressResult } from '../lib/pdfSecurity'
 import { track } from '../../shared/analytics'
-import { DocPreview, ResultPanel } from '../components/DocPreview'
+import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
 
 const PDF = 'application/pdf'
@@ -93,7 +93,21 @@ export function CompressTool() {
   return (
     <div className="card stack">
       <PickPdf file={file} onFile={(f) => { setFile(f); setResult(null); setOutput(null) }} />
-      {file && !output && <DocPreview source={file} label="Original" />}
+      {file && (
+        <BeforeAfter
+          original={file}
+          result={output}
+          toolName="compress"
+          placeholder={busy ? "Comprimiendo…" : "Elige el nivel y pulsa Comprimir PDF"}
+          summary={
+            result && (
+              <Notice kind="success">
+                {formatBytes(result.before)} → <b>{formatBytes(result.after)}</b> ({saved}% menos). Compara las dos versiones y guárdalo.
+              </Notice>
+            )
+          }
+        />
+      )}
       <div className="field">
         <span>Nivel de compresión</span>
         <Segmented
@@ -119,23 +133,11 @@ export function CompressTool() {
           Comprimir PDF
         </BusyButton>
       </div>
-      {result &&
-        (result.improved && output ? (
-          <ResultPanel
-            result={output}
-            original={file!}
-            toolName="compress"
-            summary={
-              <Notice kind="success">
-                {formatBytes(result.before)} → <b>{formatBytes(result.after)}</b> ({saved}% menos). Compara con el original y guárdalo.
-              </Notice>
-            }
-          />
-        ) : (
-          <Notice kind="info">
-            Este PDF ya estaba optimizado: no se pudo reducir más{level === 'sin-perdida' ? '. Prueba con el nivel "Media" o "Alta".' : '.'}
-          </Notice>
-        ))}
+      {result && !result.improved && (
+        <Notice kind="info">
+          Este PDF ya estaba optimizado: no se pudo reducir más{level === 'sin-perdida' ? '. Prueba con el nivel "Media" o "Alta".' : '.'}
+        </Notice>
+      )}
     </div>
   )
 }
