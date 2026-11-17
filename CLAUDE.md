@@ -63,7 +63,7 @@ Dependencias: `ui → core/infra`; `core` no usa React ni el DOM; `shared` no im
 
 Historia reciente (todo fusionado salvo lo indicado): vista previa y guardado #34–#38; idiomas y apariencia
 #39–#42; páginas por idioma #43–#46; textos dentro de archivos #47; arquitectura por capas y este archivo #48;
-**enlaces de compartir por idioma, W-57 (en revisión)**.
+enlaces de compartir por idioma (W-57) #49.
 
 ## Infraestructura
 
