@@ -1,6 +1,7 @@
 /** Lectura y render de PDFs con pdf.js, todo en el navegador. */
 import { GlobalWorkerOptions, getDocument, type PDFDocumentProxy } from 'pdfjs-dist'
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
+import { linesToText, type TextLine } from './textLayout'
 
 GlobalWorkerOptions.workerSrc = workerUrl
 
@@ -54,26 +55,39 @@ export async function renderPage(
   return canvas
 }
 
+/** Texto del PDF completo, con una línea en blanco entre páginas. */
 export async function extractText(doc: PDFDocumentProxy): Promise<string> {
+  return (await extractPagesText(doc)).join('\n\n')
+}
+
+/** Texto de cada página por separado (para saber en qué página va la lectura). */
+export async function extractPagesText(doc: PDFDocumentProxy): Promise<string[]> {
   const pages: string[] = []
   for (let i = 1; i <= doc.numPages; i++) {
     const page = await doc.getPage(i)
     const content = await page.getTextContent()
-    let line = ''
-    const lines: string[] = []
+    let line: TextLine | null = null
+    const lines: TextLine[] = []
     for (const item of content.items) {
       if (!('str' in item)) continue
-      line += item.str
+      // La altura de la línea es la de su primer trozo con texto.
+      const current: TextLine = line ?? { text: '', y: item.transform[5], h: item.height }
+      if (!current.text.trim() && item.str.trim()) {
+        current.y = item.transform[5]
+        current.h = item.height
+      }
+      current.text += item.str
+      line = current
       if (item.hasEOL) {
         lines.push(line)
-        line = ''
+        line = null
       }
     }
     if (line) lines.push(line)
-    pages.push(lines.join('\n').trim())
+    pages.push(linesToText(lines))
     page.cleanup()
   }
-  return pages.join('\n\n')
+  return pages
 }
 
 export function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number): Promise<Blob> {

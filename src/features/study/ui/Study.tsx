@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
-import { BackButton, HeroCard, Notice } from '../../../shared/ui/ui'
+import { BackButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
 import { kindOf } from '../../../shared/files/files'
-import { pdfToText } from '../../convert/core/convert'
+import { closePdf, extractPagesText, openPdf } from '../../../shared/pdf/pdf'
+import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import { useT } from '../../../shared/i18n/I18n'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
-import { listenedPercent, nextPosition, toParagraphs } from '../core/reading'
+import { firstParagraphOfPage, listenedPercent, nextPosition, pageProgress, toPagedParagraphs, toParagraphs } from '../core/reading'
 import { guessFeminine, personaAvatar, personasForVoices, voicesForLanguage, type VoicePersona } from '../core/voicePersonas'
 
 // ── Menú del Modo Estudio (W-59): una tarjeta por función, como en la app ──
@@ -91,7 +92,12 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const [state, setState] = useState<'idle' | 'playing' | 'paused'>('idle')
   const [finished, setFinished] = useState(false)
   const [loading, setLoading] = useState(false)
-  const paragraphs = useMemo(() => toParagraphs(text), [text])
+  // PDF cargado: su texto por página, para mostrar el documento y el avance por páginas (W-60b).
+  const [pdf, setPdf] = useState<{ file: File; pages: string[] } | null>(null)
+  const [docView, setDocView] = useState<'document' | 'text'>('document')
+  const paragraphs = useMemo(() => (pdf ? toPagedParagraphs(pdf.pages) : toParagraphs(text)), [pdf, text])
+  const totalPages = pdf?.pages.length ?? 0
+  const currentPage = paragraphs[pos.p]?.page ?? 1
   // Cada lectura lleva un número: al cancelar, los avisos de la anterior se ignoran.
   const run = useRef(0)
   const fileInput = useRef<HTMLInputElement>(null)
@@ -111,9 +117,10 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
 
   // Estado para la tarjeta del menú ("Leyendo · párrafo 3 de 18").
   useEffect(() => {
-    const vars = { i: Math.min(pos.p + 1, paragraphs.length), n: paragraphs.length }
-    onStatus(state === 'playing' ? tr('study.statusReading', vars) : state === 'paused' ? tr('study.statusPaused', vars) : '')
-  }, [state, pos.p, paragraphs.length, onStatus])
+    const vars = totalPages ? { i: currentPage, n: totalPages } : { i: Math.min(pos.p + 1, paragraphs.length), n: paragraphs.length }
+    const [reading, paused] = totalPages ? (['study.statusReadingPage', 'study.statusPausedPage'] as const) : (['study.statusReading', 'study.statusPaused'] as const)
+    onStatus(state === 'playing' ? tr(reading, vars) : state === 'paused' ? tr(paused, vars) : '')
+  }, [state, pos.p, paragraphs.length, totalPages, currentPage, onStatus])
 
   // El párrafo que se lee queda siempre a la vista.
   useEffect(() => {
@@ -206,9 +213,20 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     try {
       const kind = kindOf(file)
       let loaded: string | null = null
-      if (kind === 'pdf') loaded = await pdfToText(await file.arrayBuffer())
-      else if (kind === 'text') loaded = await file.text()
-      else toast(tr('study.pickPdfTxt'))
+      if (kind === 'pdf') {
+        const doc = await openPdf(await file.arrayBuffer())
+        try {
+          const pages = await extractPagesText(doc)
+          loaded = pages.join('\n\n')
+          setPdf({ file, pages })
+          setDocView('document')
+        } finally {
+          await closePdf(doc)
+        }
+      } else if (kind === 'text') {
+        loaded = await file.text()
+        setPdf(null)
+      } else toast(tr('study.pickPdfTxt'))
       if (loaded !== null) {
         setText(loaded)
         setPos({ p: 0, c: 0 })
@@ -225,7 +243,28 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   if (!supported) return <Notice kind="error">{tr('study.unsupported')}</Notice>
 
   const total = paragraphs.length
-  const percent = listenedPercent(pos.p, total, finished)
+  const pages = pageProgress(currentPage, totalPages, finished)
+  const percent = totalPages ? pages.percent : listenedPercent(pos.p, total, finished)
+  const active = state !== 'idle' || finished
+
+  const paragraphList = (
+    <div className="reading reading-paras" ref={listRef} aria-live="off">
+      {paragraphs.map((para, i) => (
+        <Fragment key={i}>
+          {para.page && para.page !== paragraphs[i - 1]?.page && <div className="page-sep">{tr('study.pageLabel', { n: para.page })}</div>}
+          <p data-p={i} className={i === pos.p && active ? 'is-current' : undefined}>
+            <button type="button" className="para-btn" title={tr('study.readFromHere', { n: i + 1 })} onClick={() => start(i)}>
+              {i === pos.p && state === 'playing'
+                ? para.chunks.map((ch, j) => (
+                    <span key={j}>{j === pos.c ? <mark>{ch}</mark> : ch} </span>
+                  ))
+                : para.text}
+            </button>
+          </p>
+        </Fragment>
+      ))}
+    </div>
+  )
 
   return (
     <div className="card stack">
@@ -247,22 +286,34 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       {view === 'edit' ? (
         <label className="field">
           <span>{tr('study.textToRead')}</span>
-          <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => setText(e.target.value)} />
+          <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => { setText(e.target.value); setPdf(null) }} />
         </label>
+      ) : pdf ? (
+        <>
+          <div className="doc-banner">
+            <Icon name="pdf" />
+            <span className="doc-banner-text">
+              <b title={pdf.file.name}>{pdf.file.name}</b>
+              <span className="faint">{tr('study.pagesCount', { n: totalPages })}</span>
+            </span>
+            <Segmented
+              label={tr('study.viewMode')}
+              value={docView}
+              onChange={setDocView}
+              options={[
+                { value: 'document', label: tr('study.viewDocument') },
+                { value: 'text', label: tr('study.viewText') },
+              ]}
+            />
+          </div>
+          {docView === 'document' ? (
+            <DocPages file={pdf.file} readingPage={active ? currentPage : null} follow={state === 'playing'} onReadPage={(n) => { const i = firstParagraphOfPage(paragraphs, n); if (i >= 0) start(i) }} />
+          ) : (
+            paragraphList
+          )}
+        </>
       ) : (
-        <div className="reading reading-paras" ref={listRef} aria-live="off">
-          {paragraphs.map((para, i) => (
-            <p key={i} data-p={i} className={i === pos.p && (state !== 'idle' || finished) ? 'is-current' : undefined}>
-              <button type="button" className="para-btn" title={tr('study.readFromHere', { n: i + 1 })} onClick={() => start(i)}>
-                {i === pos.p && state === 'playing'
-                  ? para.chunks.map((ch, j) => (
-                      <span key={j}>{j === pos.c ? <mark>{ch}</mark> : ch} </span>
-                    ))
-                  : para.text}
-              </button>
-            </p>
-          ))}
-        </div>
+        paragraphList
       )}
 
       <VoicePicker voices={voices} value={voiceURI} onChange={chooseVoice} disabled={state === 'playing'} />
@@ -279,11 +330,11 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       <div className={'player' + (view === 'read' ? ' is-sticky' : '')}>
         {view === 'read' && total > 0 && (
           <div className="player-progress">
-            <span className="faint">{tr('study.paragraphOf', { i: Math.min(pos.p + 1, total), n: total })}</span>
+            <span className="faint">{totalPages ? tr('study.pageOf', { i: currentPage, n: totalPages }) : tr('study.paragraphOf', { i: Math.min(pos.p + 1, total), n: total })}</span>
             <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={tr('study.listened', { n: percent })}>
               <i style={{ width: `${percent}%` }} />
             </div>
-            <span className="faint">{tr('study.listened', { n: percent })}</span>
+            <span className="faint">{totalPages ? tr('study.pagesRead', { r: pages.read, n: totalPages, p: percent }) : tr('study.listened', { n: percent })}</span>
           </div>
         )}
         <div className="player-controls">
@@ -307,6 +358,38 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
           <input type="range" min={0.6} max={1.8} step={0.1} value={rate} onChange={(e) => changeRate(Number(e.target.value))} />
         </label>
         {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
+      </div>
+    </div>
+  )
+}
+
+// ── Vista del documento al leer (W-60b): la página que se lee, como en la app ──
+function DocPages({ file, readingPage, follow, onReadPage }: { file: File; readingPage: number | null; follow: boolean; onReadPage: (page: number) => void }) {
+  const { pages, pageNo, setPageNo, preview, error } = usePdfPreview(file, 900)
+  // Mientras suena, la vista sigue a la página que se lee; en pausa se puede recorrer libre.
+  useEffect(() => {
+    if (follow && readingPage) setPageNo(readingPage)
+  }, [follow, readingPage, setPageNo])
+
+  if (error) return <Notice kind="error">{error}</Notice>
+  const isReading = readingPage === pageNo
+  return (
+    <div className="doc-pages">
+      <div className={'doc-page' + (isReading ? ' is-reading' : '')}>
+        {preview ? (
+          <img src={preview.url} alt={tr('study.pageLabel', { n: pageNo })} style={{ aspectRatio: `${preview.widthPt} / ${preview.heightPt}` }} />
+        ) : (
+          <span className="spinner" />
+        )}
+        {isReading && <span className="doc-page-badge"><Icon name="volume" /> {tr('study.pageLabel', { n: pageNo })}</span>}
+      </div>
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <PageNav pageNo={pageNo} pages={pages} onChange={setPageNo} />
+        {!isReading && (
+          <button type="button" className="btn btn-soft btn-sm" onClick={() => onReadPage(pageNo)}>
+            <Icon name="play" /> {tr('study.readThisPage')}
+          </button>
+        )}
       </div>
     </div>
   )

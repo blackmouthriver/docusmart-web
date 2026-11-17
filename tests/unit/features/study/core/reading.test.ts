@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { MAX_CHUNK, chunkParagraph, listenedPercent, nextPosition, splitParagraphs, toParagraphs } from '../../../../../src/features/study/core/reading'
+import { MAX_CHUNK, chunkParagraph, firstParagraphOfPage, listenedPercent, nextPosition, pageProgress, splitParagraphs, toPagedParagraphs, toParagraphs } from '../../../../../src/features/study/core/reading'
 
 describe('splitParagraphs', () => {
   it('une las líneas cortadas por el ancho de la página y separa por oraciones cortas al final', () => {
@@ -70,6 +70,33 @@ describe('chunkParagraph', () => {
     expect(chunks[0]).toBe('Corta.')
     expect(chunks.at(-1)).toBe('Otra corta.')
     expect(chunks.every((c) => c.length <= 100)).toBe(true)
+  })
+})
+
+describe('páginas del PDF', () => {
+  const pages = ['Título\n\nPrimer párrafo.', '', 'Tercera página.']
+  const ps = toPagedParagraphs(pages)
+
+  it('cada párrafo sabe de qué página sale', () => {
+    expect(ps.map((p) => [p.text, p.page])).toEqual([
+      ['Título', 1],
+      ['Primer párrafo.', 1],
+      ['Tercera página.', 3],
+    ])
+  })
+
+  it('encuentra el primer párrafo de una página o del siguiente con texto', () => {
+    expect(firstParagraphOfPage(ps, 1)).toBe(0)
+    expect(firstParagraphOfPage(ps, 2)).toBe(2)
+    expect(firstParagraphOfPage(ps, 4)).toBe(-1)
+  })
+
+  it('cuenta las páginas leídas y el porcentaje', () => {
+    expect(pageProgress(1, 12, false)).toEqual({ read: 0, percent: 0 })
+    expect(pageProgress(4, 12, false)).toEqual({ read: 3, percent: 25 })
+    expect(pageProgress(5, 12, true)).toEqual({ read: 12, percent: 100 })
+    expect(pageProgress(20, 12, false)).toEqual({ read: 12, percent: 100 })
+    expect(pageProgress(3, 0, false)).toEqual({ read: 0, percent: 0 })
   })
 })
 

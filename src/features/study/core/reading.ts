@@ -5,7 +5,8 @@
  * sin perder la posición.
  */
 
-export type Paragraph = { text: string; chunks: string[] }
+/** `page`: página del PDF (desde 1) de la que sale el párrafo; sin PDF no hay página. */
+export type Paragraph = { text: string; chunks: string[]; page?: number }
 
 /** Largo máximo de cada trozo que se envía a la voz. */
 export const MAX_CHUNK = 280
@@ -84,6 +85,23 @@ function splitLong(text: string, max: number): string[] {
 }
 
 export const toParagraphs = (text: string): Paragraph[] => splitParagraphs(text).map((p) => ({ text: p, chunks: chunkParagraph(p) }))
+
+/** Párrafos de un PDF, cada uno con la página de la que sale (W-60b). */
+export const toPagedParagraphs = (pages: readonly string[]): Paragraph[] =>
+  pages.flatMap((text, i) => toParagraphs(text).map((p) => ({ ...p, page: i + 1 })))
+
+/** Primer párrafo de una página (o del siguiente con texto); -1 si no queda ninguno. */
+export const firstParagraphOfPage = (paragraphs: readonly Paragraph[], page: number) => paragraphs.findIndex((p) => (p.page ?? 0) >= page)
+
+/**
+ * Avance por páginas, como en la app: la página que se lee todavía no cuenta como leída;
+ * al terminar se cuentan todas.
+ */
+export function pageProgress(currentPage: number, totalPages: number, finished: boolean): { read: number; percent: number } {
+  if (totalPages <= 0) return { read: 0, percent: 0 }
+  const read = finished ? totalPages : Math.min(totalPages, Math.max(0, currentPage - 1))
+  return { read, percent: Math.floor((read / totalPages) * 100) }
+}
 
 /** Porcentaje escuchado: párrafos ya leídos sobre el total (100 al terminar). */
 export function listenedPercent(paragraph: number, total: number, finished: boolean): number {
