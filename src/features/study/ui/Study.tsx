@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useRef, useState, useSyncExternalStore } 
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
-import { kindOf } from '../../../shared/files/files'
+import { baseName, kindOf } from '../../../shared/files/files'
 import { closePdf, extractPagesText, openPdf } from '../../../shared/pdf/pdf'
 import { EDIT_PDF, handOff } from '../../../shared/files/handoff'
 import { SaveOptions } from '../../../shared/ui/DocPreview'
@@ -10,6 +10,7 @@ import { documentId, entryPercent, removeEntry, resumeParagraph, upsertEntry, ty
 import { loadFile as loadStoredFile, loadHistory, pruneFiles, saveHistory, storeFile } from '../infra/historyStore'
 import { groupByDoc, isHighlighted, quoteNote, removeDocHighlights, removeHighlight, toggleHighlight, type Highlight } from '../core/highlights'
 import { getHighlights, setHighlights, subscribeHighlights } from '../infra/highlightsStore'
+import { summarize } from '../core/summarize'
 import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -109,6 +110,10 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const [doc, setDoc] = useState<{ id: string; name: string; kind: 'pdf' | 'text' } | null>(null)
   const [resumed, setResumed] = useState<string | null>(null)
   const highlights = useSyncExternalStore(subscribeHighlights, getHighlights)
+  // Resumen local (W-64): se calcula al pedirlo y se puede escuchar, copiar o guardar.
+  const [summaryOpen, setSummaryOpen] = useState(false)
+  const [summaryAt, setSummaryAt] = useState(-1)
+  const summary = useMemo(() => (summaryOpen ? summarize(text) : null), [summaryOpen, text])
   const paragraphs = useMemo(() => (pdf ? toPagedParagraphs(pdf.pages) : toParagraphs(text)), [pdf, text])
   const totalPages = pdf?.pages.length ?? 0
   const currentPage = paragraphs[pos.p]?.page ?? 1
@@ -169,6 +174,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const speak = (at: Pos, speed = rate, uri = voiceURI) => {
     const id = ++run.current
     speechSynthesis.cancel()
+    setSummaryAt(-1)
     const chunk = paragraphs[at.p]?.chunks[at.c]
     if (!chunk) return
     const u = new SpeechSynthesisUtterance(chunk)
@@ -281,6 +287,48 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       toast(tr('study.cantRead'))
     } finally {
       setLoading(false)
+    }
+  }
+
+  /** Escucha el resumen oración por oración con la voz y la velocidad elegidas. */
+  const playSummary = (i = 0) => {
+    if (!summary) return
+    const id = ++run.current
+    speechSynthesis.cancel()
+    setState('idle')
+    if (i >= summary.sentences.length) {
+      setSummaryAt(-1)
+      return
+    }
+    const u = new SpeechSynthesisUtterance(summary.sentences[i])
+    const voice = voices.find((v) => v.voiceURI === voiceURI) ?? defaultVoice(voices, uiLang)
+    if (voice) {
+      u.voice = voice
+      u.lang = voice.lang
+    }
+    u.rate = rate
+    u.onend = () => id === run.current && playSummary(i + 1)
+    u.onerror = (e) => {
+      if (id === run.current && e.error !== 'interrupted' && e.error !== 'canceled') setSummaryAt(-1)
+    }
+    setSummaryAt(i)
+    speechSynthesis.speak(u)
+  }
+  const stopSummary = () => {
+    run.current++
+    speechSynthesis.cancel()
+    setSummaryAt(-1)
+  }
+  const openSummary = () => {
+    setSummaryOpen(true)
+    track('study_summary_created', { kind: pdf ? 'pdf' : 'text' })
+  }
+  const copySummary = async () => {
+    try {
+      await navigator.clipboard.writeText(summary?.sentences.join('\n') ?? '')
+      toast(tr('study.summaryCopied'))
+    } catch {
+      toast(tr('shareApp.copyError'))
     }
   }
 
@@ -397,6 +445,11 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
         <h3>{tr('study.readAloud')}</h3>
         <div className="row read-actions">
           <VoiceMenu voices={voices} value={voiceURI} onChange={chooseVoice} rate={rate} onRate={changeRate} playing={state === 'playing'} />
+          {text.trim() && (
+            <button type="button" className="btn btn-outline btn-sm" aria-pressed={summaryOpen} onClick={() => (summaryOpen ? (stopSummary(), setSummaryOpen(false)) : openSummary())}>
+              <Icon name="note" /> {tr('study.summarize')}
+            </button>
+          )}
           {view === 'read' && (
             <button type="button" className="btn btn-outline btn-sm" onClick={edit}>
               <Icon name="edit" /> {tr('study.editText')}
@@ -408,6 +461,38 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
         </div>
         <input ref={fileInput} type="file" hidden accept="application/pdf,text/plain,.txt,.md" onChange={(e) => { void loadFile(e.target.files?.[0]); e.target.value = '' }} />
       </div>
+
+      {summary && (
+        <section className="summary" aria-label={tr('study.summaryTitle')}>
+          <div className="summary-head">
+            <h4><Icon name="note" /> {tr('study.summaryTitle')}</h4>
+            <button type="button" className="icon-btn" aria-label={tr('study.closeSummary')} onClick={() => { stopSummary(); setSummaryOpen(false) }}>
+              <Icon name="close" />
+            </button>
+          </div>
+          {summary.sentences.length ? (
+            <>
+              <p className="faint summary-meta">{tr('study.summaryMeta', { n: summary.sentences.length, total: summary.total })}</p>
+              <ol className="summary-list">
+                {summary.sentences.map((sentence, i) => (
+                  <li key={i} className={i === summaryAt ? 'is-current' : undefined}>{sentence}</li>
+                ))}
+              </ol>
+              <div className="row" style={{ gap: 8 }}>
+                {summaryAt >= 0 ? (
+                  <button type="button" className="btn btn-primary btn-sm" onClick={stopSummary}><Icon name="stop" /> {tr('study.stop')}</button>
+                ) : (
+                  <button type="button" className="btn btn-primary btn-sm" onClick={() => playSummary(0)}><Icon name="volume" /> {tr('study.listenSummary')}</button>
+                )}
+                <button type="button" className="btn btn-soft btn-sm" onClick={() => void copySummary()}><Icon name="copy" /> {tr('study.copySummary')}</button>
+              </div>
+              <SaveOptions file={new File([summary.sentences.join('\n')], `${baseName(doc?.name ?? txtName ?? tr('file.studyText'))}-${tr('file.summary')}.txt`, { type: 'text/plain' })} toolName="study_summary" />
+            </>
+          ) : (
+            <p className="faint">{tr('study.summaryEmpty')}</p>
+          )}
+        </section>
+      )}
 
       {view === 'edit' ? (
         <>

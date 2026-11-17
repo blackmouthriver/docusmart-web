@@ -352,6 +352,17 @@ p { margin: 0; }
 .icon-flip svg { transform: scaleX(-1); }
 @media (max-width: 520px) { .player-progress { grid-template-columns: 1fr auto; } .player-progress .progress { grid-column: 1 / -1; grid-row: 2; } }
 
+/* Resumen local (W-64) */
+.summary { display: grid; gap: 10px; padding: 14px; border-radius: 18px; background: linear-gradient(135deg, var(--blue-soft), var(--paper)); box-shadow: 0 0 0 1px var(--line) inset; animation: page-in 260ms var(--ease-out); }
+.summary-head { display: flex; align-items: center; justify-content: space-between; }
+.summary-head h4 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 16px; }
+.summary-head h4 svg { width: 18px; height: 18px; color: var(--blue); }
+.summary-meta { margin: 0; font-size: 13px; }
+.summary-list { margin: 0; padding-left: 22px; display: grid; gap: 8px; line-height: 1.6; }
+.summary-list li { padding: 2px 6px; border-radius: 8px; transition: background-color 200ms ease; }
+.summary-list li.is-current { background: #FEF08A; }
+[data-theme="dark"] .summary-list li.is-current { background: rgba(250, 204, 21, .3); }
+
 /* Párrafos resaltados (W-63) */
 .reading-paras p.is-marked { background: rgba(250, 204, 21, .22); box-shadow: inset 3px 0 0 #EAB308; }
 .reading-paras p.is-current.is-marked { background: linear-gradient(90deg, rgba(250, 204, 21, .3), var(--blue-soft)); }
