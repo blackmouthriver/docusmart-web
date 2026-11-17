@@ -10,14 +10,15 @@ import { mountConsentBanner } from '../shared/consent'
 import '../shared/fonts'
 import './app.css'
 
-initAnalytics()
-mountConsentBanner()
-
 // Apariencia e idioma antes de pintar: sin destellos de otro tema u otro idioma.
 applyAppearance(loadAppearance())
 watchSystemTheme(loadAppearance)
 const lang = initialLanguage()
 document.documentElement.lang = lang
+
+// Después de fijar el idioma: el banner de analítica lo toma de <html lang>.
+initAnalytics()
+mountConsentBanner()
 
 void loadMessages(lang).then((dict) =>
   createRoot(document.getElementById('root')!).render(

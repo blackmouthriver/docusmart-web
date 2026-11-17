@@ -3,7 +3,7 @@ import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
 import { existsSync, readFileSync } from 'node:fs'
-import { pages as toolPages } from './tools/pages.mjs'
+import { generatedHtml } from './tools/locales/index.mjs'
 
 // `npm run preview` usa las mismas cabeceras de seguridad que producción (firebase.json),
 // para detectar en local cualquier recurso que la CSP bloquee.
@@ -20,8 +20,11 @@ const prodHeaders = Object.fromEntries(
 const cleanUrls = (): Plugin => {
   const rewrite = (req: { url?: string }, _res: unknown, next: () => void) => {
     const [path, query = ''] = (req.url ?? '').split('?')
-    if (/^\/[a-z0-9-]+$/.test(path) && (existsSync(resolve(import.meta.dirname, `.${path}.html`)) || existsSync(resolve(import.meta.dirname, `public${path}.html`)))) {
+    // /unir-pdf y /en/merge-pdf → su .html; /en o /en/ → en/index.html (como cleanUrls en Firebase).
+    if (/^(\/[a-z]{2})?\/[a-z0-9-]+$/.test(path) && (existsSync(resolve(import.meta.dirname, `.${path}.html`)) || existsSync(resolve(import.meta.dirname, `public${path}.html`)))) {
       req.url = `${path}.html${query ? `?${query}` : ''}`
+    } else if (/^\/[a-z]{2}\/?$/.test(path) && existsSync(resolve(import.meta.dirname, `.${path.replace(/\/$/, '')}/index.html`))) {
+      req.url = `${path.replace(/\/$/, '')}/index.html${query ? `?${query}` : ''}`
     }
     next()
   }
@@ -44,7 +47,8 @@ export default defineConfig({
         landing: resolve(import.meta.dirname, 'index.html'),
         privacidad: resolve(import.meta.dirname, 'privacidad.html'),
         app: resolve(import.meta.dirname, 'app/index.html'),
-        ...Object.fromEntries(toolPages.map((p) => [p.slug, resolve(import.meta.dirname, `${p.slug}.html`)])),
+        // Páginas generadas: herramientas en cada idioma y portadas traducidas (/en/…).
+        ...Object.fromEntries(generatedHtml().map((f) => [f.replace(/\.html$/, ''), resolve(import.meta.dirname, f)])),
       },
     },
   },

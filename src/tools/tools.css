@@ -13,7 +13,20 @@
   .tp-nav nav a:hover { color: #fff; background: rgba(255, 255, 255, .08); }
   .tp-nav nav a.tp-nav-cta:hover { background: var(--blue-deep); }
 }
-@media (max-width: 560px) { .tp-nav nav a:not(.tp-nav-cta) { display: none; } }
+@media (max-width: 560px) { .tp-nav nav > a:not(.tp-nav-cta) { display: none; } }
+
+/* Selector de idioma: la misma página en cada idioma, sin JavaScript. */
+.tp-lang { position: relative; }
+.tp-lang summary { list-style: none; display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; color: var(--on-night-soft); font-size: 14px; font-weight: 600; cursor: pointer; }
+.tp-lang summary::-webkit-details-marker { display: none; }
+.tp-lang[open] summary, .tp-lang summary:focus-visible { color: #fff; background: rgba(255, 255, 255, .08); }
+.tp-lang ul { position: absolute; right: 0; top: calc(100% + 8px); z-index: 40; min-width: 170px; margin: 0; padding: 6px; list-style: none; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 20px 40px -16px rgba(11, 16, 32, .35); }
+.tp-nav .tp-lang a { display: block; padding: 8px 12px; border-radius: 10px; color: var(--ink); font-size: 14px; font-weight: 500; }
+.tp-nav .tp-lang a[aria-current] { font-weight: 700; color: var(--blue); }
+@media (hover: hover) and (pointer: fine) {
+  .tp-lang summary:hover { color: #fff; }
+  .tp-nav .tp-lang a:hover { color: var(--ink); background: var(--paper-2); }
+}
 
 .tp-hero { background: var(--night); color: var(--on-night); padding: 28px 0 88px; position: relative; overflow: hidden; }
 .tp-hero::after { content: ""; position: absolute; width: 520px; height: 520px; right: -160px; top: -220px; border-radius: 50%; background: radial-gradient(circle, rgba(37, 99, 235, .45), transparent 65%); pointer-events: none; }
