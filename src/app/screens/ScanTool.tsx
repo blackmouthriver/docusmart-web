@@ -5,6 +5,8 @@ import { Icon } from '../components/Icon'
 import { BusyButton, Notice, Progress, Segmented, errorMessage } from '../components/ui'
 import { BeforeAfter } from '../components/DocPreview'
 import { bundleFiles, resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
+import type { MessageKey } from '../i18n/messages/es'
 import type { Quad, ScanFilter } from '../lib/scan'
 import type { Photo } from '../lib/scanCanvas'
 import { track } from '../../shared/analytics'
@@ -19,10 +21,10 @@ type Page = {
 }
 
 const FILTERS: Array<{ value: ScanFilter; label: string }> = [
-  { value: 'documento', label: 'Documento' },
-  { value: 'bn', label: 'B/N' },
-  { value: 'gris', label: 'Gris' },
-  { value: 'original', label: 'Color' },
+  { value: 'documento', label: 'scan.document' },
+  { value: 'bn', label: 'scan.bw' },
+  { value: 'gris', label: 'scan.gray' },
+  { value: 'original', label: 'scan.color' },
 ]
 
 let nextId = 1
@@ -64,7 +66,7 @@ export function ScanTool() {
         const page: Page = { id: nextId++, photo, quad: defaultQuad(photo), filter: 'documento', turns: 0, result: null }
         first ??= page.id
         setPages((p) => [...p, page])
-        if (!photo.detected) toast('No se encontraron los bordes: ajusta las esquinas a mano.')
+        if (!photo.detected) toast(tr('scan.noEdges'))
       } catch (e) {
         setError(e instanceof Error ? e.message : String(e))
       } finally {
@@ -137,7 +139,7 @@ export function ScanTool() {
       }
       setOutput({ result: resultFile(pdf, `escaneo-${today()}.pdf`, 'application/pdf') })
       track('scan_saved', { pages: ready.length, format: 'pdf', searchable })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'scan', error_message: e instanceof Error ? e.name : 'error' })
@@ -150,7 +152,7 @@ export function ScanTool() {
   const saveJpgs = async () => {
     const images = scans
     setOutput(images.length === 1 ? { result: images[0] } : { result: null, results: images, saveAs: await bundleFiles(images, `escaneo-${today()}.zip`) })
-    toast('Listo. Revisa el resultado y guárdalo.')
+    toast(tr('common.doneReview'))
     track('scan_saved', { pages: ready.length, format: 'jpg', searchable: false })
   }
 
@@ -164,8 +166,8 @@ export function ScanTool() {
   )
   const addButtons = (
     <div className="row scan-add">
-      <button type="button" className="btn btn-primary" onClick={() => camera.current?.click()}><Icon name="camera" /> Tomar foto</button>
-      <button type="button" className="btn btn-soft" onClick={() => gallery.current?.click()}><Icon name="image" /> Elegir imágenes</button>
+      <button type="button" className="btn btn-primary" onClick={() => camera.current?.click()}><Icon name="camera" /> {tr('scan.takePhoto')}</button>
+      <button type="button" className="btn btn-soft" onClick={() => gallery.current?.click()}><Icon name="image" /> {tr('scan.pickImages')}</button>
     </div>
   )
 
@@ -176,43 +178,43 @@ export function ScanTool() {
         <div className="card stack scan-empty">
           <span className="ico ico-blue scan-empty-ico"><Icon name="camera" /></span>
           <p className="muted" style={{ margin: 0, textAlign: 'center' }}>
-            Fotografía el documento sobre una superficie oscura y con buena luz. DocuSmart encuentra la hoja, la endereza y la deja como un escaneo.
+            {tr('scan.intro')}
           </p>
           {addButtons}
-          {loading > 0 && <p className="faint" style={{ textAlign: 'center' }}>Buscando el documento…</p>}
+          {loading > 0 && <p className="faint" style={{ textAlign: 'center' }}>{tr('scan.finding')}</p>}
         </div>
       )}
 
       {current && (
         <div className="card stack">
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <h3>Página {pages.indexOf(current) + 1}</h3>
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => remove(current.id)}><Icon name="trash" /> Quitar</button>
+            <h3>{tr('scan.pageN', { n: pages.indexOf(current) + 1 })}</h3>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => remove(current.id)}><Icon name="trash" /> {tr('scan.remove')}</button>
           </div>
-          <p className="faint" style={{ margin: 0 }}>Arrastra las esquinas hasta las puntas de la hoja.</p>
+          <p className="faint" style={{ margin: 0 }}>{tr('scan.cornersHelp')}</p>
           <QuadEditor url={current.photo.previewUrl} quad={current.quad} onChange={(quad) => update(current.id, { quad })} />
           <div className="row">
             <button type="button" className="btn btn-ghost btn-sm" onClick={() => void import('../lib/scanCanvas').then((m) => update(current.id, { quad: m.defaultQuad(current.photo) }))}>
-              <Icon name="reset" /> {current.photo.detected ? 'Esquinas detectadas' : 'Restablecer'}
+              <Icon name="reset" /> {current.photo.detected ? tr('scan.detected') : tr('scan.reset')}
             </button>
             <button type="button" className="btn btn-ghost btn-sm" onClick={() => void import('../lib/scan').then((m) => update(current.id, { quad: m.insetQuad(0) }))}>
-              <Icon name="image" /> Toda la foto
+              <Icon name="image" /> {tr('scan.wholePhoto')}
             </button>
             <button type="button" className="btn btn-ghost btn-sm" onClick={() => update(current.id, { turns: (current.turns + 1) % 4 })}>
-              <Icon name="rotate" /> Girar{current.turns ? ` (${current.turns * 90}°)` : ''}
+              <Icon name="rotate" /> {tr('scan.rotate')}{current.turns ? ` (${current.turns * 90}°)` : ''}
             </button>
           </div>
           <div className="field">
-            <span>Filtro</span>
-            <Segmented label="Filtro" value={current.filter} onChange={(filter) => update(current.id, { filter })} options={FILTERS} />
+            <span>{tr('scan.filter')}</span>
+            <Segmented label={tr('scan.filter')} value={current.filter} onChange={(filter) => update(current.id, { filter })} options={FILTERS.map((f) => ({ ...f, label: tr(f.label as MessageKey) }))} />
             <small className="faint">
-              {current.filter === 'documento' ? 'Blanquea el papel y quita sombras: el más parecido a un escáner.' : current.filter === 'bn' ? 'Solo blanco y negro: texto nítido y archivo muy liviano.' : current.filter === 'gris' ? 'Escala de grises, sin retoques.' : 'La foto tal cual, solo enderezada.'}
+              {tr(`scan.hint.${current.filter}` as MessageKey)}
             </small>
           </div>
           <div className="row row-end">
-            {current.result && <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => setEditing(null)}>Cancelar</button>}
+            {current.result && <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => setEditing(null)}>{tr('scan.cancel')}</button>}
             <BusyButton busy={busy} onClick={() => finish(current)} icon="check">
-              {current.result ? 'Aplicar cambios' : 'Listo'}
+              {current.result ? tr('scan.apply') : tr('scan.done')}
             </BusyButton>
           </div>
         </div>
@@ -221,43 +223,43 @@ export function ScanTool() {
       {pages.length > 0 && (
         <div className="card stack">
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <h3>{pages.length === 1 ? '1 página' : `${pages.length} páginas`}</h3>
+            <h3>{pages.length === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pages.length })}</h3>
             {addButtons}
           </div>
           <div className="scan-pages">
             {pages.map((p, i) => (
               <div key={p.id} className={'scan-page' + (editing === p.id ? ' is-editing' : '')}>
-                <button type="button" className="scan-thumb" aria-label={`Editar la página ${i + 1}`} onClick={() => setEditing(p.id)}>
+                <button type="button" className="scan-thumb" aria-label={tr('scan.editPage', { n: i + 1 })} onClick={() => setEditing(p.id)}>
                   <img src={p.result?.url ?? p.photo.previewUrl} alt="" />
-                  {!p.result && <span className="scan-badge">Sin terminar</span>}
+                  {!p.result && <span className="scan-badge">{tr('scan.unfinished')}</span>}
                 </button>
                 <div className="scan-page-bar">
-                  <button type="button" className="icon-btn" aria-label="Mover antes" disabled={i === 0} onClick={() => move(i, i - 1)}><Icon name="back" /></button>
+                  <button type="button" className="icon-btn" aria-label={tr('single.moveBefore')} disabled={i === 0} onClick={() => move(i, i - 1)}><Icon name="back" /></button>
                   <span>{i + 1}</span>
-                  <button type="button" className="icon-btn" aria-label="Mover después" disabled={i === pages.length - 1} onClick={() => move(i, i + 1)} style={{ transform: 'scaleX(-1)' }}><Icon name="back" /></button>
+                  <button type="button" className="icon-btn" aria-label={tr('single.moveAfter')} disabled={i === pages.length - 1} onClick={() => move(i, i + 1)} style={{ transform: 'scaleX(-1)' }}><Icon name="back" /></button>
                 </div>
               </div>
             ))}
           </div>
-          {loading > 0 && <p className="faint">Procesando {loading === 1 ? 'una foto' : `${loading} fotos`}…</p>}
-          {pending > 0 && <Notice kind="plain">{pending === 1 ? 'Una página está' : `${pending} páginas están`} sin terminar: tócala y pulsa "Listo" para incluirla.</Notice>}
+          {loading > 0 && <p className="faint">{loading === 1 ? tr('scan.processingOne') : tr('scan.processingMany', { n: loading })}</p>}
+          {pending > 0 && <Notice kind="plain">{pending === 1 ? tr('scan.pendingOne') : tr('scan.pendingMany', { n: pending })}</Notice>}
           <label className="check">
             <input type="checkbox" checked={searchable} onChange={(e) => setSearchable(e.target.checked)} />
-            <span>Hacer el PDF buscable: reconoce el texto (OCR) para poder seleccionarlo y buscarlo</span>
+            <span>{tr('scan.searchable')}</span>
           </label>
           {ocrProgress !== null && (
             <>
               <Progress value={ocrProgress} />
-              <small className="faint">Reconociendo el texto… la primera vez se descarga el idioma.</small>
+              <small className="faint">{tr('scan.ocrHint')}</small>
             </>
           )}
           {error && <Notice kind="error">{error}</Notice>}
           <div className="row row-end">
             <button type="button" className="btn btn-soft" disabled={!ready.length || busy} onClick={() => void saveJpgs()}>
-              <Icon name="image" /> {ready.length > 1 ? 'Imágenes (ZIP)' : 'Imagen JPG'}
+              <Icon name="image" /> {ready.length > 1 ? tr('scan.imagesZip') : tr('scan.imageJpg')}
             </button>
             <BusyButton busy={busy && !current} disabled={!ready.length || busy} onClick={savePdf} icon="pdf">
-              Crear PDF{ready.length > 1 ? ` (${ready.length} páginas)` : ''}
+              {ready.length > 1 ? tr('scan.makePdfN', { n: ready.length }) : tr('scan.makePdf')}
             </BusyButton>
           </div>
           {output && scans.length > 0 && (
@@ -267,9 +269,9 @@ export function ScanTool() {
               result={output.result}
               results={output.results}
               saveAs={output.saveAs}
-              labels={['Escaneos', output.result?.type === 'application/pdf' ? 'PDF' : 'Imágenes']}
+              labels={[tr('scan.labelScans'), output.result?.type === 'application/pdf' ? 'PDF' : tr('scan.labelImages')]}
               toolName="scan"
-              title={output.result?.type === 'application/pdf' ? 'Así quedó tu PDF escaneado' : 'Así quedaron tus escaneos'}
+              title={output.result?.type === 'application/pdf' ? tr('scan.titlePdf') : tr('scan.titleImages')}
             />
           )}
         </div>
@@ -281,7 +283,7 @@ export function ScanTool() {
 
 /* ───────────── Editor de esquinas ───────────── */
 
-const CORNER_LABELS = ['Esquina superior izquierda', 'Esquina superior derecha', 'Esquina inferior derecha', 'Esquina inferior izquierda']
+const CORNER_LABELS: MessageKey[] = ['scan.corner.tl', 'scan.corner.tr', 'scan.corner.br', 'scan.corner.bl']
 
 function QuadEditor({ url, quad, onChange }: { url: string; quad: Quad; onChange: (q: Quad) => void }) {
   const stage = useRef<HTMLDivElement>(null)
@@ -325,7 +327,7 @@ function QuadEditor({ url, quad, onChange }: { url: string; quad: Quad; onChange
   return (
     <div className="crop-frame">
       <div className="crop-stage scan-stage" ref={stage} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
-        <img src={url} alt="Foto del documento" draggable={false} />
+        <img src={url} alt={tr('scan.photoAlt')} draggable={false} />
         <svg className="scan-quad" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <mask id="scan-mask">
@@ -342,7 +344,7 @@ function QuadEditor({ url, quad, onChange }: { url: string; quad: Quad; onChange
             className="scan-corner"
             role="slider"
             tabIndex={0}
-            aria-label={CORNER_LABELS[i]}
+            aria-label={tr(CORNER_LABELS[i])}
             aria-valuetext={`${Math.round(p.x * 100)} %, ${Math.round(p.y * 100)} %`}
             style={{ left: `${p.x * 100}%`, top: `${p.y * 100}%` }}
             onPointerDown={down(i)}

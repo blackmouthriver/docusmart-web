@@ -5,6 +5,7 @@ import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../componen
 import { baseName } from '../lib/files'
 import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
 import type { FormField, FormInfo, FormValues } from '../lib/pdfForm'
 import { track } from '../../shared/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
@@ -73,7 +74,7 @@ export function FormTool() {
       const { fillForm } = await import('../lib/pdfForm')
       setOutput(resultFile(await fillForm(await file.arrayBuffer(), values, { flatten }), `${baseName(file.name)}-relleno.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'fill_form' })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_fill_form', error_message: e instanceof Error ? e.name : 'error' })
@@ -85,7 +86,7 @@ export function FormTool() {
   if (!file) {
     return (
       <div className="card">
-        <DropZone accept="application/pdf" title="Toca para seleccionar el formulario PDF" hint="O arrástralo aquí" onFiles={([f]) => setFile(f)} />
+        <DropZone accept="application/pdf" title={tr('form.pick')} hint={tr('common.dragHere')} onFiles={([f]) => setFile(f)} />
       </div>
     )
   }
@@ -98,14 +99,14 @@ export function FormTool() {
         <ul className="file-list" style={{ marginTop: 0 }}>
           <FileRow
             file={file}
-            extra={info ? `${info.fields.length} ${info.fields.length === 1 ? 'campo' : 'campos'}` : 'Leyendo…'}
-            actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>Cambiar</button>}
+            extra={info ? (info.fields.length === 1 ? tr('form.oneField') : tr('form.fields', { n: info.fields.length })) : tr('common.reading')}
+            actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>{tr('common.change')}</button>}
           />
         </ul>
         {info && !info.fields.length && (
           <Notice kind="info">
-            Este PDF no tiene campos rellenables{info.hasXfa ? ' que se puedan leer (usa un formulario XFA, un formato antiguo de Adobe)' : ''}. Puedes escribir encima con{' '}
-            <a href="/editar-pdf">Editar PDF</a>.
+            {info.hasXfa ? tr('form.noFieldsXfa') : tr('form.noFields')}{' '}
+            <a href="/editar-pdf">{tr('tool.editar')}</a>.
           </Notice>
         )}
         {info && info.unsupported > 0 && <Notice kind="plain">Hay {info.unsupported} campos de un tipo que no se puede llenar aquí.</Notice>}
@@ -119,7 +120,7 @@ export function FormTool() {
               <>
                 <div className="sign-frame">
                   <div className="sign-stage">
-                    <img src={preview.url} alt={`Página ${pageNo}`} draggable={false} />
+                    <img src={preview.url} alt={tr('single.pageAlt', { n: pageNo })} draggable={false} />
                     {pageFields.flatMap((f) =>
                       f.rects
                         .filter((r) => r.page === pageNo - 1)
@@ -129,7 +130,7 @@ export function FormTool() {
                             type="button"
                             className={'form-rect' + (active === f.name ? ' is-active' : '') + (values[f.name] && (!Array.isArray(values[f.name]) || (values[f.name] as string[]).length) ? ' is-filled' : '')}
                             style={{ left: `${r.x * 100}%`, top: `${r.y * 100}%`, width: `${r.w * 100}%`, height: `${r.h * 100}%` }}
-                            aria-label={`Ir al campo ${f.label}`}
+                            aria-label={tr('form.goField', { name: f.label })}
                             onClick={() => {
                               setActive(f.name)
                               const el = document.getElementById(inputId(f.name))
@@ -144,14 +145,14 @@ export function FormTool() {
                 <PageNav pageNo={pageNo} pages={pages} onChange={setPageNo} />
               </>
             ) : (
-              <p className="faint">Preparando la vista previa…</p>
+              <p className="faint">{tr('common.preparingPreview')}</p>
             )}
           </div>
 
           <div className="card stack">
             {byPage.map(([page, fields]) => (
               <fieldset key={page} className="form-group">
-                {byPage.length > 1 && <legend>Página {page}</legend>}
+                {byPage.length > 1 && <legend>{tr('form.pageN', { n: page })}</legend>}
                 {fields.map((f) => (
                   <Field key={f.name} field={f} value={values[f.name]} active={active === f.name} onFocus={() => focusField(f)} onChange={(v) => set(f.name, v)} />
                 ))}
@@ -159,13 +160,13 @@ export function FormTool() {
             ))}
             <label className="check">
               <input type="checkbox" checked={flatten} onChange={(e) => setFlatten(e.target.checked)} />
-              <span>Aplanar el formulario: las respuestas quedan fijas y ya no se pueden cambiar (recomendado para enviarlo)</span>
+              <span>{tr('form.flatten')}</span>
             </label>
-            {missing.length > 0 && <Notice kind="plain">Campos obligatorios sin llenar: {missing.map((f) => f.label).join(', ')}.</Notice>}
+            {missing.length > 0 && <Notice kind="plain">{tr('form.missing', { list: missing.map((f) => f.label).join(', ') })}</Notice>}
             <div className="row" style={{ justifyContent: 'space-between' }}>
-              <span className="faint">{filled} de {info.fields.length} con respuesta</span>
+              <span className="faint">{tr('form.filled', { n: filled, total: info.fields.length })}</span>
               <BusyButton busy={busy} disabled={!ready} onClick={save} icon="check">
-                Llenar formulario
+                {tr('form.go')}
               </BusyButton>
             </div>
           </div>
@@ -173,7 +174,7 @@ export function FormTool() {
       )}
       {file && output && (
         <div className="card">
-          <BeforeAfter original={file} result={output} toolName="form" title="Así quedó tu formulario" />
+          <BeforeAfter original={file} result={output} toolName="form" title={tr('form.title')} />
         </div>
       )}
     </div>
@@ -185,8 +186,8 @@ function Field({ field: f, value, active, onFocus, onChange }: { field: FormFiel
   const label = (
     <>
       {f.label}
-      {f.required && <span className="form-req" aria-label="obligatorio"> *</span>}
-      {f.readOnly && <span className="faint"> (solo lectura)</span>}
+      {f.required && <span className="form-req" aria-label={tr('form.required')}> *</span>}
+      {f.readOnly && <span className="faint"> ({tr('form.readOnly')})</span>}
     </>
   )
   const cls = 'form-field' + (active ? ' is-active' : '')
@@ -219,7 +220,7 @@ function Field({ field: f, value, active, onFocus, onChange }: { field: FormFiel
           </label>
         ))}
         {!multi && value && !f.readOnly && (
-          <button type="button" className="link-btn faint" onClick={() => onChange('')}>Quitar la selección</button>
+          <button type="button" className="link-btn faint" onClick={() => onChange('')}>{tr('form.clearSel')}</button>
         )}
       </fieldset>
     )
@@ -229,7 +230,7 @@ function Field({ field: f, value, active, onFocus, onChange }: { field: FormFiel
       <label className={cls + ' field'}>
         <span>{label}</span>
         <select id={id} className="input" value={(value as string) ?? ''} disabled={f.readOnly} onFocus={onFocus} onChange={(e) => onChange(e.target.value)}>
-          <option value="">— Elige una opción —</option>
+          <option value="">{tr('form.chooseOpt')}</option>
           {f.options.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
       </label>

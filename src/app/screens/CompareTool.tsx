@@ -5,6 +5,7 @@ import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../componen
 import { baseName } from '../lib/files'
 import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
+import { tr } from '../i18n/translate'
 import { compareTexts, reportText, type Comparison } from '../lib/pdfCompare'
 import { track } from '../../shared/analytics'
 
@@ -41,8 +42,7 @@ export function CompareTool() {
       const { pdfLines } = await import('../lib/pdfCompareSources')
       const [a, b] = await Promise.all([pdfLines(fileA), pdfLines(fileB)])
       if (!a.lines.length || !b.lines.length) {
-        const which = !a.lines.length && !b.lines.length ? 'Ninguno de los dos PDF tiene' : `"${(!a.lines.length ? fileA : fileB).name}" no tiene`
-        setError(`${which} texto: parece escaneado. Pásalo primero por "OCR: reconocer texto" y compara los PDF buscables.`)
+        setError(!a.lines.length && !b.lines.length ? tr('compare.bothNoText') : tr('compare.oneNoText', { name: (!a.lines.length ? fileA : fileB).name }))
         return
       }
       const c = compareTexts(a.lines, b.lines)
@@ -50,7 +50,7 @@ export function CompareTool() {
       setShown(PAGE_SIZE)
       track('pdf_tool_used', { tool_name: 'compare' })
     } catch (e) {
-      setError(/password/i.test(String(e)) ? 'Uno de los PDF tiene contraseña. Quítala primero con "Desbloquear PDF".' : errorMessage(e))
+      setError(/password/i.test(String(e)) ? tr('compare.locked') : errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_compare', error_message: e instanceof Error ? e.name : 'error' })
     } finally {
       setBusy(false)
@@ -62,10 +62,10 @@ export function CompareTool() {
       <b>{label}</b>
       {file ? (
         <ul className="file-list" style={{ marginTop: 0 }}>
-          <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => set(null)}>Cambiar</button>} />
+          <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => set(null)}>{tr('common.change')}</button>} />
         </ul>
       ) : (
-        <DropZone accept="application/pdf" title={`Elige el PDF ${label.toLowerCase()}`} hint="O arrástralo aquí" onFiles={([f]) => set(f)} />
+        <DropZone accept="application/pdf" title={label === tr('compare.original') ? tr('compare.pickOriginal') : tr('compare.pickNew')} hint={tr('common.dragHere')} onFiles={([f]) => set(f)} />
       )}
     </div>
   )
@@ -74,19 +74,19 @@ export function CompareTool() {
     <div className="stack">
       <div className="card stack">
         <div className="compare-slots">
-          {slot('Original', fileA, pick(setFileA))}
-          {slot('Nueva versión', fileB, pick(setFileB))}
+          {slot(tr('compare.original'), fileA, pick(setFileA))}
+          {slot(tr('compare.newVersion'), fileB, pick(setFileB))}
         </div>
-        <small className="faint">Compara el texto de los dos documentos. Los cambios en imágenes o en el diseño no se detectan.</small>
+        <small className="faint">{tr('compare.help')}</small>
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
           {fileA && fileB && (
             <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => { setFileA(fileB); setFileB(fileA); setResult(null) }}>
-              <Icon name="convert" /> Intercambiar
+              <Icon name="convert" /> {tr('compare.swap')}
             </button>
           )}
           <BusyButton busy={busy} disabled={!fileA || !fileB} onClick={run} icon="split">
-            Comparar
+            {tr('compare.go')}
           </BusyButton>
         </div>
       </div>
@@ -97,10 +97,10 @@ export function CompareTool() {
             original={fileA}
             result={fileB}
             saveAs={report}
-            labels={['Original', 'Nueva versión']}
+            labels={[tr('compare.original'), tr('compare.newVersion')]}
             toolName="compare"
-            title="Así se comparan tus dos versiones"
-            summary={report ? <Notice kind="info">Abajo están los cambios marcados. Puedes guardar el informe de cambios (.txt).</Notice> : undefined}
+            title={tr('compare.title')}
+            summary={report ? <Notice kind="info">{tr('compare.summary')}</Notice> : undefined}
           />
         </div>
       )}
@@ -108,25 +108,25 @@ export function CompareTool() {
       {result && (
         <div className="card stack" aria-live="polite">
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <h3>{result.tooDifferent ? 'Son documentos muy distintos' : result.identical ? 'El texto es igual' : `${result.hunks.length} ${result.hunks.length === 1 ? 'cambio' : 'cambios'}`}</h3>
+            <h3>{result.tooDifferent ? tr('compare.tooDifferent') : result.identical ? tr('compare.identical') : result.hunks.length === 1 ? tr('compare.oneChange') : tr('compare.changes', { n: result.hunks.length })}</h3>
           </div>
           {result.tooDifferent ? (
-            <p className="muted">Casi todo el texto cambió, así que no tiene sentido marcarlo palabra por palabra. Revisa que hayas elegido dos versiones del mismo documento.</p>
+            <p className="muted">{tr('compare.tooDifferentText')}</p>
           ) : result.identical ? (
             <Notice kind="success">
-              Las dos versiones dicen lo mismo{result.pagesA !== result.pagesB ? ` (aunque una tiene ${result.pagesA} páginas y la otra ${result.pagesB})` : ''}. Puede haber cambios de diseño o en las imágenes.
+              {result.pagesA !== result.pagesB ? tr('compare.sameDiffPages', { a: result.pagesA, b: result.pagesB }) : tr('compare.same')}
             </Notice>
           ) : (
             <>
               <div className="row compare-legend">
-                <span><ins className="diff-ins">+{result.added}</ins> palabras agregadas</span>
-                <span><del className="diff-del">−{result.removed}</del> palabras quitadas</span>
+                <span><ins className="diff-ins">+{result.added}</ins> {tr('compare.added')}</span>
+                <span><del className="diff-del">−{result.removed}</del> {tr('compare.removed')}</span>
               </div>
               <ol className="compare-hunks">
                 {result.hunks.slice(0, shown).map((h, i) => (
                   <li key={i} className="compare-hunk">
                     <div className="compare-hunk-head">
-                      Cambio {i + 1} · {h.pageA === h.pageB ? `página ${h.pageA}` : `página ${h.pageA} del original, ${h.pageB} de la nueva`}
+                      {tr('compare.changeN', { n: i + 1 })} · {h.pageA === h.pageB ? tr('compare.page', { n: h.pageA }) : tr('compare.pages', { a: h.pageA, b: h.pageB })}
                     </div>
                     {h.before.map((t, j) => <p key={'b' + j} className="compare-ctx">{t}</p>)}
                     <p className="compare-change">
@@ -144,7 +144,7 @@ export function CompareTool() {
               {result.hunks.length > shown && (
                 <div className="row" style={{ justifyContent: 'center' }}>
                   <button type="button" className="btn btn-ghost" onClick={() => setShown((n) => n + PAGE_SIZE)}>
-                    Ver más cambios ({result.hunks.length - shown} restantes)
+                    {tr('compare.more', { n: result.hunks.length - shown })}
                   </button>
                 </div>
               )}
