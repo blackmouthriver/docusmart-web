@@ -81,7 +81,7 @@ Cómo funciona (`src/shared/platform/analytics.ts`):
 - IP anonimizada, sin Google Signals ni personalización de anuncios.
 - Nunca se envían nombres de archivo ni contenido, solo tipos y conteos.
 - Eventos con los mismos nombres que `DocuSmartAnalytics.kt`: `screen_view`, `document_opened`, `conversion_started` / `conversion_success` / `conversion_error` (con los mismos `conversion_type` de `ConversionType`), `pdf_tool_used`, `image_tool_used` y `scan_saved` (solo web: herramientas de imagen y escáner), `qr_created`, `qr_scanned`, `study_session_started`, `note_created`, `pomodoro_completed`, `app_error`.
-- Solo de la landing: `landing_cta_click` (destino `play_store` o `web_app`), `landing_section_view`, `landing_faq_open`.
+- Solo de la landing: `landing_cta_click` (destino `play_store`, `web_app` o `facebook`), `landing_section_view`, `landing_faq_open`.
 
 La política de privacidad ([`/privacidad`](site/privacidad.html), sección 10) describe esta analítica y las cookies que usa.
 
