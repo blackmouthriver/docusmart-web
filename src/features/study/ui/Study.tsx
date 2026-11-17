@@ -11,6 +11,8 @@ import { loadFile as loadStoredFile, loadHistory, pruneFiles, saveHistory, store
 import { groupByDoc, isHighlighted, quoteNote, removeDocHighlights, removeHighlight, toggleHighlight, type Highlight } from '../core/highlights'
 import { getHighlights, setHighlights, subscribeHighlights } from '../infra/highlightsStore'
 import { summarize } from '../core/summarize'
+import { MAX_NOTE_IMAGES, exportName, notesToBlocks, notesToText, orphanImages, parseNotes, upsertNote, type NoteLabels, type StudyNote } from '../core/notes'
+import { deleteNoteImages, loadNoteImage, saveNoteImage, storedNoteImageIds } from '../infra/noteImages'
 import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -831,13 +833,11 @@ function VoiceMenu({ voices, value, onChange, rate, onRate, playing }: { voices:
   )
 }
 
-// ── Notas (guardadas solo en este navegador) ─────────────────────────
-type Note = { id: string; text: string; at: number }
+// ── Notas (W-65): título, imágenes, editar y exportar; solo en este navegador ──
 const NOTES_KEY = 'ds-notes'
-const readNotes = (): Note[] => {
+const readNotes = (): StudyNote[] => {
   try {
-    const v = JSON.parse(localStorage.getItem(NOTES_KEY) ?? '[]')
-    return Array.isArray(v) ? v : []
+    return parseNotes(localStorage.getItem(NOTES_KEY))
   } catch {
     return []
   }
@@ -846,13 +846,50 @@ const readNotes = (): Note[] => {
 /** Id de los resaltados de un texto pegado (sin documento). */
 const PASTED_ID = 'texto'
 
+type Draft = { id: string | null; title: string; text: string; images: string[] }
+const emptyDraft = (): Draft => ({ id: null, title: '', text: '', images: [] })
+
+/** Miniatura de una imagen guardada en el navegador. */
+function NoteThumb({ id, onRemove }: { id: string; onRemove?: () => void }) {
+  const [src, setSrc] = useState('')
+  useEffect(() => {
+    let url = ''
+    let alive = true
+    void loadNoteImage(id).then((b) => {
+      if (!b || !alive) return
+      url = URL.createObjectURL(b)
+      setSrc(url)
+    })
+    return () => {
+      alive = false
+      if (url) URL.revokeObjectURL(url)
+    }
+  }, [id])
+  return (
+    <span className="note-thumb">
+      {src ? <img src={src} alt={tr('study.imageLabel')} /> : <span className="spinner" aria-hidden="true" />}
+      {onRemove && (
+        <button type="button" className="note-thumb-del" aria-label={tr('study.removeImage')} onClick={onRemove}>
+          <Icon name="close" />
+        </button>
+      )}
+    </span>
+  )
+}
+
 function Notes() {
   const { toast } = useApp()
-  const [notes, setNotes] = useState<Note[]>(readNotes)
+  const { lang } = useT()
+  const [notes, setNotes] = useState<StudyNote[]>(readNotes)
   const highlights = useSyncExternalStore(subscribeHighlights, getHighlights)
   const groups = useMemo(() => groupByDoc(highlights), [highlights])
-  const [draft, setDraft] = useState('')
+  const [draft, setDraft] = useState<Draft>(emptyDraft)
   const [storageOk, setStorageOk] = useState(true)
+  const [busyImage, setBusyImage] = useState(false)
+  const [exported, setExported] = useState<File | null>(null)
+  const [exporting, setExporting] = useState(false)
+  const imageInput = useRef<HTMLInputElement>(null)
+  const editor = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     try {
@@ -863,39 +900,134 @@ function Notes() {
     }
   }, [notes])
 
-  const add = () => {
-    if (!draft.trim()) return
-    setNotes((n) => [{ id: crypto.randomUUID(), text: draft.trim(), at: Date.now() }, ...n])
-    setDraft('')
-    track('note_created')
+  const labels: NoteLabels = { untitled: tr('study.untitledNote'), date: (ms) => new Date(ms).toLocaleString(lang), image: tr('study.imageLabel') }
+  /** Borra las imágenes que ya no usa ninguna nota (p. ej. al cancelar o borrar). */
+  const cleanImages = (list: StudyNote[], keep: string[] = []) => void storedNoteImageIds().then((ids) => deleteNoteImages(orphanImages(list, ids).filter((id) => !keep.includes(id))))
+
+  const save = () => {
+    if (!draft.text.trim() && !draft.title.trim() && !draft.images.length) return
+    const now = Date.now()
+    const old = notes.find((n) => n.id === draft.id)
+    const note: StudyNote = { id: draft.id ?? crypto.randomUUID(), title: draft.title.trim(), text: draft.text.trim(), at: old?.at ?? now, updatedAt: now, images: draft.images }
+    const next = upsertNote(notes, note)
+    setNotes(next)
+    setDraft(emptyDraft())
+    cleanImages(next)
+    if (!old) track('note_created', { images: note.images.length })
   }
+  const cancel = () => {
+    setDraft(emptyDraft())
+    cleanImages(notes)
+  }
+  const edit = (n: StudyNote) => {
+    setDraft({ id: n.id, title: n.title, text: n.text, images: [...n.images] })
+    editor.current?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  }
+  const remove = (n: StudyNote) => {
+    const next = notes.filter((x) => x.id !== n.id)
+    setNotes(next)
+    if (draft.id === n.id) setDraft(emptyDraft())
+    cleanImages(next, draft.id === n.id ? [] : draft.images)
+  }
+  const attach = async (files: FileList | null) => {
+    const picked = Array.from(files ?? [])
+    if (!picked.length) return
+    const room = MAX_NOTE_IMAGES - draft.images.length
+    if (picked.length > room) toast(tr('study.maxImages', { n: MAX_NOTE_IMAGES }))
+    setBusyImage(true)
+    try {
+      for (const f of picked.slice(0, Math.max(0, room))) {
+        const id = await saveNoteImage(f)
+        setDraft((d) => ({ ...d, images: [...d.images, id] }))
+      }
+    } catch {
+      toast(tr('study.imageError'))
+    } finally {
+      setBusyImage(false)
+    }
+  }
+
+  const exportNotes = async (list: StudyNote[], format: 'txt' | 'pdf') => {
+    setExporting(true)
+    try {
+      const name = exportName(list, tr('file.notes'), format)
+      if (format === 'txt') {
+        setExported(new File([notesToText(list, labels)], name, { type: 'text/plain' }))
+      } else {
+        const [{ layoutPdf }, { imageSize }] = await Promise.all([import('../../convert/core/officePdf'), import('../../convert/core/officeModels')])
+        const images = new Map<string, { data: Uint8Array; type: 'png' | 'jpg'; width: number; height: number }>()
+        for (const id of list.flatMap((n) => n.images)) {
+          const blob = await loadNoteImage(id)
+          if (!blob) continue
+          const data = new Uint8Array(await blob.arrayBuffer())
+          const size = imageSize(data)
+          if (size) images.set(id, { data, ...size })
+        }
+        const pdf = await layoutPdf(notesToBlocks(list, images, labels), { title: list.length === 1 ? list[0].title || tr('study.notes') : tr('study.notes') })
+        setExported(new File([pdf as BlobPart], name, { type: 'application/pdf' }))
+      }
+      track('notes_exported', { format, count: list.length })
+    } catch {
+      toast(tr('study.cantRead'))
+    } finally {
+      setExporting(false)
+    }
+  }
+
   // Un resaltado (o todos los de un documento) pasa a ser una nota con la cita y su origen.
   const source = (h: Highlight) => (h.page ? `${h.docName}, ${tr('study.pageLabel', { n: h.page })}` : h.docName)
   const saveMarks = (items: Highlight[], from: string) => {
-    setNotes((n) => [{ id: crypto.randomUUID(), text: quoteNote(items, from), at: Date.now() }, ...n])
+    const now = Date.now()
+    setNotes((n) => upsertNote(n, { id: crypto.randomUUID(), title: from, text: quoteNote(items, from), at: now, updatedAt: now, images: [] }))
     track('note_created', { source: 'highlight' })
     toast(tr('study.markSaved'))
   }
 
+  const editing = draft.id !== null
+  const canSave = !!(draft.text.trim() || draft.title.trim() || draft.images.length)
+
   return (
     <div className="card stack">
       <h3>{tr('study.notes')}</h3>
-      <label className="field">
-        <span className="sr-only">{tr('study.newNote')}</span>
-        <textarea
-          className="textarea"
-          style={{ minHeight: 100 }}
-          value={draft}
-          placeholder={tr('study.notePh')}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) add()
-          }}
-        />
-      </label>
-      <div className="row" style={{ justifyContent: 'space-between' }}>
+      <div className={'note-editor' + (editing ? ' is-editing' : '')} ref={editor}>
+        {editing && <span className="note-editing">{tr('study.editNote')}</span>}
+        <label className="field">
+          <span className="sr-only">{tr('study.noteTitle')}</span>
+          <input className="input note-title-input" value={draft.title} placeholder={tr('study.noteTitlePh')} maxLength={120} onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))} />
+        </label>
+        <label className="field">
+          <span className="sr-only">{tr('study.newNote')}</span>
+          <textarea
+            className="textarea"
+            style={{ minHeight: 100 }}
+            value={draft.text}
+            placeholder={tr('study.notePh')}
+            onChange={(e) => setDraft((d) => ({ ...d, text: e.target.value }))}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) save()
+            }}
+          />
+        </label>
+        {draft.images.length > 0 && (
+          <div className="note-thumbs">
+            {draft.images.map((id) => (
+              <NoteThumb key={id} id={id} onRemove={() => setDraft((d) => ({ ...d, images: d.images.filter((x) => x !== id) }))} />
+            ))}
+          </div>
+        )}
+        <div className="row" style={{ justifyContent: 'space-between' }}>
+          <button type="button" className="btn btn-soft btn-sm" disabled={busyImage || draft.images.length >= MAX_NOTE_IMAGES} onClick={() => imageInput.current?.click()}>
+            {busyImage ? <span className="spinner" /> : <Icon name="image" />} {tr('study.attachImage')}
+          </button>
+          <input ref={imageInput} type="file" accept="image/*" multiple hidden onChange={(e) => { void attach(e.target.files); e.target.value = '' }} />
+          <span className="row" style={{ gap: 8 }}>
+            {editing && <button type="button" className="btn btn-ghost" onClick={cancel}>{tr('study.cancel')}</button>}
+            <button type="button" className="btn btn-primary" disabled={!canSave || busyImage} onClick={save}>
+              <Icon name={editing ? 'check' : 'plus'} /> {editing ? tr('study.saveChanges') : tr('study.saveNote')}
+            </button>
+          </span>
+        </div>
         <span className="faint">{tr('study.localOnly')}</span>
-        <button type="button" className="btn btn-primary" disabled={!draft.trim()} onClick={add}><Icon name="plus" /> {tr('study.saveNote')}</button>
       </div>
       {!storageOk && <Notice kind="error">{tr('study.noStorage')}</Notice>}
       {groups.length > 0 && (
@@ -937,15 +1069,43 @@ function Notes() {
         </section>
       )}
       {notes.length > 0 && (
+        <div className="notes-bar">
+          <b>{tr('study.savedNotes', { n: notes.length })}</b>
+          <span className="row" style={{ gap: 6 }}>
+            <span className="faint">{tr('study.exportAll')}</span>
+            <button type="button" className="btn btn-outline btn-sm" disabled={exporting} onClick={() => void exportNotes(notes, 'txt')}>TXT</button>
+            <button type="button" className="btn btn-outline btn-sm" disabled={exporting} onClick={() => void exportNotes(notes, 'pdf')}>PDF</button>
+          </span>
+        </div>
+      )}
+      {(exported || exporting) && (
+        <section className="note-export" aria-label={tr('study.exportReady')}>
+          <div className="row" style={{ justifyContent: 'space-between' }}>
+            <b>{exporting ? <><span className="spinner" aria-hidden="true" /> {tr('study.exporting')}</> : exported?.name}</b>
+            <button type="button" className="icon-btn" aria-label={tr('study.closeExport')} onClick={() => setExported(null)}><Icon name="close" /></button>
+          </div>
+          {exported && !exporting && <SaveOptions file={exported} toolName="study_notes" />}
+        </section>
+      )}
+      {notes.length > 0 && (
         <div className="notes">
           {notes.map((n) => (
-            <article key={n.id} className="note">
-              <p>{n.text}</p>
+            <article key={n.id} className={'note' + (draft.id === n.id ? ' is-editing' : '')}>
+              <h4 className="note-title">{n.title || labels.untitled}</h4>
+              {n.text && <p>{n.text}</p>}
+              {n.images.length > 0 && (
+                <div className="note-thumbs">
+                  {n.images.map((id) => <NoteThumb key={id} id={id} />)}
+                </div>
+              )}
               <footer>
-                <time dateTime={new Date(n.at).toISOString()}>{new Date(n.at).toLocaleString()}</time>
-                <button type="button" className="icon-btn" aria-label={tr('study.deleteNote')} onClick={() => setNotes((x) => x.filter((y) => y.id !== n.id))}>
-                  <Icon name="trash" />
-                </button>
+                <time dateTime={new Date(n.at).toISOString()}>{labels.date(n.at)}</time>
+                <span className="row" style={{ gap: 2 }}>
+                  <button type="button" className="icon-btn" aria-label={tr('study.editNote')} title={tr('study.editNote')} onClick={() => edit(n)}><Icon name="edit" /></button>
+                  <button type="button" className="btn btn-ghost btn-sm" disabled={exporting} title={tr('study.exportNote')} onClick={() => void exportNotes([n], 'txt')}>TXT</button>
+                  <button type="button" className="btn btn-ghost btn-sm" disabled={exporting} title={tr('study.exportNote')} onClick={() => void exportNotes([n], 'pdf')}>PDF</button>
+                  <button type="button" className="icon-btn" aria-label={tr('study.deleteNote')} title={tr('study.deleteNote')} onClick={() => remove(n)}><Icon name="trash" /></button>
+                </span>
               </footer>
             </article>
           ))}

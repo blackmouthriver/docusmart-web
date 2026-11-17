@@ -371,6 +371,23 @@ p { margin: 0; }
 .summary-list li.is-current { background: #FEF08A; }
 [data-theme="dark"] .summary-list li.is-current { background: rgba(250, 204, 21, .3); }
 
+/* Notas completas (W-65) */
+.note-editor { display: grid; gap: 10px; padding: 12px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; transition: box-shadow 200ms ease; }
+.note-editor.is-editing { box-shadow: 0 0 0 2px var(--blue) inset; }
+.note-editing { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--blue); }
+.note-title-input { font-weight: 600; font-size: 16px; }
+.note-thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
+.note-thumb { position: relative; display: grid; place-items: center; width: 84px; height: 84px; border-radius: 12px; overflow: hidden; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; }
+.note-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.note-thumb-del { position: absolute; top: 4px; right: 4px; display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; background: rgba(15, 23, 42, .7); color: #fff; cursor: pointer; }
+.note-thumb-del svg { width: 14px; height: 14px; }
+.notes-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.note-export { display: grid; gap: 10px; padding: 12px; border-radius: 16px; background: var(--blue-soft); animation: page-in 220ms var(--ease-out); }
+.note-export b { display: inline-flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; }
+.note .note-title { margin: 0 0 4px; font-size: 15px; }
+.note.is-editing { box-shadow: 0 0 0 2px var(--blue) inset; }
+.note .note-thumbs { margin-top: 8px; }
+
 /* Párrafos resaltados (W-63) */
 .reading-paras p.is-marked { background: rgba(250, 204, 21, .22); box-shadow: inset 3px 0 0 #EAB308; }
 .reading-paras p.is-current.is-marked { background: linear-gradient(90deg, rgba(250, 204, 21, .3), var(--blue-soft)); }
