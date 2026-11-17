@@ -63,7 +63,20 @@ Dependencias: `ui → core/infra`; `core` no usa React ni el DOM; `shared` no im
 
 Historia reciente (todo fusionado salvo lo indicado): vista previa y guardado #34–#38; idiomas y apariencia
 #39–#42; páginas por idioma #43–#46; textos dentro de archivos #47; arquitectura por capas y este archivo #48;
-enlaces de compartir por idioma (W-57) #49.
+enlaces de compartir por idioma (W-57) #49;
+Facebook e Instagram #51–#52; correo de contacto #53.
+
+## Contacto y redes
+
+- Correo de contacto: **supportdocusmart@docusmart.online** (buzón de Hostinger). Está en el pie de la portada,
+  `site/privacidad.html`, `public/.well-known/security.txt` y `FEEDBACK_EMAIL` (`src/shared/files/share.ts`).
+- Facebook: https://www.facebook.com/profile.php?id=61596626852763
+- Instagram: https://www.instagram.com/supportdocusmart/
+- Las URL de redes están en `FACEBOOK_URL`/`INSTAGRAM_URL` de `tools/pages.mjs` (pie y `sameAs` de las páginas
+  generadas) y de `src/shared/files/share.ts` (pie de la app); la portada las tiene escritas en `site/index.html`.
+  Al cambiar una, actualizar los tres lugares y correr `npm run pages`.
+- El botón **Recomendar → Facebook** es para compartir (sharer.php), no el enlace al perfil.
+- La app Android sigue con su propio correo en su política; no se modifica desde aquí.
 
 ## Infraestructura
 
