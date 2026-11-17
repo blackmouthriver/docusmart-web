@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { MAX_CHUNK, chunkParagraph, firstParagraphOfPage, listenedPercent, nextPosition, pageProgress, splitParagraphs, toPagedParagraphs, toParagraphs } from '../../../../../src/features/study/core/reading'
+import { MAX_CHUNK, chunkParagraph, firstParagraphOfPage, listenedPercent, needsOcr, nextPosition, ocrLangFor, pageProgress, splitParagraphs, toPagedParagraphs, toParagraphs } from '../../../../../src/features/study/core/reading'
 
 describe('splitParagraphs', () => {
   it('une las líneas cortadas por el ancho de la página y separa por oraciones cortas al final', () => {
@@ -116,5 +116,20 @@ describe('progreso', () => {
     expect(nextPosition(ps, 0, ps[0].chunks.length - 1)).toEqual({ p: 1, c: 0 })
     expect(nextPosition(ps, 1, 0)).toBeNull()
     expect(nextPosition([], 0, 0)).toBeNull()
+  })
+})
+
+describe('documentos escaneados (W-61)', () => {
+  it('detecta un PDF casi sin texto', () => {
+    expect(needsOcr(['', '', ''])).toBe(true)
+    expect(needsOcr(['Pág. 1', '2'])).toBe(true)
+    expect(needsOcr(['Este es un párrafo normal con bastante texto para leer en voz alta.'])).toBe(false)
+    expect(needsOcr([])).toBe(false)
+  })
+
+  it('elige el idioma del OCR según el de la web', () => {
+    expect(ocrLangFor('es')).toBe('spa')
+    expect(ocrLangFor('en')).toBe('eng')
+    expect(ocrLangFor('fr')).toBe('spa+eng')
   })
 })

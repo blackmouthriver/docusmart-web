@@ -16,7 +16,9 @@ import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import { useT } from '../../../shared/i18n/I18n'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
-import { firstParagraphOfPage, listenedPercent, nextPosition, pageProgress, toPagedParagraphs, toParagraphs } from '../core/reading'
+import { firstParagraphOfPage, listenedPercent, needsOcr, nextPosition, ocrLangFor, pageProgress, toPagedParagraphs, toParagraphs } from '../core/reading'
+import type { OcrProgress } from '../../ocr/core/ocr'
+import { docxToText, isDocx } from '../../convert/infra/officeRender'
 import { guessFeminine, personaAvatar, personasForVoices, voicesForLanguage, type VoicePersona } from '../core/voicePersonas'
 
 // ── Menú del Modo Estudio (W-59): una tarjeta por función, como en la app ──
@@ -111,6 +113,10 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const [resumed, setResumed] = useState<string | null>(null)
   const highlights = useSyncExternalStore(subscribeHighlights, getHighlights)
   // Resumen local (W-64): se calcula al pedirlo y se puede escuchar, copiar o guardar.
+  // Más documentos (W-61): Word, PDF escaneado o foto de una página (con OCR) y arrastrar y soltar.
+  const [ocrOffer, setOcrOffer] = useState<File | null>(null)
+  const [ocrProgress, setOcrProgress] = useState<OcrProgress | null>(null)
+  const [dragging, setDragging] = useState(false)
   const [summaryOpen, setSummaryOpen] = useState(false)
   const [summaryAt, setSummaryAt] = useState(-1)
   const summary = useMemo(() => (summaryOpen ? summarize(text) : null), [summaryOpen, text])
@@ -239,50 +245,91 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     setView('edit')
   }
 
+  /** Deja listo para leer el texto cargado y, si ya se había leído, retoma donde quedó. */
+  const finishLoad = (file: File, kindOfDoc: 'pdf' | 'text', loaded: string, pdfPages: string[]) => {
+    setText(loaded)
+    setFinished(false)
+    setView(loaded.trim() ? 'read' : 'edit')
+    const id = documentId(file)
+    const count = kindOfDoc === 'pdf' ? toPagedParagraphs(pdfPages).length : toParagraphs(loaded).length
+    const before = history.find((e) => e.id === id)
+    const p = resumeParagraph(before, count)
+    setPos({ p, c: 0 })
+    setResumed(p > 0 && before ? (before.totalPages ? tr('study.pageOf', { i: before.page, n: before.totalPages }) : tr('study.paragraphOf', { i: p + 1, n: count })) : null)
+    if (loaded.trim()) {
+      setDoc({ id, name: file.name, kind: kindOfDoc })
+      const listed = upsertEntry(history, { id, name: file.name, kind: kindOfDoc, paragraph: p, totalParagraphs: count, page: 0, totalPages: 0, finished: false, updatedAt: Date.now() })
+      void storeFile(id, file).then(() => pruneFiles(listed))
+    } else setDoc(null)
+  }
+
+  /** Reconoce el texto de un PDF escaneado o de una foto con OCR, en el navegador. */
+  const readWithOcr = async (file: File) => {
+    setOcrOffer(null)
+    stop()
+    setLoading(true)
+    setOcrProgress({ page: 1, pages: 1, fraction: 0, stage: 'preparando' })
+    try {
+      const [{ sourceFromFile }, { runOcr }] = await Promise.all([import('../../ocr/infra/ocrSources'), import('../../ocr/core/ocr')])
+      const source = await sourceFromFile(file)
+      try {
+        const r = await runOcr(source.pages, { lang: ocrLangFor(uiLang), wantPdf: false, onProgress: setOcrProgress })
+        const asPdf = kindOf(file) === 'pdf'
+        setPdf(asPdf ? { file, pages: r.pageTexts } : null)
+        if (asPdf) setDocView('document')
+        setTxtName(`${baseName(file.name)}.txt`)
+        const loaded = r.pageTexts.join('\n\n')
+        if (!loaded.trim()) toast(tr('study.ocrNothing'))
+        finishLoad(file, asPdf ? 'pdf' : 'text', loaded, asPdf ? r.pageTexts : [])
+        track('ocr_done', { lang: ocrLangFor(uiLang), pages: r.pages, pdf: false, confidence: r.confidence })
+      } finally {
+        await source.close()
+      }
+    } catch {
+      toast(tr('study.cantRead'))
+    } finally {
+      setOcrProgress(null)
+      setLoading(false)
+    }
+  }
+
   const loadFile = async (file: File | undefined) => {
     if (!file) return
+    setOcrOffer(null)
+    const kind = kindOf(file)
+    // Una foto de una página: se lee con OCR directamente.
+    if (kind === 'image') return readWithOcr(file)
+    if (/\.doc$/i.test(file.name)) {
+      toast(tr('libErr.officeDocx'))
+      return
+    }
     stop()
     setLoading(true)
     try {
-      const kind = kindOf(file)
-      let loaded: string | null = null
-      let pdfPages: string[] = []
       if (kind === 'pdf') {
         // Si se edita el texto del PDF, se guarda como TXT con el mismo nombre.
-        setTxtName(`${file.name.replace(/\.[^.]+$/, '')}.txt`)
-        const doc = await openPdf(await file.arrayBuffer())
+        setTxtName(`${baseName(file.name)}.txt`)
+        const opened = await openPdf(await file.arrayBuffer())
+        let pages: string[]
         try {
-          const pages = await extractPagesText(doc)
-          pdfPages = pages
-          loaded = pages.join('\n\n')
-          setPdf({ file, pages })
-          setDocView('document')
+          pages = await extractPagesText(opened)
         } finally {
-          await closePdf(doc)
+          await closePdf(opened)
         }
-      } else if (kind === 'text') {
-        loaded = await file.text()
+        setPdf({ file, pages })
+        setDocView('document')
+        // Un PDF escaneado no tiene texto: se ofrece reconocerlo con OCR.
+        if (needsOcr(pages)) setOcrOffer(file)
+        finishLoad(file, 'pdf', pages.join('\n\n'), pages)
+      } else if (isDocx(file)) {
         setPdf(null)
-        setTxtName(/\.txt$/i.test(file.name) ? file.name : `${file.name.replace(/\.[^.]+$/, '')}.txt`)
-      } else toast(tr('study.pickPdfTxt'))
-      if (loaded !== null) {
-        setText(loaded)
-        setFinished(false)
-        setView(loaded.trim() ? 'read' : 'edit')
-        // Si ya se había leído antes, sigue donde quedó.
-        const id = documentId(file)
-        const kindOfDoc = kind === 'pdf' ? 'pdf' : 'text'
-        const count = kindOfDoc === 'pdf' ? toPagedParagraphs(pdfPages).length : toParagraphs(loaded).length
-        const before = history.find((e) => e.id === id)
-        const p = resumeParagraph(before, count)
-        setPos({ p, c: 0 })
-        setResumed(p > 0 && before ? (before.totalPages ? tr('study.pageOf', { i: before.page, n: before.totalPages }) : tr('study.paragraphOf', { i: p + 1, n: count })) : null)
-        if (loaded.trim()) {
-          setDoc({ id, name: file.name, kind: kindOfDoc })
-          const listed = upsertEntry(history, { id, name: file.name, kind: kindOfDoc, paragraph: p, totalParagraphs: count, page: 0, totalPages: 0, finished: false, updatedAt: Date.now() })
-          void storeFile(id, file).then(() => pruneFiles(listed))
-        } else setDoc(null)
-      }
+        setTxtName(`${baseName(file.name)}.txt`)
+        finishLoad(file, 'text', await docxToText(file), [])
+      } else if (kind === 'text') {
+        setPdf(null)
+        setTxtName(/\.txt$/i.test(file.name) ? file.name : `${baseName(file.name)}.txt`)
+        finishLoad(file, 'text', await file.text(), [])
+      } else toast(tr('study.pickDocument'))
     } catch {
       toast(tr('study.cantRead'))
     } finally {
@@ -440,7 +487,23 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   )
 
   return (
-    <div className="card stack">
+    <div
+      className={'card stack read-card' + (dragging ? ' is-dragging' : '')}
+      onDragOver={(e) => {
+        if (!e.dataTransfer.types.includes('Files')) return
+        e.preventDefault()
+        setDragging(true)
+      }}
+      onDragLeave={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDragging(false)
+      }}
+      onDrop={(e) => {
+        e.preventDefault()
+        setDragging(false)
+        void loadFile(e.dataTransfer.files[0])
+      }}
+    >
+      {dragging && <div className="drop-hint" aria-hidden="true"><Icon name="upload" /> {tr('study.dropHere')}</div>}
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <h3>{tr('study.readAloud')}</h3>
         <div className="row read-actions">
@@ -459,9 +522,26 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
             {loading ? <span className="spinner" /> : <Icon name="open" />} {tr('study.load')}
           </button>
         </div>
-        <input ref={fileInput} type="file" hidden accept="application/pdf,text/plain,.txt,.md" onChange={(e) => { void loadFile(e.target.files?.[0]); e.target.value = '' }} />
+        <input ref={fileInput} type="file" hidden accept="application/pdf,.pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,.txt,.md,image/*" onChange={(e) => { void loadFile(e.target.files?.[0]); e.target.value = '' }} />
       </div>
 
+      {ocrProgress && (
+        <Notice kind="info">
+          <span className="ocr-status">
+            <span className="spinner" aria-hidden="true" />
+            {ocrProgress.stage === 'preparando' ? tr('study.ocrPreparing') : tr('study.ocrProgress', { i: ocrProgress.page, n: ocrProgress.pages, p: Math.round(ocrProgress.fraction * 100) })}
+          </span>
+          <span className="progress" aria-hidden="true"><i style={{ width: `${Math.round(ocrProgress.fraction * 100)}%` }} /></span>
+        </Notice>
+      )}
+      {ocrOffer && !ocrProgress && (
+        <Notice kind="info">
+          {tr('study.ocrOffer')}{' '}
+          <button type="button" className="btn btn-primary btn-sm" onClick={() => void readWithOcr(ocrOffer)}>
+            <Icon name="text" /> {tr('study.ocrRun')}
+          </button>
+        </Notice>
+      )}
       {summary && (
         <section className="summary" aria-label={tr('study.summaryTitle')}>
           <div className="summary-head">

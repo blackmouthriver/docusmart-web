@@ -115,3 +115,16 @@ export function nextPosition(paragraphs: readonly Paragraph[], p: number, c: num
   if (c + 1 < (paragraphs[p]?.chunks.length ?? 0)) return { p, c: c + 1 }
   return p + 1 < paragraphs.length ? { p: p + 1, c: 0 } : null
 }
+
+/**
+ * ¿El PDF parece escaneado? (W-61) Casi sin letras para su cantidad de páginas: en ese
+ * caso se ofrece reconocer el texto con OCR en vez de decir "sin texto".
+ */
+export function needsOcr(pages: readonly string[]): boolean {
+  if (!pages.length) return false
+  const letters = pages.join('').match(/\p{L}/gu)?.length ?? 0
+  return letters < Math.max(30, pages.length * 20)
+}
+
+/** Idioma del OCR según el de la web: español, inglés o ambos (los modelos que trae la web). */
+export const ocrLangFor = (lang: string): 'spa' | 'eng' | 'spa+eng' => (lang === 'es' ? 'spa' : lang === 'en' ? 'eng' : 'spa+eng')

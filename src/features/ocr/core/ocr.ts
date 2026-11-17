@@ -54,7 +54,8 @@ export function normalizeOcrText(text: string): string {
     .trim()
 }
 
-export type OcrResult = { text: string; confidence: number; pdf: Uint8Array | null; pages: number }
+/** `pageTexts`: el texto de cada página por separado (Modo Estudio lo necesita para leer por páginas). */
+export type OcrResult = { text: string; confidence: number; pdf: Uint8Array | null; pages: number; pageTexts: string[] }
 
 /**
  * Reconoce una serie de páginas (imágenes o páginas de PDF ya dibujadas).
@@ -108,5 +109,6 @@ export async function runOcr(
     confidence: Math.round(confidenceSum / total),
     pdf,
     pages: total,
+    pageTexts: texts,
   }
 }

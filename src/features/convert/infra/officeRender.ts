@@ -36,6 +36,13 @@ export async function docxToPdf(file: Blob, title: string): Promise<{ pdf: Uint8
   return { pdf: await layoutPdf(blocks, { title }), skippedImages }
 }
 
+/** Texto de un Word (.docx), con una línea en blanco entre párrafos. Para leerlo en voz alta. */
+export async function docxToText(file: Blob): Promise<string> {
+  const { default: mammoth } = await import('mammoth')
+  const { value } = await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() })
+  return value
+}
+
 export async function xlsxToPdf(file: Blob, title: string): Promise<Uint8Array> {
   const [{ default: readXlsxFile }, { fromSheets }, { layoutPdf }] = await Promise.all([import('read-excel-file/browser'), import('../core/officeModels'), import('../core/officePdf')])
   const sheets = (await readXlsxFile(file)) as unknown as SheetData[]

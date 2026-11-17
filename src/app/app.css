@@ -352,6 +352,14 @@ p { margin: 0; }
 .icon-flip svg { transform: scaleX(-1); }
 @media (max-width: 520px) { .player-progress { grid-template-columns: 1fr auto; } .player-progress .progress { grid-column: 1 / -1; grid-row: 2; } }
 
+/* Más documentos en Lectura (W-61) */
+.read-card { position: relative; }
+.read-card.is-dragging { box-shadow: 0 0 0 2px var(--blue) inset; }
+.drop-hint { position: absolute; inset: 0; z-index: 10; display: grid; place-content: center; justify-items: center; gap: 8px; border-radius: inherit; background: color-mix(in srgb, var(--blue-soft) 88%, transparent); color: var(--blue); font-weight: 700; font-size: 17px; pointer-events: none; animation: pop-in 160ms var(--ease-out); }
+.drop-hint svg { width: 34px; height: 34px; }
+.ocr-status { display: inline-flex; align-items: center; gap: 8px; }
+.notice .progress { display: block; margin-top: 8px; }
+
 /* Resumen local (W-64) */
 .summary { display: grid; gap: 10px; padding: 14px; border-radius: 18px; background: linear-gradient(135deg, var(--blue-soft), var(--paper)); box-shadow: 0 0 0 1px var(--line) inset; animation: page-in 260ms var(--ease-out); }
 .summary-head { display: flex; align-items: center; justify-content: space-between; }
