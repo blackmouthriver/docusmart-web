@@ -53,3 +53,26 @@ export function logoBox(size: number): { x: number; y: number; side: number; pad
 /** Tamaños de la imagen descargada. */
 export const QR_SIZES = { s: 512, m: 1024, l: 2048 } as const
 export type QrSize = keyof typeof QR_SIZES
+
+/** Solo se incrusta un logo ya pasado a PNG/JPEG/WebP en base64 (nada de SVG ni HTML dentro). */
+const LOGO_DATA_URL = /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/
+
+/**
+ * SVG del QR (W-86, vector para imprimir sin perder calidad) con el logo encima: el mismo
+ * recuadro blanco y la misma proporción (22 %) que el PNG, en las unidades del viewBox.
+ */
+export function svgWithLogo(svg: string, logoDataUrl: string | null): string {
+  if (!logoDataUrl) return svg
+  if (!LOGO_DATA_URL.test(logoDataUrl)) throw new Error('Logo inválido')
+  const m = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(svg)
+  if (!m) return svg
+  const size = parseFloat(m[1])
+  const side = size * 0.22
+  const x = (size - side) / 2
+  const pad = side * 0.1
+  const n = (v: number) => +v.toFixed(3)
+  const extra =
+    `<rect x="${n(x - pad)}" y="${n(x - pad)}" width="${n(side + pad * 2)}" height="${n(side + pad * 2)}" rx="${n(pad)}" fill="#FFFFFF"/>` +
+    `<image x="${n(x)}" y="${n(x)}" width="${n(side)}" height="${n(side)}" preserveAspectRatio="xMidYMid meet" href="${logoDataUrl}"/>`
+  return svg.replace(/<\/svg>\s*$/, `${extra}</svg>`)
+}
