@@ -5,10 +5,11 @@
  * funcionando sin recordar (cada función atrapa sus errores).
  */
 import { MAX_STORED_BYTES, filesToDrop, parseEntries, type ReadingEntry } from '../core/readingHistory'
+import { withStore as withDb } from './studyDb'
+
+const withStore = <T,>(mode: IDBTransactionMode, run: (s: IDBObjectStore) => IDBRequest<T>) => withDb<T>('files', mode, run)
 
 const LIST_KEY = 'ds-study-history'
-const DB_NAME = 'docusmart-study'
-const STORE = 'files'
 
 export function loadHistory(): ReadingEntry[] {
   try {
@@ -23,28 +24,6 @@ export function saveHistory(list: readonly ReadingEntry[]): void {
     localStorage.setItem(LIST_KEY, JSON.stringify(list))
   } catch {
     /* almacenamiento lleno o bloqueado */
-  }
-}
-
-function openDb(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1)
-    req.onupgradeneeded = () => req.result.createObjectStore(STORE)
-    req.onsuccess = () => resolve(req.result)
-    req.onerror = () => reject(req.error)
-  })
-}
-
-async function withStore<T>(mode: IDBTransactionMode, run: (s: IDBObjectStore) => IDBRequest<T>): Promise<T> {
-  const db = await openDb()
-  try {
-    return await new Promise<T>((resolve, reject) => {
-      const req = run(db.transaction(STORE, mode).objectStore(STORE))
-      req.onsuccess = () => resolve(req.result)
-      req.onerror = () => reject(req.error)
-    })
-  } finally {
-    db.close()
   }
 }
 
