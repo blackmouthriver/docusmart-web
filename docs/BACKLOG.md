@@ -197,6 +197,21 @@ rendimiento (Lighthouse).
 
 Orden: W-71 → revisar con el usuario → W-72 → W-73/W-74 → W-75.
 
+## Herramientas ordenadas por categoría
+
+Hoy la portada lista las 31 herramientas una tras otra, y la app las muestra repartidas sin un orden claro. La idea:
+la portada solo **presenta** que hay herramientas y lleva a ellas; el orden y la elección se hacen en una vista de
+herramientas **por categoría** y **en orden alfabético** dentro de cada una.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-76 | **Catálogo único de herramientas** (fuente de verdad compartida por portada, páginas y app): id, categoría, ícono, enlace a su página y a la app. Categorías propuestas, a validar con el usuario: *Organizar PDF* (unir, dividir, rotar, reordenar, numerar), *Editar y firmar* (editar, firmar, llenar formulario, marca de agua, recortar, censurar), *Seguridad* (proteger, desbloquear, reparar), *Optimizar y archivar* (comprimir, PDF/A, comparar, extraer imágenes), *Convertir* (de y a PDF, Word, Excel, imagen, texto), *Imagen* (comprimir, redimensionar, recortar, rotar), *Escanear y OCR*, *Archivos comprimidos*, *QR y estudio* | 🤖 + 👤 | Pendiente |
+| W-77 | **Portada**: la sección de herramientas deja de listar las 31 y muestra un resumen claro ("31 herramientas gratis") con una tarjeta animada por categoría (ícono, nombre, cantidad) que lleva a esa categoría, y un botón "Ver todas las herramientas". En los 12 idiomas | 🤖 | Pendiente |
+| W-78 | **Página "Todas las herramientas"** (`/herramientas`, `/en/tools`… en los 12 idiomas, indexable y en el sitemap): herramientas agrupadas por categoría, **orden alfabético dentro de cada categoría según el idioma** (`Intl.Collator`), accesos rápidos a cada categoría y un buscador que filtra mientras se escribe. "Más herramientas" de cada página de herramienta lleva aquí | 🤖 | Pendiente |
+| W-79 | **App web**: la pantalla de herramientas usa las mismas categorías y el mismo orden alfabético, con buscador; el inicio muestra las categorías como accesos | 🤖 | Pendiente |
+
+Orden: W-76 (validar categorías) → W-78 → W-77 → W-79. Encaja con el diseño visual (W-72) para las animaciones.
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |
