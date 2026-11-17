@@ -109,7 +109,7 @@ export function FormTool() {
             <a href="/editar-pdf">{tr('tool.editar')}</a>.
           </Notice>
         )}
-        {info && info.unsupported > 0 && <Notice kind="plain">Hay {info.unsupported} campos de un tipo que no se puede llenar aquí.</Notice>}
+        {info && info.unsupported > 0 && <Notice kind="plain">{tr('form.unsupported', { n: info.unsupported })}</Notice>}
         {error && <Notice kind="error">{error}</Notice>}
       </div>
 

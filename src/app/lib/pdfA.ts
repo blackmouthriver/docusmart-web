@@ -30,6 +30,7 @@ import {
 } from 'pdf-lib'
 import FONTS from './pdfaFonts.json'
 import type { RasterPage } from './pdfRedact'
+import { tr } from '../i18n/translate'
 
 export type FontLoader = (file: string) => Promise<Uint8Array>
 export type PageRasterizer = (pageIndex: number) => Promise<RasterPage>
@@ -46,7 +47,7 @@ export type PdfAReport = {
 
 export class PdfAEncryptedError extends Error {
   constructor() {
-    super('Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".')
+    super(tr('err.lockedPdf'))
     this.name = 'PdfAEncryptedError'
   }
 }
@@ -562,7 +563,7 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
   })
 
   if (toRaster.length) {
-    if (!opts.rasterize) throw new Error('Este PDF tiene páginas que hay que convertir en imagen.')
+    if (!opts.rasterize) throw new Error(tr('libErr.pdfaRaster'))
     for (const { index, reason } of toRaster) {
       const r = await opts.rasterize(index)
       const node = pages[index].node

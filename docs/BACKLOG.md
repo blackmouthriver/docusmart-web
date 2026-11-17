@@ -124,8 +124,8 @@ Objetivo: la web en los **12 idiomas de la app** (español, inglés, portugués,
 | W-51 | **Panel de Ajustes** (botón en la cabecera de cada pantalla y en la barra lateral): idioma con banderas como en la app, tema, color de acento y tamaño de letra; modo oscuro completo | 🤖 | Hecho (PR #39, 2026-11-17) |
 | W-52 | Traducir la **navegación, Inicio y avisos generales** a los 12 idiomas | 🤖 | Hecho (PR #39, 2026-11-17) |
 | W-53a | Traducir los **componentes compartidos** (vista previa, guardar, recomendar), la lista de herramientas PDF, unir, dividir, rotar, reordenar, numerar, marca de agua, comprimir, proteger, desbloquear, reparar, PDF/A y OCR | 🤖 | Hecho (PR #40, 2026-11-17) |
-| W-53b | Traducir recortar, firmar, censurar, editar, formulario, comparar, extraer imágenes y escáner | 🤖 | En revisión (PR) |
-| W-54 | Traducir **Convertidor, imagen, archivos, QR, escáner y Modo Estudio** | 🤖 | Tras W-53 |
+| W-53b | Traducir recortar, firmar, censurar, editar, formulario, comparar, extraer imágenes y escáner | 🤖 | Hecho (PR #41, 2026-11-17) |
+| W-54 | Traducir **Convertidor, imagen, archivos, QR, escáner y Modo Estudio** + visor y mensajes de error | 🤖 | En revisión (PR) |
 | W-55 | **Página de inicio y páginas de herramientas** traducidas para buscadores (`/en/compress-pdf`, etc.) con `hreflang` y selector de idioma | 🤖 | Tras W-54 |
 | W-56 | Textos que van **dentro de los archivos** generados (numeración "Página N", informes) en el idioma elegido | 🤖 | Tras W-54 |
 

@@ -31,12 +31,14 @@ import {
 import type { Margins } from '../lib/pdfCrop'
 import { track } from '../../shared/analytics'
 import { CropStage } from './CropTool'
+import { tr } from '../i18n/translate'
+import type { MessageKey } from '../i18n/messages/es'
 
-const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
-  { id: 'comprimir', name: 'Comprimir imagen', desc: 'Reduce el peso de JPG, PNG y WebP', icon: 'compress', cls: 'ico-green' },
-  { id: 'redimensionar', name: 'Redimensionar', desc: 'Cambia el tamaño en pixeles o en %', icon: 'resize', cls: 'ico-blue' },
-  { id: 'recortar', name: 'Recortar imagen', desc: 'Libre o en 1:1, 4:3, 16:9…', icon: 'crop', cls: 'ico-amber' },
-  { id: 'rotar', name: 'Rotar y voltear', desc: 'Gira 90° o refleja como en un espejo', icon: 'rotate', cls: 'ico-violet' },
+const TOOLS: Array<{ id: string; name: MessageKey; desc: MessageKey; icon: IconName; cls: string }> = [
+  { id: 'comprimir', name: 'imgt.compress', desc: 'imgt.compress.desc', icon: 'compress', cls: 'ico-green' },
+  { id: 'redimensionar', name: 'imgt.resize', desc: 'imgt.resize.desc', icon: 'resize', cls: 'ico-blue' },
+  { id: 'recortar', name: 'imgt.crop', desc: 'imgt.crop.desc', icon: 'crop', cls: 'ico-amber' },
+  { id: 'rotar', name: 'imgt.rotate', desc: 'imgt.rotate.desc', icon: 'rotate', cls: 'ico-violet' },
 ]
 
 export const IMAGE_TOOLS: Record<string, ComponentType> = {
@@ -51,24 +53,24 @@ export function ImageToolsScreen({ sub }: { sub?: string }) {
   const Tool = tool ? IMAGE_TOOLS[tool.id] : undefined
   return (
     <>
-      <HeroCard title="Herramientas de imagen" subtitle="Comprime, redimensiona, recorta y gira fotos sin subirlas a ningún servidor." />
+      <HeroCard title={tr('nav.image')} subtitle={tr('imgt.heroSub')} />
       {tool && Tool ? (
         <>
-          <BackButton label="Volver a herramientas de imagen" onClick={() => go('imagen')} />
-          <h2 style={{ fontSize: 26, margin: '6px 0 4px' }}>{tool.name}</h2>
-          <p className="muted" style={{ marginBottom: 16 }}>{tool.desc}</p>
+          <BackButton label={tr('imgt.back')} onClick={() => go('imagen')} />
+          <h2 style={{ fontSize: 26, margin: '6px 0 4px' }}>{tr(tool.name)}</h2>
+          <p className="muted" style={{ marginBottom: 16 }}>{tr(tool.desc)}</p>
           <Tool />
         </>
       ) : (
         <>
-          <h2 className="section-title">Elige una herramienta</h2>
+          <h2 className="section-title">{tr('pdf.choose')}</h2>
           <div className="tool-grid">
             {TOOLS.map((t) => (
               <button key={t.id} type="button" className="tool-card" onClick={() => go('imagen', t.id)}>
                 <span className={'ico ' + t.cls}><Icon name={t.icon} /></span>
                 <span>
-                  <b>{t.name}</b>
-                  <small>{t.desc}</small>
+                  <b>{tr(t.name)}</b>
+                  <small>{tr(t.desc)}</small>
                 </span>
               </button>
             ))}
@@ -83,7 +85,6 @@ export function ImageToolsScreen({ sub }: { sub?: string }) {
 
 type Result = { name: string; blob: Blob; before: number; width: number; height: number; error?: undefined } | { name: string; error: string }
 const ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif'
-const PRIVACY = 'Se quitan los datos ocultos de la foto (EXIF), como la ubicación GPS.'
 
 function useBatch(toolName: string) {
   const { toast } = useApp()
@@ -101,7 +102,7 @@ function useBatch(toolName: string) {
       try {
         out.push({ ...(await process(files[i])), before: files[i].size })
       } catch (e) {
-        out.push({ name: files[i].name, error: e instanceof Error && e.message.startsWith('No se pudo abrir') ? e.message : errorMessage(e) })
+        out.push({ name: files[i].name, error: e instanceof Error && e.name === 'ImageOpenError' ? e.message : errorMessage(e) })
       }
       setProgress((i + 1) / files.length)
     }
@@ -109,16 +110,16 @@ function useBatch(toolName: string) {
     setBusy(false)
     const ok = out.filter((r) => !r.error).length
     track('image_tool_used', { tool_name: toolName, files: files.length, ok })
-    if (ok) toast(ok === 1 ? 'Imagen lista.' : `${ok} imágenes listas.`)
+    if (ok) toast(ok === 1 ? tr('imgt.readyOne') : tr('imgt.readyMany', { n: ok }))
   }
 
   const picker = (multiple = true) => (
     <>
-      <DropZone accept={ACCEPT} multiple={multiple} title={multiple ? 'Toca para elegir una o varias imágenes' : 'Toca para elegir una imagen'} hint="JPG, PNG, WebP, GIF o BMP" onFiles={(f) => { setFiles((p) => (multiple ? [...p, ...f] : f)); setResults(null) }} />
+      <DropZone accept={ACCEPT} multiple={multiple} title={multiple ? tr('imgt.pickMany') : tr('imgt.pickOne')} hint={tr('imgt.formats')} onFiles={(f) => { setFiles((p) => (multiple ? [...p, ...f] : f)); setResults(null) }} />
       {files.length > 0 && (
         <ul className="file-list">
           {files.map((f, i) => (
-            <FileRow key={f.name + i} file={f} actions={<button type="button" className="icon-btn" aria-label={`Quitar ${f.name}`} disabled={busy} onClick={() => { setFiles((p) => p.filter((_, j) => j !== i)); setResults(null) }}><Icon name="close" /></button>} />
+            <FileRow key={f.name + i} file={f} actions={<button type="button" className="icon-btn" aria-label={tr('merge.remove', { name: f.name })} disabled={busy} onClick={() => { setFiles((p) => p.filter((_, j) => j !== i)); setResults(null) }}><Icon name="close" /></button>} />
           ))}
         </ul>
       )}
@@ -161,15 +162,15 @@ function Results({ files, results, zipName, showSavings, toolName, title, busy }
         saveAs={bundle}
         toolName={toolName}
         title={title}
-        previewTitle={many ? 'Tus imágenes' : 'Vista previa de tu imagen'}
-        placeholder={busy ? 'Procesando…' : 'Elige las opciones y aplica la herramienta'}
+        previewTitle={many ? tr('imgt.yourImages') : tr('imgt.previewImage')}
+        placeholder={busy ? tr('common.processing') : tr('common.chooseApply')}
         summary={
           showSavings && ok.length > 0 ? (
             <Notice kind="success">
-              De {formatBytes(totalBefore)} a <b>{formatBytes(totalAfter)}</b> ({savedPercent(totalBefore, totalAfter)} % menos){ok.length > 1 ? '. Se guardan juntas en un ZIP.' : '.'}
+              {tr(ok.length > 1 ? 'imgt.savingsZip' : 'imgt.savings', { before: formatBytes(totalBefore), after: formatBytes(totalAfter), pct: savedPercent(totalBefore, totalAfter) })}
             </Notice>
           ) : ok.length > 1 ? (
-            <Notice kind="success">{ok.length} imágenes listas. Se guardan juntas en un ZIP.</Notice>
+            <Notice kind="success">{tr('imgt.readyZip', { n: ok.length })}</Notice>
           ) : undefined
         }
       />
@@ -191,7 +192,7 @@ function Results({ files, results, zipName, showSavings, toolName, title, busy }
                       {r.width}×{r.height} px · {showSavings ? `${formatBytes(r.before)} → ${formatBytes(r.blob.size)} (${savedPercent(r.before, r.blob.size)} %)` : formatBytes(r.blob.size)}
                     </small>
                   </span>
-                  <button type="button" className="icon-btn" aria-label={`Descargar ${r.name}`} onClick={() => download(r.blob, r.name, r.blob.type)}>
+                  <button type="button" className="icon-btn" aria-label={tr('img.downloadOne', { name: r.name })} onClick={() => download(r.blob, r.name, r.blob.type)}>
                     <Icon name="download" />
                   </button>
                 </>
@@ -256,21 +257,21 @@ function CompressImageTool() {
       <Panel>
         {b.picker()}
         <div className="field">
-          <span>Nivel de compresión</span>
-          <Segmented label="Nivel" value={level} onChange={(v) => { setLevel(v); b.setResults(null) }} options={[{ value: 'baja', label: 'Baja' }, { value: 'media', label: 'Recomendada' }, { value: 'alta', label: 'Máxima' }]} />
+          <span>{tr('imgt.level')}</span>
+          <Segmented label={tr('imgt.levelShort')} value={level} onChange={(v) => { setLevel(v); b.setResults(null) }} options={[{ value: 'baja', label: tr('imgt.low') }, { value: 'media', label: tr('imgt.recommended') }, { value: 'alta', label: tr('imgt.max') }]} />
           <small className="faint">
-            {level === 'baja' ? 'Casi sin diferencia visible; conserva el tamaño original.' : level === 'media' ? 'Buen equilibrio: hasta 2560 px de lado, ideal para enviar o publicar.' : 'Lo más liviano: hasta 1600 px de lado, para correo o WhatsApp.'}
+            {level === 'baja' ? tr('imgt.lowHint') : level === 'media' ? tr('imgt.midHint') : tr('imgt.maxHint')}
           </small>
         </div>
-        <small className="faint">Las fotos se guardan como JPG; las que tienen transparencia, como WebP. {PRIVACY}</small>
+        <small className="faint">{tr('imgt.compressNote')} {tr('imgt.privacy')}</small>
         {b.busy && <Progress value={b.progress} />}
         <div className="row row-end">
           <BusyButton busy={b.busy} disabled={!b.files.length} onClick={run} icon="compress">
-            {b.files.length > 1 ? `Comprimir ${b.files.length} imágenes` : 'Comprimir'}
+            {b.files.length > 1 ? tr('imgt.compressN', { n: b.files.length }) : tr('imgt.compressGo')}
           </BusyButton>
         </div>
       </Panel>
-      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-comprimidas.zip" showSavings toolName="compress_image" title={b.files.length > 1 ? 'Así quedaron tus imágenes comprimidas' : 'Así quedó tu imagen comprimida'} />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-comprimidas.zip" showSavings toolName="compress_image" title={b.files.length > 1 ? tr('imgt.title.compressMany') : tr('imgt.title.compressOne')} />}
     </div>
   )
 }
@@ -302,39 +303,39 @@ function ResizeImageTool() {
     <div className="stack">
       <Panel>
         {b.picker()}
-        <Segmented label="Cómo redimensionar" value={mode} onChange={(v) => { setMode(v); b.setResults(null) }} options={[{ value: 'percent', label: 'Por porcentaje' }, { value: 'pixels', label: 'Por pixeles' }]} />
+        <Segmented label={tr('imgt.howResize')} value={mode} onChange={(v) => { setMode(v); b.setResults(null) }} options={[{ value: 'percent', label: tr('imgt.byPercent') }, { value: 'pixels', label: tr('imgt.byPixels') }]} />
         {mode === 'percent' ? (
           <label className="field">
-            <span>Tamaño: {percent} %</span>
+            <span>{tr('imgt.sizePct', { n: percent })}</span>
             <input type="range" min={5} max={200} step={5} value={percent} onChange={(e) => setPercent(Number(e.target.value))} />
           </label>
         ) : (
           <>
             <div className="row">
               <label className="field" style={{ flex: 1, minWidth: 120 }}>
-                <span>Ancho (px)</span>
-                <input className="input" type="number" min={1} max={16384} inputMode="numeric" value={width} placeholder="Ej. 1080" onChange={(e) => setWidth(e.target.value)} />
+                <span>{tr('imgt.width')}</span>
+                <input className="input" type="number" min={1} max={16384} inputMode="numeric" value={width} placeholder={tr('imgt.eg')} onChange={(e) => setWidth(e.target.value)} />
               </label>
               <label className="field" style={{ flex: 1, minWidth: 120 }}>
-                <span>Alto (px)</span>
-                <input className="input" type="number" min={1} max={16384} inputMode="numeric" value={height} placeholder={keepRatio ? 'Automático' : 'Ej. 1080'} onChange={(e) => setHeight(e.target.value)} />
+                <span>{tr('imgt.height')}</span>
+                <input className="input" type="number" min={1} max={16384} inputMode="numeric" value={height} placeholder={keepRatio ? tr('imgt.auto') : tr('imgt.eg')} onChange={(e) => setHeight(e.target.value)} />
               </label>
             </div>
             <label className="check">
               <input type="checkbox" checked={keepRatio} onChange={(e) => setKeepRatio(e.target.checked)} />
-              <span>Conservar la proporción (si escribes los dos lados, la imagen cabe dentro de ese tamaño)</span>
+              <span>{tr('imgt.keepRatio')}</span>
             </label>
           </>
         )}
-        <small className="faint">Se conserva el formato (JPG, PNG o WebP; los demás salen como PNG). {PRIVACY}</small>
+        <small className="faint">{tr('imgt.keepFormat')} {tr('imgt.privacy')}</small>
         {b.busy && <Progress value={b.progress} />}
         <div className="row row-end">
           <BusyButton busy={b.busy} disabled={!b.files.length || !valid} onClick={run} icon="resize">
-            {b.files.length > 1 ? `Redimensionar ${b.files.length} imágenes` : 'Redimensionar'}
+            {b.files.length > 1 ? tr('imgt.resizeN', { n: b.files.length }) : tr('imgt.resize')}
           </BusyButton>
         </div>
       </Panel>
-      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-redimensionadas.zip" toolName="resize_image" title={b.files.length > 1 ? 'Así quedaron tus imágenes' : 'Así quedó tu imagen redimensionada'} />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-redimensionadas.zip" toolName="resize_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.resizeOne')} />}
     </div>
   )
 }
@@ -368,25 +369,25 @@ function RotateImageTool() {
         {b.picker()}
         {first && (
           <div className="rotate-preview">
-            <img src={first} alt="Vista previa" style={{ transform: css }} />
+            <img src={first} alt={tr('imgt.previewAlt')} style={{ transform: css }} />
           </div>
         )}
         <div className="row" style={{ justifyContent: 'center' }}>
-          <button type="button" className="btn btn-soft btn-sm" onClick={() => change((p) => rotateBy(p, -90))}><span className="icon-mirror"><Icon name="rotate" /></span> Izquierda</button>
-          <button type="button" className="btn btn-soft btn-sm" onClick={() => change((p) => rotateBy(p, 90))}><Icon name="rotate" /> Derecha</button>
-          <button type="button" className="btn btn-soft btn-sm" aria-pressed={t.flipH} onClick={() => change((p) => ({ ...p, flipH: !p.flipH }))}><Icon name="flip" /> Espejo</button>
-          <button type="button" className="btn btn-soft btn-sm" aria-pressed={t.flipV} onClick={() => change((p) => ({ ...p, flipV: !p.flipV }))}><span className="icon-turn"><Icon name="flip" /></span> Vertical</button>
+          <button type="button" className="btn btn-soft btn-sm" onClick={() => change((p) => rotateBy(p, -90))}><span className="icon-mirror"><Icon name="rotate" /></span> {tr('imgt.left')}</button>
+          <button type="button" className="btn btn-soft btn-sm" onClick={() => change((p) => rotateBy(p, 90))}><Icon name="rotate" /> {tr('imgt.right')}</button>
+          <button type="button" className="btn btn-soft btn-sm" aria-pressed={t.flipH} onClick={() => change((p) => ({ ...p, flipH: !p.flipH }))}><Icon name="flip" /> {tr('imgt.mirror')}</button>
+          <button type="button" className="btn btn-soft btn-sm" aria-pressed={t.flipV} onClick={() => change((p) => ({ ...p, flipV: !p.flipV }))}><span className="icon-turn"><Icon name="flip" /></span> {tr('imgt.vertical')}</button>
         </div>
-        {b.files.length > 1 && <small className="faint" style={{ textAlign: 'center' }}>El mismo giro se aplica a las {b.files.length} imágenes.</small>}
-        <small className="faint">{PRIVACY}</small>
+        {b.files.length > 1 && <small className="faint" style={{ textAlign: 'center' }}>{tr('imgt.sameTurn', { n: b.files.length })}</small>}
+        <small className="faint">{tr('imgt.privacy')}</small>
         {b.busy && <Progress value={b.progress} />}
         <div className="row row-end">
           <BusyButton busy={b.busy} disabled={!b.files.length || isIdentity(t)} onClick={run} icon="rotate">
-            {isIdentity(t) ? 'Elige un giro' : 'Aplicar giro'}
+            {isIdentity(t) ? tr('imgt.pickTurn') : tr('imgt.applyTurn')}
           </BusyButton>
         </div>
       </Panel>
-      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-giradas.zip" toolName="rotate_image" title={b.files.length > 1 ? 'Así quedaron tus imágenes' : 'Así quedó tu imagen girada'} />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-giradas.zip" toolName="rotate_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.rotateOne')} />}
     </div>
   )
 }
@@ -461,7 +462,7 @@ function CropImageTool() {
       img.bmp.close()
       setOutput(resultFile(blob, outputName(file.name, 'recortada', mime), mime))
       track('image_tool_used', { tool_name: 'crop', files: 1, ok: 1 })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
       setError(errorMessage(e))
     } finally {
@@ -472,36 +473,36 @@ function CropImageTool() {
   return (
     <Panel>
       {!file ? (
-        <DropZone accept={ACCEPT} title="Toca para elegir una imagen" hint="JPG, PNG, WebP, GIF o BMP" onFiles={([f]) => setFile(f)} />
+        <DropZone accept={ACCEPT} title={tr('imgt.pickOne')} hint={tr('imgt.formats')} onFiles={([f]) => setFile(f)} />
       ) : (
         <ul className="file-list" style={{ marginTop: 0 }}>
-          <FileRow file={file} extra={dims ? `${dims.width}×${dims.height} px` : 'Leyendo…'} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>Cambiar</button>} />
+          <FileRow file={file} extra={dims ? `${dims.width}×${dims.height} px` : tr('common.reading')} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>{tr('common.change')}</button>} />
         </ul>
       )}
       {url && dims && (
         <>
-          <div className="aspect-chips" role="radiogroup" aria-label="Proporción">
+          <div className="aspect-chips" role="radiogroup" aria-label={tr('imgt.aspect')}>
             {(Object.keys(ASPECTS) as AspectName[]).map((a) => (
               <button key={a} type="button" role="radio" aria-checked={aspect === a} className="edit-tool" onClick={() => pickAspect(a)}>
-                {a === 'libre' ? 'Libre' : a}
+                {a === 'libre' ? tr('imgt.free') : a}
               </button>
             ))}
           </div>
           <CropStage url={url} margins={margins} onChange={onChange} />
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <span className="faint">Resultado: {px?.width} × {px?.height} px</span>
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => pickAspect(aspect)}><Icon name="reset" /> Restablecer</button>
+            <span className="faint">{tr('imgt.resultPx', { w: px?.width ?? 0, h: px?.height ?? 0 })}</span>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => pickAspect(aspect)}><Icon name="reset" /> {tr('crop.reset')}</button>
           </div>
-          <small className="faint">{PRIVACY}</small>
+          <small className="faint">{tr('imgt.privacy')}</small>
         </>
       )}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!px} onClick={save} icon="check">
-          Recortar imagen
+          {tr('imgt.crop')}
         </BusyButton>
       </div>
-      {file && output && <BeforeAfter original={file} result={output} toolName="crop_image" title="Así quedó tu imagen recortada" />}
+      {file && output && <BeforeAfter original={file} result={output} toolName="crop_image" title={tr('imgt.title.cropOne')} />}
     </Panel>
   )
 }

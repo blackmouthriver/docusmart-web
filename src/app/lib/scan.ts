@@ -4,6 +4,7 @@
  * RGBA (como ImageData) para poder probarlo sin canvas.
  */
 import { PDFDocument } from 'pdf-lib'
+import { tr } from '../i18n/translate'
 
 export type Pixels = { data: Uint8ClampedArray; width: number; height: number }
 export type Point = { x: number; y: number }
@@ -163,7 +164,7 @@ function solve(A: number[][], b: number[]): number[] {
   for (let c = 0; c < n; c++) {
     let p = c
     for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r
-    if (Math.abs(M[p][c]) < 1e-12) throw new Error('Las esquinas no forman un cuadrilátero válido.')
+    if (Math.abs(M[p][c]) < 1e-12) throw new Error(tr('libErr.badCorners'))
     ;[M[c], M[p]] = [M[p], M[c]]
     for (let r = 0; r < n; r++) {
       if (r === c) continue
@@ -279,7 +280,7 @@ export type ScannedPage = { jpg: Uint8Array; width: number; height: number }
 
 /** Un PDF con una página por documento, de ancho A4 (595 pt) y alto proporcional. */
 export async function scansToPdf(pages: ScannedPage[]): Promise<Uint8Array> {
-  if (!pages.length) throw new Error('Agrega al menos una página.')
+  if (!pages.length) throw new Error(tr('libErr.scanAddPage'))
   const doc = await PDFDocument.create()
   doc.setTitle('Documento escaneado con DocuSmart')
   for (const p of pages) {
