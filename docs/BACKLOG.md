@@ -158,6 +158,12 @@ Todo sigue siendo local: nada de IA ni voces en la nube.
 Orden sugerido: W-58 → W-60 → W-59 → W-62/W-63 → W-64 → W-61 → W-65 → W-66 → W-67. Cada ítem en su PR, en los 12
 idiomas, con revisión de punta a punta en el navegador.
 
+## Códigos QR, como en la app y mejor para la web
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-69 | **Revisar y refinar la creación de códigos QR** frente a la app (tipos de contenido, diseño, QR protegido, leer) y proponer mejoras propias de la web; el análisis se convierte en ítems W-xx aquí. Se hace **después** del Modo Estudio (W-58..W-67) | 🤖 | Pendiente |
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |
