@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import QRCode from 'qrcode'
 import jsQR from 'jsqr'
 import { go, useApp } from '../../../app/state'
@@ -10,16 +10,19 @@ import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
 import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, isPlainScheme, parseContact, parseEvent, parseWifi, phoneNumber, safeLink, type QrForm, type QrKind, type ReadType } from '../core/qrContent'
 import { download, isOwnBlobUrl, safeMimeType } from '../../../shared/files/files'
+import { previewOf, type QrHistoryEntry, type QrHistoryKind } from '../core/qrHistory'
+import { clearQrHistory, forgetQr, getQrHistory, recordQr, subscribeQrHistory } from '../infra/historyStore'
 import { QR_COLORS, QR_SIZES, errorLevels, hasSufficientContrast, logoBox, svgWithLogo, type QrColorId, type QrSize } from '../core/qrDesign'
 import { useT } from '../../../shared/i18n/I18n'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 
 // Menú de QR (W-82): una vista por función, como el Modo Estudio.
-type QrView = 'crear' | 'leer'
+type QrView = 'crear' | 'leer' | 'historial'
 const QR_VIEWS: Array<{ id: QrView; icon: IconName; cls: string; title: MessageKey; desc: MessageKey }> = [
   { id: 'crear', icon: 'qr', cls: 'ico-blue', title: 'qr.create', desc: 'qr.menuCreateDesc' },
   { id: 'leer', icon: 'camera', cls: 'ico-green', title: 'qr.read', desc: 'qr.menuReadDesc' },
+  { id: 'historial', icon: 'folder', cls: 'ico-amber', title: 'qr.history', desc: 'qr.menuHistoryDesc' },
 ]
 
 export function QrScreen({ sub }: { sub?: string }) {
@@ -32,7 +35,7 @@ export function QrScreen({ sub }: { sub?: string }) {
           <div style={{ margin: '14px 0' }}>
             <BackButton label={tr('nav.qr')} onClick={() => go('qr')} />
           </div>
-          <div className="qr-view">{view === 'crear' ? <CreateQr /> : <ReadQr />}</div>
+          <div className="qr-view">{view === 'crear' ? <CreateQr /> : view === 'leer' ? <ReadQr /> : <QrHistory />}</div>
         </>
       ) : (
         <>
@@ -233,6 +236,7 @@ export function CreateQr() {
       const payload = protect ? PREFIX + (await encrypt(built.payload, password)) : built.payload
       setImg(await renderQr(payload, { color: hex, size: QR_SIZES[size], logo }))
       setLastPayload(payload)
+      recordQr({ source: 'created', payload, kind: protect ? 'protected' : detectType(built.payload), color: hex })
       track('qr_created', { qr_content_type: form.kind, has_password: protect, color, has_logo: !!logo, size })
     } catch {
       toast(tr('qr.tooLong'))
@@ -414,6 +418,7 @@ export function ReadQr() {
   const found = (data: string) => {
     stop()
     setResult(data)
+    recordQr({ source: 'scanned', payload: data, kind: isProtectedPayload(data) ? 'protected' : detectType(data) })
     track('qr_scanned', { qr_content_type: isProtectedPayload(data) ? 'protected' : detectType(data) })
   }
 
@@ -720,5 +725,87 @@ function ProtectedResult({ payload, onCopy }: { payload: string; onCopy: () => v
       </form>
       {wrong && <Notice kind="error">{tr('qr.wrong')}</Notice>}
     </div>
+  )
+}
+
+// ── Historial (W-87): QR creados y leídos, solo en este navegador ──────
+const HISTORY_ICON: Record<QrHistoryKind, IconName> = { ...READ_ICON, protected: 'lock' }
+
+function HistoryItem({ entry, onCopy }: { entry: QrHistoryEntry; onCopy: () => void }) {
+  const { lang } = useT()
+  const [open, setOpen] = useState(false)
+  const [img, setImg] = useState<string | null>(null)
+  const preview = previewOf(entry)
+  useEffect(() => {
+    if (!open || img) return
+    let alive = true
+    void renderQr(entry.payload, { color: entry.color ?? '#000000', size: 512, logo: null })
+      .then((url) => alive && setImg(url))
+      .catch(() => {})
+    return () => {
+      alive = false
+    }
+  }, [open, img, entry])
+  const label =
+    preview.kind === 'protected'
+      ? tr('qr.historyProtected')
+      : preview.kind === 'wifi'
+        ? tr('qr.historyWifi', { ssid: preview.ssid ?? tr('qr.hiddenSsid') })
+        : preview.kind === 'contact'
+          ? tr('qr.historyContact', { name: preview.name ?? tr('qr.hiddenName') })
+          : preview.text
+  return (
+    <li className={'qr-history-item' + (open ? ' is-open' : '')}>
+      <div className="qr-history-row">
+        <span className="ico ico-blue"><Icon name={HISTORY_ICON[entry.kind]} /></span>
+        <span className="qr-history-text">
+          <b title={preview.kind === 'plain' ? preview.text : undefined}>{label}</b>
+          <span className="faint">
+            <span className={'qr-badge ' + entry.source}>{tr(entry.source === 'created' ? 'qr.src.created' : 'qr.src.scanned')}</span> · {new Date(entry.at).toLocaleString(lang, { dateStyle: 'medium', timeStyle: 'short' })}
+          </span>
+        </span>
+        <button type="button" className="btn btn-soft btn-sm" aria-expanded={open} onClick={() => setOpen((o) => !o)}>{open ? tr('qr.close') : tr('qr.open')}</button>
+        <button type="button" className="icon-btn" aria-label={tr('qr.deleteEntry')} title={tr('qr.deleteEntry')} onClick={() => forgetQr(entry.id)}><Icon name="trash" /></button>
+      </div>
+      {open && (
+        <div className="qr-history-body">
+          {img ? <img className="qr-history-img" src={img} alt={tr('qr.alt')} /> : <span className="spinner" aria-hidden="true" />}
+          <div className="qr-history-detail">{entry.kind === 'protected' ? <ProtectedResult payload={entry.payload} onCopy={onCopy} /> : <QrResult value={entry.payload} onCopy={onCopy} />}</div>
+        </div>
+      )}
+    </li>
+  )
+}
+
+export function QrHistory() {
+  const { toast } = useApp()
+  const list = useSyncExternalStore(subscribeQrHistory, getQrHistory)
+  const [confirming, setConfirming] = useState(false)
+  const copied = () => toast(tr('qr.copied'))
+  return (
+    <section className="card stack" aria-labelledby="qr-history">
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <div className="row">
+          <span className="ico ico-amber"><Icon name="folder" /></span>
+          <h3 id="qr-history">{tr('qr.history')}</h3>
+        </div>
+        {list.length > 0 && !confirming && <button type="button" className="btn btn-ghost btn-sm" onClick={() => setConfirming(true)}><Icon name="trash" /> {tr('qr.clearAll')}</button>}
+      </div>
+      {confirming && (
+        <Notice kind="error">
+          {tr('qr.clearConfirm')}{' '}
+          <button type="button" className="btn btn-primary btn-sm" onClick={() => { clearQrHistory(); setConfirming(false) }}>{tr('qr.clearYes')}</button>{' '}
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => setConfirming(false)}>{tr('qr.cancel')}</button>
+        </Notice>
+      )}
+      {list.length ? (
+        <ul className="qr-history">
+          {list.map((e) => <HistoryItem key={e.id} entry={e} onCopy={copied} />)}
+        </ul>
+      ) : (
+        <p className="faint">{tr('qr.historyEmpty')}</p>
+      )}
+      <small className="faint">{tr('qr.historyLocal')}</small>
+    </section>
   )
 }
