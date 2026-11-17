@@ -152,7 +152,8 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
           converted.push(resultFile(data, `${baseName(files[i].name)}.${target}`, data.type))
           setProgress((i + 1) / files.length)
         }
-        setOut({ result: null, results: converted, saveAs: await bundleFiles(converted, `docusmart-${target}.zip`) })
+        // Una sola imagen se ve en grande; varias, como miniaturas y en un ZIP.
+        setOut(converted.length === 1 ? { result: converted[0] } : { result: null, results: converted, saveAs: await bundleFiles(converted, `docusmart-${target}.zip`) })
       } else if (conv.id === 'pdf-img') {
         const blobs = await pdfToImages(await files[0].arrayBuffer(), pdfImgFormat, 1600, (d, t) => setProgress(d / t))
         const name = baseName(files[0].name)

@@ -95,7 +95,7 @@ function ImagePreview({ source, page, label, onPages }: PreviewProps) {
     <figure className="doc-preview">
       <figcaption className="doc-preview-meta">
         <b>{label}</b>
-        <span className="faint">{docSummary(1, source.size, formatBytes)}</span>
+        <span className="faint">Imagen · {formatBytes(source.size)}</span>
       </figcaption>
       <div className="doc-preview-stage">
         {page > 1 ? <span className="faint">Este documento tiene 1 página.</span> : url ? <img src={url} alt={label} /> : <span className="spinner" aria-label="Cargando vista previa" />}
