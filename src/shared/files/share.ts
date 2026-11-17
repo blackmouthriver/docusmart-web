@@ -57,6 +57,8 @@ export function sizeChange(before: number, after: number): string | null {
 /* ───────────── Invitar a compartir DocuSmart ───────────── */
 
 export const SITE_URL = 'https://docusmart.online'
+/** Página de DocuSmart en Facebook. */
+export const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61596626852763'
 export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.docsmart'
 export const FEEDBACK_EMAIL = 'jblackmouthr@gmail.com'
 
