@@ -60,6 +60,7 @@ export const SITE_URL = 'https://docusmart.online'
 /** Redes sociales de DocuSmart. */
 export const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61596626852763'
 export const INSTAGRAM_URL = 'https://www.instagram.com/supportdocusmart/'
+export const TIKTOK_URL = 'https://www.tiktok.com/@docusmartsupport'
 export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.docsmart'
 export const FEEDBACK_EMAIL = 'supportdocusmart@docusmart.online'
 

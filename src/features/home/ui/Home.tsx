@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { FACEBOOK_URL, INSTAGRAM_URL } from '../../../shared/files/share'
+import { FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL } from '../../../shared/files/share'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { HeroCard } from '../../../shared/ui/ui'
@@ -107,6 +107,9 @@ export function Home() {
         </a>
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
           Instagram
+        </a>
+        <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer">
+          TikTok
         </a>
         {analyticsConfigured && (
           <button type="button" className="link-btn" data-consent-open>
