@@ -497,6 +497,10 @@ p { margin: 0; }
 .edit-stage.tool-text { cursor: text; }
 .edit-stage.tool-rect, .edit-stage.tool-ellipse, .edit-stage.tool-highlight, .edit-stage.tool-whiteout { cursor: crosshair; }
 .edit-stage.tool-select { cursor: default; }
+.edit-stage.tool-replace { cursor: default; }
+/* Reemplazar texto (W-81): cada línea del PDF es una zona tocable */
+.edit-line { position: absolute; z-index: 2; padding: 0; border: 0; border-radius: 3px; background: rgba(37, 99, 235, .08); box-shadow: 0 0 0 1px rgba(37, 99, 235, .35) inset; cursor: pointer; transition: background-color 150ms ease, box-shadow 150ms ease; }
+.edit-line:hover, .edit-line:focus-visible { background: rgba(37, 99, 235, .2); box-shadow: 0 0 0 2px var(--blue) inset; outline: none; }
 .edit-item { position: absolute; touch-action: none; cursor: move; outline: 1.5px dashed transparent; outline-offset: 2px; }
 .edit-item.is-selected, .edit-item:focus-visible { outline-color: var(--blue); }
 .edit-text { white-space: pre; line-height: 1.2; padding: 0; }
