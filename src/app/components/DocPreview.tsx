@@ -6,17 +6,79 @@ import { Notice } from './ui'
 import { download, formatBytes, isOwnBlobUrl, safeMimeType } from '../lib/files'
 import { PLAY_URL, SITE_URL, appShareLinks, toolShareUrl, canShareFile, docSummary, feedbackMailto, shareFile } from '../lib/share'
 import { PageNav, usePdfPreview } from '../screens/PdfPreview'
+import { isDocx, isXlsx } from '../lib/officeRender'
 import { useApp } from '../state'
 import { track } from '../../shared/analytics'
 
 type PreviewProps = { source: Blob; page: number; label: string; onPages?: (n: number) => void; password?: string }
+type PdfProps = PreviewProps & { /** Peso a mostrar (el del archivo de Office, no el del PDF de muestra). */ displaySize?: number; note?: string }
 
 /**
  * Un documento (PDF o imagen) con su etiqueta, número de páginas, peso y la página
  * `page` dibujada. La página la controla quien lo usa (así dos vistas avanzan juntas).
  */
 export function DocPreview(props: PreviewProps) {
-  return props.source.type.startsWith('image/') ? <ImagePreview {...props} /> : <PdfPreview {...props} />
+  const s = props.source as Blob & { name?: string }
+  if (s.type.startsWith('image/')) return <ImagePreview {...props} />
+  if (s.type.startsWith('text/plain')) return <TextPreview {...props} />
+  if (isDocx(s) || isXlsx(s)) return <OfficePreview {...props} />
+  return <PdfPreview {...props} />
+}
+
+/** Un texto: las primeras líneas. */
+function TextPreview({ source, label, onPages }: PreviewProps) {
+  const [text, setText] = useState<string | null>(null)
+  useEffect(() => {
+    let alive = true
+    void source.slice(0, 20_000).text().then((t) => alive && setText(t))
+    onPages?.(1)
+    return () => {
+      alive = false
+    }
+  }, [source, onPages])
+  const lines = text ? text.split('\n').length : 0
+  return (
+    <figure className="doc-preview">
+      <figcaption className="doc-preview-meta">
+        <b>{label}</b>
+        <span className="faint">
+          {source.size > 20_000 ? 'Texto' : `${lines} ${lines === 1 ? 'línea' : 'líneas'}`} · {formatBytes(source.size)}
+        </span>
+      </figcaption>
+      <div className="doc-preview-stage text-preview-stage">
+        {text === null ? <span className="spinner" aria-label="Cargando vista previa" /> : <pre className="text-view">{text}{source.size > 20_000 ? '\n…' : ''}</pre>}
+      </div>
+    </figure>
+  )
+}
+
+/** Word o Excel: se diagrama a PDF para mostrar sus páginas (vista aproximada). */
+function OfficePreview(props: PreviewProps) {
+  const { source, label } = props
+  const [pdf, setPdf] = useState<Blob | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  useEffect(() => {
+    let alive = true
+    setPdf(null)
+    setError(null)
+    void import('../lib/officeRender')
+      .then(async (m) => (isDocx(source) ? (await m.docxToPdf(source, label)).pdf : await m.xlsxToPdf(source, label)))
+      .then((bytes) => alive && setPdf(new Blob([bytes as BlobPart], { type: 'application/pdf' })))
+      .catch(() => alive && setError('No se pudo mostrar la vista previa de este archivo.'))
+    return () => {
+      alive = false
+    }
+  }, [source, label])
+  if (pdf) return <PdfPreview {...props} source={pdf} displaySize={source.size} note="vista aproximada" />
+  return (
+    <figure className="doc-preview">
+      <figcaption className="doc-preview-meta">
+        <b>{label}</b>
+        <span className="faint">{formatBytes(source.size)}</span>
+      </figcaption>
+      <div className="doc-preview-stage">{error ? <span className="faint">{error}</span> : <span className="spinner" aria-label="Preparando la vista previa" />}</div>
+    </figure>
+  )
 }
 
 /** Una imagen: una sola "página". */
@@ -42,7 +104,7 @@ function ImagePreview({ source, page, label, onPages }: PreviewProps) {
   )
 }
 
-function PdfPreview({ source, page, label, onPages, password }: PreviewProps) {
+function PdfPreview({ source, page, label, onPages, password, displaySize, note }: PdfProps) {
   const { pages, pageNo, setPageNo, preview, error } = usePdfPreview(source, 640, page, password)
   useEffect(() => {
     if (pages) onPages?.(pages)
@@ -55,7 +117,10 @@ function PdfPreview({ source, page, label, onPages, password }: PreviewProps) {
     <figure className="doc-preview">
       <figcaption className="doc-preview-meta">
         <b>{label}</b>
-        <span className="faint">{docSummary(pages, source.size, formatBytes)}</span>
+        <span className="faint">
+          {docSummary(pages, displaySize ?? source.size, formatBytes)}
+          {note ? ` · ${note}` : ''}
+        </span>
       </figcaption>
       <div className="doc-preview-stage" aria-busy={!preview && !error}>
         {error ? (
