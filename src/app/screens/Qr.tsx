@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import QRCode from 'qrcode'
 import jsQR from 'jsqr'
 import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, HeroCard, Notice, Segmented } from '../components/ui'
-import { download } from '../lib/files'
+import { SaveOptions, ShareApp } from '../components/DocPreview'
+import { resultFile, toolShareUrl } from '../lib/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../lib/qrCrypto'
 import { track } from '../../shared/analytics'
 
@@ -28,6 +29,11 @@ export function CreateQr() {
   const [protect, setProtect] = useState(false)
   const [password, setPassword] = useState('')
   const [img, setImg] = useState<string | null>(null)
+  /** El QR como archivo PNG, para guardarlo o compartirlo. */
+  const qrFile = useMemo(
+    () => (img ? resultFile(Uint8Array.from(atob(img.split(',')[1] ?? ''), (c) => c.charCodeAt(0)), protect ? 'docusmart-qr-protegido.png' : 'docusmart-qr.png', 'image/png') : null),
+    [img, protect],
+  )
   const [busy, setBusy] = useState(false)
 
   const create = async () => {
@@ -74,15 +80,13 @@ export function CreateQr() {
       {img && (
         <div className="qr-preview">
           <img src={img} alt="Código QR generado" />
-          <button
-            type="button"
-            className="btn btn-soft"
-            style={{ marginTop: 14 }}
-            onClick={async () => download(await (await fetch(img)).blob(), protect ? 'docusmart-qr-protegido.png' : 'docusmart-qr.png')}
-          >
-            <Icon name="download" /> Descargar PNG
-          </button>
         </div>
+      )}
+      {qrFile && (
+        <>
+          <SaveOptions file={qrFile} toolName="qr" />
+          <ShareApp url={toolShareUrl('qr')} toolName="qr" />
+        </>
       )}
     </section>
   )

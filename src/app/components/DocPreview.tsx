@@ -22,7 +22,32 @@ export function DocPreview(props: PreviewProps) {
   if (s.type.startsWith('image/')) return <ImagePreview {...props} />
   if (s.type.startsWith('text/plain')) return <TextPreview {...props} />
   if (isDocx(s) || isXlsx(s)) return <OfficePreview {...props} />
-  return <PdfPreview {...props} />
+  if (isPdfLike(s)) return <PdfPreview {...props} />
+  return <GenericPreview {...props} />
+}
+
+/** PDF por tipo o extensión (un Blob sin tipo ni nombre se trata como PDF). */
+const isPdfLike = (f: Blob & { name?: string }) => f.type === 'application/pdf' || !!f.name?.toLowerCase().endsWith('.pdf') || (!f.type && !f.name)
+const extOf = (f: Blob & { name?: string }) => (f.name?.match(/\.([a-z0-9]{1,5})$/i)?.[1] ?? 'archivo').toUpperCase()
+
+/** Cualquier otro archivo (ZIP, 7Z…): su tipo, nombre y peso. */
+function GenericPreview({ source, label, onPages }: PreviewProps) {
+  const s = source as Blob & { name?: string }
+  useEffect(() => onPages?.(1), [onPages])
+  return (
+    <figure className="doc-preview">
+      <figcaption className="doc-preview-meta">
+        <b>{label}</b>
+        <span className="faint">{extOf(s)} · {formatBytes(source.size)}</span>
+      </figcaption>
+      <div className="doc-preview-stage">
+        <div className="generic-file">
+          <span className="generic-ext">{extOf(s)}</span>
+          {s.name && <span className="faint" title={s.name}>{s.name}</span>}
+        </div>
+      </div>
+    </figure>
+  )
 }
 
 /** Un texto: las primeras líneas. */
@@ -319,7 +344,9 @@ function FileTiles({ files, label, max = 12 }: { files: File[]; label: string; m
 }
 
 function FileThumb({ file }: { file: File }) {
-  return file.type.startsWith('image/') ? <ImageThumb file={file} /> : <PdfThumb file={file} />
+  if (file.type.startsWith('image/')) return <ImageThumb file={file} />
+  if (isPdfLike(file)) return <PdfThumb file={file} />
+  return <span className="generic-ext generic-ext-sm">{extOf(file)}</span>
 }
 
 function ImageThumb({ file }: { file: File }) {

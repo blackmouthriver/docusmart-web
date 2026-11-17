@@ -3,7 +3,9 @@ import { useEffect, useMemo, useState, type ComponentType, type ReactNode } from
 import { go, useApp } from '../state'
 import { Icon, type IconName } from '../components/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Progress, Segmented, errorMessage } from '../components/ui'
-import { download, downloadMany, formatBytes, isOwnBlobUrl } from '../lib/files'
+import { download, formatBytes, isOwnBlobUrl } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { bundleFiles, resultFile } from '../lib/share'
 import {
   ASPECTS,
   IDENTITY,
@@ -126,50 +128,78 @@ function useBatch(toolName: string) {
   return { files, setFiles, results, setResults, busy, progress, run, picker }
 }
 
-function Results({ results, zipName, showSavings }: { results: Result[]; zipName: string; showSavings?: boolean }) {
-  const ok = results.filter((r): r is Extract<Result, { blob: Blob }> => !r.error)
+/**
+ * Antes y después de las imágenes: las elegidas a la izquierda y, al procesarlas,
+ * el resultado al lado (en grande si es una, en miniaturas si son varias). Debajo,
+ * el detalle de cada imagen y los errores.
+ */
+function Results({ files, results, zipName, showSavings, toolName, title, busy }: { files: File[]; results: Result[] | null; zipName: string; showSavings?: boolean; toolName: string; title: string; busy: boolean }) {
+  const ok = (results ?? []).filter((r): r is Extract<Result, { blob: Blob }> => !r.error)
+  const outFiles = useMemo(
+    () => (results ?? []).flatMap((r) => (r.error === undefined ? [resultFile(r.blob, r.name, r.blob.type)] : [])),
+    [results],
+  )
+  const [bundle, setBundle] = useState<File | null>(null)
+  useEffect(() => {
+    let alive = true
+    setBundle(null)
+    void bundleFiles(outFiles, zipName).then((b) => alive && setBundle(b))
+    return () => {
+      alive = false
+    }
+  }, [outFiles, zipName])
   const totalBefore = ok.reduce((s, r) => s + r.before, 0)
   const totalAfter = ok.reduce((s, r) => s + r.blob.size, 0)
+  const many = files.length > 1
   return (
     <div className="card stack" aria-live="polite">
-      <div className="row" style={{ justifyContent: 'space-between' }}>
-        <h3>{ok.length === 1 ? '1 imagen lista' : `${ok.length} imágenes listas`}</h3>
-        {ok.length > 0 && (
-          <button type="button" className="btn btn-primary btn-sm" onClick={() => downloadMany(ok.map((r) => ({ name: r.name, data: r.blob })), zipName)}>
-            <Icon name="download" /> {ok.length > 1 ? 'Descargar todo (ZIP)' : 'Descargar'}
-          </button>
-        )}
-      </div>
-      {showSavings && ok.length > 0 && (
-        <p className="muted" style={{ margin: 0 }}>
-          De {formatBytes(totalBefore)} a <b>{formatBytes(totalAfter)}</b> ({savedPercent(totalBefore, totalAfter)} % menos).
-        </p>
+      <BeforeAfter
+        original={many ? undefined : files[0]}
+        originals={many ? files : undefined}
+        result={!many && outFiles.length === 1 ? outFiles[0] : null}
+        results={many && outFiles.length ? outFiles : undefined}
+        saveAs={bundle}
+        toolName={toolName}
+        title={title}
+        previewTitle={many ? 'Tus imágenes' : 'Vista previa de tu imagen'}
+        placeholder={busy ? 'Procesando…' : 'Elige las opciones y aplica la herramienta'}
+        summary={
+          showSavings && ok.length > 0 ? (
+            <Notice kind="success">
+              De {formatBytes(totalBefore)} a <b>{formatBytes(totalAfter)}</b> ({savedPercent(totalBefore, totalAfter)} % menos){ok.length > 1 ? '. Se guardan juntas en un ZIP.' : '.'}
+            </Notice>
+          ) : ok.length > 1 ? (
+            <Notice kind="success">{ok.length} imágenes listas. Se guardan juntas en un ZIP.</Notice>
+          ) : undefined
+        }
+      />
+      {results && (results.length > 1 || results.some((r) => r.error)) && (
+        <ul className="file-list" style={{ marginTop: 0 }}>
+          {results.map((r, i) => (
+            <li key={r.name + i} className="file-row img-result">
+              {r.error !== undefined ? (
+                <>
+                  <span className="img-result-name">{r.name}</span>
+                  <small style={{ color: 'var(--danger)' }}>{r.error}</small>
+                </>
+              ) : (
+                <>
+                  <ResultThumb blob={r.blob} />
+                  <span className="img-result-info">
+                    <b>{r.name}</b>
+                    <small className="faint">
+                      {r.width}×{r.height} px · {showSavings ? `${formatBytes(r.before)} → ${formatBytes(r.blob.size)} (${savedPercent(r.before, r.blob.size)} %)` : formatBytes(r.blob.size)}
+                    </small>
+                  </span>
+                  <button type="button" className="icon-btn" aria-label={`Descargar ${r.name}`} onClick={() => download(r.blob, r.name, r.blob.type)}>
+                    <Icon name="download" />
+                  </button>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
-      <ul className="file-list" style={{ marginTop: 0 }}>
-        {results.map((r, i) => (
-          <li key={r.name + i} className="file-row img-result">
-            {r.error !== undefined ? (
-              <>
-                <span className="img-result-name">{r.name}</span>
-                <small style={{ color: 'var(--danger)' }}>{r.error}</small>
-              </>
-            ) : (
-              <>
-                <ResultThumb blob={r.blob} />
-                <span className="img-result-info">
-                  <b>{r.name}</b>
-                  <small className="faint">
-                    {r.width}×{r.height} px · {showSavings ? `${formatBytes(r.before)} → ${formatBytes(r.blob.size)} (${savedPercent(r.before, r.blob.size)} %)` : formatBytes(r.blob.size)}
-                  </small>
-                </span>
-                <button type="button" className="icon-btn" aria-label={`Descargar ${r.name}`} onClick={() => download(r.blob, r.name, r.blob.type)}>
-                  <Icon name="download" />
-                </button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
     </div>
   )
 }
@@ -240,7 +270,7 @@ function CompressImageTool() {
           </BusyButton>
         </div>
       </Panel>
-      {b.results && <Results results={b.results} zipName="imagenes-comprimidas.zip" showSavings />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-comprimidas.zip" showSavings toolName="compress_image" title={b.files.length > 1 ? 'Así quedaron tus imágenes comprimidas' : 'Así quedó tu imagen comprimida'} />}
     </div>
   )
 }
@@ -304,7 +334,7 @@ function ResizeImageTool() {
           </BusyButton>
         </div>
       </Panel>
-      {b.results && <Results results={b.results} zipName="imagenes-redimensionadas.zip" />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-redimensionadas.zip" toolName="resize_image" title={b.files.length > 1 ? 'Así quedaron tus imágenes' : 'Así quedó tu imagen redimensionada'} />}
     </div>
   )
 }
@@ -351,12 +381,12 @@ function RotateImageTool() {
         <small className="faint">{PRIVACY}</small>
         {b.busy && <Progress value={b.progress} />}
         <div className="row row-end">
-          <BusyButton busy={b.busy} disabled={!b.files.length || isIdentity(t)} onClick={run} icon="download">
-            {isIdentity(t) ? 'Elige un giro' : 'Aplicar y guardar'}
+          <BusyButton busy={b.busy} disabled={!b.files.length || isIdentity(t)} onClick={run} icon="rotate">
+            {isIdentity(t) ? 'Elige un giro' : 'Aplicar giro'}
           </BusyButton>
         </div>
       </Panel>
-      {b.results && <Results results={b.results} zipName="imagenes-giradas.zip" />}
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName="imagenes-giradas.zip" toolName="rotate_image" title={b.files.length > 1 ? 'Así quedaron tus imágenes' : 'Así quedó tu imagen girada'} />}
     </div>
   )
 }
@@ -366,6 +396,8 @@ function RotateImageTool() {
 function CropImageTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
+  const [output, setOutput] = useState<File | null>(null)
+  useEffect(() => setOutput(null), [file])
   const url = useObjectUrl(file)
   const [dims, setDims] = useState<{ width: number; height: number } | null>(null)
   const [aspect, setAspect] = useState<AspectName>('libre')
@@ -427,9 +459,9 @@ function CropImageTool() {
       const mime = outputMime(file.type)
       const blob = await renderImage(img, { crop: px, mime, quality: 0.92 })
       img.bmp.close()
-      download(blob, outputName(file.name, 'recortada', mime), mime)
+      setOutput(resultFile(blob, outputName(file.name, 'recortada', mime), mime))
       track('image_tool_used', { tool_name: 'crop', files: 1, ok: 1 })
-      toast('Listo. La imagen se descargó.')
+      toast('Listo. Revisa el resultado y guárdalo.')
     } catch (e) {
       setError(errorMessage(e))
     } finally {
@@ -465,10 +497,11 @@ function CropImageTool() {
       )}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={!px} onClick={save} icon="download">
-          Recortar y descargar
+        <BusyButton busy={busy} disabled={!px} onClick={save} icon="check">
+          Recortar imagen
         </BusyButton>
       </div>
+      {file && output && <BeforeAfter original={file} result={output} toolName="crop_image" title="Así quedó tu imagen recortada" />}
     </Panel>
   )
 }
