@@ -108,7 +108,7 @@ document.addEventListener('click', (e) => {
   const a = (e.target as HTMLElement).closest<HTMLElement>('[data-track]')
   if (!a) return
   const id = a.dataset.track ?? ''
-  track('landing_cta_click', { cta: id, destination: id.startsWith('play_store') ? 'play_store' : id.startsWith('facebook') ? 'facebook' : 'web_app' })
+  track('landing_cta_click', { cta: id, destination: id.startsWith('play_store') ? 'play_store' : id.startsWith('facebook') ? 'facebook' : id.startsWith('instagram') ? 'instagram' : 'web_app' })
 })
 const seen = new Set<string>()
 const sectionIo = new IntersectionObserver(
