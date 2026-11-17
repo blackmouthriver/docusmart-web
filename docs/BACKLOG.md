@@ -94,8 +94,7 @@ Con W-38 queda cubierta la paridad con la app e iLovePDF en herramientas de PDF.
 
 ### Después (paridad con la app e iLovePDF)
 
-| ID | Ítem | En la app | En iLovePDF | Cómo (navegador) |
-|---|---|---|---|---|
+Sin pendientes: todas las herramientas de la app y de iLovePDF que se pueden hacer en el navegador ya están (PowerPoint a PDF sigue solo en la app).
 
 ## Mantenimiento y limpieza
 
