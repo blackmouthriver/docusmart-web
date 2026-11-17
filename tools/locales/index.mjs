@@ -9,6 +9,9 @@ import en from './en.mjs'
 import pt from './pt.mjs'
 import fr from './fr.mjs'
 import it from './it.mjs'
+import de from './de.mjs'
+import ca from './ca.mjs'
+import eu from './eu.mjs'
 
 /** Textos fijos de la plantilla de herramienta, en español. */
 export const ES_UI = {
@@ -42,7 +45,7 @@ export const ES_UI = {
 }
 
 export const ES = { lang: 'es', label: 'Español', ogLocale: 'es_ES', ui: ES_UI, pages: {}, landing: [] }
-export const LOCALES = [en, pt, fr, it]
+export const LOCALES = [en, pt, fr, it, de, ca, eu]
 export const LANGS = [ES, ...LOCALES]
 
 // Cada idioma debe traer todas las páginas y todos los textos de la plantilla.
