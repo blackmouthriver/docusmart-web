@@ -6,6 +6,8 @@ import { kindOf } from '../../../shared/files/files'
 import { closePdf, extractPagesText, openPdf } from '../../../shared/pdf/pdf'
 import { EDIT_PDF, handOff } from '../../../shared/files/handoff'
 import { SaveOptions } from '../../../shared/ui/DocPreview'
+import { documentId, entryPercent, removeEntry, resumeParagraph, upsertEntry, type ReadingEntry } from '../core/readingHistory'
+import { loadFile as loadStoredFile, loadHistory, pruneFiles, saveHistory, storeFile } from '../infra/historyStore'
 import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -100,6 +102,10 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const [txtName, setTxtName] = useState<string | null>(null)
   const textFile = useMemo(() => (text.trim() && !pdf ? new File([text], txtName ?? `${tr('file.studyText')}.txt`, { type: 'text/plain' }) : null), [text, pdf, txtName])
   const [docView, setDocView] = useState<'document' | 'text'>('document')
+  // Retomar lectura (W-62): documentos recientes con su avance, solo en este navegador.
+  const [history, setHistory] = useState<ReadingEntry[]>(loadHistory)
+  const [doc, setDoc] = useState<{ id: string; name: string; kind: 'pdf' | 'text' } | null>(null)
+  const [resumed, setResumed] = useState<string | null>(null)
   const paragraphs = useMemo(() => (pdf ? toPagedParagraphs(pdf.pages) : toParagraphs(text)), [pdf, text])
   const totalPages = pdf?.pages.length ?? 0
   const currentPage = paragraphs[pos.p]?.page ?? 1
@@ -126,6 +132,17 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     const [reading, paused] = totalPages ? (['study.statusReadingPage', 'study.statusPausedPage'] as const) : (['study.statusReading', 'study.statusPaused'] as const)
     onStatus(state === 'playing' ? tr(reading, vars) : state === 'paused' ? tr(paused, vars) : '')
   }, [state, pos.p, paragraphs.length, totalPages, currentPage, onStatus])
+
+  // Guarda el avance del documento abierto en cada cambio de párrafo.
+  useEffect(() => {
+    if (!doc || !paragraphs.length) return
+    const entry: ReadingEntry = { ...doc, paragraph: pos.p, totalParagraphs: paragraphs.length, page: totalPages ? currentPage : 0, totalPages, finished, updatedAt: Date.now() }
+    setHistory((list) => {
+      const next = upsertEntry(list, entry)
+      saveHistory(next)
+      return next
+    })
+  }, [doc, pos.p, finished, paragraphs.length, totalPages, currentPage])
 
   // El párrafo que se lee queda siempre a la vista.
   useEffect(() => {
@@ -180,6 +197,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
 
   const start = (p = 0) => {
     if (!paragraphs.length) return
+    setResumed(null)
     setView('read')
     setFinished(false)
     if (state === 'idle') track('study_session_started', { mode: 'read_aloud' })
@@ -206,10 +224,9 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     setRate(r)
     if (state === 'playing') speak({ p: pos.p, c: pos.c }, r)
   }
+  // Abrir el editor no mueve la posición (ni el avance guardado): solo cambiar el texto la reinicia.
   const edit = () => {
     stop()
-    setFinished(false)
-    setPos({ p: 0, c: 0 })
     setView('edit')
   }
 
@@ -220,12 +237,14 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     try {
       const kind = kindOf(file)
       let loaded: string | null = null
+      let pdfPages: string[] = []
       if (kind === 'pdf') {
         // Si se edita el texto del PDF, se guarda como TXT con el mismo nombre.
         setTxtName(`${file.name.replace(/\.[^.]+$/, '')}.txt`)
         const doc = await openPdf(await file.arrayBuffer())
         try {
           const pages = await extractPagesText(doc)
+          pdfPages = pages
           loaded = pages.join('\n\n')
           setPdf({ file, pages })
           setDocView('document')
@@ -239,15 +258,40 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       } else toast(tr('study.pickPdfTxt'))
       if (loaded !== null) {
         setText(loaded)
-        setPos({ p: 0, c: 0 })
         setFinished(false)
         setView(loaded.trim() ? 'read' : 'edit')
+        // Si ya se había leído antes, sigue donde quedó.
+        const id = documentId(file)
+        const kindOfDoc = kind === 'pdf' ? 'pdf' : 'text'
+        const count = kindOfDoc === 'pdf' ? toPagedParagraphs(pdfPages).length : toParagraphs(loaded).length
+        const before = history.find((e) => e.id === id)
+        const p = resumeParagraph(before, count)
+        setPos({ p, c: 0 })
+        setResumed(p > 0 && before ? (before.totalPages ? tr('study.pageOf', { i: before.page, n: before.totalPages }) : tr('study.paragraphOf', { i: p + 1, n: count })) : null)
+        if (loaded.trim()) {
+          setDoc({ id, name: file.name, kind: kindOfDoc })
+          const listed = upsertEntry(history, { id, name: file.name, kind: kindOfDoc, paragraph: p, totalParagraphs: count, page: 0, totalPages: 0, finished: false, updatedAt: Date.now() })
+          void storeFile(id, file).then(() => pruneFiles(listed))
+        } else setDoc(null)
       }
     } catch {
       toast(tr('study.cantRead'))
     } finally {
       setLoading(false)
     }
+  }
+
+  const continueEntry = async (e: ReadingEntry) => {
+    const file = await loadStoredFile(e.id)
+    if (file) await loadFile(file)
+    else toast(tr('study.historyMissing', { name: e.name }))
+  }
+  const forget = (e: ReadingEntry) => {
+    const next = removeEntry(history, e.id)
+    setHistory(next)
+    saveHistory(next)
+    void pruneFiles(next)
+    if (doc?.id === e.id) setDoc(null)
   }
 
   if (!supported) return <Notice kind="error">{tr('study.unsupported')}</Notice>
@@ -307,6 +351,14 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
     </div>
   )
+  const resumedNotice = resumed && !finished && state === 'idle' && (
+    <Notice kind="info">
+      {tr('study.resumedAt', { where: resumed })}{' '}
+      <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setPos({ p: 0, c: 0 }); setResumed(null) }}>
+        <Icon name="reset" /> {tr('study.fromStart')}
+      </button>
+    </Notice>
+  )
   const finishedNotice = finished && (
     <Notice kind="success">
       {tr('study.finished')}{' '}
@@ -336,9 +388,38 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
 
       {view === 'edit' ? (
         <>
+          {history.length > 0 && (
+            <section className="history" aria-label={tr('study.continueReading')}>
+              <h4>{tr('study.continueReading')}</h4>
+              <ul className="history-list">
+                {history.map((e) => {
+                  const pct = entryPercent(e)
+                  return (
+                    <li key={e.id} className="history-item">
+                      <span className={'ico ' + (e.kind === 'pdf' ? 'ico-red' : 'ico-blue')}><Icon name={e.kind === 'pdf' ? 'pdf' : 'text'} /></span>
+                      <span className="history-text">
+                        <b title={e.name}>{e.name}</b>
+                        <span className="faint">
+                          {e.finished ? tr('study.readDone') : e.totalPages ? tr('study.pageOf', { i: e.page, n: e.totalPages }) : tr('study.paragraphOf', { i: e.paragraph + 1, n: e.totalParagraphs })} · {pct} %
+                        </span>
+                        <span className="progress" aria-hidden="true"><i style={{ width: `${pct}%` }} /></span>
+                      </span>
+                      <button type="button" className="btn btn-soft btn-sm" disabled={loading} onClick={() => void continueEntry(e)}>
+                        <Icon name="play" /> {e.finished ? tr('study.readAgain') : tr('study.continue')}
+                      </button>
+                      <button type="button" className="icon-btn" aria-label={tr('study.removeFromList', { name: e.name })} title={tr('study.removeFromList', { name: e.name })} onClick={() => forget(e)}>
+                        <Icon name="trash" />
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+              <small className="faint">{tr('study.historyLocal')}</small>
+            </section>
+          )}
           <label className="field">
             <span>{tr('study.textToRead')}</span>
-            <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => { setText(e.target.value); setPdf(null) }} />
+            <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => { setText(e.target.value); setPdf(null); setDoc(null); setPos({ p: 0, c: 0 }); setFinished(false); setResumed(null) }} />
           </label>
           {playerBar}
           {textFile && (
@@ -371,6 +452,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
           </div>
           {playerBar}
           {finishedNotice}
+          {resumedNotice}
           {docView === 'document' ? (
             <DocPages file={pdf.file} readingPage={active ? currentPage : null} follow={state === 'playing'} onReadPage={(n) => { const i = firstParagraphOfPage(paragraphs, n); if (i >= 0) start(i) }} />
           ) : (
@@ -381,6 +463,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
         <>
           {playerBar}
           {finishedNotice}
+          {resumedNotice}
           {paragraphList}
         </>
       )}
