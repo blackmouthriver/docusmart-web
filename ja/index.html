@@ -1,0 +1,881 @@
+<!doctype html>
+<!-- Generado por scripts/generate-tool-pages.mjs desde index.html. No editar a mano. -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocuSmart — 書類をひとつの場所に</title>
+<meta name="description" content="Androidで書類をスキャン、変換、結合、保護。17種類の変換、PDFツール、安全なフォルダー、学習モード。ファイルはスマホの中で処理されます。">
+<meta name="theme-color" content="#0B1020">
+<meta property="og:title" content="DocuSmart — 書類をひとつの場所に">
+<meta property="og:description" content="書類をスマホの外に出さずに、スキャン・変換・保護。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://docusmart.online/ja/">
+<meta property="og:image" content="https://docusmart.online/img/screen-home.webp">
+<meta property="og:locale" content="ja_JP">
+<link rel="canonical" href="https://docusmart.online/ja/">
+<!-- hreflang:start -->
+<link rel="alternate" hreflang="es" href="https://docusmart.online/">
+<link rel="alternate" hreflang="en" href="https://docusmart.online/en/">
+<link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/">
+<link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/">
+<link rel="alternate" hreflang="it" href="https://docusmart.online/it/">
+<link rel="alternate" hreflang="de" href="https://docusmart.online/de/">
+<link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/">
+<link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/">
+<link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/">
+<link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/">
+<link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/">
+<link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/">
+<link rel="alternate" hreflang="x-default" href="https://docusmart.online/">
+<!-- hreflang:end -->
+<link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --night: #0B1020;
+    --night-2: #111729;
+    --night-line: #232B45;
+    --paper: #F7F7F5;
+    --paper-2: #F0EFEA;
+    --card: #FFFFFF;
+    --line: #E7E5E0;
+    --ink: #1C1B1A;
+    --ink-soft: #57534E;
+    --ink-faint: #78716C;
+    --on-night: #E7EAF3;
+    --on-night-soft: #94A3B8;
+    --blue: #2563EB;
+    --blue-deep: #1D4ED8;
+    --blue-light: #60A5FA;
+    --scan: #7EE0FF;
+    --pdf: #EF4444;
+    --amber: #F59E0B;
+
+    --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-body: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    /* Curvas: ease-out fuerte para entradas, ease-in-out para movimiento en pantalla */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+    --gutter: clamp(16px, 4vw, 40px);
+    --max: 1200px;
+    --radius: 24px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--blue-light); outline-offset: 3px; border-radius: 8px; }
+
+  .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .eyebrow {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--blue);
+  }
+  h1, h2, h3 { font-family: var(--font-display); margin: 0; letter-spacing: -0.025em; line-height: 1.02; }
+  h2 { font-size: clamp(36px, 5.4vw, 64px); font-weight: 700; }
+  h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.15; }
+  p { margin: 0; }
+
+  /* ── Botones ─────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    height: 52px; padding: 0 22px; border-radius: 999px; border: 0; cursor: pointer;
+    font-weight: 600; font-size: 15px; white-space: nowrap;
+    transition: transform 160ms var(--ease-out), background-color 200ms ease, box-shadow 200ms ease;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 8px 24px -8px rgba(37,99,235,.7); }
+  .btn-light { background: #fff; color: var(--night); }
+  .btn-ghost { background: rgba(255,255,255,.06); color: var(--on-night); box-shadow: 0 0 0 1px rgba(255,255,255,.14) inset; }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover { background: var(--blue-deep); }
+    .btn-light:hover { background: #E7EAF3; }
+    .btn-ghost:hover { background: rgba(255,255,255,.11); }
+  }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .play-btn { height: 56px; padding: 0 22px 0 18px; }
+  .play-btn small { display: block; font-size: 11px; font-weight: 500; opacity: .7; line-height: 1.1; }
+  .play-btn span { display: block; font-size: 17px; line-height: 1.15; }
+
+  /* ── Navegación ──────────────────────────────────── */
+  .nav {
+    position: fixed; z-index: 50; top: 14px; left: 50%; transform: translateX(-50%);
+    width: calc(100% - 2 * var(--gutter)); max-width: 1080px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    height: 60px; padding: 0 10px 0 16px; border-radius: 999px;
+    background: rgba(11, 16, 32, .55); color: var(--on-night);
+    backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset;
+    transition: background-color 300ms ease, box-shadow 300ms ease, color 300ms ease;
+  }
+  .nav.is-light { background: rgba(247,247,245,.78); color: var(--ink); box-shadow: 0 0 0 1px rgba(28,27,26,.08) inset, 0 8px 30px -12px rgba(28,27,26,.25); }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 19px; letter-spacing: -0.02em; }
+  .brand img { width: 32px; height: 32px; border-radius: 9px; }
+  .nav-links { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  .nav-links a { display: block; padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; opacity: .78; transition: opacity 150ms ease, background-color 150ms ease; }
+  @media (hover: hover) and (pointer: fine) { .nav-links a:hover { opacity: 1; background: rgba(127,127,127,.12); } }
+  .nav .btn { height: 42px; padding: 0 18px; font-size: 14px; }
+  /* Selector de idioma: enlaces a la portada en cada idioma, sin JavaScript. */
+  .lang-menu { position: relative; border-bottom: 0; }
+  .lang-menu summary { list-style: none; display: flex; align-items: center; gap: 6px; height: 42px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; opacity: .85; }
+  .lang-menu summary::-webkit-details-marker { display: none; }
+  .lang-menu[open] summary, .lang-menu summary:focus-visible { opacity: 1; background: rgba(127,127,127,.14); }
+  .lang-menu ul { position: absolute; right: 0; top: calc(100% + 8px); min-width: 170px; margin: 0; padding: 6px; list-style: none; border-radius: 16px; background: var(--card); color: var(--ink); box-shadow: 0 0 0 1px var(--line), 0 20px 40px -16px rgba(11,16,32,.35); }
+  .lang-menu a { display: block; padding: 8px 12px; border-radius: 10px; font-size: 14px; }
+  .lang-menu a[aria-current] { font-weight: 700; color: var(--blue); }
+  @media (hover: hover) and (pointer: fine) { .lang-menu a:hover { background: var(--paper-2); } }
+  .menu-toggle { display: none; width: 42px; height: 42px; border-radius: 999px; border: 0; background: rgba(127,127,127,.14); cursor: pointer; place-items: center; }
+  .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after { display: block; width: 16px; height: 1.5px; background: currentColor; border-radius: 2px; position: relative; transition: transform 250ms var(--ease-out), opacity 150ms ease; }
+  .menu-toggle span::before, .menu-toggle span::after { content: ""; position: absolute; left: 0; }
+  .menu-toggle span::before { top: -5px; }
+  .menu-toggle span::after { top: 5px; }
+  .nav.is-open .menu-toggle span { background: transparent; }
+  .nav.is-open .menu-toggle span::before { transform: translateY(5px) rotate(45deg); }
+  .nav.is-open .menu-toggle span::after { transform: translateY(-5px) rotate(-45deg); }
+
+  @media (max-width: 860px) {
+    .nav-links {
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0; flex-direction: column; gap: 2px;
+      padding: 10px; border-radius: 22px; background: var(--night-2); color: var(--on-night);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 24px 48px -16px rgba(0,0,0,.5);
+      opacity: 0; transform: translateY(-6px) scale(.98); transform-origin: top center; pointer-events: none;
+      transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+    }
+    .nav-links a { padding: 14px 16px; font-size: 16px; opacity: .9; }
+    .nav.is-open .nav-links { opacity: 1; transform: none; pointer-events: auto; }
+    .menu-toggle { display: grid; }
+    .nav .nav-cta { display: none; }
+  }
+
+  /* ── Hero ────────────────────────────────────────── */
+  .hero {
+    position: relative; overflow: hidden; isolation: isolate;
+    background: var(--night); color: var(--on-night);
+    padding: 132px 0 0;
+  }
+  .hero-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55; will-change: transform; }
+  .glow-a { width: 620px; height: 620px; left: -160px; top: -200px; background: #1E40AF; animation: drift-a 22s var(--ease-in-out) infinite alternate; }
+  .glow-b { width: 520px; height: 520px; right: -120px; top: 120px; background: #0E7490; opacity: .35; animation: drift-b 26s var(--ease-in-out) infinite alternate; }
+  .glow-c { width: 420px; height: 420px; left: 40%; bottom: -160px; background: var(--blue); opacity: .3; animation: drift-a 30s var(--ease-in-out) infinite alternate-reverse; }
+  @keyframes drift-a { to { transform: translate3d(80px, 60px, 0) scale(1.1); } }
+  @keyframes drift-b { to { transform: translate3d(-90px, -40px, 0) scale(.92); } }
+  .grid-lines {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 75%);
+  }
+  .hero-inner { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border-radius: 999px;
+    background: rgba(255,255,255,.06); box-shadow: 0 0 0 1px rgba(255,255,255,.1) inset;
+    font-size: 13px; font-weight: 500; color: var(--on-night-soft);
+  }
+  .pill b { padding: 3px 10px; border-radius: 999px; background: rgba(126,224,255,.14); color: var(--scan); font-weight: 600; font-size: 12px; }
+  .hero h1 {
+    margin-top: 26px; font-size: clamp(46px, 6.6vw, 92px); font-weight: 800; letter-spacing: -0.04em; line-height: .95;
+    color: #fff;
+  }
+  .hero h1 .word { display: inline-block; }
+  .hero h1 em { font-style: normal; color: transparent; background: linear-gradient(90deg, var(--blue-light), var(--scan)); -webkit-background-clip: text; background-clip: text; }
+  .hero-lead { margin-top: 24px; max-width: 520px; font-size: clamp(17px, 1.6vw, 19px); color: var(--on-night-soft); }
+  .hero-actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero-meta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; color: var(--on-night-soft); }
+  .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
+  .hero-meta svg { width: 16px; height: 16px; color: var(--scan); }
+
+  /* Teléfono */
+  .phone-stage { position: relative; display: flex; justify-content: center; padding: 20px 0 40px; }
+  .phone {
+    position: relative; width: min(300px, 72vw); aspect-ratio: 540 / 1087;
+    border-radius: 44px; padding: 10px; background: #1a2036;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset, 0 0 0 1px rgba(0,0,0,.6), 0 50px 100px -30px rgba(37,99,235,.55), 0 30px 60px -30px rgba(0,0,0,.8);
+  }
+  .phone-screen { position: relative; height: 100%; border-radius: 35px; overflow: hidden; background: #EFF4FB; }
+  .phone-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .phone::before { content: ""; position: absolute; top: 20px; left: 50%; width: 22px; height: 22px; margin-left: -11px; border-radius: 50%; background: #05070d; z-index: 2; box-shadow: 0 0 0 2px #1a2036; }
+  /* Línea de escaneo: el motivo del ícono de la app */
+  .scanline {
+    position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 3;
+    background: var(--scan); box-shadow: 0 0 18px 4px rgba(126,224,255,.55);
+    animation: scan 4.8s var(--ease-in-out) infinite;
+  }
+  .scanline::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 3px; height: 90px;
+    background: linear-gradient(to top, rgba(126,224,255,.22), transparent);
+  }
+  @keyframes scan {
+    0% { transform: translateY(0); opacity: 0; }
+    8% { opacity: 1; }
+    50% { transform: translateY(var(--scan-h, 560px)); opacity: 1; }
+    58% { opacity: 0; }
+    100% { transform: translateY(var(--scan-h, 560px)); opacity: 0; }
+  }
+  .corner { position: absolute; width: 38px; height: 38px; border: 3px solid rgba(255,255,255,.85); z-index: 4; }
+  .corner.tl { top: -14px; left: -14px; border-right: 0; border-bottom: 0; border-radius: 14px 0 0 0; }
+  .corner.tr { top: -14px; right: -14px; border-left: 0; border-bottom: 0; border-radius: 0 14px 0 0; }
+  .corner.bl { bottom: -14px; left: -14px; border-right: 0; border-top: 0; border-radius: 0 0 0 14px; }
+  .corner.br { bottom: -14px; right: -14px; border-left: 0; border-top: 0; border-radius: 0 0 14px 0; }
+  .float-chip {
+    position: absolute; z-index: 5; display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px 10px 10px; border-radius: 16px; font-size: 13px; font-weight: 600; color: var(--ink);
+    background: rgba(255,255,255,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 20px 40px -16px rgba(0,0,0,.55);
+    animation: bob 6s ease-in-out infinite;
+  }
+  .float-chip small { display: block; font-weight: 500; color: var(--ink-faint); font-size: 11px; line-height: 1.2; }
+  .float-chip .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+  .float-chip .ico svg { width: 18px; height: 18px; }
+  .chip-a { left: max(-4%, -30px); top: 22%; }
+  .chip-b { right: max(-6%, -40px); top: 58%; animation-delay: -3s; }
+  @keyframes bob { 50% { transform: translateY(-10px); } }
+
+  .wordmark {
+    margin-top: 40px; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.06em;
+    font-size: clamp(56px, 20vw, 300px); line-height: .78; text-align: center; white-space: nowrap;
+    color: transparent; background: linear-gradient(180deg, rgba(231,234,243,.16), rgba(231,234,243,0) 85%);
+    -webkit-background-clip: text; background-clip: text;
+    margin-bottom: -0.12em; user-select: none;
+  }
+
+  @media (max-width: 960px) {
+    .hero { padding-top: 112px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 24px; }
+    .hero-copy { text-align: left; }
+    .phone-stage { padding-top: 32px; }
+    .chip-a { left: 0; }
+    .chip-b { right: 0; }
+  }
+
+  /* ── Franja de formatos ──────────────────────────── */
+  .formats { background: var(--night); color: var(--on-night-soft); border-top: 1px solid var(--night-line); padding: 22px 0; overflow: hidden; }
+  .marquee { display: flex; width: max-content; animation: marquee 38s linear infinite; }
+  .marquee ul { display: flex; gap: 48px; padding: 0 24px; margin: 0; list-style: none; }
+  .marquee li { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; white-space: nowrap; }
+  .marquee li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--dot, var(--blue-light)); }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* ── Secciones generales ─────────────────────────── */
+  section { position: relative; }
+  .section { padding: clamp(80px, 11vw, 140px) 0; }
+  .section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: end; margin-bottom: 56px; }
+  .section-head p { color: var(--ink-soft); font-size: 18px; max-width: 460px; justify-self: end; }
+  .section-head h2 { margin-top: 14px; }
+  @media (max-width: 860px) {
+    .section-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; }
+    .section-head p { justify-self: start; }
+  }
+
+  /* ── Bento de funciones ──────────────────────────── */
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .tile {
+    position: relative; overflow: hidden; border-radius: var(--radius); background: var(--card);
+    box-shadow: 0 0 0 1px var(--line) inset; padding: 28px; display: flex; flex-direction: column; min-height: 320px;
+  }
+  .tile p { color: var(--ink-soft); margin-top: 10px; font-size: 15px; max-width: 420px; }
+  .tile .tag { display: inline-flex; align-self: flex-start; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--paper-2); color: var(--ink-soft); margin-bottom: 18px; }
+  .t-scan { grid-column: span 4; background: var(--night); color: var(--on-night); box-shadow: none; min-height: 420px; }
+  .t-scan p { color: var(--on-night-soft); }
+  .t-scan > h3, .t-scan > p { max-width: min(46%, 380px); }
+  .t-scan .tag { background: rgba(126,224,255,.12); color: var(--scan); }
+  .t-conv { grid-column: span 2; }
+  .t-pdf { grid-column: span 3; }
+  .t-safe { grid-column: span 3; }
+  .t-study { grid-column: span 2; }
+  .t-qr { grid-column: span 2; }
+  .t-lang { grid-column: span 2; background: var(--blue); color: #fff; box-shadow: none; }
+  .t-lang p { color: rgba(255,255,255,.8); }
+  .t-lang .tag { background: rgba(255,255,255,.16); color: #fff; }
+  .tile-visual { margin-top: auto; padding-top: 28px; }
+
+  /* Escáner */
+  .scan-visual { position: absolute; right: 7%; bottom: -40px; width: min(260px, 36%); aspect-ratio: 3/4; }
+  .scan-doc { position: absolute; inset: 0; border-radius: 16px; background: #fff; padding: 28px 24px; transform: rotate(-4deg); box-shadow: 0 30px 60px -20px rgba(0,0,0,.6); }
+  .scan-doc i { display: block; height: 8px; border-radius: 4px; background: #C9D6FF; margin-bottom: 14px; }
+  .scan-doc i:nth-child(1) { width: 60%; height: 12px; background: #94A3B8; margin-bottom: 22px; }
+  .scan-doc i:nth-child(3) { width: 85%; }
+  .scan-doc i:nth-child(5) { width: 70%; }
+  .scan-doc i:nth-child(7) { width: 40%; }
+  .scan-frame { position: absolute; inset: -18px; }
+  .scan-frame .corner { border-color: var(--scan); width: 34px; height: 34px; top: auto; left: auto; right: auto; bottom: auto; }
+  .scan-frame .tl { top: 0; left: 0; } .scan-frame .tr { top: 0; right: 0; } .scan-frame .bl { bottom: 0; left: 0; } .scan-frame .br { bottom: 0; right: 0; }
+  .scan-frame .scanline { --scan-h: 360px; left: 10px; right: 10px; animation-duration: 3.6s; }
+  @media (max-width: 860px) {
+    .t-scan { min-height: 560px; }
+    .t-scan > h3, .t-scan > p { max-width: none; }
+    .scan-visual { right: 50%; transform: translateX(50%); width: 220px; bottom: -30px; }
+    .scan-frame .scanline { --scan-h: 310px; }
+  }
+
+  /* Convertidor */
+  .conv-list { display: grid; gap: 8px; }
+  .conv-row { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; padding: 10px 12px; border-radius: 14px; background: var(--paper); }
+  .fmt { display: inline-grid; place-items: center; min-width: 52px; height: 28px; padding: 0 8px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: #fff; }
+  .conv-row .arrow { color: var(--ink-faint); }
+  .conv-count { font-family: var(--font-display); font-weight: 800; font-size: 76px; line-height: .9; letter-spacing: -0.05em; color: var(--blue); }
+
+  /* Herramientas PDF */
+  .t-pdf { padding-right: 0; flex-direction: row; gap: 20px; }
+  .t-pdf .copy { flex: 1; display: flex; flex-direction: column; padding-right: 4px; min-width: 0; }
+  .web-tools { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+  .web-tools a { display: block; height: 100%; padding: 20px; border-radius: 20px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; text-decoration: none; transition: transform 200ms var(--ease-out), box-shadow 200ms ease; }
+  .web-tools b { display: block; font-family: var(--font-display); font-size: 19px; letter-spacing: -0.015em; }
+  .web-tools span { display: block; margin-top: 4px; font-size: 14px; color: var(--ink-faint); }
+  @media (hover: hover) and (pointer: fine) { .web-tools a:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--line) inset, 0 14px 30px -18px rgba(28,27,26,.35); } }
+  @media (max-width: 960px) { .web-tools { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 420px) { .web-tools { grid-template-columns: 1fr; } }
+  .tool-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 24px; }
+  .tool-chips span { padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; }
+  .mini-phone { flex: none; width: 170px; align-self: flex-end; margin-bottom: -60px; border-radius: 26px 0 0 0; padding: 7px 0 0 7px; background: #1a2036; }
+  .mini-phone img { border-radius: 20px 0 0 0; width: 100%; height: auto; aspect-ratio: 540 / 720; object-fit: cover; object-position: top; }
+  @media (max-width: 560px) {
+    .t-pdf { flex-direction: column; padding-right: 28px; }
+    .mini-phone { align-self: center; width: 200px; border-radius: 26px 26px 0 0; padding: 7px 7px 0; margin-bottom: -28px; }
+    .mini-phone img { border-radius: 20px 20px 0 0; }
+  }
+
+  /* Seguridad */
+  .pin { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 24px; border-radius: 20px; background: var(--paper); }
+  .pin-lock { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: #FEF3C7; color: #B45309; }
+  .pin-lock svg { width: 24px; height: 24px; }
+  .pin-dots { display: flex; gap: 14px; }
+  .pin-dots i { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 2px var(--ink-faint) inset; animation: pin-fill 4s var(--ease-out) infinite; }
+  .pin-dots i:nth-child(2) { animation-delay: .35s; }
+  .pin-dots i:nth-child(3) { animation-delay: .7s; }
+  .pin-dots i:nth-child(4) { animation-delay: 1.05s; }
+  @keyframes pin-fill {
+    0%, 6% { background: transparent; box-shadow: 0 0 0 2px var(--ink-faint) inset; transform: scale(1); }
+    10% { transform: scale(1.18); }
+    14%, 80% { background: var(--blue); box-shadow: 0 0 0 2px var(--blue) inset; transform: scale(1); }
+    90%, 100% { background: transparent; box-shadow: 0 0 0 2px var(--ink-faint) inset; }
+  }
+  .safe-points { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .safe-points div { padding: 14px; border-radius: 16px; box-shadow: 0 0 0 1px var(--line) inset; font-size: 14px; color: var(--ink-soft); }
+  .safe-points b { display: block; color: var(--ink); font-size: 15px; }
+
+  /* Estudio */
+  .timer { position: relative; width: 150px; height: 150px; margin: 0 auto; }
+  .timer svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .timer circle { fill: none; stroke-width: 10; }
+  .timer .track { stroke: var(--paper-2); }
+  .timer .prog { stroke: var(--amber); stroke-linecap: round; stroke-dasharray: 408; stroke-dashoffset: 408; }
+  .tile.is-in .timer .prog { animation: ring 9s linear infinite; }
+  @keyframes ring { to { stroke-dashoffset: 0; } }
+  .timer b { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-size: 34px; letter-spacing: -0.03em; }
+
+  /* QR */
+  .qr { width: 132px; height: 132px; margin: 0 auto; display: grid; grid-template-columns: repeat(11, 1fr); gap: 2px; padding: 10px; border-radius: 18px; background: var(--paper); }
+  .qr i { border-radius: 2px; background: var(--ink); }
+  .qr i.o { background: transparent; }
+
+  /* Idiomas */
+  .langs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .langs span { padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.14); font-size: 13px; font-weight: 600; }
+  .lang-big { font-family: var(--font-display); font-weight: 800; font-size: 76px; line-height: .9; letter-spacing: -0.05em; }
+
+  @media (max-width: 960px) {
+    .bento { grid-template-columns: repeat(2, 1fr); }
+    .t-scan, .t-pdf, .t-safe { grid-column: span 2; }
+    .t-conv, .t-study, .t-qr, .t-lang { grid-column: span 1; }
+  }
+  @media (max-width: 560px) {
+    .bento { grid-template-columns: 1fr; }
+    .tile, .t-scan, .t-pdf, .t-safe, .t-conv, .t-study, .t-qr, .t-lang { grid-column: auto; min-height: 0; }
+    .tile { padding: 24px; }
+    .t-scan { min-height: 560px; }
+  }
+
+  /* ── Privacidad ──────────────────────────────────── */
+  .privacy { background: var(--night); color: var(--on-night); overflow: hidden; }
+  .privacy .eyebrow { color: var(--scan); }
+  .privacy-statement { font-family: var(--font-display); font-weight: 700; font-size: clamp(38px, 6.4vw, 84px); line-height: 1; letter-spacing: -0.035em; max-width: 14ch; margin-top: 18px; }
+  .privacy-statement span { color: var(--on-night-soft); }
+  .privacy-grid { margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--night-line); }
+  .privacy-grid > div { padding: 28px 28px 0 0; }
+  .privacy-grid > div + div { padding-left: 28px; border-left: 1px solid var(--night-line); }
+  .privacy-grid .num { font-family: var(--font-display); font-weight: 700; color: var(--scan); font-size: 14px; letter-spacing: .04em; }
+  .privacy-grid h3 { margin-top: 12px; color: #fff; }
+  .privacy-grid p { margin-top: 10px; color: var(--on-night-soft); font-size: 15px; }
+  .privacy-glow { position: absolute; right: -200px; top: -120px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(37,99,235,.35), transparent 65%); pointer-events: none; }
+  @media (max-width: 760px) {
+    .privacy-grid { grid-template-columns: 1fr; margin-top: 40px; }
+    .privacy-grid > div, .privacy-grid > div + div { padding: 24px 0; border-left: 0; }
+    .privacy-grid > div + div { border-top: 1px solid var(--night-line); }
+  }
+
+  /* ── Planes ──────────────────────────────────────── */
+  .plans { display: grid; grid-template-columns: 1fr 1.15fr; gap: 16px; align-items: stretch; }
+  .plan { border-radius: 28px; padding: 36px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; display: flex; flex-direction: column; }
+  .plan-name { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+  .plan-price { margin-top: 8px; color: var(--ink-soft); }
+  .plan ul { list-style: none; padding: 0; margin: 28px 0 32px; display: grid; gap: 14px; }
+  .plan li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; }
+  .plan li svg { width: 20px; height: 20px; flex: none; margin-top: 2px; color: var(--blue); }
+  .plan li.muted { color: var(--ink-faint); }
+  .plan li.muted svg { color: var(--ink-faint); }
+  .plan .btn { margin-top: auto; align-self: flex-start; }
+  .plan-premium { background: var(--night); color: var(--on-night); box-shadow: none; position: relative; overflow: hidden; }
+  .plan-premium .plan-price { color: var(--on-night-soft); }
+  .plan-premium li svg { color: var(--scan); }
+  .plan-premium::before { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 80% at 100% 0%, rgba(37,99,235,.45), transparent 60%); pointer-events: none; }
+  .plan-premium > * { position: relative; }
+  .trial-badge { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; margin-bottom: 18px; padding: 6px 12px; border-radius: 999px; background: rgba(251,191,36,.14); color: #FBBF24; font-size: 13px; font-weight: 600; }
+  .plan-note { margin-top: 18px; font-size: 13px; color: var(--ink-faint); }
+  @media (max-width: 860px) { .plans { grid-template-columns: 1fr; } .plan { padding: 28px; } }
+
+  /* ── Preguntas ───────────────────────────────────── */
+  .faq { display: grid; grid-template-columns: .8fr 1.2fr; gap: 48px; }
+  .faq-list { border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; font-weight: 600; font-size: 18px; }
+  summary::-webkit-details-marker { display: none; }
+  summary .plus { position: relative; width: 28px; height: 28px; flex: none; border-radius: 50%; background: var(--paper-2); transition: transform 250ms var(--ease-out), background-color 200ms ease; }
+  summary .plus::before, summary .plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 1.5px; margin: -.75px 0 0 -5.5px; background: var(--ink); border-radius: 2px; }
+  summary .plus::after { transform: rotate(90deg); }
+  details[open] summary .plus { transform: rotate(45deg); background: var(--blue); }
+  details[open] summary .plus::before, details[open] summary .plus::after { background: #fff; }
+  .answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 300ms var(--ease-out); }
+  details[open] .answer { grid-template-rows: 1fr; }
+  .answer > div { overflow: hidden; }
+  .answer p { padding: 0 48px 24px 0; color: var(--ink-soft); }
+  @media (max-width: 860px) { .faq { grid-template-columns: 1fr; gap: 24px; } summary { font-size: 17px; } .answer p { padding-right: 0; } }
+
+  /* ── CTA final + pie ─────────────────────────────── */
+  .cta { padding: 0 0 clamp(80px, 10vw, 120px); }
+  .cta-card {
+    position: relative; overflow: hidden; isolation: isolate; border-radius: 36px; background: var(--blue); color: #fff;
+    padding: clamp(40px, 7vw, 88px); display: grid; grid-template-columns: 1.3fr .7fr; gap: 32px; align-items: end;
+  }
+  .cta-card h2 { font-size: clamp(40px, 6vw, 76px); letter-spacing: -0.04em; }
+  .cta-card p { margin-top: 18px; color: rgba(255,255,255,.82); font-size: 18px; max-width: 460px; }
+  .cta-card .actions { display: flex; justify-content: flex-end; }
+  .cta-card::before { content: ""; position: absolute; z-index: -1; inset: 0; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 48px 48px; mask-image: linear-gradient(120deg, transparent 30%, #000); -webkit-mask-image: linear-gradient(120deg, transparent 30%, #000); }
+  .cta-card .cta-icon { position: absolute; z-index: -1; right: -60px; top: -60px; width: 300px; opacity: .14; transform: rotate(12deg); }
+  @media (max-width: 760px) { .cta-card { grid-template-columns: 1fr; } .cta-card .actions { justify-content: flex-start; } }
+
+  footer { border-top: 1px solid var(--line); padding: 40px 0 48px; color: var(--ink-faint); font-size: 14px; }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; }
+  .foot nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .foot-link { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+  @media (hover: hover) and (pointer: fine) { .foot nav a:hover, .foot-link:hover { color: var(--ink); } }
+  .foot .brand { color: var(--ink); font-size: 17px; }
+  .foot .brand img { width: 28px; height: 28px; }
+
+  /* ── Animaciones de entrada ──────────────────────── */
+  .js .reveal { opacity: 0; transform: translateY(16px); filter: blur(6px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out), filter 700ms var(--ease-out); transition-delay: var(--d, 0ms); }
+  .js .reveal.is-in { opacity: 1; transform: none; filter: none; }
+  .js .hero h1 .word { opacity: 0; transform: translateY(24px); filter: blur(8px); animation: word-in 800ms var(--ease-out) forwards; animation-delay: calc(120ms + var(--i) * 70ms); }
+  @keyframes word-in { to { opacity: 1; transform: none; filter: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    .scanline { display: none; }
+    .js .reveal, .js .hero h1 .word { opacity: 1; transform: none; filter: none; }
+    .timer .prog { stroke-dashoffset: 120; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="DocuSmart ホーム">
+    <img src="/img/icon.svg" alt="" width="32" height="32">
+    DocuSmart
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#funciones">機能</a></li>
+    <li><a href="#privacidad">プライバシー</a></li>
+    <li><a href="#planes">プラン</a></li>
+    <li><a href="#preguntas">よくある質問</a></li>
+    <li><a href="#herramientas">ツール</a></li>
+    <li><a href="/app/" data-track="web_app_nav">Webで使う</a></li>
+  </ul>
+  <!-- langs:start -->
+  <details class="lang-menu">
+    <summary aria-label="言語: 日本語"><span aria-hidden="true">🌐</span> JA</summary>
+    <ul>
+      <li><a href="/" hreflang="es" lang="es" data-set-lang="es">Español</a></li>
+      <li><a href="/en/" hreflang="en" lang="en" data-set-lang="en">English</a></li>
+      <li><a href="/pt/" hreflang="pt" lang="pt" data-set-lang="pt">Português</a></li>
+      <li><a href="/fr/" hreflang="fr" lang="fr" data-set-lang="fr">Français</a></li>
+      <li><a href="/it/" hreflang="it" lang="it" data-set-lang="it">Italiano</a></li>
+      <li><a href="/de/" hreflang="de" lang="de" data-set-lang="de">Deutsch</a></li>
+      <li><a href="/ca/" hreflang="ca" lang="ca" data-set-lang="ca">Català</a></li>
+      <li><a href="/eu/" hreflang="eu" lang="eu" data-set-lang="eu">Euskara</a></li>
+      <li><a href="/ru/" hreflang="ru" lang="ru" data-set-lang="ru">Русский</a></li>
+      <li><a href="/ja/" hreflang="ja" lang="ja" data-set-lang="ja" aria-current="page">日本語</a></li>
+      <li><a href="/ko/" hreflang="ko" lang="ko" data-set-lang="ko">한국어</a></li>
+      <li><a href="/zh/" hreflang="zh" lang="zh" data-set-lang="zh">中文</a></li>
+    </ul>
+  </details>
+<!-- langs:end -->
+  <a class="btn btn-primary nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_1">ダウンロード</a>
+  <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開く" data-open-label="メニューを開く" data-close-label="メニューを閉じる" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+</header>
+
+<main id="top">
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="glow glow-a"></div>
+      <div class="glow glow-b"></div>
+      <div class="glow glow-c"></div>
+      <div class="grid-lines"></div>
+    </div>
+
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <span class="pill reveal"><b>Android</b> スキャン・変換・保護</span>
+        <h1 aria-label="あなたの書類を、ひとつの場所に。">
+          <span class="word" style="--i:0">あなたの書類を、</span>
+          <span class="word" style="--i:1"><em>ひとつの場所に。</em></span>
+        </h1>
+        <p class="hero-lead reveal" style="--d:420ms">PDF、Word、Excel、PowerPoint、画像をスマホで開いて、変換して、整理。ファイルはその場で処理され、どのサーバーにもアップロードされません。</p>
+        <div class="hero-actions reveal" style="--d:520ms">
+          <a class="btn btn-light play-btn" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_2">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#2563EB" d="M3.6 2.2a1.3 1.3 0 0 0-.6 1.1v17.4c0 .5.2.9.6 1.1l9.7-9.8z"/><path fill="#22C55E" d="m16.6 8.7-3.3 3.3-9.7-9.8c.3-.2.8-.2 1.2 0z"/><path fill="#EF4444" d="m16.6 15.3-11.8 6.5c-.4.2-.9.2-1.2 0l9.7-9.8z"/><path fill="#FBBF24" d="m20.4 10.8-3.8-2.1-3.3 3.3 3.3 3.3 3.8-2.1c.9-.5.9-1.9 0-2.4"/></svg>
+            <div><small>ダウンロード</small><span>Google Play</span></div>
+          </a>
+          <a class="btn btn-ghost" href="/app/" data-track="web_app_hero">ブラウザで試す</a>
+        </div>
+        <div class="hero-meta reveal" style="--d:620ms">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>アカウント不要</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Premiumが3日間無料</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>12言語</span>
+        </div>
+      </div>
+
+      <div class="phone-stage reveal" style="--d:300ms">
+        <div class="phone" id="hero-phone">
+          <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+          <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+          <div class="phone-screen">
+            <div class="scanline" aria-hidden="true"></div>
+            <img src="/img/screen-home.webp" width="540" height="1087" alt="スキャン、画像をPDFに、セキュリティ、読み上げ、メモ、ポモドーロ、QRへのショートカットがあるDocuSmartのホーム画面">
+          </div>
+        </div>
+        <div class="float-chip chip-a" aria-hidden="true">
+          <span class="ico" style="background:#FEE2E2;color:#EF4444"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span>
+          <div>PDF → Word<small>スマホの中で変換</small></div>
+        </div>
+        <div class="float-chip chip-b" aria-hidden="true">
+          <span class="ico" style="background:#FEF3C7;color:#B45309"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          <div>安全なフォルダー<small>PINで保護</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wordmark" aria-hidden="true">DocuSmart</div>
+  </section>
+
+  <!-- ── Formatos ── -->
+  <div class="formats" aria-label="対応形式">
+    <div class="marquee">
+      <ul>
+        <li style="--dot:#EF4444">PDF</li><li style="--dot:#60A5FA">Word</li><li style="--dot:#22C55E">Excel</li><li style="--dot:#F97316">PowerPoint</li><li style="--dot:#8B5CF6">JPG</li><li style="--dot:#8B5CF6">PNG</li><li style="--dot:#8B5CF6">WebP</li><li style="--dot:#8B5CF6">BMP</li><li style="--dot:#94A3B8">TXT</li><li style="--dot:#22C55E">CSV</li><li style="--dot:#06B6D4">HTML</li><li style="--dot:#7EE0FF">QR</li>
+      </ul>
+      <ul aria-hidden="true">
+        <li style="--dot:#EF4444">PDF</li><li style="--dot:#60A5FA">Word</li><li style="--dot:#22C55E">Excel</li><li style="--dot:#F97316">PowerPoint</li><li style="--dot:#8B5CF6">JPG</li><li style="--dot:#8B5CF6">PNG</li><li style="--dot:#8B5CF6">WebP</li><li style="--dot:#8B5CF6">BMP</li><li style="--dot:#94A3B8">TXT</li><li style="--dot:#22C55E">CSV</li><li style="--dot:#06B6D4">HTML</li><li style="--dot:#7EE0FF">QR</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── Funciones ── -->
+  <section class="section" id="funciones">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="reveal">
+          <span class="eyebrow">機能</span>
+          <h2>書類まわりのことが、すべてポケットに。</h2>
+        </div>
+        <p class="reveal" style="--d:100ms">請求書のスキャンから手続き用PDFの結合まで。ふつうなら5つのアプリで探すツールを、DocuSmartがひとつにまとめました。</p>
+      </div>
+
+      <div class="bento">
+        <article class="tile t-scan reveal">
+          <span class="tag">スキャナー</span>
+          <h3 style="font-size:clamp(26px,3vw,36px);max-width:12ch">カメラでスキャンして、必要な部分だけを切り取る。</h3>
+          <p>書類の端を自動で検出し、PDFまたは画像として保存。すぐに共有できます。</p>
+          <div class="scan-visual" aria-hidden="true">
+            <div class="scan-doc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="scan-frame">
+              <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+              <div class="scanline"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="tile t-conv reveal" style="--d:80ms">
+          <span class="tag">変換</span>
+          <div class="conv-count">17</div>
+          <h3 style="margin-top:6px">種類の変換</h3>
+          <div class="tile-visual conv-list" aria-label="変換の例">
+            <div class="conv-row"><span class="fmt" style="background:#EF4444">PDF</span><span class="arrow">→</span><span class="fmt" style="background:#2563EB">WORD</span></div>
+            <div class="conv-row"><span class="fmt" style="background:#16A34A">EXCEL</span><span class="arrow">→</span><span class="fmt" style="background:#EF4444">PDF</span></div>
+            <div class="conv-row"><span class="fmt" style="background:#8B5CF6">IMG</span><span class="arrow">→</span><span class="fmt" style="background:#EF4444">PDF</span></div>
+          </div>
+        </article>
+
+        <article class="tile t-pdf reveal">
+          <div class="copy">
+            <span class="tag">PDFツール</span>
+            <h3>パソコンを開かずに、結合・分割・圧縮。</h3>
+            <p>手続き用にファイルを1つにまとめたり、必要なページだけを取り出したり、メールで送れるよう軽くしたり。</p>
+            <div class="tool-chips">
+              <span>結合</span><span>分割</span><span>圧縮</span><span>回転</span><span>並べ替え</span><span>ページ番号</span><span>透かし</span><span>パスワード</span>
+            </div>
+          </div>
+          <div class="mini-phone" aria-hidden="true">
+            <img src="/img/screen-merge.webp" width="540" height="1087" alt="" loading="lazy">
+          </div>
+        </article>
+
+        <article class="tile t-safe reveal" style="--d:80ms">
+          <span class="tag">セキュリティ</span>
+          <h3>ほかの人に見られたくないものは、安全なフォルダーへ。</h3>
+          <p>大切なファイルをPINでロックした場所に移し、パスワードで暗号化したQRコードも作れます。</p>
+          <div class="tile-visual">
+            <div class="pin" aria-hidden="true">
+              <span class="pin-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+              <div class="pin-dots"><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="safe-points">
+              <div><b>PIN</b>フォルダーのロック</div>
+              <div><b>AES-256</b>保護付きQRの暗号化</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="tile t-study reveal">
+          <span class="tag">学習モード</span>
+          <h3>読み上げ、メモ、そして集中。</h3>
+          <div class="tile-visual">
+            <div class="timer" aria-hidden="true">
+              <svg viewBox="0 0 150 150"><circle class="track" cx="75" cy="75" r="65"/><circle class="prog" cx="75" cy="75" r="65"/></svg>
+              <b>25:00</b>
+            </div>
+            <p style="text-align:center;margin:14px auto 0">ポモドーロタイマー付き</p>
+          </div>
+        </article>
+
+        <article class="tile t-qr reveal" style="--d:80ms">
+          <span class="tag">QRコード</span>
+          <h3>QRの読み取りと作成。保護付きにも対応。</h3>
+          <div class="tile-visual"><div class="qr" id="qr" aria-hidden="true"></div></div>
+        </article>
+
+        <article class="tile t-lang reveal" style="--d:160ms">
+          <span class="tag">言語</span>
+          <div class="lang-big">12</div>
+          <h3 style="margin-top:6px">言語に対応、スマホの言語に合わせます。</h3>
+          <div class="tile-visual langs">
+            <span>Español</span><span>English</span><span>Português</span><span>Deutsch</span><span>Français</span><span>Italiano</span><span>Català</span><span>Euskara</span><span>Русский</span><span>日本語</span><span>한국어</span><span>中文</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Privacidad ── -->
+  <section class="section privacy" id="privacidad">
+    <div class="privacy-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow reveal">プライバシー</span>
+      <p class="privacy-statement reveal" style="--d:80ms">書類はスマホの外に出ません。<span>それだけです。</span></p>
+      <div class="privacy-grid">
+        <div class="reveal">
+          <span class="num">01</span>
+          <h3>端末内で処理</h3>
+          <p>変換、スキャン、PDFツールはすべて端末上で動きます。処理のためにファイルをクラウドへアップロードすることはありません。</p>
+        </div>
+        <div class="reveal" style="--d:80ms">
+          <span class="num">02</span>
+          <h3>アカウント不要</h3>
+          <p>アプリを開けばすぐに使えます。DocuSmartの利用に、メールアドレスもパスワードも登録も不要です。</p>
+        </div>
+        <div class="reveal" style="--d:160ms">
+          <span class="num">03</span>
+          <h3>鍵をかけて</h3>
+          <p>いちばん大切なものはPINで守るフォルダーへ。保護付きQRはAES-256で暗号化されます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Planes ── -->
+  <section class="section" id="planes">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="reveal">
+          <span class="eyebrow">プラン</span>
+          <h2>無料ではじめて、必要なときにPremiumへ。</h2>
+        </div>
+        <p class="reveal" style="--d:100ms">インストールすると、カード登録なしで3日間Premiumのすべてを使えます。その後、無料版を続けるか定期購入するかを選べます。</p>
+      </div>
+
+      <div class="plans">
+        <div class="plan reveal">
+          <div class="plan-name">無料</div>
+          <div class="plan-price">毎日の使い方に</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>書類ビューアーとライブラリ</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>1日5回の変換</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>PDFツールを1日3回</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>1日8件のスキャン保存</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>安全なフォルダー、QR、学習モード</li>
+            <li class="muted"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg>広告あり</li>
+          </ul>
+          <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_3">無料でダウンロード</a>
+        </div>
+
+        <div class="plan plan-premium reveal" style="--d:100ms">
+          <span class="trial-badge">インストール後3日間無料</span>
+          <div class="plan-name">Premium</div>
+          <div class="plan-price">月額または年額 · 価格はGoogle Playで</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>変換とPDFツールが無制限</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>広告なし</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>編集できるPDFからWordへの変換</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>OCR：スキャンしたPDFに検索できる本物の文字</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>高度なPDF圧縮</li>
+          </ul>
+          <a class="btn btn-light" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_4">Premiumを試す</a>
+        </div>
+      </div>
+      <p class="plan-note reveal">定期購入はGoogle Playで管理・解約できます。解約するまで自動更新されます。</p>
+    </div>
+  </section>
+
+  <!-- ── Preguntas ── -->
+  <!-- ── Herramientas web ── -->
+  <section class="section" id="herramientas" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="reveal">
+          <span class="eyebrow">ブラウザで</span>
+          <h2>ファイルをアップロードしない無料ツール。</h2>
+        </div>
+        <p class="reveal" style="--d:100ms">どのパソコンやスマホからも、インストールもアカウント作成もせずに使えます。処理はすべてお使いの端末で行われます。</p>
+      </div>
+      <ul class="web-tools reveal">
+<!-- tools:start -->
+        <li><a href="/ja/merge-pdf"><b>PDFを結合</b><span>複数のPDFを1つに</span></a></li>
+        <li><a href="/ja/split-pdf"><b>PDFを分割</b><span>ページの抽出・分割</span></a></li>
+        <li><a href="/ja/rotate-pdf"><b>PDFを回転</b><span>向きのずれたページを直す</span></a></li>
+        <li><a href="/ja/scan-document"><b>書類をスキャン</b><span>写真 → きれいなPDF</span></a></li>
+        <li><a href="/ja/fill-pdf-form"><b>PDFフォームに入力</b><span>入力可能なPDFに記入</span></a></li>
+        <li><a href="/ja/edit-pdf"><b>PDFを編集</b><span>テキスト・画像・図形</span></a></li>
+        <li><a href="/ja/extract-images-from-pdf"><b>PDFから画像を抽出</b><span>元の画質のまま写真を取り出す</span></a></li>
+        <li><a href="/ja/compare-pdf"><b>PDFを比較</b><span>2つの版の変更点</span></a></li>
+        <li><a href="/ja/redact-pdf"><b>PDFを墨消し</b><span>機密情報を削除</span></a></li>
+        <li><a href="/ja/sign-pdf"><b>PDFに署名</b><span>署名を描くかアップロード</span></a></li>
+        <li><a href="/ja/crop-pdf"><b>PDFをトリミング</b><span>余白の削除・範囲の切り出し</span></a></li>
+        <li><a href="/ja/compress-pdf"><b>PDFを圧縮</b><span>PDFのサイズを小さく</span></a></li>
+        <li><a href="/ja/protect-pdf"><b>PDFにパスワードを設定</b><span>PDFにパスワードをかける</span></a></li>
+        <li><a href="/ja/unlock-pdf"><b>PDFのロック解除</b><span>PDFのパスワードを解除</span></a></li>
+        <li><a href="/ja/repair-pdf"><b>PDFを修復</b><span>開かないPDFを復旧</span></a></li>
+        <li><a href="/ja/pdf-to-pdfa"><b>PDFをPDF/Aに</b><span>長期保存用の形式</span></a></li>
+        <li><a href="/ja/compress-image"><b>画像を圧縮</b><span>写真を軽く</span></a></li>
+        <li><a href="/ja/resize-image"><b>画像のサイズ変更</b><span>写真のサイズを変える</span></a></li>
+        <li><a href="/ja/crop-image"><b>画像をトリミング</b><span>自由、または1:1、4:3、16:9…</span></a></li>
+        <li><a href="/ja/rotate-image"><b>画像の回転と反転</b><span>90°回転・反転</span></a></li>
+        <li><a href="/ja/zip-files"><b>ファイルを圧縮（ZIP・7Z）</b><span>ZIP・7Zを作成</span></a></li>
+        <li><a href="/ja/unzip-files"><b>RAR・ZIP・7Zを展開</b><span>RAR・ZIP・7Zを開く</span></a></li>
+        <li><a href="/ja/ocr-pdf"><b>OCR：文字認識</b><span>スキャンや写真から文字を</span></a></li>
+        <li><a href="/ja/image-to-pdf"><b>画像をPDFに</b><span>写真を1つのPDFに</span></a></li>
+        <li><a href="/ja/pdf-to-jpg"><b>PDFをJPGに</b><span>各ページを画像に</span></a></li>
+        <li><a href="/ja/pdf-to-word"><b>PDFをWordに</b><span>編集できる文書（.docx）</span></a></li>
+        <li><a href="/ja/pdf-to-excel"><b>PDFをExcelに</b><span>表をスプレッドシートに</span></a></li>
+        <li><a href="/ja/word-to-pdf"><b>WordをPDFに</b><span>.docx文書をPDFに</span></a></li>
+        <li><a href="/ja/excel-to-pdf"><b>ExcelをPDFに</b><span>.xlsxシートをPDFに</span></a></li>
+        <li><a href="/ja/pdf-to-text"><b>PDFをテキストに</b><span>PDFから文字を取り出す</span></a></li>
+        <li><a href="/ja/qr-code-generator"><b>QRコードの作成と読み取り</b><span>QRの作成とスキャン</span></a></li>
+<!-- tools:end -->
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="preguntas" style="padding-top:0">
+    <div class="wrap faq">
+      <div class="reveal">
+        <span class="eyebrow">よくある質問</span>
+        <h2 style="margin-top:14px">よくいただく質問です。</h2>
+      </div>
+      <div class="faq-list reveal" style="--d:100ms">
+        <details>
+          <summary>ファイルはサーバーにアップロードされますか？<span class="plus" aria-hidden="true"></span></summary>
+          <div class="answer"><div><p>いいえ。DocuSmartは書類の変換、スキャン、編集をスマホの中で行います。ファイルは端末に残ります。</p></div></div>
+        </details>
+        <details>
+          <summary>インターネット接続は必要ですか？<span class="plus" aria-hidden="true"></span></summary>
+          <div class="answer"><div><p>書類を開く、変換する、編集するには不要です。接続を使うのは、Google PlayでPremiumを購入・復元するときなどだけです。</p></div></div>
+        </details>
+        <details>
+          <summary>Premiumの無料体験には何が含まれますか？<span class="plus" aria-hidden="true"></span></summary>
+          <div class="answer"><div><p>アプリをインストールすると、カード登録なしで3日間Premiumのすべての機能を使えます。終了後は、定期購入しない限り無料版のまま使えます。</p></div></div>
+        </details>
+        <details>
+          <summary>どの形式に変換できますか？<span class="plus" aria-hidden="true"></span></summary>
+          <div class="answer"><div><p>画像からPDF・JPG・PNG・WebP・BMP、PDFから画像・TXT・Word・HTML、WordからPDF・TXT・HTML、ExcelからPDF・CSV・HTML、PowerPointからPDF・TXT。全部で17通りです。</p></div></div>
+        </details>
+        <details>
+          <summary>定期購入を解約するには？<span class="plus" aria-hidden="true"></span></summary>
+          <div class="answer"><div><p>Google Playの「お支払いと定期購入」、またはアプリ内の「設定 → Premium」にある「定期購入を管理」ボタンから解約できます。</p></div></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <img class="cta-icon" src="/img/icon.svg" alt="" aria-hidden="true">
+        <div>
+          <h2>今日から書類を整理しよう。</h2>
+          <p>DocuSmartを無料でダウンロードして、Premiumを3日間お試しください。</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-light play-btn" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_5">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#2563EB" d="M3.6 2.2a1.3 1.3 0 0 0-.6 1.1v17.4c0 .5.2.9.6 1.1l9.7-9.8z"/><path fill="#22C55E" d="m16.6 8.7-3.3 3.3-9.7-9.8c.3-.2.8-.2 1.2 0z"/><path fill="#EF4444" d="m16.6 15.3-11.8 6.5c-.4.2-.9.2-1.2 0l9.7-9.8z"/><path fill="#FBBF24" d="m20.4 10.8-3.8-2.1-3.3 3.3 3.3 3.3 3.8-2.1c.9-.5.9-1.9 0-2.4"/></svg>
+            <div><small>ダウンロード</small><span>Google Play</span></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="#top"><img src="/img/icon.svg" alt="" width="28" height="28">DocuSmart</a>
+    <nav aria-label="フッター">
+      <a href="/privacidad">プライバシーポリシー（スペイン語）</a>
+      <button type="button" class="foot-link" data-consent-open hidden>アナリティクスの設定</button>
+      <a href="/app/" data-track="web_app_footer">DocuSmart Web</a>
+      <a href="mailto:jblackmouthr@gmail.com">お問い合わせ</a>
+      <a href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_6">Google Play</a>
+    </nav>
+    <span>© <span id="year">2026</span> DocuSmart</span>
+  </div>
+</footer>
+
+<script type="module" src="/src/landing/main.ts"></script>
+</body>
+</html>
