@@ -371,6 +371,8 @@ p { margin: 0; }
 .summary-list li.is-current { background: #FEF08A; }
 [data-theme="dark"] .summary-list li.is-current { background: rgba(250, 204, 21, .3); }
 
+.kbd-hint { font-size: 12px; }
+
 /* Estadísticas de estudio (W-66) */
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
 .stat { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; }
