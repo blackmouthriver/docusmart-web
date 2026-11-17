@@ -105,3 +105,39 @@ describe('buildPayload', () => {
     expect('payload' in buildPayload({ ...base, kind: 'event', event: { ...base.event, title: 'X' } })).toBe(true)
   })
 })
+
+describe('lector inteligente (W-84)', () => {
+  it('detecta el tipo como la app', async () => {
+    const { detectType } = await import('../../../../../src/features/qr/core/qrContent')
+    expect(detectType(' https://a.com/foto.png')).toBe('url')
+    expect(detectType('MAILTO:a@b.c')).toBe('email')
+    expect(detectType('tel:300')).toBe('phone')
+    expect(detectType('WIFI:S:x;;')).toBe('wifi')
+    expect(detectType('BEGIN:VCARD\nEND:VCARD')).toBe('contact')
+    expect(detectType('BEGIN:VCALENDAR\nBEGIN:VEVENT')).toBe('event')
+    expect(detectType('file:///sdcard/a.pdf')).toBe('text')
+    expect(detectType('hola')).toBe('text')
+  })
+
+  it('solo abre http/https y avisa de enlaces sin cifrar o que imitan otro sitio', async () => {
+    const { safeLink } = await import('../../../../../src/features/qr/core/qrContent')
+    expect(safeLink('https://docusmart.online/app?x=1')).toEqual({ href: 'https://docusmart.online/app?x=1', host: 'docusmart.online', secure: true, lookalike: false })
+    expect(safeLink('http://ejemplo.com')).toMatchObject({ secure: false })
+    expect(safeLink('https://xn--pypal-4ve.com/login')).toMatchObject({ lookalike: true })
+    expect(safeLink('https://pаypal.com')?.lookalike).toBe(true)
+    expect(safeLink('javascript:alert(1)')).toBeNull()
+    expect(safeLink('data:text/html,hola')).toBeNull()
+    expect(safeLink('file:///etc/hosts')).toBeNull()
+    expect(safeLink('no es un enlace')).toBeNull()
+  })
+
+  it('extrae correo y teléfono, y solo los usa como enlace si son limpios', async () => {
+    const { emailAddress, isPlainScheme, phoneNumber } = await import('../../../../../src/features/qr/core/qrContent')
+    expect(emailAddress('mailto:ana%40x.co?subject=Hola')).toBe('ana@x.co')
+    expect(emailAddress('mailto:%E0%A4%A')).toBe('%E0%A4%A')
+    expect(phoneNumber(' TEL: +57300 ')).toBe('+57300')
+    expect(isPlainScheme('mailto:ana@x.co')).toBe(true)
+    expect(isPlainScheme('tel:+57300')).toBe(true)
+    expect(isPlainScheme('mailto:a@b.c" onclick="x')).toBe(false)
+  })
+})

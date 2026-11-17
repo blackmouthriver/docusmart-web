@@ -8,11 +8,11 @@ import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { SaveOptions, ShareApp } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
-import { buildPayload, type QrForm, type QrKind } from '../core/qrContent'
+import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, isPlainScheme, parseContact, parseEvent, parseWifi, phoneNumber, safeLink, type QrForm, type QrKind, type ReadType } from '../core/qrContent'
+import { download } from '../../../shared/files/files'
+import { useT } from '../../../shared/i18n/I18n'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
-
-const contentType = (s: string) => (/^https?:\/\//i.test(s) ? 'url' : /^WIFI:/i.test(s) ? 'wifi' : 'text')
 
 // Menú de QR (W-82): una vista por función, como el Modo Estudio.
 type QrView = 'crear' | 'leer'
@@ -207,6 +207,21 @@ export function CreateQr() {
   )
 }
 
+// ── Leer QR (W-84): reconoce el tipo y ofrece la acción que corresponde ──
+type Detector = { detect: (source: ImageBitmapSource) => Promise<Array<{ rawValue: string }>> }
+/** Lector nativo del navegador (Chrome en Android, Edge, Safari reciente), más rápido que jsQR. */
+let nativeDetector: Detector | null | undefined
+function getNativeDetector(): Detector | null {
+  if (nativeDetector !== undefined) return nativeDetector
+  try {
+    const BD = (window as unknown as { BarcodeDetector?: new (o: { formats: string[] }) => Detector }).BarcodeDetector
+    nativeDetector = BD ? new BD({ formats: ['qr_code'] }) : null
+  } catch {
+    nativeDetector = null
+  }
+  return nativeDetector
+}
+
 export function ReadQr() {
   const { toast } = useApp()
   const [mode, setMode] = useState<'camera' | 'image'>('camera')
@@ -227,10 +242,11 @@ export function ReadQr() {
   const found = (data: string) => {
     stop()
     setResult(data)
-    track('qr_scanned', { qr_content_type: isProtectedPayload(data) ? 'protected' : contentType(data) })
+    track('qr_scanned', { qr_content_type: isProtectedPayload(data) ? 'protected' : detectType(data) })
   }
 
-  const decode = (source: CanvasImageSource, w: number, h: number) => {
+  /** jsQR sobre un canvas achicado (respaldo cuando no hay lector nativo o no encontró nada). */
+  const decodeJs = (source: CanvasImageSource, w: number, h: number) => {
     const canvas = document.createElement('canvas')
     const scale = Math.min(1, 1024 / Math.max(w, h))
     canvas.width = Math.round(w * scale)
@@ -239,6 +255,18 @@ export function ReadQr() {
     ctx.drawImage(source, 0, 0, canvas.width, canvas.height)
     const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height)
     return jsQR(data, canvas.width, canvas.height)?.data ?? null
+  }
+  const decode = async (source: CanvasImageSource & ImageBitmapSource, w: number, h: number) => {
+    const native = getNativeDetector()
+    if (native) {
+      try {
+        const codes = await native.detect(source)
+        if (codes[0]?.rawValue) return codes[0].rawValue
+      } catch {
+        /* se prueba con jsQR */
+      }
+    }
+    return decodeJs(source, w, h)
   }
 
   const startCamera = async () => {
@@ -250,15 +278,15 @@ export function ReadQr() {
       v.srcObject = stream.current
       await v.play()
       setScanning(true)
-      const tick = () => {
+      const tick = async () => {
         if (!stream.current) return
         if (v.readyState >= 2) {
-          const data = decode(v, v.videoWidth, v.videoHeight)
+          const data = await decode(v, v.videoWidth, v.videoHeight)
           if (data !== null) return found(data)
         }
-        requestAnimationFrame(tick)
+        requestAnimationFrame(() => void tick())
       }
-      requestAnimationFrame(tick)
+      requestAnimationFrame(() => void tick())
     } catch {
       stop()
       setError(tr('qr.cameraError'))
@@ -271,7 +299,7 @@ export function ReadQr() {
     setResult(null)
     try {
       const bmp = await createImageBitmap(file)
-      const data = decode(bmp, bmp.width, bmp.height)
+      const data = await decode(bmp, bmp.width, bmp.height)
       bmp.close()
       if (data === null) setError(tr('qr.notFound'))
       else found(data)
@@ -279,6 +307,23 @@ export function ReadQr() {
       setError(tr('qr.cantRead'))
     }
   }
+
+  // Pegar una imagen (Ctrl+V / Cmd+V): una captura de pantalla con un QR se lee al instante.
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const file = [...(e.clipboardData?.files ?? [])].find((f) => f.type.startsWith('image/'))
+      if (!file) return
+      e.preventDefault()
+      stop()
+      setMode('image')
+      void fromImage(file)
+    }
+    window.addEventListener('paste', onPaste)
+    return () => window.removeEventListener('paste', onPaste)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const copied = () => toast(tr('qr.copied'))
 
   return (
     <section className="card stack" aria-labelledby="qr-read">
@@ -299,7 +344,7 @@ export function ReadQr() {
             {scanning ? (
               <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('qr.stop')}</button>
             ) : (
-              <button type="button" className="btn btn-primary" onClick={startCamera}><Icon name="camera" /> {tr('qr.openCamera')}</button>
+              <button type="button" className="btn btn-primary" onClick={startCamera}><Icon name="camera" /> {result === null ? tr('qr.openCamera') : tr('qr.scanAnother')}</button>
             )}
           </div>
         </>
@@ -309,34 +354,181 @@ export function ReadQr() {
           <input ref={fileInput} type="file" accept="image/*" hidden onChange={(e) => { void fromImage(e.target.files?.[0]); e.target.value = '' }} />
         </div>
       )}
+      <small className="faint">{tr('qr.pasteHint')}</small>
 
       {error && <Notice kind="error">{error}</Notice>}
-      {result !== null && (isProtectedPayload(result) ? <ProtectedResult payload={result} /> : <PlainResult value={result} onCopy={() => toast(tr('qr.copied'))} />)}
+      {result !== null && (isProtectedPayload(result) ? <ProtectedResult payload={result} onCopy={copied} /> : <QrResult value={result} onCopy={copied} />)}
     </section>
   )
 }
 
-function PlainResult({ value, onCopy }: { value: string; onCopy: () => void }) {
-  const isUrl = /^https?:\/\//i.test(value)
-  return (
-    <div className="stack">
-      <div className="result-box">{value}</div>
-      <div className="row">
-        <button type="button" className="btn btn-soft btn-sm" onClick={() => navigator.clipboard.writeText(value).then(onCopy)}><Icon name="copy" /> {tr('ocr.copy')}</button>
-        {isUrl && (
-          <a className="btn btn-outline btn-sm" href={value} target="_blank" rel="noopener noreferrer nofollow">{tr('qr.openLink')}</a>
+/** Copia un texto y avisa. */
+const copyText = (value: string, onCopy: () => void) => void navigator.clipboard.writeText(value).then(onCopy, () => {})
+
+const READ_ICON: Record<ReadType, IconName> = { url: 'link', email: 'mail', phone: 'phone', wifi: 'wifi', contact: 'user', event: 'calendar', text: 'text' }
+
+/** Resultado de un QR con las acciones de su tipo (nada se abre ni se descarga sin tocar un botón). */
+function QrResult({ value, onCopy }: { value: string; onCopy: () => void }) {
+  const { lang } = useT()
+  const [showKey, setShowKey] = useState(false)
+  const type = detectType(value)
+  const head = (
+    <div className="qr-result-head">
+      <span className="ico ico-blue"><Icon name={READ_ICON[type]} /></span>
+      <b>{tr(`qr.kind.${type}` as MessageKey)}</b>
+    </div>
+  )
+  const copyBtn = (text: string, label: MessageKey = 'ocr.copy') => (
+    <button type="button" className="btn btn-soft btn-sm" onClick={() => copyText(text, onCopy)}><Icon name="copy" /> {tr(label)}</button>
+  )
+  const row = (label: MessageKey, text: string) =>
+    text ? (
+      <div className="qr-field">
+        <span className="faint">{tr(label)}</span>
+        <span>{text}</span>
+      </div>
+    ) : null
+
+  if (type === 'url') {
+    const link = safeLink(value)
+    return (
+      <div className="qr-result stack">
+        {head}
+        <div className="result-box">{value}</div>
+        {link ? (
+          <>
+            <p className="qr-host">{tr('qr.linkGoesTo')} <b>{link.host}</b></p>
+            {!link.secure && <Notice kind="info">{tr('qr.notSecure')}</Notice>}
+            {link.lookalike && <Notice kind="error">{tr('qr.lookalike')}</Notice>}
+            <div className="row">
+              <a className="btn btn-primary btn-sm" href={link.href} target="_blank" rel="noopener noreferrer nofollow"><Icon name="link" /> {tr('qr.openLink')}</a>
+              {copyBtn(value)}
+            </div>
+          </>
+        ) : (
+          <>
+            <Notice kind="info">{tr('qr.blocked')}</Notice>
+            <div className="row">{copyBtn(value)}</div>
+          </>
         )}
       </div>
+    )
+  }
+
+  if (type === 'email' || type === 'phone') {
+    const text = type === 'email' ? emailAddress(value) : phoneNumber(value)
+    return (
+      <div className="qr-result stack">
+        {head}
+        <div className="result-box">{text}</div>
+        <div className="row">
+          {isPlainScheme(value) && (
+            <a className="btn btn-primary btn-sm" href={value.trim()}>
+              <Icon name={type === 'email' ? 'mail' : 'phone'} /> {tr(type === 'email' ? 'qr.act.email' : 'qr.act.call')}
+            </a>
+          )}
+          {copyBtn(text)}
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'wifi') {
+    const w = parseWifi(value)
+    if (w) {
+      return (
+        <div className="qr-result stack">
+          {head}
+          <div className="qr-fields">
+            {row('qr.label.ssid', w.ssid)}
+            {row('qr.label.security', w.security === 'NONE' ? tr('qr.sec.none') : w.security === 'WEP' ? 'WEP' : 'WPA/WPA2')}
+            {w.password && (
+              <div className="qr-field">
+                <span className="faint">{tr('qr.label.wifiKey')}</span>
+                <span className="qr-key">
+                  {showKey ? w.password : '•'.repeat(Math.min(12, w.password.length))}
+                  <button type="button" className="link-btn" onClick={() => setShowKey((s) => !s)}>{showKey ? tr('qr.act.hide') : tr('qr.act.show')}</button>
+                </span>
+              </div>
+            )}
+          </div>
+          <div className="row">
+            {copyBtn(w.ssid, 'qr.act.copySsid')}
+            {w.password && copyBtn(w.password, 'qr.act.copyKey')}
+          </div>
+          <small className="faint">{tr('qr.wifiNote')}</small>
+        </div>
+      )
+    }
+  }
+
+  if (type === 'contact') {
+    const c = parseContact(value)
+    if (c) {
+      return (
+        <div className="qr-result stack">
+          {head}
+          <div className="qr-fields">
+            {row('qr.label.name', c.name)}
+            {row('qr.label.phone', c.phone)}
+            {row('qr.label.email', c.email)}
+          </div>
+          <div className="row">
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => download(new Blob([contactPayload(c)], { type: 'text/vcard' }), `${c.name || 'contacto'}.vcf`)}>
+              <Icon name="download" /> {tr('qr.act.saveContact')}
+            </button>
+            {copyBtn([c.name, c.phone, c.email].filter(Boolean).join('\n'))}
+          </div>
+        </div>
+      )
+    }
+  }
+
+  if (type === 'event') {
+    const e = parseEvent(value)
+    if (e) {
+      const when = (s: string) => {
+        try {
+          return new Date(s).toLocaleString(lang, { dateStyle: 'medium', timeStyle: 'short' })
+        } catch {
+          return s
+        }
+      }
+      return (
+        <div className="qr-result stack">
+          {head}
+          <div className="qr-fields">
+            {row('qr.label.eventTitle', e.title)}
+            {row('qr.label.location', e.location)}
+            {row('qr.label.start', when(e.start))}
+            {row('qr.label.end', when(e.end))}
+          </div>
+          <div className="row">
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => download(new Blob([eventPayload(e)], { type: 'text/calendar' }), `${e.title || 'evento'}.ics`)}>
+              <Icon name="calendar" /> {tr('qr.act.addEvent')}
+            </button>
+            {copyBtn(value)}
+          </div>
+        </div>
+      )
+    }
+  }
+
+  return (
+    <div className="qr-result stack">
+      {head}
+      <div className="result-box">{value}</div>
+      <div className="row">{copyBtn(value)}</div>
     </div>
   )
 }
 
-function ProtectedResult({ payload }: { payload: string }) {
+function ProtectedResult({ payload, onCopy }: { payload: string; onCopy: () => void }) {
   const [password, setPassword] = useState('')
   const [plain, setPlain] = useState<string | null>(null)
   const [wrong, setWrong] = useState(false)
   const [busy, setBusy] = useState(false)
-  if (plain !== null) return <PlainResult value={plain} onCopy={() => {}} />
+  if (plain !== null) return <QrResult value={plain} onCopy={onCopy} />
   return (
     <div className="stack">
       <Notice kind="info">{tr('qr.protectedInfo')}</Notice>

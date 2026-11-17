@@ -326,6 +326,17 @@ p { margin: 0; }
 .qr-kind svg { width: 17px; height: 17px; }
 .qr-kind[aria-checked="true"] { background: var(--blue-soft); color: var(--blue); box-shadow: 0 0 0 1.5px var(--blue) inset; }
 .qr-dates { gap: 12px; align-items: flex-start; }
+.qr-result { padding: 14px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; animation: page-in 240ms var(--ease-out); }
+.qr-result-head { display: flex; align-items: center; gap: 10px; }
+.qr-result-head .ico { width: 36px; height: 36px; border-radius: 10px; }
+.qr-result-head .ico svg { width: 18px; height: 18px; }
+.qr-host { margin: 0; }
+.qr-host b { color: var(--ink); word-break: break-all; }
+.qr-fields { display: grid; gap: 8px; }
+.qr-field { display: grid; gap: 1px; }
+.qr-field .faint { font-size: 12.5px; }
+.qr-field > span:last-child { word-break: break-word; }
+.qr-key { display: inline-flex; align-items: center; gap: 10px; font-family: ui-monospace, Consolas, monospace; }
 .qr-dates .field { flex: 1 1 200px; }
 .study-menu { display: grid; gap: 12px; max-width: 720px; }
 .study-card { align-items: center; padding: 20px; width: 100%; }
