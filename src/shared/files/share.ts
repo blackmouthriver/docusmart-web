@@ -61,7 +61,7 @@ export const SITE_URL = 'https://docusmart.online'
 export const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61596626852763'
 export const INSTAGRAM_URL = 'https://www.instagram.com/supportdocusmart/'
 export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.docsmart'
-export const FEEDBACK_EMAIL = 'jblackmouthr@gmail.com'
+export const FEEDBACK_EMAIL = 'supportdocusmart@docusmart.online'
 
 export type AppShareLink = { id: 'whatsapp' | 'facebook' | 'x' | 'linkedin'; label: string; href: string }
 
