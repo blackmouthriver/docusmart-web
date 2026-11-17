@@ -19,7 +19,7 @@ export function OcrTool() {
   const [result, setResult] = useState<OcrResult | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const output = useMemo(() => (result?.pdf && file ? resultFile(result.pdf, `${baseName(file.name)}-buscable.pdf`, 'application/pdf') : null), [result, file])
+  const output = useMemo(() => (result?.pdf && file ? resultFile(result.pdf, `${baseName(file.name)}-${tr('file.searchable')}.pdf`, 'application/pdf') : null), [result, file])
 
   const run = async () => {
     if (!file) return

@@ -32,7 +32,7 @@ export function CreateQr() {
   const [img, setImg] = useState<string | null>(null)
   /** El QR como archivo PNG, para guardarlo o compartirlo. */
   const qrFile = useMemo(
-    () => (img ? resultFile(Uint8Array.from(atob(img.split(',')[1] ?? ''), (c) => c.charCodeAt(0)), protect ? 'docusmart-qr-protegido.png' : 'docusmart-qr.png', 'image/png') : null),
+    () => (img ? resultFile(Uint8Array.from(atob(img.split(',')[1] ?? ''), (c) => c.charCodeAt(0)), protect ? `docusmart-qr-${tr('file.protected')}.png` : 'docusmart-qr.png', 'image/png') : null),
     [img, protect],
   )
   const [busy, setBusy] = useState(false)

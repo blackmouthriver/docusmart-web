@@ -41,7 +41,7 @@ export function ExtractImagesTool() {
       const base = baseName(file.name)
       const list = r.images.map((img) => ({
         ...img,
-        name: `${base}-pagina-${img.page}-imagen-${img.index}.${img.format}`,
+        name: `${base}-${tr('file.page')}-${img.page}-${tr('file.image')}-${img.index}.${img.format}`,
         url: URL.createObjectURL(new Blob([img.data as BlobPart], { type: img.format === 'jpg' ? 'image/jpeg' : 'image/png' })),
       }))
       setItems(list)
@@ -66,7 +66,7 @@ export function ExtractImagesTool() {
   useEffect(() => {
     let alive = true
     setBundle(null)
-    void bundleFiles(chosenFiles, `${file ? baseName(file.name) : 'pdf'}-imagenes.zip`).then((b) => alive && setBundle(b))
+    void bundleFiles(chosenFiles, `${file ? baseName(file.name) : 'pdf'}-${tr('file.images')}.zip`).then((b) => alive && setBundle(b))
     return () => {
       alive = false
     }

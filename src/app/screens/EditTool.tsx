@@ -114,7 +114,7 @@ export function EditTool() {
     setBusy(true)
     setError(null)
     try {
-      setOutput(resultFile(await applyEdits(await file.arrayBuffer(), items.map(({ id: _id, ...rest }) => rest as EditItem)), `${baseName(file.name)}-editado.pdf`, 'application/pdf'))
+      setOutput(resultFile(await applyEdits(await file.arrayBuffer(), items.map(({ id: _id, ...rest }) => rest as EditItem)), `${baseName(file.name)}-${tr('file.edited')}.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'edit' })
       toast(tr('common.doneReview'))
     } catch (e) {

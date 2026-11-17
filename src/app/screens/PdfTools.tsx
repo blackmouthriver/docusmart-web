@@ -169,7 +169,7 @@ export function MergeTool() {
           onClick={() =>
             run(async () => {
               const out = await merge(await Promise.all(files.map((f) => f.arrayBuffer())))
-              setOutput(resultFile(out, `${baseName(files[0].name)}-unido.pdf`, PDF_TYPE))
+              setOutput(resultFile(out, `${baseName(files[0].name)}-${tr('file.merged')}.pdf`, PDF_TYPE))
             }, tr('common.doneReview'))
           }
         >
@@ -235,7 +235,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   const [order, setOrder] = useState<number[]>([])
   const [position, setPosition] = useState<'bottom-center' | 'bottom-right'>('bottom-center')
   const [format, setFormat] = useState<'n' | 'n-of-total'>('n')
-  const [mark, setMark] = useState('CONFIDENCIAL')
+  const [mark, setMark] = useState(() => tr('out.watermarkDefault'))
   /** Resultado listo para ver y guardar (ya no se descarga solo). */
   const [output, setOutput] = useState<File | null>(null)
   /** Dividir "cada página por separado": los PDF de cada página y el ZIP para guardarlos. */
@@ -271,14 +271,14 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
             label: tr('single.splitEach', { n: count }),
             disabled: count < 2,
             go: async () => {
-              const files = (await splitEach(await bytes())).map((d, i) => resultFile(d, `${name}-pagina-${i + 1}.pdf`, PDF_TYPE))
-              setParts({ files, zip: await bundleFiles(files, `${name}-paginas.zip`) })
+              const files = (await splitEach(await bytes())).map((d, i) => resultFile(d, `${name}-${tr('file.page')}-${i + 1}.pdf`, PDF_TYPE))
+              setParts({ files, zip: await bundleFiles(files, `${name}-${tr('file.pages')}.zip`) })
             },
           }
         : {
             label: tr('single.extract'),
             disabled: !(ranges ?? pagesFromSelection).length,
-            go: async () => setOutput(resultFile(await extractPages(await bytes(), ranges ?? pagesFromSelection), `${name}-extracto.pdf`, PDF_TYPE)),
+            go: async () => setOutput(resultFile(await extractPages(await bytes(), ranges ?? pagesFromSelection), `${name}-${tr('file.extract')}.pdf`, PDF_TYPE)),
           }
   } else if (toolId === 'rotar') {
     const changed = rotations.some((r) => r % 360 !== 0)
@@ -291,7 +291,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
           const idx = rotations.map((r, i) => ((r % 360) === angle ? i : -1)).filter((i) => i >= 0)
           if (idx.length) data = await rotate(toArrayBuffer(data), idx, angle)
         }
-        setOutput(resultFile(data as Uint8Array, `${name}-rotado.pdf`, PDF_TYPE))
+        setOutput(resultFile(data as Uint8Array, `${name}-${tr('file.rotated')}.pdf`, PDF_TYPE))
       },
     }
   } else if (toolId === 'reordenar') {
@@ -299,19 +299,19 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
     action = {
       label: tr('single.reorder'),
       disabled: same || order.length === 0,
-      go: async () => setOutput(resultFile(await extractPages(await bytes(), order), `${name}-reordenado.pdf`, PDF_TYPE)),
+      go: async () => setOutput(resultFile(await extractPages(await bytes(), order), `${name}-${tr('file.reordered')}.pdf`, PDF_TYPE)),
     }
   } else if (toolId === 'numerar') {
     action = {
       label: tr('single.number'),
       disabled: !count,
-      go: async () => setOutput(resultFile(await numberPages(await bytes(), { position, format }), `${name}-numerado.pdf`, PDF_TYPE)),
+      go: async () => setOutput(resultFile(await numberPages(await bytes(), { position, format }), `${name}-${tr('file.numbered')}.pdf`, PDF_TYPE)),
     }
   } else if (toolId === 'marca') {
     action = {
       label: tr('single.watermark'),
       disabled: !count || !mark.trim(),
-      go: async () => setOutput(resultFile(await watermark(await bytes(), mark), `${name}-marca.pdf`, PDF_TYPE)),
+      go: async () => setOutput(resultFile(await watermark(await bytes(), mark), `${name}-${tr('file.watermark')}.pdf`, PDF_TYPE)),
     }
   }
 

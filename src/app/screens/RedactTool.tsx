@@ -67,7 +67,7 @@ export function RedactTool() {
         setStatus(tr('redact.progress', { n: ++done, total }))
         return raster(i, a)
       })
-      setOutput(resultFile(out, `${baseName(file.name)}-censurado.pdf`, 'application/pdf'))
+      setOutput(resultFile(out, `${baseName(file.name)}-${tr('file.redacted')}.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'redact' })
       toast(tr('common.doneReview'))
     } catch (e) {
