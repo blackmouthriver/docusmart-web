@@ -11,7 +11,7 @@
 // CI verifica que estén al día (`npm run pages:check`).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { FACEBOOK_URL, SITE, pages } from '../tools/pages.mjs'
+import { FACEBOOK_URL, INSTAGRAM_URL, SITE, pages } from '../tools/pages.mjs'
 import { ES, LANGS, LOCALES, filePath, homePath, localized, pagePath } from '../tools/locales/index.mjs'
 
 const root = join(import.meta.dirname, '..')
@@ -93,7 +93,7 @@ function render(page, loc) {
       isAccessibleForFree: true,
       inLanguage: loc.lang,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      publisher: { '@type': 'Organization', name: 'DocuSmart', url: SITE, sameAs: [FACEBOOK_URL] },
+      publisher: { '@type': 'Organization', name: 'DocuSmart', url: SITE, sameAs: [FACEBOOK_URL, INSTAGRAM_URL] },
     },
     {
       '@context': 'https://schema.org',
@@ -215,6 +215,7 @@ ${related.map((r) => `      <li><a href="${pagePath(r, loc)}"><b>${esc(localized
       <a href="/app/">DocuSmart Web</a>
       <a href="/privacidad">${esc(ui.footPrivacy)}</a>
       <a href="${FACEBOOK_URL}" target="_blank" rel="noopener">Facebook</a>
+      <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener">Instagram</a>
       <button type="button" class="link-btn" data-consent-open hidden>${esc(ui.footConsent)}</button>
     </nav>
   </div>

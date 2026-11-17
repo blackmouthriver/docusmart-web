@@ -9,8 +9,9 @@
 //       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar' }
 
 export const SITE = 'https://docusmart.online'
-/** Página de DocuSmart en Facebook (pie de página y datos estructurados). */
+/** Redes sociales de DocuSmart (pie de página y datos estructurados). */
 export const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61596626852763'
+export const INSTAGRAM_URL = 'https://www.instagram.com/supportdocusmart/'
 
 export const pages = [
   {
