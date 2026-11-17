@@ -29,6 +29,7 @@ const STUDY_SUBS: NavSub[] = [
 const QR_SUBS: NavSub[] = [
   { sub: 'crear', label: 'qr.create', icon: 'qr' },
   { sub: 'leer', label: 'qr.read', icon: 'camera' },
+  { sub: 'historial', label: 'qr.history', icon: 'folder' },
 ]
 const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: IconName; mobile?: boolean; subs?: NavSub[] }> = [
   { section: '', label: 'nav.home', short: 'nav.short.home', icon: 'home' },
