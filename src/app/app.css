@@ -352,6 +352,22 @@ p { margin: 0; }
 .icon-flip svg { transform: scaleX(-1); }
 @media (max-width: 520px) { .player-progress { grid-template-columns: 1fr auto; } .player-progress .progress { grid-column: 1 / -1; grid-row: 2; } }
 
+/* Párrafos resaltados (W-63) */
+.reading-paras p.is-marked { background: rgba(250, 204, 21, .22); box-shadow: inset 3px 0 0 #EAB308; }
+.reading-paras p.is-current.is-marked { background: linear-gradient(90deg, rgba(250, 204, 21, .3), var(--blue-soft)); }
+.mark-btn[aria-pressed="true"] { background: #FEF9C3; border-color: #EAB308; color: #854D0E; }
+.marks { display: grid; gap: 10px; padding: 12px; border-radius: 16px; background: rgba(250, 204, 21, .1); box-shadow: 0 0 0 1px rgba(234, 179, 8, .35) inset; }
+.marks h4 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; }
+.marks h4 svg { width: 18px; height: 18px; color: #CA8A04; }
+.mark-group { display: grid; gap: 6px; }
+.mark-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.mark-head b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1 1 160px; }
+.mark { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--card); border-left: 3px solid #EAB308; animation: page-in 220ms var(--ease-out); }
+.mark p { margin: 0; white-space: pre-wrap; }
+.mark footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; font-size: 12.5px; }
+[data-theme="dark"] .mark-btn[aria-pressed="true"] { background: rgba(250, 204, 21, .2); color: #FDE68A; }
+[data-theme="dark"] .reading-paras p.is-marked { background: rgba(250, 204, 21, .14); }
+
 /* Retomar lectura (W-62) */
 .history { display: grid; gap: 8px; }
 .history h4 { margin: 0; font-size: 15px; }
