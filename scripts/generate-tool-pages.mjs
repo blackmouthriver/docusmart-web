@@ -1,11 +1,12 @@
 // Genera las páginas para buscadores a partir de tools/pages.mjs (español) y de
 // tools/locales/<idioma>.mjs (traducciones):
 //   - Una página por herramienta: /unir-pdf (español) y /en/merge-pdf, etc.
-//   - La portada en cada idioma: /en/ se arma desde index.html con la tabla de
-//     reemplazos del idioma, así hay una sola portada que mantener.
+//   - La portada en cada idioma: /en/ se arma desde site/index.html con la tabla
+//     de reemplazos del idioma, así hay una sola portada que mantener.
 //   - hreflang entre todas las versiones, selector de idioma y sitemap.xml.
-// El texto queda en el HTML para que los buscadores lo lean sin ejecutar
-// JavaScript; la herramienta se monta encima con src/tools/main.tsx.
+// Las páginas se escriben en site/ (la raíz de Vite). El texto queda en el HTML
+// para que los buscadores lo lean sin ejecutar JavaScript; la herramienta se
+// monta encima con src/entries/tool-page.tsx.
 // Se ejecuta antes de `dev` y `build`; los archivos generados se versionan y el
 // CI verifica que estén al día (`npm run pages:check`).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -14,6 +15,10 @@ import { SITE, pages } from '../tools/pages.mjs'
 import { ES, LANGS, LOCALES, filePath, homePath, localized, pagePath } from '../tools/locales/index.mjs'
 
 const root = join(import.meta.dirname, '..')
+/** Carpeta de las páginas HTML (raíz de Vite), relativa al proyecto. */
+const SITE_DIR = 'site'
+/** Ruta del script de entrada desde una página a cierta profundidad bajo site/. */
+const entryScript = (name, depth) => `${'../'.repeat(depth + 1)}src/entries/${name}`
 const check = process.argv.includes('--check')
 const stale = []
 
@@ -213,13 +218,13 @@ ${related.map((r) => `      <li><a href="${pagePath(r, loc)}"><b>${esc(localized
     </nav>
   </div>
 </footer>
-<script type="module" src="/src/tools/main.tsx"></script>
+<script type="module" src="${entryScript('tool-page.tsx', loc.lang === 'es' ? 0 : 1)}"></script>
 </body>
 </html>
 `
 }
 
-for (const loc of LANGS) for (const page of pages) emit(filePath(page, loc), render(page, loc))
+for (const loc of LANGS) for (const page of pages) emit(`${SITE_DIR}/${filePath(page, loc)}`, render(page, loc))
 
 // ── Portada ──────────────────────────────────────────────────────────────────
 /** Reemplaza el bloque entre <!-- name:start --> y <!-- name:end -->. */
@@ -239,8 +244,8 @@ function landingBlocks(html, loc, file) {
   return out
 }
 
-const landingEs = landingBlocks(readFileSync(join(root, 'index.html'), 'utf-8'), ES, 'index.html')
-emit('index.html', landingEs)
+const landingEs = landingBlocks(readFileSync(join(root, SITE_DIR, 'index.html'), 'utf-8'), ES, `${SITE_DIR}/index.html`)
+emit(`${SITE_DIR}/index.html`, landingEs)
 
 for (const loc of LOCALES) {
   let html = landingEs
@@ -255,8 +260,11 @@ for (const loc of LOCALES) {
     .replace(`<link rel="canonical" href="${SITE}/">`, `<link rel="canonical" href="${SITE}/${loc.lang}/">`)
     .replace(`<meta property="og:url" content="${SITE}/">`, `<meta property="og:url" content="${SITE}/${loc.lang}/">`)
     .replace('<meta property="og:locale" content="es_ES">', `<meta property="og:locale" content="${loc.ogLocale}">`)
-    .replace('<!doctype html>', '<!doctype html>\n<!-- Generado por scripts/generate-tool-pages.mjs desde index.html. No editar a mano. -->')
-  emit(`${loc.lang}/index.html`, landingBlocks(html, loc, `${loc.lang}/index.html`))
+    .replace('<!doctype html>', '<!doctype html>\n<!-- Generado por scripts/generate-tool-pages.mjs desde site/index.html. No editar a mano. -->')
+    // Un nivel más abajo (site/en/index.html): el script de entrada está un "../" más arriba.
+    .replace(`src="${entryScript('landing.ts', 0)}"`, `src="${entryScript('landing.ts', 1)}"`)
+  if (!html.includes(entryScript('landing.ts', 1))) throw new Error(`${SITE_DIR}/index.html no carga ${entryScript('landing.ts', 0)}`)
+  emit(`${SITE_DIR}/${loc.lang}/index.html`, landingBlocks(html, loc, `${SITE_DIR}/${loc.lang}/index.html`))
 }
 
 // ── sitemap.xml con las versiones de cada página ─────────────────────────────

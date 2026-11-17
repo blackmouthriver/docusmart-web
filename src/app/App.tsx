@@ -1,20 +1,20 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
-import { Icon, type IconName } from './components/Icon'
-import { analyticsConfigured, trackScreen } from '../shared/analytics'
+import { Icon, type IconName } from '../shared/ui/Icon'
+import { analyticsConfigured, trackScreen } from '../shared/platform/analytics'
 import { AppContext, parseHash, type Route } from './state'
-import { useT } from './i18n/I18n'
-import { LANGS } from './i18n/languages'
-import type { MessageKey } from './i18n/messages/es'
-import { SettingsPanel } from './components/SettingsPanel'
-import { Home } from './screens/Home'
+import { useT } from '../shared/i18n/I18n'
+import { LANGS } from '../shared/i18n/languages'
+import type { MessageKey } from '../shared/i18n/messages/es'
+import { SettingsPanel } from '../shared/ui/SettingsPanel'
+import { Home } from '../features/home/ui/Home'
 // Cada pantalla se descarga al entrar: pdf.js y las librerías de QR no frenan el Inicio.
-const Viewer = lazy(() => import('./screens/Viewer').then((m) => ({ default: m.Viewer })))
-const Converter = lazy(() => import('./screens/Converter').then((m) => ({ default: m.Converter })))
-const PdfTools = lazy(() => import('./screens/PdfTools').then((m) => ({ default: m.PdfTools })))
-const QrScreen = lazy(() => import('./screens/Qr').then((m) => ({ default: m.QrScreen })))
-const Study = lazy(() => import('./screens/Study').then((m) => ({ default: m.Study })))
-const ArchiveScreen = lazy(() => import('./screens/Archive').then((m) => ({ default: m.ArchiveScreen })))
-const ImageToolsScreen = lazy(() => import('./screens/ImageTools').then((m) => ({ default: m.ImageToolsScreen })))
+const Viewer = lazy(() => import('../features/viewer/ui/Viewer').then((m) => ({ default: m.Viewer })))
+const Converter = lazy(() => import('../features/convert/ui/Converter').then((m) => ({ default: m.Converter })))
+const PdfTools = lazy(() => import('../features/pdf/ui/PdfTools').then((m) => ({ default: m.PdfTools })))
+const QrScreen = lazy(() => import('../features/qr/ui/Qr').then((m) => ({ default: m.QrScreen })))
+const Study = lazy(() => import('../features/study/ui/Study').then((m) => ({ default: m.Study })))
+const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((m) => ({ default: m.ArchiveScreen })))
+const ImageToolsScreen = lazy(() => import('../features/image/ui/ImageTools').then((m) => ({ default: m.ImageToolsScreen })))
 
 // `mobile: false`: solo en la barra lateral; la barra inferior del celular tiene 5 lugares.
 const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: IconName; mobile?: boolean }> = [

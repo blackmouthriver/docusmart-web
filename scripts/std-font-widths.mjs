@@ -1,4 +1,4 @@
-// Genera src/app/lib/pdfaFonts.json: para cada una de las 14 fuentes estándar de
+// Genera src/features/pdfa/core/pdfaFonts.json: para cada una de las 14 fuentes estándar de
 // PDF, la fuente libre de pdf.js que la reemplaza al convertir a PDF/A y el ancho
 // de cada código (32–255) leído del propio programa de fuente. PDF/A exige que
 // los anchos del diccionario coincidan con los de la fuente incrustada.
@@ -236,5 +236,5 @@ for (const [base, file] of Object.entries(FILES)) {
     ...(symbolic ? { names } : {}),
   }
 }
-writeFileSync(join(root, 'src', 'app', 'lib', 'pdfaFonts.json'), JSON.stringify(out) + '\n')
+writeFileSync(join(root, 'src', 'features', 'pdfa', 'core', 'pdfaFonts.json'), JSON.stringify(out) + '\n')
 for (const [k, v] of Object.entries(out)) console.log(k.padEnd(22), v.file.padEnd(28), 'sin glifo:', v.missing.length ? v.missing.join(',') : '—')
