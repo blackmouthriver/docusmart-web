@@ -11,6 +11,8 @@ import { loadFile as loadStoredFile, loadHistory, pruneFiles, saveHistory, store
 import { groupByDoc, isHighlighted, quoteNote, removeDocHighlights, removeHighlight, toggleHighlight, type Highlight } from '../core/highlights'
 import { getHighlights, setHighlights, subscribeHighlights } from '../infra/highlightsStore'
 import { summarize } from '../core/summarize'
+import { firstDayOfWeek, hoursMinutes, weekCounts, weekDays } from '../core/stats'
+import { getStats, recordPomodoro, recordReading, subscribeStats } from '../infra/statsStore'
 import { MAX_NOTE_IMAGES, exportName, notesToBlocks, notesToText, orphanImages, parseNotes, upsertNote, type NoteLabels, type StudyNote } from '../core/notes'
 import { deleteNoteImages, loadNoteImage, saveNoteImage, storedNoteImageIds } from '../infra/noteImages'
 import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
@@ -24,13 +26,14 @@ import { docxToText, isDocx } from '../../convert/infra/officeRender'
 import { guessFeminine, personaAvatar, personasForVoices, voicesForLanguage, type VoicePersona } from '../core/voicePersonas'
 
 // ── Menú del Modo Estudio (W-59): una tarjeta por función, como en la app ──
-type StudyTab = 'lectura' | 'notas' | 'pomodoro'
+type StudyTab = 'lectura' | 'notas' | 'pomodoro' | 'estadisticas'
 type Report = (status: string) => void
 
 const STUDY_TABS: Array<{ id: StudyTab; icon: IconName; cls: string; title: MessageKey; desc: MessageKey }> = [
   { id: 'lectura', icon: 'volume', cls: 'ico-green', title: 'study.readAloud', desc: 'study.menuReadDesc' },
   { id: 'notas', icon: 'note', cls: 'ico-blue', title: 'study.notes', desc: 'study.menuNotesDesc' },
   { id: 'pomodoro', icon: 'timer', cls: 'ico-amber', title: 'study.pomodoro', desc: 'study.menuPomodoroDesc' },
+  { id: 'estadisticas', icon: 'chart', cls: 'ico-violet', title: 'study.stats', desc: 'study.menuStatsDesc' },
 ]
 
 export function Study({ sub }: { sub?: string }) {
@@ -44,12 +47,13 @@ export function Study({ sub }: { sub?: string }) {
   }, [tab])
   const reporters = useMemo(() => {
     const make = (id: StudyTab): Report => (s) => setStatus((cur) => (cur[id] === s ? cur : { ...cur, [id]: s }))
-    return { lectura: make('lectura'), notas: make('notas'), pomodoro: make('pomodoro') }
+    return { lectura: make('lectura'), notas: make('notas'), pomodoro: make('pomodoro'), estadisticas: make('estadisticas') }
   }, [])
 
   const section = (id: StudyTab) => {
     if (id === 'lectura') return <ReadAloud onStatus={reporters.lectura} />
     if (id === 'notas') return <Notes />
+    if (id === 'estadisticas') return <Stats />
     return <Pomodoro onStatus={reporters.pomodoro} />
   }
 
@@ -148,6 +152,13 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     const [reading, paused] = totalPages ? (['study.statusReadingPage', 'study.statusPausedPage'] as const) : (['study.statusReading', 'study.statusPaused'] as const)
     onStatus(state === 'playing' ? tr(reading, vars) : state === 'paused' ? tr(paused, vars) : '')
   }, [state, pos.p, paragraphs.length, totalPages, currentPage, onStatus])
+
+  // Estadísticas (W-66): el tiempo que suena la lectura se suma al total escuchado.
+  useEffect(() => {
+    if (state !== 'playing') return
+    const startedAt = Date.now()
+    return () => recordReading(Date.now() - startedAt)
+  }, [state])
 
   // Guarda el avance del documento abierto en cada cambio de párrafo.
   useEffect(() => {
@@ -1115,6 +1126,61 @@ function Notes() {
   )
 }
 
+// ── Estadísticas de estudio (W-66), como en la app ───────────────────
+function Stats() {
+  const { lang } = useT()
+  const stats = useSyncExternalStore(subscribeStats, getStats)
+  const now = Date.now()
+  const locale = typeof navigator === 'undefined' ? lang : navigator.language || lang
+  const firstDay = firstDayOfWeek(locale)
+  const counts = weekCounts(stats.pomodoros, now, firstDay)
+  const days = weekDays(now, firstDay)
+  const week = counts.reduce((a, b) => a + b, 0)
+  const max = Math.max(1, ...counts)
+  const today = new Date(now).toDateString()
+  const { h, m } = hoursMinutes(stats.readingMs)
+  const dayName = new Intl.DateTimeFormat(lang, { weekday: 'short' })
+  const dayLong = new Intl.DateTimeFormat(lang, { weekday: 'long' })
+  const empty = !stats.readingMs && !stats.totalPomodoros
+
+  return (
+    <div className="card stack">
+      <h3>{tr('study.stats')}</h3>
+      {empty && <Notice kind="info">{tr('study.statsEmpty')}</Notice>}
+      <div className="stats-grid">
+        <div className="stat">
+          <span className="ico ico-green"><Icon name="volume" /></span>
+          <span className="stat-text">
+            <span className="faint">{tr('study.statsListened')}</span>
+            <b>{tr('study.statsDuration', { h, m })}</b>
+          </span>
+        </div>
+        <div className="stat">
+          <span className="ico ico-amber"><Icon name="timer" /></span>
+          <span className="stat-text">
+            <span className="faint">{tr('study.statsTotal')}</span>
+            <b>{stats.totalPomodoros}</b>
+          </span>
+        </div>
+      </div>
+      <section className="week" aria-label={tr('study.statsWeek', { n: week })}>
+        <h4>{tr('study.statsWeek', { n: week })}</h4>
+        <div className="week-bars">
+          {counts.map((c, i) => (
+            <div key={i} className={'week-day' + (days[i].toDateString() === today ? ' is-today' : '')} title={`${dayLong.format(days[i])}: ${c}`}>
+              <span className="week-count">{c || ''}</span>
+              <span className="week-bar" style={{ height: `${(c / max) * 100}%` }} aria-hidden="true" />
+              <span className="week-label">{dayName.format(days[i])}</span>
+              <span className="sr-only">{`${dayLong.format(days[i])}: ${c}`}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+      <small className="faint">{tr('study.localOnly')}</small>
+    </div>
+  )
+}
+
 // ── Pomodoro: 25 min de foco, 5 de descanso, 15 cada 4 pomodoros ─────
 const FOCUS = 25 * 60
 const SHORT = 5 * 60
@@ -1144,6 +1210,7 @@ function Pomodoro({ onStatus }: { onStatus: Report }) {
           const count = done + 1
           setDone(count)
           track('pomodoro_completed', { pomodoro_count: count })
+          recordPomodoro()
           const next = count % 4 === 0 ? 'long' : 'short'
           setPhase(next)
           setLeft(next === 'long' ? LONG : SHORT)

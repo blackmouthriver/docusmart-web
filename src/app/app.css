@@ -371,6 +371,21 @@ p { margin: 0; }
 .summary-list li.is-current { background: #FEF08A; }
 [data-theme="dark"] .summary-list li.is-current { background: rgba(250, 204, 21, .3); }
 
+/* Estadísticas de estudio (W-66) */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.stat { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; }
+.stat-text { display: grid; gap: 2px; }
+.stat-text b { font-size: 22px; font-variant-numeric: tabular-nums; }
+.week { display: grid; gap: 10px; padding: 14px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; }
+.week h4 { margin: 0; font-size: 15px; }
+.week-bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; height: 150px; align-items: end; }
+.week-day { display: grid; grid-template-rows: auto 1fr auto; justify-items: center; height: 100%; gap: 4px; }
+.week-bar { align-self: end; width: 100%; max-width: 34px; min-height: 4px; border-radius: 8px 8px 4px 4px; background: linear-gradient(180deg, #FBBF24, #F59E0B); transform-origin: bottom; animation: bar-grow 500ms var(--ease-out); }
+.week-count { font-size: 12px; font-weight: 700; color: #B45309; min-height: 16px; }
+.week-label { font-size: 12px; color: var(--ink-faint); text-transform: capitalize; }
+.week-day.is-today .week-label { color: var(--blue); font-weight: 700; }
+@keyframes bar-grow { from { transform: scaleY(0); } }
+
 /* Notas completas (W-65) */
 .note-editor { display: grid; gap: 10px; padding: 12px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; transition: box-shadow 200ms ease; }
 .note-editor.is-editing { box-shadow: 0 0 0 2px var(--blue) inset; }

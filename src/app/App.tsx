@@ -18,11 +18,12 @@ const ImageToolsScreen = lazy(() => import('../features/image/ui/ImageTools').th
 
 // `mobile: false`: solo en la barra lateral; la barra inferior del celular tiene 5 lugares.
 type NavSub = { sub: string; label: MessageKey; icon: IconName }
-// Modo Estudio se despliega en la barra lateral con sus tres vistas.
+// Modo Estudio se despliega en la barra lateral con sus vistas.
 const STUDY_SUBS: NavSub[] = [
   { sub: 'lectura', label: 'study.readAloud', icon: 'volume' },
   { sub: 'notas', label: 'study.notes', icon: 'note' },
   { sub: 'pomodoro', label: 'study.pomodoro', icon: 'timer' },
+  { sub: 'estadisticas', label: 'study.stats', icon: 'chart' },
 ]
 const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: IconName; mobile?: boolean; subs?: NavSub[] }> = [
   { section: '', label: 'nav.home', short: 'nav.short.home', icon: 'home' },

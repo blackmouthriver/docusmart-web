@@ -26,6 +26,7 @@ const paths = {
   lock: 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4',
   camera: 'M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8',
   timer: 'M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16M12 10v4l2 2M10 2h4',
+  chart: 'M4 20h16M7 16v-5M12 16V6M17 16v-8',
   note: 'M5 4h14v12l-4 4H5zM15 20v-4h4M8 9h8M8 13h5',
   volume: 'M4 9h4l5-4v14l-5-4H4zM17 9a4 4 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11',
   play: 'M7 4v16l13-8z',
