@@ -6,6 +6,9 @@
 // Para sumar un idioma: crea su archivo y agrégalo a LOCALES.
 import { pages } from '../pages.mjs'
 import en from './en.mjs'
+import pt from './pt.mjs'
+import fr from './fr.mjs'
+import it from './it.mjs'
 
 /** Textos fijos de la plantilla de herramienta, en español. */
 export const ES_UI = {
@@ -39,7 +42,7 @@ export const ES_UI = {
 }
 
 export const ES = { lang: 'es', label: 'Español', ogLocale: 'es_ES', ui: ES_UI, pages: {}, landing: [] }
-export const LOCALES = [en]
+export const LOCALES = [en, pt, fr, it]
 export const LANGS = [ES, ...LOCALES]
 
 // Cada idioma debe traer todas las páginas y todos los textos de la plantilla.
@@ -56,6 +59,13 @@ for (const loc of LOCALES) {
     if (p.steps.length !== src.steps.length) throw new Error(`tools/locales/${loc.lang}.mjs: ${slug} tiene ${p.steps.length} pasos (en español, ${src.steps.length})`)
     if (p.faq.length !== src.faq.length) throw new Error(`tools/locales/${loc.lang}.mjs: ${slug} tiene ${p.faq.length} preguntas (en español, ${src.faq.length})`)
   }
+  // La portada: todos los idiomas reemplazan los mismos textos que el inglés (la referencia).
+  const ref = new Set(en.landing.map(([from]) => from))
+  const own = new Set(loc.landing.map(([from]) => from))
+  const missingLanding = [...ref].filter((s) => !own.has(s))
+  const extraLanding = [...own].filter((s) => !ref.has(s))
+  if (missingLanding.length || extraLanding.length)
+    throw new Error(`tools/locales/${loc.lang}.mjs: portada sin traducir ${JSON.stringify(missingLanding)}; sobran ${JSON.stringify(extraLanding)}`)
 }
 
 /** La página de una herramienta en un idioma (en español, la original). */
