@@ -153,8 +153,8 @@ Todo sigue siendo local: nada de IA ni voces en la nube.
 | W-62 | **Retomar lectura**: lista de documentos recientes con su progreso ("Página 3 de 12 · Continuar leyendo"), guardada solo en el navegador; quitar de la lista | 🤖 | Hecho (PR #64) |
 | W-63 | **Resaltar párrafos** mientras se escucha ("Marcar párrafo actual") y pasarlos a Notas | 🤖 | Hecho (PR #65) |
 | W-64 | **Resumen local** (extractivo, port de `TextSummarizer` de la app): elige las oraciones más relevantes, sin IA en la nube; copiar, descargar o leer en voz alta. Mejora web: palabras vacías en los 12 idiomas | 🤖 | Hecho (PR #66) |
-| W-65 | **Notas completas**: título, editar, exportar todas o una (TXT y PDF) e imágenes adjuntas (guardadas en IndexedDB). Dictado por voz **descartado**: en Chrome el reconocimiento envía el audio a Google y rompe la promesa de privacidad | 🤖 | En revisión |
-| W-66 | **Estadísticas de estudio**: tiempo total escuchado, pomodoros de la semana con barras por día y total | 🤖 | Pendiente |
+| W-65 | **Notas completas**: título, editar, exportar todas o una (TXT y PDF) e imágenes adjuntas (guardadas en IndexedDB). Dictado por voz **descartado**: en Chrome el reconocimiento envía el audio a Google y rompe la promesa de privacidad | 🤖 | Hecho (PR #68) |
+| W-66 | **Estadísticas de estudio**: tiempo total escuchado, pomodoros de la semana con barras por día y total | 🤖 | En revisión |
 | W-67 | **Mejoras propias de la web**: atajos de teclado (espacio = leer/pausar, flechas = párrafo), controles desde auriculares y pantalla bloqueada (Media Session), pantalla encendida mientras se lee (Wake Lock) y aviso del navegador al terminar un Pomodoro (Notification, con permiso) | 🤖 | Pendiente |
 | W-68 | **Agenda y recordatorios** (en la app: agenda/calendario y "recordarme repasar"). En la web solo avisaría con la pestaña abierta; evaluar después de W-58..W-67 | 👤 decidir | Pendiente |
 
