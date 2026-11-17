@@ -285,6 +285,13 @@ ${pages.map((p) => entry((l) => pagePath(p, l), 'monthly', '0.9')).join('\n')}
 `
 emit('public/sitemap.xml', sitemap)
 
+// ── Slugs por idioma para la app ─────────────────────────────────────────────
+// Los enlaces de compartir/recomendar llevan a la página del idioma del usuario
+// (/en/merge-pdf…). Solo los slugs, para no meter los textos SEO en el bundle.
+const slugs = Object.fromEntries(pages.map((p) => [p.slug, Object.fromEntries(LOCALES.map((l) => [l.lang, l.pages[p.slug].slug]))]))
+emit('src/shared/files/toolPageSlugs.json', `${JSON.stringify(slugs, null, 2)}
+`)
+
 if (check && stale.length) {
   console.error(`Páginas desactualizadas: ${stale.join(', ')}. Ejecuta: npm run pages`)
   process.exit(1)

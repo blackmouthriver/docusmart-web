@@ -6,6 +6,9 @@
 import { zipSync } from 'fflate'
 import { safeFilename, safeMimeType } from './files'
 import { tr } from '../i18n/translate'
+import type { Lang } from '../i18n/languages'
+// Generado por scripts/generate-tool-pages.mjs: slug en español → slug en cada idioma.
+import TOOL_PAGE_SLUGS from './toolPageSlugs.json'
 
 export type ShareOutcome = 'shared' | 'cancelled' | 'unsupported'
 type ShareNav = { share?: (data: ShareData) => Promise<void>; canShare?: (data: ShareData) => boolean }
@@ -74,7 +77,7 @@ export function appShareLinks(url = SITE_URL, text = 'Uso DocuSmart para trabaja
 export const feedbackMailto = (tool: string) => `mailto:${FEEDBACK_EMAIL}?subject=${encodeURIComponent(`Opinión sobre DocuSmart Web (${tool})`)}`
 
 /** Página pública de cada herramienta (para recomendarla); las que no tienen, la app. */
-const TOOL_PAGES: Record<string, string> = {
+export const TOOL_PAGES: Record<string, string> = {
   compress: 'comprimir-pdf',
   merge: 'unir-pdf',
   split: 'dividir-pdf',
@@ -105,7 +108,15 @@ const TOOL_PAGES: Record<string, string> = {
   archive_extract: 'descomprimir-archivos',
   qr: 'crear-codigo-qr',
 }
-export const toolShareUrl = (tool: string) => `${SITE_URL}/${TOOL_PAGES[tool] ?? 'app'}`
+const SLUGS: Record<string, Partial<Record<Lang, string>>> = TOOL_PAGE_SLUGS
+
+/** Página pública de la herramienta en el idioma del usuario; sin página, la app web. */
+export function toolShareUrl(tool: string, lang: Lang = 'es'): string {
+  const es = TOOL_PAGES[tool]
+  if (!es) return `${SITE_URL}/app`
+  const slug = lang === 'es' ? undefined : SLUGS[es]?.[lang]
+  return slug ? `${SITE_URL}/${lang}/${slug}` : `${SITE_URL}/${es}`
+}
 
 /** Varios resultados en uno para guardar: el archivo tal cual si es uno solo, o un ZIP. */
 export async function bundleFiles(files: File[], zipName: string): Promise<File | null> {

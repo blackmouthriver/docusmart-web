@@ -4,8 +4,9 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon } from './Icon'
 import { Notice } from './ui'
 import { download, formatBytes, isOwnBlobUrl, safeMimeType } from '../files/files'
-import { PLAY_URL, SITE_URL, appShareLinks, toolShareUrl, canShareFile, docSummary, feedbackMailto, shareFile } from '../files/share'
+import { PLAY_URL, appShareLinks, toolShareUrl, canShareFile, docSummary, feedbackMailto, shareFile } from '../files/share'
 import { tr } from '../i18n/translate'
+import { useT } from '../i18n/I18n'
 import { PageNav, usePdfPreview } from '../../features/pdf/ui/PdfPreview'
 import { isDocx, isXlsx } from '../../features/convert/infra/officeRender'
 import { useApp } from '../../app/state'
@@ -279,8 +280,11 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
 }
 
 /** Al final de cada herramienta: invitar a recomendar y calificar DocuSmart. */
-export function ShareApp({ url = SITE_URL, toolName }: { url?: string; toolName: string }) {
+/** Invita a recomendar DocuSmart con el enlace a la página de la herramienta en el idioma del usuario. */
+export function ShareApp({ toolName }: { toolName: string }) {
   const { toast } = useApp()
+  const { lang } = useT()
+  const url = toolShareUrl(toolName, lang)
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(url)
@@ -388,7 +392,6 @@ export function BeforeAfter({
   title,
   previewTitle = tr('dp.previewTitle'),
   placeholder = tr('dp.placeholder'),
-  shareUrl,
   resultPassword,
   originalPassword,
 }: {
@@ -404,8 +407,6 @@ export function BeforeAfter({
   title: string
   previewTitle?: string
   placeholder?: string
-  /** Página de la herramienta, para recomendarla. */
-  shareUrl?: string
   /** Contraseña del resultado (Proteger PDF), para poder mostrarlo. */
   resultPassword?: string
   /** Contraseña del original (Desbloquear PDF). */
@@ -465,7 +466,7 @@ export function BeforeAfter({
       </div>
       {done && summary}
       {done && toSave && <SaveOptions file={toSave} toolName={toolName} />}
-      {done && <ShareApp url={shareUrl ?? toolShareUrl(toolName)} toolName={toolName} />}
+      {done && <ShareApp toolName={toolName} />}
     </section>
   )
 }

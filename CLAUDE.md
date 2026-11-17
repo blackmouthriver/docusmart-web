@@ -56,12 +56,14 @@ Dependencias: `ui → core/infra`; `core` no usa React ni el DOM; `shared` no im
   textos/nombres de los archivos generados. **Apariencia:** tema, 10 colores de acento y tamaño de letra.
 - **SEO:** portada + 31 herramientas en cada idioma (`/en/merge-pdf`…), `hreflang`, sitemap con 386 URL,
   selector de idioma sin JavaScript.
+- Los enlaces de **recomendar** (`toolShareUrl`) llevan a la página de la herramienta en el idioma del
+  usuario; el generador escribe `src/shared/files/toolPageSlugs.json` (no editar a mano).
 - Guardar en **Google Drive** y **Dropbox**: código listo y oculto hasta que el usuario cree las credenciales
   (IDs públicos en `src/shared/cloud/cloudConfig.ts`).
 
 Historia reciente (todo fusionado salvo lo indicado): vista previa y guardado #34–#38; idiomas y apariencia
-#39–#42; páginas por idioma #43–#46; textos dentro de archivos #47; **arquitectura por capas y este archivo #48
-(en revisión)**.
+#39–#42; páginas por idioma #43–#46; textos dentro de archivos #47; arquitectura por capas y este archivo #48;
+**enlaces de compartir por idioma, W-57 (en revisión)**.
 
 ## Infraestructura
 
@@ -101,8 +103,6 @@ Historia reciente (todo fusionado salvo lo indicado): vista previa y guardado #3
 
 - **Del usuario** (`docs/PENDIENTES.md`): ID de cliente OAuth de Google (W-45), app key de Dropbox (W-46),
   decidir enlace/QR para compartir (W-47), Search Console, restricción de la API key, Hostinger, Play Console.
-- **De código:** W-57 — los enlaces de compartir/recomendar (`toolShareUrl`) apuntan a la página en español;
-  deberían llevar a la del idioma del usuario.
 - **Mantenimiento:** HSTS preload (dic-2026), certificados de Firebase (ene-2027), `security.txt` (antes del 2027-10-16).
 
 ## Trampas conocidas
