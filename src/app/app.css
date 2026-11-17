@@ -311,6 +311,27 @@ p { margin: 0; }
 .reading { font-size: 17px; line-height: 1.75; max-height: 50vh; overflow: auto; padding: 18px; border-radius: 16px; background: var(--paper); white-space: pre-wrap; }
 .reading mark { background: #FEF08A; border-radius: 4px; padding: 0 1px; }
 
+/* Lector por párrafos del Modo Estudio (W-60) */
+.reading-paras { white-space: normal; display: grid; gap: 4px; scroll-padding: 16px; }
+.reading-paras p { margin: 0; border-radius: 12px; transition: background-color 200ms ease; }
+.reading-paras p.is-current { background: var(--blue-soft); }
+.para-btn { all: unset; display: block; box-sizing: border-box; width: 100%; padding: 6px 10px; border-radius: 12px; cursor: pointer; }
+.para-btn:hover { background: color-mix(in srgb, var(--blue-soft) 60%, transparent); }
+.para-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.player { display: grid; gap: 12px; }
+.player.is-sticky { position: sticky; z-index: 5; bottom: 12px; padding: 12px 14px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 10px 30px -12px rgba(15, 23, 42, .25); }
+@media (max-width: 860px) {
+  .player.is-sticky { bottom: calc(84px + env(safe-area-inset-bottom)); }
+  .reading-paras { max-height: 42vh; }
+}
+.player-progress { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
+.progress { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--blue); border-radius: inherit; transition: width 300ms var(--ease-out); }
+.player-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.icon-flip svg { transform: scaleX(-1); }
+.player-speed { max-width: 320px; }
+@media (max-width: 520px) { .player-progress { grid-template-columns: 1fr auto; } .player-progress .progress { grid-column: 1 / -1; grid-row: 2; } }
+
 /* Personajes de voz del Modo Estudio (W-58) */
 .voice-picker { display: grid; gap: 10px; }
 .voice-current { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; background: var(--paper); flex-wrap: wrap; }
