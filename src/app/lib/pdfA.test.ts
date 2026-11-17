@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { PDFArray, PDFDict, PDFDocument, PDFName, PDFNumber, PDFRawStream, PDFRef, StandardFonts, cmyk, decodePDFRawStream, rgb } from 'pdf-lib'
-import { convertToPdfA, isForbiddenAction, planFont, PdfAEncryptedError, srgbIcc, standardFontName, xmpPacket, type PdfAOptions } from './pdfA'
+import { convertToPdfA, isForbiddenAction, planFont, PdfAEncryptedError, srgbIcc, standardFontName, usesCmykOperator, xmpPacket, type PdfAOptions } from './pdfA'
 
 const N = PDFName.of
 const JPG = Uint8Array.from(atob('/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k='), (c) => c.charCodeAt(0))
@@ -70,6 +70,15 @@ describe('piezas', () => {
     expect(planFont(f({ Subtype: 'Type1', BaseFont: 'Times-Roman' }))).toEqual({ status: 'fix', std: 'Times-Roman', encoding: 'standard' })
     expect(planFont(f({ Subtype: 'Type1', BaseFont: 'Symbol' }))).toEqual({ status: 'fix', std: 'Symbol', encoding: 'builtin' })
     expect(planFont(f({ Subtype: 'Type1', BaseFont: 'Helvetica', Encoding: 'MacRomanEncoding' })).status).toBe('broken')
+  })
+
+  it('detecta los operadores de color CMYK', () => {
+    expect(usesCmykOperator('q 0 0.5 1 0 k 10 10 50 50 re f Q')).toBe(true)
+    expect(usesCmykOperator('0 0 0 1 K\n1 w')).toBe(true)
+    expect(usesCmykOperator('q .2 -1 +3 4.5 k Q')).toBe(true)
+    expect(usesCmykOperator('0 0 1 rg BT /F1 12 Tf (k) Tj ET')).toBe(false)
+    expect(usesCmykOperator('1 0 0 k')).toBe(false)
+    expect(usesCmykOperator('/k 1 2 3 4 Tj')).toBe(false)
   })
 
   it('acciones prohibidas, también encadenadas', async () => {

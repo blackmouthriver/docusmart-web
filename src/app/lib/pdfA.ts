@@ -315,7 +315,19 @@ function walk(ctx: PDFContext, start: PDFObject | undefined, visit: (obj: PDFObj
   }
 }
 
-const CMYK_OP = /(?:^|\s)(?:[-+]?(?:\d+\.?\d*|\.\d+)\s+){4}[kK](?=\s|$|[/[(<])/m
+const NUMBER = /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$/
+
+/** ¿El contenido usa los operadores de color CMYK ("c m y k k" / "K")? Recorrido lineal por tokens. */
+export function usesCmykOperator(content: string): boolean {
+  let numbers = 0
+  for (const token of content.split(/[\s[\]()<>/]+/)) {
+    if (token === 'k' || token === 'K') {
+      if (numbers >= 4) return true
+    }
+    numbers = NUMBER.test(token) ? numbers + 1 : 0
+  }
+  return false
+}
 
 function decodeText(s: PDFRawStream): string {
   try {
@@ -351,7 +363,7 @@ function pageProblem(ctx: PDFContext, page: PDFDict, fontPlans: Map<PDFDict, Fon
   }
   if (reason) return reason
   // Streams de contenido: operadores de color CMYK
-  for (const s of contentStreams) if (CMYK_OP.test(decodeText(s))) return 'cmyk'
+  for (const s of contentStreams) if (usesCmykOperator(decodeText(s))) return 'cmyk'
   return null
 }
 

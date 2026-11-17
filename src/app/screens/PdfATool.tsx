@@ -89,7 +89,7 @@ export function PdfATool() {
       setError(e instanceof Error ? e.message : 'No se pudo convertir el archivo.')
       track('app_error', { error_context: 'pdf_tool_pdfa', error_message: e instanceof Error ? e.name : 'error' })
     } finally {
-      if (pdfDoc) (await import('../lib/pdf')).closePdf(pdfDoc)
+      if (pdfDoc) await (await import('../lib/pdf')).closePdf(pdfDoc)
       setBusy(false)
     }
   }
