@@ -370,6 +370,26 @@ p { margin: 0; }
 @media (max-width: 860px) { .doc-page { max-height: 48vh; padding: 8px; } }
 
 /* Personajes de voz del Modo Estudio (W-58) */
+.read-actions { gap: 8px; flex-wrap: wrap; }
+.voice-menu { position: relative; }
+.voice-chip { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px 0 4px; border: 0; border-radius: 99px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; color: var(--ink); cursor: pointer; transition: box-shadow 150ms ease; }
+.voice-chip:hover:not(:disabled) { box-shadow: 0 0 0 1px var(--line-strong) inset; }
+.voice-chip[aria-expanded="true"] { box-shadow: 0 0 0 2px var(--blue) inset; }
+.voice-chip:disabled { opacity: .6; cursor: default; }
+.voice-chip-text { display: grid; line-height: 1.1; text-align: left; }
+.voice-chip-text b { font-size: 14px; }
+.voice-chip-text small { font-size: 11.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.voice-chip-empty { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); }
+.voice-chip-empty svg, .voice-chip-caret svg { width: 16px; height: 16px; }
+.voice-chip-caret { display: grid; color: var(--ink-faint); }
+.voice-chip-caret svg { transform: rotate(-90deg); transition: transform 200ms var(--ease-out); }
+.voice-chip[aria-expanded="true"] .voice-chip-caret svg { transform: rotate(90deg); }
+.voice-pop { position: absolute; z-index: 30; top: calc(100% + 8px); right: 0; width: min(380px, calc(100vw - 32px)); max-height: min(70vh, 560px); overflow: auto; display: grid; gap: 12px; padding: 14px; border-radius: 20px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 24px 48px -20px rgba(15, 23, 42, .4); animation: pop-in 180ms var(--ease-out); transform-origin: top right; }
+.voice-pop .voice-list { max-height: 260px; }
+@keyframes pop-in { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
+@media (max-width: 560px) {
+  .voice-pop { position: fixed; left: 16px; right: 16px; top: auto; bottom: calc(92px + env(safe-area-inset-bottom)); width: auto; transform-origin: bottom center; }
+}
 .voice-picker { display: grid; gap: 10px; }
 .voice-current { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; background: var(--paper); flex-wrap: wrap; }
 .voice-current .voice-text { flex: 1 1 140px; }

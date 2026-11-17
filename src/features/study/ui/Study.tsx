@@ -132,6 +132,8 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
 
   const chooseVoice = (uri: string) => {
     setVoiceURI(uri)
+    // Con la lectura en marcha, el trozo actual se repite con la voz nueva.
+    if (state === 'playing') speak(pos, rate, uri)
     try {
       localStorage.setItem(VOICE_KEY, uri)
     } catch {
@@ -139,13 +141,13 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     }
   }
 
-  const speak = (at: Pos, speed = rate) => {
+  const speak = (at: Pos, speed = rate, uri = voiceURI) => {
     const id = ++run.current
     speechSynthesis.cancel()
     const chunk = paragraphs[at.p]?.chunks[at.c]
     if (!chunk) return
     const u = new SpeechSynthesisUtterance(chunk)
-    const voice = voices.find((v) => v.voiceURI === voiceURI) ?? defaultVoice(voices, uiLang)
+    const voice = voices.find((v) => v.voiceURI === uri) ?? defaultVoice(voices, uiLang)
     if (voice) {
       u.voice = voice
       u.lang = voice.lang
@@ -154,7 +156,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     u.onend = () => {
       if (id !== run.current) return
       const next = nextPosition(paragraphs, at.p, at.c)
-      if (next) speak(next, speed)
+      if (next) speak(next, speed, uri)
       else {
         setState('idle')
         setFinished(true)
@@ -270,7 +272,8 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
     <div className="card stack">
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <h3>{tr('study.readAloud')}</h3>
-        <div className="row" style={{ gap: 8 }}>
+        <div className="row read-actions">
+          <VoiceMenu voices={voices} value={voiceURI} onChange={chooseVoice} rate={rate} onRate={changeRate} playing={state === 'playing'} />
           {view === 'read' && (
             <button type="button" className="btn btn-outline btn-sm" onClick={edit}>
               <Icon name="edit" /> {tr('study.editText')}
@@ -316,8 +319,6 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
         paragraphList
       )}
 
-      <VoicePicker voices={voices} value={voiceURI} onChange={chooseVoice} disabled={state === 'playing'} />
-
       {finished && (
         <Notice kind="success">
           {tr('study.finished')}{' '}
@@ -353,10 +354,6 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
           </button>
           {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('study.stop')}</button>}
         </div>
-        <label className="field player-speed">
-          <span>{tr('study.speed', { n: rate.toFixed(1) })}</span>
-          <input type="range" min={0.6} max={1.8} step={0.1} value={rate} onChange={(e) => changeRate(Number(e.target.value))} />
-        </label>
         {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
       </div>
     </div>
@@ -424,16 +421,35 @@ function VoiceAvatar({ persona, size }: { persona: VoicePersona; size: number })
   return <img className="voice-avatar" src={personaAvatar(persona)} alt="" width={size} height={size} style={{ borderColor: persona.color }} />
 }
 
-function VoicePicker({ voices, value, onChange, disabled }: { voices: SpeechSynthesisVoice[]; value: string; onChange: (uri: string) => void; disabled: boolean }) {
+/** Avatar de la voz en la cabecera de Lectura: al tocarlo se despliega un panel para elegir voz y velocidad. */
+function VoiceMenu({ voices, value, onChange, rate, onRate, playing }: { voices: SpeechSynthesisVoice[]; value: string; onChange: (uri: string) => void; rate: number; onRate: (r: number) => void; playing: boolean }) {
   const { lang } = useT()
   const [open, setOpen] = useState(false)
   const [all, setAll] = useState(false)
   const [previewing, setPreviewing] = useState('')
+  const box = useRef<HTMLDivElement>(null)
   const shown = useMemo(() => shownVoices(voices, lang, all), [voices, lang, all])
   const personas = useMemo(() => personasForVoices(shown.map((v) => ({ id: v.voiceURI, feminine: guessFeminine(v.name) }))), [shown])
   const selected = voices.find((v) => v.voiceURI === value) ?? shown[0]
   // La voz guardada puede no estar en la lista visible (otro idioma): su personaje se calcula aparte.
   const selectedPersona = selected && (personas.get(selected.voiceURI) ?? personasForVoices([{ id: selected.voiceURI, feminine: guessFeminine(selected.name) }]).get(selected.voiceURI))
+
+  // Se cierra al tocar fuera o con Esc.
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: PointerEvent) => {
+      if (!box.current?.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('pointerdown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
 
   const detail = (v: SpeechSynthesisVoice) => `${languageName(v.lang, lang)}${v.localService ? '' : ` · ${tr('study.voiceOnline')}`}`
 
@@ -442,54 +458,74 @@ function VoicePicker({ voices, value, onChange, disabled }: { voices: SpeechSynt
     const u = new SpeechSynthesisUtterance(tr('study.voiceSample', { name: persona.name }))
     u.voice = v
     u.lang = v.lang
+    u.rate = rate
     u.onend = () => setPreviewing('')
     u.onerror = () => setPreviewing('')
     setPreviewing(v.voiceURI)
     speechSynthesis.speak(u)
   }
 
-  if (!voices.length) return <p className="faint">{tr('study.noVoices')}</p>
-  if (!selected || !selectedPersona) return null
+  if (!voices.length || !selected || !selectedPersona) {
+    return (
+      <button type="button" className="voice-chip" disabled title={tr('study.noVoices')}>
+        <span className="voice-chip-empty"><Icon name="volume" /></span>
+        <span className="voice-chip-text"><b>{tr('study.voice')}</b></span>
+      </button>
+    )
+  }
 
   return (
-    <div className="voice-picker">
-      <div className="voice-current">
-        <VoiceAvatar persona={selectedPersona} size={56} />
-        <div className="voice-text">
-          <span className="faint">{tr('study.voice')}</span>
+    <div className="voice-menu" ref={box}>
+      <button type="button" className="voice-chip" aria-expanded={open} aria-haspopup="dialog" aria-label={`${tr('study.voiceSettings')}: ${selectedPersona.name}, ${rate.toFixed(1)}×`} onClick={() => setOpen((o) => !o)}>
+        <VoiceAvatar persona={selectedPersona} size={32} />
+        <span className="voice-chip-text">
           <b>{selectedPersona.name}</b>
-          <span className="faint">{detail(selected)}</span>
-        </div>
-        <button type="button" className="btn btn-soft btn-sm" aria-expanded={open} disabled={disabled} onClick={() => setOpen((o) => !o)}>
-          {open ? tr('study.doneChoosing') : tr('study.changeVoice')}
-        </button>
-      </div>
-      {open && !disabled && (
-        <div className="voice-list" role="radiogroup" aria-label={tr('study.chooseVoice')}>
-          {shown.map((v) => {
-            const p = personas.get(v.voiceURI)
-            if (!p) return null
-            const isSel = v.voiceURI === selected.voiceURI
-            return (
-              <div key={v.voiceURI} className={'voice-row' + (isSel ? ' is-selected' : '')}>
-                <label className="voice-choice">
-                  <input type="radio" name="study-voice" checked={isSel} onChange={() => onChange(v.voiceURI)} />
-                  <VoiceAvatar persona={p} size={40} />
-                  <span className="voice-text">
-                    <b>{p.name}</b>
-                    <span className="faint" title={v.name}>{detail(v)}</span>
-                  </span>
-                </label>
-                <button type="button" className="icon-btn" aria-label={`${tr('study.voicePreview')}: ${p.name}`} disabled={previewing === v.voiceURI} onClick={() => preview(v, p)}>
-                  <Icon name={previewing === v.voiceURI ? 'volume' : 'play'} />
-                </button>
-              </div>
-            )
-          })}
-          <label className="voice-all faint">
-            <input type="checkbox" checked={all} onChange={(e) => setAll(e.target.checked)} />
-            {tr('study.allVoices')}
+          <small>{rate.toFixed(1)}×</small>
+        </span>
+        <span className="voice-chip-caret" aria-hidden="true"><Icon name="back" /></span>
+      </button>
+      {open && (
+        <div className="voice-pop" role="dialog" aria-label={tr('study.voiceSettings')}>
+          <div className="voice-current">
+            <VoiceAvatar persona={selectedPersona} size={56} />
+            <div className="voice-text">
+              <span className="faint">{tr('study.voice')}</span>
+              <b>{selectedPersona.name}</b>
+              <span className="faint">{detail(selected)}</span>
+            </div>
+          </div>
+          <label className="field">
+            <span>{tr('study.speed', { n: rate.toFixed(1) })}</span>
+            <input type="range" min={0.6} max={1.8} step={0.1} value={rate} onChange={(e) => onRate(Number(e.target.value))} />
           </label>
+          <div className="voice-list" role="radiogroup" aria-label={tr('study.chooseVoice')}>
+            {shown.map((v) => {
+              const p = personas.get(v.voiceURI)
+              if (!p) return null
+              const isSel = v.voiceURI === selected.voiceURI
+              return (
+                <div key={v.voiceURI} className={'voice-row' + (isSel ? ' is-selected' : '')}>
+                  <label className="voice-choice">
+                    <input type="radio" name="study-voice" checked={isSel} onChange={() => onChange(v.voiceURI)} />
+                    <VoiceAvatar persona={p} size={40} />
+                    <span className="voice-text">
+                      <b>{p.name}</b>
+                      <span className="faint" title={v.name}>{detail(v)}</span>
+                    </span>
+                  </label>
+                  {/* Con la lectura en marcha no hay muestra: cortaría la lectura. */}
+                  <button type="button" className="icon-btn" aria-label={`${tr('study.voicePreview')}: ${p.name}`} disabled={playing || previewing === v.voiceURI} onClick={() => preview(v, p)}>
+                    <Icon name={previewing === v.voiceURI ? 'volume' : 'play'} />
+                  </button>
+                </div>
+              )
+            })}
+            <label className="voice-all faint">
+              <input type="checkbox" checked={all} onChange={(e) => setAll(e.target.checked)} />
+              {tr('study.allVoices')}
+            </label>
+          </div>
+          <button type="button" className="btn btn-primary btn-sm" onClick={() => setOpen(false)}>{tr('study.doneChoosing')}</button>
         </div>
       )}
     </div>
