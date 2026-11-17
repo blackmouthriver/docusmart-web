@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { appShareLinks, canShareFile, docSummary, feedbackMailto, resultFile, shareFile, sizeChange, toolShareUrl } from '../../../../src/shared/files/share'
+import { appShareLinks, canShareFile, docSummary, feedbackMailto, resultFile, shareFile, sizeChange, toolShareUrl, TOOL_PAGES } from '../../../../src/shared/files/share'
+import { LANGS } from '../../../../src/shared/i18n/languages'
 import { formatBytes } from '../../../../src/shared/files/files'
 
 describe('resultFile', () => {
@@ -77,4 +78,23 @@ it('agrupa varios resultados en un ZIP (uno solo va tal cual)', async () => {
   const entries = unzipSync(new Uint8Array(await zip.arrayBuffer()))
   expect(Object.keys(entries)).toEqual(['a.pdf', 'a-2.pdf'])
   expect([...entries['a-2.pdf']]).toEqual([2, 3])
+})
+
+it('toolShareUrl lleva a la página de la herramienta en el idioma del usuario', () => {
+  expect(toolShareUrl('merge', 'en')).toBe('https://docusmart.online/en/merge-pdf')
+  expect(toolShareUrl('compress', 'es')).toBe('https://docusmart.online/comprimir-pdf')
+  expect(toolShareUrl('merge', 'ja')).toMatch(/^https:\/\/docusmart\.online\/ja\/[a-z0-9-]+$/)
+  // Sin página pública: la app web, en cualquier idioma.
+  expect(toolShareUrl('number_pages', 'fr')).toBe('https://docusmart.online/app')
+})
+
+it('toda herramienta con página tiene su slug en cada idioma', () => {
+  for (const tool of Object.keys(TOOL_PAGES)) {
+    for (const { code } of LANGS) {
+      const url = toolShareUrl(tool, code)
+      const expected = code === 'es' ? `https://docusmart.online/${TOOL_PAGES[tool]}` : new RegExp(`^https://docusmart\.online/${code}/[a-z0-9-]+$`)
+      if (typeof expected === 'string') expect(url).toBe(expected)
+      else expect(url, `${tool} en ${code}`).toMatch(expected)
+    }
+  }
 })

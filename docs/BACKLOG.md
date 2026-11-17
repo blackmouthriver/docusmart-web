@@ -131,7 +131,7 @@ Objetivo: la web en los **12 idiomas de la app** (español, inglés, portugués,
 | W-55c | Las mismas páginas en **alemán, catalán y euskera** (`/de/`, `/ca/`, `/eu/`) | 🤖 | Hecho (PR #45, 2026-11-17) |
 | W-55d | Las mismas páginas en **ruso, japonés, coreano y chino** (slugs en inglés) | 🤖 | Hecho (PR #46, 2026-11-17) |
 | W-56 | Textos que van **dentro de los archivos** generados (numeración "Página N", informes) en el idioma elegido | 🤖 | Hecho (PR #47, 2026-11-17) |
-| W-57 | Los enlaces de **compartir/recomendar** (`toolShareUrl`) apuntan a la página en español; que lleven a la del idioma del usuario (`/en/merge-pdf`…) | 🤖 | Pendiente |
+| W-57 | Los enlaces de **compartir/recomendar** (`toolShareUrl`) apuntan a la página en español; que lleven a la del idioma del usuario (`/en/merge-pdf`…) | 🤖 | En revisión |
 
 ## Mantenimiento y limpieza
 

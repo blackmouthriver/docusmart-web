@@ -101,7 +101,6 @@ export function CompressTool() {
           toolName="compress"
           title={tr('compress.title')}
           previewTitle={tr('common.previewPdf')}
-          shareUrl="https://docusmart.online/comprimir-pdf"
           placeholder={busy ? tr('compress.busy') : tr('compress.placeholder')}
           summary={
             result && (

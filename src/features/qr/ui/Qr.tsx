@@ -5,7 +5,7 @@ import { useApp } from '../../../app/state'
 import { Icon } from '../../../shared/ui/Icon'
 import { BusyButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
 import { SaveOptions, ShareApp } from '../../../shared/ui/DocPreview'
-import { resultFile, toolShareUrl } from '../../../shared/files/share'
+import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -86,7 +86,7 @@ export function CreateQr() {
       {qrFile && (
         <>
           <SaveOptions file={qrFile} toolName="qr" />
-          <ShareApp url={toolShareUrl('qr')} toolName="qr" />
+          <ShareApp toolName="qr" />
         </>
       )}
     </section>
