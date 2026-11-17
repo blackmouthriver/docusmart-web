@@ -9,7 +9,7 @@ import { SaveOptions, ShareApp } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
 import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, isPlainScheme, parseContact, parseEvent, parseWifi, phoneNumber, safeLink, type QrForm, type QrKind, type ReadType } from '../core/qrContent'
-import { download } from '../../../shared/files/files'
+import { download, isOwnBlobUrl, safeMimeType } from '../../../shared/files/files'
 import { QR_COLORS, QR_SIZES, errorLevels, hasSufficientContrast, logoBox, type QrColorId, type QrSize } from '../core/qrDesign'
 import { useT } from '../../../shared/i18n/I18n'
 import { track } from '../../../shared/platform/analytics'
@@ -143,8 +143,9 @@ export function CreateQr() {
   const lowContrast = !hasSufficientContrast(hex)
   useEffect(() => {
     if (!logo) return setLogoUrl('')
-    const url = URL.createObjectURL(logo)
-    setLogoUrl(url)
+    // Se re-empaqueta con un tipo de imagen y se comprueba que la URL sea del propio sitio.
+    const url = URL.createObjectURL(new Blob([logo], { type: safeMimeType(logo.type).startsWith('image/') ? logo.type : 'image/png' }))
+    setLogoUrl(isOwnBlobUrl(url) ? url : '')
     return () => URL.revokeObjectURL(url)
   }, [logo])
   const pickLogo = async (file: File | undefined) => {
