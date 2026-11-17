@@ -1,9 +1,10 @@
 // Extraer imágenes: saca las fotos y gráficos incrustados en un PDF con su calidad original.
-import { useEffect, useState } from 'react'
-import { useApp } from '../state'
+import { useEffect, useMemo, useState } from 'react'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../components/ui'
-import { baseName, download, downloadMany, formatBytes } from '../lib/files'
+import { baseName, download, formatBytes } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { bundleFiles, resultFile } from '../lib/share'
 import type { ExtractResult } from '../lib/pdfImages'
 import { track } from '../../shared/analytics'
 
@@ -11,7 +12,6 @@ type Item = ExtractResult['images'][number] & { url: string; name: string }
 const MIN_SIZE = 40
 
 export function ExtractImagesTool() {
-  const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
   const [skipSmall, setSkipSmall] = useState(true)
   const [busy, setBusy] = useState(false)
@@ -56,6 +56,20 @@ export function ExtractImagesTool() {
   }
 
   const chosen = items?.filter((_, i) => selected.has(i)) ?? []
+  /** Las imágenes elegidas como archivos, y lo que se guarda (la imagen o un ZIP). */
+  const chosenFiles = useMemo(
+    () => (items ?? []).filter((_, i) => selected.has(i)).map((img) => resultFile(img.data, img.name, img.format === 'jpg' ? 'image/jpeg' : 'image/png')),
+    [items, selected],
+  )
+  const [bundle, setBundle] = useState<File | null>(null)
+  useEffect(() => {
+    let alive = true
+    setBundle(null)
+    void bundleFiles(chosenFiles, `${file ? baseName(file.name) : 'pdf'}-imagenes.zip`).then((b) => alive && setBundle(b))
+    return () => {
+      alive = false
+    }
+  }, [chosenFiles, file])
   const toggle = (i: number) =>
     setSelected((s) => {
       const n = new Set(s)
@@ -79,6 +93,24 @@ export function ExtractImagesTool() {
           <span>Omitir imágenes pequeñas (íconos, viñetas y adornos de menos de {MIN_SIZE} px)</span>
         </label>
         <small className="faint">Las fotos JPEG salen idénticas a las originales; las demás, como PNG sin pérdida.</small>
+        {file && (
+          <BeforeAfter
+            original={file}
+            result={null}
+            results={items ? chosenFiles : undefined}
+            saveAs={bundle}
+            labels={['Tu PDF', 'Imágenes']}
+            toolName="extract_images"
+            title="Estas son las imágenes de tu PDF"
+            previewTitle="Vista previa de tu PDF"
+            placeholder={busy ? 'Buscando imágenes…' : items && !items.length ? 'No se encontraron imágenes' : 'Pulsa Buscar imágenes'}
+            summary={
+              <Notice kind="success">
+                {chosenFiles.length === 1 ? 'Se guardará 1 imagen.' : `Se guardarán ${chosenFiles.length} imágenes en un ZIP.`} Abajo puedes elegir cuáles.
+              </Notice>
+            }
+          />
+        )}
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
           <BusyButton busy={busy} disabled={!file} onClick={run} icon="image">
@@ -97,17 +129,7 @@ export function ExtractImagesTool() {
                   <button type="button" className="btn btn-ghost btn-sm" onClick={() => setSelected(selected.size === items.length ? new Set() : new Set(items.map((_, i) => i)))}>
                     {selected.size === items.length ? 'Quitar selección' : 'Seleccionar todas'}
                   </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
-                    disabled={!chosen.length}
-                    onClick={async () => {
-                      await downloadMany(chosen.map((i) => ({ name: i.name, data: i.data })), `${baseName(file!.name)}-imagenes.zip`)
-                      toast(chosen.length === 1 ? 'Imagen descargada.' : `${chosen.length} imágenes descargadas en un ZIP.`)
-                    }}
-                  >
-                    <Icon name="download" /> {chosen.length > 1 ? `Descargar ${chosen.length} (ZIP)` : 'Descargar'}
-                  </button>
+                  <span className="faint">{chosen.length} elegidas</span>
                 </div>
               </div>
               <div className="img-grid">

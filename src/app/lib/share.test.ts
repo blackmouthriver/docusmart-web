@@ -64,3 +64,17 @@ it('página pública de cada herramienta', () => {
   expect(toolShareUrl('form')).toBe('https://docusmart.online/llenar-formulario-pdf')
   expect(toolShareUrl('number_pages')).toBe('https://docusmart.online/app')
 })
+
+it('agrupa varios resultados en un ZIP (uno solo va tal cual)', async () => {
+  const { unzipSync } = await import('fflate')
+  const { bundleFiles } = await import('./share')
+  const a = resultFile(new Uint8Array([1]), 'a.pdf', 'application/pdf')
+  const b = resultFile(new Uint8Array([2, 3]), 'a.pdf', 'application/pdf')
+  expect(await bundleFiles([], 'x.zip')).toBeNull()
+  expect(await bundleFiles([a], 'x.zip')).toBe(a)
+  const zip = (await bundleFiles([a, b], 'todo.zip'))!
+  expect([zip.name, zip.type]).toEqual(['todo.zip', 'application/zip'])
+  const entries = unzipSync(new Uint8Array(await zip.arrayBuffer()))
+  expect(Object.keys(entries)).toEqual(['a.pdf', 'a-2.pdf'])
+  expect([...entries['a-2.pdf']]).toEqual([2, 3])
+})

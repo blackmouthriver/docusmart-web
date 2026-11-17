@@ -3,6 +3,7 @@
  * en el celular abre WhatsApp, Drive, Gmail, Telegram… sin subir el archivo a
  * ningún servidor de DocuSmart.
  */
+import { zipSync } from 'fflate'
 import { safeFilename, safeMimeType } from './files'
 
 export type ShareOutcome = 'shared' | 'cancelled' | 'unsupported'
@@ -89,3 +90,16 @@ const TOOL_PAGES: Record<string, string> = {
   pdfa: 'pdf-a-pdfa',
 }
 export const toolShareUrl = (tool: string) => `${SITE_URL}/${TOOL_PAGES[tool] ?? 'app'}`
+
+/** Varios resultados en uno para guardar: el archivo tal cual si es uno solo, o un ZIP. */
+export async function bundleFiles(files: File[], zipName: string): Promise<File | null> {
+  if (!files.length) return null
+  if (files.length === 1) return files[0]
+  const entries: Record<string, Uint8Array> = {}
+  for (const f of files) {
+    let name = f.name
+    for (let n = 2; name in entries; n++) name = f.name.replace(/(\.[^.]+)?$/, `-${n}$1`)
+    entries[name] = new Uint8Array(await f.arrayBuffer())
+  }
+  return resultFile(zipSync(entries, { level: 0 }), zipName, 'application/zip')
+}
