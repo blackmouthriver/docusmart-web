@@ -1,9 +1,10 @@
 // Comparar PDF: qué cambió entre dos versiones de un documento.
-import { useState } from 'react'
-import { useApp } from '../state'
+import { useMemo, useState } from 'react'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../components/ui'
-import { baseName, download } from '../lib/files'
+import { baseName } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import { compareTexts, reportText, type Comparison } from '../lib/pdfCompare'
 import { track } from '../../shared/analytics'
 
@@ -13,13 +14,17 @@ type Result = Comparison & { nameA: string; nameB: string; pagesA: number; pages
 const PAGE_SIZE = 30
 
 export function CompareTool() {
-  const { toast } = useApp()
   const [fileA, setFileA] = useState<File | null>(null)
   const [fileB, setFileB] = useState<File | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<Result | null>(null)
   const [shown, setShown] = useState(PAGE_SIZE)
+  /** Lo que se guarda: el informe de cambios (si hay cambios). */
+  const report = useMemo(
+    () => (result && !result.identical ? resultFile(new Blob([reportText(result, result.nameA, result.nameB)], { type: 'text/plain;charset=utf-8' }), `comparacion-${baseName(result.nameA)}.txt`, 'text/plain;charset=utf-8') : null),
+    [result],
+  )
 
   const pick = (set: (f: File | null) => void) => (f: File | null) => {
     set(f)
@@ -86,22 +91,24 @@ export function CompareTool() {
         </div>
       </div>
 
+      {result && fileA && fileB && (
+        <div className="card">
+          <BeforeAfter
+            original={fileA}
+            result={fileB}
+            saveAs={report}
+            labels={['Original', 'Nueva versión']}
+            toolName="compare"
+            title="Así se comparan tus dos versiones"
+            summary={report ? <Notice kind="info">Abajo están los cambios marcados. Puedes guardar el informe de cambios (.txt).</Notice> : undefined}
+          />
+        </div>
+      )}
+
       {result && (
         <div className="card stack" aria-live="polite">
           <div className="row" style={{ justifyContent: 'space-between' }}>
             <h3>{result.tooDifferent ? 'Son documentos muy distintos' : result.identical ? 'El texto es igual' : `${result.hunks.length} ${result.hunks.length === 1 ? 'cambio' : 'cambios'}`}</h3>
-            {!result.identical && (
-              <button
-                type="button"
-                className="btn btn-soft btn-sm"
-                onClick={() => {
-                  download(new Blob([reportText(result, result.nameA, result.nameB)], { type: 'text/plain;charset=utf-8' }), `comparacion-${baseName(result.nameA)}.txt`)
-                  toast('Informe descargado.')
-                }}
-              >
-                <Icon name="download" /> Informe .txt
-              </button>
-            )}
           </div>
           {result.tooDifferent ? (
             <p className="muted">Casi todo el texto cambió, así que no tiene sentido marcarlo palabra por palabra. Revisa que hayas elegido dos versiones del mismo documento.</p>

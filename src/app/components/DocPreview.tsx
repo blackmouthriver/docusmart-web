@@ -227,14 +227,68 @@ export function ShareApp({ url = SITE_URL, toolName }: { url?: string; toolName:
   )
 }
 
+/** Miniaturas de varios archivos (los PDF de Unir, las páginas separadas, las imágenes extraídas). */
+function FileTiles({ files, label, max = 12 }: { files: File[]; label: string; max?: number }) {
+  const total = files.reduce((n, f) => n + f.size, 0)
+  return (
+    <figure className="doc-preview">
+      <figcaption className="doc-preview-meta">
+        <b>{label}</b>
+        <span className="faint">
+          {files.length === 1 ? '1 archivo' : `${files.length} archivos`} · {formatBytes(total)}
+        </span>
+      </figcaption>
+      <div className="doc-preview-stage file-tiles-stage">
+        <ul className="file-tiles">
+          {files.slice(0, max).map((f, i) => (
+            <li key={`${f.name}-${i}`}>
+              <FileThumb file={f} />
+              <span title={f.name}>{f.name}</span>
+            </li>
+          ))}
+        </ul>
+        {files.length > max && <small className="faint">y {files.length - max} más</small>}
+      </div>
+    </figure>
+  )
+}
+
+function FileThumb({ file }: { file: File }) {
+  return file.type.startsWith('image/') ? <ImageThumb file={file} /> : <PdfThumb file={file} />
+}
+
+function ImageThumb({ file }: { file: File }) {
+  const [url, setUrl] = useState<string | null>(null)
+  useEffect(() => {
+    const u = URL.createObjectURL(new Blob([file], { type: safeMimeType(file.type).startsWith('image/') ? file.type : 'image/png' }))
+    setUrl(isOwnBlobUrl(u) ? u : null)
+    return () => URL.revokeObjectURL(u)
+  }, [file])
+  return url ? <img src={url} alt="" loading="lazy" /> : <span className="spinner" aria-hidden="true" />
+}
+
+function PdfThumb({ file }: { file: File }) {
+  const { preview, error } = usePdfPreview(file, 220)
+  if (error) return <span className="faint">PDF</span>
+  return preview ? <img src={preview.url} alt="" /> : <span className="spinner" aria-hidden="true" />
+}
+
 /**
  * El archivo del usuario ("Antes") y, cuando la herramienta termina, el resultado
  * ("Después") al lado, en la misma fila. Un solo control de páginas mueve los dos.
  * Debajo, el resumen, las opciones para guardar y la invitación a recomendar la app.
+ *
+ * Con varios archivos: `originals` (entradas, p. ej. Unir) o `results` (salidas,
+ * p. ej. páginas separadas) se muestran como miniaturas, y `saveAs` es lo que se
+ * guarda (un ZIP, un informe…). Si no se indica, se guarda `result`.
  */
 export function BeforeAfter({
   original,
+  originals,
   result,
+  results,
+  saveAs,
+  labels = ['Antes', 'Después'],
   summary,
   toolName,
   title,
@@ -244,8 +298,12 @@ export function BeforeAfter({
   resultPassword,
   originalPassword,
 }: {
-  original: Blob
+  original?: Blob
+  originals?: File[]
   result: File | null
+  results?: File[]
+  saveAs?: File | null
+  labels?: [string, string]
   summary?: ReactNode
   toolName: string
   /** Título con el resultado, propio de la herramienta ("Así quedó tu PDF comprimido"). */
@@ -263,36 +321,47 @@ export function BeforeAfter({
   const [pagesBefore, setPagesBefore] = useState(0)
   const [pagesAfter, setPagesAfter] = useState(0)
   const ref = useRef<HTMLElement>(null)
+  const done = !!(result || results?.length)
+  const toSave = saveAs === undefined ? result : saveAs
 
   // Otro archivo: vuelve a la primera página.
   useEffect(() => {
     setPage(1)
     setPagesBefore(0)
-  }, [original])
+  }, [original, originals])
   useEffect(() => {
-    if (!result) {
+    if (!done) {
       setPagesAfter(0)
       return
     }
     // Al aparecer el resultado, la comparación se lleva a la vista.
     const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
     ref.current?.scrollIntoView?.({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
-  }, [result])
+  }, [done, result, results])
+
+  // El control de páginas solo cuenta las vistas de un solo documento.
+  const navPages = Math.max(originals ? 0 : pagesBefore, results ? 0 : pagesAfter)
 
   return (
-    <section ref={ref} className="compare-panel stack" aria-label={result ? title : previewTitle}>
+    <section ref={ref} className="compare-panel stack" aria-label={done ? title : previewTitle}>
       <div className="compare-head">
-        <h3>{result ? title : previewTitle}</h3>
-        <PageNav pageNo={page} pages={Math.max(pagesBefore, pagesAfter)} onChange={setPage} />
+        <h3>{done ? title : previewTitle}</h3>
+        <PageNav pageNo={page} pages={navPages} onChange={setPage} />
       </div>
       <div className="before-after">
-        <DocPreview source={original} page={page} label="Antes" onPages={setPagesBefore} password={originalPassword} />
-        {result ? (
-          <DocPreview source={result} page={page} label="Después" onPages={setPagesAfter} password={resultPassword} />
+        {originals ? (
+          <FileTiles files={originals} label={labels[0]} />
+        ) : original ? (
+          <DocPreview source={original} page={page} label={labels[0]} onPages={setPagesBefore} password={originalPassword} />
+        ) : null}
+        {results?.length ? (
+          <FileTiles files={results} label={labels[1]} />
+        ) : result ? (
+          <DocPreview source={result} page={page} label={labels[1]} onPages={setPagesAfter} password={resultPassword} />
         ) : (
           <figure className="doc-preview">
             <figcaption className="doc-preview-meta">
-              <b>Después</b>
+              <b>{labels[1]}</b>
             </figcaption>
             <div className="doc-preview-stage doc-placeholder">
               <span className="faint">{placeholder}</span>
@@ -300,9 +369,9 @@ export function BeforeAfter({
           </figure>
         )}
       </div>
-      {result && summary}
-      {result && <SaveOptions file={result} toolName={toolName} />}
-      {result && <ShareApp url={shareUrl ?? toolShareUrl(toolName)} toolName={toolName} />}
+      {done && summary}
+      {done && toSave && <SaveOptions file={toSave} toolName={toolName} />}
+      {done && <ShareApp url={shareUrl ?? toolShareUrl(toolName)} toolName={toolName} />}
     </section>
   )
 }

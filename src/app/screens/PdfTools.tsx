@@ -2,7 +2,7 @@ import { useEffect, useState, type ComponentType } from 'react'
 import { go, useApp } from '../state'
 import { Icon, type IconName } from '../components/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Segmented, errorMessage } from '../components/ui'
-import { baseName, download, downloadMany, parsePageRanges } from '../lib/files'
+import { baseName, parsePageRanges } from '../lib/files'
 import { closePdf, openPdf, renderPage } from '../lib/pdf'
 import { extractPages, merge, numberPages, rotate, splitEach, watermark } from '../lib/pdfTools'
 import { track } from '../../shared/analytics'
@@ -18,7 +18,7 @@ import { FormTool } from './FormTool'
 import { ScanTool } from './ScanTool'
 import { PdfATool } from './PdfATool'
 import { BeforeAfter } from '../components/DocPreview'
-import { resultFile } from '../lib/share'
+import { bundleFiles, resultFile } from '../lib/share'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'editar', name: 'Editar PDF', desc: 'Agrega texto, imágenes, formas y resaltado', icon: 'edit', cls: 'ico-blue' },
@@ -130,6 +130,9 @@ function useRun(toolName: string) {
 export function MergeTool() {
   const [files, setFiles] = useState<File[]>([])
   const { busy, error, run } = useRun('merge')
+  const [output, setOutput] = useState<File | null>(null)
+  // Agregar, quitar u ordenar los PDF invalida el resultado anterior.
+  useEffect(() => setOutput(null), [files])
   const move = (i: number, j: number) =>
     setFiles((p) => {
       const c = p.slice()
@@ -166,13 +169,24 @@ export function MergeTool() {
           onClick={() =>
             run(async () => {
               const out = await merge(await Promise.all(files.map((f) => f.arrayBuffer())))
-              download(out, `${baseName(files[0].name)}-unido.pdf`, 'application/pdf')
-            })
+              setOutput(resultFile(out, `${baseName(files[0].name)}-unido.pdf`, PDF_TYPE))
+            }, 'Listo. Revisa el resultado y guárdalo.')
           }
         >
           {files.length < 2 ? 'Selecciona al menos 2 PDFs' : `Unir ${files.length} PDFs`}
         </BusyButton>
       </div>
+      {files.length > 0 && (
+        <BeforeAfter
+          originals={files}
+          result={output}
+          labels={['Los PDF', 'Unido']}
+          toolName="merge"
+          title="Así quedó tu PDF unido"
+          previewTitle="Los PDF que vas a unir"
+          placeholder={busy ? 'Uniendo…' : files.length < 2 ? 'Agrega al menos otro PDF' : `Pulsa Unir ${files.length} PDFs`}
+        />
+      )}
     </div>
   )
 }
@@ -224,16 +238,20 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   const [mark, setMark] = useState('CONFIDENCIAL')
   /** Resultado listo para ver y guardar (ya no se descarga solo). */
   const [output, setOutput] = useState<File | null>(null)
+  /** Dividir "cada página por separado": los PDF de cada página y el ZIP para guardarlos. */
+  const [parts, setParts] = useState<{ files: File[]; zip: File | null } | null>(null)
 
   const count = thumbs.length
   const withThumbs = toolId === 'dividir' || toolId === 'rotar' || toolId === 'reordenar'
-  const splitEachMode = toolId === 'dividir' && splitMode === 'each'
   useEffect(() => {
     setSelected(new Set())
     setRange('')
   }, [file])
   // Cualquier cambio de archivo u opciones invalida el resultado anterior.
-  useEffect(() => setOutput(null), [file, splitMode, range, selected, rotations, order, position, format, mark])
+  useEffect(() => {
+    setOutput(null)
+    setParts(null)
+  }, [file, splitMode, range, selected, rotations, order, position, format, mark])
   useEffect(() => {
     setRotations(Array(count).fill(0))
     setOrder([...Array(count).keys()])
@@ -253,8 +271,8 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
             label: `Separar ${count} páginas`,
             disabled: count < 2,
             go: async () => {
-              const parts = await splitEach(await bytes())
-              await downloadMany(parts.map((d, i) => ({ name: `${name}-pagina-${i + 1}.pdf`, data: d })), `${name}-paginas.zip`)
+              const files = (await splitEach(await bytes())).map((d, i) => resultFile(d, `${name}-pagina-${i + 1}.pdf`, PDF_TYPE))
+              setParts({ files, zip: await bundleFiles(files, `${name}-paginas.zip`) })
             },
           }
         : {
@@ -409,11 +427,22 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
 
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={action.disabled} onClick={() => run(action.go, splitEachMode ? undefined : 'Listo. Revisa el resultado y guárdalo.')} icon={splitEachMode ? 'download' : 'check'}>
+        <BusyButton busy={busy} disabled={action.disabled} onClick={() => run(action.go, 'Listo. Revisa el resultado y guárdalo.')} icon="check">
           {action.label}
         </BusyButton>
       </div>
       {withThumbs && output && <BeforeAfter original={file} result={output} toolName={trackName} title={TITLES[toolId]} />}
+      {parts && (
+        <BeforeAfter
+          original={file}
+          result={null}
+          results={parts.files}
+          saveAs={parts.zip}
+          toolName={trackName}
+          title="Así quedaron las páginas separadas"
+          summary={<Notice kind="success">{parts.files.length} PDF, uno por página. Se guardan juntos en un ZIP.</Notice>}
+        />
+      )}
     </div>
   )
 }
