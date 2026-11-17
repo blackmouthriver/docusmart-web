@@ -1,0 +1,55 @@
+/**
+ * Diseño del QR (W-85), como QrDesignSection/QrColorValidation de la app: 8 colores
+ * fijos sobre fondo blanco, un contraste mínimo para que la cámara lo lea, y un logo
+ * centrado que obliga a subir la corrección de errores.
+ */
+
+/** Los mismos colores y en el mismo orden que la app (el amarillo no pasa el contraste a propósito). */
+export const QR_COLORS = [
+  { id: 'black', hex: '#000000' },
+  { id: 'blue', hex: '#1976D2' },
+  { id: 'purple', hex: '#7B1FA2' },
+  { id: 'green', hex: '#2E7D32' },
+  { id: 'red', hex: '#C62828' },
+  { id: 'orange', hex: '#E65100' },
+  { id: 'teal', hex: '#00695C' },
+  { id: 'yellow', hex: '#FBC02D' },
+] as const
+
+export type QrColorId = (typeof QR_COLORS)[number]['id']
+
+/** Por debajo de 3:1 un QR empieza a fallar con cámaras comunes (umbral de la app). */
+export const MIN_CONTRAST = 3
+
+/** Luminancia relativa WCAG de un color `#RRGGBB`. */
+export function luminance(hex: string): number {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim())
+  if (!m) return 0
+  const n = parseInt(m[1], 16)
+  const channel = (v: number) => {
+    const c = v / 255
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+  }
+  return 0.2126 * channel((n >> 16) & 255) + 0.7152 * channel((n >> 8) & 255) + 0.0722 * channel(n & 255)
+}
+
+export function contrastRatio(a: string, b: string): number {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+  return (hi + 0.05) / (lo + 0.05)
+}
+
+export const hasSufficientContrast = (hex: string, background = '#FFFFFF') => contrastRatio(hex, background) >= MIN_CONTRAST
+
+/** Niveles de corrección a probar en orden: con logo, alto (H, si no entra Q); sin logo, M (si no entra L). */
+export const errorLevels = (hasLogo: boolean): Array<'H' | 'Q' | 'M' | 'L'> => (hasLogo ? ['H', 'Q'] : ['M', 'L'])
+
+/** Caja del logo dentro de un QR de `size` px: 22 % del ancho, centrado, con un margen blanco del 10 %. */
+export function logoBox(size: number): { x: number; y: number; side: number; pad: number } {
+  const side = Math.round(size * 0.22)
+  const x = Math.round((size - side) / 2)
+  return { x, y: x, side, pad: Math.round(side * 0.1) }
+}
+
+/** Tamaños de la imagen descargada. */
+export const QR_SIZES = { s: 512, m: 1024, l: 2048 } as const
+export type QrSize = keyof typeof QR_SIZES

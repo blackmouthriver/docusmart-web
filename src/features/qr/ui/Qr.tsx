@@ -9,7 +9,8 @@ import { SaveOptions, ShareApp } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
 import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, isPlainScheme, parseContact, parseEvent, parseWifi, phoneNumber, safeLink, type QrForm, type QrKind, type ReadType } from '../core/qrContent'
-import { download } from '../../../shared/files/files'
+import { download, isOwnBlobUrl, safeMimeType } from '../../../shared/files/files'
+import { QR_COLORS, QR_SIZES, errorLevels, hasSufficientContrast, logoBox, type QrColorId, type QrSize } from '../core/qrDesign'
 import { useT } from '../../../shared/i18n/I18n'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -82,6 +83,43 @@ const emptyForm = (): QrForm => ({
   event: { title: '', location: '', start: nextHour(), end: nextHour(1) },
 })
 
+/**
+ * Dibuja el QR en un canvas con el color, el tamaño y el logo elegidos (W-85). Con logo usa
+ * corrección alta (H, o Q si el contenido no entra) para que siga leyéndose con el centro tapado.
+ */
+async function renderQr(payload: string, opts: { color: string; size: number; logo: File | null }): Promise<string> {
+  const canvas = document.createElement('canvas')
+  let failure: unknown = null
+  for (const level of errorLevels(!!opts.logo)) {
+    try {
+      await QRCode.toCanvas(canvas, payload, { width: opts.size, margin: 2, errorCorrectionLevel: level, color: { dark: opts.color, light: '#FFFFFF' } })
+      failure = null
+      break
+    } catch (e) {
+      failure = e
+    }
+  }
+  if (failure) throw failure
+  if (opts.logo) {
+    const bmp = await createImageBitmap(opts.logo)
+    const ctx = canvas.getContext('2d')!
+    const box = logoBox(canvas.width)
+    ctx.fillStyle = '#FFFFFF'
+    ctx.beginPath()
+    if (ctx.roundRect) ctx.roundRect(box.x - box.pad, box.y - box.pad, box.side + box.pad * 2, box.side + box.pad * 2, box.pad)
+    else ctx.rect(box.x - box.pad, box.y - box.pad, box.side + box.pad * 2, box.side + box.pad * 2)
+    ctx.fill()
+    const fit = box.side / Math.max(bmp.width, bmp.height)
+    const w = bmp.width * fit
+    const h = bmp.height * fit
+    ctx.drawImage(bmp, box.x + (box.side - w) / 2, box.y + (box.side - h) / 2, w, h)
+    bmp.close()
+  }
+  const url = canvas.toDataURL('image/png')
+  canvas.width = canvas.height = 0
+  return url
+}
+
 export function CreateQr() {
   const { toast } = useApp()
   const [form, setForm] = useState<QrForm>(emptyForm)
@@ -95,6 +133,32 @@ export function CreateQr() {
     [img, protect],
   )
   const [busy, setBusy] = useState(false)
+  // Diseño (W-85): color, logo y tamaño, como en la app.
+  const [color, setColor] = useState<QrColorId>('black')
+  const [logo, setLogo] = useState<File | null>(null)
+  const [logoUrl, setLogoUrl] = useState('')
+  const [size, setSize] = useState<QrSize>('m')
+  const logoInput = useRef<HTMLInputElement>(null)
+  const hex = QR_COLORS.find((c) => c.id === color)!.hex
+  const lowContrast = !hasSufficientContrast(hex)
+  useEffect(() => {
+    if (!logo) return setLogoUrl('')
+    // Se re-empaqueta con un tipo de imagen y se comprueba que la URL sea del propio sitio.
+    const url = URL.createObjectURL(new Blob([logo], { type: safeMimeType(logo.type).startsWith('image/') ? logo.type : 'image/png' }))
+    setLogoUrl(isOwnBlobUrl(url) ? url : '')
+    return () => URL.revokeObjectURL(url)
+  }, [logo])
+  const pickLogo = async (file: File | undefined) => {
+    if (!file) return
+    try {
+      const bmp = await createImageBitmap(file) // comprueba que sea una imagen válida
+      bmp.close()
+      setLogo(file)
+      setImg(null)
+    } catch {
+      toast(tr('qr.logoError'))
+    }
+  }
   const built = buildPayload(form)
   const error = 'error' in built ? built.error : null
 
@@ -109,8 +173,8 @@ export function CreateQr() {
     setBusy(true)
     try {
       const payload = protect ? PREFIX + (await encrypt(built.payload, password)) : built.payload
-      setImg(await QRCode.toDataURL(payload, { width: 640, margin: 2, errorCorrectionLevel: 'M', color: { dark: '#0B1020', light: '#FFFFFF' } }))
-      track('qr_created', { qr_content_type: form.kind, has_password: protect })
+      setImg(await renderQr(payload, { color: hex, size: QR_SIZES[size], logo }))
+      track('qr_created', { qr_content_type: form.kind, has_password: protect, color, has_logo: !!logo, size })
     } catch {
       toast(tr('qr.tooLong'))
     } finally {
@@ -173,6 +237,47 @@ export function CreateQr() {
         </>
       )}
 
+      <details className="qr-design">
+        <summary><Icon name="stamp" /> {tr('qr.design')}</summary>
+        <div className="stack">
+          <div className="field">
+            <span>{tr('qr.color')}</span>
+            <div className="qr-colors" role="radiogroup" aria-label={tr('qr.color')}>
+              {QR_COLORS.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={color === c.id}
+                  className="qr-color"
+                  style={{ background: c.hex }}
+                  title={tr(`qr.color.${c.id}` as MessageKey)}
+                  aria-label={tr(`qr.color.${c.id}` as MessageKey)}
+                  onClick={() => { setColor(c.id); setImg(null) }}
+                />
+              ))}
+            </div>
+            {lowContrast && <Notice kind="error">{tr('qr.contrastWarn')}</Notice>}
+          </div>
+          <div className="field">
+            <span>{tr('qr.logo')}</span>
+            <div className="row" style={{ gap: 10 }}>
+              {logoUrl && <img className="qr-logo-thumb" src={logoUrl} alt="" />}
+              <button type="button" className="btn btn-soft btn-sm" onClick={() => logoInput.current?.click()}><Icon name="image" /> {logo ? tr('qr.changeLogo') : tr('qr.addLogo')}</button>
+              {logo && <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setLogo(null); setImg(null) }}><Icon name="close" /> {tr('qr.removeLogo')}</button>}
+              <input ref={logoInput} type="file" accept="image/png,image/jpeg,image/webp" hidden onChange={(e) => { void pickLogo(e.target.files?.[0]); e.target.value = '' }} />
+            </div>
+            <small className="faint">{tr('qr.logoHint')}</small>
+          </div>
+          <Segmented
+            label={tr('qr.size')}
+            value={size}
+            onChange={(v) => { setSize(v); setImg(null) }}
+            options={[{ value: 's', label: `${tr('qr.size.s')} · ${QR_SIZES.s} px` }, { value: 'm', label: `${tr('qr.size.m')} · ${QR_SIZES.m} px` }, { value: 'l', label: `${tr('qr.size.l')} · ${QR_SIZES.l} px` }]}
+          />
+        </div>
+      </details>
+
       <Segmented
         label={tr('qr.type')}
         value={protect ? 'protected' : 'open'}
@@ -188,7 +293,7 @@ export function CreateQr() {
       )}
       {tried && error && <Notice kind="error">{tr(`qr.err.${error}` as MessageKey)}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={protect && password.length < 4} onClick={create} icon="qr">
+        <BusyButton busy={busy} disabled={(protect && password.length < 4) || lowContrast} onClick={create} icon="qr">
           {tr('qr.generate')}
         </BusyButton>
       </div>
