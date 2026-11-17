@@ -16,6 +16,7 @@ import { ExtractImagesTool } from './ExtractImagesTool'
 import { EditTool } from './EditTool'
 import { FormTool } from './FormTool'
 import { ScanTool } from './ScanTool'
+import { PdfATool } from './PdfATool'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'editar', name: 'Editar PDF', desc: 'Agrega texto, imágenes, formas y resaltado', icon: 'edit', cls: 'ico-blue' },
@@ -36,6 +37,7 @@ const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls
   { id: 'proteger', name: 'Proteger PDF', desc: 'Contraseña con cifrado AES-256 y permisos', icon: 'lock', cls: 'ico-amber' },
   { id: 'desbloquear', name: 'Desbloquear PDF', desc: 'Quita la contraseña o las restricciones', icon: 'unlock', cls: 'ico-blue' },
   { id: 'reparar', name: 'Reparar PDF', desc: 'Recupera PDF dañados que no abren', icon: 'wrench', cls: 'ico-violet' },
+  { id: 'pdfa', name: 'PDF a PDF/A', desc: 'Formato de archivo a largo plazo (PDF/A-2b)', icon: 'archive', cls: 'ico-cyan' },
   { id: 'ocr', name: 'OCR: reconocer texto', desc: 'Saca el texto de escaneos y fotos', icon: 'text', cls: 'ico-cyan' },
 ]
 
@@ -55,6 +57,7 @@ export const OWN_TOOLS: Record<string, ComponentType> = {
   editar: EditTool,
   formulario: FormTool,
   escanear: ScanTool,
+  pdfa: PdfATool,
 }
 
 export function PdfTools({ sub }: { sub?: string }) {
