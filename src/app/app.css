@@ -465,3 +465,12 @@ p { margin: 0; }
 .scan-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .scan-badge { position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 2px 6px; border-radius: 999px; background: rgba(245, 158, 11, 0.95); color: #1C1B1A; font-size: 11px; font-weight: 700; }
 .scan-page-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+
+/* Vista previa del documento y del resultado */
+.doc-preview { display: grid; gap: 10px; min-width: 0; }
+.doc-preview-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; min-height: 36px; }
+.doc-preview-stage { display: grid; place-items: center; padding: 14px; border-radius: 14px; background: var(--paper-2); min-height: 240px; }
+.doc-preview-stage img { display: block; max-width: 100%; max-height: 60vh; width: auto; height: auto; background: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(28, 27, 26, 0.2); }
+.result-panel { border-top: 1px solid var(--line); padding-top: 16px; }
+.save-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.save-options .btn { flex: 1 1 160px; justify-content: center; }

@@ -6,6 +6,8 @@ import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../c
 import { baseName, download, formatBytes } from '../lib/files'
 import { WrongPasswordError, compressLossless, isEncrypted, protect, repair, unlock, type CompressResult } from '../lib/pdfSecurity'
 import { track } from '../../shared/analytics'
+import { DocPreview, ResultPanel } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 
 const PDF = 'application/pdf'
 
@@ -58,11 +60,13 @@ export function CompressTool() {
   const [level, setLevel] = useState<Level>('sin-perdida')
   const [progress, setProgress] = useState(0)
   const [result, setResult] = useState<CompressResult | null>(null)
+  const [output, setOutput] = useState<File | null>(null)
   const { busy, error, run } = useJob('compress')
 
   const go = () =>
     run(async () => {
       setResult(null)
+      setOutput(null)
       setProgress(0)
       const bytes = new Uint8Array(await file!.arrayBuffer())
       if (await isEncrypted(bytes)) throw new Error('Este PDF tiene contraseña. Quítala primero con "Desbloquear PDF".')
@@ -79,21 +83,23 @@ export function CompressTool() {
         }
       }
       setResult(r)
-      if (r.improved) download(r.bytes, `${baseName(file!.name)}-comprimido.pdf`, PDF)
+      // Ya no se descarga solo: primero se ve el resultado y luego se elige cómo guardarlo.
+      if (r.improved) setOutput(resultFile(r.bytes, `${baseName(file!.name)}-comprimido.pdf`, PDF))
       track('pdf_compress_result', { level, before_kb: Math.round(r.before / 1024), after_kb: Math.round(r.after / 1024) })
-    }, 'Listo.')
+    }, 'Listo. Revisa el resultado y guárdalo.')
 
   const saved = result && result.before > 0 ? Math.round((1 - result.after / result.before) * 100) : 0
 
   return (
     <div className="card stack">
-      <PickPdf file={file} onFile={(f) => { setFile(f); setResult(null) }} />
+      <PickPdf file={file} onFile={(f) => { setFile(f); setResult(null); setOutput(null) }} />
+      {file && !output && <DocPreview source={file} label="Original" />}
       <div className="field">
         <span>Nivel de compresión</span>
         <Segmented
           label="Nivel de compresión"
           value={level}
-          onChange={(v) => { setLevel(v); setResult(null) }}
+          onChange={(v) => { setLevel(v); setResult(null); setOutput(null) }}
           options={[
             { value: 'sin-perdida', label: 'Sin pérdida' },
             { value: 'media', label: 'Media' },
@@ -108,21 +114,28 @@ export function CompressTool() {
       </div>
       {busy && level !== 'sin-perdida' && progress > 0 && <Progress value={progress} />}
       {error && <Notice kind="error">{error}</Notice>}
-      {result &&
-        (result.improved ? (
-          <Notice kind="success">
-            {formatBytes(result.before)} → <b>{formatBytes(result.after)}</b> ({saved}% menos). El archivo se descargó.
-          </Notice>
-        ) : (
-          <Notice kind="info">
-            Este PDF ya estaba optimizado: no se pudo reducir más{level === 'sin-perdida' ? '. Prueba con el nivel "Media" o "Alta".' : '.'}
-          </Notice>
-        ))}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!file} onClick={go} icon="compress">
           Comprimir PDF
         </BusyButton>
       </div>
+      {result &&
+        (result.improved && output ? (
+          <ResultPanel
+            result={output}
+            original={file!}
+            toolName="compress"
+            summary={
+              <Notice kind="success">
+                {formatBytes(result.before)} → <b>{formatBytes(result.after)}</b> ({saved}% menos). Compara con el original y guárdalo.
+              </Notice>
+            }
+          />
+        ) : (
+          <Notice kind="info">
+            Este PDF ya estaba optimizado: no se pudo reducir más{level === 'sin-perdida' ? '. Prueba con el nivel "Media" o "Alta".' : '.'}
+          </Notice>
+        ))}
     </div>
   )
 }
