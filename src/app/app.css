@@ -321,6 +321,12 @@ p { margin: 0; }
 
 /* Menú del Modo Estudio (W-59) */
 .qr-view { max-width: 720px; }
+.qr-kinds { display: flex; flex-wrap: wrap; gap: 8px; }
+.qr-kind { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border: 0; border-radius: 99px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; color: var(--ink-soft); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease; }
+.qr-kind svg { width: 17px; height: 17px; }
+.qr-kind[aria-checked="true"] { background: var(--blue-soft); color: var(--blue); box-shadow: 0 0 0 1.5px var(--blue) inset; }
+.qr-dates { gap: 12px; align-items: flex-start; }
+.qr-dates .field { flex: 1 1 200px; }
 .study-menu { display: grid; gap: 12px; max-width: 720px; }
 .study-card { align-items: center; padding: 20px; width: 100%; }
 .study-card .ico { width: 56px; height: 56px; border-radius: 18px; }
