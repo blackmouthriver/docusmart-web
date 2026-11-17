@@ -92,9 +92,12 @@ it('toda herramienta con página tiene su slug en cada idioma', () => {
   for (const tool of Object.keys(TOOL_PAGES)) {
     for (const { code } of LANGS) {
       const url = toolShareUrl(tool, code)
-      const expected = code === 'es' ? `https://docusmart.online/${TOOL_PAGES[tool]}` : new RegExp(`^https://docusmart\.online/${code}/[a-z0-9-]+$`)
-      if (typeof expected === 'string') expect(url).toBe(expected)
-      else expect(url, `${tool} en ${code}`).toMatch(expected)
+      if (code === 'es') expect(url).toBe(`https://docusmart.online/${TOOL_PAGES[tool]}`)
+      else {
+        const prefix = `https://docusmart.online/${code}/`
+        expect(url.startsWith(prefix), `${tool} en ${code}`).toBe(true)
+        expect(url.slice(prefix.length)).toMatch(/^[a-z0-9-]+$/)
+      }
     }
   }
 })
