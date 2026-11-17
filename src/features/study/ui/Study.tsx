@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
@@ -8,6 +8,8 @@ import { EDIT_PDF, handOff } from '../../../shared/files/handoff'
 import { SaveOptions } from '../../../shared/ui/DocPreview'
 import { documentId, entryPercent, removeEntry, resumeParagraph, upsertEntry, type ReadingEntry } from '../core/readingHistory'
 import { loadFile as loadStoredFile, loadHistory, pruneFiles, saveHistory, storeFile } from '../infra/historyStore'
+import { groupByDoc, isHighlighted, quoteNote, removeDocHighlights, removeHighlight, toggleHighlight, type Highlight } from '../core/highlights'
+import { getHighlights, setHighlights, subscribeHighlights } from '../infra/highlightsStore'
 import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -106,6 +108,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const [history, setHistory] = useState<ReadingEntry[]>(loadHistory)
   const [doc, setDoc] = useState<{ id: string; name: string; kind: 'pdf' | 'text' } | null>(null)
   const [resumed, setResumed] = useState<string | null>(null)
+  const highlights = useSyncExternalStore(subscribeHighlights, getHighlights)
   const paragraphs = useMemo(() => (pdf ? toPagedParagraphs(pdf.pages) : toParagraphs(text)), [pdf, text])
   const totalPages = pdf?.pages.length ?? 0
   const currentPage = paragraphs[pos.p]?.page ?? 1
@@ -297,6 +300,16 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   if (!supported) return <Notice kind="error">{tr('study.unsupported')}</Notice>
 
   const total = paragraphs.length
+  // Resaltados (W-63): del documento abierto ('texto' si es texto pegado).
+  const docKey = doc?.id ?? PASTED_ID
+  const docLabel = doc?.name ?? tr('study.pastedText')
+  const marked = (i: number) => !!paragraphs[i] && isHighlighted(highlights, { docId: docKey, paragraph: i, text: paragraphs[i].text })
+  const docMarks = highlights.filter((h) => h.docId === docKey).length
+  const toggleMark = () => {
+    const para = paragraphs[pos.p]
+    if (!para) return
+    setHighlights(toggleHighlight(getHighlights(), { docId: docKey, docName: docLabel, paragraph: pos.p, page: para.page ?? 0, text: para.text, at: Date.now() }))
+  }
   const pages = pageProgress(currentPage, totalPages, finished)
   const percent = totalPages ? pages.percent : listenedPercent(pos.p, total, finished)
   const active = state !== 'idle' || finished
@@ -306,7 +319,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       {paragraphs.map((para, i) => (
         <Fragment key={i}>
           {para.page && para.page !== paragraphs[i - 1]?.page && <div className="page-sep">{tr('study.pageLabel', { n: para.page })}</div>}
-          <p data-p={i} className={i === pos.p && active ? 'is-current' : undefined}>
+          <p data-p={i} className={[i === pos.p && active ? 'is-current' : '', marked(i) ? 'is-marked' : ''].join(' ').trim() || undefined}>
             <button type="button" className="para-btn" title={tr('study.readFromHere', { n: i + 1 })} onClick={() => start(i)}>
               {i === pos.p && state === 'playing'
                 ? para.chunks.map((ch, j) => (
@@ -347,6 +360,16 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
           <Icon name="back" />
         </button>
         {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('study.stop')}</button>}
+        {view === 'read' && total > 0 && (
+          <button type="button" className="btn btn-outline btn-sm mark-btn" aria-pressed={marked(pos.p)} onClick={toggleMark}>
+            <Icon name="marker" /> {marked(pos.p) ? tr('study.unmarkParagraph') : tr('study.markParagraph')}
+          </button>
+        )}
+        {view === 'read' && docMarks > 0 && (
+          <button type="button" className="link-btn" onClick={() => go('estudio', 'notas')}>
+            {tr('study.marksInNotes', { n: docMarks })}
+          </button>
+        )}
       </div>
       {view === 'edit' && total > 0 && <span className="faint">{tr('study.paragraphs', { n: total })}</span>}
     </div>
@@ -655,8 +678,14 @@ const readNotes = (): Note[] => {
   }
 }
 
+/** Id de los resaltados de un texto pegado (sin documento). */
+const PASTED_ID = 'texto'
+
 function Notes() {
+  const { toast } = useApp()
   const [notes, setNotes] = useState<Note[]>(readNotes)
+  const highlights = useSyncExternalStore(subscribeHighlights, getHighlights)
+  const groups = useMemo(() => groupByDoc(highlights), [highlights])
   const [draft, setDraft] = useState('')
   const [storageOk, setStorageOk] = useState(true)
 
@@ -674,6 +703,13 @@ function Notes() {
     setNotes((n) => [{ id: crypto.randomUUID(), text: draft.trim(), at: Date.now() }, ...n])
     setDraft('')
     track('note_created')
+  }
+  // Un resaltado (o todos los de un documento) pasa a ser una nota con la cita y su origen.
+  const source = (h: Highlight) => (h.page ? `${h.docName}, ${tr('study.pageLabel', { n: h.page })}` : h.docName)
+  const saveMarks = (items: Highlight[], from: string) => {
+    setNotes((n) => [{ id: crypto.randomUUID(), text: quoteNote(items, from), at: Date.now() }, ...n])
+    track('note_created', { source: 'highlight' })
+    toast(tr('study.markSaved'))
   }
 
   return (
@@ -697,6 +733,44 @@ function Notes() {
         <button type="button" className="btn btn-primary" disabled={!draft.trim()} onClick={add}><Icon name="plus" /> {tr('study.saveNote')}</button>
       </div>
       {!storageOk && <Notice kind="error">{tr('study.noStorage')}</Notice>}
+      {groups.length > 0 && (
+        <section className="marks" aria-label={tr('study.highlightsTitle', { n: highlights.length })}>
+          <h4><Icon name="marker" /> {tr('study.highlightsTitle', { n: highlights.length })}</h4>
+          {groups.map((g) => (
+            <div key={g.docId} className="mark-group">
+              <div className="mark-head">
+                <b title={g.docName}>{g.docName}</b>
+                <span className="row" style={{ gap: 6 }}>
+                  {g.items.length > 1 && (
+                    <button type="button" className="btn btn-soft btn-sm" onClick={() => saveMarks(g.items, g.docName)}>
+                      <Icon name="note" /> {tr('study.saveAllMarks')}
+                    </button>
+                  )}
+                  <button type="button" className="btn btn-ghost btn-sm" onClick={() => setHighlights(removeDocHighlights(getHighlights(), g.docId))}>
+                    <Icon name="trash" /> {tr('study.removeAllMarks')}
+                  </button>
+                </span>
+              </div>
+              {g.items.map((h) => (
+                <blockquote key={`${h.paragraph}-${h.at}`} className="mark">
+                  <p>{h.text}</p>
+                  <footer>
+                    <span className="faint">{h.page ? tr('study.pageLabel', { n: h.page }) : ''}</span>
+                    <span className="row" style={{ gap: 4 }}>
+                      <button type="button" className="btn btn-ghost btn-sm" onClick={() => saveMarks([h], source(h))}>
+                        <Icon name="note" /> {tr('study.saveMark')}
+                      </button>
+                      <button type="button" className="icon-btn" aria-label={tr('study.removeMark')} onClick={() => setHighlights(removeHighlight(getHighlights(), h))}>
+                        <Icon name="close" />
+                      </button>
+                    </span>
+                  </footer>
+                </blockquote>
+              ))}
+            </div>
+          ))}
+        </section>
+      )}
       {notes.length > 0 && (
         <div className="notes">
           {notes.map((n) => (
