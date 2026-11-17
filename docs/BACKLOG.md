@@ -126,8 +126,10 @@ Objetivo: la web en los **12 idiomas de la app** (español, inglés, portugués,
 | W-53a | Traducir los **componentes compartidos** (vista previa, guardar, recomendar), la lista de herramientas PDF, unir, dividir, rotar, reordenar, numerar, marca de agua, comprimir, proteger, desbloquear, reparar, PDF/A y OCR | 🤖 | Hecho (PR #40, 2026-11-17) |
 | W-53b | Traducir recortar, firmar, censurar, editar, formulario, comparar, extraer imágenes y escáner | 🤖 | Hecho (PR #41, 2026-11-17) |
 | W-54 | Traducir **Convertidor, imagen, archivos, QR, escáner y Modo Estudio** + visor y mensajes de error | 🤖 | Hecho (PR #42, 2026-11-17) |
-| W-55a | Páginas para buscadores por idioma: generador con `tools/locales/<idioma>.mjs`, `hreflang`, sitemap con alternativas, selector de idioma, herramienta y banner de analítica en el idioma de la página. **Inglés completo** (`/en/` y 31 herramientas) | 🤖 | En revisión (PR) |
-| W-55b | Las mismas páginas en los otros **10 idiomas** (pt, de, ru, ja, ko, zh, it, fr, ca, eu): un archivo `tools/locales/<idioma>.mjs` por idioma | 🤖 | Tras W-55a |
+| W-55a | Páginas para buscadores por idioma: generador con `tools/locales/<idioma>.mjs`, `hreflang`, sitemap con alternativas, selector de idioma, herramienta y banner de analítica en el idioma de la página. **Inglés completo** (`/en/` y 31 herramientas) | 🤖 | Hecho (PR #43, 2026-11-17) |
+| W-55b | Las mismas páginas en **portugués, francés e italiano** (`/pt/`, `/fr/`, `/it/`) | 🤖 | En revisión (PR) |
+| W-55c | Las mismas páginas en **alemán, catalán y euskera** | 🤖 | Tras W-55b |
+| W-55d | Las mismas páginas en **ruso, japonés, coreano y chino** (slugs en inglés) | 🤖 | Tras W-55c |
 | W-56 | Textos que van **dentro de los archivos** generados (numeración "Página N", informes) en el idioma elegido | 🤖 | Tras W-54 |
 
 ## Mantenimiento y limpieza
