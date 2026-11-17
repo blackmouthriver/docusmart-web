@@ -63,8 +63,10 @@ function ToolHost({ children }: { children: ReactNode }) {
   const setOpenFile = useCallback(() => {
     location.href = '/app/#/ver'
   }, [])
+  // Las páginas para buscadores todavía no tienen su panel de Ajustes (W-55): se abre la app.
+  const openAppSettings = () => (location.href = '/app/')
   return (
-    <AppContext.Provider value={{ openFile: null, setOpenFile, toast }}>
+    <AppContext.Provider value={{ openFile: null, setOpenFile, toast, openSettings: openAppSettings }}>
       <Suspense fallback={<p className="faint">Cargando herramienta…</p>}>{children}</Suspense>
       <div className="toast-wrap" aria-live="polite">
         {toasts.map((t) => (

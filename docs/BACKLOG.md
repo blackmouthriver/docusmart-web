@@ -108,11 +108,25 @@ Objetivo: en todas las herramientas, (1) al subir el archivo se ve el documento 
 | W-41 | Extender a las herramientas PDF de **un archivo → un PDF**: dividir (extraer páginas), rotar, reordenar, numerar, marca de agua, proteger (el resultado se muestra con la contraseña), desbloquear, reparar, OCR (también con fotos), recortar, firmar, censurar, editar, formulario y PDF/A | 🤖 | Hecho (PR #35, 2026-11-17) |
 | W-42 | Herramientas con **varios archivos**: Unir (miniaturas de los PDF de entrada y el PDF unido), Dividir cada página (miniaturas de las páginas y un ZIP para guardar), Extraer imágenes (miniaturas de las elegidas; se guarda la imagen o un ZIP) y Comparar (original y nueva versión lado a lado; se guarda el informe de cambios) | 🤖 | Hecho (PR #36, 2026-11-17) |
 | W-43 | **Convertidor**: antes y después en las 12 conversiones; la vista previa muestra PDF, imágenes, texto y también **Word y Excel** (se diagraman a PDF para mostrar sus páginas, marcado como vista aproximada); varias imágenes o páginas salen como miniaturas y se guardan en un ZIP | 🤖 | Hecho (PR #37, 2026-11-17) |
-| W-44 | **Imagen, escáner, archivos y QR**: antes y después en comprimir, redimensionar, rotar y recortar imagen (una en grande, varias en miniaturas y ZIP); escáner (escaneos → PDF o imágenes); crear ZIP/7Z (archivos → comprimido) y extraer (comprimido → lo que había dentro, todo en un ZIP); QR con Descargar, Compartir y Drive/Dropbox. La vista previa reconoce cualquier tipo de archivo | 🤖 | En revisión (PR) |
+| W-44 | **Imagen, escáner, archivos y QR**: antes y después en comprimir, redimensionar, rotar y recortar imagen (una en grande, varias en miniaturas y ZIP); escáner (escaneos → PDF o imágenes); crear ZIP/7Z (archivos → comprimido) y extraer (comprimido → lo que había dentro, todo en un ZIP); QR con Descargar, Compartir y Drive/Dropbox. La vista previa reconoce cualquier tipo de archivo | 🤖 | Hecho (PR #38, 2026-11-17) |
 | W-45 | **Guardar en Google Drive** directo: OAuth en ventana emergente (sin SDK, compatible con la CSP) y subida con el permiso mínimo `drive.file` | 👤 + 🤖 | **Código listo** (PR #34); el botón aparece cuando pongas el **ID de cliente OAuth** en `src/app/lib/cloudConfig.ts`. Falta que lo crees en Google Cloud (proyecto de Firebase): tipo "Aplicación web", origen `https://docusmart.online`, redirección `https://docusmart.online/oauth`, pantalla de consentimiento con el permiso `drive.file` |
 | W-46 | **Guardar en Dropbox** directo: OAuth con PKCE en ventana emergente y subida a Aplicaciones/DocuSmart | 👤 + 🤖 | **Código listo** (PR #34); falta que crees la app en Dropbox Developers (Scoped access, "App folder", permiso `files.content.write`, redirección `https://docusmart.online/oauth`) y pongas la **App key** en `cloudConfig.ts` |
 | W-47 | **Enlace y código QR** para abrir el resultado en otro dispositivo | 👤 decide | Implica **subir el archivo** a un servidor, lo que cambia la promesa "tus archivos no salen del navegador". Propuesta: cifrado de extremo a extremo en el navegador (AES-GCM, la clave va en el `#` del enlace y el servidor nunca la ve), Firebase Storage con borrado automático a las 24 h, límite de tamaño y App Check. Requiere plan Blaze y actualizar la política de privacidad. Alternativa sin guardar nada: QR con transferencia directa entre dispositivos (WebRTC, ambos abiertos a la vez; necesita un servidor de señalización) |
 | W-48 | **WhatsApp en computador**: la web no puede adjuntar un archivo a WhatsApp Web; solo se puede mandar un enlace | 🤖 | Depende de W-47 (en el celular ya funciona con Compartir) |
+
+## Idiomas y apariencia, como en la app (2026-11-17)
+
+Objetivo: la web en los **12 idiomas de la app** (español, inglés, portugués, alemán, ruso, japonés, coreano, chino, italiano, francés, catalán y euskera), elegido solo según el idioma del navegador (con la zona horaria como respaldo; no se consulta la IP para no enviar datos a terceros), y un panel de **Ajustes** para cambiar el idioma, el **tema** (Sistema, Claro, Oscuro), el **color de acento** (los 10 de la app) y el **tamaño de letra** (Normal, Grande, Muy grande). Se guarda en el navegador.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-50 | **Infraestructura de idiomas**: detección (guardado → idioma del navegador → zona horaria → español), diccionarios por idioma cargados bajo demanda, `t()` con variables, `<html lang>` y textos que faltan caen al español | 🤖 | Piloto (PR) |
+| W-51 | **Panel de Ajustes** (botón en la cabecera de cada pantalla y en la barra lateral): idioma con banderas como en la app, tema, color de acento y tamaño de letra; modo oscuro completo | 🤖 | Piloto (PR) |
+| W-52 | Traducir la **navegación, Inicio y avisos generales** a los 12 idiomas | 🤖 | Piloto (PR) |
+| W-53 | Traducir las **herramientas PDF** (antes y después, opciones de guardado, mensajes) | 🤖 | Tras el visto bueno del piloto |
+| W-54 | Traducir **Convertidor, imagen, archivos, QR, escáner y Modo Estudio** | 🤖 | Tras W-53 |
+| W-55 | **Página de inicio y páginas de herramientas** traducidas para buscadores (`/en/compress-pdf`, etc.) con `hreflang` y selector de idioma | 🤖 | Tras W-54 |
+| W-56 | Textos que van **dentro de los archivos** generados (numeración "Página N", informes) en el idioma elegido | 🤖 | Tras W-54 |
 
 ## Mantenimiento y limpieza
 

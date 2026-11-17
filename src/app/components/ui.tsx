@@ -1,10 +1,20 @@
-import { useRef, useState, type ReactNode } from 'react'
+import { useContext, useRef, useState, type ReactNode } from 'react'
 import { Icon, type IconName } from './Icon'
 import { formatBytes, kindOf } from '../lib/files'
+import { AppContext } from '../state'
+import { useT } from '../i18n/I18n'
 
 export function HeroCard({ title, subtitle }: { title: string; subtitle: string }) {
+  const app = useContext(AppContext)
+  const { t, lang } = useT()
   return (
     <header className="hero-card">
+      {app && (
+        <button type="button" className="hero-settings" aria-label={t('settings.open')} title={t('settings.open')} onClick={app.openSettings}>
+          <Icon name="globe" />
+          {lang.toUpperCase()}
+        </button>
+      )}
       <div className="hero-chip">
         <span>
           <img src="/img/icon.svg" alt="" />

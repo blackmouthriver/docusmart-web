@@ -15,7 +15,7 @@ export function go(section: string, sub?: string) {
 }
 
 // ── Archivo abierto en el visor y avisos (compartidos entre pantallas) ─
-export type AppState = { openFile: File | null; setOpenFile: (f: File | null) => void; toast: (msg: string) => void }
+export type AppState = { openFile: File | null; setOpenFile: (f: File | null) => void; toast: (msg: string) => void; openSettings: () => void }
 export const AppContext = createContext<AppState | null>(null)
 
 export const useApp = () => {
