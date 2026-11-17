@@ -164,6 +164,39 @@ idiomas, con revisión de punta a punta en el navegador.
 |---|---|---|---|
 | W-69 | **Revisar y refinar la creación de códigos QR** frente a la app (tipos de contenido, diseño, QR protegido, leer) y proponer mejoras propias de la web; el análisis se convierte en ítems W-xx aquí. Se hace **después** del Modo Estudio (W-58..W-67) | 🤖 | Pendiente |
 
+## Asistente de chat en todo el sitio
+
+Análisis completo, con requisitos funcionales y no funcionales, criterios de aceptación, tecnologías y costos, en
+[`docs/CHATBOT.md`](CHATBOT.md). Asistente **local** (nada sale del navegador), **USD 0 al mes**; sin widgets de
+terceros ni IA en la nube.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-70 | **Aprobar la propuesta** de `docs/CHATBOT.md` (opción A local; B con la IA del navegador como fase 2) | 👤 decidir | Pendiente |
+| W-70a | Base de conocimiento por idioma generada desde `tools/` + preguntas propias (es, en); validación en el CI | 🤖 | Pendiente |
+| W-70b | Motor de búsqueda local (tildes, sinónimos, tipeos) en `core/` con pruebas y preguntas de prueba | 🤖 | Pendiente |
+| W-70c | Widget en la app web: botón, panel accesible, sugerencias por pantalla y acciones que abren herramientas | 🤖 | Pendiente |
+| W-70d | Widget en la portada y las páginas de herramientas, cargado bajo demanda, en los 12 idiomas | 🤖 | Pendiente |
+| W-70e | Base traducida a los 10 idiomas restantes, analítica con consentimiento (solo IDs) y párrafo en la política de privacidad | 🤖 | Pendiente |
+| W-70f | (Opcional) Respuestas redactadas con la IA local del navegador (Chrome Prompt API) cuando esté disponible | 🤖 | Pendiente |
+
+## Diseño visual y animaciones de todo el sitio
+
+Hoy la portada tiene animaciones y el resto se ve plano. Se empieza por la **política de privacidad** y desde ahí se
+revisa página por página con el usuario. Reglas para todas: animaciones con `transform` y `opacity`, respetar
+`prefers-reduced-motion`, nada de librerías ni recursos externos (por la CSP), modo oscuro y sin empeorar el
+rendimiento (Lighthouse).
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-71 | **Política de privacidad con diseño propio**: encabezado con degradado e ícono como la portada; resumen "en 30 segundos" con tarjetas (qué se procesa, qué no se sube, analítica opcional, contacto); índice lateral fijo que marca la sección visible; cada sección como tarjeta con ícono; aparición suave al desplazar; botón "volver arriba"; ancho de lectura cómodo; modo oscuro; versión para imprimir. **El texto legal no cambia** (sigue sincronizado con la app) | 🤖 | Pendiente |
+| W-72 | **Sistema de movimiento común**: duraciones y curvas compartidas, utilidad de aparición al desplazar (IntersectionObserver), transiciones entre páginas (View Transitions API, donde exista) y microinteracciones de botones y tarjetas, para reutilizar en todo el sitio | 🤖 | Pendiente |
+| W-73 | **Páginas de herramientas** (372): encabezado animado, pasos ilustrados, FAQ con apertura animada y herramienta con entrada suave | 🤖 | Pendiente |
+| W-74 | **App web**: transiciones entre pantallas, estados de carga con esqueletos, animación al terminar un proceso (éxito/descarga) y menús/paneles con movimiento | 🤖 | Pendiente |
+| W-75 | **Portada**: revisión con el usuario de lo que ya tiene y ajustes de coherencia con lo nuevo | 🤖 + 👤 | Pendiente |
+
+Orden: W-71 → revisar con el usuario → W-72 → W-73/W-74 → W-75.
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |
