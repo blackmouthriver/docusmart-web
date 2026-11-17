@@ -3,7 +3,9 @@ import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, ty
 import { useApp } from '../state'
 import { Icon, type IconName } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Segmented, errorMessage } from '../components/ui'
-import { baseName, download } from '../lib/files'
+import { baseName } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import { canvasToBlob } from '../lib/pdf'
 import { applyEdits, type BoxKind, type EditItem, type FontName } from '../lib/pdfEdit'
 import { areaFromCorners } from '../lib/pdfRedact'
@@ -42,6 +44,9 @@ let nextId = 1
 export function EditTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
+  /** Resultado listo para ver y guardar (ya no se descarga solo). */
+  const [output, setOutput] = useState<File | null>(null)
+  useEffect(() => setOutput(null), [file])
   const { pages, ready, pageNo, setPageNo, preview, error, setError } = usePdfPreview(file)
   const [items, setItems] = useState<Item[]>([])
   const [selected, setSelected] = useState<number | null>(null)
@@ -107,9 +112,9 @@ export function EditTool() {
     setBusy(true)
     setError(null)
     try {
-      download(await applyEdits(await file.arrayBuffer(), items.map(({ id: _id, ...rest }) => rest as EditItem)), `${baseName(file.name)}-editado.pdf`, 'application/pdf')
+      setOutput(resultFile(await applyEdits(await file.arrayBuffer(), items.map(({ id: _id, ...rest }) => rest as EditItem)), `${baseName(file.name)}-editado.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: 'edit' })
-      toast('Listo. El archivo se descargó.')
+      toast('Listo. Revisa el resultado y guárdalo.')
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_edit', error_message: e instanceof Error ? e.name : 'error' })
@@ -199,11 +204,16 @@ export function EditTool() {
 
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
-          <BusyButton busy={busy} disabled={!ready || !hasItems} onClick={save} icon="download">
-            Guardar y descargar
+          <BusyButton busy={busy} disabled={!ready || !hasItems} onClick={save} icon="check">
+            Aplicar cambios
           </BusyButton>
         </div>
       </div>
+      {file && output && (
+        <div className="card">
+          <BeforeAfter original={file} result={output} toolName="edit" title="Así quedó tu PDF editado" />
+        </div>
+      )}
     </div>
   )
 }

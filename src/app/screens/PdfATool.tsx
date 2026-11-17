@@ -2,7 +2,9 @@
 import { useState } from 'react'
 import { useApp } from '../state'
 import { BusyButton, DropZone, FileRow, Notice } from '../components/ui'
-import { baseName, download } from '../lib/files'
+import { baseName } from '../lib/files'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 import type { PdfAReport, RasterReason } from '../lib/pdfA'
 import { track } from '../../shared/analytics'
 
@@ -48,10 +50,12 @@ export function PdfATool() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [report, setReport] = useState<PdfAReport | null>(null)
+  const [output, setOutput] = useState<File | null>(null)
 
   const pick = (f: File | null) => {
     setFile(f)
     setReport(null)
+    setOutput(null)
     setError(null)
   }
 
@@ -60,6 +64,7 @@ export function PdfATool() {
     setBusy(true)
     setError(null)
     setReport(null)
+    setOutput(null)
     let pdfDoc: Awaited<ReturnType<typeof import('../lib/pdf').openPdf>> | null = null
     try {
       const [{ convertToPdfA, PdfAEncryptedError }, pdf, raster] = await Promise.all([import('../lib/pdfA'), import('../lib/pdf'), import('../lib/pdfRedactSources')])
@@ -77,10 +82,10 @@ export function PdfATool() {
             return raster.makeRasterizer(pdfDoc)(index, [])
           },
         })
-        download(out, `${baseName(file.name)}-pdfa.pdf`, PDF)
+        setOutput(resultFile(out, `${baseName(file.name)}-pdfa.pdf`, PDF))
         setReport(r)
         track('pdf_tool_used', { tool_name: 'pdfa' })
-        toast('Listo. El PDF/A se descargó.')
+        toast('Listo. Revisa el resultado y guárdalo.')
       } catch (e) {
         if (e instanceof PdfAEncryptedError) throw e
         throw new Error('No se pudo convertir el archivo. Revisa que sea un PDF válido.', { cause: e })
@@ -103,20 +108,30 @@ export function PdfATool() {
       ) : (
         <DropZone accept={PDF} title="Toca para seleccionar un PDF" hint="O arrástralo aquí" onFiles={([f]) => pick(f)} />
       )}
+      {file && (
+        <BeforeAfter
+          original={file}
+          result={report ? output : null}
+          toolName="pdfa"
+          title="Así quedó tu PDF/A"
+          previewTitle="Vista previa de tu PDF"
+          placeholder={busy ? 'Convirtiendo…' : 'Pulsa Convertir a PDF/A'}
+          summary={
+            report && <Notice kind="success">
+              <strong>Listo: el PDF cumple PDF/A-2b.</strong>
+              {describeReport(report).map((line) => (
+                <span key={line} style={{ display: 'block', marginTop: 6 }}>{line}</span>
+              ))}
+            </Notice>
+          }
+        />
+      )}
       {!report && !error && (
         <small className="faint">
           PDF/A es el formato para archivar documentos que piden entidades públicas, juzgados y universidades: lleva las fuentes y los colores dentro del archivo para que se vea igual dentro de muchos años. DocuSmart crea PDF/A-2b.
         </small>
       )}
       {error && <Notice kind="error">{error}</Notice>}
-      {report && (
-        <Notice kind="success">
-          <strong>Listo: el PDF cumple PDF/A-2b y se descargó.</strong>
-          {describeReport(report).map((line) => (
-            <span key={line} style={{ display: 'block', marginTop: 6 }}>{line}</span>
-          ))}
-        </Notice>
-      )}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!file} onClick={convert} icon="archive">
           Convertir a PDF/A

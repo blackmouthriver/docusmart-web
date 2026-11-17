@@ -70,3 +70,22 @@ export function appShareLinks(url = SITE_URL, text = 'Uso DocuSmart para trabaja
 }
 
 export const feedbackMailto = (tool: string) => `mailto:${FEEDBACK_EMAIL}?subject=${encodeURIComponent(`Opinión sobre DocuSmart Web (${tool})`)}`
+
+/** Página pública de cada herramienta (para recomendarla); las que no tienen, la app. */
+const TOOL_PAGES: Record<string, string> = {
+  compress: 'comprimir-pdf',
+  merge: 'unir-pdf',
+  split: 'dividir-pdf',
+  rotate: 'rotar-pdf',
+  protect: 'proteger-pdf',
+  unlock: 'desbloquear-pdf',
+  repair: 'reparar-pdf',
+  ocr: 'ocr-pdf',
+  crop: 'recortar-pdf',
+  sign: 'firmar-pdf',
+  redact: 'censurar-pdf',
+  edit: 'editar-pdf',
+  form: 'llenar-formulario-pdf',
+  pdfa: 'pdf-a-pdfa',
+}
+export const toolShareUrl = (tool: string) => `${SITE_URL}/${TOOL_PAGES[tool] ?? 'app'}`

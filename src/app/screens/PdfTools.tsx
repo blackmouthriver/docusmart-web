@@ -17,6 +17,8 @@ import { EditTool } from './EditTool'
 import { FormTool } from './FormTool'
 import { ScanTool } from './ScanTool'
 import { PdfATool } from './PdfATool'
+import { BeforeAfter } from '../components/DocPreview'
+import { resultFile } from '../lib/share'
 
 const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls: string }> = [
   { id: 'editar', name: 'Editar PDF', desc: 'Agrega texto, imágenes, formas y resaltado', icon: 'edit', cls: 'ico-blue' },
@@ -40,6 +42,17 @@ const TOOLS: Array<{ id: string; name: string; desc: string; icon: IconName; cls
   { id: 'pdfa', name: 'PDF a PDF/A', desc: 'Formato de archivo a largo plazo (PDF/A-2b)', icon: 'archive', cls: 'ico-cyan' },
   { id: 'ocr', name: 'OCR: reconocer texto', desc: 'Saca el texto de escaneos y fotos', icon: 'text', cls: 'ico-cyan' },
 ]
+
+const PDF_TYPE = 'application/pdf'
+
+/** Título del resultado, propio de cada herramienta. */
+const TITLES: Record<string, string> = {
+  dividir: 'Así quedaron las páginas extraídas',
+  rotar: 'Así quedó tu PDF rotado',
+  reordenar: 'Así quedó el nuevo orden',
+  numerar: 'Así quedó tu PDF numerado',
+  marca: 'Así quedó tu PDF con marca de agua',
+}
 
 /** Herramientas con su propio componente (las demás usan SingleFileTool). */
 export const OWN_TOOLS: Record<string, ComponentType> = {
@@ -97,13 +110,13 @@ function useRun(toolName: string) {
   const { toast } = useApp()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const run = async (fn: () => Promise<void>) => {
+  const run = async (fn: () => Promise<void>, okMsg = 'Listo. El archivo se descargó.') => {
     setBusy(true)
     setError(null)
     try {
       await fn()
       track('pdf_tool_used', { tool_name: toolName })
-      toast('Listo. El archivo se descargó.')
+      toast(okMsg)
     } catch (e) {
       setError(errorMessage(e))
       track('app_error', { error_context: 'pdf_tool_' + toolName, error_message: e instanceof Error ? e.name : 'error' })
@@ -197,9 +210,8 @@ function useThumbs(file: File | null) {
 export function SingleFileTool({ toolId }: { toolId: string }) {
   const [file, setFile] = useState<File | null>(null)
   const { thumbs, error: loadError } = useThumbs(file)
-  const { busy, error, run } = useRun(
-    { dividir: 'split', rotar: 'rotate', reordenar: 'reorder_pages', numerar: 'number_pages', marca: 'watermark' }[toolId] ?? toolId,
-  )
+  const trackName = { dividir: 'split', rotar: 'rotate', reordenar: 'reorder_pages', numerar: 'number_pages', marca: 'watermark' }[toolId] ?? toolId
+  const { busy, error, run } = useRun(trackName)
 
   // Estado por herramienta
   const [splitMode, setSplitMode] = useState<'range' | 'each'>('range')
@@ -210,12 +222,18 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   const [position, setPosition] = useState<'bottom-center' | 'bottom-right'>('bottom-center')
   const [format, setFormat] = useState<'n' | 'n-of-total'>('n')
   const [mark, setMark] = useState('CONFIDENCIAL')
+  /** Resultado listo para ver y guardar (ya no se descarga solo). */
+  const [output, setOutput] = useState<File | null>(null)
 
   const count = thumbs.length
+  const withThumbs = toolId === 'dividir' || toolId === 'rotar' || toolId === 'reordenar'
+  const splitEachMode = toolId === 'dividir' && splitMode === 'each'
   useEffect(() => {
     setSelected(new Set())
     setRange('')
   }, [file])
+  // Cualquier cambio de archivo u opciones invalida el resultado anterior.
+  useEffect(() => setOutput(null), [file, splitMode, range, selected, rotations, order, position, format, mark])
   useEffect(() => {
     setRotations(Array(count).fill(0))
     setOrder([...Array(count).keys()])
@@ -242,12 +260,12 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
         : {
             label: 'Extraer páginas',
             disabled: !(ranges ?? pagesFromSelection).length,
-            go: async () => download(await extractPages(await bytes(), ranges ?? pagesFromSelection), `${name}-extracto.pdf`, 'application/pdf'),
+            go: async () => setOutput(resultFile(await extractPages(await bytes(), ranges ?? pagesFromSelection), `${name}-extracto.pdf`, PDF_TYPE)),
           }
   } else if (toolId === 'rotar') {
     const changed = rotations.some((r) => r % 360 !== 0)
     action = {
-      label: 'Guardar PDF rotado',
+      label: 'Rotar PDF',
       disabled: !changed,
       go: async () => {
         let data: ArrayBuffer | Uint8Array = await bytes()
@@ -255,27 +273,27 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
           const idx = rotations.map((r, i) => ((r % 360) === angle ? i : -1)).filter((i) => i >= 0)
           if (idx.length) data = await rotate(toArrayBuffer(data), idx, angle)
         }
-        download(data as Uint8Array, `${name}-rotado.pdf`, 'application/pdf')
+        setOutput(resultFile(data as Uint8Array, `${name}-rotado.pdf`, PDF_TYPE))
       },
     }
   } else if (toolId === 'reordenar') {
     const same = order.length === count && order.every((p, i) => p === i)
     action = {
-      label: 'Guardar nuevo orden',
+      label: 'Aplicar nuevo orden',
       disabled: same || order.length === 0,
-      go: async () => download(await extractPages(await bytes(), order), `${name}-reordenado.pdf`, 'application/pdf'),
+      go: async () => setOutput(resultFile(await extractPages(await bytes(), order), `${name}-reordenado.pdf`, PDF_TYPE)),
     }
   } else if (toolId === 'numerar') {
     action = {
-      label: 'Numerar y descargar',
+      label: 'Numerar páginas',
       disabled: !count,
-      go: async () => download(await numberPages(await bytes(), { position, format }), `${name}-numerado.pdf`, 'application/pdf'),
+      go: async () => setOutput(resultFile(await numberPages(await bytes(), { position, format }), `${name}-numerado.pdf`, PDF_TYPE)),
     }
   } else if (toolId === 'marca') {
     action = {
       label: 'Aplicar marca de agua',
       disabled: !count || !mark.trim(),
-      go: async () => download(await watermark(await bytes(), mark), `${name}-marca.pdf`, 'application/pdf'),
+      go: async () => setOutput(resultFile(await watermark(await bytes(), mark), `${name}-marca.pdf`, PDF_TYPE)),
     }
   }
 
@@ -304,6 +322,18 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
           actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => setFile(null)}>Cambiar</button>}
         />
       </ul>
+
+      {/* Numerar y marca de agua no tienen miniaturas: se ve el documento y el resultado al lado. */}
+      {!withThumbs && (
+        <BeforeAfter
+          original={file}
+          result={output}
+          toolName={trackName}
+          title={TITLES[toolId]}
+          previewTitle="Vista previa de tu PDF"
+          placeholder={busy ? 'Procesando…' : 'Elige las opciones y aplica la herramienta'}
+        />
+      )}
 
       {toolId === 'dividir' && (
         <>
@@ -379,10 +409,11 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
 
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={action.disabled} onClick={() => run(action.go)} icon="download">
+        <BusyButton busy={busy} disabled={action.disabled} onClick={() => run(action.go, splitEachMode ? undefined : 'Listo. Revisa el resultado y guárdalo.')} icon={splitEachMode ? 'download' : 'check'}>
           {action.label}
         </BusyButton>
       </div>
+      {withThumbs && output && <BeforeAfter original={file} result={output} toolName={trackName} title={TITLES[toolId]} />}
     </div>
   )
 }
