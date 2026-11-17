@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { Fragment, Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon, type IconName } from '../shared/ui/Icon'
 import { analyticsConfigured, trackScreen } from '../shared/platform/analytics'
 import { AppContext, parseHash, type Route } from './state'
@@ -17,12 +17,19 @@ const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((
 const ImageToolsScreen = lazy(() => import('../features/image/ui/ImageTools').then((m) => ({ default: m.ImageToolsScreen })))
 
 // `mobile: false`: solo en la barra lateral; la barra inferior del celular tiene 5 lugares.
-const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: IconName; mobile?: boolean }> = [
+type NavSub = { sub: string; label: MessageKey; icon: IconName }
+// Modo Estudio se despliega en la barra lateral con sus tres vistas.
+const STUDY_SUBS: NavSub[] = [
+  { sub: 'lectura', label: 'study.readAloud', icon: 'volume' },
+  { sub: 'notas', label: 'study.notes', icon: 'note' },
+  { sub: 'pomodoro', label: 'study.pomodoro', icon: 'timer' },
+]
+const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: IconName; mobile?: boolean; subs?: NavSub[] }> = [
   { section: '', label: 'nav.home', short: 'nav.short.home', icon: 'home' },
   { section: 'convertir', label: 'nav.convert', short: 'nav.short.convert', icon: 'convert' },
   { section: 'pdf', label: 'nav.pdf', short: 'nav.short.pdf', icon: 'pdf' },
   { section: 'qr', label: 'nav.qr', short: 'nav.short.qr', icon: 'qr' },
-  { section: 'estudio', label: 'nav.study', short: 'nav.short.study', icon: 'study' },
+  { section: 'estudio', label: 'nav.study', short: 'nav.short.study', icon: 'study', subs: STUDY_SUBS },
   { section: 'imagen', label: 'nav.image', short: 'nav.image', icon: 'image', mobile: false },
   { section: 'archivos', label: 'nav.archive', short: 'nav.archive', icon: 'archive', mobile: false },
 ]
@@ -93,7 +100,7 @@ export function App() {
       screen = <ImageToolsScreen sub={route.sub} />
       break
     case 'estudio':
-      screen = <Study />
+      screen = <Study sub={route.sub} />
       break
     default:
       screen = <Home />
@@ -109,10 +116,23 @@ export function App() {
           </a>
           <nav className="side-nav" aria-label={t('nav.sections')}>
             {NAV.map((n) => (
-              <a key={n.section} className="nav-item" href={'#/' + n.section} aria-current={active === n.section ? 'page' : undefined}>
-                <Icon name={n.icon} />
-                {t(n.label)}
-              </a>
+              <Fragment key={n.section}>
+                <a className="nav-item" href={'#/' + n.section} aria-current={active === n.section && !(n.subs && route.sub) ? 'page' : undefined} aria-expanded={n.subs ? active === n.section : undefined}>
+                  <Icon name={n.icon} />
+                  {t(n.label)}
+                  {n.subs && <span className="nav-caret" aria-hidden="true"><Icon name="back" /></span>}
+                </a>
+                {n.subs && active === n.section && (
+                  <div className="nav-subs">
+                    {n.subs.map((s) => (
+                      <a key={s.sub} className="nav-item nav-sub" href={`#/${n.section}/${s.sub}`} aria-current={route.sub === s.sub ? 'page' : undefined}>
+                        <Icon name={s.icon} />
+                        {t(s.label)}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </Fragment>
             ))}
           </nav>
           <div className="side-foot">
@@ -136,7 +156,7 @@ export function App() {
 
         <main className="main">
           <div className="content">
-            <div className="screen" key={route.section + (route.sub ?? '')}>
+            <div className="screen" key={route.section === 'estudio' ? route.section : route.section + (route.sub ?? '')}>
               <Suspense fallback={<div className="faint" style={{ padding: 24 }}>{t('common.loading')}</div>}>{screen}</Suspense>
             </div>
           </div>
