@@ -88,6 +88,13 @@ const TOOL_PAGES: Record<string, string> = {
   edit: 'editar-pdf',
   form: 'llenar-formulario-pdf',
   pdfa: 'pdf-a-pdfa',
+  'img-pdf': 'imagen-a-pdf',
+  'pdf-img': 'pdf-a-jpg',
+  'pdf-txt': 'pdf-a-texto',
+  'pdf-word': 'pdf-a-word',
+  'pdf-excel': 'pdf-a-excel',
+  'word-pdf': 'word-a-pdf',
+  'excel-pdf': 'excel-a-pdf',
 }
 export const toolShareUrl = (tool: string) => `${SITE_URL}/${TOOL_PAGES[tool] ?? 'app'}`
 
