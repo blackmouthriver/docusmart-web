@@ -5,21 +5,22 @@ import { HeroCard, Notice, Segmented } from '../components/ui'
 import { kindOf } from '../lib/files'
 import { pdfToText } from '../lib/convert'
 import { track } from '../../shared/analytics'
+import { tr } from '../i18n/translate'
 
 export function Study() {
   const [tab, setTab] = useState<'read' | 'notes' | 'pomodoro'>('read')
   return (
     <>
-      <HeroCard title="Modo Estudio" subtitle="Escucha tus documentos, toma notas y estudia en bloques de concentración." />
+      <HeroCard title={tr('nav.study')} subtitle={tr('study.heroSub')} />
       <div style={{ margin: '18px 0 14px' }}>
         <Segmented
-          label="Herramienta de estudio"
+          label={tr('study.tool')}
           value={tab}
           onChange={setTab}
           options={[
-            { value: 'read', label: 'Lectura en voz alta' },
-            { value: 'notes', label: 'Notas' },
-            { value: 'pomodoro', label: 'Pomodoro' },
+            { value: 'read', label: tr('study.readAloud') },
+            { value: 'notes', label: tr('study.notes') },
+            { value: 'pomodoro', label: tr('study.pomodoro') },
           ]}
         />
       </div>
@@ -121,30 +122,30 @@ function ReadAloud() {
       const kind = kindOf(file)
       if (kind === 'pdf') setText(await pdfToText(await file.arrayBuffer()))
       else if (kind === 'text') setText(await file.text())
-      else toast('Elige un PDF o un archivo de texto.')
+      else toast(tr('study.pickPdfTxt'))
     } catch {
-      toast('No se pudo leer el archivo.')
+      toast(tr('study.cantRead'))
     } finally {
       setLoading(false)
     }
   }
 
-  if (!supported) return <Notice kind="error">Este navegador no tiene lectura en voz alta. Prueba con Chrome, Edge o Safari.</Notice>
+  if (!supported) return <Notice kind="error">{tr('study.unsupported')}</Notice>
 
   return (
     <div className="card stack">
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <h3>Lectura en voz alta</h3>
+        <h3>{tr('study.readAloud')}</h3>
         <button type="button" className="btn btn-soft btn-sm" onClick={() => fileInput.current?.click()} disabled={loading}>
-          {loading ? <span className="spinner" /> : <Icon name="open" />} Cargar PDF o TXT
+          {loading ? <span className="spinner" /> : <Icon name="open" />} {tr('study.load')}
         </button>
         <input ref={fileInput} type="file" hidden accept="application/pdf,text/plain,.txt,.md" onChange={(e) => { void loadFile(e.target.files?.[0]); e.target.value = '' }} />
       </div>
 
       {state === 'idle' ? (
         <label className="field">
-          <span>Texto a leer</span>
-          <textarea className="textarea" value={text} placeholder="Pega aquí el texto o carga un documento" onChange={(e) => setText(e.target.value)} />
+          <span>{tr('study.textToRead')}</span>
+          <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => setText(e.target.value)} />
         </label>
       ) : (
         <div className="reading" aria-live="off">
@@ -156,7 +157,7 @@ function ReadAloud() {
 
       <div className="row">
         <label className="field" style={{ flex: '2 1 220px' }}>
-          <span>Voz</span>
+          <span>{tr('study.voice')}</span>
           <select className="select" value={voiceURI} onChange={(e) => setVoiceURI(e.target.value)} disabled={state !== 'idle'}>
             {voices.map((v) => (
               <option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang})</option>
@@ -164,19 +165,19 @@ function ReadAloud() {
           </select>
         </label>
         <label className="field" style={{ flex: '1 1 160px' }}>
-          <span>Velocidad · {rate.toFixed(1)}×</span>
+          <span>{tr('study.speed', { n: rate.toFixed(1) })}</span>
           <input type="range" min={0.6} max={1.8} step={0.1} value={rate} disabled={state !== 'idle'} onChange={(e) => setRate(Number(e.target.value))} />
         </label>
       </div>
 
       <div className="row">
         {state === 'playing' ? (
-          <button type="button" className="btn btn-primary" onClick={pause}><Icon name="pause" /> Pausar</button>
+          <button type="button" className="btn btn-primary" onClick={pause}><Icon name="pause" /> {tr('study.pause')}</button>
         ) : (
-          <button type="button" className="btn btn-primary" onClick={play} disabled={!sentences.length}><Icon name="play" /> {state === 'paused' ? 'Continuar' : 'Leer'}</button>
+          <button type="button" className="btn btn-primary" onClick={play} disabled={!sentences.length}><Icon name="play" /> {state === 'paused' ? tr('study.resume') : tr('study.read')}</button>
         )}
-        {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> Detener</button>}
-        {sentences.length > 0 && <span className="faint">{sentences.length} frases</span>}
+        {state !== 'idle' && <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('study.stop')}</button>}
+        {sentences.length > 0 && <span className="faint">{tr('study.sentences', { n: sentences.length })}</span>}
       </div>
     </div>
   )
@@ -217,14 +218,14 @@ function Notes() {
 
   return (
     <div className="card stack">
-      <h3>Notas</h3>
+      <h3>{tr('study.notes')}</h3>
       <label className="field">
-        <span className="sr-only">Nueva nota</span>
+        <span className="sr-only">{tr('study.newNote')}</span>
         <textarea
           className="textarea"
           style={{ minHeight: 100 }}
           value={draft}
-          placeholder="Escribe una nota… (Ctrl + Enter para guardar)"
+          placeholder={tr('study.notePh')}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) add()
@@ -232,10 +233,10 @@ function Notes() {
         />
       </label>
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <span className="faint">Se guardan solo en este navegador.</span>
-        <button type="button" className="btn btn-primary" disabled={!draft.trim()} onClick={add}><Icon name="plus" /> Guardar nota</button>
+        <span className="faint">{tr('study.localOnly')}</span>
+        <button type="button" className="btn btn-primary" disabled={!draft.trim()} onClick={add}><Icon name="plus" /> {tr('study.saveNote')}</button>
       </div>
-      {!storageOk && <Notice kind="error">Este navegador no permite guardar datos; las notas se perderán al cerrar la pestaña.</Notice>}
+      {!storageOk && <Notice kind="error">{tr('study.noStorage')}</Notice>}
       {notes.length > 0 && (
         <div className="notes">
           {notes.map((n) => (
@@ -243,7 +244,7 @@ function Notes() {
               <p>{n.text}</p>
               <footer>
                 <time dateTime={new Date(n.at).toISOString()}>{new Date(n.at).toLocaleString()}</time>
-                <button type="button" className="icon-btn" aria-label="Borrar nota" onClick={() => setNotes((x) => x.filter((y) => y.id !== n.id))}>
+                <button type="button" className="icon-btn" aria-label={tr('study.deleteNote')} onClick={() => setNotes((x) => x.filter((y) => y.id !== n.id))}>
                   <Icon name="trash" />
                 </button>
               </footer>
@@ -298,8 +299,8 @@ function Pomodoro() {
   }, [running])
 
   useEffect(() => {
-    const base = 'Modo Estudio · DocuSmart Web'
-    document.title = running ? `${fmt(left)} · ${phase === 'focus' ? 'Foco' : 'Descanso'}` : base
+    const base = `${tr('nav.study')} · DocuSmart Web`
+    document.title = running ? `${fmt(left)} · ${phase === 'focus' ? tr('study.focus') : tr('study.break')}` : base
     return () => {
       document.title = base
     }
@@ -321,13 +322,13 @@ function Pomodoro() {
           </svg>
           <div className="timer-label" role="timer" aria-live="off">
             <b>{fmt(left)}</b>
-            <small>{phase === 'focus' ? (running ? 'concentrado' : 'pausado') : phase === 'short' ? 'descanso corto' : 'descanso largo'}</small>
+            <small>{phase === 'focus' ? (running ? tr('study.focused') : tr('study.paused')) : phase === 'short' ? tr('study.shortBreak') : tr('study.longBreak')}</small>
           </div>
         </div>
         <div className="row">
-          <button type="button" className="btn btn-outline" onClick={reset}><Icon name="reset" /> Reiniciar</button>
+          <button type="button" className="btn btn-outline" onClick={reset}><Icon name="reset" /> {tr('study.restart')}</button>
           {running ? (
-            <button type="button" className="btn btn-primary" onClick={() => setRunning(false)}><Icon name="pause" /> Pausar</button>
+            <button type="button" className="btn btn-primary" onClick={() => setRunning(false)}><Icon name="pause" /> {tr('study.pause')}</button>
           ) : (
             <button
               type="button"
@@ -337,17 +338,17 @@ function Pomodoro() {
                 setRunning(true)
               }}
             >
-              <Icon name="play" /> Iniciar
+              <Icon name="play" /> {tr('study.start')}
             </button>
           )}
         </div>
         <div className="row" style={{ gap: 12 }}>
-          <span className="faint">Pomodoros completados: {done}</span>
+          <span className="faint">{tr('study.done', { n: done })}</span>
           <span className="dots" aria-hidden="true">
             {[0, 1, 2, 3].map((i) => <i key={i} className={i < done % 4 || (done > 0 && done % 4 === 0) ? 'on' : ''} />)}
           </span>
         </div>
-        <span className="faint">Cada 4 pomodoros = descanso largo</span>
+        <span className="faint">{tr('study.every4')}</span>
       </div>
     </div>
   )

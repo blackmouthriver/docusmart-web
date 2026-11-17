@@ -2,6 +2,7 @@
 // cobertura como los demás archivos que necesitan el canvas del navegador).
 import { canvasToBlob } from './pdf'
 import { rotatedSize, type OutputMime, type Transform } from './imageTools'
+import { tr } from '../i18n/translate'
 
 export type LoadedImage = { bmp: ImageBitmap; width: number; height: number }
 
@@ -11,7 +12,9 @@ export async function loadImage(file: Blob): Promise<LoadedImage> {
     const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' })
     return { bmp, width: bmp.width, height: bmp.height }
   } catch {
-    throw new Error('No se pudo abrir la imagen. Usa JPG, PNG, WebP, GIF o BMP (las fotos HEIC del iPhone no se pueden leer en el navegador).')
+    const e = new Error(tr('libErr.imageOpen'))
+    e.name = 'ImageOpenError'
+    throw e
   }
 }
 

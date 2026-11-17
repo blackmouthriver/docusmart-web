@@ -8,13 +8,14 @@ import { SaveOptions, ShareApp } from '../components/DocPreview'
 import { resultFile, toolShareUrl } from '../lib/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../lib/qrCrypto'
 import { track } from '../../shared/analytics'
+import { tr } from '../i18n/translate'
 
 const contentType = (s: string) => (/^https?:\/\//i.test(s) ? 'url' : /^WIFI:/i.test(s) ? 'wifi' : 'text')
 
 export function QrScreen() {
   return (
     <>
-      <HeroCard title="Códigos QR" subtitle="Lee y crea códigos QR, también protegidos con contraseña." />
+      <HeroCard title={tr('nav.qr')} subtitle={tr('qr.heroSub')} />
       <div className="two-col" style={{ marginTop: 16 }}>
         <CreateQr />
         <ReadQr />
@@ -43,7 +44,7 @@ export function CreateQr() {
       setImg(await QRCode.toDataURL(payload, { width: 640, margin: 2, errorCorrectionLevel: 'M', color: { dark: '#0B1020', light: '#FFFFFF' } }))
       track('qr_created', { qr_content_type: contentType(text), has_password: protect })
     } catch {
-      toast('El texto es demasiado largo para un código QR.')
+      toast(tr('qr.tooLong'))
     } finally {
       setBusy(false)
     }
@@ -53,33 +54,33 @@ export function CreateQr() {
     <section className="card stack" aria-labelledby="qr-create">
       <div className="row">
         <span className="ico ico-cyan"><Icon name="qr" /></span>
-        <h3 id="qr-create">Crear QR</h3>
+        <h3 id="qr-create">{tr('qr.create')}</h3>
       </div>
       <label className="field">
-        <span>Texto o enlace</span>
-        <textarea className="textarea" style={{ minHeight: 96 }} value={text} maxLength={900} placeholder="https://… o cualquier texto" onChange={(e) => { setText(e.target.value); setImg(null) }} />
+        <span>{tr('qr.textOrLink')}</span>
+        <textarea className="textarea" style={{ minHeight: 96 }} value={text} maxLength={900} placeholder={tr('qr.placeholder')} onChange={(e) => { setText(e.target.value); setImg(null) }} />
       </label>
       <Segmented
-        label="Tipo de QR"
+        label={tr('qr.type')}
         value={protect ? 'protected' : 'open'}
         onChange={(v) => { setProtect(v === 'protected'); setImg(null) }}
-        options={[{ value: 'open', label: 'Normal' }, { value: 'protected', label: 'Protegido' }]}
+        options={[{ value: 'open', label: tr('qr.normal') }, { value: 'protected', label: tr('qr.protected') }]}
       />
       {protect && (
         <label className="field">
-          <span>Contraseña para abrirlo</span>
+          <span>{tr('qr.keyToOpen')}</span>
           <input className="input" type="password" autoComplete="new-password" value={password} onChange={(e) => { setPassword(e.target.value); setImg(null) }} />
-          <small className="faint">Cifrado AES-256. Se puede abrir en la app de DocuSmart o aquí con esta contraseña.</small>
+          <small className="faint">{tr('qr.aesNote')}</small>
         </label>
       )}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={!text.trim() || (protect && password.length < 4)} onClick={create} icon="qr">
-          Generar QR
+          {tr('qr.generate')}
         </BusyButton>
       </div>
       {img && (
         <div className="qr-preview">
-          <img src={img} alt="Código QR generado" />
+          <img src={img} alt={tr('qr.alt')} />
         </div>
       )}
       {qrFile && (
@@ -146,7 +147,7 @@ export function ReadQr() {
       requestAnimationFrame(tick)
     } catch {
       stop()
-      setError('No se pudo usar la cámara. Revisa el permiso del navegador o lee el QR desde una imagen.')
+      setError(tr('qr.cameraError'))
     }
   }
 
@@ -158,10 +159,10 @@ export function ReadQr() {
       const bmp = await createImageBitmap(file)
       const data = decode(bmp, bmp.width, bmp.height)
       bmp.close()
-      if (data === null) setError('No se encontró un código QR en esa imagen.')
+      if (data === null) setError(tr('qr.notFound'))
       else found(data)
     } catch {
-      setError('No se pudo leer la imagen.')
+      setError(tr('qr.cantRead'))
     }
   }
 
@@ -169,9 +170,9 @@ export function ReadQr() {
     <section className="card stack" aria-labelledby="qr-read">
       <div className="row">
         <span className="ico ico-blue"><Icon name="camera" /></span>
-        <h3 id="qr-read">Leer QR</h3>
+        <h3 id="qr-read">{tr('qr.read')}</h3>
       </div>
-      <Segmented label="Origen" value={mode} onChange={(m) => { stop(); setMode(m) }} options={[{ value: 'camera', label: 'Cámara' }, { value: 'image', label: 'Desde imagen' }]} />
+      <Segmented label={tr('qr.source')} value={mode} onChange={(m) => { stop(); setMode(m) }} options={[{ value: 'camera', label: tr('qr.camera') }, { value: 'image', label: tr('qr.fromImage') }]} />
 
       {mode === 'camera' ? (
         <>
@@ -182,21 +183,21 @@ export function ReadQr() {
           </div>
           <div className="row">
             {scanning ? (
-              <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> Detener</button>
+              <button type="button" className="btn btn-soft" onClick={stop}><Icon name="stop" /> {tr('qr.stop')}</button>
             ) : (
-              <button type="button" className="btn btn-primary" onClick={startCamera}><Icon name="camera" /> Abrir cámara</button>
+              <button type="button" className="btn btn-primary" onClick={startCamera}><Icon name="camera" /> {tr('qr.openCamera')}</button>
             )}
           </div>
         </>
       ) : (
         <div className="row">
-          <button type="button" className="btn btn-primary" onClick={() => fileInput.current?.click()}><Icon name="image" /> Elegir imagen</button>
+          <button type="button" className="btn btn-primary" onClick={() => fileInput.current?.click()}><Icon name="image" /> {tr('qr.pickImage')}</button>
           <input ref={fileInput} type="file" accept="image/*" hidden onChange={(e) => { void fromImage(e.target.files?.[0]); e.target.value = '' }} />
         </div>
       )}
 
       {error && <Notice kind="error">{error}</Notice>}
-      {result !== null && (isProtectedPayload(result) ? <ProtectedResult payload={result} /> : <PlainResult value={result} onCopy={() => toast('Copiado')} />)}
+      {result !== null && (isProtectedPayload(result) ? <ProtectedResult payload={result} /> : <PlainResult value={result} onCopy={() => toast(tr('qr.copied'))} />)}
     </section>
   )
 }
@@ -207,9 +208,9 @@ function PlainResult({ value, onCopy }: { value: string; onCopy: () => void }) {
     <div className="stack">
       <div className="result-box">{value}</div>
       <div className="row">
-        <button type="button" className="btn btn-soft btn-sm" onClick={() => navigator.clipboard.writeText(value).then(onCopy)}><Icon name="copy" /> Copiar</button>
+        <button type="button" className="btn btn-soft btn-sm" onClick={() => navigator.clipboard.writeText(value).then(onCopy)}><Icon name="copy" /> {tr('ocr.copy')}</button>
         {isUrl && (
-          <a className="btn btn-outline btn-sm" href={value} target="_blank" rel="noopener noreferrer nofollow">Abrir enlace</a>
+          <a className="btn btn-outline btn-sm" href={value} target="_blank" rel="noopener noreferrer nofollow">{tr('qr.openLink')}</a>
         )}
       </div>
     </div>
@@ -224,7 +225,7 @@ function ProtectedResult({ payload }: { payload: string }) {
   if (plain !== null) return <PlainResult value={plain} onCopy={() => {}} />
   return (
     <div className="stack">
-      <Notice kind="info">Este QR está protegido. Escribe la contraseña para ver su contenido.</Notice>
+      <Notice kind="info">{tr('qr.protectedInfo')}</Notice>
       <form
         className="row"
         onSubmit={async (e) => {
@@ -236,10 +237,10 @@ function ProtectedResult({ payload }: { payload: string }) {
           setPlain(r)
         }}
       >
-        <input className="input" style={{ flex: '1 1 180px' }} type="password" aria-label="Contraseña del QR" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit" className="btn btn-primary" disabled={!password || busy}>{busy ? <span className="spinner" /> : <Icon name="lock" />} Desbloquear</button>
+        <input className="input" style={{ flex: '1 1 180px' }} type="password" aria-label={tr('qr.keyAria')} value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button type="submit" className="btn btn-primary" disabled={!password || busy}>{busy ? <span className="spinner" /> : <Icon name="lock" />} {tr('qr.unlock')}</button>
       </form>
-      {wrong && <Notice kind="error">Contraseña incorrecta.</Notice>}
+      {wrong && <Notice kind="error">{tr('qr.wrong')}</Notice>}
     </div>
   )
 }

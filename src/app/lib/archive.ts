@@ -11,6 +11,7 @@
  * Cada operación usa una instancia nueva del módulo (un programa de
  * Emscripten no puede ejecutar `main` dos veces); el .wasm queda en caché.
  */
+import { tr } from '../i18n/translate'
 
 interface SevenZipFS {
   mkdir: (p: string) => void
@@ -103,7 +104,7 @@ function run(z: SevenZipModule, args: string[], messages: string[], archive?: Ui
     // Con un 7Z de nombres cifrados y la clave incorrecta, 7-Zip se cae antes de
     // escribir "Wrong password": la causa se deduce del propio archivo.
     if (archive && hasEncrypted7zHeader(archive)) throw new WrongArchivePasswordError()
-    throw new ArchiveError('No se pudo procesar el archivo comprimido.')
+    throw new ArchiveError(tr('libErr.archProcess'))
   }
   return text
 }
@@ -133,18 +134,15 @@ function mkdirp(fs: SevenZipFS, dir: string) {
 
 /** El formato ZIP no define cómo guardar letras fuera del inglés en la contraseña: 7-Zip las rechaza. */
 export const isZipSafePassword = (password: string) => /^[ -~]+$/.test(password)
-export const ZIP_PASSWORD_HINT =
-  'En ZIP la contraseña solo puede tener letras sin tildes, números y símbolos. Para usar tildes o ñ, elige el formato 7Z.'
-
 const LEVEL_FLAG: Record<ArchiveLevel, string> = { rapida: '-mx=1', normal: '-mx=5', maxima: '-mx=9' }
 
 export async function createArchive(
   files: ArchiveInput[],
   opts: { format: ArchiveFormat; level?: ArchiveLevel; password?: string },
 ): Promise<Uint8Array> {
-  if (files.length === 0) throw new ArchiveError('Agrega al menos un archivo.')
+  if (files.length === 0) throw new ArchiveError(tr('libErr.archAddOne'))
   if (opts.password && opts.format === 'zip' && !isZipSafePassword(opts.password)) {
-    throw new ArchiveError(ZIP_PASSWORD_HINT)
+    throw new ArchiveError(tr('arch.zipKeyHint'))
   }
   const messages: string[] = []
   const z = await instance(messages)
@@ -171,7 +169,7 @@ export async function createArchive(
   try {
     return z.FS.readFile(out)
   } catch {
-    throw new ArchiveError(/ERROR/i.test(text) ? 'No se pudo crear el archivo comprimido.' : 'No se generó el archivo comprimido.')
+    throw new ArchiveError(/ERROR/i.test(text) ? tr('libErr.archCreate') : tr('libErr.archNoOutput'))
   }
 }
 
@@ -188,7 +186,7 @@ export async function listArchive(name: string, data: Uint8Array, password = '')
   const path = writeArchive(z, name, data)
   const text = run(z, ['l', '-slt', passwordArg(password), path], messages, data)
   if (/Can not open the file as archive|Cannot open the file as archive|is not archive/i.test(text)) {
-    throw new ArchiveError('El archivo no es un comprimido válido o está dañado.')
+    throw new ArchiveError(tr('libErr.archInvalid'))
   }
   // Bloques "Clave = Valor" separados por líneas vacías; el primero es el propio archivo.
   const blocks = text.split(/\n\s*\n/).map((b) => Object.fromEntries(b.split('\n').map((l) => l.split(' = ')).filter((kv) => kv.length === 2)))
@@ -224,7 +222,7 @@ export async function extractArchive(name: string, data: Uint8Array, password = 
   const path = writeArchive(z, name, data)
   const text = run(z, ['x', passwordArg(password), '-y', '-o/x', path], messages, data)
   if (/Can not open the file as archive|Cannot open the file as archive|is not archive/i.test(text)) {
-    throw new ArchiveError('El archivo no es un comprimido válido o está dañado.')
+    throw new ArchiveError(tr('libErr.archInvalid'))
   }
   let files: ArchiveInput[]
   try {
@@ -233,6 +231,6 @@ export async function extractArchive(name: string, data: Uint8Array, password = 
     files = []
   }
   if (files.length === 1 && /\.tar$/i.test(files[0].path)) return extractArchive(files[0].path, files[0].data)
-  if (files.length === 0 && /ERROR/i.test(text)) throw new ArchiveError('No se pudo extraer el archivo: puede estar dañado.')
+  if (files.length === 0 && /ERROR/i.test(text)) throw new ArchiveError(tr('libErr.archExtract'))
   return files
 }

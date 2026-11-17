@@ -9,8 +9,8 @@ import { BeforeAfter } from '../components/DocPreview'
 import { resultFile } from '../lib/share'
 import {
   EXTRACT_ACCEPT,
+  ArchiveError,
   WrongArchivePasswordError,
-  ZIP_PASSWORD_HINT,
   createArchive,
   extractArchive,
   isZipSafePassword,
@@ -21,6 +21,7 @@ import {
   type ArchiveLevel,
 } from '../lib/archive'
 import { track } from '../../shared/analytics'
+import { tr } from '../i18n/translate'
 
 // Por encima de esto el navegador puede quedarse sin memoria (todo se procesa en RAM).
 const BIG = 700 * 1024 * 1024
@@ -33,25 +34,24 @@ function mimeFor(path: string): string {
 }
 
 function friendly(e: unknown): string {
-  if (e instanceof WrongArchivePasswordError) return 'La contraseña no es correcta.'
-  const msg = e instanceof Error ? e.message : ''
-  if (/^(El |La |En |No |Agrega )/.test(msg)) return msg
-  return 'No se pudo procesar el archivo. Si es muy grande, prueba con menos archivos.'
+  if (e instanceof WrongArchivePasswordError) return tr('arch.wrongKey')
+  if (e instanceof ArchiveError) return e.message
+  return tr('arch.failed')
 }
 
 export function ArchiveScreen({ sub }: { sub?: string }) {
   const mode = sub === 'extraer' ? 'extraer' : 'crear'
   return (
     <>
-      <HeroCard title="Comprimir archivos" subtitle="Crea ZIP o 7Z y abre ZIP, RAR, 7Z, TAR o GZ, sin subir nada." />
+      <HeroCard title={tr('nav.archive')} subtitle={tr('arch.heroSub')} />
       <div style={{ margin: '18px 0 14px' }}>
         <Segmented
-          label="Modo"
+          label={tr('arch.mode')}
           value={mode}
           onChange={(m) => go('archivos', m)}
           options={[
-            { value: 'crear', label: 'Comprimir' },
-            { value: 'extraer', label: 'Descomprimir' },
+            { value: 'crear', label: tr('arch.compress') },
+            { value: 'extraer', label: tr('arch.decompress') },
           ]}
         />
       </div>
@@ -109,7 +109,7 @@ export function CreateArchiveTool() {
       setOutput(resultFile(out, `${(name.trim() || 'archivos').replace(/\.(zip|7z)$/i, '')}.${format}`, format === 'zip' ? 'application/zip' : 'application/octet-stream'))
       setDone({ before: total, after: out.length })
       track('archive_created', { format, level, files: items.length, encrypted: usePw })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
       setError(friendly(e))
       track('app_error', { error_context: 'archive_create', error_message: e instanceof Error ? e.name : 'error' })
@@ -120,15 +120,15 @@ export function CreateArchiveTool() {
 
   return (
     <div className="card stack">
-      <DropZone accept="*/*" multiple title="Toca para agregar archivos" hint="Puedes agregar varios, de cualquier tipo" onFiles={add} />
+      <DropZone accept="*/*" multiple title={tr('arch.pickFiles')} hint={tr('arch.pickHint')} onFiles={add} />
       <div className="row">
         <button type="button" className="btn btn-soft btn-sm" onClick={() => folderInput.current?.click()}>
-          <Icon name="folder" /> Agregar una carpeta
+          <Icon name="folder" /> {tr('arch.addFolder')}
         </button>
         <input ref={folderInput} type="file" multiple hidden onChange={(e) => { add(Array.from(e.target.files ?? [])); e.target.value = '' }} />
         {items.length > 0 && (
           <span className="faint">
-            {items.length} archivo{items.length === 1 ? '' : 's'} · {formatBytes(total)}
+            {items.length === 1 ? tr('dp.file') : tr('dp.files', { n: items.length })} · {formatBytes(total)}
           </span>
         )}
       </div>
@@ -141,85 +141,85 @@ export function CreateArchiveTool() {
                 <b title={it.path}>{it.path}</b>
                 <small>{formatBytes(it.file.size)}</small>
               </div>
-              <button type="button" className="icon-btn" aria-label={`Quitar ${it.path}`} onClick={() => setItems((p) => p.filter((_, j) => j !== i))}>
+              <button type="button" className="icon-btn" aria-label={tr('merge.remove', { name: it.path })} onClick={() => setItems((p) => p.filter((_, j) => j !== i))}>
                 <Icon name="close" />
               </button>
             </li>
           ))}
         </ul>
       )}
-      {total > BIG && <Notice kind="info">Son {formatBytes(total)}: todo se procesa en la memoria del navegador y podría tardar o fallar. Si pasa, divide en partes.</Notice>}
+      {total > BIG && <Notice kind="info">{tr('arch.big', { size: formatBytes(total) })}</Notice>}
 
       <div className="row" style={{ gap: 16 }}>
         <div className="field">
-          <span>Formato</span>
-          <Segmented label="Formato" value={format} onChange={setFormat} options={[{ value: 'zip', label: 'ZIP' }, { value: '7z', label: '7Z' }]} />
+          <span>{tr('single.format')}</span>
+          <Segmented label={tr('single.format')} value={format} onChange={setFormat} options={[{ value: 'zip', label: 'ZIP' }, { value: '7z', label: '7Z' }]} />
         </div>
         <div className="field">
-          <span>Compresión</span>
+          <span>{tr('arch.level')}</span>
           <Segmented
-            label="Compresión"
+            label={tr('arch.level')}
             value={level}
             onChange={setLevel}
             options={[
-              { value: 'rapida', label: 'Rápida' },
-              { value: 'normal', label: 'Normal' },
-              { value: 'maxima', label: 'Máxima' },
+              { value: 'rapida', label: tr('arch.fast') },
+              { value: 'normal', label: tr('arch.normal') },
+              { value: 'maxima', label: tr('arch.max') },
             ]}
           />
         </div>
       </div>
       <small className="faint">
         {format === 'zip'
-          ? 'ZIP se abre en cualquier equipo sin instalar nada.'
-          : '7Z comprime más y, con contraseña, también oculta los nombres de los archivos. Para abrirlo se necesita 7-Zip, WinRAR o DocuSmart.'}
+          ? tr('arch.zipNote')
+          : tr('arch.7zNote')}
       </small>
 
       <label className="field">
-        <span>Nombre del archivo</span>
+        <span>{tr('arch.name')}</span>
         <input className="input" value={name} maxLength={80} onChange={(e) => setName(e.target.value)} />
       </label>
 
       <label className="check">
         <input type="checkbox" checked={usePw} onChange={(e) => setUsePw(e.target.checked)} />
-        <span>Proteger con contraseña (AES-256)</span>
+        <span>{tr('arch.protect')}</span>
       </label>
       {usePw && (
         <>
           <label className="field">
-            <span>Contraseña</span>
+            <span>{tr('arch.key')}</span>
             <input className="input" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} />
           </label>
           <label className="field">
-            <span>Repite la contraseña</span>
+            <span>{tr('arch.key2')}</span>
             <input className="input" type="password" autoComplete="new-password" value={pw2} onChange={(e) => setPw2(e.target.value)} />
           </label>
-          {zipPwBad && <small style={{ color: 'var(--danger)' }}>{ZIP_PASSWORD_HINT}</small>}
-          {pw.length > 0 && pw.length < 4 && <small style={{ color: 'var(--danger)' }}>Usa al menos 4 caracteres.</small>}
-          {pw2.length > 0 && pw !== pw2 && <small style={{ color: 'var(--danger)' }}>Las contraseñas no coinciden.</small>}
+          {zipPwBad && <small style={{ color: 'var(--danger)' }}>{tr('arch.zipKeyHint')}</small>}
+          {pw.length > 0 && pw.length < 4 && <small style={{ color: 'var(--danger)' }}>{tr('arch.min4')}</small>}
+          {pw2.length > 0 && pw !== pw2 && <small style={{ color: 'var(--danger)' }}>{tr('arch.mismatch')}</small>}
         </>
       )}
 
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={items.length === 0 || !pwOk} onClick={create} icon="archive">
-          {`Crear ${format.toUpperCase()}`}
+          {tr('arch.create', { fmt: format.toUpperCase() })}
         </BusyButton>
       </div>
       {items.length > 0 && (
         <BeforeAfter
           originals={inputFiles}
           result={output}
-          labels={['Tus archivos', format.toUpperCase()]}
+          labels={[tr('conv.yourFiles'), format.toUpperCase()]}
           toolName="archive_create"
-          title={`Así quedó tu ${format.toUpperCase()}`}
-          previewTitle="Los archivos que vas a comprimir"
-          placeholder={busy ? 'Comprimiendo…' : `Pulsa Crear ${format.toUpperCase()}`}
+          title={tr('arch.title', { fmt: format.toUpperCase() })}
+          previewTitle={tr('arch.toCompress')}
+          placeholder={busy ? tr('arch.compressing') : tr('arch.press', { fmt: format.toUpperCase() })}
           summary={
             done && (
               <Notice kind="success">
                 {formatBytes(done.before)} → <b>{formatBytes(done.after)}</b>
-                {done.after < done.before ? ` (${Math.round((1 - done.after / done.before) * 100)}% menos)` : ' (estos archivos ya venían comprimidos)'}.
+                {done.after < done.before ? ` (${tr('common.lessPct', { n: Math.round((1 - done.after / done.before) * 100) })})` : ` (${tr('arch.alreadyCompressed')})`}.
               </Notice>
             )
           }
@@ -256,7 +256,7 @@ export function ExtractArchiveTool() {
       if (e instanceof WrongArchivePasswordError) {
         // 7Z con nombres cifrados: ni siquiera se puede listar sin la clave.
         setNeedsPw(true)
-        if (password) setError('La contraseña no es correcta.')
+        if (password) setError(tr('arch.wrongKey'))
       } else setError(friendly(e))
     } finally {
       setBusy(false)
@@ -281,7 +281,7 @@ export function ExtractArchiveTool() {
       if (!entries) setEntries(files.map((f) => ({ path: f.path, size: f.data.length, isDir: false, encrypted: needsPw })))
       setExtracted(files)
       track('archive_extracted', { format: ext(file), files: files.length })
-      toast(`Se extrajeron ${files.length} archivo${files.length === 1 ? '' : 's'}.`)
+      toast(files.length === 1 ? tr('arch.extractedOne') : tr('arch.extractedMany', { n: files.length }))
     } catch (e) {
       setError(friendly(e))
       track('app_error', { error_context: 'archive_extract', error_message: e instanceof Error ? e.name : 'error' })
@@ -305,7 +305,7 @@ export function ExtractArchiveTool() {
   return (
     <div className="card stack">
       {!file ? (
-        <DropZone accept={EXTRACT_ACCEPT} title="Toca para abrir un comprimido" hint="ZIP, RAR, 7Z, TAR, GZ, BZ2 o XZ" onFiles={([f]) => pick(f)} />
+        <DropZone accept={EXTRACT_ACCEPT} title={tr('arch.pickArchive')} hint={tr('arch.archHint')} onFiles={([f]) => pick(f)} />
       ) : (
         <ul className="file-list" style={{ marginTop: 0 }}>
           <li className="file-item">
@@ -314,10 +314,10 @@ export function ExtractArchiveTool() {
               <b title={file.name}>{file.name}</b>
               <small>
                 {formatBytes(file.size)}
-                {entries ? ` · ${files.length} archivo${files.length === 1 ? '' : 's'}` : ''}
+                {entries ? ` · ${files.length === 1 ? tr('dp.file') : tr('dp.files', { n: files.length })}` : ''}
               </small>
             </div>
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setFile(null); setEntries(null); setExtracted(null); setError(null) }}>Cambiar</button>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setFile(null); setEntries(null); setExtracted(null); setError(null) }}>{tr('common.change')}</button>
           </li>
         </ul>
       )}
@@ -330,9 +330,9 @@ export function ExtractArchiveTool() {
             void extract()
           }}
         >
-          <Notice kind="info">Este archivo tiene contraseña.</Notice>
+          <Notice kind="info">{tr('arch.hasKey')}</Notice>
           <label className="field">
-            <span>Contraseña</span>
+            <span>{tr('arch.key')}</span>
             <input className="input" type="password" autoComplete="current-password" value={pw} onChange={(e) => setPw(e.target.value)} />
           </label>
         </form>
@@ -361,7 +361,7 @@ export function ExtractArchiveTool() {
                 <b title={f.path}>{f.path}</b>
                 <small>{formatBytes(f.data.length)}</small>
               </div>
-              <button type="button" className="icon-btn" aria-label={`Descargar ${f.path}`} onClick={() => download(f.data, f.path.split('/').pop() || 'archivo')}>
+              <button type="button" className="icon-btn" aria-label={tr('img.downloadOne', { name: f.path })} onClick={() => download(f.data, f.path.split('/').pop() || 'archivo')}>
                 <Icon name="download" />
               </button>
             </li>
@@ -370,12 +370,12 @@ export function ExtractArchiveTool() {
       )}
 
       {error && <Notice kind="error">{error}</Notice>}
-      {file && ext(file) === 'rar' && !error && <small className="faint">Los RAR se pueden abrir aquí; para crear uno nuevo usa ZIP o 7Z (el formato RAR es propietario).</small>}
+      {file && ext(file) === 'rar' && !error && <small className="faint">{tr('arch.rarNote')}</small>}
 
       <div className="row row-end">
         {!extracted && (
           <BusyButton busy={busy} disabled={!file || (needsPw && !pw)} onClick={extract} icon="archive">
-            Extraer archivos
+            {tr('arch.extract')}
           </BusyButton>
         )}
       </div>
@@ -385,10 +385,10 @@ export function ExtractArchiveTool() {
           result={null}
           results={extractedFiles}
           saveAs={bundle}
-          labels={['Comprimido', 'Extraído']}
+          labels={[tr('arch.archived'), tr('arch.extractedLbl')]}
           toolName="archive_extract"
-          title="Esto es lo que había dentro"
-          summary={extractedFiles.length > 1 ? <Notice kind="success">{extractedFiles.length} archivos. Se guardan todos juntos en un ZIP, con sus carpetas; también puedes descargarlos uno por uno arriba.</Notice> : undefined}
+          title={tr('arch.inside')}
+          summary={extractedFiles.length > 1 ? <Notice kind="success">{tr('arch.zipAll', { n: extractedFiles.length })}</Notice> : undefined}
         />
       )}
     </div>

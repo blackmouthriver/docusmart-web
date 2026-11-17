@@ -8,6 +8,8 @@ import { bundleFiles, resultFile } from '../lib/share'
 import { OfficeFormatError, docxToPdf, xlsxToPdf } from '../lib/officeRender'
 import { convertImage, imagesToPdf, pdfToImages, pdfToText, type ImageTarget } from '../lib/convert'
 import { track } from '../../shared/analytics'
+import { tr } from '../i18n/translate'
+import type { MessageKey } from '../i18n/messages/es'
 
 
 type Conv = {
@@ -17,36 +19,36 @@ type Conv = {
   to: string
   fromColor: string
   toColor: string
-  desc: string
+  desc: MessageKey
 }
 
 const FMT_COLORS: Record<string, string> = {
   IMG: '#8B5CF6', PDF: '#EF4444', JPG: '#8B5CF6', PNG: '#8B5CF6', WEBP: '#8B5CF6', BMP: '#8B5CF6',
   TXT: '#64748B', WORD: '#2563EB', EXCEL: '#16A34A', PPT: '#F97316', HTML: '#06B6D4', CSV: '#16A34A',
 }
-const c = (id: string, type: string, from: string, to: string, desc: string): Conv => ({
+const c = (id: string, type: string, from: string, to: string, desc: MessageKey): Conv => ({
   id, type, from, to, desc, fromColor: FMT_COLORS[from], toColor: FMT_COLORS[to],
 })
 
 const IMAGE_CONVS = [
-  c('img-pdf', 'IMAGE_TO_PDF', 'IMG', 'PDF', 'Una o varias imágenes en un solo PDF'),
-  c('img-jpg', 'IMAGE_TO_JPG', 'IMG', 'JPG', 'Liviano, ideal para fotos'),
-  c('img-png', 'IMAGE_TO_PNG', 'IMG', 'PNG', 'Sin pérdida, conserva transparencia'),
-  c('img-webp', 'IMAGE_TO_WEBP', 'IMG', 'WEBP', 'Formato moderno para la web'),
-  c('img-bmp', 'IMAGE_TO_BMP', 'IMG', 'BMP', 'Mapa de bits sin compresión'),
+  c('img-pdf', 'IMAGE_TO_PDF', 'IMG', 'PDF', 'conv.desc.imgPdf'),
+  c('img-jpg', 'IMAGE_TO_JPG', 'IMG', 'JPG', 'conv.desc.imgJpg'),
+  c('img-png', 'IMAGE_TO_PNG', 'IMG', 'PNG', 'conv.desc.imgPng'),
+  c('img-webp', 'IMAGE_TO_WEBP', 'IMG', 'WEBP', 'conv.desc.imgWebp'),
+  c('img-bmp', 'IMAGE_TO_BMP', 'IMG', 'BMP', 'conv.desc.imgBmp'),
 ]
 const PDF_CONVS = [
-  c('pdf-img', 'PDF_TO_IMAGE', 'PDF', 'IMG', 'Cada página como imagen'),
-  c('pdf-txt', 'PDF_TO_TXT', 'PDF', 'TXT', 'Extrae el texto del documento'),
-  c('pdf-word', 'PDF_TO_WORD', 'PDF', 'WORD', 'Documento editable, con su formato'),
-  c('pdf-excel', 'PDF_TO_EXCEL', 'PDF', 'EXCEL', 'Tablas a una hoja de cálculo'),
+  c('pdf-img', 'PDF_TO_IMAGE', 'PDF', 'IMG', 'conv.desc.pdfImg'),
+  c('pdf-txt', 'PDF_TO_TXT', 'PDF', 'TXT', 'conv.desc.pdfTxt'),
+  c('pdf-word', 'PDF_TO_WORD', 'PDF', 'WORD', 'conv.desc.pdfWord'),
+  c('pdf-excel', 'PDF_TO_EXCEL', 'PDF', 'EXCEL', 'conv.desc.pdfExcel'),
 ]
 const OFFICE_CONVS = [
-  c('word-pdf', 'WORD_TO_PDF', 'WORD', 'PDF', 'Documento .docx a PDF'),
-  c('excel-pdf', 'EXCEL_TO_PDF', 'EXCEL', 'PDF', 'Hojas de cálculo .xlsx a PDF'),
+  c('word-pdf', 'WORD_TO_PDF', 'WORD', 'PDF', 'conv.desc.wordPdf'),
+  c('excel-pdf', 'EXCEL_TO_PDF', 'EXCEL', 'PDF', 'conv.desc.excelPdf'),
 ]
 const APP_ONLY = [
-  c('', 'PPT_TO_PDF', 'PPT', 'PDF', ''),
+  c('', 'PPT_TO_PDF', 'PPT', 'PDF', 'conv.desc.pptPdf'),
 ]
 const ALL = [...IMAGE_CONVS, ...PDF_CONVS, ...OFFICE_CONVS]
 
@@ -69,12 +71,12 @@ export function Converter({ sub }: { sub?: string }) {
 
   return (
     <>
-      <HeroCard title="Convertidor" subtitle="Convierte tus documentos fácilmente, sin salir del navegador." />
-      <h2 className="section-title">¿Qué quieres convertir?</h2>
+      <HeroCard title={tr('conv.title')} subtitle={tr('conv.subtitle')} />
+      <h2 className="section-title">{tr('conv.question')}</h2>
       {[
-        { title: 'Imagen', cls: 'ico-violet', icon: 'image' as const, list: IMAGE_CONVS },
+        { title: tr('conv.image'), cls: 'ico-violet', icon: 'image' as const, list: IMAGE_CONVS },
         { title: 'PDF', cls: 'ico-red', icon: 'pdf' as const, list: PDF_CONVS },
-        { title: 'Word y Excel', cls: 'ico-blue', icon: 'file' as const, list: OFFICE_CONVS },
+        { title: tr('conv.wordExcel'), cls: 'ico-blue', icon: 'file' as const, list: OFFICE_CONVS },
       ].map((g) => (
         <section className="conv-group" key={g.title}>
           <h3>
@@ -86,8 +88,8 @@ export function Converter({ sub }: { sub?: string }) {
               <button key={x.id} type="button" className="tool-card" onClick={() => go('convertir', x.id)} style={{ flexDirection: 'column', gap: 12 }}>
                 <Pair conv={x} />
                 <span>
-                  <b>{x.from === 'IMG' ? 'Imagen' : x.from} → {x.to === 'IMG' ? 'Imagen' : x.to}</b>
-                  <small>{x.desc}</small>
+                  <b>{x.from === 'IMG' ? tr('conv.image') : x.from} → {x.to === 'IMG' ? tr('conv.image') : x.to}</b>
+                  <small>{tr(x.desc)}</small>
                 </span>
               </button>
             ))}
@@ -97,14 +99,14 @@ export function Converter({ sub }: { sub?: string }) {
       <section className="conv-group">
         <h3>
           <span className="ico ico-blue"><Icon name="phone" /></span>
-          En la app Android
+          {tr('conv.inApp')}
         </h3>
         <div className="card">
           <div className="row" style={{ gap: 14 }}>
             {APP_ONLY.map((x) => <Pair key={x.type} conv={x} />)}
           </div>
           <p className="muted" style={{ marginTop: 12 }}>
-            PowerPoint a PDF se convierte en la app, junto con el resto de las 17 combinaciones.
+            {tr('conv.inAppText')}
           </p>
         </div>
       </section>
@@ -163,7 +165,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         const [{ extractForWord }, { buildDocument, writeDocx, summarize }] = await Promise.all([import('../lib/pdfWordSources'), import('../lib/pdfWord')])
         const ex = await extractForWord(files[0], (d, t) => setProgress(d / t))
         if (!ex.texts.length) {
-          setError('No se encontró texto: parece un PDF escaneado. Pásalo primero por "OCR: reconocer texto" (con "PDF buscable") y convierte ese PDF.')
+          setError(tr('conv.noText'))
           track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
           return
         }
@@ -174,7 +176,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         const [{ extractForWord }, { buildSheets, writeXlsx, summarizeSheets }] = await Promise.all([import('../lib/pdfWordSources'), import('../lib/pdfExcel')])
         const ex = await extractForWord(files[0], (d, t) => setProgress(d / t), { images: false })
         if (!ex.texts.length) {
-          setError('No se encontró texto: parece un PDF escaneado. Pásalo primero por "OCR: reconocer texto" (con "PDF buscable") y convierte ese PDF.')
+          setError(tr('conv.noText'))
           track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
           return
         }
@@ -195,29 +197,29 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         const t = await pdfToText(await files[0].arrayBuffer())
         setText(t)
         if (!t.trim()) {
-          setError('No se encontró texto: parece un PDF escaneado. Usa la herramienta "OCR: reconocer texto" en Herramientas PDF.')
+          setError(tr('conv.noTextTxt'))
           track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
           return
         }
         setOut({ result: resultFile(new Blob([t], { type: 'text/plain;charset=utf-8' }), `${baseName(files[0].name)}.txt`, 'text/plain;charset=utf-8') })
       }
       track('conversion_success', { conversion_type: conv.type, file_size_kb: totalKb })
-      toast('Listo. Revisa el resultado y guárdalo.')
+      toast(tr('common.doneReview'))
     } catch (e) {
-      setError(e instanceof OfficeFormatError || (e instanceof Error && /^El (documento|libro) no tiene/.test(e.message)) ? e.message : errorMessage(e))
+      setError(e instanceof OfficeFormatError || (e instanceof Error && e.name === 'OfficeEmptyError') ? e.message : errorMessage(e))
       track('conversion_error', { conversion_type: conv.type, error_message: e instanceof Error ? e.name : 'error' })
     } finally {
       setBusy(false)
     }
   }
 
-  const title = `${conv.from === 'IMG' ? 'Imagen' : conv.from} → ${conv.to === 'IMG' ? 'Imagen' : conv.to}`
+  const title = `${conv.from === 'IMG' ? tr('conv.image') : conv.from} → ${conv.to === 'IMG' ? tr('conv.image') : conv.to}`
   return (
     <>
       {!embedded && (
         <>
-          <HeroCard title="Convertidor" subtitle="Convierte tus documentos fácilmente, sin salir del navegador." />
-          <BackButton label="Volver al convertidor" onClick={() => go('convertir')} />
+          <HeroCard title={tr('conv.title')} subtitle={tr('conv.subtitle')} />
+          <BackButton label={tr('conv.back')} onClick={() => go('convertir')} />
         </>
       )}
       <div className="card stack">
@@ -225,12 +227,12 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
           <h3 style={{ fontSize: 24 }}>{title}</h3>
           <Pair conv={conv} />
         </div>
-        <p className="muted">{conv.desc}</p>
+        <p className="muted">{tr(conv.desc)}</p>
         <DropZone
           accept={isImageInput ? 'image/*' : conv.id === 'word-pdf' ? '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document' : conv.id === 'excel-pdf' ? '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf'}
           multiple={isImageInput}
-          title={isImageInput ? 'Toca para seleccionar imágenes' : conv.id === 'word-pdf' ? 'Toca para seleccionar un documento de Word (.docx)' : conv.id === 'excel-pdf' ? 'Toca para seleccionar un libro de Excel (.xlsx)' : 'Toca para seleccionar un PDF'}
-          hint="O arrastra los archivos aquí"
+          title={isImageInput ? tr('conv.pickImages') : conv.id === 'word-pdf' ? tr('conv.pickWord') : conv.id === 'excel-pdf' ? tr('conv.pickExcel') : tr('common.pickPdf')}
+          hint={tr('conv.dragFiles')}
           onFiles={(f) => {
             setFiles((prev) => (isImageInput ? [...prev, ...f] : f))
             setText(null)
@@ -247,15 +249,15 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
                   <>
                     {conv.id === 'img-pdf' && files.length > 1 && (
                       <>
-                        <button type="button" className="icon-btn" aria-label="Subir" disabled={i === 0} onClick={() => setFiles((p) => swap(p, i, i - 1))}>
+                        <button type="button" className="icon-btn" aria-label={tr('conv.moveUp')} disabled={i === 0} onClick={() => setFiles((p) => swap(p, i, i - 1))}>
                           <Icon name="up" />
                         </button>
-                        <button type="button" className="icon-btn" aria-label="Bajar" disabled={i === files.length - 1} onClick={() => setFiles((p) => swap(p, i, i + 1))}>
+                        <button type="button" className="icon-btn" aria-label={tr('conv.moveDown')} disabled={i === files.length - 1} onClick={() => setFiles((p) => swap(p, i, i + 1))}>
                           <Icon name="downArrow" />
                         </button>
                       </>
                     )}
-                    <button type="button" className="icon-btn" aria-label={`Quitar ${f.name}`} onClick={() => setFiles((p) => p.filter((_, j) => j !== i))}>
+                    <button type="button" className="icon-btn" aria-label={tr('merge.remove', { name: f.name })} onClick={() => setFiles((p) => p.filter((_, j) => j !== i))}>
                       <Icon name="close" />
                     </button>
                   </>
@@ -266,28 +268,28 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         )}
         {conv.id === 'pdf-img' && (
           <div className="row">
-            <span className="faint">Formato</span>
-            <Segmented label="Formato de imagen" value={pdfImgFormat} onChange={setPdfImgFormat} options={[{ value: 'png', label: 'PNG' }, { value: 'jpg', label: 'JPG' }]} />
+            <span className="faint">{tr('single.format')}</span>
+            <Segmented label={tr('conv.imageFormat')} value={pdfImgFormat} onChange={setPdfImgFormat} options={[{ value: 'png', label: 'PNG' }, { value: 'jpg', label: 'JPG' }]} />
           </div>
         )}
         {busy && progress > 0 && <Progress value={progress} />}
         {error && <Notice kind="error">{error}</Notice>}
         {conv.id === 'pdf-word' && !wordInfo && !error && (
-          <small className="faint">Un PDF no guarda párrafos ni tablas: DocuSmart los reconstruye. Funciona mejor con PDF creados desde Word o un programa similar; los escaneados necesitan OCR primero.</small>
+          <small className="faint">{tr('conv.wordNote')}</small>
         )}
         {conv.id === 'pdf-excel' && (
           <div className="field">
-            <span>Hojas</span>
-            <Segmented label="Hojas" value={sheetMode} onChange={setSheetMode} options={[{ value: 'pages', label: 'Una por página' }, { value: 'single', label: 'Todo en una hoja' }]} />
-            {!excelInfo && !error && <small className="faint">Funciona mejor con tablas de PDF digitales (extractos, facturas, reportes). Los números quedan como números para poder sumarlos.</small>}
+            <span>{tr('conv.sheets')}</span>
+            <Segmented label={tr('conv.sheets')} value={sheetMode} onChange={setSheetMode} options={[{ value: 'pages', label: tr('conv.onePerPage') }, { value: 'single', label: tr('conv.allInOne') }]} />
+            {!excelInfo && !error && <small className="faint">{tr('conv.excelNote')}</small>}
           </div>
         )}
         {isOffice && !officeInfo && !error && (
-          <small className="faint">El PDF conserva el contenido y la estructura (títulos, negritas, listas, tablas e imágenes); las fuentes y el diseño exacto pueden variar un poco.</small>
+          <small className="faint">{tr('conv.officeNote')}</small>
         )}
         <div className="row row-end">
           <BusyButton busy={busy} disabled={!files.length} onClick={run} icon="convert">
-            Convertir
+            {tr('conv.go')}
           </BusyButton>
         </div>
         {files.length > 0 && (
@@ -299,23 +301,27 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
             saveAs={out?.saveAs}
             toolName={conv.id || conv.type}
             title={resultTitle(conv.to)}
-            previewTitle={files.length > 1 ? 'Tus archivos' : 'Vista previa de tu archivo'}
-            placeholder={busy ? 'Convirtiendo…' : `Aquí verás el resultado en ${conv.to === 'IMG' ? 'imagen' : conv.to}`}
+            previewTitle={files.length > 1 ? tr('conv.yourFiles') : tr('conv.previewFile')}
+            placeholder={busy ? tr('conv.converting') : tr('conv.resultIn', { fmt: conv.to === 'IMG' ? tr('conv.imageLower') : conv.to })}
             summary={
               officeInfo ? (
                 officeInfo.skippedImages ? (
-                  <Notice kind="info">{officeInfo.skippedImages === 1 ? 'Una imagen usa' : `${officeInfo.skippedImages} imágenes usan`} un formato que no se pudo incluir (por ejemplo EMF o GIF).</Notice>
+                  <Notice kind="info">{officeInfo.skippedImages === 1 ? tr('conv.skippedOne') : tr('conv.skippedMany', { n: officeInfo.skippedImages })}</Notice>
                 ) : undefined
               ) : excelInfo ? (
                 <Notice kind="success">
-                  {excelInfo.rows} filas en {excelInfo.sheets} {excelInfo.sheets === 1 ? 'hoja' : 'hojas'}, con {excelInfo.numbers} {excelInfo.numbers === 1 ? 'número' : 'números'}. La vista es aproximada; revisa las columnas al abrirlo en Excel.
+                  {tr('conv.excelSummary', {
+                    rows: excelInfo.rows,
+                    sheets: excelInfo.sheets === 1 ? tr('conv.sheetOne') : tr('conv.sheetMany', { n: excelInfo.sheets }),
+                    numbers: excelInfo.numbers === 1 ? tr('conv.numberOne') : tr('conv.numberMany', { n: excelInfo.numbers }),
+                  })}
                 </Notice>
               ) : wordInfo ? (
                 <Notice kind="success">
-                  {wordInfo.paragraphs} párrafos{wordInfo.headings ? `, ${wordInfo.headings} ${wordInfo.headings === 1 ? 'título' : 'títulos'}` : ''}{wordInfo.tables ? `, ${wordInfo.tables} ${wordInfo.tables === 1 ? 'tabla' : 'tablas'}` : ''}{wordInfo.images ? `, ${wordInfo.images} ${wordInfo.images === 1 ? 'imagen' : 'imágenes'}` : ''}. La vista es aproximada; el diseño puede variar un poco en Word.
+                  {tr('conv.wordSummary', { parts: wordParts(wordInfo) })}
                 </Notice>
               ) : out?.saveAs && out.results && out.results.length > 1 ? (
-                <Notice kind="success">{out.results.length} archivos. Se guardan juntos en un ZIP.</Notice>
+                <Notice kind="success">{tr('conv.filesZip', { n: out.results.length })}</Notice>
               ) : undefined
             }
           />
@@ -324,9 +330,9 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
       {text && text.trim() && (
         <div className="card" style={{ marginTop: 14 }}>
           <div className="row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
-            <h3>Texto extraído</h3>
-            <button type="button" className="btn btn-soft btn-sm" onClick={() => navigator.clipboard.writeText(text).then(() => toast('Texto copiado'))}>
-              <Icon name="copy" /> Copiar
+            <h3>{tr('conv.extracted')}</h3>
+            <button type="button" className="btn btn-soft btn-sm" onClick={() => navigator.clipboard.writeText(text).then(() => toast(tr('conv.textCopied')))}>
+              <Icon name="copy" /> {tr('ocr.copy')}
             </button>
           </div>
           <pre className="text-view">{text}</pre>
@@ -342,11 +348,20 @@ const XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
 /** Título del resultado según el formato de destino. */
 function resultTitle(to: string): string {
-  if (to === 'PDF') return 'Así quedó tu PDF'
-  if (to === 'WORD') return 'Así quedó tu documento de Word'
-  if (to === 'EXCEL') return 'Así quedó tu hoja de Excel'
-  if (to === 'TXT') return 'Este es el texto de tu PDF'
-  return 'Así quedaron tus imágenes'
+  if (to === 'PDF') return tr('conv.result.pdf')
+  if (to === 'WORD') return tr('conv.result.word')
+  if (to === 'EXCEL') return tr('conv.result.excel')
+  if (to === 'TXT') return tr('conv.result.txt')
+  return tr('conv.result.images')
+}
+
+/** "12 párrafos, 2 títulos, 1 tabla": lo que se reconstruyó en el Word. */
+function wordParts(w: { paragraphs: number; tables: number; images: number; headings: number }): string {
+  const parts = [tr('conv.paragraphs', { n: w.paragraphs })]
+  if (w.headings) parts.push(w.headings === 1 ? tr('conv.headingOne') : tr('conv.headingMany', { n: w.headings }))
+  if (w.tables) parts.push(w.tables === 1 ? tr('conv.tableOne') : tr('conv.tableMany', { n: w.tables }))
+  if (w.images) parts.push(w.images === 1 ? tr('img.countOne') : tr('img.countMany', { n: w.images }))
+  return parts.join(', ')
 }
 
 function swap<T>(arr: T[], a: number, b: number): T[] {

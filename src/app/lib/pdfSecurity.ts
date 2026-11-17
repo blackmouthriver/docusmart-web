@@ -4,6 +4,7 @@
  */
 import { PDFDocument } from 'pdf-lib'
 import { QPDF_ERROR, QPDF_OK, QPDF_WARNINGS, runQpdf } from './qpdf'
+import { tr } from '../i18n/translate'
 
 export class WrongPasswordError extends Error {
   constructor() {
@@ -40,7 +41,7 @@ export async function compressLossless(bytes: ArrayBuffer | Uint8Array): Promise
     ['{in}', '--object-streams=generate', '--compress-streams=y', '--recompress-flate', '--compression-level=9', '{out}'],
     input,
   )
-  if (!r.output) throw new QpdfError('No se pudo comprimir el PDF.')
+  if (!r.output) throw new QpdfError(tr('libErr.qpdfCompress'))
   const improved = r.output.length < input.length
   return { bytes: improved ? r.output : input, before: input.length, after: improved ? r.output.length : input.length, improved }
 }
@@ -62,7 +63,7 @@ function randomPassword() {
 
 /** Cifra con AES-256 (lo que leen Adobe, Chrome, Edge y la app de DocuSmart). */
 export async function protect(bytes: ArrayBuffer | Uint8Array, opts: ProtectOptions): Promise<Uint8Array> {
-  if (!opts.userPassword) throw new QpdfError('Falta la contraseña.')
+  if (!opts.userPassword) throw new QpdfError(tr('libErr.qpdfNoKey'))
   const owner = opts.ownerPassword || randomPassword()
   const perms = [
     `--print=${opts.allowPrint === false ? 'none' : 'full'}`,
@@ -72,9 +73,9 @@ export async function protect(bytes: ArrayBuffer | Uint8Array, opts: ProtectOpti
   const r = await runQpdf(['--encrypt', opts.userPassword, owner, '256', ...perms, '--', '{in}', '{out}'], toBytes(bytes))
   if (r.code !== QPDF_OK && r.code !== QPDF_WARNINGS) {
     if (r.code === QPDF_ERROR && r.messages.some((m) => /password/i.test(m))) throw new WrongPasswordError()
-    throw new QpdfError('No se pudo proteger el PDF. Si ya tiene contraseña, quítala primero.')
+    throw new QpdfError(tr('libErr.qpdfProtectLocked'))
   }
-  if (!r.output) throw new QpdfError('No se pudo proteger el PDF.')
+  if (!r.output) throw new QpdfError(tr('libErr.qpdfProtect'))
   return r.output
 }
 
@@ -85,9 +86,9 @@ export async function unlock(bytes: ArrayBuffer | Uint8Array, password: string):
     // qpdf solo distingue el motivo por el mensaje; si no lo capturó, una
     // salida 2 al descifrar casi siempre es contraseña incorrecta.
     if (r.messages.length === 0 || r.messages.some((m) => /password/i.test(m))) throw new WrongPasswordError()
-    throw new QpdfError('No se pudo desbloquear el PDF.')
+    throw new QpdfError(tr('libErr.qpdfUnlock'))
   }
-  if (!r.output) throw new QpdfError('No se pudo desbloquear el PDF.')
+  if (!r.output) throw new QpdfError(tr('libErr.qpdfUnlock'))
   return r.output
 }
 
@@ -105,10 +106,10 @@ export async function repair(bytes: ArrayBuffer | Uint8Array): Promise<RepairRes
   try {
     doc = await PDFDocument.load(input, { ignoreEncryption: true, throwOnInvalidObject: false, updateMetadata: false })
   } catch {
-    throw new QpdfError('El archivo está demasiado dañado para recuperarlo.')
+    throw new QpdfError(tr('libErr.qpdfTooDamaged'))
   }
-  if (doc.isEncrypted) throw new QpdfError('El PDF tiene contraseña: desbloquéalo primero.')
-  if (doc.getPageCount() === 0) throw new QpdfError('No se encontraron páginas para recuperar.')
+  if (doc.isEncrypted) throw new QpdfError(tr('libErr.qpdfLocked'))
+  if (doc.getPageCount() === 0) throw new QpdfError(tr('libErr.qpdfNoPages'))
   const check = await runQpdf(['--check', '{in}'], input)
   return { bytes: await doc.save(), hadProblems: check.code !== QPDF_OK }
 }

@@ -2,6 +2,7 @@
 // cobertura, como los demás *Sources.ts e imageCanvas.ts).
 import { canvasToBlob } from './pdf'
 import { MAX_OUTPUT_SIDE, applyFilter, detectDocument, insetQuad, outputSize, rotate90, warpPerspective, type Pixels, type Quad, type ScanFilter } from './scan'
+import { tr } from '../i18n/translate'
 
 export type Photo = {
   /** La foto ya derecha (EXIF) y reducida a lo que hace falta para el resultado. */
@@ -35,7 +36,7 @@ export async function loadPhoto(file: Blob): Promise<Photo> {
   try {
     bmp = await createImageBitmap(file, { imageOrientation: 'from-image' })
   } catch {
-    throw new Error('No se pudo abrir la foto. Usa JPG, PNG o WebP (las fotos HEIC del iPhone no se pueden leer en el navegador).')
+    throw new Error(tr('libErr.photoOpen'))
   }
   try {
     // Un poco más grande que la salida, para que enderezar no pierda nitidez.

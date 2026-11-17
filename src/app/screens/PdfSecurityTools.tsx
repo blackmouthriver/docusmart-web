@@ -4,7 +4,7 @@ import { useApp } from '../state'
 import { Icon } from '../components/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../components/ui'
 import { baseName, formatBytes } from '../lib/files'
-import { WrongPasswordError, compressLossless, isEncrypted, protect, repair, unlock, type CompressResult } from '../lib/pdfSecurity'
+import { QpdfError, WrongPasswordError, compressLossless, isEncrypted, protect, repair, unlock, type CompressResult } from '../lib/pdfSecurity'
 import { track } from '../../shared/analytics'
 import { tr } from '../i18n/translate'
 import { BeforeAfter } from '../components/DocPreview'
@@ -16,7 +16,7 @@ function friendly(e: unknown): string {
   if (e instanceof WrongPasswordError) return tr('sec.wrongKey')
   const msg = e instanceof Error ? e.message : ''
   if (/encrypt|password/i.test(msg)) return tr('err.lockedPdf')
-  if (/^(El |La |No |Falta |Este )/.test(msg)) return msg
+  if (e instanceof QpdfError) return e.message
   return tr('sec.invalidPdfCheck')
 }
 

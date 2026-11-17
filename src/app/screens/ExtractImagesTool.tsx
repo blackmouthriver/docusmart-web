@@ -142,7 +142,7 @@ export function ExtractImagesTool() {
                     </button>
                     <figcaption>
                       <span>
-                        <b>Pág. {img.page}</b> · {img.width}×{img.height} · {img.format.toUpperCase()} · {formatBytes(img.data.length)}
+                        <b>{tr('img.pageShort', { n: img.page })}</b> · {img.width}×{img.height} · {img.format.toUpperCase()} · {formatBytes(img.data.length)}
                       </span>
                       <button type="button" className="icon-btn" aria-label={tr('img.downloadOne', { name: img.name })} onClick={() => download(img.data, img.name, img.format === 'jpg' ? 'image/jpeg' : 'image/png')}>
                         <Icon name="download" />

@@ -5,6 +5,7 @@ import { DropZone, Notice, Progress, errorMessage } from '../components/ui'
 import { kindOf } from '../lib/files'
 import { closePdf, openPdf, renderPage } from '../lib/pdf'
 import { track } from '../../shared/analytics'
+import { tr } from '../i18n/translate'
 
 const ZOOMS = [0.6, 0.8, 1, 1.25, 1.5]
 
@@ -14,11 +15,11 @@ export function Viewer() {
   if (!openFile) {
     return (
       <>
-        <h1 style={{ fontSize: 28, marginBottom: 16 }}>Visor</h1>
+        <h1 style={{ fontSize: 28, marginBottom: 16 }}>{tr('nav.viewer')}</h1>
         <DropZone
           accept="application/pdf,image/*,text/plain,.txt,.csv,.md"
-          title="Abre un PDF, una imagen o un texto"
-          hint="Arrastra el archivo aquí o toca para elegirlo"
+          title={tr('viewer.title')}
+          hint={tr('viewer.hint')}
           onFiles={([f]) => {
             setOpenFile(f)
             track('document_opened', { document_type: kindOf(f) })
@@ -32,20 +33,20 @@ export function Viewer() {
   return (
     <>
       <div className="viewer-bar">
-        <button type="button" className="icon-btn" aria-label="Volver al inicio" onClick={() => go('')}>
+        <button type="button" className="icon-btn" aria-label={tr('viewer.backHome')} onClick={() => go('')}>
           <Icon name="back" />
         </button>
         <span className="title" title={openFile.name}>
           {openFile.name}
         </span>
         <button type="button" className="btn btn-soft btn-sm" onClick={() => setOpenFile(null)}>
-          Cerrar
+          {tr('settings.close')}
         </button>
       </div>
       {kind === 'pdf' && <PdfView file={openFile} />}
       {kind === 'image' && <ImageView file={openFile} />}
       {kind === 'text' && <TextView file={openFile} />}
-      {kind === 'other' && <Notice kind="error">Este tipo de archivo no se puede abrir en la web.</Notice>}
+      {kind === 'other' && <Notice kind="error">{tr('viewer.unsupported')}</Notice>}
     </>
   )
 }
@@ -73,7 +74,7 @@ function PdfView({ file }: { file: File }) {
         for (let i = 1; i <= doc.numPages && !cancelled; i++) {
           const canvas = await renderPage(doc, i, width)
           canvas.style.maxWidth = `${860 * ZOOMS[zoom]}px`
-          canvas.setAttribute('aria-label', `Página ${i}`)
+          canvas.setAttribute('aria-label', tr('viewer.pageN', { n: i }))
           if (!cancelled) el.appendChild(canvas)
           setProgress(i / doc.numPages)
         }
@@ -90,15 +91,15 @@ function PdfView({ file }: { file: File }) {
   return (
     <>
       <div className="row" style={{ justifyContent: 'space-between', margin: '4px 0 8px' }}>
-        <span className="faint">{pages ? `${pages} página${pages === 1 ? '' : 's'}` : 'Cargando…'}</span>
+        <span className="faint">{pages ? (pages === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pages })) : tr('common.loading')}</span>
         <div className="row" style={{ gap: 4 }}>
-          <button type="button" className="icon-btn" aria-label="Alejar" disabled={zoom === 0} onClick={() => setZoom((z) => z - 1)}>
+          <button type="button" className="icon-btn" aria-label={tr('viewer.zoomOut')} disabled={zoom === 0} onClick={() => setZoom((z) => z - 1)}>
             <Icon name="downArrow" />
           </button>
           <span className="faint" style={{ minWidth: 44, textAlign: 'center' }}>
             {Math.round(ZOOMS[zoom] * 100)}%
           </span>
-          <button type="button" className="icon-btn" aria-label="Acercar" disabled={zoom === ZOOMS.length - 1} onClick={() => setZoom((z) => z + 1)}>
+          <button type="button" className="icon-btn" aria-label={tr('viewer.zoomIn')} disabled={zoom === ZOOMS.length - 1} onClick={() => setZoom((z) => z + 1)}>
             <Icon name="up" />
           </button>
         </div>
@@ -130,6 +131,6 @@ function TextView({ file }: { file: File }) {
       .then(setText)
       .catch(() => setFailed(true))
   }, [file])
-  if (failed) return <Notice kind="error">No se pudo leer el archivo de texto.</Notice>
+  if (failed) return <Notice kind="error">{tr('viewer.textError')}</Notice>
   return <pre className="text-view">{text}</pre>
 }
