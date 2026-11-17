@@ -4,6 +4,8 @@ import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
 import { kindOf } from '../../../shared/files/files'
 import { closePdf, extractPagesText, openPdf } from '../../../shared/pdf/pdf'
+import { EDIT_PDF, handOff } from '../../../shared/files/handoff'
+import { SaveOptions } from '../../../shared/ui/DocPreview'
 import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -94,6 +96,9 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
   const [loading, setLoading] = useState(false)
   // PDF cargado: su texto por página, para mostrar el documento y el avance por páginas (W-60b).
   const [pdf, setPdf] = useState<{ file: File; pages: string[] } | null>(null)
+  // Nombre del TXT cargado, para guardar el texto editado con el mismo nombre (W-80).
+  const [txtName, setTxtName] = useState<string | null>(null)
+  const textFile = useMemo(() => (text.trim() && !pdf ? new File([text], txtName ?? `${tr('file.studyText')}.txt`, { type: 'text/plain' }) : null), [text, pdf, txtName])
   const [docView, setDocView] = useState<'document' | 'text'>('document')
   const paragraphs = useMemo(() => (pdf ? toPagedParagraphs(pdf.pages) : toParagraphs(text)), [pdf, text])
   const totalPages = pdf?.pages.length ?? 0
@@ -216,6 +221,8 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       const kind = kindOf(file)
       let loaded: string | null = null
       if (kind === 'pdf') {
+        // Si se edita el texto del PDF, se guarda como TXT con el mismo nombre.
+        setTxtName(`${file.name.replace(/\.[^.]+$/, '')}.txt`)
         const doc = await openPdf(await file.arrayBuffer())
         try {
           const pages = await extractPagesText(doc)
@@ -228,6 +235,7 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
       } else if (kind === 'text') {
         loaded = await file.text()
         setPdf(null)
+        setTxtName(/\.txt$/i.test(file.name) ? file.name : `${file.name.replace(/\.[^.]+$/, '')}.txt`)
       } else toast(tr('study.pickPdfTxt'))
       if (loaded !== null) {
         setText(loaded)
@@ -333,6 +341,12 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
             <textarea className="textarea" value={text} placeholder={tr('study.textPh')} onChange={(e) => { setText(e.target.value); setPdf(null) }} />
           </label>
           {playerBar}
+          {textFile && (
+            <section className="stack text-save" aria-label={tr('study.saveText')}>
+              <h4>{tr('study.saveText')}</h4>
+              <SaveOptions file={textFile} toolName="study_text" />
+            </section>
+          )}
         </>
       ) : pdf ? (
         <>
@@ -342,6 +356,9 @@ function ReadAloud({ onStatus }: { onStatus: Report }) {
               <b title={pdf.file.name}>{pdf.file.name}</b>
               <span className="faint">{tr('study.pagesCount', { n: totalPages })}</span>
             </span>
+            <button type="button" className="btn btn-outline btn-sm" title={tr('study.editDocumentHint')} onClick={() => { stop(); handOff(EDIT_PDF, pdf.file); go('pdf', 'editar') }}>
+              <Icon name="edit" /> {tr('study.editDocument')}
+            </button>
             <Segmented
               label={tr('study.viewMode')}
               value={docView}
