@@ -48,3 +48,25 @@ export function sizeChange(before: number, after: number): string | null {
   if (!pct) return null
   return after < before ? `${pct}% menos` : `${pct}% más`
 }
+
+/* ───────────── Invitar a compartir DocuSmart ───────────── */
+
+export const SITE_URL = 'https://docusmart.online'
+export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.docsmart'
+export const FEEDBACK_EMAIL = 'jblackmouthr@gmail.com'
+
+export type AppShareLink = { id: 'whatsapp' | 'facebook' | 'x' | 'linkedin'; label: string; href: string }
+
+/** Enlaces para recomendar DocuSmart (solo llevan la dirección del sitio, nunca datos del usuario). */
+export function appShareLinks(url = SITE_URL, text = 'Uso DocuSmart para trabajar mis PDF gratis y sin subirlos a internet.'): AppShareLink[] {
+  const u = encodeURIComponent(url)
+  const t = encodeURIComponent(text)
+  return [
+    { id: 'whatsapp', label: 'WhatsApp', href: `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}` },
+    { id: 'facebook', label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
+    { id: 'x', label: 'X', href: `https://twitter.com/intent/tweet?text=${t}&url=${u}` },
+    { id: 'linkedin', label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
+  ]
+}
+
+export const feedbackMailto = (tool: string) => `mailto:${FEEDBACK_EMAIL}?subject=${encodeURIComponent(`Opinión sobre DocuSmart Web (${tool})`)}`

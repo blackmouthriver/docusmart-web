@@ -1,9 +1,10 @@
-// Vista previa de documentos: antes y después lado a lado, y opciones para guardar el resultado.
+// Vista previa de documentos: antes y después lado a lado, opciones para guardar el
+// resultado e invitación a recomendar DocuSmart.
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon } from './Icon'
 import { Notice } from './ui'
 import { download, formatBytes } from '../lib/files'
-import { canShareFile, docSummary, shareFile } from '../lib/share'
+import { PLAY_URL, SITE_URL, appShareLinks, canShareFile, docSummary, feedbackMailto, shareFile } from '../lib/share'
 import { PageNav, usePdfPreview } from '../screens/PdfPreview'
 import { useApp } from '../state'
 import { track } from '../../shared/analytics'
@@ -42,11 +43,31 @@ export function DocPreview({ source, page, label, onPages }: { source: Blob; pag
   )
 }
 
-/** Descargar o compartir (WhatsApp, Drive, correo… con la hoja del sistema). */
+type CloudState = { kind: 'drive' | 'dropbox'; status: 'busy' | 'done'; text?: string; link?: string } | null
+
+/** Descargar, compartir con la hoja del sistema y guardar en Google Drive o Dropbox. */
 export function SaveOptions({ file, toolName }: { file: File; toolName: string }) {
   const { toast } = useApp()
-  const [shareError, setShareError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [cloud, setCloud] = useState<CloudState>(null)
+  const [enabled, setEnabled] = useState({ drive: false, dropbox: false })
+  const abort = useRef<AbortController | null>(null)
+  const cloudMod = useRef<typeof import('../lib/cloudPopup') | null>(null)
   const shareable = canShareFile(file)
+
+  useEffect(() => {
+    let alive = true
+    void import('../lib/cloudPopup').then((m) => {
+      cloudMod.current = m
+      if (alive) setEnabled({ drive: m.driveEnabled(), dropbox: m.dropboxEnabled() })
+    })
+    return () => {
+      alive = false
+      abort.current?.abort()
+    }
+  }, [])
+  // Otro resultado: se olvida lo guardado antes.
+  useEffect(() => setCloud(null), [file])
 
   const save = () => {
     download(file, file.name, file.type)
@@ -54,19 +75,44 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
     toast('El archivo se descargó.')
   }
   const share = async () => {
-    setShareError(null)
+    setError(null)
     try {
       const r = await shareFile(file)
       if (r === 'shared') track('result_saved', { tool_name: toolName, method: 'share' })
     } catch {
-      setShareError('No se pudo compartir el archivo. Descárgalo y envíalo desde tu dispositivo.')
+      setError('No se pudo compartir el archivo. Descárgalo y envíalo desde tu dispositivo.')
     }
   }
+  const toCloud = async (kind: 'drive' | 'dropbox') => {
+    const m = cloudMod.current
+    if (!m) return
+    setError(null)
+    abort.current?.abort()
+    abort.current = new AbortController()
+    setCloud({ kind, status: 'busy' })
+    // El módulo ya está cargado: la ventana de autorización se abre dentro del clic
+    // (si hubiera una espera antes, el navegador la bloquearía).
+    try {
+      if (kind === 'drive') {
+        const r = await m.saveToDrive(file, abort.current.signal)
+        setCloud({ kind, status: 'done', text: `Guardado en tu Google Drive como "${r.name}".`, link: r.link })
+      } else {
+        const r = await m.saveToDropbox(file, abort.current.signal)
+        setCloud({ kind, status: 'done', text: `Guardado en tu Dropbox, en Aplicaciones › DocuSmart${r.path}.`, link: 'https://www.dropbox.com/home' })
+      }
+      track('result_saved', { tool_name: toolName, method: kind })
+    } catch (e) {
+      setCloud(null)
+      if (e instanceof m.CloudCancelled) return
+      setError(e instanceof Error && /^(No se|El navegador|La autorización)/.test(e.message) ? e.message : `No se pudo guardar en ${kind === 'drive' ? 'Google Drive' : 'Dropbox'}.`)
+    }
+  }
+  const busy = cloud?.status === 'busy'
 
   return (
-    <div className="stack" style={{ gap: 8 }}>
+    <div className="stack" style={{ gap: 10 }}>
       <div className="save-options">
-        <button type="button" className="btn btn-primary" onClick={save}>
+        <button type="button" className="btn btn-primary save-main" onClick={save}>
           <Icon name="download" />
           Descargar
         </button>
@@ -76,30 +122,107 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
             Compartir
           </button>
         )}
+        {enabled.drive && (
+          <button type="button" className="btn btn-outline" disabled={busy} aria-busy={busy && cloud?.kind === 'drive'} onClick={() => void toCloud('drive')}>
+            {busy && cloud?.kind === 'drive' ? <span className="spinner" aria-hidden="true" /> : <Icon name="cloud" />}
+            Google Drive
+          </button>
+        )}
+        {enabled.dropbox && (
+          <button type="button" className="btn btn-outline" disabled={busy} aria-busy={busy && cloud?.kind === 'dropbox'} onClick={() => void toCloud('dropbox')}>
+            {busy && cloud?.kind === 'dropbox' ? <span className="spinner" aria-hidden="true" /> : <Icon name="cloud" />}
+            Dropbox
+          </button>
+        )}
       </div>
-      {shareable && <small className="faint">Con "Compartir" puedes enviarlo por WhatsApp o guardarlo en Google Drive, Dropbox o tu correo.</small>}
-      {shareError && <Notice kind="error">{shareError}</Notice>}
+      {busy && (
+        <small className="faint">
+          Autoriza a DocuSmart en la ventana que se abrió. Solo podrá ver los archivos que guarde ahí.{' '}
+          <button type="button" className="link-btn" onClick={() => abort.current?.abort()}>Cancelar</button>
+        </small>
+      )}
+      {cloud?.status === 'done' && (
+        <Notice kind="success">
+          {cloud.text}{' '}
+          {cloud.link && (
+            <a href={cloud.link} target="_blank" rel="noopener noreferrer">
+              Abrir
+            </a>
+          )}
+        </Notice>
+      )}
+      {shareable && !busy && <small className="faint">Con "Compartir" puedes enviarlo por WhatsApp, correo u otras apps de tu dispositivo.</small>}
+      {error && <Notice kind="error">{error}</Notice>}
     </div>
+  )
+}
+
+/** Al final de cada herramienta: invitar a recomendar y calificar DocuSmart. */
+export function ShareApp({ url = SITE_URL, toolName }: { url?: string; toolName: string }) {
+  const { toast } = useApp()
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(url)
+      toast('Enlace copiado.')
+      track('app_shared', { tool_name: toolName, channel: 'copy' })
+    } catch {
+      toast('No se pudo copiar el enlace.')
+    }
+  }
+  return (
+    <aside className="share-app" aria-label="Recomienda DocuSmart">
+      <p className="share-app-title">¿Te sirvió? ¡Ayúdanos a que más personas conozcan DocuSmart!</p>
+      <p className="faint" style={{ margin: 0 }}>Compártelo con quien trabaje con documentos: es gratis y los archivos nunca salen de su dispositivo.</p>
+      <div className="share-app-links">
+        {appShareLinks(url).map((l) => (
+          <a key={l.id} className="btn btn-outline btn-sm" href={l.href} target="_blank" rel="noopener noreferrer" onClick={() => track('app_shared', { tool_name: toolName, channel: l.id })}>
+            {l.label}
+          </a>
+        ))}
+        <button type="button" className="btn btn-outline btn-sm" onClick={() => void copy()}>
+          <Icon name="link" />
+          Copiar enlace
+        </button>
+      </div>
+      <div className="share-app-links">
+        <a className="btn btn-soft btn-sm" href={PLAY_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('app_shared', { tool_name: toolName, channel: 'play_rating' })}>
+          <Icon name="star" />
+          Califica la app en Google Play
+        </a>
+        <a className="btn btn-soft btn-sm" href={feedbackMailto(toolName)} onClick={() => track('app_shared', { tool_name: toolName, channel: 'feedback' })}>
+          <Icon name="mail" />
+          Envíanos tu opinión
+        </a>
+      </div>
+    </aside>
   )
 }
 
 /**
  * El archivo del usuario ("Antes") y, cuando la herramienta termina, el resultado
  * ("Después") al lado, en la misma fila. Un solo control de páginas mueve los dos.
- * Debajo, el resumen y las opciones para guardar.
+ * Debajo, el resumen, las opciones para guardar y la invitación a recomendar la app.
  */
 export function BeforeAfter({
   original,
   result,
   summary,
   toolName,
+  title,
+  previewTitle = 'Vista previa de tu documento',
   placeholder = 'Aquí verás el resultado',
+  shareUrl,
 }: {
   original: Blob
   result: File | null
   summary?: ReactNode
   toolName: string
+  /** Título con el resultado, propio de la herramienta ("Así quedó tu PDF comprimido"). */
+  title: string
+  previewTitle?: string
   placeholder?: string
+  /** Página de la herramienta, para recomendarla. */
+  shareUrl?: string
 }) {
   const [page, setPage] = useState(1)
   const [pagesBefore, setPagesBefore] = useState(0)
@@ -122,9 +245,9 @@ export function BeforeAfter({
   }, [result])
 
   return (
-    <section ref={ref} className="compare-panel stack" aria-label="Antes y después">
-      <div className="row" style={{ justifyContent: 'space-between', minHeight: 36 }}>
-        <h3 style={{ margin: 0, fontSize: 17 }}>{result ? 'Antes y después' : 'Vista previa'}</h3>
+    <section ref={ref} className="compare-panel stack" aria-label={result ? title : previewTitle}>
+      <div className="compare-head">
+        <h3>{result ? title : previewTitle}</h3>
         <PageNav pageNo={page} pages={Math.max(pagesBefore, pagesAfter)} onChange={setPage} />
       </div>
       <div className="before-after">
@@ -144,6 +267,7 @@ export function BeforeAfter({
       </div>
       {result && summary}
       {result && <SaveOptions file={result} toolName={toolName} />}
+      {result && <ShareApp url={shareUrl} toolName={toolName} />}
     </section>
   )
 }

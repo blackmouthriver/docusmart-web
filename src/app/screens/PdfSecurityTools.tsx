@@ -98,6 +98,9 @@ export function CompressTool() {
           original={file}
           result={output}
           toolName="compress"
+          title="Así quedó tu PDF comprimido"
+          previewTitle="Vista previa de tu PDF"
+          shareUrl="https://docusmart.online/comprimir-pdf"
           placeholder={busy ? "Comprimiendo…" : "Elige el nivel y pulsa Comprimir PDF"}
           summary={
             result && (

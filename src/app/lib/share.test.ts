@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { canShareFile, docSummary, resultFile, shareFile, sizeChange } from './share'
+import { appShareLinks, canShareFile, docSummary, feedbackMailto, resultFile, shareFile, sizeChange } from './share'
 import { formatBytes } from './files'
 
 describe('resultFile', () => {
@@ -43,5 +43,18 @@ describe('textos', () => {
     expect(sizeChange(1000, 1000)).toBeNull()
     expect(sizeChange(1000, 999)).toBeNull()
     expect(sizeChange(0, 10)).toBeNull()
+  })
+})
+
+describe('recomendar DocuSmart', () => {
+  it('enlaces de redes con la dirección de la herramienta', () => {
+    const links = appShareLinks('https://docusmart.online/comprimir-pdf', 'Hola & chao')
+    expect(links.map((l) => l.id)).toEqual(['whatsapp', 'facebook', 'x', 'linkedin'])
+    expect(links[0].href).toBe('https://wa.me/?text=Hola%20%26%20chao%20https%3A%2F%2Fdocusmart.online%2Fcomprimir-pdf')
+    expect(new URL(links[1].href).searchParams.get('u')).toBe('https://docusmart.online/comprimir-pdf')
+    expect(Object.fromEntries(new URL(links[2].href).searchParams)).toEqual({ text: 'Hola & chao', url: 'https://docusmart.online/comprimir-pdf' })
+    expect(new URL(links[3].href).searchParams.get('url')).toBe('https://docusmart.online/comprimir-pdf')
+    expect(appShareLinks()[1].href).toContain(encodeURIComponent('https://docusmart.online'))
+    expect(feedbackMailto('compress')).toMatch(/^mailto:.+\?subject=Opini%C3%B3n%20sobre%20DocuSmart%20Web%20\(compress\)$/)
   })
 })

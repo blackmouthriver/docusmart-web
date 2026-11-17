@@ -20,7 +20,7 @@ const prodHeaders = Object.fromEntries(
 const cleanUrls = (): Plugin => {
   const rewrite = (req: { url?: string }, _res: unknown, next: () => void) => {
     const [path, query = ''] = (req.url ?? '').split('?')
-    if (/^\/[a-z0-9-]+$/.test(path) && existsSync(resolve(import.meta.dirname, `.${path}.html`))) {
+    if (/^\/[a-z0-9-]+$/.test(path) && (existsSync(resolve(import.meta.dirname, `.${path}.html`)) || existsSync(resolve(import.meta.dirname, `public${path}.html`)))) {
       req.url = `${path}.html${query ? `?${query}` : ''}`
     }
     next()
