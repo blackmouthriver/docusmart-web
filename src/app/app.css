@@ -340,7 +340,10 @@ p { margin: 0; }
 .para-btn:hover { background: color-mix(in srgb, var(--blue-soft) 60%, transparent); }
 .para-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .player { display: grid; gap: 12px; }
-.player.is-card { padding: 12px 14px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 10px 30px -16px rgba(15, 23, 42, .25); }
+.player.is-card { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; padding: 10px 14px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 10px 30px -16px rgba(15, 23, 42, .25); }
+/* Leer y los controles en la misma fila que la barra de progreso. */
+.player.is-card .player-controls { order: -1; flex: none; flex-wrap: nowrap; }
+.player.is-card .player-progress { flex: 1 1 300px; }
 @media (max-width: 860px) { .reading-paras { max-height: 42vh; } }
 .player-progress { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
 .progress { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
