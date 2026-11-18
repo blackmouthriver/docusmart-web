@@ -380,6 +380,15 @@ p { margin: 0; }
 
 .toast-wrap { position: fixed; z-index: 60; left: 50%; bottom: 24px; transform: translateX(-50%); display: grid; gap: 8px; width: min(420px, calc(100% - 32px)); pointer-events: none; }
 @media (max-width: 860px) { .toast-wrap { bottom: calc(92px + env(safe-area-inset-bottom)); } }
+/* Versión nueva disponible (W-16): queda hasta que el usuario actualiza o la cierra. Abajo a la
+   izquierda del área de trabajo (los avisos van al centro y el asistente a la derecha). */
+.update-bar { position: fixed; z-index: 61; left: calc(var(--sidebar) + 24px); bottom: 24px; display: flex; align-items: center; gap: 12px; max-width: min(460px, calc(100% - var(--sidebar) - 48px)); padding: 10px 10px 10px 16px; border-radius: 16px; background: var(--night); color: var(--on-night); font-size: 14px; font-weight: 500; box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset, 0 18px 44px -16px rgba(0, 0, 0, .55); animation: toast-in 320ms var(--ease-out); }
+.update-bar > svg { width: 20px; height: 20px; flex: none; color: #7EE0FF; }
+.update-bar > span { flex: 1; min-width: 0; }
+.update-bar .btn { flex: none; }
+.update-bar .icon-btn { color: var(--on-night-soft); }
+@media (hover: hover) and (pointer: fine) { .update-bar .icon-btn:hover:not(:disabled) { background: rgba(255, 255, 255, .1); color: var(--on-night); } }
+@media (max-width: 860px) { .update-bar { left: 16px; right: 16px; max-width: none; bottom: calc(160px + env(safe-area-inset-bottom)); } }
 .toast { padding: 12px 16px; border-radius: 14px; background: var(--night); color: var(--on-night); font-size: 14px; font-weight: 500; box-shadow: 0 16px 40px -16px rgba(0,0,0,.5); animation: toast-in 260ms var(--ease-out); }
 @keyframes toast-in { from { opacity: 0; transform: translateY(10px) scale(.97); } }
 
