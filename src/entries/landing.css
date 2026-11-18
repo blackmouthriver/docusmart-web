@@ -21,8 +21,8 @@
   --pdf: #EF4444;
   --amber: #F59E0B;
 
-  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-body: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Bricolage Fallback", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", "Jakarta Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Curvas: ease-out fuerte para entradas, ease-in-out para movimiento en pantalla */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -472,7 +472,7 @@ details[open] .answer { grid-template-rows: 1fr; }
 .cta-card .cta-icon { position: absolute; z-index: -1; right: -60px; top: -60px; width: 300px; opacity: .14; transform: rotate(12deg); }
 @media (max-width: 760px) { .cta-card { grid-template-columns: 1fr; } .cta-card .actions { justify-content: flex-start; } }
 
-footer { border-top: 1px solid var(--line); padding: 40px 0 48px; color: var(--ink-faint); font-size: 14px; }
+footer { border-top: 1px solid var(--line); padding: 40px 0 48px; color: var(--ink-soft); font-size: 14px; }
 .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; }
 .foot nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .foot-link { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
