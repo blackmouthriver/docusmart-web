@@ -1,47 +1,38 @@
 // Ayuda de DocuSmart Desktop (W-16): cómo instalar la web como programa según el navegador, y en
 // la versión instalada, cómo crear el ícono del escritorio, anclarla, usarla sin conexión y cómo se
 // actualiza. Mismo diálogo que Ajustes (hoja abajo en el celular, ventana en la computadora).
-import { useCallback, useEffect, useRef, useState } from 'react'
 import { Icon, type IconName } from './Icon'
+import { useDialog } from './useDialog'
 import { useT } from '../i18n/I18n'
 import type { MessageKey } from '../i18n/messages/es'
-import { desktopBrowser, desktopGuideMode, isStandalone } from '../platform/pwa'
-import { prefersReducedMotion } from '../platform/motion'
+import { desktopBrowser, desktopGuideMode, isStandalone, type DesktopBrowser } from '../platform/pwa'
 import { PLAY_URL } from '../files/share'
 
 type Tip = { icon: IconName; title: MessageKey; text: MessageKey }
 
+const INSTALL_STEP: Record<DesktopBrowser, MessageKey> = { edge: 'desk.step.edge', chrome: 'desk.step.chrome', safari: 'desk.step.safari', firefox: 'desk.step.other', other: 'desk.step.other' }
+const SHORTCUT_STEP: Record<DesktopBrowser, MessageKey> = { edge: 'desk.shortcut.edge', chrome: 'desk.shortcut.chrome', safari: 'desk.shortcut.other', firefox: 'desk.shortcut.other', other: 'desk.shortcut.other' }
+const OFFLINE: Tip = { icon: 'wifi', title: 'desk.offline.title', text: 'desk.offline.text' }
+const INTRO = { install: 'desk.intro.install', installed: 'desk.intro.installed', mobile: 'desk.mobile' } as const
+
+/** Consejos de cada caso: en el navegador, cómo instalarla; ya instalada, sus atajos. */
+function tipsFor(mode: 'install' | 'installed' | 'mobile', browser: DesktopBrowser): Tip[] {
+  if (mode === 'install') return [{ icon: 'info', title: 'desk.howTo', text: INSTALL_STEP[browser] }, OFFLINE]
+  if (mode === 'installed')
+    return [
+      { icon: 'star', title: 'desk.shortcut.title', text: SHORTCUT_STEP[browser] },
+      { icon: 'link', title: 'desk.pin.title', text: 'desk.pin.text' },
+      OFFLINE,
+      { icon: 'reset', title: 'desk.update.title', text: 'desk.update.text' },
+    ]
+  return []
+}
+
 export function DesktopHelp({ onClose: close, canInstall, onInstall }: { onClose: () => void; canInstall: boolean; onInstall: () => void }) {
   const { t } = useT()
-  const panel = useRef<HTMLDivElement>(null)
-  const [closing, setClosing] = useState(false)
-  const onClose = useCallback(() => {
-    setClosing(true)
-    setTimeout(close, prefersReducedMotion() ? 0 : 200)
-  }, [close])
-
-  useEffect(() => {
-    const before = document.activeElement as HTMLElement | null
-    panel.current?.querySelector<HTMLElement>('button')?.focus()
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    addEventListener('keydown', onKey)
-    return () => {
-      removeEventListener('keydown', onKey)
-      before?.focus?.()
-    }
-  }, [onClose])
-
+  const { panel, closing, onClose } = useDialog(close)
   const ua = navigator.userAgent
   const mode = desktopGuideMode(ua, isStandalone(window))
-  const browser = desktopBrowser(ua)
-  const installStep: MessageKey = browser === 'edge' ? 'desk.step.edge' : browser === 'chrome' ? 'desk.step.chrome' : browser === 'safari' ? 'desk.step.safari' : 'desk.step.other'
-  const shortcutStep: MessageKey = browser === 'edge' ? 'desk.shortcut.edge' : browser === 'chrome' ? 'desk.shortcut.chrome' : 'desk.shortcut.other'
-  const installedTips: Tip[] = [
-    { icon: 'star', title: 'desk.shortcut.title', text: shortcutStep },
-    { icon: 'link', title: 'desk.pin.title', text: 'desk.pin.text' },
-    { icon: 'wifi', title: 'desk.offline.title', text: 'desk.offline.text' },
-    { icon: 'reset', title: 'desk.update.title', text: 'desk.update.text' },
-  ]
   const install = () => {
     onInstall()
     onClose()
@@ -57,61 +48,37 @@ export function DesktopHelp({ onClose: close, canInstall, onInstall }: { onClose
           </span>
           <div>
             <h2 id="desk-title">DocuSmart Desktop</h2>
-            <p>{t(mode === 'installed' ? 'desk.intro.installed' : mode === 'mobile' ? 'desk.mobile' : 'desk.intro.install')}</p>
+            <p>{t(INTRO[mode])}</p>
           </div>
           <button type="button" className="icon-btn" aria-label={t('settings.close')} onClick={onClose}>
             <Icon name="close" />
           </button>
         </div>
 
-        {mode === 'install' && (
-          <>
-            {canInstall && (
-              <button type="button" className="btn btn-primary desk-install" onClick={install}>
-                <Icon name="download" />
-                {t('desk.installNow')}
-              </button>
-            )}
-            <section className="desk-tip">
-              <span className="desk-ico">
-                <Icon name="info" />
-              </span>
-              <div>
-                <h3>{t('desk.howTo')}</h3>
-                <p>{t(installStep)}</p>
-              </div>
-            </section>
-            <section className="desk-tip">
-              <span className="desk-ico">
-                <Icon name="wifi" />
-              </span>
-              <div>
-                <h3>{t('desk.offline.title')}</h3>
-                <p>{t('desk.offline.text')}</p>
-              </div>
-            </section>
-          </>
+        {mode === 'install' && canInstall && (
+          <button type="button" className="btn btn-primary desk-install" onClick={install}>
+            <Icon name="download" />
+            {t('desk.installNow')}
+          </button>
         )}
-
-        {mode === 'installed' &&
-          installedTips.map((tip) => (
-            <section key={tip.title} className="desk-tip">
-              <span className="desk-ico">
-                <Icon name={tip.icon} />
-              </span>
-              <div>
-                <h3>{t(tip.title)}</h3>
-                <p>{t(tip.text)}</p>
-              </div>
-            </section>
-          ))}
-
         {mode === 'mobile' && (
           <a className="btn btn-primary desk-install" href={PLAY_URL} target="_blank" rel="noopener noreferrer">
             <Icon name="download" />
             Google Play
           </a>
         )}
+
+        {tipsFor(mode, desktopBrowser(ua)).map((tip) => (
+          <section key={tip.title} className="desk-tip">
+            <span className="desk-ico">
+              <Icon name={tip.icon} />
+            </span>
+            <div>
+              <h3>{t(tip.title)}</h3>
+              <p>{t(tip.text)}</p>
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   )

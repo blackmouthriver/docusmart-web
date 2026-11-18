@@ -59,7 +59,7 @@ export function initMotion(root: Document = document): () => void {
   return observeReveal(root.querySelectorAll('.reveal'))
 }
 
-type ViewTransitionLike = { finished?: Promise<unknown>; updateCallbackDone?: Promise<unknown>; skipTransition?: () => void }
+type ViewTransitionLike = { finished?: Promise<unknown>; ready?: Promise<unknown>; updateCallbackDone?: Promise<unknown>; skipTransition?: () => void }
 type ViewTransitionDoc = {
   startViewTransition?: (update: () => void) => ViewTransitionLike | undefined
   documentElement?: { classList: { add: (c: string) => void; remove: (c: string) => void } }
@@ -92,6 +92,8 @@ export async function withViewTransition(
     () => clearTimeout(timer),
     () => clearTimeout(timer),
   )
+  // Si la transición se salta, `ready` también falla: sin esto queda un error "sin capturar".
+  vt?.ready?.catch(() => undefined)
   try {
     await vt?.finished
   } catch {
