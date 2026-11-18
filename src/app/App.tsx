@@ -11,7 +11,7 @@ import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
 import { loadCollapsed, saveCollapsed } from './sidebarPref'
-import { onOfflineReady, promptInstall, watchInstallPrompt } from '../shared/platform/pwa'
+import { isStandalone, onOfflineReady, promptInstall, watchInstallPrompt } from '../shared/platform/pwa'
 import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
 import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 import { Home } from '../features/home/ui/Home'
@@ -119,7 +119,9 @@ export function App() {
     const name = SCREEN_NAMES[route.section] ?? 'Home'
     trackScreen(route.sub ? `${name}/${route.sub}` : name)
     const nav = NAV.find((n) => n.section === route.section)
-    document.title = route.section === '' ? 'DocuSmart Web' : `${t(nav?.label ?? 'nav.viewer')} · DocuSmart Web`
+    // Instalada en la computadora se llama DocuSmart Desktop (W-16); en el navegador, DocuSmart Web.
+    const brand = isStandalone(window) ? 'DocuSmart Desktop' : 'DocuSmart Web'
+    document.title = route.section === '' ? brand : `${t(nav?.label ?? 'nav.viewer')} · ${brand}`
   }, [route.section, route.sub, t])
 
   const nextToastId = useRef(0)

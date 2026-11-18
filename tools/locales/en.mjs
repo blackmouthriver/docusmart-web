@@ -715,6 +715,8 @@ export default {
   },
   // Portada: [texto exacto en index.html, traducción]. Se reemplazan todas las apariciones.
   landing: [
+    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Install the desktop version from Chrome or Edge on your computer: it opens in its own window, like any other program, and works offline."],
+    ["Instalar DocuSmart Desktop", "Install DocuSmart Desktop"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — All your documents in one place'],
     [
       'Escanea, convierte, une y protege tus documentos desde Android. 17 conversiones, herramientas PDF, carpeta segura y modo estudio. Tus archivos se procesan en tu teléfono.',

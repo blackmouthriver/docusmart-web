@@ -264,7 +264,19 @@ p { margin: 0; }
 .tools-search { position: relative; display: block; margin-top: 16px; }
 .tools-search svg { position: absolute; left: 16px; top: 50%; width: 20px; height: 20px; translate: 0 -50%; color: var(--ink-faint); pointer-events: none; }
 .tools-search .input { width: 100%; height: 52px; padding-left: 46px; border-radius: 999px; font-size: 16px; }
-.tools-jump { position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 12px -4px 0; padding: 10px 4px; background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); }
+.tools-jump { position: sticky; top: 0; z-index: 5; overflow: hidden; margin: 12px -4px 0; padding: 10px 4px; background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); }
+/* Carrusel continuo (como .th-marquee de /herramientas): se pausa al pasar el ratón, al tocar o
+   al llegar con el teclado, y los bordes se desvanecen. */
+.tools-marquee { display: flex; width: max-content; animation: tools-marquee 42s linear infinite; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.tools-jump:hover .tools-marquee, .tools-jump:focus-within .tools-marquee, .tools-jump:active .tools-marquee { animation-play-state: paused; }
+.tools-track { display: flex; gap: 8px; padding-right: 8px; }
+@keyframes tools-marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  /* Sin movimiento: una sola fila que se desplaza a mano. */
+  .tools-jump { overflow-x: auto; scrollbar-width: none; }
+  .tools-marquee { animation: none; -webkit-mask-image: none; mask-image: none; }
+  .tools-track[aria-hidden] { display: none; }
+}
 .tools-chip { display: inline-flex; align-items: center; gap: 6px; flex: none; padding: 8px 14px; border: 0; border-radius: 999px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; color: var(--ink-soft); font: inherit; font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease; }
 .tools-chip svg { width: 16px; height: 16px; color: var(--blue); }
 .tools-chip:disabled { opacity: .4; cursor: default; }

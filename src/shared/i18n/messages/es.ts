@@ -14,7 +14,7 @@ export const es = {
   'nav.short.pdf': 'PDF',
   'nav.short.qr': 'QR',
   'nav.short.study': 'Estudio',
-  'pwa.install': "Instalar en este equipo",
+  'pwa.install': "Instalar DocuSmart Desktop",
   'pwa.offlineReady': "Listo: ya puedes usar las herramientas sin conexión",
   'nav.collapse': "Contraer menú",
   'nav.expand': "Expandir menú",

@@ -14,7 +14,7 @@ const en: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Study",
-  'pwa.install': "Install on this device",
+  'pwa.install': "Install DocuSmart Desktop",
   'pwa.offlineReady': "Ready: you can now use the tools offline",
   'nav.collapse': "Collapse menu",
   'nav.expand': "Expand menu",

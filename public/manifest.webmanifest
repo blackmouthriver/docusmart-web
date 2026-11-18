@@ -1,7 +1,7 @@
 {
   "id": "/app/",
-  "name": "DocuSmart Web",
-  "short_name": "DocuSmart",
+  "name": "DocuSmart Desktop",
+  "short_name": "DocuSmart Desktop",
   "description": "Herramientas para tus documentos que funcionan en el navegador, sin subir tus archivos: PDF, imágenes, QR y modo estudio.",
   "lang": "es",
   "dir": "ltr",

@@ -70,9 +70,12 @@ const preloadDisplayFont = (): Plugin => ({
 
 // App instalable (W-16): cada página enlaza el manifest y el ícono para iOS; la que no tiene
 // color de barra lo recibe. Va aquí y no en cada plantilla para que ninguna página quede afuera.
+// Solo en el build: el servidor de desarrollo (localhost) no se ofrece para instalar, así no queda
+// un segundo DocuSmart Desktop instalado desde otro origen.
 const ICON_LINK = '<link rel="icon" href="/img/icon.svg" type="image/svg+xml">'
 const pwaHead = (): Plugin => ({
   name: 'pwa-head',
+  apply: 'build',
   transformIndexHtml: (html) => {
     if (!html.includes(ICON_LINK)) return html
     const extra = ['<link rel="manifest" href="/manifest.webmanifest">', '<link rel="apple-touch-icon" href="/img/pwa/apple-touch-icon.png">']
