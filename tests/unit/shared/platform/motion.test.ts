@@ -158,8 +158,8 @@ describe('withViewTransition', () => {
   it('usa View Transitions cuando existe', () => {
     stubReducedMotion(false)
     const update = vi.fn()
-    const doc = { startViewTransition: vi.fn(function (this: unknown, u: () => void) { expect(this).toBe(doc); u() }) }
-    withViewTransition(update, doc)
+    const doc = { startViewTransition: vi.fn(function (this: unknown, u: () => void) { expect(this).toBe(doc); u(); return undefined }) }
+    void withViewTransition(update, doc)
     expect(doc.startViewTransition).toHaveBeenCalledOnce()
     expect(update).toHaveBeenCalledOnce()
   })
@@ -167,11 +167,11 @@ describe('withViewTransition', () => {
     stubReducedMotion(true)
     const update = vi.fn()
     const doc = { startViewTransition: vi.fn() }
-    withViewTransition(update, doc)
+    void withViewTransition(update, doc)
     expect(doc.startViewTransition).not.toHaveBeenCalled()
     stubReducedMotion(false)
-    withViewTransition(update, {})
-    withViewTransition(update, undefined)
+    void withViewTransition(update, {})
+    void withViewTransition(update, undefined)
     expect(update).toHaveBeenCalledTimes(3)
   })
 })
@@ -191,5 +191,92 @@ describe('quietPageTransitions', () => {
   })
   it('sin ventana no hace nada', () => {
     expect(() => quietPageTransitions(undefined)).not.toThrow()
+  })
+})
+
+describe('withViewTransition con clase en <html>', () => {
+  function rootStub() {
+    const classes = new Set<string>()
+    return { classes, documentElement: { classList: { add: (c: string) => void classes.add(c), remove: (c: string) => void classes.delete(c) } } }
+  }
+  it('marca <html> mientras dura y la quita al terminar', async () => {
+    stubReducedMotion(false)
+    const r = rootStub()
+    let finish!: () => void
+    const finished = new Promise<void>((res) => (finish = res))
+    const update = vi.fn()
+    const done = withViewTransition(update, { ...r, startViewTransition: (u) => (u(), { finished }) }, 'vt-screen')
+    expect(update).toHaveBeenCalledOnce()
+    expect(r.classes.has('vt-screen')).toBe(true)
+    finish()
+    await done
+    expect(r.classes.has('vt-screen')).toBe(false)
+  })
+  it('si el navegador salta la transición, quita la clase sin lanzar error', async () => {
+    stubReducedMotion(false)
+    const r = rootStub()
+    const finished = Promise.reject(new Error('skipped'))
+    await expect(withViewTransition(() => {}, { ...r, startViewTransition: () => ({ finished }) }, 'vt-screen')).resolves.toBeUndefined()
+    expect(r.classes.has('vt-screen')).toBe(false)
+  })
+  it('sin clase pedida no toca <html>', async () => {
+    stubReducedMotion(false)
+    const r = rootStub()
+    await withViewTransition(() => {}, { ...r, startViewTransition: () => undefined })
+    expect(r.classes.size).toBe(0)
+  })
+})
+
+describe('withViewTransition con la pestaña oculta', () => {
+  it('cambia al instante sin pedir la transición', async () => {
+    stubReducedMotion(false)
+    const update = vi.fn()
+    const startViewTransition = vi.fn()
+    await withViewTransition(update, { visibilityState: 'hidden', startViewTransition }, 'vt-screen')
+    expect(update).toHaveBeenCalledOnce()
+    expect(startViewTransition).not.toHaveBeenCalled()
+  })
+})
+
+describe('withViewTransition cuando el navegador no dibuja', () => {
+  it('salta la animación si el cambio no ocurrió a tiempo', async () => {
+    vi.useFakeTimers()
+    stubReducedMotion(false)
+    let finish!: () => void
+    const finished = new Promise<void>((res) => (finish = res))
+    const update = vi.fn()
+    const vt = {
+      finished,
+      updateCallbackDone: new Promise<void>(() => {}),
+      skipTransition: vi.fn(() => {
+        update()
+        finish()
+      }),
+    }
+    const done = withViewTransition(update, { startViewTransition: () => vt }, undefined, 300)
+    expect(update).not.toHaveBeenCalled()
+    await vi.advanceTimersByTimeAsync(300)
+    await done
+    expect(vt.skipTransition).toHaveBeenCalledOnce()
+    expect(update).toHaveBeenCalledOnce()
+    vi.useRealTimers()
+  })
+  it('no salta la animación si el cambio ya ocurrió (también si falló)', async () => {
+    vi.useFakeTimers()
+    stubReducedMotion(false)
+    for (const make of [() => Promise.resolve(), () => Promise.reject(new Error('x'))]) {
+      const updateCallbackDone = make()
+      updateCallbackDone.catch(() => {})
+      let finish!: () => void
+      const finished = new Promise<void>((res) => (finish = res))
+      const vt = { finished, updateCallbackDone, skipTransition: vi.fn() }
+      const done = withViewTransition(() => {}, { startViewTransition: (u) => (u(), vt) }, undefined, 300)
+      await vi.advanceTimersByTimeAsync(0)
+      await vi.advanceTimersByTimeAsync(1000)
+      finish()
+      await done
+      expect(vt.skipTransition).not.toHaveBeenCalled()
+    }
+    vi.useRealTimers()
   })
 })

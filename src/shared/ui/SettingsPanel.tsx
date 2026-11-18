@@ -1,16 +1,23 @@
 // Ajustes de DocuSmart Web, como en la app: idioma, tema, color de acento y tamaño de letra.
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Icon } from './Icon'
 import { Segmented } from './ui'
 import { LANGS } from '../i18n/languages'
 import { useT } from '../i18n/I18n'
 import { ACCENTS, applyAppearance, loadAppearance, saveAppearance, type Accent, type Appearance, type FontScale, type ThemeMode } from '../../app/appearance'
 import { track } from '../platform/analytics'
+import { prefersReducedMotion } from '../platform/motion'
 
-export function SettingsPanel({ onClose }: { onClose: () => void }) {
+export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
   const { t, lang, setLang } = useT()
   const [look, setLook] = useState<Appearance>(loadAppearance)
   const panel = useRef<HTMLDivElement>(null)
+  // Al cerrar, el panel sale animado y luego se desmonta (W-74).
+  const [closing, setClosing] = useState(false)
+  const onClose = useCallback(() => {
+    setClosing(true)
+    setTimeout(close, prefersReducedMotion() ? 0 : 200)
+  }, [close])
 
   // Esc cierra; el foco entra al panel y vuelve a donde estaba al cerrar.
   useEffect(() => {
@@ -34,7 +41,7 @@ export function SettingsPanel({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="settings-backdrop">
+    <div className={'settings-backdrop' + (closing ? ' is-closing' : '')}>
       {/* Tocar fuera del panel lo cierra (botón nativo, fuera del orden de tabulación: Esc y "Cerrar" ya existen). */}
       <button type="button" className="settings-scrim" aria-label={t('settings.close')} tabIndex={-1} onClick={onClose} />
       <div ref={panel} className="settings-panel stack" role="dialog" aria-modal="true" aria-labelledby="settings-title">

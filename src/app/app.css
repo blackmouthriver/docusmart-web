@@ -272,7 +272,15 @@ p { margin: 0; }
 .progress { height: 6px; border-radius: 999px; background: var(--paper-2); overflow: hidden; }
 .progress i { display: block; height: 100%; background: var(--blue); border-radius: inherit; transition: width 200ms var(--ease-out); }
 .notice { display: flex; gap: 10px; padding: 12px 14px; border-radius: 14px; font-size: 14px; background: var(--paper-2); color: var(--ink-soft); }
-.notice svg { width: 18px; height: 18px; flex: none; margin-top: 2px; }
+.notice svg { width: 18px; height: 18px; flex: none; }
+.notice-ico { position: relative; display: grid; flex: none; height: 18px; margin-top: 2px; }
+/* Proceso terminado (W-74): el aviso entra, el check se dibuja y sale un anillo. */
+.notice-success { animation: success-in 420ms var(--ease-out) both; }
+.notice-success .notice-ico path { stroke-dasharray: 24; stroke-dashoffset: 24; animation: check-draw 420ms var(--ease-out) 160ms forwards; }
+.notice-success .notice-ico::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid currentColor; opacity: 0; animation: success-ring 750ms var(--ease-out) 220ms; }
+@keyframes success-in { from { opacity: 0; transform: translateY(6px) scale(.97); } }
+@keyframes check-draw { to { stroke-dashoffset: 0; } }
+@keyframes success-ring { from { opacity: .55; transform: scale(.5); } to { opacity: 0; transform: scale(1.7); } }
 .notice-error { background: #FEF2F2; color: #B91C1C; }
 .notice-success { background: #F0FDF4; color: #15803D; }
 .notice-info { background: var(--blue-soft); color: var(--blue-deep); }
@@ -547,7 +555,31 @@ p { margin: 0; }
 .voice-all { display: flex; align-items: center; gap: 8px; padding: 8px 6px 4px; font-size: 13px; }
 
 .screen { animation: screen-in 320ms var(--ease-out); }
+/* Cambio de pantalla con View Transitions (W-74): solo el contenido; la barra lateral queda quieta. */
+html.vt-screen .content { view-transition-name: ds-screen; }
+html.vt-screen .screen { animation: none; }
+html.vt-screen::view-transition-old(root), html.vt-screen::view-transition-new(root) { animation: none; }
+html.vt-screen::view-transition-group(ds-screen) { animation: none; }
+html.vt-screen::view-transition-old(ds-screen) { animation: vt-screen-out 140ms var(--ease-in-out) both; }
+html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms var(--ease-out) both; }
+@keyframes vt-screen-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes vt-screen-in { from { opacity: 0; transform: translateY(10px); } }
+
+/* Esqueleto de carga de una pantalla (W-74). */
+.skel { position: relative; overflow: hidden; display: grid; gap: 16px; }
+.skel i { display: block; border-radius: var(--radius); background: var(--paper-2); }
+.skel-hero { height: 150px; }
+.skel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.skel-card { height: 110px; }
+.skel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .5) 50%, transparent 70%); transform: translateX(-100%); animation: skel-shimmer 1.4s ease-in-out infinite; }
+[data-theme="dark"] .skel::after { background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .06) 50%, transparent 70%); }
+@keyframes skel-shimmer { to { transform: translateX(100%); } }
 @keyframes screen-in { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) {
+  .notice-success, .notice-success .notice-ico::after, .skel::after, .settings-backdrop, .settings-panel,
+  .settings-backdrop.is-closing, .settings-backdrop.is-closing .settings-panel { animation: none; }
+  .notice-success .notice-ico path { stroke-dasharray: none; stroke-dashoffset: 0; animation: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
@@ -810,4 +842,17 @@ p { margin: 0; }
 .accent-swatch[aria-checked="true"] { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--ink); }
 .accent-swatch svg { width: 18px; height: 18px; }
 .settings-scrim { position: absolute; inset: 0; border: 0; padding: 0; background: transparent; cursor: default; }
+/* Ajustes con entrada y salida (W-74): el fondo se oscurece y el panel sube (celular) o crece (escritorio). */
+.settings-backdrop { animation: backdrop-in 220ms ease both; }
+.settings-panel { animation: sheet-in 360ms var(--ease-out) both; }
+@media (min-width: 720px) { .settings-panel { animation-name: dialog-in; } }
+.settings-backdrop.is-closing { animation: backdrop-out 200ms ease both; }
+.settings-backdrop.is-closing .settings-panel { animation: sheet-out 200ms var(--ease-in-out, ease-in) both; }
+@media (min-width: 720px) { .settings-backdrop.is-closing .settings-panel { animation-name: dialog-out; } }
+@keyframes backdrop-in { from { opacity: 0; } }
+@keyframes backdrop-out { to { opacity: 0; } }
+@keyframes sheet-in { from { transform: translateY(100%); } }
+@keyframes sheet-out { to { transform: translateY(100%); } }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(12px) scale(.96); } }
+@keyframes dialog-out { to { opacity: 0; transform: translateY(8px) scale(.97); } }
 .settings-panel { position: relative; }
