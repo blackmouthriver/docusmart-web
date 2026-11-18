@@ -51,9 +51,9 @@ function svg(name, cls) {
   return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`
 }
 /** Ícono de cada herramienta, el mismo que usa en la app web (PdfTools, ImageTools, Converter…). */
-const PDF_ICONS = { unir: 'merge', dividir: 'split', rotar: 'rotate', escanear: 'camera', formulario: 'form', editar: 'edit', imagenes: 'images', comparar: 'compare', censurar: 'redact', firmar: 'pen', recortar: 'crop', comprimir: 'compress', proteger: 'lock', desbloquear: 'unlock', reparar: 'wrench', ocr: 'text', pdfa: 'archive' }
+const PDF_ICONS = { unir: 'merge', reordenar: 'reorder', numerar: 'hash', marca: 'stamp', dividir: 'split', rotar: 'rotate', escanear: 'camera', formulario: 'form', editar: 'edit', imagenes: 'images', comparar: 'compare', censurar: 'redact', firmar: 'pen', recortar: 'crop', comprimir: 'compress', proteger: 'lock', desbloquear: 'unlock', reparar: 'wrench', ocr: 'text', pdfa: 'archive' }
 const IMG_ICONS = { comprimir: 'compress', redimensionar: 'resize', recortar: 'crop', rotar: 'rotate' }
-const CONV_ICONS = { 'img-pdf': 'image', 'pdf-img': 'images', 'pdf-txt': 'text' }
+const CONV_ICONS = { 'img-pdf': 'image', 'img-png': 'image', 'img-jpg': 'image', 'img-webp': 'image', 'pdf-img': 'images', 'pdf-txt': 'text' }
 function toolIcon({ kind, id }) {
   if (kind === 'pdf') return PDF_ICONS[id] ?? 'pdf'
   if (kind === 'img') return IMG_ICONS[id] ?? 'image'
