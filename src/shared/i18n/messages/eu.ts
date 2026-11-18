@@ -14,7 +14,7 @@ const eu: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Ikasketa",
-  'pwa.install': "Instalatu gailu honetan",
+  'pwa.install': "Instalatu DocuSmart Desktop",
   'pwa.offlineReady': "Prest: orain tresnak konexiorik gabe erabil ditzakezu",
   'nav.collapse': "Tolestu menua",
   'nav.expand': "Zabaldu menua",

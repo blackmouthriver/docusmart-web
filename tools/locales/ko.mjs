@@ -700,6 +700,8 @@ export default {
     },
   },
   landing: [
+    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "컴퓨터의 Chrome 또는 Edge에서 데스크톱 버전을 설치하세요. 일반 프로그램처럼 별도 창에서 열리고 인터넷 없이도 작동합니다."],
+    ["Instalar DocuSmart Desktop", "DocuSmart Desktop 설치"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — 모든 문서를 한곳에'],
     [
       'Escanea, convierte, une y protege tus documentos desde Android. 17 conversiones, herramientas PDF, carpeta segura y modo estudio. Tus archivos se procesan en tu teléfono.',

@@ -31,16 +31,24 @@ export function ToolsScreen({ sub }: { sub?: string }) {
         <input className="input" type="search" value={query} placeholder={t('tools.searchHint')} autoComplete="off" enterKeyHint="search" onChange={(e) => setQuery(e.target.value)} />
       </label>
 
+      {/* Carrusel continuo de categorías, como en /herramientas y la portada: dos copias que se
+          desplazan en bucle (la segunda, oculta a lectores de pantalla y al teclado). */}
       <nav className="tools-jump" aria-label={t('tools.title')}>
-        {CATEGORIES.map((c) => {
-          const visible = groups.some((g) => g.id === c.id)
-          return (
-            <button key={c.id} type="button" className="tools-chip" disabled={!visible} onClick={() => jump(c.id)}>
-              <Icon name={c.icon} />
-              {t(`cat.${c.id}` as MessageKey)}
-            </button>
-          )
-        })}
+        <div className="tools-marquee">
+          {[false, true].map((copy) => (
+            <div key={String(copy)} className="tools-track" aria-hidden={copy || undefined}>
+              {CATEGORIES.map((c) => {
+                const visible = groups.some((g) => g.id === c.id)
+                return (
+                  <button key={c.id} type="button" className="tools-chip" disabled={!visible} tabIndex={copy ? -1 : undefined} onClick={() => jump(c.id)}>
+                    <Icon name={c.icon} />
+                    {t(`cat.${c.id}` as MessageKey)}
+                  </button>
+                )
+              })}
+            </div>
+          ))}
+        </div>
       </nav>
 
       <div aria-live="polite">

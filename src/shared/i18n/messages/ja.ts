@@ -14,7 +14,7 @@ const ja: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "学習",
-  'pwa.install': "このデバイスにインストール",
+  'pwa.install': "DocuSmart Desktop をインストール",
   'pwa.offlineReady': "準備完了：オフラインでもツールを使えます",
   'nav.collapse': "メニューを折りたたむ",
   'nav.expand': "メニューを展開",

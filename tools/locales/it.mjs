@@ -714,6 +714,8 @@ export default {
     },
   },
   landing: [
+    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Installa la versione desktop da Chrome o Edge sul tuo computer: si apre in una finestra tutta sua, come un programma, e funziona offline."],
+    ["Instalar DocuSmart Desktop", "Installa DocuSmart Desktop"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — I tuoi documenti in un unico posto'],
     [
       'Escanea, convierte, une y protege tus documentos desde Android. 17 conversiones, herramientas PDF, carpeta segura y modo estudio. Tus archivos se procesan en tu teléfono.',
