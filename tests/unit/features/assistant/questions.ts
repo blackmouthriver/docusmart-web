@@ -75,6 +75,20 @@ export const QUESTIONS_ES: Case[] = [
   ['que es docusmart', 'que-es'],
   ['tamaño maximo de archivo', ['tamano', 'limites']],
   ['usan cookies', 'analitica'],
+  // W-13: herramientas con página nueva
+  ['cambiar el orden de las paginas de un pdf', t('ordenar-paginas-pdf')],
+  ['como ordeno las hojas del pdf', t('ordenar-paginas-pdf')],
+  ['pasar una hoja de calculo a pdf', t('excel-a-pdf')],
+  ['ponerle numero de pagina a un pdf', t('numerar-paginas-pdf')],
+  ['enumerar las paginas del pdf', t('numerar-paginas-pdf')],
+  ['poner marca de agua a un pdf', t('marca-de-agua-pdf')],
+  ['agregar texto confidencial a todas las paginas', t('marca-de-agua-pdf')],
+  ['convertir jpg a png', t('jpg-a-png')],
+  ['pasar una foto a png', t('jpg-a-png')],
+  ['png a jpg', t('png-a-jpg')],
+  ['convertir imagen png a jpeg', t('png-a-jpg')],
+  ['convertir imagenes a webp', t('imagen-a-webp')],
+  ['pasar jpg a webp para mi pagina web', t('imagen-a-webp')],
 ]
 
 export const QUESTIONS_EN: Case[] = [
@@ -139,6 +153,14 @@ export const QUESTIONS_EN: Case[] = [
   ['what is docusmart', 'que-es'],
   ['maximum file size', ['tamano', 'limites']],
   ['do you use cookies', 'analitica'],
+  // W-13
+  ['reorder pdf pages', t('ordenar-paginas-pdf')],
+  ['change the order of pages in a pdf', t('ordenar-paginas-pdf')],
+  ['add page numbers to pdf', t('numerar-paginas-pdf')],
+  ['add a watermark to my pdf', t('marca-de-agua-pdf')],
+  ['convert jpg to png', t('jpg-a-png')],
+  ['png to jpeg', t('png-a-jpg')],
+  ['convert images to webp', t('imagen-a-webp')],
 ]
 
 /** Fuera de tema: el asistente no debe responder con confianza. */

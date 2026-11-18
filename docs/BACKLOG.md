@@ -43,8 +43,8 @@ _Sin pendientes P0._
 
 | ID | Ítem | Quién | Estado |
 |---|---|---|---|
-| W-12 | **Imagen para compartir** 1200×630 (`og:image`, `twitter:card=summary_large_image`) para la landing y cada herramienta. Hoy usa una captura vertical | 🛠️ | En revisión (una imagen por idioma, `scripts/og-images.py`) |
-| W-13 | **Más páginas de herramientas**: numerar páginas, marca de agua, ordenar páginas, JPG→PNG, PNG→JPG, imagen→WebP. Solo hay que agregar entradas a `tools/pages.mjs` | 🛠️ | Pendiente |
+| W-12 | **Imagen para compartir** 1200×630 (`og:image`, `twitter:card=summary_large_image`) para la landing y cada herramienta. Hoy usa una captura vertical | 🛠️ | Hecho (PR #104; una imagen por idioma, `scripts/og-images.py`) |
+| W-13 | **Más páginas de herramientas**: numerar páginas, marca de agua, ordenar páginas, JPG→PNG, PNG→JPG, imagen→WebP. Solo hay que agregar entradas a `tools/pages.mjs` | 🛠️ | En revisión: ordenar, numerar, marca de agua, JPG→PNG, PNG→JPG e imagen→WebP (37 herramientas × 12 idiomas) |
 | W-14 | **Versión en inglés** de la landing y las herramientas, con `hreflang` (la app ya está en 12 idiomas) | 🛠️ | Hecho (portada y herramientas en 12 idiomas con `hreflang`) |
 | W-15 | **Eventos clave en GA4**: marcar `landing_cta_click` (destino `play_store`) y `conversion_success` como conversiones, y armar un tablero simple | 👤 (te guío) | Pendiente |
 | W-16 | **PWA**: manifest y service worker para instalar DocuSmart Web y usarla sin conexión. Encaja con la promesa de "nada sale de tu equipo" | 🛠️ | Pendiente |

@@ -401,5 +401,83 @@
     "ja": "qr-code-generator",
     "ko": "qr-code-generator",
     "zh": "qr-code-generator"
+  },
+  "ordenar-paginas-pdf": {
+    "en": "reorder-pdf-pages",
+    "pt": "organizar-paginas-pdf",
+    "fr": "organiser-pages-pdf",
+    "it": "riordinare-pagine-pdf",
+    "de": "pdf-seiten-sortieren",
+    "ca": "ordenar-pagines-pdf",
+    "eu": "pdf-orriak-ordenatu",
+    "ru": "reorder-pdf-pages",
+    "ja": "reorder-pdf-pages",
+    "ko": "reorder-pdf-pages",
+    "zh": "reorder-pdf-pages"
+  },
+  "numerar-paginas-pdf": {
+    "en": "add-page-numbers-to-pdf",
+    "pt": "numerar-paginas-pdf",
+    "fr": "numeroter-pages-pdf",
+    "it": "numerare-pagine-pdf",
+    "de": "pdf-seitenzahlen-einfuegen",
+    "ca": "numerar-pagines-pdf",
+    "eu": "pdf-orriak-zenbakitu",
+    "ru": "add-page-numbers-to-pdf",
+    "ja": "add-page-numbers-to-pdf",
+    "ko": "add-page-numbers-to-pdf",
+    "zh": "add-page-numbers-to-pdf"
+  },
+  "marca-de-agua-pdf": {
+    "en": "add-watermark-to-pdf",
+    "pt": "marca-dagua-pdf",
+    "fr": "filigrane-pdf",
+    "it": "filigrana-pdf",
+    "de": "pdf-wasserzeichen",
+    "ca": "marca-aigua-pdf",
+    "eu": "pdf-ur-marka",
+    "ru": "add-watermark-to-pdf",
+    "ja": "add-watermark-to-pdf",
+    "ko": "add-watermark-to-pdf",
+    "zh": "add-watermark-to-pdf"
+  },
+  "jpg-a-png": {
+    "en": "jpg-to-png",
+    "pt": "jpg-para-png",
+    "fr": "jpg-en-png",
+    "it": "jpg-in-png",
+    "de": "jpg-in-png",
+    "ca": "jpg-a-png",
+    "eu": "jpgtik-pngra",
+    "ru": "jpg-to-png",
+    "ja": "jpg-to-png",
+    "ko": "jpg-to-png",
+    "zh": "jpg-to-png"
+  },
+  "png-a-jpg": {
+    "en": "png-to-jpg",
+    "pt": "png-para-jpg",
+    "fr": "png-en-jpg",
+    "it": "png-in-jpg",
+    "de": "png-in-jpg",
+    "ca": "png-a-jpg",
+    "eu": "pngtik-jpgra",
+    "ru": "png-to-jpg",
+    "ja": "png-to-jpg",
+    "ko": "png-to-jpg",
+    "zh": "png-to-jpg"
+  },
+  "imagen-a-webp": {
+    "en": "image-to-webp",
+    "pt": "imagem-para-webp",
+    "fr": "image-en-webp",
+    "it": "immagine-in-webp",
+    "de": "bild-in-webp",
+    "ca": "imatge-a-webp",
+    "eu": "iruditik-webpra",
+    "ru": "image-to-webp",
+    "ja": "image-to-webp",
+    "ko": "image-to-webp",
+    "zh": "image-to-webp"
   }
 }

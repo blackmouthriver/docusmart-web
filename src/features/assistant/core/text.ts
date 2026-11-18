@@ -43,7 +43,9 @@ const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
     firma: 'firmar', firmo: 'firmar',
     foto: 'imagen', fotografia: 'imagen', jpeg: 'jpg', imagenes: 'imagen',
     escaneo: 'escanear', escaner: 'escanear', digitalizar: 'escanear',
-    docx: 'word', doc: 'word', xlsx: 'excel', planilla: 'excel', hoja: 'excel',
+    docx: 'word', doc: 'word', xlsx: 'excel', planilla: 'excel', calculo: 'excel',
+    // "hoja" es casi siempre una página ("las hojas del PDF"); la de cálculo la marca "cálculo".
+    hoja: 'pagina', ordeno: 'ordenar', reordenar: 'ordenar', enumerar: 'numerar', enumero: 'numerar', numero: 'numerar',
     costo: 'precio', cuesta: 'precio', pagar: 'precio', pago: 'precio', gratis: 'precio', gratuito: 'precio', gratuita: 'precio', cobran: 'precio',
     movil: 'celular', telefono: 'celular', smartphone: 'celular',
     comprimido: 'zip', descomprimir: 'extraer', generar: 'crear', genero: 'crear', creo: 'crear',
