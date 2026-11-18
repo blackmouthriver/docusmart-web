@@ -5,6 +5,10 @@ export default {
     title: 'DocuSmart-Assistent', greeting: 'Hallo! Ich bin der DocuSmart-Assistent. Frag mich, wie ein Tool funktioniert, oder alles, was du über die App und die Website wissen willst.', placeholder: 'Schreib deine Frage…', send: 'Senden', open: 'Assistent öffnen', close: 'Assistent schließen', clear: 'Unterhaltung löschen', suggestions: 'Vorgeschlagene Fragen', related: 'Das könnte dir auch helfen',
     fallback: 'Darauf habe ich keine Antwort. Versuch es mit einer anderen Formulierung oder wähle einen dieser Vorschläge; wenn du willst, schreib uns und wir helfen dir.', helpful: 'War das hilfreich?', yes: 'Ja', no: 'Nein', thanks: 'Danke für dein Feedback!', privacyNote: 'Alles passiert in deinem Browser: Was du schreibst, wird nirgendwohin gesendet.',
     aiBadge: "✨ Von der KI deines Browsers aus unserer Wissensbasis formuliert",
+    sendQuestion: "Diese Frage senden",
+    sendSubject: "Frage an den DocuSmart-Assistenten",
+    sendIntro: "Hallo, der Assistent konnte diese Frage nicht beantworten:",
+    sendNote: "Deine E-Mail-App öffnet sich mit der Frage; du entscheidest, ob du sie sendest.",
   },
   entries: [
     { id: 'hola', q: ['hallo', 'hi', 'guten tag', 'guten morgen'], a: 'Hallo! Wie kann ich helfen? Ich erkläre dir, wie du PDFs zusammenfügst, umwandelst, unterschreibst oder komprimierst, einen QR-Code erstellst, den Lernmodus nutzt oder wie wir deine Dateien schützen.', related: ['ayuda', 'que-es', 'privacidad'] },

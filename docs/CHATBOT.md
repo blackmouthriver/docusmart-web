@@ -1,6 +1,6 @@
 # Asistente de chat de DocuSmart Web: análisis y requisitos
 
-> Estado: **en desarrollo** (opción A, 2026-11-18). Ítems W-70a a W-70f en `docs/BACKLOG.md`.
+> Estado: **en desarrollo** (opción A, 2026-11-18). Ítems W-70a a W-70g en `docs/BACKLOG.md`.
 > Hecho: base de conocimiento (`tools/assistant/`, generada en `public/assistant/<idioma>.json`) y motor
 > (`src/features/assistant/core/`): 96 % de aciertos en español, 95 % en inglés y ≥ 94 % en los otros 10 idiomas
 > (W-70e: base propia en los 12 idiomas; chino, japonés y coreano se indexan por pares de caracteres).

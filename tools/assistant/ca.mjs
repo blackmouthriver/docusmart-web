@@ -5,6 +5,10 @@ export default {
     title: 'Assistent de DocuSmart', greeting: "Hola! Soc l'assistent de DocuSmart. Pregunta'm com fer servir una eina o el que vulguis saber de l'app i el web.", placeholder: 'Escriu la teva pregunta…', send: 'Enviar', open: "Obrir l'assistent", close: "Tancar l'assistent", clear: 'Esborrar conversa', suggestions: 'Preguntes suggerides', related: 'També et pot servir',
     fallback: "No tinc resposta per a això. Prova de preguntar-ho d'una altra manera o tria un d'aquests suggeriments; si vols, escriu-nos i t'ajudem.", helpful: "T'ha servit?", yes: 'Sí', no: 'No', thanks: 'Gràcies per avisar!', privacyNote: "Tot passa al teu navegador: el que escrius no s'envia enlloc.",
     aiBadge: "✨ Redactada per la IA del teu navegador a partir de la nostra base",
+    sendQuestion: "Envia aquesta pregunta",
+    sendSubject: "Pregunta per a l’assistent de DocuSmart",
+    sendIntro: "Hola, l’assistent no ha sabut respondre aquesta pregunta:",
+    sendNote: "S’obre la teva app de correu amb la pregunta escrita; tu decideixes si l’envies.",
   },
   entries: [
     { id: 'hola', q: ['hola', 'bon dia', 'bona tarda', 'ei'], a: "Hola! En què t'ajudo? Puc explicar-te com unir, convertir, signar o comprimir un PDF, crear un QR, fer servir el Mode Estudi o com cuidem els teus fitxers.", related: ['ayuda', 'que-es', 'privacidad'] },

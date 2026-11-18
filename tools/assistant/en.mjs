@@ -32,6 +32,10 @@ export default {
     thanks: 'Thanks for letting us know!',
     privacyNote: 'Everything happens in your browser: what you type is never sent anywhere.',
     aiBadge: "✨ Written by your browser's built-in AI from our knowledge base",
+    sendQuestion: "Send this question",
+    sendSubject: "Question for the DocuSmart assistant",
+    sendIntro: "Hi, the assistant couldn't answer this question:",
+    sendNote: "Your email app opens with the question written in; you decide whether to send it.",
   },
   entries: [
     { id: 'hola', q: ['hi', 'hello', 'hey', 'good morning', 'good afternoon'], a: 'Hi! How can I help? I can explain how to merge, convert, sign or compress a PDF, create a QR code, use Study mode or tell you how we look after your files.', related: ['ayuda', 'que-es', 'privacidad'] },
