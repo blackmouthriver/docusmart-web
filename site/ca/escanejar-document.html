@@ -148,7 +148,8 @@
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="Ruta"><a href="/ca/">DocuSmart</a><span aria-hidden="true">›</span><span>Escanejar document</span></nav>
       <h1>Escanejar document</h1>
       <p class="tp-lead">Fes una foto del teu contracte, rebut o deure amb el mòbil i DocuSmart la converteix en un escaneig dret i net, a punt per enviar en PDF.</p>
@@ -157,6 +158,13 @@
         <li>Gratis i sense registre</li>
         <li>Funciona al navegador</li>
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -166,21 +174,21 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Com escanejar un document en 3 passos</h2>
-    <ol class="tp-steps">
-      <li>Prem &quot;Fer foto&quot; (al mòbil s’obre la càmera) o tria fotos que ja tinguis. Posa el full sobre una superfície fosca i amb bona llum.</li>
-      <li>Revisa les cantonades que ha trobat DocuSmart i tria un filtre: Document blanqueja el paper i treu les ombres. Afegeix més pàgines si vols.</li>
-      <li>Prem &quot;Crear PDF&quot; (marca &quot;Fer el PDF cercable&quot; per poder cercar el text) o baixa les pàgines com a JPG.</li>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/></svg></span><span>Prem &quot;Fer foto&quot; (al mòbil s’obre la càmera) o tria fotos que ja tinguis. Posa el full sobre una superfície fosca i amb bona llum.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/></svg></span><span>Revisa les cantonades que ha trobat DocuSmart i tria un filtre: Document blanqueja el paper i treu les ombres. Afegeix més pàgines si vols.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>Prem &quot;Crear PDF&quot; (marca &quot;Fer el PDF cercable&quot; per poder cercar el text) o baixa les pàgines com a JPG.</span></li>
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>Els teus fitxers no surten del teu equip</h2>
     <p>A diferència d’altres eines en línia, DocuSmart no puja els teus documents a cap servidor: tot es processa dins del teu navegador. La pots fer servir amb contractes, factures o documents d’identitat amb total tranquil·litat. <a href="/privacidad">Llegeix la nostra política de privacitat (en castellà)</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Preguntes freqüents</h2>
     <div class="tp-faq">
       <details>
@@ -202,7 +210,7 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>Més eines gratis</h2>
     <ul class="tp-related">
       <li><a href="/ca/unir-pdf"><b>Unir PDF</b><span>Combina diversos PDF en un</span></a></li>
@@ -239,13 +247,13 @@
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>Porta DocuSmart al mòbil</h2>
         <p>L'app per a Android afegeix escàner amb detecció de vores, carpeta segura amb PIN, Word, Excel i PowerPoint, i OCR. Funciona sense connexió.</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Baixa-la a Google Play</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Baixa-la a Google Play</a>
     </div>
   </section>
 </main>

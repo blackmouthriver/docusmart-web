@@ -140,7 +140,8 @@
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="Навигация"><a href="/ru/">DocuSmart</a><span aria-hidden="true">›</span><span>Обрезать изображение</span></nav>
       <h1>Обрезать изображение</h1>
       <p class="tp-lead">Уберите лишнее с фото или приведите его к нужному формату: квадрат для аватара, 16:9 для обложки или 4:3 для печати.</p>
@@ -149,6 +150,13 @@
         <li>Бесплатно и без регистрации</li>
         <li>Работает в браузере</li>
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -158,21 +166,21 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Как обрезать изображение за 3 шага</h2>
-    <ol class="tp-steps">
-      <li>Выберите изображение.</li>
-      <li>Выберите пропорции (или «Свободно») и настройте рамку, перетаскивая края, углы или всю рамку.</li>
-      <li>Нажмите «Обрезать изображение».</li>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>Выберите изображение.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14"/></svg></span><span>Выберите пропорции (или «Свободно») и настройте рамку, перетаскивая края, углы или всю рамку.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>Нажмите «Обрезать изображение».</span></li>
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>Ваши файлы не покидают устройство</h2>
     <p>В отличие от других онлайн-сервисов, DocuSmart не загружает документы ни на какой сервер: всё обрабатывается в вашем браузере. Можно спокойно работать с договорами, счетами и документами, удостоверяющими личность. <a href="/privacidad">Политика конфиденциальности (на испанском)</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Частые вопросы</h2>
     <div class="tp-faq">
       <details>
@@ -190,7 +198,7 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>Другие бесплатные инструменты</h2>
     <ul class="tp-related">
       <li><a href="/ru/merge-pdf"><b>Объединить PDF</b><span>Несколько PDF в один</span></a></li>
@@ -227,13 +235,13 @@
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>DocuSmart на вашем телефоне</h2>
         <p>Приложение для Android добавляет сканер с определением краёв, защищённую PIN-кодом папку, Word, Excel и PowerPoint, а также OCR. Работает без интернета.</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Скачать в Google Play</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Скачать в Google Play</a>
     </div>
   </section>
 </main>

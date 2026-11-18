@@ -29,7 +29,35 @@
 }
 
 .tp-hero { background: var(--night); color: var(--on-night); padding: 28px 0 88px; position: relative; overflow: hidden; }
-.tp-hero::after { content: ""; position: absolute; width: 520px; height: 520px; right: -160px; top: -220px; border-radius: 50%; background: radial-gradient(circle, rgba(37, 99, 235, .45), transparent 65%); pointer-events: none; }
+.tp-hero::after, .tp-hero::before { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+.tp-hero::after { width: 520px; height: 520px; right: -160px; top: -220px; background: radial-gradient(circle, rgba(37, 99, 235, .45), transparent 65%); animation: tp-drift 14s ease-in-out infinite alternate; }
+.tp-hero::before { width: 420px; height: 420px; left: -180px; bottom: -260px; background: radial-gradient(circle, rgba(99, 102, 241, .32), transparent 65%); animation: tp-drift 18s ease-in-out infinite alternate-reverse; }
+@keyframes tp-drift { to { transform: translate3d(-40px, 30px, 0) scale(1.08); } }
+
+/* Texto del encabezado con entrada escalonada (sin depender de JS: termina siempre visible). */
+.tp-hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 32px; align-items: center; }
+.tp-hero-text > * { animation: tp-rise 700ms var(--ease-out) both; }
+.tp-hero-text > :nth-child(2) { animation-delay: 70ms; }
+.tp-hero-text > :nth-child(3) { animation-delay: 140ms; }
+.tp-hero-text > :nth-child(4) { animation-delay: 210ms; }
+@keyframes tp-rise { from { opacity: 0; transform: translateY(14px); } }
+
+/* Ilustración: el ícono de la herramienta con anillos, línea de escaneo y dos sellos flotantes. */
+.tp-hero-art { position: relative; width: 240px; height: 240px; justify-self: end; animation: tp-pop 800ms var(--ease-out) 150ms both; }
+@keyframes tp-pop { from { opacity: 0; transform: scale(.9); } }
+.tp-ring { position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(126, 224, 255, .28); animation: tp-spin 40s linear infinite; }
+.tp-ring-2 { inset: 30px; border-style: solid; border-color: rgba(255, 255, 255, .1); animation-duration: 26s; animation-direction: reverse; }
+@keyframes tp-spin { to { transform: rotate(360deg); } }
+.tp-tile { position: absolute; inset: 62px; display: grid; place-items: center; overflow: hidden; border-radius: 30px; color: #fff; background: linear-gradient(145deg, #3B82F6, #1D4ED8 60%, #312E81); box-shadow: 0 1px 0 rgba(255, 255, 255, .3) inset, 0 24px 50px -18px rgba(37, 99, 235, .8); animation: tp-float 6s ease-in-out infinite; }
+.tp-tile-ico { width: 54px; height: 54px; }
+.tp-scan { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--scan), transparent); box-shadow: 0 0 12px var(--scan); animation: tp-scan 3.2s ease-in-out infinite; }
+@keyframes tp-scan { 0%, 100% { transform: translateY(8px); opacity: 0; } 15%, 85% { opacity: 1; } 50% { transform: translateY(106px); } }
+@keyframes tp-float { 50% { transform: translateY(-8px); } }
+.tp-chip { position: absolute; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, .1); color: var(--scan); backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(255, 255, 255, .14) inset; animation: tp-float 5s ease-in-out infinite; }
+.tp-chip-a { left: 6px; top: 40px; animation-delay: -1.5s; }
+.tp-chip-b { right: 4px; bottom: 34px; color: #86EFAC; animation-delay: -3s; }
+.tp-chip-ico { width: 22px; height: 22px; }
+@media (max-width: 760px) { .tp-hero-grid { grid-template-columns: minmax(0, 1fr); } .tp-hero-art { display: none; } }
 .tp-crumbs { display: flex; gap: 8px; font-size: 13px; color: var(--on-night-soft); }
 .tp-crumbs a { color: var(--on-night-soft); }
 .tp-hero h1 { margin-top: 18px; font-size: clamp(36px, 6vw, 60px); font-weight: 800; letter-spacing: -0.035em; color: #fff; }
@@ -40,14 +68,34 @@
 /* La herramienta se superpone al final del hero, como una tarjeta. */
 .tp-tool { position: relative; z-index: 2; margin-top: -60px; }
 .tp-tool > div > .card, .tp-tool .two-col > .card { box-shadow: 0 0 0 1px var(--line) inset, 0 24px 48px -28px rgba(11, 16, 32, .35); }
+/* La herramienta entra suave al montarse (también al reemplazar el esqueleto de carga). */
+#tool > * { animation: tp-tool-in 520ms var(--ease-out) both; }
+@keyframes tp-tool-in { from { opacity: 0; transform: translateY(16px) scale(.985); } }
+.tp-skeleton { position: relative; overflow: hidden; display: grid; gap: 14px; padding: 24px; border-radius: var(--radius); background: var(--card); box-shadow: 0 0 0 1px var(--line) inset, 0 24px 48px -28px rgba(11, 16, 32, .35); }
+.tp-skeleton i { display: block; height: 14px; border-radius: 8px; background: var(--paper-2); }
+.tp-skeleton i:first-child { width: 40%; height: 20px; }
+.tp-skeleton i:nth-child(2) { height: 120px; border-radius: 16px; }
+.tp-skeleton i:nth-child(3) { width: 70%; }
+.tp-skeleton::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .45) 50%, transparent 70%); transform: translateX(-100%); animation: tp-shimmer 1.4s ease-in-out infinite; }
+[data-theme="dark"] .tp-skeleton::after { background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .06) 50%, transparent 70%); }
+@keyframes tp-shimmer { to { transform: translateX(100%); } }
 .tp-noscript { padding: 24px; border-radius: var(--radius); background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; }
 
 .tp-section { margin-top: 56px; }
 .tp-section h2 { font-size: clamp(24px, 3.4vw, 32px); font-weight: 700; margin-bottom: 18px; }
-.tp-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: paso; }
-.tp-steps li { counter-increment: paso; padding: 20px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; color: var(--ink-soft); }
-.tp-steps li::before { content: counter(paso); display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: 12px; border-radius: 10px; background: var(--blue-soft); color: var(--blue); font-family: var(--font-display); font-weight: 700; }
-@media (max-width: 760px) { .tp-steps { grid-template-columns: 1fr; } }
+.tp-steps { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: paso; }
+/* Línea que une los pasos; se dibuja cuando aparece el primero. */
+.tp-steps::before { content: ""; position: absolute; left: 16%; right: 16%; top: 46px; height: 2px; background: linear-gradient(90deg, var(--blue-soft), var(--blue), var(--blue-soft)); transform-origin: left; }
+@supports selector(:has(*)) {
+  .js .tp-steps::before { transform: scaleX(0); transition: transform 900ms var(--ease-out) 200ms; }
+  .js .tp-steps:has(li.is-in)::before { transform: none; }
+}
+.tp-steps li { position: relative; counter-increment: paso; padding: 20px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; color: var(--ink-soft); }
+.tp-step-ico { position: relative; display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 14px; border-radius: 16px; background: var(--blue-soft); color: var(--blue); }
+.tp-step-svg { width: 26px; height: 26px; }
+.tp-step-ico::after { content: counter(paso); position: absolute; right: -8px; top: -8px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--blue); color: #fff; font-family: var(--font-display); font-size: 12px; font-weight: 700; box-shadow: 0 0 0 3px var(--card); }
+.tp-steps li.is-in .tp-step-ico { animation: tp-pop 600ms var(--ease-out) calc(var(--d, 0ms) + 120ms) both; }
+@media (max-width: 760px) { .tp-steps { grid-template-columns: 1fr; } .tp-steps::before { display: none; } }
 
 .tp-privacy p { max-width: 720px; color: var(--ink-soft); font-size: 16px; }
 
@@ -58,6 +106,10 @@
 .tp-faq summary::after { content: "+"; flex: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: var(--paper-2); font-weight: 700; transition: transform 250ms var(--ease-out); }
 .tp-faq details[open] summary::after { transform: rotate(45deg); }
 .tp-faq details p { padding: 0 40px 18px 0; color: var(--ink-soft); }
+.tp-faq details[open] p { animation: tp-faq-in 320ms var(--ease-out) both; }
+@keyframes tp-faq-in { from { opacity: 0; transform: translateY(-6px); } }
+.tp-faq summary { transition: color 150ms ease; }
+@media (hover: hover) and (pointer: fine) { .tp-faq summary:hover { color: var(--blue); } }
 
 .tp-related { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 0; padding: 0; list-style: none; }
 .tp-related a { display: block; height: 100%; padding: 16px; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; text-decoration: none; transition: box-shadow 200ms ease, transform 200ms var(--ease-out); }
@@ -75,3 +127,11 @@
 .tp-foot nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 .tp-foot a { color: inherit; }
 .tool-page .toast-wrap { bottom: 24px; }
+
+/* "Reducir movimiento": todo quieto y visible. */
+@media (prefers-reduced-motion: reduce) {
+  .tp-hero::after, .tp-hero::before, .tp-hero-text > *, .tp-hero-art, .tp-ring, .tp-tile, .tp-scan, .tp-chip,
+  #tool > *, .tp-skeleton::after, .tp-faq details[open] p, .tp-steps li.is-in .tp-step-ico { animation: none; }
+  .tp-scan { display: none; }
+  .js .tp-steps::before { transform: none; transition: none; }
+}

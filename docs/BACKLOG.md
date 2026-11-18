@@ -215,8 +215,8 @@ rendimiento (Lighthouse).
 | ID | Ítem | Quién | Estado |
 |---|---|---|---|
 | W-71 | **Política de privacidad con diseño propio**: encabezado con degradado e ícono como la portada; resumen "en 30 segundos" con tarjetas (qué se procesa, qué no se sube, analítica opcional, contacto); índice lateral fijo que marca la sección visible; cada sección como tarjeta con ícono; aparición suave al desplazar; botón "volver arriba"; ancho de lectura cómodo; modo oscuro; versión para imprimir. **El texto legal no cambia** (sigue sincronizado con la app) | 🤖 | Hecho (PR #80) |
-| W-72 | **Sistema de movimiento común**: duraciones y curvas compartidas, utilidad de aparición al desplazar (IntersectionObserver), transiciones entre páginas (View Transitions API, donde exista) y microinteracciones de botones y tarjetas, para reutilizar en todo el sitio | 🤖 | En revisión |
-| W-73 | **Páginas de herramientas** (372): encabezado animado, pasos ilustrados, FAQ con apertura animada y herramienta con entrada suave | 🤖 | Pendiente |
+| W-72 | **Sistema de movimiento común**: duraciones y curvas compartidas, utilidad de aparición al desplazar (IntersectionObserver), transiciones entre páginas (View Transitions API, donde exista) y microinteracciones de botones y tarjetas, para reutilizar en todo el sitio | 🤖 | Hecho (PR #82) |
+| W-73 | **Páginas de herramientas** (372): encabezado animado, pasos ilustrados, FAQ con apertura animada y herramienta con entrada suave | 🤖 | En revisión |
 | W-74 | **App web**: transiciones entre pantallas, estados de carga con esqueletos, animación al terminar un proceso (éxito/descarga) y menús/paneles con movimiento | 🤖 | Pendiente |
 | W-75 | **Portada**: revisión con el usuario de lo que ya tiene y ajustes de coherencia con lo nuevo | 🤖 + 👤 | Pendiente |
 

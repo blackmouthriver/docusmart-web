@@ -148,7 +148,8 @@
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="パンくずリスト"><a href="/ja/">DocuSmart</a><span aria-hidden="true">›</span><span>PDFフォームに入力</span></nav>
       <h1>PDFフォームに入力</h1>
       <p class="tp-lead">申請書や申込書など入力可能なPDFフォームを、印刷もソフトのインストールもせずに、ページ上の記入位置を見ながら完成させられます。</p>
@@ -157,6 +158,13 @@
         <li>無料・登録不要</li>
         <li>ブラウザで動作</li>
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18H5zM8 8h8M8 12h8M8 16h4"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -166,21 +174,21 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>PDFフォームに入力する3ステップ</h2>
-    <ol class="tp-steps">
-      <li>PDFフォームを選びます。DocuSmartが項目を見つけてページ上に示します。</li>
-      <li>回答を入力します。ページ上の枠をタップするとその項目が開き、逆も同じです。</li>
-      <li>送信する場合は「平坦化」をオンにして回答を固定し、「フォームに入力」を押します。</li>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>PDFフォームを選びます。DocuSmartが項目を見つけてページ上に示します。</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18H5zM8 8h8M8 12h8M8 16h4"/></svg></span><span>回答を入力します。ページ上の枠をタップするとその項目が開き、逆も同じです。</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>送信する場合は「平坦化」をオンにして回答を固定し、「フォームに入力」を押します。</span></li>
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>ファイルは端末の外に出ません</h2>
     <p>ほかのオンラインツールと違い、DocuSmartは書類をどのサーバーにもアップロードしません。すべてブラウザの中で処理されます。契約書や請求書、身分証明書も安心して扱えます。 <a href="/privacidad">プライバシーポリシーを読む（スペイン語）</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>よくある質問</h2>
     <div class="tp-faq">
       <details>
@@ -202,7 +210,7 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>ほかの無料ツール</h2>
     <ul class="tp-related">
       <li><a href="/ja/merge-pdf"><b>PDFを結合</b><span>複数のPDFを1つに</span></a></li>
@@ -239,13 +247,13 @@
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>DocuSmartをスマホでも</h2>
         <p>Androidアプリなら、端の自動検出つきスキャナー、PINで守る安全なフォルダー、Word・Excel・PowerPoint、OCRも使えます。オフラインで動作します。</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Google Playで入手</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Google Playで入手</a>
     </div>
   </section>
 </main>

@@ -140,7 +140,8 @@
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="Ruta"><a href="/">DocuSmart</a><span aria-hidden="true">›</span><span>Word a PDF</span></nav>
       <h1>Word a PDF</h1>
       <p class="tp-lead">Pasa tus documentos de Word a PDF para enviarlos o imprimirlos tal como deben verse, sin instalar nada.</p>
@@ -149,6 +150,13 @@
         <li>Gratis y sin registro</li>
         <li>Funciona en el navegador</li>
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -158,21 +166,21 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Cómo convertir Word a PDF en 3 pasos</h2>
-    <ol class="tp-steps">
-      <li>Elige el documento de Word (.docx).</li>
-      <li>Pulsa &quot;Convertir y descargar&quot;.</li>
-      <li>Listo: el PDF se descarga con títulos, listas, tablas e imágenes.</li>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>Elige el documento de Word (.docx).</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg></span><span>Pulsa &quot;Convertir y descargar&quot;.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>Listo: el PDF se descarga con títulos, listas, tablas e imágenes.</span></li>
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>Tus archivos no salen de tu equipo</h2>
     <p>A diferencia de otras herramientas en línea, DocuSmart no sube tus documentos a ningún servidor: todo se procesa dentro de tu navegador. Puedes usarla con contratos, facturas o documentos de identidad con total tranquilidad. <a href="/privacidad">Lee nuestra política de privacidad</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Preguntas frecuentes</h2>
     <div class="tp-faq">
       <details>
@@ -190,7 +198,7 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>Más herramientas gratis</h2>
     <ul class="tp-related">
       <li><a href="/unir-pdf"><b>Unir PDF</b><span>Combina varios PDF en uno</span></a></li>
@@ -227,13 +235,13 @@
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>Lleva DocuSmart en tu celular</h2>
         <p>La app para Android suma escáner con detección de bordes, carpeta segura con PIN, Word, Excel y PowerPoint, y OCR. Funciona sin conexión.</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Descargar en Google Play</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Descargar en Google Play</a>
     </div>
   </section>
 </main>
