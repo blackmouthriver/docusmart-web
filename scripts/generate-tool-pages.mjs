@@ -12,6 +12,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { CATEGORIES, FACEBOOK_URL, INSTAGRAM_URL, SITE, TIKTOK_URL, pages } from '../tools/pages.mjs'
+import { KB_OWN, buildKb, kbJson } from '../tools/assistant/build.mjs'
 import { ES, LANGS, LOCALES, filePath, homePath, hubFile, hubPath, localized, pagePath, toolCount } from '../tools/locales/index.mjs'
 
 const root = join(import.meta.dirname, '..')
@@ -471,6 +472,9 @@ ${pages.map((p) => entry((l) => pagePath(p, l), 'monthly', '0.9')).join('\n')}
 </urlset>
 `
 emit('public/sitemap.xml', sitemap)
+
+// ── Base de conocimiento del asistente (W-70a) ──────────────────────────────
+for (const lang of Object.keys(KB_OWN)) emit(`public/assistant/${lang}.json`, kbJson(buildKb(lang)))
 
 // ── Slugs por idioma para la app ─────────────────────────────────────────────
 // Los enlaces de compartir/recomendar llevan a la página del idioma del usuario
