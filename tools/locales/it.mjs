@@ -31,6 +31,20 @@ export default {
     footPrivacy: 'Informativa sulla privacy',
     footConsent: 'Preferenze di analisi',
     os: 'Qualsiasi (browser web)',
+    // Categorías y página "Todas las herramientas" (W-76/W-78)
+    cats: { organizar: "Organizzare PDF", editar: "Modificare e firmare", seguridad: "Sicurezza", optimizar: "Ottimizzare e archiviare", convertir: "Convertire", imagen: "Immagine", escanear: "Scansione e OCR", archivos: "File compressi", qr: "Codici QR" },
+    hubSlug: "strumenti",
+    hubTitle: "Tutti gli strumenti gratis: PDF, immagini, QR e altro | DocuSmart",
+    hubDescription: "Tutti gli strumenti di DocuSmart per categoria: unire, convertire, firmare e comprimere PDF, modificare immagini, OCR, QR e file ZIP. Gratis e senza caricare i tuoi file.",
+    hubH1: "Tutti gli strumenti",
+    hubLead: "{n} strumenti gratuiti che funzionano nel browser, senza caricare i tuoi file. Scegli una categoria o cerca per nome.",
+    hubSearch: "Cerca uno strumento",
+    hubSearchHint: "Per esempio: unire, Word, foto…",
+    hubEmpty: "Nessuno strumento corrisponde alla ricerca.",
+    hubJump: "Categorie",
+    toolsOne: "1 strumento",
+    toolsMany: "{n} strumenti",
+    seeAll: "Vedi tutti i {n} strumenti",
   },
   pages: {
     'unir-pdf': {

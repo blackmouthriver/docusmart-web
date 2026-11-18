@@ -7,13 +7,14 @@
 .tp-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -0.02em; text-decoration: none; color: #fff; }
 .tp-brand img { border-radius: 8px; }
 .tp-nav nav { display: flex; align-items: center; gap: 4px; }
-.tp-nav nav a { padding: 8px 12px; border-radius: 999px; color: var(--on-night-soft); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 150ms ease, background-color 150ms ease; }
+.tp-nav nav a { white-space: nowrap; padding: 8px 12px; border-radius: 999px; color: var(--on-night-soft); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 150ms ease, background-color 150ms ease; }
 .tp-nav nav a.tp-nav-cta { background: var(--blue); color: #fff; }
 @media (hover: hover) and (pointer: fine) {
   .tp-nav nav a:hover { color: #fff; background: rgba(255, 255, 255, .08); }
   .tp-nav nav a.tp-nav-cta:hover { background: var(--blue-deep); }
 }
 @media (max-width: 560px) { .tp-nav nav > a:not(.tp-nav-cta) { display: none; } }
+@media (max-width: 420px) { .tp-nav nav a, .tp-lang summary { padding: 8px 10px; font-size: 13px; } }
 
 /* Selector de idioma: la misma página en cada idioma, sin JavaScript. */
 .tp-lang { position: relative; }

@@ -340,6 +340,18 @@
   @media (hover: hover) and (pointer: fine) { .web-tools a:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--line) inset, 0 14px 30px -18px rgba(28,27,26,.35); } }
   @media (max-width: 960px) { .web-tools { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 420px) { .web-tools { grid-template-columns: 1fr; } }
+  /* Resumen por categoría (W-77): tarjeta con ícono, nombre y cantidad; lleva a /herramientas. */
+  .wt-cats { grid-template-columns: repeat(3, 1fr); }
+  .wt-cats a { display: flex; align-items: center; gap: 14px; }
+  .wt-cats b { font-size: 17px; }
+  .wt-cats .wt-text { margin: 0; min-width: 0; color: inherit; font-size: inherit; }
+  .wt-cats .wt-text span { margin-top: 2px; }
+  .wt-cats .wt-ico { margin: 0; display: grid; place-items: center; flex: none; width: 46px; height: 46px; border-radius: 14px; background: var(--blue-soft, rgba(37,99,235,.1)); color: var(--blue); transition: transform 300ms var(--ease-out); }
+  .wt-svg { width: 24px; height: 24px; }
+  @media (hover: hover) and (pointer: fine) { .wt-cats a:hover .wt-ico { transform: scale(1.08) rotate(-4deg); } }
+  .wt-more { display: flex; justify-content: center; margin-top: 28px; }
+  @media (max-width: 960px) { .wt-cats { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 420px) { .wt-cats { grid-template-columns: 1fr; } }
   .tool-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 24px; }
   .tool-chips span { padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; }
   .mini-phone { flex: none; width: 170px; align-self: flex-end; margin-bottom: -60px; border-radius: 26px 0 0 0; padding: 7px 0 0 7px; background: #1a2036; }
@@ -777,41 +789,20 @@
         </div>
         <p class="reveal" style="--d:100ms">Use-as em qualquer computador ou celular, sem instalar nada nem criar conta. Tudo é processado no seu aparelho.</p>
       </div>
-      <ul class="web-tools reveal">
 <!-- tools:start -->
-        <li><a href="/pt/juntar-pdf"><b>Juntar PDF</b><span>Combine vários PDFs em um</span></a></li>
-        <li><a href="/pt/dividir-pdf"><b>Dividir PDF</b><span>Extraia ou separe páginas</span></a></li>
-        <li><a href="/pt/girar-pdf"><b>Girar PDF</b><span>Endireite páginas giradas</span></a></li>
-        <li><a href="/pt/digitalizar-documento"><b>Digitalizar documento</b><span>Foto → PDF limpo</span></a></li>
-        <li><a href="/pt/preencher-formulario-pdf"><b>Preencher formulário PDF</b><span>Complete PDFs preenchíveis</span></a></li>
-        <li><a href="/pt/editar-pdf"><b>Editar PDF</b><span>Texto, imagens e formas</span></a></li>
-        <li><a href="/pt/extrair-imagens-pdf"><b>Extrair imagens de um PDF</b><span>Fotos em qualidade original</span></a></li>
-        <li><a href="/pt/comparar-pdf"><b>Comparar PDF</b><span>O que mudou entre duas versões</span></a></li>
-        <li><a href="/pt/ocultar-dados-pdf"><b>Ocultar dados do PDF</b><span>Elimine dados sensíveis</span></a></li>
-        <li><a href="/pt/assinar-pdf"><b>Assinar PDF</b><span>Desenhe ou envie sua assinatura</span></a></li>
-        <li><a href="/pt/cortar-pdf"><b>Cortar PDF</b><span>Remova margens ou deixe uma área</span></a></li>
-        <li><a href="/pt/comprimir-pdf"><b>Comprimir PDF</b><span>Reduza o tamanho de um PDF</span></a></li>
-        <li><a href="/pt/proteger-pdf"><b>Proteger PDF com senha</b><span>Coloque senha em um PDF</span></a></li>
-        <li><a href="/pt/desbloquear-pdf"><b>Desbloquear PDF</b><span>Tire a senha de um PDF</span></a></li>
-        <li><a href="/pt/reparar-pdf"><b>Reparar PDF</b><span>Recupere PDFs que não abrem</span></a></li>
-        <li><a href="/pt/pdf-para-pdfa"><b>PDF para PDF/A</b><span>Formato de arquivamento de longo prazo</span></a></li>
-        <li><a href="/pt/comprimir-imagem"><b>Comprimir imagem</b><span>Fotos mais leves</span></a></li>
-        <li><a href="/pt/redimensionar-imagem"><b>Redimensionar imagem</b><span>Mude o tamanho de fotos</span></a></li>
-        <li><a href="/pt/cortar-imagem"><b>Cortar imagem</b><span>Livre ou em 1:1, 4:3, 16:9…</span></a></li>
-        <li><a href="/pt/girar-imagem"><b>Girar e espelhar imagem</b><span>Gire 90° ou espelhe</span></a></li>
-        <li><a href="/pt/compactar-arquivos"><b>Compactar arquivos (ZIP e 7Z)</b><span>Crie um ZIP ou 7Z</span></a></li>
-        <li><a href="/pt/descompactar-arquivos"><b>Descompactar RAR, ZIP e 7Z</b><span>Abra RAR, ZIP e 7Z</span></a></li>
-        <li><a href="/pt/ocr-pdf"><b>OCR: reconhecer texto</b><span>Texto de digitalizações e fotos</span></a></li>
-        <li><a href="/pt/imagem-para-pdf"><b>Imagem para PDF</b><span>Junte fotos em um PDF</span></a></li>
-        <li><a href="/pt/pdf-para-jpg"><b>PDF para JPG</b><span>Cada página como imagem</span></a></li>
-        <li><a href="/pt/pdf-para-word"><b>PDF para Word</b><span>Documento editável (.docx)</span></a></li>
-        <li><a href="/pt/pdf-para-excel"><b>PDF para Excel</b><span>Tabelas para planilha</span></a></li>
-        <li><a href="/pt/word-para-pdf"><b>Word para PDF</b><span>Documento .docx para PDF</span></a></li>
-        <li><a href="/pt/excel-para-pdf"><b>Excel para PDF</b><span>Planilhas .xlsx para PDF</span></a></li>
-        <li><a href="/pt/pdf-para-texto"><b>PDF para texto</b><span>Extraia o texto de um PDF</span></a></li>
-        <li><a href="/pt/gerar-codigo-qr"><b>Criar e ler códigos QR</b><span>Gere e leia QR</span></a></li>
-<!-- tools:end -->
+      <ul class="web-tools wt-cats" data-stagger="60">
+        <li class="reveal"><a href="/pt/ferramentas#cat-organizar"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4v5a4 4 0 0 0 4 4 4 4 0 0 1 4 4v3M16 4v5a4 4 0 0 1-4 4M5 7l3-3 3 3M13 7l3-3 3 3"/></svg></span><span class="wt-text"><b>Organizar PDF</b><span>3 ferramentas</span></span></a></li>
+        <li class="reveal"><a href="/pt/ferramentas#cat-editar"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4l5 5L9 20H4v-5zM13 6l5 5M4 22h16"/></svg></span><span class="wt-text"><b>Editar e assinar</b><span>5 ferramentas</span></span></a></li>
+        <li class="reveal"><a href="/pt/ferramentas#cat-seguridad"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span class="wt-text"><b>Segurança</b><span>3 ferramentas</span></span></a></li>
+        <li class="reveal"><a href="/pt/ferramentas#cat-optimizar"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg></span><span class="wt-text"><b>Otimizar e arquivar</b><span>4 ferramentas</span></span></a></li>
+        <li class="reveal"><a href="/pt/ferramentas#cat-convertir"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg></span><span class="wt-text"><b>Converter</b><span>7 ferramentas</span></span></a></li>
+        <li class="reveal"><a href="/pt/ferramentas#cat-imagen"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M15 9.5a1.5 1.5 0 1 1 0-.01"/></svg></span><span class="wt-text"><b>Imagem</b><span>4 ferramentas</span></span></a></li>
+        <li class="reveal"><a href="/pt/ferramentas#cat-escanear"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/></svg></span><span class="wt-text"><b>Digitalizar e OCR</b><span>2 ferramentas</span></span></a></li>
+        <li class="reveal"><a href="/pt/ferramentas#cat-archivos"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v4H3zM5 8v12h14V8M10 12h4"/></svg></span><span class="wt-text"><b>Arquivos compactados</b><span>2 ferramentas</span></span></a></li>
+        <li class="reveal"><a href="/pt/ferramentas#cat-qr"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2M14 18h2M18 18h2v2"/></svg></span><span class="wt-text"><b>Códigos QR</b><span>1 ferramenta</span></span></a></li>
       </ul>
+      <div class="wt-more reveal"><a class="btn btn-primary" href="/pt/ferramentas">Ver as 31 ferramentas <span aria-hidden="true">→</span></a></div>
+<!-- tools:end -->
     </div>
   </section>
 

@@ -31,6 +31,20 @@ export default {
     footPrivacy: 'Privacy policy',
     footConsent: 'Analytics preferences',
     os: 'Any (web browser)',
+    // Categorías y página "Todas las herramientas" (W-76/W-78)
+    cats: { organizar: "Organize PDF", editar: "Edit and sign", seguridad: "Security", optimizar: "Optimize and archive", convertir: "Convert", imagen: "Image", escanear: "Scan and OCR", archivos: "Compressed files", qr: "QR codes" },
+    hubSlug: "tools",
+    hubTitle: "All free tools: PDF, image, QR and more | DocuSmart",
+    hubDescription: "Every DocuSmart tool by category: merge, convert, sign and compress PDFs, edit images, OCR, QR codes and ZIP files. Free and without uploading your files.",
+    hubH1: "All tools",
+    hubLead: "{n} free tools that run in your browser, without uploading your files. Pick a category or search by name.",
+    hubSearch: "Search tools",
+    hubSearchHint: "For example: merge, Word, photo…",
+    hubEmpty: "No tool matches your search.",
+    hubJump: "Categories",
+    toolsOne: "1 tool",
+    toolsMany: "{n} tools",
+    seeAll: "See all {n} tools",
   },
   pages: {
     'unir-pdf': {

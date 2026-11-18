@@ -34,6 +34,20 @@ export default {
     footPrivacy: 'プライバシーポリシー',
     footConsent: 'アナリティクスの設定',
     os: '任意（Webブラウザ）',
+    // Categorías y página "Todas las herramientas" (W-76/W-78)
+    cats: { organizar: "PDF の整理", editar: "編集と署名", seguridad: "セキュリティ", optimizar: "最適化と保存", convertir: "変換", imagen: "画像", escanear: "スキャンと OCR", archivos: "圧縮ファイル", qr: "QR コード" },
+    hubSlug: "tools",
+    hubTitle: "無料ツール一覧：PDF・画像・QR など | DocuSmart",
+    hubDescription: "DocuSmart の全ツールをカテゴリ別に。PDF の結合・変換・署名・圧縮、画像編集、OCR、QR コード、ZIP ファイル。無料で、ファイルをアップロードしません。",
+    hubH1: "すべてのツール",
+    hubLead: "ブラウザで動く {n} 個の無料ツール。ファイルはアップロードされません。カテゴリを選ぶか、名前で検索してください。",
+    hubSearch: "ツールを検索",
+    hubSearchHint: "例：結合、Word、写真…",
+    hubEmpty: "検索に一致するツールはありません。",
+    hubJump: "カテゴリ",
+    toolsOne: "1 個のツール",
+    toolsMany: "{n} 個のツール",
+    seeAll: "{n} 個のツールをすべて見る",
   },
   pages: {
     'unir-pdf': {

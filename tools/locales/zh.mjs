@@ -33,6 +33,20 @@ export default {
     footPrivacy: '隐私政策',
     footConsent: '分析偏好设置',
     os: '任意（网页浏览器）',
+    // Categorías y página "Todas las herramientas" (W-76/W-78)
+    cats: { organizar: "整理 PDF", editar: "编辑与签名", seguridad: "安全", optimizar: "优化与归档", convertir: "转换", imagen: "图片", escanear: "扫描与 OCR", archivos: "压缩文件", qr: "二维码" },
+    hubSlug: "tools",
+    hubTitle: "全部免费工具：PDF、图片、二维码等 | DocuSmart",
+    hubDescription: "按类别浏览 DocuSmart 的全部工具：合并、转换、签署和压缩 PDF，编辑图片，OCR，二维码和 ZIP 文件。免费，且不上传你的文件。",
+    hubH1: "全部工具",
+    hubLead: "{n} 个在浏览器中运行的免费工具，不上传你的文件。选择一个类别，或按名称搜索。",
+    hubSearch: "搜索工具",
+    hubSearchHint: "例如：合并、Word、照片…",
+    hubEmpty: "没有与搜索匹配的工具。",
+    hubJump: "类别",
+    toolsOne: "1 个工具",
+    toolsMany: "{n} 个工具",
+    seeAll: "查看全部 {n} 个工具",
   },
   pages: {
     'unir-pdf': {
