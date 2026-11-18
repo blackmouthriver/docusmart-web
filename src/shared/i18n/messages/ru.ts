@@ -29,6 +29,8 @@ const ru: Messages = {
   'settings.theme.light': "Светлая",
   'settings.theme.dark': "Тёмная",
   'settings.accent': "Акцентный цвет",
+  'settings.animatedBg': "Анимированный фон",
+  'settings.animatedBg.sub': "Фигуры в цвете акцента в движении",
   'settings.font': "Размер текста",
   'settings.font.normal': "Обычный",
   'settings.font.large': "Крупный",

@@ -31,6 +31,8 @@ export const es = {
   'settings.theme.light': 'Claro',
   'settings.theme.dark': 'Oscuro',
   'settings.accent': 'Color de acento',
+  'settings.animatedBg': "Fondo animado",
+  'settings.animatedBg.sub': "Formas con el color de acento en movimiento",
   'settings.font': 'Tamaño de letra',
   'settings.font.normal': 'Normal',
   'settings.font.large': 'Grande',

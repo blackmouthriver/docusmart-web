@@ -29,6 +29,8 @@ const ja: Messages = {
   'settings.theme.light': "ライト",
   'settings.theme.dark': "ダーク",
   'settings.accent': "アクセントカラー",
+  'settings.animatedBg': "アニメーション背景",
+  'settings.animatedBg.sub': "アクセントカラーの図形が動きます",
   'settings.font': "文字の大きさ",
   'settings.font.normal': "標準",
   'settings.font.large': "大",

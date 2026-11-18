@@ -29,6 +29,8 @@ const eu: Messages = {
   'settings.theme.light': "Argia",
   'settings.theme.dark': "Iluna",
   'settings.accent': "Nabarmentze kolorea",
+  'settings.animatedBg': "Atzeko plano animatua",
+  'settings.animatedBg.sub': "Nabarmentze-kolorearekin mugitzen diren formak",
   'settings.font': "Testuaren tamaina",
   'settings.font.normal': "Arrunta",
   'settings.font.large': "Handia",

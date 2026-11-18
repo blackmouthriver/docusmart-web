@@ -11,8 +11,8 @@ describe('apariencia en el navegador', () => {
     const store: Record<string, string> = {}
     vi.stubGlobal('localStorage', { getItem: (k: string) => store[k] ?? null, setItem: (k: string, v: string) => (store[k] = v) })
     expect(loadAppearance()).toEqual(DEFAULT_APPEARANCE)
-    saveAppearance({ theme: 'dark', accent: 'teal', font: 'large' })
-    expect(loadAppearance()).toEqual({ theme: 'dark', accent: 'teal', font: 'large' })
+    saveAppearance({ theme: 'dark', accent: 'teal', font: 'large', animatedBg: false })
+    expect(loadAppearance()).toEqual({ theme: 'dark', accent: 'teal', font: 'large', animatedBg: false })
     vi.stubGlobal('localStorage', {
       getItem: () => {
         throw new Error('bloqueado')

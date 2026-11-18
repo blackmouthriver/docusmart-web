@@ -29,6 +29,8 @@ const en: Messages = {
   'settings.theme.light': "Light",
   'settings.theme.dark': "Dark",
   'settings.accent': "Accent color",
+  'settings.animatedBg': "Animated background",
+  'settings.animatedBg.sub': "Shapes in your accent color, in motion",
   'settings.font': "Text size",
   'settings.font.normal': "Normal",
   'settings.font.large': "Large",

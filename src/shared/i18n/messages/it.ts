@@ -29,6 +29,8 @@ const it: Messages = {
   'settings.theme.light': "Chiaro",
   'settings.theme.dark': "Scuro",
   'settings.accent': "Colore principale",
+  'settings.animatedBg': "Sfondo animato",
+  'settings.animatedBg.sub': "Forme del colore d'accento in movimento",
   'settings.font': "Dimensione del testo",
   'settings.font.normal': "Normale",
   'settings.font.large': "Grande",

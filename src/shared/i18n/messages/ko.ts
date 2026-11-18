@@ -29,6 +29,8 @@ const ko: Messages = {
   'settings.theme.light': "라이트",
   'settings.theme.dark': "다크",
   'settings.accent': "강조 색상",
+  'settings.animatedBg': "애니메이션 배경",
+  'settings.animatedBg.sub': "강조 색상의 도형이 움직입니다",
   'settings.font': "글자 크기",
   'settings.font.normal': "보통",
   'settings.font.large': "크게",

@@ -29,6 +29,8 @@ const zh: Messages = {
   'settings.theme.light': "浅色",
   'settings.theme.dark': "深色",
   'settings.accent': "强调色",
+  'settings.animatedBg': "动态背景",
+  'settings.animatedBg.sub': "以强调色移动的图形",
   'settings.font': "文字大小",
   'settings.font.normal': "标准",
   'settings.font.large': "大",

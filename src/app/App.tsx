@@ -9,6 +9,7 @@ import { useT } from '../shared/i18n/I18n'
 import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
+import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
 import { Home } from '../features/home/ui/Home'
 // Cada pantalla se descarga al entrar: pdf.js y las librerías de QR no frenan el Inicio.
 const Viewer = lazy(() => import('../features/viewer/ui/Viewer').then((m) => ({ default: m.Viewer })))
@@ -175,6 +176,9 @@ export function App() {
             )}
           </div>
         </aside>
+
+        {/* Fondo animado (W-89); el Visor y la lectura van con fondo sólido, como en la app. */}
+        {route.section !== 'ver' && !(route.section === 'estudio' && route.sub === 'lectura') && <AnimatedBackground />}
 
         <main className="main">
           <div className="content">

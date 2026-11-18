@@ -29,6 +29,8 @@ const de: Messages = {
   'settings.theme.light': "Hell",
   'settings.theme.dark': "Dunkel",
   'settings.accent': "Akzentfarbe",
+  'settings.animatedBg': "Animierter Hintergrund",
+  'settings.animatedBg.sub': "Formen in der Akzentfarbe in Bewegung",
   'settings.font': "Textgröße",
   'settings.font.normal': "Normal",
   'settings.font.large': "Groß",

@@ -29,6 +29,8 @@ const ca: Messages = {
   'settings.theme.light': "Clar",
   'settings.theme.dark': "Fosc",
   'settings.accent': "Color d’accent",
+  'settings.animatedBg': "Fons animat",
+  'settings.animatedBg.sub': "Formes amb el color d'accent en moviment",
   'settings.font': "Mida del text",
   'settings.font.normal': "Normal",
   'settings.font.large': "Gran",
