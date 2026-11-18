@@ -36,7 +36,7 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
 .pv-hero {
   position: relative; overflow: hidden; color: #fff;
   background: radial-gradient(1200px 500px at 85% -10%, rgba(126, 224, 255, .35), transparent 60%), radial-gradient(900px 500px at 0% 120%, rgba(99, 102, 241, .45), transparent 60%), linear-gradient(135deg, #1D4ED8, #0B1020 75%);
-  padding: 28px var(--gutter) 120px;
+  padding: 28px var(--gutter) 160px;
 }
 .pv-hero::after { content: ''; position: absolute; inset: auto -10% -60px; height: 120px; background: var(--paper); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
 .pv-hero-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
@@ -50,9 +50,9 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
 .pv-lead { margin: 18px 0 0; max-width: 46ch; font-size: clamp(16px, 2vw, 19px); color: rgba(255, 255, 255, .9); }
 
 /* ── En 30 segundos ── */
-.pv-summary { position: relative; z-index: 2; max-width: 1100px; margin: -64px auto 0; padding: 0 var(--gutter); }
-/* El título queda sobre el degradado oscuro del encabezado. */
-.pv-summary-title { margin: 0 0 12px; font-family: var(--font-display); font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: rgba(255, 255, 255, .82); }
+.pv-summary { position: relative; z-index: 2; max-width: calc(1100px + 2 * var(--gutter)); margin: -118px auto 0; padding: 0 var(--gutter); }
+/* El título queda dentro del degradado oscuro, por encima de la curva. */
+.pv-summary-title { margin: 0 0 40px; font-family: var(--font-display); font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: #fff; text-shadow: 0 1px 12px rgba(0, 0, 0, .35); }
 .pv-sum-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
 .pv-sum { display: grid; gap: 6px; padding: 18px; border-radius: 20px; background: var(--card); box-shadow: 0 0 0 1px var(--line), 0 18px 40px -26px rgba(15, 23, 42, .35); }
 .pv-sum b { font-family: var(--font-display); font-size: 17px; line-height: 1.25; }
@@ -60,7 +60,7 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
 .pv-summary-note { margin: 10px 2px 0; color: var(--ink-faint); font-size: 13px; }
 
 /* ── Índice + contenido ── */
-.pv-layout { max-width: 1100px; margin: 40px auto 0; padding: 0 var(--gutter); display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 32px; align-items: start; }
+.pv-layout { max-width: calc(1100px + 2 * var(--gutter)); margin: 40px auto 0; padding: 0 var(--gutter); display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 32px; align-items: start; }
 .pv-toc { position: sticky; top: 20px; padding: 16px; border-radius: 18px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
 .pv-toc-title { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
 .pv-toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
@@ -93,7 +93,7 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
 .pv-top:hover { transform: translateY(-2px); }
 .pv-top .pv-svg { width: 20px; height: 20px; }
 .pv-top[hidden] { display: grid; opacity: 0; pointer-events: none; transform: translateY(12px); }
-.pv-foot { max-width: 1100px; margin: 48px auto 0; padding: 24px var(--gutter) 48px; color: var(--ink-faint); font-size: 14px; border-top: 1px solid var(--line); }
+.pv-foot { max-width: calc(1100px + 2 * var(--gutter)); margin: 48px auto 0; padding: 24px var(--gutter) 48px; color: var(--ink-faint); font-size: 14px; border-top: 1px solid var(--line); }
 
 /* ── Aparición suave al desplazar (solo con JS y sin "reducir movimiento") ── */
 .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); transition-delay: var(--d, 0ms); }
@@ -114,7 +114,7 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
   .pv-toc-title { display: none; }
   .pv-toc ol { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
   .pv-toc a { white-space: nowrap; padding: 6px 12px; border-radius: 99px; box-shadow: 0 0 0 1px var(--line) inset; font-size: 13px; }
-  .pv-hero { padding-bottom: 104px; }
+  .pv-hero { padding-bottom: 150px; }
 }
 
 /* ── Impresión: solo el texto, sin degradados ni índice ── */
