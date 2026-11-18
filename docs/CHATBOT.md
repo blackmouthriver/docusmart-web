@@ -2,7 +2,9 @@
 
 > Estado: **en desarrollo** (opción A, 2026-11-18). Ítems W-70a a W-70f en `docs/BACKLOG.md`.
 > Hecho: base de conocimiento (`tools/assistant/`, generada en `public/assistant/<idioma>.json`) y motor
-> (`src/features/assistant/core/`): 92,9 % de aciertos en español y 95,1 % en inglés, < 1 ms por pregunta.
+> (`src/features/assistant/core/`): 95,7 % de aciertos en español y 95,1 % en inglés, < 1 ms por pregunta.
+> Widget en todo el sitio (W-70c/W-70d): `src/features/assistant/ui/launcher.ts` monta el mismo botón en la portada,
+> las herramientas, /herramientas, la privacidad y la app; el panel (React) y la base se cargan al abrirlo.
 > Objetivo de costo: **USD 0 al mes** en la primera versión.
 
 ## 1. Qué es y para qué

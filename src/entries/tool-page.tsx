@@ -14,6 +14,7 @@ import { rememberLangChoice } from '../shared/platform/langChoice'
 import '../shared/platform/fonts'
 import '../app/app.css'
 import { initMotion } from '../shared/platform/motion'
+import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
 import '../shared/ui/motion.css'
 import './tool-page.css'
@@ -119,6 +120,8 @@ watchSystemTheme(loadAppearance)
 const pageLang = document.documentElement.lang
 const lang = isLang(pageLang) ? pageLang : DEFAULT_LANG
 const host = document.getElementById('tool')
+// Asistente (W-70d) con la herramienta de esta página como contexto (sus preguntas primero).
+mountAssistantLauncher({ lang, context: host?.dataset.slug })
 if (host) {
   const { kind, id, slug } = host.dataset
   trackScreen(`Tool/${slug ?? kind}`)

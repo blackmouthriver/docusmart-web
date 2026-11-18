@@ -12,6 +12,7 @@ import { rememberLangChoice } from '../shared/platform/langChoice'
 import { initMotion } from '../shared/platform/motion'
 import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
 import { matchesQuery } from '../shared/i18n/search'
+import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 
 initAnalytics()
 mountConsentBanner()
@@ -21,6 +22,8 @@ initMotion()
 applyAppearance(loadAppearance())
 watchSystemTheme(loadAppearance)
 trackScreen('ToolsHub')
+// Asistente (W-70d): el mismo botón flotante de todo el sitio; el panel se descarga al abrirlo.
+mountAssistantLauncher({ lang: document.documentElement.lang })
 
 const input = document.querySelector<HTMLInputElement>('#th-q')
 const sections = [...document.querySelectorAll<HTMLElement>('[data-cat]')]
