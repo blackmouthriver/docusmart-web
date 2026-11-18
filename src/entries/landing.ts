@@ -43,7 +43,17 @@ addEventListener(
   },
   { passive: true },
 )
-updateNav()
+// En el siguiente cuadro y no al cargar: medir aquí obligaría a calcular el diseño antes de tiempo.
+requestAnimationFrame(updateNav)
+
+// La marca gigante del hero aparece cuando su fuente ya llegó: con la de reserva el texto se
+// corría de lado al cambiar (CLS). Si la fuente tarda, se muestra igual a los 3 s.
+const wordmark = document.querySelector('.wordmark')
+if (wordmark) {
+  const show = () => wordmark.classList.add('is-ready')
+  document.fonts.load('800 100px "Bricolage Grotesque Variable"').then(show, show)
+  setTimeout(show, 3000)
+}
 
 // Las etiquetas vienen en el HTML, ya traducidas en cada portada (/en/…).
 const openLabel = toggle.dataset.openLabel ?? 'Abrir menú'

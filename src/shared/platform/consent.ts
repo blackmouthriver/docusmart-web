@@ -6,11 +6,17 @@
  */
 import { analyticsConfigured, getConsent, setConsent } from './analytics'
 import { consentText } from './consentText'
-import './consent.css'
+
+/** Los estilos del banner se descargan solo cuando se muestra: así no bloquean el primer pintado. */
+const loadStyles = () => import('./consent.css').catch(() => undefined)
 
 const PRIVACY_HREF = '/privacidad.html#sitio-web'
 
 function showBanner() {
+  void loadStyles().then(buildBanner)
+}
+
+function buildBanner() {
   document.querySelector('.ds-consent')?.remove()
   const current = getConsent()
   // El idioma de la página: el de la portada o herramienta (/en/…) o el elegido en la app.
