@@ -353,14 +353,79 @@ section { position: relative; }
 .wt-svg { width: 24px; height: 24px; }
 @media (hover: hover) and (pointer: fine) { .wt-cats a:hover .wt-ico { transform: scale(1.08) rotate(-4deg); } }
 .wt-more { display: flex; justify-content: center; margin-top: 28px; }
-/* DocuSmart Desktop: la web instalada como programa (W-16). Solo en pantallas anchas: en el
-   celular no se ofrece instalarla (ahí va la app de Google Play). */
-.wt-desktop { display: flex; align-items: center; gap: 18px; margin-top: 22px; padding: 18px 20px; border-radius: 20px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; }
-.wt-desktop-ico { display: grid; place-items: center; flex: none; width: 46px; height: 46px; border-radius: 14px; background: var(--blue-soft); color: var(--blue-text); }
-.wt-desktop p { flex: 1; margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.5; }
-.wt-desktop p b { display: block; color: var(--ink); font-size: 17px; }
-.wt-desktop .btn { flex: none; }
+/* DocuSmart Desktop: la web instalada como programa (W-16). Tarjeta oscura con brillos que se
+   desplazan, borde de luz que gira, un destello que la cruza y la ilustración de un monitor con la
+   app (mosaicos que aparecen en secuencia, descarga que rebota, "sin conexión" que late y destellos).
+   Solo en pantallas anchas: en el celular no se ofrece instalarla (ahí va la app de Google Play). */
+@property --wd-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.wt-desktop { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: center; gap: 40px; margin-top: 28px; padding: 30px 40px 30px 30px; border-radius: 28px; background: radial-gradient(120% 150% at 0% 0%, #1D2B64 0%, #0B1020 58%); color: #E7EAF3; box-shadow: 0 30px 60px -30px rgba(11, 16, 32, .6); }
+.wt-desktop::before { content: ''; position: absolute; inset: 0; z-index: 3; padding: 1.5px; border-radius: inherit; pointer-events: none; background: conic-gradient(from var(--wd-angle), transparent 0 58%, rgba(126, 224, 255, .95) 74%, rgba(37, 99, 235, .9) 86%, transparent 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); animation: wd-spin 6s linear infinite; }
+.wt-desktop::after { content: ''; position: absolute; top: -10%; bottom: -10%; left: -45%; z-index: 2; width: 28%; pointer-events: none; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .13), transparent); transform: skewX(-18deg); animation: wd-sweep 7s ease-in-out 1.5s infinite; }
+@keyframes wd-spin { to { --wd-angle: 360deg; } }
+@keyframes wd-sweep { 0%, 62% { left: -45%; } 100% { left: 130%; } }
+.wd-glow { position: absolute; z-index: -1; border-radius: 50%; filter: blur(55px); pointer-events: none; }
+.wd-glow-a { left: -70px; top: -90px; width: 280px; height: 280px; background: #2563EB; opacity: .6; animation: wd-drift 12s ease-in-out infinite alternate; }
+.wd-glow-b { right: 6%; bottom: -130px; width: 240px; height: 240px; background: #0EA5E9; opacity: .45; animation: wd-drift 15s ease-in-out infinite alternate-reverse; }
+@keyframes wd-drift { to { transform: translate(70px, 40px) scale(1.18); } }
+
+/* Ilustración */
+.wd-art { position: relative; height: 216px; }
+.wd-monitor { position: absolute; left: 50%; top: 10px; width: 262px; transform: translateX(-50%); animation: wd-float 6s ease-in-out infinite; }
+@keyframes wd-float { 50% { transform: translate(-50%, -7px); } }
+.wd-window { height: 158px; overflow: hidden; border-radius: 12px; background: #F7F7F5; box-shadow: 0 0 0 6px #1A2036, 0 0 0 7px rgba(255, 255, 255, .08), 0 24px 44px -14px rgba(0, 0, 0, .7); }
+.wd-stand { width: 74px; height: 24px; margin: 7px auto 0; background: linear-gradient(#232B45, #141A2E); clip-path: polygon(32% 0, 68% 0, 100% 100%, 0 100%); }
+.wd-bar { display: flex; align-items: center; gap: 4px; height: 18px; padding: 0 8px; background: #fff; border-bottom: 1px solid #E7E5E0; }
+.wd-bar i { width: 6px; height: 6px; border-radius: 50%; background: #FF5F57; }
+.wd-bar i:nth-child(2) { background: #FEBC2E; }
+.wd-bar i:nth-child(3) { background: #28C840; }
+.wd-brand { display: flex; align-items: center; gap: 4px; margin-left: 8px; color: #1C1B1A; font-size: 8px; font-weight: 700; letter-spacing: -.01em; }
+.wd-brand img { width: 10px; height: 10px; border-radius: 3px; }
+.wd-body { display: grid; grid-template-columns: 46px 1fr; height: calc(100% - 18px); }
+.wd-side { display: grid; align-content: start; gap: 7px; padding: 11px 8px; background: #0B1020; }
+.wd-side b { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .16); }
+.wd-side b:first-child { background: #2563EB; }
+.wd-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; padding: 10px; }
+.wd-t { display: grid; place-items: center; border-radius: 9px; background: #fff; box-shadow: 0 0 0 1px #E7E5E0 inset, 0 4px 10px -6px rgba(28, 27, 26, .35); opacity: 0; animation: wd-pop 5.4s cubic-bezier(.2, .8, .2, 1) infinite; }
+.wd-t svg { width: 15px; height: 15px; }
+.wd-t1 { color: #2563EB; }
+.wd-t2 { color: #7C3AED; animation-delay: .15s; }
+.wd-t3 { color: #DC2626; animation-delay: .3s; }
+.wd-t4 { color: #0891B2; animation-delay: .45s; }
+.wd-t5 { color: #16A34A; animation-delay: .6s; }
+.wd-t6 { color: #D97706; animation-delay: .75s; }
+@keyframes wd-pop { 0% { opacity: 0; transform: scale(.55) translateY(6px); } 9%, 84% { opacity: 1; transform: none; } 100% { opacity: 0; transform: scale(.92); } }
+.wd-badge { position: absolute; z-index: 1; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 13px; color: #fff; box-shadow: 0 12px 26px -10px rgba(0, 0, 0, .65), 0 0 0 1px rgba(255, 255, 255, .15) inset; }
+.wd-badge svg { width: 20px; height: 20px; }
+.wd-down { right: 0; top: 0; background: linear-gradient(135deg, #1E9BFF, #3B1FE0); animation: wd-bob 2.6s ease-in-out infinite; }
+.wd-arrow { animation: wd-arrow 1.6s ease-in-out infinite; }
+.wd-offline { left: 0; bottom: 30px; background: linear-gradient(135deg, #22C55E, #0E9F6E); animation: wd-bob 3.2s ease-in-out .6s infinite; }
+.wd-offline::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 0 rgba(34, 197, 94, .6); animation: wd-ping 2.4s ease-out infinite; }
+@keyframes wd-bob { 50% { transform: translateY(-6px); } }
+@keyframes wd-arrow { 50% { transform: translateY(2px); } }
+@keyframes wd-ping { to { box-shadow: 0 0 0 14px rgba(34, 197, 94, 0); } }
+.wd-spark { position: absolute; width: 16px; height: 16px; color: #7EE0FF; opacity: 0; animation: wd-twinkle 3s ease-in-out infinite; }
+.wd-s1 { left: 18px; top: 2px; }
+.wd-s2 { right: 52px; top: 74px; width: 12px; height: 12px; color: #fff; animation-delay: 1s; }
+.wd-s3 { right: 30px; bottom: 6px; width: 20px; height: 20px; animation-delay: 2s; }
+@keyframes wd-twinkle { 0%, 100% { opacity: 0; transform: scale(.4) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
+
+/* Texto y botón */
+.wd-copy p { margin: 0; max-width: 48ch; color: rgba(231, 234, 243, .78); font-size: 16px; line-height: 1.6; }
+.wd-copy p b { display: block; width: fit-content; margin-bottom: 8px; font-family: var(--font-display); font-size: clamp(26px, 2.6vw, 32px); letter-spacing: -.025em; line-height: 1.1; color: transparent; background: linear-gradient(90deg, #fff 30%, #7EE0FF); -webkit-background-clip: text; background-clip: text; }
+.wd-btn { position: relative; overflow: hidden; margin-top: 20px; }
+.wd-btn::after { content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .45), transparent); transform: skewX(-20deg); transition: left 600ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .wd-btn:hover::after { left: 130%; }
+  .wt-desktop:hover .wd-monitor { animation-duration: 3s; }
+}
+@media (max-width: 1080px) { .wt-desktop { grid-template-columns: 250px minmax(0, 1fr); gap: 28px; } .wd-monitor { width: 230px; } .wd-window { height: 140px; } }
 @media (max-width: 860px) { .wt-desktop { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .wt-desktop::before, .wt-desktop::after, .wd-glow, .wd-monitor, .wd-t, .wd-badge, .wd-arrow, .wd-offline::after, .wd-spark { animation: none; }
+  .wt-desktop::after { display: none; }
+  .wd-monitor { transform: translateX(-50%); }
+  .wd-t, .wd-spark { opacity: 1; }
+}
 @media (max-width: 960px) { .wt-cats { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 420px) { .wt-cats { grid-template-columns: 1fr; } }
 .tool-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 24px; }
