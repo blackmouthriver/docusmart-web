@@ -163,6 +163,14 @@ describe('withViewTransition', () => {
     expect(doc.startViewTransition).toHaveBeenCalledOnce()
     expect(update).toHaveBeenCalledOnce()
   })
+  it('si se salta la transición, atiende también el rechazo de `ready` (sin errores sin capturar)', async () => {
+    stubReducedMotion(false)
+    const ready = Promise.reject(new DOMException('Transition was skipped', 'AbortError'))
+    const catchSpy = vi.spyOn(ready, 'catch')
+    const doc = { startViewTransition: (u: () => void) => (u(), { ready, finished: Promise.resolve() }) }
+    await withViewTransition(vi.fn(), doc)
+    expect(catchSpy).toHaveBeenCalledOnce()
+  })
   it('sin soporte o con "reducir movimiento" cambia al instante', () => {
     stubReducedMotion(true)
     const update = vi.fn()
