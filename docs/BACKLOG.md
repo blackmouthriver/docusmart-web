@@ -197,13 +197,14 @@ terceros ni IA en la nube.
 
 | ID | Ítem | Quién | Estado |
 |---|---|---|---|
-| W-70 | **Aprobar la propuesta** de `docs/CHATBOT.md` (opción A local; B con la IA del navegador como fase 2) | 👤 decidir | Pendiente |
-| W-70a | Base de conocimiento por idioma generada desde `tools/` + preguntas propias (es, en); validación en el CI | 🤖 | Pendiente |
-| W-70b | Motor de búsqueda local (tildes, sinónimos, tipeos) en `core/` con pruebas y preguntas de prueba | 🤖 | Pendiente |
+| W-70 | **Aprobar la propuesta** de `docs/CHATBOT.md` (opción A local; B con la IA del navegador como fase 2) | 👤 decidir | Hecho (2026-11-18: el usuario pidió seguir con el chatbot → opción A, local y USD 0) |
+| W-70a | Base de conocimiento por idioma generada desde `tools/` + preguntas propias (es, en); validación en el CI | 🤖 | En revisión |
+| W-70b | Motor de búsqueda local (tildes, sinónimos, tipeos) en `core/` con pruebas y preguntas de prueba | 🤖 | En revisión |
 | W-70c | Widget en la app web: botón, panel accesible, sugerencias por pantalla y acciones que abren herramientas | 🤖 | Pendiente |
 | W-70d | Widget en la portada y las páginas de herramientas, cargado bajo demanda, en los 12 idiomas | 🤖 | Pendiente |
 | W-70e | Base traducida a los 10 idiomas restantes, analítica con consentimiento (solo IDs) y párrafo en la política de privacidad | 🤖 | Pendiente |
 | W-70f | (Opcional) Respuestas redactadas con la IA local del navegador (Chrome Prompt API) cuando esté disponible | 🤖 | Pendiente |
+| W-70g | **"Enviar esta pregunta"** cuando el asistente no sabe responder: abre un correo a soporte con la pregunta ya escrita; el usuario decide si lo envía (nada se manda solo). Sirve para conocer las preguntas reales y mejorar la base (ver `docs/CHATBOT.md`, sección 8) | 🤖 | Pendiente |
 
 ## Diseño visual y animaciones de todo el sitio
 
@@ -219,7 +220,7 @@ rendimiento (Lighthouse).
 | W-73 | **Páginas de herramientas** (372): encabezado animado, pasos ilustrados, FAQ con apertura animada y herramienta con entrada suave | 🤖 | Hecho (PR #83) |
 | W-74 | **App web**: transiciones entre pantallas, estados de carga con esqueletos, animación al terminar un proceso (éxito/descarga) y menús/paneles con movimiento | 🤖 | Hecho (PR #84) |
 | W-75 | **Portada**: revisión con el usuario de lo que ya tiene y ajustes de coherencia con lo nuevo | 🤖 + 👤 | Hecho (revisada con el usuario el 2026-11-17: eligió solo resumir las herramientas → W-77; modo oscuro en la portada hecho en PR #87 y en las herramientas en PR #88; microinteracciones en tarjetas hechas en PR #89; limpieza de estilos en línea hecha en PR #90) |
-| W-89 | **Fondo animado como la app** (pedido del usuario 2026-11-17): formas geométricas con el degradado del **color de acento** que derivan despacio (ciclos de 10–14 s, como `DocuSmartAnimatedBackground.kt` de la app), como capa detrás del contenido que no intercepta toques. Opción **"Fondo animado"** en Ajustes de la web ("Formas con el color de acento en movimiento"), guardada con la apariencia. Quieto con "reducir movimiento"; el Visor y la lectura mantienen fondo sólido. Solo `transform`/`opacity`, sin librerías, en claro y oscuro. Empezar por la app web; después evaluar portada y herramientas | 🤖 | En revisión |
+| W-89 | **Fondo animado como la app** (pedido del usuario 2026-11-17): formas geométricas con el degradado del **color de acento** que derivan despacio (ciclos de 10–14 s, como `DocuSmartAnimatedBackground.kt` de la app), como capa detrás del contenido que no intercepta toques. Opción **"Fondo animado"** en Ajustes de la web ("Formas con el color de acento en movimiento"), guardada con la apariencia. Quieto con "reducir movimiento"; el Visor y la lectura mantienen fondo sólido. Solo `transform`/`opacity`, sin librerías, en claro y oscuro. Empezar por la app web; después evaluar portada y herramientas | 🤖 | Hecho (PR #92) |
 
 Orden: W-71 → revisar con el usuario → W-72 → W-73/W-74 → W-75.
 
