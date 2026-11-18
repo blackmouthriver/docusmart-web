@@ -547,6 +547,22 @@
     .js .reveal, .js .hero h1 .word { opacity: 1; transform: none; filter: none; }
     .timer .prog { stroke-dashoffset: 120; }
   }
+
+  /* ── Antes eran estilos en línea en el HTML (ahora clases, mismo resultado) ── */
+  .hero h1 .word { --i: 0; }
+  .hero h1 .word:nth-of-type(2) { --i: 1; } .hero h1 .word:nth-of-type(3) { --i: 2; } .hero h1 .word:nth-of-type(4) { --i: 3; }
+  .hero h1 .word:nth-of-type(5) { --i: 4; } .hero h1 .word:nth-of-type(6) { --i: 5; } .hero h1 .word:nth-of-type(7) { --i: 6; }
+  .hero h1 .word:nth-of-type(8) { --i: 7; }
+  .d-80 { --d: 80ms; } .d-100 { --d: 100ms; } .d-160 { --d: 160ms; } .d-300 { --d: 300ms; } .d-420 { --d: 420ms; } .d-520 { --d: 520ms; } .d-620 { --d: 620ms; }
+  .dot-red { --dot: #EF4444; } .dot-blue { --dot: #60A5FA; } .dot-green { --dot: #22C55E; } .dot-orange { --dot: #F97316; }
+  .dot-violet { --dot: #8B5CF6; } .dot-slate { --dot: #94A3B8; } .dot-cyan { --dot: #06B6D4; } .dot-scan { --dot: #7EE0FF; }
+  .fmt-red { background: #EF4444; } .fmt-blue { background: #2563EB; } .fmt-green { background: #16A34A; } .fmt-violet { background: #8B5CF6; }
+  .ico-pdf { background: #FEE2E2; color: #EF4444; } .ico-lock { background: #FEF3C7; color: #B45309; }
+  .t-scan h3.scan-title { font-size: clamp(26px, 3vw, 36px); max-width: 12ch; }
+  .tile-subtitle { margin-top: 6px; }
+  .tile .timer-note { text-align: center; margin: 14px auto 0; }
+  .section.section-flush { padding-top: 0; }
+  .faq-title { margin-top: 14px; }
 </style>
 </head>
 <body>
@@ -601,28 +617,28 @@
       <div class="hero-copy">
         <span class="pill reveal"><b>Android</b> Scannen, konvertieren, schützen</span>
         <h1 aria-label="Deine Dokumente, an einem Ort.">
-          <span class="word" style="--i:0">Deine</span>
-          <span class="word" style="--i:1">Dokumente,</span>
-          <span class="word" style="--i:2">an</span>
-          <span class="word" style="--i:3"><em>einem</em></span>
-          <span class="word" style="--i:4"><em>Ort.</em></span>
+          <span class="word">Deine</span>
+          <span class="word">Dokumente,</span>
+          <span class="word">an</span>
+          <span class="word"><em>einem</em></span>
+          <span class="word"><em>Ort.</em></span>
         </h1>
-        <p class="hero-lead reveal" style="--d:420ms">Öffne, konvertiere und organisiere PDFs, Word, Excel, PowerPoint und Bilder auf deinem Handy. Deine Dateien werden direkt dort verarbeitet, ohne sie auf einen Server hochzuladen.</p>
-        <div class="hero-actions reveal" style="--d:520ms">
+        <p class="hero-lead reveal d-420">Öffne, konvertiere und organisiere PDFs, Word, Excel, PowerPoint und Bilder auf deinem Handy. Deine Dateien werden direkt dort verarbeitet, ohne sie auf einen Server hochzuladen.</p>
+        <div class="hero-actions reveal d-520">
           <a class="btn btn-light play-btn" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_2">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#2563EB" d="M3.6 2.2a1.3 1.3 0 0 0-.6 1.1v17.4c0 .5.2.9.6 1.1l9.7-9.8z"/><path fill="#22C55E" d="m16.6 8.7-3.3 3.3-9.7-9.8c.3-.2.8-.2 1.2 0z"/><path fill="#EF4444" d="m16.6 15.3-11.8 6.5c-.4.2-.9.2-1.2 0l9.7-9.8z"/><path fill="#FBBF24" d="m20.4 10.8-3.8-2.1-3.3 3.3 3.3 3.3 3.8-2.1c.9-.5.9-1.9 0-2.4"/></svg>
             <div><small>Jetzt bei</small><span>Google Play</span></div>
           </a>
           <a class="btn btn-ghost" href="/app/" data-track="web_app_hero">Im Browser testen</a>
         </div>
-        <div class="hero-meta reveal" style="--d:620ms">
+        <div class="hero-meta reveal d-620">
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Ohne Konto</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>3 Tage Premium gratis</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>12 Sprachen</span>
         </div>
       </div>
 
-      <div class="phone-stage reveal" style="--d:300ms">
+      <div class="phone-stage reveal d-300">
         <div class="phone" id="hero-phone">
           <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
           <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
@@ -632,11 +648,11 @@
           </div>
         </div>
         <div class="float-chip chip-a" aria-hidden="true">
-          <span class="ico" style="background:#FEE2E2;color:#EF4444"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span>
+          <span class="ico ico-pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span>
           <div>PDF → Word<small>Auf dem Handy konvertiert</small></div>
         </div>
         <div class="float-chip chip-b" aria-hidden="true">
-          <span class="ico" style="background:#FEF3C7;color:#B45309"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          <span class="ico ico-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
           <div>Sicherer Ordner<small>Mit PIN geschützt</small></div>
         </div>
       </div>
@@ -649,10 +665,10 @@
   <div class="formats" aria-label="Unterstützte Formate">
     <div class="marquee">
       <ul>
-        <li style="--dot:#EF4444">PDF</li><li style="--dot:#60A5FA">Word</li><li style="--dot:#22C55E">Excel</li><li style="--dot:#F97316">PowerPoint</li><li style="--dot:#8B5CF6">JPG</li><li style="--dot:#8B5CF6">PNG</li><li style="--dot:#8B5CF6">WebP</li><li style="--dot:#8B5CF6">BMP</li><li style="--dot:#94A3B8">TXT</li><li style="--dot:#22C55E">CSV</li><li style="--dot:#06B6D4">HTML</li><li style="--dot:#7EE0FF">QR</li>
+        <li class="dot-red">PDF</li><li class="dot-blue">Word</li><li class="dot-green">Excel</li><li class="dot-orange">PowerPoint</li><li class="dot-violet">JPG</li><li class="dot-violet">PNG</li><li class="dot-violet">WebP</li><li class="dot-violet">BMP</li><li class="dot-slate">TXT</li><li class="dot-green">CSV</li><li class="dot-cyan">HTML</li><li class="dot-scan">QR</li>
       </ul>
       <ul aria-hidden="true">
-        <li style="--dot:#EF4444">PDF</li><li style="--dot:#60A5FA">Word</li><li style="--dot:#22C55E">Excel</li><li style="--dot:#F97316">PowerPoint</li><li style="--dot:#8B5CF6">JPG</li><li style="--dot:#8B5CF6">PNG</li><li style="--dot:#8B5CF6">WebP</li><li style="--dot:#8B5CF6">BMP</li><li style="--dot:#94A3B8">TXT</li><li style="--dot:#22C55E">CSV</li><li style="--dot:#06B6D4">HTML</li><li style="--dot:#7EE0FF">QR</li>
+        <li class="dot-red">PDF</li><li class="dot-blue">Word</li><li class="dot-green">Excel</li><li class="dot-orange">PowerPoint</li><li class="dot-violet">JPG</li><li class="dot-violet">PNG</li><li class="dot-violet">WebP</li><li class="dot-violet">BMP</li><li class="dot-slate">TXT</li><li class="dot-green">CSV</li><li class="dot-cyan">HTML</li><li class="dot-scan">QR</li>
       </ul>
     </div>
   </div>
@@ -665,13 +681,13 @@
           <span class="eyebrow">Funktionen</span>
           <h2>Dein ganzer Papierkram, in der Hosentasche.</h2>
         </div>
-        <p class="reveal" style="--d:100ms">Vom Scannen einer Rechnung bis zum Zusammenfügen der PDFs für einen Antrag: DocuSmart vereint Werkzeuge, die du sonst in fünf verschiedenen Apps suchen würdest.</p>
+        <p class="reveal d-100">Vom Scannen einer Rechnung bis zum Zusammenfügen der PDFs für einen Antrag: DocuSmart vereint Werkzeuge, die du sonst in fünf verschiedenen Apps suchen würdest.</p>
       </div>
 
       <div class="bento">
         <article class="tile t-scan reveal">
           <span class="tag">Scanner</span>
-          <h3 style="font-size:clamp(26px,3vw,36px);max-width:12ch">Mit der Kamera scannen, nur das Wichtige zuschneiden.</h3>
+          <h3 class="scan-title">Mit der Kamera scannen, nur das Wichtige zuschneiden.</h3>
           <p>Erkennt die Kanten des Dokuments automatisch und speichert es als PDF oder Bild, bereit zum Teilen.</p>
           <div class="scan-visual" aria-hidden="true">
             <div class="scan-doc"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -682,14 +698,14 @@
           </div>
         </article>
 
-        <article class="tile t-conv reveal" style="--d:80ms">
+        <article class="tile t-conv reveal d-80">
           <span class="tag">Konverter</span>
           <div class="conv-count">17</div>
-          <h3 style="margin-top:6px">Konvertierungsarten</h3>
+          <h3 class="tile-subtitle">Konvertierungsarten</h3>
           <div class="tile-visual conv-list" aria-label="Konvertierungsbeispiele">
-            <div class="conv-row"><span class="fmt" style="background:#EF4444">PDF</span><span class="arrow">→</span><span class="fmt" style="background:#2563EB">WORD</span></div>
-            <div class="conv-row"><span class="fmt" style="background:#16A34A">EXCEL</span><span class="arrow">→</span><span class="fmt" style="background:#EF4444">PDF</span></div>
-            <div class="conv-row"><span class="fmt" style="background:#8B5CF6">IMG</span><span class="arrow">→</span><span class="fmt" style="background:#EF4444">PDF</span></div>
+            <div class="conv-row"><span class="fmt fmt-red">PDF</span><span class="arrow">→</span><span class="fmt fmt-blue">WORD</span></div>
+            <div class="conv-row"><span class="fmt fmt-green">EXCEL</span><span class="arrow">→</span><span class="fmt fmt-red">PDF</span></div>
+            <div class="conv-row"><span class="fmt fmt-violet">IMG</span><span class="arrow">→</span><span class="fmt fmt-red">PDF</span></div>
           </div>
         </article>
 
@@ -707,7 +723,7 @@
           </div>
         </article>
 
-        <article class="tile t-safe reveal" style="--d:80ms">
+        <article class="tile t-safe reveal d-80">
           <span class="tag">Sicherheit</span>
           <h3>Ein sicherer Ordner für alles, was niemand sonst sehen soll.</h3>
           <p>Verschiebe sensible Dateien in einen PIN-gesperrten Bereich und erstelle passwortverschlüsselte QR-Codes.</p>
@@ -731,20 +747,20 @@
               <svg viewBox="0 0 150 150"><circle class="track" cx="75" cy="75" r="65"/><circle class="prog" cx="75" cy="75" r="65"/></svg>
               <b>25:00</b>
             </div>
-            <p style="text-align:center;margin:14px auto 0">Pomodoro-Timer inklusive</p>
+            <p class="timer-note">Pomodoro-Timer inklusive</p>
           </div>
         </article>
 
-        <article class="tile t-qr reveal" style="--d:80ms">
+        <article class="tile t-qr reveal d-80">
           <span class="tag">QR-Codes</span>
           <h3>QR-Codes lesen und erstellen, auch geschützt.</h3>
           <div class="tile-visual"><div class="qr" id="qr" aria-hidden="true"></div></div>
         </article>
 
-        <article class="tile t-lang reveal" style="--d:160ms">
+        <article class="tile t-lang reveal d-160">
           <span class="tag">Sprachen</span>
           <div class="lang-big">12</div>
-          <h3 style="margin-top:6px">Sprachen, passt sich deinem Handy an.</h3>
+          <h3 class="tile-subtitle">Sprachen, passt sich deinem Handy an.</h3>
           <div class="tile-visual langs">
             <span>Español</span><span>English</span><span>Português</span><span>Deutsch</span><span>Français</span><span>Italiano</span><span>Català</span><span>Euskara</span><span>Русский</span><span>日本語</span><span>한국어</span><span>中文</span>
           </div>
@@ -758,19 +774,19 @@
     <div class="privacy-glow" aria-hidden="true"></div>
     <div class="wrap">
       <span class="eyebrow reveal">Datenschutz</span>
-      <p class="privacy-statement reveal" style="--d:80ms">Deine Dokumente bleiben auf deinem Handy. <span>Punkt.</span></p>
+      <p class="privacy-statement reveal d-80">Deine Dokumente bleiben auf deinem Handy. <span>Punkt.</span></p>
       <div class="privacy-grid">
         <div class="reveal">
           <span class="num">01</span>
           <h3>Lokale Verarbeitung</h3>
           <p>Konvertierungen, Scannen und PDF-Werkzeuge laufen auf deinem Gerät. Wir laden deine Dateien nicht in die Cloud, um damit zu arbeiten.</p>
         </div>
-        <div class="reveal" style="--d:80ms">
+        <div class="reveal d-80">
           <span class="num">02</span>
           <h3>Ohne Konto</h3>
           <p>App öffnen und loslegen. Wir verlangen weder E-Mail noch Passwort noch Registrierung, um DocuSmart zu nutzen.</p>
         </div>
-        <div class="reveal" style="--d:160ms">
+        <div class="reveal d-160">
           <span class="num">03</span>
           <h3>Unter Verschluss</h3>
           <p>Das Heikelste kommt in den PIN-geschützten Ordner, und geschützte QR-Codes werden mit AES-256 verschlüsselt.</p>
@@ -787,7 +803,7 @@
           <span class="eyebrow">Tarife</span>
           <h2>Starte kostenlos. Wechsle zu Premium, wenn du es brauchst.</h2>
         </div>
-        <p class="reveal" style="--d:100ms">Nach der Installation hast du 3 Tage volles Premium, ohne Karte. Danach entscheidest du, ob du bei der Gratisversion bleibst oder ein Abo abschließt.</p>
+        <p class="reveal d-100">Nach der Installation hast du 3 Tage volles Premium, ohne Karte. Danach entscheidest du, ob du bei der Gratisversion bleibst oder ein Abo abschließt.</p>
       </div>
 
       <div class="plans">
@@ -805,7 +821,7 @@
           <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_3">Kostenlos herunterladen</a>
         </div>
 
-        <div class="plan plan-premium reveal" style="--d:100ms">
+        <div class="plan plan-premium reveal d-100">
           <span class="trial-badge">3 Tage gratis nach der Installation</span>
           <div class="plan-name">Premium</div>
           <div class="plan-price">Monatlich oder jährlich · Preis bei Google Play</div>
@@ -825,14 +841,14 @@
 
   <!-- ── Preguntas ── -->
   <!-- ── Herramientas web ── -->
-  <section class="section" id="herramientas" style="padding-top:0">
+  <section class="section section-flush" id="herramientas">
     <div class="wrap">
       <div class="section-head">
         <div class="reveal">
           <span class="eyebrow">Im Browser</span>
           <h2>Kostenlose Werkzeuge, ohne Datei-Upload.</h2>
         </div>
-        <p class="reveal" style="--d:100ms">Nutze sie auf jedem Computer oder Handy, ohne Installation und ohne Konto. Alles wird auf deinem Gerät verarbeitet.</p>
+        <p class="reveal d-100">Nutze sie auf jedem Computer oder Handy, ohne Installation und ohne Konto. Alles wird auf deinem Gerät verarbeitet.</p>
       </div>
 <!-- tools:start -->
       <ul class="web-tools wt-cats" data-stagger="60">
@@ -851,13 +867,13 @@
     </div>
   </section>
 
-  <section class="section" id="preguntas" style="padding-top:0">
+  <section class="section section-flush" id="preguntas">
     <div class="wrap faq">
       <div class="reveal">
         <span class="eyebrow">Häufige Fragen</span>
-        <h2 style="margin-top:14px">Was uns oft gefragt wird.</h2>
+        <h2 class="faq-title">Was uns oft gefragt wird.</h2>
       </div>
-      <div class="faq-list reveal" style="--d:100ms">
+      <div class="faq-list reveal d-100">
         <details>
           <summary>Werden meine Dateien auf einen Server hochgeladen?<span class="plus" aria-hidden="true"></span></summary>
           <div class="answer"><div><p>Nein. DocuSmart konvertiert, scannt und bearbeitet deine Dokumente direkt auf dem Handy. Deine Dateien bleiben auf deinem Gerät.</p></div></div>

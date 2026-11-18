@@ -613,18 +613,18 @@ export default {
     ['<b>Android</b> Escanea, convierte y protege', '<b>Android</b> Eskaneatu, bihurtu eta babestu'],
     [
       `<h1 aria-label="Tus documentos, en un solo lugar.">
-          <span class="word" style="--i:0">Tus</span>
-          <span class="word" style="--i:1">documentos,</span>
-          <span class="word" style="--i:2">en</span>
-          <span class="word" style="--i:3">un</span>
-          <span class="word" style="--i:4"><em>solo</em></span>
-          <span class="word" style="--i:5"><em>lugar.</em></span>
+          <span class="word">Tus</span>
+          <span class="word">documentos,</span>
+          <span class="word">en</span>
+          <span class="word">un</span>
+          <span class="word"><em>solo</em></span>
+          <span class="word"><em>lugar.</em></span>
         </h1>`,
       `<h1 aria-label="Zure dokumentuak, leku bakarrean.">
-          <span class="word" style="--i:0">Zure</span>
-          <span class="word" style="--i:1">dokumentuak,</span>
-          <span class="word" style="--i:2"><em>leku</em></span>
-          <span class="word" style="--i:3"><em>bakarrean.</em></span>
+          <span class="word">Zure</span>
+          <span class="word">dokumentuak,</span>
+          <span class="word"><em>leku</em></span>
+          <span class="word"><em>bakarrean.</em></span>
         </h1>`,
     ],
     [
