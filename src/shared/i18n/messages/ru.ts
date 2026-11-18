@@ -17,6 +17,7 @@ const ru: Messages = {
   'nav.sections': "Разделы",
   'nav.viewer': "Просмотр",
   'side.privacy': "Файлы обрабатываются в этом браузере. Они никуда не загружаются.",
+  'side.playOn': "Доступно в",
   'side.getApp': "Больше функций? Скачайте приложение →",
   'side.analytics': "Настройки аналитики",
   'common.loading': "Загрузка…",

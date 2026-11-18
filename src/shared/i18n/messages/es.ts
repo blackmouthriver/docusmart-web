@@ -17,6 +17,7 @@ export const es = {
   'nav.sections': 'Secciones',
   'nav.viewer': 'Visor',
   'side.privacy': 'Tus archivos se procesan en este navegador. No se suben a ningún servidor.',
+  'side.playOn': "Disponible en",
   'side.getApp': '¿Más funciones? Descarga la app →',
   'side.analytics': 'Preferencias de analítica',
   'common.loading': 'Cargando…',

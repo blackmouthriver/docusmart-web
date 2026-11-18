@@ -10,6 +10,7 @@ export function HeroCard({ title, subtitle }: { title: string; subtitle: string 
   const { t, lang } = useT()
   return (
     <header className="hero-card">
+      <span className="hero-shine" aria-hidden="true" />
       {app && (
         <button type="button" className="hero-settings" aria-label={t('settings.open')} title={t('settings.open')} onClick={app.openSettings}>
           <Icon name="globe" />

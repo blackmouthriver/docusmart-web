@@ -17,6 +17,7 @@ const zh: Messages = {
   'nav.sections': "栏目",
   'nav.viewer': "查看器",
   'side.privacy': "你的文件在此浏览器中处理，不会上传到任何服务器。",
+  'side.playOn': "下载于",
   'side.getApp': "需要更多功能？下载应用 →",
   'side.analytics': "分析偏好设置",
   'common.loading': "加载中…",
