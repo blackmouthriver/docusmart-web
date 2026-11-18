@@ -10,12 +10,16 @@ import { initAnalytics, trackScreen } from '../shared/platform/analytics'
 import { mountConsentBanner } from '../shared/platform/consent'
 import { rememberLangChoice } from '../shared/platform/langChoice'
 import { initMotion } from '../shared/platform/motion'
+import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
 import { matchesQuery } from '../shared/i18n/search'
 
 initAnalytics()
 mountConsentBanner()
 rememberLangChoice()
 initMotion()
+// Tema, acento y tamaño de letra elegidos en Ajustes de la app (también en estas páginas).
+applyAppearance(loadAppearance())
+watchSystemTheme(loadAppearance)
 trackScreen('ToolsHub')
 
 const input = document.querySelector<HTMLInputElement>('#th-q')

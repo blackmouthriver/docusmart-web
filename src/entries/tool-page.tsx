@@ -14,6 +14,7 @@ import { rememberLangChoice } from '../shared/platform/langChoice'
 import '../shared/platform/fonts'
 import '../app/app.css'
 import { initMotion } from '../shared/platform/motion'
+import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
 import '../shared/ui/motion.css'
 import './tool-page.css'
 
@@ -110,6 +111,9 @@ mountConsentBanner()
 rememberLangChoice()
 // Aparición de secciones, pasos escalonados y transición entre páginas (W-72/W-73).
 initMotion()
+// Tema, acento y tamaño de letra elegidos en Ajustes de la app (también en estas páginas).
+applyAppearance(loadAppearance())
+watchSystemTheme(loadAppearance)
 
 // La herramienta habla el idioma de la página (/en/merge-pdf → inglés), no el guardado.
 const pageLang = document.documentElement.lang

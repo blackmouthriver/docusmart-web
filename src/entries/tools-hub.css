@@ -20,6 +20,7 @@ html { scroll-padding-top: 76px; scroll-behavior: smooth; }
 @media (hover: hover) and (pointer: fine) { .th-jump a:hover { background: var(--blue-soft); color: var(--ink); } }
 
 .th-svg { width: 22px; height: 22px; flex: none; }
+[data-theme="dark"] .th-cat-ico { color: #0B1020; }
 .th-cat { margin-top: 36px; }
 .th-cat-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
 .th-cat-head h2 { font-size: clamp(21px, 2.6vw, 26px); }
