@@ -15,6 +15,7 @@ const ja: Messages = {
   'nav.short.qr': "QR",
   'nav.short.study': "学習",
   'pwa.install': "このデバイスにインストール",
+  'pwa.offlineReady': "準備完了：オフラインでもツールを使えます",
   'nav.collapse': "メニューを折りたたむ",
   'nav.expand': "メニューを展開",
   'nav.sections': "セクション",

@@ -11,7 +11,7 @@ import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
 import { loadCollapsed, saveCollapsed } from './sidebarPref'
-import { promptInstall, watchInstallPrompt } from '../shared/platform/pwa'
+import { onOfflineReady, promptInstall, watchInstallPrompt } from '../shared/platform/pwa'
 import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
 import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 import { Home } from '../features/home/ui/Home'
@@ -128,6 +128,8 @@ export function App() {
     setToasts((t) => [...t, { id, msg }])
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3200)
   }, [])
+  // App instalada (W-16): avisa cuando ya descargó todas las herramientas para usarlas sin conexión.
+  useEffect(() => onOfflineReady(() => toast(t('pwa.offlineReady'))), [toast, t])
 
   const active = route.section === 'ver' ? '' : route.section
   let screen: ReactNode

@@ -2,7 +2,7 @@
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { generatedHtml } from './tools/locales/index.mjs'
 
@@ -81,8 +81,25 @@ const pwaHead = (): Plugin => ({
   },
 })
 
-// El service worker (src/sw/sw.js) se publica como /sw.js con la versión del build: cada
-// publicación instala uno nuevo y borra la caché de páginas de la anterior.
+/** Archivos de public/ que usan las herramientas (wasm de qpdf y 7z, datos de pdf.js), sin licencias. */
+function publicToolFiles(): string[] {
+  const out: string[] = []
+  const walk = (rel: string) => {
+    const dir = resolve(ROOT, 'public', rel)
+    if (!existsSync(dir)) return
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const path = `${rel}/${e.name}`
+      if (e.isDirectory()) walk(path)
+      else if (!/license/i.test(e.name)) out.push(`/${path}`)
+    }
+  }
+  ;['pdfjs', 'qpdf', '7z'].forEach(walk)
+  return out.sort()
+}
+
+// El service worker (src/sw/sw.js) se publica como /sw.js con la versión del build (cada
+// publicación instala uno nuevo y borra la caché de páginas de la anterior) y con la lista de
+// todo el código de las herramientas, que la app instalada descarga para funcionar sin conexión.
 const swVersion = (): Plugin => ({
   name: 'sw-version',
   apply: 'build',
@@ -90,6 +107,25 @@ const swVersion = (): Plugin => ({
     const version = createHash('sha256').update(Object.keys(bundle).sort().join('\n')).digest('hex').slice(0, 12)
     const source = readFileSync(resolve(ROOT, 'src', 'sw', 'sw.js'), 'utf-8').replace("'__SW_VERSION__'", `'${version}'`)
     this.emitFile({ type: 'asset', fileName: 'sw.js', source })
+  },
+  // La lista se arma al final, con lo que de verdad quedó en dist/assets (el bundle incluye
+  // módulos de cada página HTML que después se descartan). La copia de 7zz.wasm que emite el
+  // paquete no se usa: va /7z/7zz.wasm.
+  closeBundle() {
+    const dist = resolve(ROOT, 'dist')
+    const sw = resolve(dist, 'sw.js')
+    if (!existsSync(sw)) return
+    const assets: string[] = []
+    const walk = (rel: string) => {
+      for (const e of readdirSync(resolve(dist, rel), { withFileTypes: true })) {
+        const path = `${rel}/${e.name}`
+        if (e.isDirectory()) walk(path)
+        else if (/\.(js|mjs|css|woff2)$/.test(e.name)) assets.push(`/${path}`)
+      }
+    }
+    walk('assets')
+    const tools = [...assets.sort(), ...publicToolFiles()]
+    writeFileSync(sw, readFileSync(sw, 'utf-8').replace('/*__SW_TOOLS__*/ []', JSON.stringify(tools)))
   },
 })
 

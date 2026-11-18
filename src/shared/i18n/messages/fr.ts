@@ -15,6 +15,7 @@ const fr: Messages = {
   'nav.short.qr': "QR",
   'nav.short.study': "Étude",
   'pwa.install': "Installer sur cet appareil",
+  'pwa.offlineReady': "C’est prêt : vous pouvez utiliser les outils hors connexion",
   'nav.collapse': "Réduire le menu",
   'nav.expand': "Développer le menu",
   'nav.sections': "Sections",

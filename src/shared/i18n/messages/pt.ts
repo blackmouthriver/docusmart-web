@@ -15,6 +15,7 @@ const pt: Messages = {
   'nav.short.qr': "QR",
   'nav.short.study': "Estudo",
   'pwa.install': "Instalar neste dispositivo",
+  'pwa.offlineReady': "Pronto: agora você pode usar as ferramentas sem conexão",
   'nav.collapse': "Recolher menu",
   'nav.expand': "Expandir menu",
   'nav.sections': "Secções",

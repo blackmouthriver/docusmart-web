@@ -15,6 +15,7 @@ const ko: Messages = {
   'nav.short.qr': "QR",
   'nav.short.study': "학습",
   'pwa.install': "이 기기에 설치",
+  'pwa.offlineReady': "준비 완료: 이제 인터넷 없이도 도구를 쓸 수 있어요",
   'nav.collapse': "메뉴 접기",
   'nav.expand': "메뉴 펼치기",
   'nav.sections': "섹션",
