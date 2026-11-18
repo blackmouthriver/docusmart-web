@@ -144,3 +144,67 @@ export const QUESTIONS_EN: Case[] = [
 /** Fuera de tema: el asistente no debe responder con confianza. */
 export const OFF_TOPIC_ES = ['que hora es', 'quien gano el partido', 'receta de pizza', 'cual es la capital de francia']
 export const OFF_TOPIC_EN = ['what time is it', 'who won the game', 'pizza recipe', 'what is the capital of france']
+
+/** Los otros 10 idiomas (W-70e): ≥ 75 % de aciertos. */
+export const QUESTIONS_OTHER: Record<string, Case[]> = {
+  pt: [
+    ['como juntar pdfs', t('unir-pdf')], ['dividir um pdf', t('dividir-pdf')], ['comprimir pdf', t('comprimir-pdf')], ['converter pdf para word', t('pdf-a-word')],
+    ['proteger pdf com senha', t('proteger-pdf')], ['assinar um pdf', t('firmar-pdf')], ['imagem para pdf', t('imagen-a-pdf')], ['criar um código qr', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['meus arquivos são enviados para um servidor', 'privacidad'], ['é grátis', 'precio'], ['como cancelo a assinatura', 'cancelar'], ['tem app para iphone', 'iphone'],
+    ['funciona sem internet', 'offline'], ['ler em voz alta', 'lectura'], ['olá', 'hola'], ['contato com o suporte', 'contacto'],
+  ],
+  fr: [
+    ['fusionner des pdf', t('unir-pdf')], ['diviser un pdf', t('dividir-pdf')], ['compresser un pdf', t('comprimir-pdf')], ['convertir un pdf en word', t('pdf-a-word')],
+    ['protéger un pdf par mot de passe', t('proteger-pdf')], ['signer un pdf', t('firmar-pdf')], ['image en pdf', t('imagen-a-pdf')], ['créer un code qr', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['mes fichiers sont-ils envoyés sur un serveur', 'privacidad'], ["c'est gratuit", 'precio'], ["comment annuler l'abonnement", 'cancelar'], ['appli pour iphone', 'iphone'],
+    ['fonctionne sans internet', 'offline'], ['lire à voix haute', 'lectura'], ['bonjour', 'hola'], ['contacter le support', 'contacto'],
+  ],
+  it: [
+    ['unire pdf', t('unir-pdf')], ['dividere un pdf', t('dividir-pdf')], ['comprimere un pdf', t('comprimir-pdf')], ['convertire pdf in word', t('pdf-a-word')],
+    ['proteggere un pdf con password', t('proteger-pdf')], ['firmare un pdf', t('firmar-pdf')], ['immagine in pdf', t('imagen-a-pdf')], ['creare un codice qr', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['i miei file vengono caricati su un server', 'privacidad'], ['è gratis', 'precio'], ["come annullo l'abbonamento", 'cancelar'], ["c'è l'app per iphone", 'iphone'],
+    ['funziona senza internet', 'offline'], ['leggere ad alta voce', 'lectura'], ['ciao', 'hola'], ["contattare l'assistenza", 'contacto'],
+  ],
+  de: [
+    ['pdf zusammenfügen', t('unir-pdf')], ['pdf teilen', t('dividir-pdf')], ['pdf komprimieren', t('comprimir-pdf')], ['pdf in word umwandeln', t('pdf-a-word')],
+    ['pdf mit passwort schützen', t('proteger-pdf')], ['pdf unterschreiben', t('firmar-pdf')], ['bild in pdf', t('imagen-a-pdf')], ['qr-code erstellen', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['werden meine dateien auf einen server hochgeladen', 'privacidad'], ['ist es kostenlos', 'precio'], ['wie kündige ich das abo', 'cancelar'], ['gibt es eine iphone app', 'iphone'],
+    ['funktioniert es ohne internet', 'offline'], ['vorlesen', 'lectura'], ['hallo', 'hola'], ['support kontaktieren', 'contacto'],
+  ],
+  ca: [
+    ['unir pdf', t('unir-pdf')], ['dividir un pdf', t('dividir-pdf')], ['comprimir un pdf', t('comprimir-pdf')], ['convertir pdf a word', t('pdf-a-word')],
+    ['protegir un pdf amb contrasenya', t('proteger-pdf')], ['signar un pdf', t('firmar-pdf')], ['imatge a pdf', t('imagen-a-pdf')], ['crear un codi qr', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['els meus fitxers es pugen a algun servidor', 'privacidad'], ['és gratis', 'precio'], ['com cancel·lo la subscripció', 'cancelar'], ['hi ha app per a iphone', 'iphone'],
+    ['funciona sense internet', 'offline'], ['llegir en veu alta', 'lectura'], ['hola', 'hola'], ['contacte amb el suport', 'contacto'],
+  ],
+  eu: [
+    ['pdfak batu', t('unir-pdf')], ['pdf bat zatitu', t('dividir-pdf')], ['pdf bat konprimitu', t('comprimir-pdf')], ['pdftik wordera', t('pdf-a-word')],
+    ['pdf bat pasahitzarekin babestu', t('proteger-pdf')], ['pdf bat sinatu', t('firmar-pdf')], ['iruditik pdfra', t('imagen-a-pdf')], ['qr kode bat sortu', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['nire fitxategiak zerbitzari batera igotzen dira', 'privacidad'], ['doan da', 'precio'], ['nola utzi harpidetza', 'cancelar'], ['iphonerako aplikaziorik badago', 'iphone'],
+    ['internetik gabe dabil', 'offline'], ['ozen irakurri', 'lectura'], ['kaixo', 'hola'], ['laguntza teknikoa', 'contacto'],
+  ],
+  ru: [
+    ['объединить pdf', t('unir-pdf')], ['разделить pdf', t('dividir-pdf')], ['сжать pdf', t('comprimir-pdf')], ['конвертировать pdf в word', t('pdf-a-word')],
+    ['защитить pdf паролем', t('proteger-pdf')], ['подписать pdf', t('firmar-pdf')], ['изображение в pdf', t('imagen-a-pdf')], ['создать qr-код', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['мои файлы загружаются на сервер', 'privacidad'], ['это бесплатно', 'precio'], ['как отменить подписку', 'cancelar'], ['есть приложение для iphone', 'iphone'],
+    ['работает без интернета', 'offline'], ['читать вслух', 'lectura'], ['привет', 'hola'], ['связаться с поддержкой', 'contacto'],
+  ],
+  ja: [
+    ['PDFを結合したい', t('unir-pdf')], ['PDFを分割', t('dividir-pdf')], ['PDFを圧縮', t('comprimir-pdf')], ['PDFをWordに変換', t('pdf-a-word')],
+    ['PDFにパスワードをかける', t('proteger-pdf')], ['PDFに署名', t('firmar-pdf')], ['画像をPDFに', t('imagen-a-pdf')], ['QRコードを作る', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['ファイルはサーバーにアップロードされますか', 'privacidad'], ['無料ですか', 'precio'], ['解約方法', 'cancelar'], ['iPhoneアプリはありますか', 'iphone'],
+    ['インターネットなしで使えますか', 'offline'], ['読み上げ', 'lectura'], ['こんにちは', 'hola'], ['サポートに問い合わせ', 'contacto'],
+  ],
+  ko: [
+    ['PDF 합치기', t('unir-pdf')], ['PDF 나누기', t('dividir-pdf')], ['PDF 압축', t('comprimir-pdf')], ['PDF를 Word로 변환', t('pdf-a-word')],
+    ['PDF에 비밀번호 걸기', t('proteger-pdf')], ['PDF 서명', t('firmar-pdf')], ['이미지를 PDF로', t('imagen-a-pdf')], ['QR 코드 만들기', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['내 파일이 서버에 업로드되나요', 'privacidad'], ['무료인가요', 'precio'], ['구독 취소 방법', 'cancelar'], ['아이폰 앱이 있나요', 'iphone'],
+    ['인터넷 없이 되나요', 'offline'], ['소리 내어 읽기', 'lectura'], ['안녕하세요', 'hola'], ['고객지원 연락처', 'contacto'],
+  ],
+  zh: [
+    ['合并PDF', t('unir-pdf')], ['拆分PDF', t('dividir-pdf')], ['压缩PDF', t('comprimir-pdf')], ['PDF转Word', t('pdf-a-word')],
+    ['给PDF加密码', t('proteger-pdf')], ['签署PDF', t('firmar-pdf')], ['图片转PDF', t('imagen-a-pdf')], ['创建二维码', [...t('crear-codigo-qr'), 'qr-protegido']],
+    ['我的文件会上传到服务器吗', 'privacidad'], ['免费吗', 'precio'], ['如何取消订阅', 'cancelar'], ['有iPhone应用吗', 'iphone'],
+    ['没有网络能用吗', 'offline'], ['朗读', 'lectura'], ['你好', 'hola'], ['联系客服', 'contacto'],
+  ],
+}

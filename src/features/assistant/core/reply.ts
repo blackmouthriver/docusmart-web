@@ -4,13 +4,11 @@
  */
 import { search, suggestionsFor, type Index, type KbEntry } from './engine'
 
-/** Idiomas con base propia; los demás usan la más cercana hasta que se traduzcan (W-70e). */
-const KB_LANGS = ['es', 'en'] as const
-const NEAR_SPANISH = new Set(['ca', 'eu', 'pt', 'it', 'gl'])
+/** Idiomas con base propia (los 12 del sitio, W-70e); cualquier otro usa el inglés. */
+export const KB_LANGS = ['es', 'en', 'pt', 'fr', 'it', 'de', 'ca', 'eu', 'ru', 'ja', 'ko', 'zh'] as const
 
 export function kbLangFor(lang: string): (typeof KB_LANGS)[number] {
-  if ((KB_LANGS as readonly string[]).includes(lang)) return lang as (typeof KB_LANGS)[number]
-  return NEAR_SPANISH.has(lang) ? 'es' : 'en'
+  return (KB_LANGS as readonly string[]).includes(lang) ? (lang as (typeof KB_LANGS)[number]) : 'en'
 }
 
 /** Herramienta (slug) de una pantalla de la app (#/pdf/unir → "unir-pdf"), si la hay. */

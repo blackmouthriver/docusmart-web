@@ -4,11 +4,16 @@
  * "imágenes") y cada palabra buscada debe aparecer en algún lugar del texto.
  */
 
-/** Minúsculas y sin marcas diacríticas, para comparar sin importar tildes ni mayúsculas. */
+/**
+ * Minúsculas y sin tildes, para comparar sin importar acentos ni mayúsculas. Solo se quitan los
+ * acentos de las letras latinas (y cirílicas): las marcas del japonés (が) y las sílabas del coreano
+ * se recomponen intactas.
+ */
 export function normalizeForSearch(text: string): string {
   return text
     .normalize('NFD')
-    .replace(/\p{M}/gu, '')
+    .replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFC')
     .toLocaleLowerCase()
     .replace(/\s+/g, ' ')
     .trim()

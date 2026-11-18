@@ -7,12 +7,9 @@ import { answerFor, contextForRoute, kbLangFor, reply } from '../../../../src/fe
 const ES = buildIndex(JSON.parse(readFileSync(join(process.cwd(), 'public', 'assistant', 'es.json'), 'utf-8')) as Kb)
 
 describe('idioma de la base', () => {
-  it('usa la propia o la más cercana', () => {
-    expect(kbLangFor('es')).toBe('es')
-    expect(kbLangFor('en')).toBe('en')
-    expect(kbLangFor('ca')).toBe('es')
-    expect(kbLangFor('pt')).toBe('es')
-    expect(kbLangFor('ja')).toBe('en')
+  it('los 12 idiomas tienen base propia; cualquier otro usa el inglés', () => {
+    for (const l of ['es', 'en', 'pt', 'fr', 'it', 'de', 'ca', 'eu', 'ru', 'ja', 'ko', 'zh']) expect(kbLangFor(l)).toBe(l)
+    expect(kbLangFor('nl')).toBe('en')
   })
 })
 
