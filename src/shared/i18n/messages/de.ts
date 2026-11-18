@@ -18,7 +18,6 @@ const de: Messages = {
   'nav.viewer': "Viewer",
   'side.privacy': "Deine Dateien werden in diesem Browser verarbeitet. Sie werden auf keinen Server hochgeladen.",
   'side.playOn': "Jetzt bei",
-  'assistant.open': "Assistent",
   'side.getApp': "Mehr Funktionen? Hol dir die App →",
   'side.analytics': "Analyse-Einstellungen",
   'common.loading': "Wird geladen…",

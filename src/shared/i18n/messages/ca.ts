@@ -18,7 +18,6 @@ const ca: Messages = {
   'nav.viewer': "Visor",
   'side.privacy': "Els teus fitxers es processen en aquest navegador. No es pugen a cap servidor.",
   'side.playOn': "Disponible a",
-  'assistant.open': "Assistent",
   'side.getApp': "Més funcions? Descarrega l’app →",
   'side.analytics': "Preferències d’analítica",
   'common.loading': "Carregant…",

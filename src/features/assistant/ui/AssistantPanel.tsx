@@ -1,28 +1,54 @@
-// Panel del asistente (W-70c): diálogo accesible con foco atrapado, Esc para cerrar, mensajes
+// Panel del asistente (W-70c/W-70d): diálogo accesible con foco atrapado, Esc para cerrar, mensajes
 // anunciados y respuestas que solo se pintan como texto y enlaces de una lista permitida (la base).
+// Funciona dentro de la app (las acciones navegan con go()) y en el resto del sitio (enlaces normales).
 // Lo escrito nunca sale del navegador; con consentimiento de analítica se registra solo el id.
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { go } from '../../../app/state'
 import { Icon } from '../../../shared/ui/Icon'
 import { track } from '../../../shared/platform/analytics'
+import { prefersReducedMotion } from '../../../shared/platform/motion'
 import { suggestionsFor, type Index, type Kb, type KbAction, type KbEntry } from '../core/engine'
 import { answerFor, contextForRoute, reply, type Reply } from '../core/reply'
 import { loadKb } from '../infra/kbLoader'
+import { typingDelay } from '../core/launcher'
 
 /** Primera letra en mayúscula (las preguntas de la base se escriben como las escribe la gente). */
 const capitalize = (s: string) => s.charAt(0).toLocaleUpperCase() + s.slice(1)
+/** Duración de la transición de cierre (el panel se encoge hacia el botón). */
+const CLOSE_MS = 200
 
 type Msg = { id: number; role: 'user'; text: string } | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down' }
 
-export function AssistantPanel({ lang, section, sub, onClose }: { lang: string; section: string; sub?: string; onClose: () => void }) {
+export type PanelProps = {
+  lang: string
+  onClose: () => void
+  /** Dentro de la app web: las acciones navegan sin recargar. */
+  inApp?: boolean
+  /** En la app: pantalla actual (para deducir la herramienta). */
+  section?: string
+  sub?: string
+  /** Fuera de la app: herramienta de la página (slug), si la hay. */
+  context?: string
+}
+
+export function AssistantPanel({ lang, onClose: close, inApp = false, section = '', sub, context: pageContext }: PanelProps) {
+  const [closing, setClosing] = useState(false)
+  /** Cierra con transición (o al instante con "reducir movimiento"). */
+  const onClose = () => {
+    if (closing) return
+    setClosing(true)
+    window.setTimeout(close, prefersReducedMotion() ? 0 : CLOSE_MS)
+  }
   const [data, setData] = useState<{ kb: Kb; index: Index } | null>(null)
   const [failed, setFailed] = useState(false)
   const [msgs, setMsgs] = useState<Msg[]>([{ id: 0, role: 'bot', reply: { kind: 'greeting' } }])
+  const [typing, setTyping] = useState(false)
   const [text, setText] = useState('')
   const panel = useRef<HTMLDivElement>(null)
   const list = useRef<HTMLDivElement>(null)
   const input = useRef<HTMLInputElement>(null)
   const nextId = useRef(1)
+  const screen = inApp ? section || 'home' : location.pathname
 
   useEffect(() => {
     let alive = true
@@ -30,35 +56,43 @@ export function AssistantPanel({ lang, section, sub, onClose }: { lang: string; 
       (d) => alive && setData(d),
       () => alive && setFailed(true),
     )
-    track('assistant_opened', { screen: section || 'home' })
+    track('assistant_opened', { screen })
     return () => {
       alive = false
     }
-  }, [lang, section])
+  }, [lang, screen])
 
   useEffect(() => input.current?.focus(), [data])
   useEffect(() => {
     const el = list.current
     if (el) el.scrollTop = el.scrollHeight
-  }, [msgs])
+  }, [msgs, typing])
 
-  const context = useMemo(() => (data ? contextForRoute(data.index, section, sub) : undefined), [data, section, sub])
+  const context = useMemo(() => pageContext ?? (data && inApp ? contextForRoute(data.index, section, sub) : undefined), [data, inApp, section, sub, pageContext])
   const ui = data?.kb.ui
 
   const push = (user: string, r: Reply) => {
-    const u = nextId.current++
-    const b = nextId.current++
-    setMsgs((m) => [...m, { id: u, role: 'user', text: user }, { id: b, role: 'bot', reply: r }])
+    setMsgs((m) => [...m, { id: nextId.current++, role: 'user', text: user }])
+    setTyping(true)
+    // Pausa de "escribiendo…": más larga cuanto más larga la respuesta, para que se sienta atendida.
+    const length = r.kind === 'answer' ? r.entry.a.length : 120
+    window.setTimeout(
+      () => {
+        setTyping(false)
+        setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', reply: r }])
+      },
+      prefersReducedMotion() ? 0 : typingDelay(length),
+    )
     if (r.kind === 'answer') track('assistant_answer', { answer_id: r.entry.id })
-    else track('assistant_fallback', { screen: section || 'home' })
+    else track('assistant_fallback', { screen })
   }
   const ask = () => {
     const q = text.trim()
-    if (!q || !data) return
+    if (!q || !data || typing) return
     setText('')
     push(q, reply(data.index, q, context))
   }
-  const choose = (e: KbEntry) => data && push(capitalize(e.q[0]), answerFor(data.index, e))
+  const choose = (e: KbEntry) => data && !typing && push(capitalize(e.q[0]), answerFor(data.index, e))
   const feedback = (id: number, answerId: string, value: 'up' | 'down') => {
     setMsgs((m) => m.map((x) => (x.id === id && x.role === 'bot' ? { ...x, feedback: value } : x)))
     track('assistant_feedback', { answer_id: answerId, value })
@@ -73,7 +107,7 @@ export function AssistantPanel({ lang, section, sub, onClose }: { lang: string; 
       return
     }
     if (e.key !== 'Tab' || !panel.current) return
-    const items = [...panel.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input')]
+    const items = [...panel.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled])')]
     if (!items.length) return
     const first = items[0]
     const last = items[items.length - 1]
@@ -86,9 +120,11 @@ export function AssistantPanel({ lang, section, sub, onClose }: { lang: string; 
     }
   }
 
-  const runAction = (a: KbAction) => {
+  const onAction = (a: KbAction, ev?: { preventDefault: () => void }) => {
     track('assistant_action', { kind: a.kind, target: a.kind === 'tool' ? a.app : a.href.startsWith('mailto:') ? 'mail' : a.href })
-    if (a.kind === 'tool' || a.app !== undefined) {
+    // En la app, las herramientas y pantallas se abren sin recargar.
+    if (inApp && (a.kind === 'tool' || a.app !== undefined)) {
+      ev?.preventDefault()
       const [s, sb] = (a.kind === 'tool' ? a.app : (a.app ?? '')).split('/')
       onClose()
       go(s, sb)
@@ -96,34 +132,29 @@ export function AssistantPanel({ lang, section, sub, onClose }: { lang: string; 
   }
 
   return (
-    <div ref={panel} className="assistant-panel" role="dialog" aria-modal="false" aria-labelledby="assistant-title" onKeyDown={onKeyDown}>
+    <div ref={panel} className={'assistant-panel' + (closing ? ' is-closing' : '')} role="dialog" aria-modal="false" aria-labelledby="assistant-title" onKeyDown={onKeyDown}>
       <header className="assistant-head">
         <span className="assistant-avatar" aria-hidden="true">
           <Icon name="chat" />
+          <span className="assistant-online" />
         </span>
         <div className="assistant-head-text">
           <h2 id="assistant-title">{ui?.title ?? 'DocuSmart'}</h2>
           {ui && <small>{ui.privacyNote}</small>}
         </div>
         {ui && (
-          <button type="button" className="icon-btn" aria-label={ui.clear} title={ui.clear} onClick={clear}>
+          <button type="button" className="as-icon-btn" aria-label={ui.clear} title={ui.clear} onClick={clear}>
             <Icon name="reset" />
           </button>
         )}
-        <button type="button" className="icon-btn" aria-label={ui?.close ?? '×'} title={ui?.close} onClick={onClose}>
+        <button type="button" className="as-icon-btn" aria-label={ui?.close ?? '×'} title={ui?.close} onClick={onClose}>
           <Icon name="close" />
         </button>
       </header>
 
       <div ref={list} className="assistant-list" aria-live="polite">
-        {!data && !failed && (
-          <div className="assistant-typing" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </div>
-        )}
-        {failed && <p className="assistant-bubble bot">⚠️ {'Sin conexión: no se pudo cargar el asistente. / Offline: the assistant could not load.'}</p>}
+        {!data && !failed && <Typing />}
+        {failed && <p className="assistant-bubble bot">⚠️ {lang === 'es' ? 'Sin conexión: no se pudo cargar el asistente.' : 'Offline: the assistant could not load.'}</p>}
         {data &&
           msgs.map((m) =>
             m.role === 'user' ? (
@@ -131,9 +162,10 @@ export function AssistantPanel({ lang, section, sub, onClose }: { lang: string; 
                 {m.text}
               </p>
             ) : (
-              <BotMessage key={m.id} msg={m} kb={data.kb} index={data.index} context={context} onChoose={choose} onAction={runAction} onFeedback={feedback} />
+              <BotMessage key={m.id} msg={m} kb={data.kb} index={data.index} context={context} onChoose={choose} onAction={onAction} onFeedback={feedback} />
             ),
           )}
+        {typing && <Typing />}
       </div>
 
       <form
@@ -145,7 +177,7 @@ export function AssistantPanel({ lang, section, sub, onClose }: { lang: string; 
       >
         <input
           ref={input}
-          className="input"
+          className="as-input"
           type="text"
           value={text}
           placeholder={ui?.placeholder}
@@ -156,10 +188,20 @@ export function AssistantPanel({ lang, section, sub, onClose }: { lang: string; 
           disabled={!data}
           onChange={(e) => setText(e.target.value)}
         />
-        <button type="submit" className="assistant-send" aria-label={ui?.send ?? ''} title={ui?.send} disabled={!data || !text.trim()}>
+        <button type="submit" className="assistant-send" aria-label={ui?.send ?? ''} title={ui?.send} disabled={!data || !text.trim() || typing}>
           <Icon name="send" />
         </button>
       </form>
+    </div>
+  )
+}
+
+function Typing() {
+  return (
+    <div className="assistant-typing" aria-hidden="true">
+      <i />
+      <i />
+      <i />
     </div>
   )
 }
@@ -178,7 +220,7 @@ function BotMessage({
   index: Index
   context?: string
   onChoose: (e: KbEntry) => void
-  onAction: (a: KbAction) => void
+  onAction: (a: KbAction, ev?: { preventDefault: () => void }) => void
   onFeedback: (id: number, answerId: string, value: 'up' | 'down') => void
 }) {
   const { reply: r } = msg
@@ -226,21 +268,21 @@ function BotMessage({
   )
 }
 
-function Actions({ actions, onAction }: { actions: KbAction[]; onAction: (a: KbAction) => void }) {
+function Actions({ actions, onAction }: { actions: KbAction[]; onAction: (a: KbAction, ev?: { preventDefault: () => void }) => void }) {
   return (
     <div className="assistant-actions">
-      {actions.map((a) => {
-        const inApp = a.kind === 'tool' || a.app !== undefined
-        if (inApp)
-          return (
-            <button key={a.label} type="button" className="btn btn-primary btn-sm" onClick={() => onAction(a)}>
-              {a.label}
-            </button>
-          )
+      {actions.map((a, i) => {
         const external = a.kind === 'link' && a.external
         return (
-          <a key={a.label} className="btn btn-soft btn-sm" href={a.href} onClick={() => onAction(a)} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+          <a
+            key={a.label}
+            className={'as-action' + (i === 0 ? ' is-primary' : '')}
+            href={a.href}
+            onClick={(ev) => onAction(a, ev)}
+            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
             {a.label}
+            <Icon name={external ? 'link' : 'back'} />
           </a>
         )
       })}

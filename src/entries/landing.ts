@@ -5,6 +5,7 @@ import { mountConsentBanner } from '../shared/platform/consent'
 import { rememberLangChoice } from '../shared/platform/langChoice'
 import { applyTheme, loadAppearance, watchSystemTheme } from '../app/appearance'
 import { initMotion, prefersReducedMotion } from '../shared/platform/motion'
+import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 import '../shared/ui/motion.css'
 
 rememberLangChoice()
@@ -64,6 +65,9 @@ addEventListener('keydown', (e) => {
 
 // Entradas al hacer scroll (sistema de movimiento común, W-72)
 initMotion()
+
+// Asistente (W-70d): el mismo botón flotante de todo el sitio; el panel se descarga al abrirlo.
+mountAssistantLauncher({ lang: document.documentElement.lang })
 
 // Luz que sigue al puntero en las tarjetas de Funciones y Planes (solo con ratón y sin "reducir movimiento").
 if (matchMedia('(hover: hover) and (pointer: fine)').matches && !prefersReducedMotion()) {

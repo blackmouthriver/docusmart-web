@@ -4,11 +4,14 @@ import '../shared/platform/trustedTypes'
 import '../shared/platform/fonts'
 import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
 import { initMotion, scrollBehavior } from '../shared/platform/motion'
+import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 
 applyAppearance(loadAppearance())
 watchSystemTheme(loadAppearance)
 // Aparición suave al entrar en pantalla (sistema de movimiento común, W-72).
 initMotion()
+// Asistente (W-70d): el mismo botón flotante de todo el sitio; el panel se descarga al abrirlo.
+mountAssistantLauncher({ lang: document.documentElement.lang })
 
 // Índice: marca la sección que se está leyendo (y la deja a la vista en el celular).
 const links = new Map<string, HTMLAnchorElement>()

@@ -88,7 +88,7 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
 .contact a { font-weight: 700; font-size: 1.05em; }
 
 /* ── Volver arriba y pie ── */
-.pv-top { position: fixed; right: 20px; bottom: 20px; z-index: 5; display: grid; place-items: center; width: 46px; height: 46px; border: 0; border-radius: 50%; background: var(--blue); color: #fff; cursor: pointer; box-shadow: 0 12px 28px -10px rgba(37, 99, 235, .7); transition: transform 200ms var(--ease-out), opacity 200ms ease; }
+.pv-top { position: fixed; right: 30px; bottom: 96px; z-index: 5; display: grid; place-items: center; width: 46px; height: 46px; border: 0; border-radius: 50%; background: var(--blue); color: #fff; cursor: pointer; box-shadow: 0 12px 28px -10px rgba(37, 99, 235, .7); transition: transform 200ms var(--ease-out), opacity 200ms ease; }
 .pv-top:hover { transform: translateY(-2px); }
 .pv-top .pv-svg { width: 20px; height: 20px; }
 .pv-top[hidden] { display: grid; opacity: 0; pointer-events: none; transform: translateY(12px); }

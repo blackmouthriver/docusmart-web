@@ -18,7 +18,6 @@ const ko: Messages = {
   'nav.viewer': "뷰어",
   'side.privacy': "파일은 이 브라우저에서 처리되며 어떤 서버에도 업로드되지 않습니다.",
   'side.playOn': "다운로드하기",
-  'assistant.open': "도우미",
   'side.getApp': "더 많은 기능이 필요하세요? 앱 다운로드 →",
   'side.analytics': "분석 설정",
   'common.loading': "불러오는 중…",
