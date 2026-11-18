@@ -17,6 +17,7 @@ const PdfTools = lazy(() => import('../features/pdf/ui/PdfTools').then((m) => ({
 const QrScreen = lazy(() => import('../features/qr/ui/Qr').then((m) => ({ default: m.QrScreen })))
 const Study = lazy(() => import('../features/study/ui/Study').then((m) => ({ default: m.Study })))
 const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((m) => ({ default: m.ArchiveScreen })))
+const ToolsScreen = lazy(() => import('../features/tools/ui/ToolsScreen').then((m) => ({ default: m.ToolsScreen })))
 const ImageToolsScreen = lazy(() => import('../features/image/ui/ImageTools').then((m) => ({ default: m.ImageToolsScreen })))
 
 // `mobile: false`: solo en la barra lateral; la barra inferior del celular tiene 5 lugares.
@@ -36,6 +37,7 @@ const QR_SUBS: NavSub[] = [
 ]
 const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: IconName; mobile?: boolean; subs?: NavSub[] }> = [
   { section: '', label: 'nav.home', short: 'nav.short.home', icon: 'home' },
+  { section: 'herramientas', label: 'nav.tools', short: 'nav.short.tools', icon: 'grid', mobile: false },
   { section: 'convertir', label: 'nav.convert', short: 'nav.short.convert', icon: 'convert' },
   { section: 'pdf', label: 'nav.pdf', short: 'nav.short.pdf', icon: 'pdf' },
   { section: 'qr', label: 'nav.qr', short: 'nav.short.qr', icon: 'qr', subs: QR_SUBS },
@@ -53,6 +55,7 @@ const SCREEN_NAMES: Record<string, string> = {
   estudio: 'Study',
   archivos: 'Archive',
   imagen: 'ImageTools',
+  herramientas: 'Tools',
 }
 
 export function App() {
@@ -102,6 +105,9 @@ export function App() {
       break
     case 'convertir':
       screen = <Converter sub={route.sub} />
+      break
+    case 'herramientas':
+      screen = <ToolsScreen sub={route.sub} />
       break
     case 'pdf':
       screen = <PdfTools sub={route.sub} />
