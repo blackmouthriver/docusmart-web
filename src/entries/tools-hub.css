@@ -13,7 +13,13 @@ html { scroll-padding-top: 76px; scroll-behavior: smooth; }
 .th-body { position: relative; z-index: 2; margin-top: -48px; }
 
 /* Accesos rápidos a cada categoría: fila que se desplaza en el celular. */
-.th-jump { position: sticky; top: 60px; z-index: 5; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 12px; margin: 0 -12px 8px; border-radius: 20px; background: color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter: blur(12px); box-shadow: 0 0 0 1px var(--line), 0 18px 40px -28px rgba(11, 16, 32, .4); }
+.th-jump { position: sticky; top: 60px; z-index: 5; overflow: hidden; padding: 12px 0; margin: 0 -12px 8px; border-radius: 20px; background: color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter: blur(12px); box-shadow: 0 0 0 1px var(--line), 0 18px 40px -28px rgba(11, 16, 32, .4); }
+/* Carrusel continuo de categorías, como la franja de formatos de la portada: dos copias que se
+   desplazan en bucle; se pausa al pasar el ratón o al llegar con el teclado, y los bordes se desvanecen. */
+.th-marquee { display: flex; width: max-content; animation: th-marquee 42s linear infinite; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.th-jump:hover .th-marquee, .th-jump:focus-within .th-marquee, .th-jump:active .th-marquee { animation-play-state: paused; }
+.th-track { display: flex; gap: 8px; padding-right: 8px; }
+@keyframes th-marquee { to { transform: translateX(-50%); } }
 .th-jump a { display: inline-flex; align-items: center; gap: 6px; flex: none; padding: 8px 14px; border-radius: 999px; background: var(--paper-2); color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 600; white-space: nowrap; transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease; }
 .th-jump a .th-svg { width: 16px; height: 16px; color: var(--blue); }
 .th-jump a[aria-disabled] { opacity: .4; pointer-events: none; }
@@ -44,6 +50,10 @@ html { scroll-padding-top: 76px; scroll-behavior: smooth; }
 .th-empty { margin: 40px 0; padding: 28px; border-radius: 20px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; color: var(--ink-soft); text-align: center; animation: tp-rise 300ms var(--ease-out); }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Sin movimiento: una fila que se desplaza a mano, sin la copia. */
+  .th-jump { overflow-x: auto; scrollbar-width: none; padding: 12px; }
+  .th-marquee { animation: none; -webkit-mask-image: none; mask-image: none; }
+  .th-track[aria-hidden] { display: none; }
   .th-search, .th-empty { animation: none; }
   .th-grid a, .th-tool-ico { transition: none; }
   .th-grid a:hover, .th-grid a:hover .th-tool-ico, .th-grid a:active { transform: none; }
