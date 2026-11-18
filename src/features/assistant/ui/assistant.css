@@ -47,8 +47,12 @@ body:has(.ds-consent) .assistant-root { display: none; }
 .fab-spark.s2 { bottom: 2px; left: -8px; width: 9px; height: 9px; animation-delay: 2.4s; }
 .fab-spark.s3 { top: 6px; left: -4px; width: 7px; height: 7px; animation-delay: 3.1s; }
 @keyframes fab-spark { 0%, 60%, 100% { opacity: 0; transform: scale(0) rotate(0deg); } 75% { opacity: 1; transform: scale(1.15) rotate(45deg); } 88% { opacity: .7; transform: scale(.8) rotate(90deg); } }
-/* Ya lo descubrió (lo abrió) o está abierto: sin llamados de atención. */
-.assistant-root.is-quiet .fab-halo, .assistant-root.is-quiet .fab-spark, .assistant-fab.is-open .fab-halo, .assistant-fab.is-open .fab-spark { display: none; }
+/* Ya lo abrió en esta visita: modo tranquilo (un solo halo más espaciado y destellos más pausados),
+   para que siga teniendo vida sin insistir. Mientras el chat está abierto, el botón queda quieto. */
+.assistant-root.is-quiet .fab-halo { animation-duration: 9s; }
+.assistant-root.is-quiet .fab-halo-2 { display: none; }
+.assistant-root.is-quiet .fab-spark { animation-duration: 7s; }
+.assistant-fab.is-open .fab-halo, .assistant-fab.is-open .fab-spark { display: none; }
 
 /* ── Burbuja de bienvenida ── */
 .assistant-teaser { position: absolute; right: 70px; bottom: 8px; display: flex; align-items: center; gap: 2px; max-width: min(280px, calc(100vw - 110px)); padding: 4px 4px 4px 14px; border-radius: 18px 18px 6px 18px; background: var(--as-surface); color: var(--as-ink); box-shadow: 0 0 0 1px var(--as-line), 0 16px 32px -14px rgba(11, 16, 32, .45); transform-origin: bottom right; animation: teaser-in 420ms var(--as-spring); }
@@ -99,6 +103,10 @@ body:has(.ds-consent) .assistant-root { display: none; }
 @keyframes bubble-in { from { opacity: 0; transform: translateY(10px); } }
 @keyframes bubble-user { from { opacity: 0; transform: scale(.8); } }
 
+/* Respuesta redactada por la IA del navegador (W-70f): cursor mientras escribe y marca al terminar. */
+.assistant-bubble.is-writing::after { content: '▍'; margin-left: 1px; color: var(--as-accent); animation: caret 1s steps(2, start) infinite; }
+@keyframes caret { to { visibility: hidden; } }
+.assistant-ai-badge { margin-top: -2px; color: var(--as-faint); font-size: 11.5px; }
 .assistant-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 .as-action { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 12px; background: var(--as-soft); color: var(--as-ink); font-size: 13.5px; font-weight: 600; text-decoration: none; box-shadow: 0 0 0 1px var(--as-line) inset; transition: transform 150ms var(--as-ease), background-color 150ms ease; }
 .as-action svg { width: 14px; height: 14px; }
@@ -136,7 +144,7 @@ body:has(.ds-consent) .assistant-root { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .assistant-fab, .fab-halo, .fab-spark, .assistant-teaser, .assistant-teaser.is-leaving, .assistant-panel, .assistant-panel.is-closing,
-  .assistant-panel > *, .assistant-bot > *, .assistant-bubble.user, .assistant-typing, .assistant-typing i, .assistant-online, .fab-chat { animation: none !important; }
+  .assistant-panel > *, .assistant-bot > *, .assistant-bubble.user, .assistant-typing, .assistant-typing i, .assistant-online, .fab-chat, .assistant-bubble.is-writing::after { animation: none !important; }
   .fab-halo, .fab-spark { display: none; }
   .fab-icon { transition: none; }
 }

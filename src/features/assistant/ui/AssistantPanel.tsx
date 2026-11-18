@@ -11,13 +11,18 @@ import { suggestionsFor, type Index, type Kb, type KbAction, type KbEntry } from
 import { answerFor, contextForRoute, reply, type Reply } from '../core/reply'
 import { loadKb } from '../infra/kbLoader'
 import { typingDelay } from '../core/launcher'
+import { kbLangFor } from '../core/reply'
+import { localAiFor, type LocalAi } from '../infra/browserAi'
 
 /** Primera letra en mayúscula (las preguntas de la base se escriben como las escribe la gente). */
 const capitalize = (s: string) => s.charAt(0).toLocaleUpperCase() + s.slice(1)
 /** Duración de la transición de cierre (el panel se encoge hacia el botón). */
 const CLOSE_MS = 200
 
-type Msg = { id: number; role: 'user'; text: string } | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down' }
+/** text/ai: respuesta redactada por la IA del navegador (W-70f), mientras se escribe ('writing') y al terminar ('done'). */
+type Msg =
+  | { id: number; role: 'user'; text: string }
+  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done' }
 
 export type PanelProps = {
   lang: string
@@ -43,6 +48,9 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
   const [failed, setFailed] = useState(false)
   const [msgs, setMsgs] = useState<Msg[]>([{ id: 0, role: 'bot', reply: { kind: 'greeting' } }])
   const [typing, setTyping] = useState(false)
+  /** IA integrada del navegador, si ya está disponible (W-70f); si no, respuestas fijas. */
+  const [ai, setAi] = useState<LocalAi | null>(null)
+  const [writing, setWriting] = useState(false)
   const [text, setText] = useState('')
   const panel = useRef<HTMLDivElement>(null)
   const list = useRef<HTMLDivElement>(null)
@@ -64,6 +72,13 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
 
   useEffect(() => input.current?.focus(), [data])
   useEffect(() => {
+    let alive = true
+    void localAiFor(kbLangFor(lang)).then((a) => alive && setAi(a))
+    return () => {
+      alive = false
+    }
+  }, [lang])
+  useEffect(() => {
     const el = list.current
     if (el) el.scrollTop = el.scrollHeight
   }, [msgs, typing])
@@ -71,8 +86,35 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
   const context = useMemo(() => pageContext ?? (data && inApp ? contextForRoute(data.index, section, sub) : undefined), [data, inApp, section, sub, pageContext])
   const ui = data?.kb.ui
 
+  /** Con IA del navegador: "escribiendo…", luego el texto en vivo; si falla, la respuesta fija. */
+  const writeWithAi = async (localAi: LocalAi, question: string, r: Extract<Reply, { kind: 'answer' }>) => {
+    const id = nextId.current++
+    let shown = false
+    setTyping(true)
+    setWriting(true)
+    const final = await localAi.rephrase(question, r.entry.a, (partial) => {
+      const text = partial.replace(/\*\*|`/g, '')
+      if (!shown) {
+        shown = true
+        setTyping(false)
+        setMsgs((m) => [...m, { id, role: 'bot', reply: r, text, ai: 'writing' }])
+      } else setMsgs((m) => m.map((x) => (x.id === id && x.role === 'bot' ? { ...x, text } : x)))
+    })
+    setTyping(false)
+    setWriting(false)
+    const done: Msg = final ? { id, role: 'bot', reply: r, text: final, ai: 'done' } : { id, role: 'bot', reply: r }
+    setMsgs((m) => (shown ? m.map((x) => (x.id === id ? done : x)) : [...m, done]))
+    track(final ? 'assistant_ai' : 'assistant_ai_fallback', { answer_id: r.entry.id })
+  }
+
   const push = (user: string, r: Reply) => {
     setMsgs((m) => [...m, { id: nextId.current++, role: 'user', text: user }])
+    if (r.kind === 'answer') track('assistant_answer', { answer_id: r.entry.id })
+    else track('assistant_fallback', { screen })
+    if (ai && r.kind === 'answer' && r.entry.id !== 'gracias') {
+      void writeWithAi(ai, user, r)
+      return
+    }
     setTyping(true)
     // Pausa de "escribiendo…": más larga cuanto más larga la respuesta, para que se sienta atendida.
     const length = r.kind === 'answer' ? r.entry.a.length : 120
@@ -83,16 +125,14 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
       },
       prefersReducedMotion() ? 0 : typingDelay(length),
     )
-    if (r.kind === 'answer') track('assistant_answer', { answer_id: r.entry.id })
-    else track('assistant_fallback', { screen })
   }
   const ask = () => {
     const q = text.trim()
-    if (!q || !data || typing) return
+    if (!q || !data || typing || writing) return
     setText('')
     push(q, reply(data.index, q, context))
   }
-  const choose = (e: KbEntry) => data && !typing && push(capitalize(e.q[0]), answerFor(data.index, e))
+  const choose = (e: KbEntry) => data && !typing && !writing && push(capitalize(e.q[0]), answerFor(data.index, e))
   const feedback = (id: number, answerId: string, value: 'up' | 'down') => {
     setMsgs((m) => m.map((x) => (x.id === id && x.role === 'bot' ? { ...x, feedback: value } : x)))
     track('assistant_feedback', { answer_id: answerId, value })
@@ -188,7 +228,7 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
           disabled={!data}
           onChange={(e) => setText(e.target.value)}
         />
-        <button type="submit" className="assistant-send" aria-label={ui?.send ?? ''} title={ui?.send} disabled={!data || !text.trim() || typing}>
+        <button type="submit" className="assistant-send" aria-label={ui?.send ?? ''} title={ui?.send} disabled={!data || !text.trim() || typing || writing}>
           <Icon name="send" />
         </button>
       </form>
@@ -244,7 +284,10 @@ function BotMessage({
   }
   return (
     <div className="assistant-bot">
-      <p className="assistant-bubble bot">{r.entry.a}</p>
+      <p className={'assistant-bubble bot' + (msg.ai === 'writing' ? ' is-writing' : '')}>{msg.text ?? r.entry.a}</p>
+      {msg.ai === 'done' && <small className="assistant-ai-badge">{ui.aiBadge}</small>}
+      {msg.ai === 'writing' ? null : (
+        <>
       {r.entry.actions && <Actions actions={r.entry.actions} onAction={onAction} />}
       {r.entry.id !== 'gracias' && (
         <div className="assistant-feedback">
@@ -264,6 +307,8 @@ function BotMessage({
         </div>
       )}
       {r.related.length > 0 && <Chips title={ui.related} entries={r.related} onChoose={onChoose} />}
+        </>
+      )}
     </div>
   )
 }

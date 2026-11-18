@@ -1,7 +1,7 @@
 /**
  * Botón flotante del asistente (W-70d): textos (disponibles antes de descargar la base) y cuándo
  * llamar la atención. Regla de UX: la burbuja de bienvenida sale una vez por visita y, cuando el
- * usuario ya abrió el asistente, se apagan los destellos (ya lo descubrió; no hay que insistir).
+ * usuario ya abrió el asistente, halo y destellos pasan a un modo tranquilo (siguen, más espaciados).
  */
 
 export const LAUNCHER_TEXT: Readonly<Record<string, { label: string; teaser: string; dismiss: string }>> = {
