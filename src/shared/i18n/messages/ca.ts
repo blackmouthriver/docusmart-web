@@ -14,6 +14,7 @@ const ca: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Estudi",
+  'pwa.install': "Instal·la en aquest dispositiu",
   'nav.collapse': "Replegar el menú",
   'nav.expand': "Desplegar el menú",
   'nav.sections': "Seccions",

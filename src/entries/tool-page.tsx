@@ -1,4 +1,5 @@
 import '../shared/platform/trustedTypes'
+import { registerServiceWorker } from '../shared/platform/pwa'
 // Monta la herramienta de una página propia (/unir-pdf, /imagen-a-pdf…) dentro
 // de #tool. El texto de la página ya viene en el HTML generado; aquí solo se
 // agrega la parte interactiva, reutilizando los componentes de la app web.
@@ -140,3 +141,6 @@ document.addEventListener('click', (e) => {
   const a = (e.target as HTMLElement).closest<HTMLElement>('[data-track]')
   if (a) track('landing_cta_click', { cta: a.dataset.track ?? '', destination: 'play_store' })
 })
+
+// App instalable y sin conexión (W-16).
+registerServiceWorker()

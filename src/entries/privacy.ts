@@ -1,6 +1,7 @@
 // Política de privacidad (W-71): mismo tema que la web, índice que marca la sección visible,
 // aparición suave de las tarjetas y botón para volver arriba. El texto legal está en el HTML.
 import '../shared/platform/trustedTypes'
+import { registerServiceWorker } from '../shared/platform/pwa'
 import '../shared/platform/fonts'
 import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
 import { initMotion, scrollBehavior } from '../shared/platform/motion'
@@ -40,3 +41,6 @@ if (top) {
   toggle()
   top.addEventListener('click', () => scrollTo({ top: 0, behavior: scrollBehavior() }))
 }
+
+// App instalable y sin conexión (W-16).
+registerServiceWorker()

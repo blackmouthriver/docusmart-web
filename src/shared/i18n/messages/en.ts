@@ -14,6 +14,7 @@ const en: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Study",
+  'pwa.install': "Install on this device",
   'nav.collapse': "Collapse menu",
   'nav.expand': "Expand menu",
   'nav.sections': "Sections",

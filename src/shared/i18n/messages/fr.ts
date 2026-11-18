@@ -14,6 +14,7 @@ const fr: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Étude",
+  'pwa.install': "Installer sur cet appareil",
   'nav.collapse': "Réduire le menu",
   'nav.expand': "Développer le menu",
   'nav.sections': "Sections",

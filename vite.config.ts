@@ -3,6 +3,7 @@ import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
 import { existsSync, readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
 import { generatedHtml } from './tools/locales/index.mjs'
 
 // Estructura: las páginas HTML viven en site/ (raíz de Vite), el código en src/,
@@ -67,11 +68,36 @@ const preloadDisplayFont = (): Plugin => ({
   },
 })
 
+// App instalable (W-16): cada página enlaza el manifest y el ícono para iOS; la que no tiene
+// color de barra lo recibe. Va aquí y no en cada plantilla para que ninguna página quede afuera.
+const ICON_LINK = '<link rel="icon" href="/img/icon.svg" type="image/svg+xml">'
+const pwaHead = (): Plugin => ({
+  name: 'pwa-head',
+  transformIndexHtml: (html) => {
+    if (!html.includes(ICON_LINK)) return html
+    const extra = ['<link rel="manifest" href="/manifest.webmanifest">', '<link rel="apple-touch-icon" href="/img/pwa/apple-touch-icon.png">']
+    if (!html.includes('name="theme-color"')) extra.push('<meta name="theme-color" content="#0B1020">')
+    return html.replace(ICON_LINK, [ICON_LINK, ...extra].join('\n'))
+  },
+})
+
+// El service worker (src/sw/sw.js) se publica como /sw.js con la versión del build: cada
+// publicación instala uno nuevo y borra la caché de páginas de la anterior.
+const swVersion = (): Plugin => ({
+  name: 'sw-version',
+  apply: 'build',
+  generateBundle(_opts, bundle) {
+    const version = createHash('sha256').update(Object.keys(bundle).sort().join('\n')).digest('hex').slice(0, 12)
+    const source = readFileSync(resolve(ROOT, 'src', 'sw', 'sw.js'), 'utf-8').replace("'__SW_VERSION__'", `'${version}'`)
+    this.emitFile({ type: 'asset', fileName: 'sw.js', source })
+  },
+})
+
 // Multipágina: landing en "/", política en "/privacidad", app web en "/app/" y una página por herramienta.
 export default defineConfig({
   root: SITE,
   publicDir: resolve(ROOT, 'public'),
-  plugins: [react(), cleanUrls(), serveSrcInDev(), preloadDisplayFont()],
+  plugins: [react(), cleanUrls(), serveSrcInDev(), preloadDisplayFont(), pwaHead(), swVersion()],
   // Las páginas de site/ cargan su código desde ../src: en desarrollo se permite leer todo el proyecto.
   server: { fs: { allow: [ROOT] } },
   build: {

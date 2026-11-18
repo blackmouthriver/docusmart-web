@@ -14,6 +14,7 @@ export const es = {
   'nav.short.pdf': 'PDF',
   'nav.short.qr': 'QR',
   'nav.short.study': 'Estudio',
+  'pwa.install': "Instalar en este equipo",
   'nav.collapse': "Contraer menú",
   'nav.expand': "Expandir menú",
   'nav.sections': 'Secciones',

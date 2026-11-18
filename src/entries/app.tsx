@@ -1,4 +1,5 @@
 import '../shared/platform/trustedTypes'
+import { registerServiceWorker } from '../shared/platform/pwa'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from '../app/App'
@@ -32,3 +33,6 @@ void loadMessages(lang).then((dict) =>
     </StrictMode>,
   ),
 )
+
+// App instalable y sin conexión (W-16).
+registerServiceWorker()
