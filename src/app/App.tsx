@@ -11,7 +11,7 @@ import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
 import { loadCollapsed, saveCollapsed } from './sidebarPref'
-import { isStandalone, onOfflineReady, promptInstall, watchInstallPrompt } from '../shared/platform/pwa'
+import { isStandalone, onOfflineReady, onUpdateReady, promptInstall, watchInstallPrompt } from '../shared/platform/pwa'
 import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
 import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 import { Home } from '../features/home/ui/Home'
@@ -132,6 +132,10 @@ export function App() {
   }, [])
   // App instalada (W-16): avisa cuando ya descargó todas las herramientas para usarlas sin conexión.
   useEffect(() => onOfflineReady(() => toast(t('pwa.offlineReady'))), [toast, t])
+  // Versión nueva publicada mientras la app seguía abierta: aviso con "Actualizar" (recarga
+  // cuando el usuario quiera, sin cortar lo que esté haciendo) y "Más tarde".
+  const [updateReady, setUpdateReady] = useState(false)
+  useEffect(() => onUpdateReady(() => setUpdateReady(true)), [])
 
   const active = route.section === 'ver' ? '' : route.section
   let screen: ReactNode
@@ -270,6 +274,19 @@ export function App() {
             </div>
           ))}
         </div>
+
+        {updateReady && (
+          <div className="update-bar" role="status">
+            <Icon name="download" />
+            <span>{t('pwa.updateReady')}</span>
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => location.reload()}>
+              {t('pwa.update')}
+            </button>
+            <button type="button" className="icon-btn" aria-label={t('pwa.later')} title={t('pwa.later')} onClick={() => setUpdateReady(false)}>
+              <Icon name="close" />
+            </button>
+          </div>
+        )}
       </div>
     </AppContext.Provider>
   )
