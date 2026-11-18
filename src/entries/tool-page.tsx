@@ -13,6 +13,8 @@ import { mountConsentBanner } from '../shared/platform/consent'
 import { rememberLangChoice } from '../shared/platform/langChoice'
 import '../shared/platform/fonts'
 import '../app/app.css'
+import { quietPageTransitions } from '../shared/platform/motion'
+import '../shared/ui/motion.css'
 import './tool-page.css'
 
 const PdfTool = lazy(() =>
@@ -95,6 +97,7 @@ function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
 initAnalytics()
 mountConsentBanner()
 rememberLangChoice()
+quietPageTransitions()
 
 // La herramienta habla el idioma de la página (/en/merge-pdf → inglés), no el guardado.
 const pageLang = document.documentElement.lang
