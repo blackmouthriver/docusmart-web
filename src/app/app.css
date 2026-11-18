@@ -822,6 +822,26 @@ html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms v
   --danger: #F87171;
   --success: #4ADE80;
 }
+/* Tema "Sistema" antes de que cargue el script (páginas de herramientas, sin parpadeo):
+   los mismos tonos; el resto de los ajustes oscuros llega al aplicar data-theme. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --night: #070A12;
+    --night-2: #0C1019;
+    --night-line: #1E2536;
+    --paper: #0E1116;
+    --paper-2: #171B22;
+    --card: #1A1F27;
+    --line: #2A303B;
+    --line-strong: #3A4150;
+    --ink: #E7E9EE;
+    --ink-soft: #B6BCC8;
+    --ink-faint: #8C93A1;
+    --danger: #F87171;
+    --success: #4ADE80;
+  }
+}
 [data-theme="dark"] .bottom-nav { background: rgba(14, 17, 22, 0.9); }
 [data-theme="dark"] .btn-primary { color: #0B1020; }
 [data-theme="dark"] .btn-soft:hover:not(:disabled) { background: #222833; }

@@ -129,6 +129,9 @@
 .tp-foot a { color: inherit; }
 .tool-page .toast-wrap { bottom: 24px; }
 
+/* Modo oscuro: el azul de acento se aclara, así que el texto encima va oscuro (como los botones de la app). */
+[data-theme="dark"] .tp-nav nav a.tp-nav-cta, [data-theme="dark"] .tp-step-ico::after { color: #0B1020; }
+
 /* "Reducir movimiento": todo quieto y visible. */
 @media (prefers-reduced-motion: reduce) {
   .tp-hero::after, .tp-hero::before, .tp-hero-text > *, .tp-hero-art, .tp-ring, .tp-tile, .tp-scan, .tp-chip,
