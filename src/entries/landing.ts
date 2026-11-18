@@ -4,7 +4,7 @@ import { initAnalytics, track } from '../shared/platform/analytics'
 import { mountConsentBanner } from '../shared/platform/consent'
 import { rememberLangChoice } from '../shared/platform/langChoice'
 import { applyTheme, loadAppearance, watchSystemTheme } from '../app/appearance'
-import { initMotion } from '../shared/platform/motion'
+import { initMotion, prefersReducedMotion } from '../shared/platform/motion'
 import '../shared/ui/motion.css'
 
 rememberLangChoice()
@@ -64,6 +64,17 @@ addEventListener('keydown', (e) => {
 
 // Entradas al hacer scroll (sistema de movimiento común, W-72)
 initMotion()
+
+// Luz que sigue al puntero en las tarjetas de Funciones y Planes (solo con ratón y sin "reducir movimiento").
+if (matchMedia('(hover: hover) and (pointer: fine)').matches && !prefersReducedMotion()) {
+  document.querySelectorAll<HTMLElement>('.tile, .plan').forEach((card) =>
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect()
+      card.style.setProperty('--mx', `${Math.round(e.clientX - r.left)}px`)
+      card.style.setProperty('--my', `${Math.round(e.clientY - r.top)}px`)
+    }),
+  )
+}
 
 // Altura real del recorrido de la línea de escaneo del teléfono
 const phoneScreen = document.querySelector<HTMLElement>('#hero-phone .phone-screen')

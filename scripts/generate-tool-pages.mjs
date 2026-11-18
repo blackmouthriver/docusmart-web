@@ -356,7 +356,14 @@ ${langMenu(loc, hubPath, 'tp-lang', '      ')}
 
   <div class="tp-wrap th-body">
     <nav class="th-jump" aria-label="${esc(ui.hubJump)}">
-${CATEGORIES.map((c) => `      <a href="#cat-${c.id}" data-jump="${c.id}">${svg(c.icon, 'th-svg')}${esc(ui.cats[c.id])}</a>`).join('\n')}
+      <div class="th-marquee">
+        <div class="th-track">
+${CATEGORIES.map((c) => `          <a href="#cat-${c.id}" data-jump="${c.id}">${svg(c.icon, 'th-svg')}${esc(ui.cats[c.id])}</a>`).join('\n')}
+        </div>
+        <div class="th-track" aria-hidden="true">
+${CATEGORIES.map((c) => `          <a href="#cat-${c.id}" data-jump="${c.id}" tabindex="-1">${svg(c.icon, 'th-svg')}${esc(ui.cats[c.id])}</a>`).join('\n')}
+        </div>
+      </div>
     </nav>
     <div id="th-results" aria-live="polite">
 ${sections}

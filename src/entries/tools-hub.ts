@@ -25,7 +25,12 @@ trackScreen('ToolsHub')
 const input = document.querySelector<HTMLInputElement>('#th-q')
 const sections = [...document.querySelectorAll<HTMLElement>('[data-cat]')]
 const empty = document.querySelector<HTMLElement>('.th-empty')
-const jumps = new Map([...document.querySelectorAll<HTMLAnchorElement>('[data-jump]')].map((a) => [`cat-${a.dataset.jump}`, a]))
+/** Accesos de cada categoría (el carrusel tiene dos copias de cada uno). */
+const jumps = new Map<string, HTMLAnchorElement[]>()
+document.querySelectorAll<HTMLAnchorElement>('[data-jump]').forEach((a) => {
+  const id = `cat-${a.dataset.jump}`
+  jumps.set(id, [...(jumps.get(id) ?? []), a])
+})
 
 function filter(query: string) {
   let total = 0
@@ -39,7 +44,7 @@ function filter(query: string) {
     section.hidden = shown === 0
     // Al filtrar, la sección se muestra ya visible (sin esperar a desplazarse).
     if (query) section.classList.add('is-in')
-    jumps.get(section.id)?.toggleAttribute('aria-disabled', shown === 0)
+    jumps.get(section.id)?.forEach((a) => a.toggleAttribute('aria-disabled', shown === 0))
     total += shown
   }
   if (empty) empty.hidden = total > 0
