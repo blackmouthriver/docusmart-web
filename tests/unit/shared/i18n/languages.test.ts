@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { LANGS, detectLanguage, isLang, langFromTimeZone } from '../../../../src/shared/i18n/languages'
-import { ACCENTS, DEFAULT_APPEARANCE, accentVars, applyAppearance, parseAppearance, resolveTheme } from '../../../../src/app/appearance'
+import { ACCENTS, DEFAULT_APPEARANCE, accentVars, applyAppearance, applyTheme, parseAppearance, resolveTheme } from '../../../../src/app/appearance'
 
 describe('idiomas', () => {
   it('los 12 de la app', () => {
@@ -62,6 +62,15 @@ describe('apariencia', () => {
     expect(root.style.colorScheme).toBe('dark')
     expect(vars['--blue']).toBe('#FCA5A5')
     expect(vars['--font-scale']).toBe('1.3')
+  })
+
+  it('solo el tema, sin tocar acento ni letra (portada)', () => {
+    const setProperty = vi.fn()
+    const root = { dataset: {} as Record<string, string>, style: { colorScheme: '', setProperty } }
+    expect(applyTheme({ theme: 'dark', accent: 'red', font: 'xlarge' }, root as unknown as HTMLElement)).toBe('dark')
+    expect(root.dataset.theme).toBe('dark')
+    expect(root.style.colorScheme).toBe('dark')
+    expect(setProperty).not.toHaveBeenCalled()
   })
 })
 

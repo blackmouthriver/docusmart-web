@@ -36,6 +36,11 @@ describe('apariencia en el navegador', () => {
     expect(root.dataset.theme).toBe('dark')
     stop()
     expect(mq.removeEventListener).toHaveBeenCalled()
+    // Con otra forma de aplicar (la portada aplica solo el tema).
+    const apply = vi.fn()
+    watchSystemTheme(() => ({ ...DEFAULT_APPEARANCE, theme: 'system' }), apply)
+    listener!()
+    expect(apply).toHaveBeenCalledOnce()
     vi.stubGlobal('matchMedia', undefined)
     expect(typeof watchSystemTheme(() => DEFAULT_APPEARANCE)).toBe('function')
   })

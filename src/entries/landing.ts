@@ -3,10 +3,15 @@ import '../shared/platform/fonts'
 import { initAnalytics, track } from '../shared/platform/analytics'
 import { mountConsentBanner } from '../shared/platform/consent'
 import { rememberLangChoice } from '../shared/platform/langChoice'
+import { applyTheme, loadAppearance, watchSystemTheme } from '../app/appearance'
 import { initMotion } from '../shared/platform/motion'
 import '../shared/ui/motion.css'
 
 rememberLangChoice()
+
+// Tema claro u oscuro elegido en Ajustes de la app ("Sistema" ya lo resuelve el CSS sin esperar al script).
+applyTheme(loadAppearance())
+watchSystemTheme(loadAppearance, applyTheme)
 
 document.documentElement.classList.add('js')
 

@@ -110,6 +110,9 @@ Facebook e Instagram #51–#52; correo de contacto #53.
   `src/shared/platform/motion.ts` (`initMotion`, `withViewTransition`, `scrollBehavior`). Solo `transform` y
   `opacity`, y siempre respetando "reducir movimiento". Las reglas comunes van en `:where()` para que cada
   página pueda ajustarlas sin pelear especificidad.
+- **Modo oscuro de la portada:** tokens oscuros en el `<style>` de `site/index.html`, con
+  `@media (prefers-color-scheme: dark)` para "Sistema" (sin JS, sin parpadeo) y `[data-theme="dark"]` para la
+  elección guardada, que aplica `applyTheme` en `landing.ts` (solo tema: el acento no cambia la portada).
 - Comentarios, documentación y mensajes de commit en español.
 
 ## Flujo de trabajo

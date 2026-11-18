@@ -73,20 +73,26 @@ export function saveAppearance(a: Appearance) {
   }
 }
 
-/** Aplica la apariencia al documento (tema, acento y tamaño de letra). */
-export function applyAppearance(a: Appearance, root: HTMLElement = document.documentElement) {
+/** Solo el tema claro u oscuro, sin acento ni tamaño de letra (la portada, con sus colores de marca). */
+export function applyTheme(a: Appearance, root: HTMLElement = document.documentElement): 'light' | 'dark' {
   const theme = resolveTheme(a.theme, systemDark())
   root.dataset.theme = theme
   root.style.colorScheme = theme
+  return theme
+}
+
+/** Aplica la apariencia al documento (tema, acento y tamaño de letra). */
+export function applyAppearance(a: Appearance, root: HTMLElement = document.documentElement) {
+  const theme = applyTheme(a, root)
   for (const [k, v] of Object.entries(accentVars(a.accent, theme))) root.style.setProperty(k, v)
   root.style.setProperty('--font-scale', String(FONT_SCALES[a.font]))
 }
 
 /** Con el tema "Sistema", sigue los cambios del sistema operativo. */
-export function watchSystemTheme(get: () => Appearance): () => void {
+export function watchSystemTheme(get: () => Appearance, apply: (a: Appearance) => unknown = applyAppearance): () => void {
   if (typeof matchMedia !== 'function') return () => {}
   const mq = matchMedia('(prefers-color-scheme: dark)')
-  const on = () => get().theme === 'system' && applyAppearance(get())
+  const on = () => get().theme === 'system' && apply(get())
   mq.addEventListener('change', on)
   return () => mq.removeEventListener('change', on)
 }
