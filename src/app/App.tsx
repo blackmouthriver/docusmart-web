@@ -1,4 +1,7 @@
 import { Fragment, Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { flushSync } from 'react-dom'
+import { withViewTransition } from '../shared/platform/motion'
+import { ScreenSkeleton } from '../shared/ui/ui'
 import { Icon, type IconName } from '../shared/ui/Icon'
 import { analyticsConfigured, trackScreen } from '../shared/platform/analytics'
 import { AppContext, parseHash, type Route } from './state'
@@ -63,10 +66,16 @@ export function App() {
   const current = LANGS.find((l) => l.code === lang)!
 
   useEffect(() => {
-    const onHash = () => {
-      setRoute(parseHash())
-      window.scrollTo({ top: 0 })
-    }
+    // Cambio de pantalla con transición suave (W-74): solo se anima el contenido, no la barra lateral.
+    const onHash = () =>
+      void withViewTransition(
+        () => {
+          flushSync(() => setRoute(parseHash()))
+          window.scrollTo({ top: 0 })
+        },
+        document,
+        'vt-screen',
+      )
     addEventListener('hashchange', onHash)
     return () => removeEventListener('hashchange', onHash)
   }, [])
@@ -164,7 +173,7 @@ export function App() {
         <main className="main">
           <div className="content">
             <div className="screen" key={route.section === 'estudio' ? route.section : route.section + (route.sub ?? '')}>
-              <Suspense fallback={<div className="faint" style={{ padding: 24 }}>{t('common.loading')}</div>}>{screen}</Suspense>
+              <Suspense fallback={<ScreenSkeleton label={t('common.loading')} />}>{screen}</Suspense>
             </div>
           </div>
         </main>

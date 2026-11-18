@@ -59,15 +59,47 @@ export function initMotion(root: Document = document): () => void {
   return observeReveal(root.querySelectorAll('.reveal'))
 }
 
-type ViewTransitionDoc = { startViewTransition?: (update: () => void) => unknown }
+type ViewTransitionLike = { finished?: Promise<unknown>; updateCallbackDone?: Promise<unknown>; skipTransition?: () => void }
+type ViewTransitionDoc = {
+  startViewTransition?: (update: () => void) => ViewTransitionLike | undefined
+  documentElement?: { classList: { add: (c: string) => void; remove: (c: string) => void } }
+  visibilityState?: string
+}
 
-/** Cambia la vista con una transición suave donde exista (View Transitions); si no, al instante. */
-export function withViewTransition(update: () => void, doc: ViewTransitionDoc | undefined = globalThis.document): void {
-  if (!doc?.startViewTransition || prefersReducedMotion()) {
+/**
+ * Cambia la vista con una transición suave donde exista (View Transitions); si no, al instante.
+ * `rootClass` marca <html> mientras dura, para que el CSS anime solo esa transición
+ * (por ejemplo, la pantalla de la app sin mover la barra lateral). Resuelve al terminar.
+ * Con la pestaña oculta cambia al instante: el navegador dejaría la transición esperando
+ * al próximo cuadro y la vista no cambiaría hasta volver a la pestaña. Por la misma razón,
+ * si el cambio no ocurrió en `maxWaitMs` (el navegador no está dibujando), se salta la animación.
+ */
+export async function withViewTransition(
+  update: () => void,
+  doc: ViewTransitionDoc | undefined = globalThis.document,
+  rootClass?: string,
+  maxWaitMs = 500,
+): Promise<void> {
+  if (!doc?.startViewTransition || prefersReducedMotion() || doc.visibilityState === 'hidden') {
     update()
     return
   }
-  doc.startViewTransition.call(doc, update)
+  const root = rootClass ? doc.documentElement : undefined
+  root?.classList.add(rootClass!)
+  const vt = doc.startViewTransition.call(doc, update)
+  const timer = setTimeout(() => vt?.skipTransition?.(), maxWaitMs)
+  vt?.updateCallbackDone?.then(
+    () => clearTimeout(timer),
+    () => clearTimeout(timer),
+  )
+  try {
+    await vt?.finished
+  } catch {
+    /* transición saltada (pestaña oculta, otra navegación): la vista ya cambió */
+  } finally {
+    clearTimeout(timer)
+    root?.classList.remove(rootClass!)
+  }
 }
 
 type Settled = { catch?: (onRejected: () => void) => unknown }

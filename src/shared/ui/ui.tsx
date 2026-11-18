@@ -121,8 +121,24 @@ export function Notice({ kind = 'info', children }: { kind?: 'info' | 'error' | 
   const icon: IconName = kind === 'error' ? 'alert' : kind === 'success' ? 'check' : 'info'
   return (
     <div className={'notice' + (kind === 'plain' ? '' : ' notice-' + kind)} role={kind === 'error' ? 'alert' : 'status'}>
-      <Icon name={icon} />
+      <span className="notice-ico">
+        <Icon name={icon} />
+      </span>
       <div>{children}</div>
+    </div>
+  )
+}
+
+/** Esqueleto mientras carga una pantalla (W-74): encabezado y tarjetas con un brillo que pasa. */
+export function ScreenSkeleton({ label }: { label: string }) {
+  return (
+    <div className="skel" role="status" aria-label={label}>
+      <i className="skel-hero" />
+      <div className="skel-grid">
+        {[0, 1, 2, 3, 4, 5].map((k) => (
+          <i key={k} className="skel-card" />
+        ))}
+      </div>
     </div>
   )
 }
