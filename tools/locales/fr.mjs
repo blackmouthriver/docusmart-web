@@ -615,6 +615,7 @@ export default {
       `<h1 aria-label="Tus documentos, en un solo lugar.">
           <span class="word">Tus</span>
           <span class="word">documentos,</span>
+          <br class="h1-break">
           <span class="word">en</span>
           <span class="word">un</span>
           <span class="word"><em>solo</em></span>
@@ -623,6 +624,7 @@ export default {
       `<h1 aria-label="Vos documents, au même endroit.">
           <span class="word">Vos</span>
           <span class="word">documents,</span>
+          <br class="h1-break">
           <span class="word">au</span>
           <span class="word">même</span>
           <span class="word"><em>endroit.</em></span>

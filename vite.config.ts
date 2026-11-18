@@ -52,11 +52,26 @@ const serveSrcInDev = (): Plugin => ({
   transformIndexHtml: { order: 'pre', handler: (html) => html.replace(/(src|href)="(?:\.\.\/)+src\//g, `$1="${ROOT_URL}/src/`) },
 })
 
+// Precarga la fuente de los títulos (Bricolage, alfabeto latino): así llega junto con el CSS y el
+// título de la portada, que la espera para no reacomodarse (CLS), aparece antes.
+const preloadDisplayFont = (): Plugin => ({
+  name: 'preload-display-font',
+  apply: 'build',
+  transformIndexHtml: {
+    order: 'post',
+    handler: (html, ctx) => {
+      const font = Object.keys(ctx.bundle ?? {}).find((f) => /bricolage-grotesque-latin-opsz-normal-[\w-]+\.woff2$/.test(f))
+      if (!font) return html
+      return html.replace('</head>', `<link rel="preload" href="/${font}" as="font" type="font/woff2" crossorigin>\n</head>`)
+    },
+  },
+})
+
 // Multipágina: landing en "/", política en "/privacidad", app web en "/app/" y una página por herramienta.
 export default defineConfig({
   root: SITE,
   publicDir: resolve(ROOT, 'public'),
-  plugins: [react(), cleanUrls(), serveSrcInDev()],
+  plugins: [react(), cleanUrls(), serveSrcInDev(), preloadDisplayFont()],
   // Las páginas de site/ cargan su código desde ../src: en desarrollo se permite leer todo el proyecto.
   server: { fs: { allow: [ROOT] } },
   build: {

@@ -181,6 +181,11 @@ p { margin: 0; }
   color: #fff;
 }
 .hero h1 .word { display: inline-block; }
+/* El título y la marca gigante esperan a su fuente (Bricolage, precargada): con la de reserva los
+   cortes de línea cambiaban al llegar la real (CLS). landing.ts agrega html.fonts-ready; sin
+   JavaScript, o si la fuente tarda, aparecen igual (el título a los 2 s, la marca a los 3 s). */
+html:not(.fonts-ready) .hero h1 { visibility: hidden; animation: show-late 0s 2s forwards; }
+@keyframes show-late { to { visibility: visible; } }
 .hero h1 em { font-style: normal; color: transparent; background: linear-gradient(90deg, var(--blue-light), var(--scan)); -webkit-background-clip: text; background-clip: text; }
 .hero-lead { margin-top: 24px; max-width: 520px; font-size: clamp(17px, 1.6vw, 19px); color: var(--on-night-soft); }
 .hero-actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
@@ -240,12 +245,11 @@ p { margin: 0; }
   color: transparent; background: linear-gradient(180deg, rgba(231,234,243,.16), rgba(231,234,243,0) 85%);
   -webkit-background-clip: text; background-clip: text;
   margin-bottom: -0.12em; user-select: none;
-  /* Oculta desde el primer pintado (sin ocupar menos espacio) hasta que llega su fuente: landing.ts
-     agrega .is-ready. Sin JavaScript aparece igual a los 3 s. */
+  /* Oculta desde el primer pintado (sin ocupar menos espacio) hasta html.fonts-ready; ver el título. */
   visibility: hidden; opacity: 0; transition: opacity .6s ease;
   animation: wordmark-show 0s 3s forwards;
 }
-.wordmark.is-ready { visibility: visible; opacity: 1; animation: none; }
+.fonts-ready .wordmark { visibility: visible; opacity: 1; animation: none; }
 @keyframes wordmark-show { to { visibility: visible; opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .wordmark { transition: none; } }
 /* En pantallas anchas el h1 de la portada es enorme (~89 px): ahí calza la reserva "Display". */
@@ -494,7 +498,7 @@ footer { border-top: 1px solid var(--line); padding: 40px 0 48px; color: var(--i
 /* ── Animaciones de entrada ──────────────────────── */
 .js .reveal { opacity: 0; transform: translateY(16px); filter: blur(6px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out), filter 700ms var(--ease-out); transition-delay: var(--d, 0ms); }
 .js .reveal.is-in { opacity: 1; transform: none; filter: none; }
-.js .hero h1 .word { opacity: 0; transform: translateY(24px); filter: blur(8px); animation: word-in 800ms var(--ease-out) forwards; animation-delay: calc(120ms + var(--i) * 70ms); }
+.fonts-ready .hero h1 .word { opacity: 0; transform: translateY(24px); filter: blur(8px); animation: word-in 800ms var(--ease-out) forwards; animation-delay: calc(120ms + var(--i) * 70ms); }
 @keyframes word-in { to { opacity: 1; transform: none; filter: none; } }
 
 /* ── Microinteracciones de tarjetas (Funciones y Planes) ──
@@ -525,7 +529,7 @@ footer { border-top: 1px solid var(--line); padding: 40px 0 48px; color: var(--i
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .scanline { display: none; }
-  .js .reveal, .js .hero h1 .word { opacity: 1; transform: none; filter: none; }
+  .js .reveal, .fonts-ready .hero h1 .word { opacity: 1; transform: none; filter: none; }
   .timer .prog { stroke-dashoffset: 120; }
 }
 

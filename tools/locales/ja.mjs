@@ -601,6 +601,7 @@ export default {
       `<h1 aria-label="Tus documentos, en un solo lugar.">
           <span class="word">Tus</span>
           <span class="word">documentos,</span>
+          <br class="h1-break">
           <span class="word">en</span>
           <span class="word">un</span>
           <span class="word"><em>solo</em></span>
@@ -608,6 +609,7 @@ export default {
         </h1>`,
       `<h1 aria-label="あなたの書類を、ひとつの場所に。">
           <span class="word">あなたの書類を、</span>
+          <br class="h1-break">
           <span class="word"><em>ひとつの場所に。</em></span>
         </h1>`,
     ],
