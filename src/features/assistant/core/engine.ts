@@ -29,6 +29,8 @@ const ORDER_STEP = 0.15
 const PHRASE_BOOST = 1.5
 /** Sin herramienta en contexto, las respuestas generales priman sobre las preguntas repetidas de cada herramienta. */
 const GENERAL_BOOST = 1.2
+/** La entrada principal de cada herramienta (qué hace y sus pasos) responde el "cómo"; sus FAQ, lo específico. */
+const MAIN_TOOL_BOOST = 1.25
 /** Plus para las entradas de la herramienta de la página actual. */
 const CONTEXT_BOOST = 1.3
 /** Puntaje mínimo y proporción mínima de palabras encontradas para responder con confianza. */
@@ -124,6 +126,7 @@ export function search(index: Index, query: string, opts: { context?: string; li
     score *= orderBoost([...asked], doc.qSeqs)
     if (doc.entry.q.some((q) => q.split(/\s+/).length > 1 && normalized.includes(normalizeForSearch(q)))) score *= PHRASE_BOOST
     if (!opts.context && !doc.entry.tool) score *= GENERAL_BOOST
+    if (doc.entry.tool && doc.entry.id === `tool:${doc.entry.tool}`) score *= MAIN_TOOL_BOOST
     if (opts.context && doc.entry.tool === opts.context) score *= CONTEXT_BOOST
     scored.push({ entry: doc.entry, score, matched })
   }

@@ -18,6 +18,7 @@ export const es = {
   'nav.viewer': 'Visor',
   'side.privacy': 'Tus archivos se procesan en este navegador. No se suben a ningún servidor.',
   'side.playOn': "Disponible en",
+  'assistant.open': "Asistente",
   'side.getApp': '¿Más funciones? Descarga la app →',
   'side.analytics': 'Preferencias de analítica',
   'common.loading': 'Cargando…',

@@ -18,6 +18,7 @@ const en: Messages = {
   'nav.viewer': "Viewer",
   'side.privacy': "Your files are processed in this browser. They are never uploaded to any server.",
   'side.playOn': "Get it on",
+  'assistant.open': "Assistant",
   'side.getApp': "More features? Get the app →",
   'side.analytics': "Analytics preferences",
   'common.loading': "Loading…",

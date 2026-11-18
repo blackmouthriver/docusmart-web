@@ -18,6 +18,7 @@ const it: Messages = {
   'nav.viewer': "Visualizzatore",
   'side.privacy': "I tuoi file vengono elaborati in questo browser. Non vengono caricati su nessun server.",
   'side.playOn': "Disponibile su",
+  'assistant.open': "Assistente",
   'side.getApp': "Più funzioni? Scarica l’app →",
   'side.analytics': "Preferenze di analisi",
   'common.loading': "Caricamento…",

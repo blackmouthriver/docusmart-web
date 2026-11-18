@@ -18,6 +18,7 @@ const ja: Messages = {
   'nav.viewer': "ビューアー",
   'side.privacy': "ファイルはこのブラウザ内で処理され、どのサーバーにもアップロードされません。",
   'side.playOn': "ダウンロード",
+  'assistant.open': "アシスタント",
   'side.getApp': "もっと機能が必要？アプリをダウンロード →",
   'side.analytics': "アナリティクスの設定",
   'common.loading': "読み込み中…",

@@ -18,6 +18,7 @@ const eu: Messages = {
   'nav.viewer': "Ikustailea",
   'side.privacy': "Zure fitxategiak nabigatzaile honetan prozesatzen dira. Ez dira inongo zerbitzarira igotzen.",
   'side.playOn': "Eskuragarri",
+  'assistant.open': "Laguntzailea",
   'side.getApp': "Funtzio gehiago? Deskargatu aplikazioa →",
   'side.analytics': "Analitika hobespenak",
   'common.loading': "Kargatzen…",

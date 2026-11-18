@@ -11,6 +11,7 @@ import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
 import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
+import { AssistantLauncher } from '../features/assistant/ui/AssistantLauncher'
 import { Home } from '../features/home/ui/Home'
 // Cada pantalla se descarga al entrar: pdf.js y las librerías de QR no frenan el Inicio.
 const Viewer = lazy(() => import('../features/viewer/ui/Viewer').then((m) => ({ default: m.Viewer })))
@@ -211,6 +212,9 @@ export function App() {
             </a>
           ))}
         </nav>
+
+        {/* Asistente (W-70c): en todas las pantallas salvo el Visor, que ocupa toda la vista. */}
+        {route.section !== 'ver' && <AssistantLauncher section={route.section} sub={route.sub} />}
 
         {settingsOpen && <SettingsPanel onClose={closeSettings} />}
 

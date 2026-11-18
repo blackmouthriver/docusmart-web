@@ -18,6 +18,7 @@ const fr: Messages = {
   'nav.viewer': "Lecteur",
   'side.privacy': "Vos fichiers sont traités dans ce navigateur. Ils ne sont envoyés sur aucun serveur.",
   'side.playOn': "Disponible sur",
+  'assistant.open': "Assistant",
   'side.getApp': "Plus de fonctions ? Téléchargez l’app →",
   'side.analytics': "Préférences d’analyse",
   'common.loading': "Chargement…",
