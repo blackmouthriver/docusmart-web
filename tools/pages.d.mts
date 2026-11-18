@@ -6,8 +6,12 @@ export type ToolSpec =
   | { kind: 'archive'; id: 'crear' | 'extraer' }
   | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' }
 
+export type CategoryId = 'organizar' | 'editar' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'escanear' | 'archivos' | 'qr'
+
 export interface ToolPage {
   slug: string
+  /** Categoría (W-76): una de CATEGORIES. */
+  category: CategoryId
   tool: ToolSpec
   title: string
   description: string
@@ -21,4 +25,9 @@ export interface ToolPage {
 }
 
 export const SITE: string
+export const FACEBOOK_URL: string
+export const INSTAGRAM_URL: string
+export const TIKTOK_URL: string
+/** Categorías de herramientas (W-76), en orden de presentación; el nombre está en ui.cats de cada idioma. */
+export const CATEGORIES: Array<{ id: CategoryId; icon: string }>
 export const pages: ToolPage[]

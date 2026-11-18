@@ -7,6 +7,9 @@ import { analyticsConfigured, track } from '../../../shared/platform/analytics'
 import { kindOf } from '../../../shared/files/files'
 import { useT } from '../../../shared/i18n/I18n'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
+import { CATEGORIES, countByCategory } from '../../tools/core/catalog'
+
+const COUNTS = countByCategory()
 
 const QUICK: Array<{ id: string; icon: IconName; cls: string; to: [string, string?] }> = [
   { id: 'imgPdf', icon: 'image', cls: 'ico-violet', to: ['convertir', 'img-pdf'] },
@@ -81,6 +84,27 @@ export function Home() {
               <small>{t(`quick.${q.id}.hint` as MessageKey)}</small>
             </span>
           </button>
+        ))}
+      </div>
+
+      {/* Todas las herramientas por categoría, como en la portada y /herramientas (W-79). */}
+      <div className="row home-cats-head">
+        <h2 className="section-title">{t('home.categories')}</h2>
+        <a className="btn btn-soft" href="#/herramientas">
+          {t('home.allTools')} <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div className="home-cats">
+        {CATEGORIES.map((c) => (
+          <a key={c.id} className="home-cat" href={`#/herramientas/${c.id}`}>
+            <span className="ico ico-blue">
+              <Icon name={c.icon} />
+            </span>
+            <span>
+              <b>{t(`cat.${c.id}` as MessageKey)}</b>
+              <small>{COUNTS[c.id] === 1 ? t('tools.one') : t('tools.many', { n: COUNTS[c.id] })}</small>
+            </span>
+          </a>
         ))}
       </div>
 

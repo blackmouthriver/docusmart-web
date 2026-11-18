@@ -31,6 +31,8 @@ Antes de pedir revisión: `npx tsc -b --noEmit`, `npx vitest run`, `npm run buil
   `scripts/generate-tool-pages.mjs`: **no editarlos a mano**. Cada herramienta tiene `category` en
   `tools/pages.mjs` (categorías en `CATEGORIES`, nombres en `ui.cats` de cada idioma); la portada muestra el
   resumen por categoría y `/herramientas` (`/en/tools`…) las lista en orden alfabético del idioma, con buscador.
+  En la app, `src/features/tools/core/catalog.ts` tiene las 39 herramientas con las mismas categorías (una prueba
+  verifica que coincidan con el sitio); la pantalla es `#/herramientas` y el inicio muestra los accesos por categoría.
 - `src/entries/` — entradas: `app.tsx` (/app/), `landing.ts` (portada), `tool-page.tsx` (páginas de herramienta),
   `tools-hub.ts` (/herramientas).
 - `src/app/` — armazón de la app: `App.tsx`, `state.ts` (contexto y `go()` de navegación por hash), `appearance.ts`.
