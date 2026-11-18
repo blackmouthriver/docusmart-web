@@ -100,3 +100,32 @@ traducir la base de conocimiento (unas 120 entradas × 12 idiomas).
 | W-70d | Widget en la portada y las páginas de herramientas (carga bajo demanda), en los 12 idiomas |
 | W-70e | Traducción de la base de conocimiento a los otros 10 idiomas, analítica con consentimiento y párrafo en la política de privacidad |
 | W-70f | (Opcional) Respuestas redactadas con la IA local del navegador cuando esté disponible |
+
+## 8. Cómo mejorar la base con el tiempo
+
+La base no aprende sola: se mejora con un ciclo corto que se repite (por ejemplo, una vez al mes). La regla es
+que **cada arreglo deja una pregunta de prueba**, así una mejora nunca rompe otra respuesta.
+
+1. **Detectar qué falla, sin leer lo que escriben los usuarios.** Con el consentimiento de analítica, el asistente
+   registra solo identificadores (W-70e): `assistant_feedback` con 👍/👎 y el `id` de la respuesta, y
+   `assistant_fallback` cuando no supo responder. En GA4 se ve qué respuestas reciben más 👎 y en qué páginas
+   aparece más el "no sé".
+2. **Conocer las preguntas reales, solo si el usuario quiere.** Cuando no hay respuesta, un botón "Enviar esta
+   pregunta" abre un correo a soporte con la pregunta ya escrita (W-70g): el usuario decide si lo envía y nada
+   se manda solo.
+3. **Arreglar en el lugar correcto:**
+
+   | Qué pasa | Dónde se arregla |
+   |---|---|
+   | La pregunta se escribe de otra forma ("achicar un PDF") | Agregar esa forma a `q` de la entrada en `tools/assistant/<idioma>.mjs` |
+   | Una palabra no se reconoce como otra ("juntar" = unir) | `SYNONYMS` en `src/features/assistant/core/text.ts` |
+   | La respuesta es imprecisa o vieja | `a` de la entrada; si es de una herramienta, su FAQ en `tools/pages.mjs` (mejora también la página) |
+   | Falta un tema | Entrada nueva con el mismo `id` en todos los idiomas |
+   | Responde otra cosa con confianza | Pregunta de prueba que lo detecte y, si hace falta, ajustar sinónimos o palabras vacías |
+
+4. **Probar y publicar:** agregar el caso a `tests/unit/features/assistant/questions.ts`, correr `npm run pages`
+   (regenera `public/assistant/*.json`) y `npm test`. El CI exige ≥ 85 % de aciertos y que lo fuera de tema no
+   reciba respuesta.
+5. **Más adelante (W-70f):** con la IA local del navegador, las respuestas se redactan con más naturalidad, pero
+   siempre a partir de esta misma base: mejorarla sigue siendo el camino.
+

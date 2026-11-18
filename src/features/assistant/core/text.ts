@@ -72,7 +72,7 @@ export function tokenize(text: string, lang: string): string[] {
   const syn = SYNONYMS[lang] ?? {}
   return normalizeForSearch(text)
     // "PDF/A" es un formato propio, no "pdf" + "a".
-    .replace(/pdf\s*\/\s*a/g, 'pdfa')
+    .replace(/pdf\s*\/\s*a\b/g, 'pdfa')
     .split(/[^\p{L}\p{N}]+/u)
     .filter((w) => w && !stop.has(w))
     .map((w) => {

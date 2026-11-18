@@ -204,6 +204,7 @@ terceros ni IA en la nube.
 | W-70d | Widget en la portada y las páginas de herramientas, cargado bajo demanda, en los 12 idiomas | 🤖 | Pendiente |
 | W-70e | Base traducida a los 10 idiomas restantes, analítica con consentimiento (solo IDs) y párrafo en la política de privacidad | 🤖 | Pendiente |
 | W-70f | (Opcional) Respuestas redactadas con la IA local del navegador (Chrome Prompt API) cuando esté disponible | 🤖 | Pendiente |
+| W-70g | **"Enviar esta pregunta"** cuando el asistente no sabe responder: abre un correo a soporte con la pregunta ya escrita; el usuario decide si lo envía (nada se manda solo). Sirve para conocer las preguntas reales y mejorar la base (ver `docs/CHATBOT.md`, sección 8) | 🤖 | Pendiente |
 
 ## Diseño visual y animaciones de todo el sitio
 
