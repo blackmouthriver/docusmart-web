@@ -160,8 +160,11 @@ ${alternates(pathFor)}
 <meta property="og:title" content="${esc(p.title)}">
 <meta property="og:description" content="${esc(p.description)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITE}/img/screen-home.webp">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="${SITE}/img/og/${loc.lang}.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 ${jsonLd(structured)}
 </script>
@@ -321,8 +324,11 @@ ${alternates(hubPath)}
 <meta property="og:title" content="${esc(ui.hubTitle)}">
 <meta property="og:description" content="${esc(ui.hubDescription)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITE}/img/screen-home.webp">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="${SITE}/img/og/${loc.lang}.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 ${jsonLd(structured)}
 </script>
@@ -445,6 +451,8 @@ for (const loc of LOCALES) {
     .replace(`<link rel="canonical" href="${SITE}/">`, `<link rel="canonical" href="${SITE}/${loc.lang}/">`)
     .replace(`<meta property="og:url" content="${SITE}/">`, `<meta property="og:url" content="${SITE}/${loc.lang}/">`)
     .replace('<meta property="og:locale" content="es_ES">', `<meta property="og:locale" content="${loc.ogLocale}">`)
+    // Imagen para compartir en el idioma de la portada (W-12, scripts/og-images.py).
+    .replace(`<meta property="og:image" content="${SITE}/img/og/es.jpg">`, `<meta property="og:image" content="${SITE}/img/og/${loc.lang}.jpg">`)
     .replace('<!doctype html>', '<!doctype html>\n<!-- Generado por scripts/generate-tool-pages.mjs desde site/index.html. No editar a mano. -->')
     // Un nivel más abajo (site/en/index.html): el script de entrada está un "../" más arriba.
     .replace(`src="${entryScript('landing.ts', 0)}"`, `src="${entryScript('landing.ts', 1)}"`)
