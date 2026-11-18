@@ -1,0 +1,45 @@
+/*
+ * Fuentes de reserva ajustadas (CLS): mientras se descargan Bricolage y Plus Jakarta, el navegador
+ * muestra Arial (o sus equivalentes de métricas iguales: Arimo, Liberation Sans) escalada para ocupar
+ * el mismo ancho y con las mismas alturas, así el texto no se reacomoda al llegar la fuente real.
+ * Medidas tomadas en docusmart.online con canvas.measureText (2026-11-18): a igual tamaño,
+ * Bricolage 800 ocupa el 92,45 % del ancho de Arial negrita (ascenso 0,93 y descenso 0,27 em) y
+ * Plus Jakarta 400 el 104,53 % de Arial (ascenso 1,04 y descenso 0,22 em).
+ * ascent/descent-override = métrica de la fuente real ÷ size-adjust.
+ */
+@font-face {
+  font-family: "Bricolage Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Arimo Bold"), local("Liberation Sans Bold"), local("Arial"), local("Arimo"), local("Liberation Sans");
+  font-weight: 600 900;
+  size-adjust: 92.45%;
+  ascent-override: 100.6%;
+  descent-override: 29.2%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Bricolage Fallback";
+  src: local("Arial"), local("ArialMT"), local("Arimo"), local("Liberation Sans");
+  font-weight: 100 599;
+  size-adjust: 93.04%;
+  ascent-override: 100%;
+  descent-override: 29%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Jakarta Fallback";
+  src: local("Arial"), local("ArialMT"), local("Arimo"), local("Liberation Sans");
+  font-weight: 100 549;
+  size-adjust: 104.53%;
+  ascent-override: 99.5%;
+  descent-override: 21.05%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Jakarta Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Arimo Bold"), local("Liberation Sans Bold"), local("Arial"), local("Arimo"), local("Liberation Sans");
+  font-weight: 550 900;
+  size-adjust: 100.79%;
+  ascent-override: 103.2%;
+  descent-override: 21.8%;
+  line-gap-override: 0%;
+}
