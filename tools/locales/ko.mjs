@@ -601,6 +601,7 @@ export default {
       `<h1 aria-label="Tus documentos, en un solo lugar.">
           <span class="word">Tus</span>
           <span class="word">documentos,</span>
+          <br class="h1-break">
           <span class="word">en</span>
           <span class="word">un</span>
           <span class="word"><em>solo</em></span>
@@ -609,6 +610,7 @@ export default {
       `<h1 aria-label="모든 문서를, 한곳에.">
           <span class="word">모든</span>
           <span class="word">문서를,</span>
+          <br class="h1-break">
           <span class="word"><em>한곳에.</em></span>
         </h1>`,
     ],
