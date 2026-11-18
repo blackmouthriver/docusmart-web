@@ -148,7 +148,8 @@
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="Navigationspfad"><a href="/de/">DocuSmart</a><span aria-hidden="true">›</span><span>Bild komprimieren</span></nav>
       <h1>Bild komprimieren</h1>
       <p class="tp-lead">Mach deine Fotos leichter, um sie per E-Mail oder WhatsApp zu senden, auf eine Website zu laden oder Platz zu sparen, ohne sichtbaren Qualitätsverlust.</p>
@@ -157,6 +158,13 @@
         <li>Kostenlos, ohne Anmeldung</li>
         <li>Läuft im Browser</li>
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -166,21 +174,21 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Bilder in 3 Schritten komprimieren</h2>
-    <ol class="tp-steps">
-      <li>Wähle ein oder mehrere Bilder (JPG, PNG, WebP, GIF oder BMP).</li>
-      <li>Wähle die Stufe: niedrig, empfohlen oder maximal.</li>
-      <li>Tippe auf „Komprimieren“ und lade jedes Bild einzeln oder alle als ZIP herunter; du siehst, wie viel Platz du gespart hast.</li>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>Wähle ein oder mehrere Bilder (JPG, PNG, WebP, GIF oder BMP).</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg></span><span>Wähle die Stufe: niedrig, empfohlen oder maximal.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>Tippe auf „Komprimieren“ und lade jedes Bild einzeln oder alle als ZIP herunter; du siehst, wie viel Platz du gespart hast.</span></li>
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>Deine Dateien verlassen dein Gerät nicht</h2>
     <p>Anders als andere Online-Werkzeuge lädt DocuSmart deine Dokumente auf keinen Server hoch: Alles wird in deinem Browser verarbeitet. Du kannst es bedenkenlos mit Verträgen, Rechnungen oder Ausweisdokumenten nutzen. <a href="/privacidad">Unsere Datenschutzerklärung lesen (auf Spanisch)</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Häufige Fragen</h2>
     <div class="tp-faq">
       <details>
@@ -202,7 +210,7 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>Weitere kostenlose Werkzeuge</h2>
     <ul class="tp-related">
       <li><a href="/de/pdf-zusammenfuegen"><b>PDF zusammenfügen</b><span>Mehrere PDFs zu einem</span></a></li>
@@ -239,13 +247,13 @@
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>DocuSmart auf dem Handy</h2>
         <p>Die Android-App bietet zusätzlich einen Scanner mit Kantenerkennung, einen PIN-geschützten sicheren Ordner, Word, Excel und PowerPoint sowie OCR. Sie funktioniert offline.</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Bei Google Play laden</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Bei Google Play laden</a>
     </div>
   </section>
 </main>

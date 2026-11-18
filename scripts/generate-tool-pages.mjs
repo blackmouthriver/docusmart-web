@@ -39,6 +39,33 @@ function emit(rel, content) {
   }
 }
 
+// ── Íconos (W-73): los mismos trazos que src/shared/ui/Icon.tsx, para no duplicarlos ──
+const ICON_PATHS = Object.fromEntries(
+  [...readFileSync(join(root, 'src/shared/ui/Icon.tsx'), 'utf-8').matchAll(/^ {2}([a-z]+): '([^']+)'/gm)].map((m) => [m[1], m[2]]),
+)
+/** SVG decorativo (aria-hidden) con un ícono de la app. */
+function svg(name, cls) {
+  const d = ICON_PATHS[name]
+  if (!d) throw new Error(`Ícono desconocido: ${name}`)
+  return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`
+}
+/** Ícono de cada herramienta, el mismo que usa en la app web (PdfTools, ImageTools, Converter…). */
+const PDF_ICONS = { unir: 'merge', dividir: 'split', rotar: 'rotate', escanear: 'camera', formulario: 'form', editar: 'edit', imagenes: 'images', comparar: 'compare', censurar: 'redact', firmar: 'pen', recortar: 'crop', comprimir: 'compress', proteger: 'lock', desbloquear: 'unlock', reparar: 'wrench', ocr: 'text', pdfa: 'archive' }
+const IMG_ICONS = { comprimir: 'compress', redimensionar: 'resize', recortar: 'crop', rotar: 'rotate' }
+const CONV_ICONS = { 'img-pdf': 'image', 'pdf-img': 'images', 'pdf-txt': 'text' }
+function toolIcon({ kind, id }) {
+  if (kind === 'pdf') return PDF_ICONS[id] ?? 'pdf'
+  if (kind === 'img') return IMG_ICONS[id] ?? 'image'
+  if (kind === 'conv') return CONV_ICONS[id] ?? 'convert'
+  if (kind === 'archive') return id === 'extraer' ? 'folder' : 'archive'
+  return 'qr'
+}
+/** Los tres pasos: elegir → la herramienta → descargar (escribir en el QR, cámara al escanear). */
+function stepIcons(tool) {
+  const first = tool.kind === 'qr' ? 'type' : tool.id === 'escanear' ? 'camera' : 'upload'
+  return [first, toolIcon(tool), 'download']
+}
+
 /** Primera letra en minúscula para "Cómo unir PDF…", salvo siglas como OCR. */
 const lowerFirst = (s) => (/^\p{Lu}{2}/u.test(s) ? s : s.charAt(0).toLowerCase() + s.slice(1))
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -153,13 +180,21 @@ ${langMenu(loc, pathFor, 'tp-lang', '      ')}
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="${esc(ui.crumbs)}"><a href="${home}">DocuSmart</a><span aria-hidden="true">›</span><span>${esc(p.h1)}</span></nav>
       <h1>${esc(p.h1)}</h1>
       <p class="tp-lead">${esc(p.lead)}</p>
       <ul class="tp-badges">
 ${ui.badges.map((b) => `        <li>${esc(b)}</li>`).join('\n')}
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile">${svg(toolIcon(page.tool), 'tp-tile-ico')}<span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a">${svg('shield', 'tp-chip-ico')}</span>
+        <span class="tp-chip tp-chip-b">${svg('check', 'tp-chip-ico')}</span>
+      </div>
     </div>
   </section>
 
@@ -169,26 +204,26 @@ ${ui.badges.map((b) => `        <li>${esc(b)}</li>`).join('\n')}
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>${esc(p.howTo ?? ui.howTo.replace('{tool}', lowerFirst(p.h1)))}</h2>
-    <ol class="tp-steps">
-${p.steps.map((s) => `      <li>${esc(s)}</li>`).join('\n')}
+    <ol class="tp-steps" data-stagger="120">
+${p.steps.map((s, i) => `      <li class="reveal"><span class="tp-step-ico">${svg(stepIcons(page.tool)[i] ?? 'check', 'tp-step-svg')}</span><span>${esc(s)}</span></li>`).join('\n')}
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>${esc(ui.privacyTitle)}</h2>
     <p>${esc(ui.privacyText)} <a href="/privacidad">${esc(ui.privacyLink)}</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>${esc(ui.faqTitle)}</h2>
     <div class="tp-faq">
 ${p.faq.map(([q, a]) => `      <details>\n        <summary>${esc(q)}</summary>\n        <p>${esc(a)}</p>\n      </details>`).join('\n')}
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>${esc(ui.moreTools)}</h2>
     <ul class="tp-related">
 ${related.map((r) => `      <li><a href="${pagePath(r, loc)}"><b>${esc(localized(r, loc).h1)}</b><span>${esc(localized(r, loc).short)}</span></a></li>`).join('\n')}
@@ -196,13 +231,13 @@ ${related.map((r) => `      <li><a href="${pagePath(r, loc)}"><b>${esc(localized
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>${esc(ui.ctaTitle)}</h2>
         <p>${esc(ui.ctaText)}</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">${esc(ui.ctaBtn)}</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">${esc(ui.ctaBtn)}</a>
     </div>
   </section>
 </main>

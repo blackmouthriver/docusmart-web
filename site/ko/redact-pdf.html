@@ -148,7 +148,8 @@
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="경로"><a href="/ko/">DocuSmart</a><span aria-hidden="true">›</span><span>PDF 가림 처리</span></nav>
       <h1>PDF 가림 처리</h1>
       <p class="tp-lead">문서를 공유하기 전에 개인정보를 가리세요. 가린 내용은 사각형 아래 숨는 게 아니라 파일에서 사라집니다.</p>
@@ -157,6 +158,13 @@
         <li>무료, 가입 불필요</li>
         <li>브라우저에서 작동</li>
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v5H4zM4 14h6M14 14h6M4 19h16"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -166,21 +174,21 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>PDF를 가림 처리하는 3단계</h2>
-    <ol class="tp-steps">
-      <li>PDF를 선택하세요.</li>
-      <li>단어를 검색하거나 이메일·긴 숫자를 한꺼번에 표시하세요. 페이지를 드래그해 원하는 영역을 가릴 수도 있습니다.</li>
-      <li>페이지를 확인하고 &quot;PDF 가림 처리&quot;를 누르세요.</li>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>PDF를 선택하세요.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v5H4zM4 14h6M14 14h6M4 19h16"/></svg></span><span>단어를 검색하거나 이메일·긴 숫자를 한꺼번에 표시하세요. 페이지를 드래그해 원하는 영역을 가릴 수도 있습니다.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>페이지를 확인하고 &quot;PDF 가림 처리&quot;를 누르세요.</span></li>
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>파일이 내 기기 밖으로 나가지 않습니다</h2>
     <p>다른 온라인 도구와 달리 DocuSmart는 문서를 어떤 서버에도 올리지 않습니다. 모든 처리는 브라우저 안에서 이루어집니다. 계약서, 청구서, 신분증도 안심하고 다룰 수 있습니다. <a href="/privacidad">개인정보 처리방침 보기(스페인어)</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>자주 묻는 질문</h2>
     <div class="tp-faq">
       <details>
@@ -202,7 +210,7 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>다른 무료 도구</h2>
     <ul class="tp-related">
       <li><a href="/ko/merge-pdf"><b>PDF 합치기</b><span>여러 PDF를 하나로</span></a></li>
@@ -239,13 +247,13 @@
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>휴대폰에서도 DocuSmart</h2>
         <p>Android 앱에는 가장자리 자동 감지 스캐너, PIN으로 잠그는 보안 폴더, Word·Excel·PowerPoint, OCR까지 있습니다. 오프라인에서도 작동합니다.</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Google Play에서 받기</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Google Play에서 받기</a>
     </div>
   </section>
 </main>

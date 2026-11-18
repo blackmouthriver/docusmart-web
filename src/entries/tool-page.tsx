@@ -13,7 +13,7 @@ import { mountConsentBanner } from '../shared/platform/consent'
 import { rememberLangChoice } from '../shared/platform/langChoice'
 import '../shared/platform/fonts'
 import '../app/app.css'
-import { quietPageTransitions } from '../shared/platform/motion'
+import { initMotion } from '../shared/platform/motion'
 import '../shared/ui/motion.css'
 import './tool-page.css'
 
@@ -57,6 +57,17 @@ const QrTools = lazy(() =>
   })),
 )
 
+/** Esqueleto mientras carga la herramienta: misma forma que la tarjeta, con un brillo que pasa. */
+function ToolSkeleton() {
+  return (
+    <div className="tp-skeleton" role="status" aria-label={tr('common.loading')}>
+      <i />
+      <i />
+      <i />
+    </div>
+  )
+}
+
 function ToolHost({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Array<{ id: number; msg: string }>>([])
   const nextId = useRef(0)
@@ -73,7 +84,7 @@ function ToolHost({ children }: { children: ReactNode }) {
   const openAppSettings = () => (location.href = '/app/')
   return (
     <AppContext.Provider value={{ openFile: null, setOpenFile, toast, openSettings: openAppSettings }}>
-      <Suspense fallback={<p className="faint">{tr('common.loading')}</p>}>{children}</Suspense>
+      <Suspense fallback={<ToolSkeleton />}>{children}</Suspense>
       <div className="toast-wrap" aria-live="polite">
         {toasts.map((t) => (
           <div key={t.id} className="toast">
@@ -97,7 +108,8 @@ function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
 initAnalytics()
 mountConsentBanner()
 rememberLangChoice()
-quietPageTransitions()
+// Aparición de secciones, pasos escalonados y transición entre páginas (W-72/W-73).
+initMotion()
 
 // La herramienta habla el idioma de la página (/en/merge-pdf → inglés), no el guardado.
 const pageLang = document.documentElement.lang

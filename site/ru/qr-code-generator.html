@@ -140,7 +140,8 @@
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="Навигация"><a href="/ru/">DocuSmart</a><span aria-hidden="true">›</span><span>Создать и считать QR-код</span></nav>
       <h1>Создать и считать QR-код</h1>
       <p class="tp-lead">Создайте QR-код для ссылки или текста, при желании защитите его паролем или считайте код камерой.</p>
@@ -149,6 +150,13 @@
         <li>Бесплатно и без регистрации</li>
         <li>Работает в браузере</li>
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2M14 18h2M18 18h2v2"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -158,21 +166,21 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Как создать QR-код за 3 шага</h2>
-    <ol class="tp-steps">
-      <li>Введите ссылку или текст и нажмите «Создать QR».</li>
-      <li>Если он личный, выберите «Защищённый» и задайте пароль: содержимое будет зашифровано.</li>
-      <li>Скачайте PNG или используйте «Считать QR» с камерой или изображением.</li>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7V4h14v3M12 4v16M9 20h6"/></svg></span><span>Введите ссылку или текст и нажмите «Создать QR».</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2M14 18h2M18 18h2v2"/></svg></span><span>Если он личный, выберите «Защищённый» и задайте пароль: содержимое будет зашифровано.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>Скачайте PNG или используйте «Считать QR» с камерой или изображением.</span></li>
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>Ваши файлы не покидают устройство</h2>
     <p>В отличие от других онлайн-сервисов, DocuSmart не загружает документы ни на какой сервер: всё обрабатывается в вашем браузере. Можно спокойно работать с договорами, счетами и документами, удостоверяющими личность. <a href="/privacidad">Политика конфиденциальности (на испанском)</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Частые вопросы</h2>
     <div class="tp-faq">
       <details>
@@ -190,7 +198,7 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>Другие бесплатные инструменты</h2>
     <ul class="tp-related">
       <li><a href="/ru/merge-pdf"><b>Объединить PDF</b><span>Несколько PDF в один</span></a></li>
@@ -227,13 +235,13 @@
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>DocuSmart на вашем телефоне</h2>
         <p>Приложение для Android добавляет сканер с определением краёв, защищённую PIN-кодом папку, Word, Excel и PowerPoint, а также OCR. Работает без интернета.</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Скачать в Google Play</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Скачать в Google Play</a>
     </div>
   </section>
 </main>

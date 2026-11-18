@@ -140,7 +140,8 @@
 
 <main>
   <section class="tp-hero">
-    <div class="tp-wrap">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
       <nav class="tp-crumbs" aria-label="Fil d'Ariane"><a href="/fr/">DocuSmart</a><span aria-hidden="true">›</span><span>Déverrouiller un PDF</span></nav>
       <h1>Déverrouiller un PDF</h1>
       <p class="tp-lead">Retirez le mot de passe de votre PDF pour ne plus avoir à le saisir à chaque fois, ou supprimez les restrictions d’impression et de copie.</p>
@@ -149,6 +150,13 @@
         <li>Gratuit et sans inscription</li>
         <li>Fonctionne dans le navigateur</li>
       </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 7.5-2"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -158,21 +166,21 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Comment déverrouiller un PDF en 3 étapes</h2>
-    <ol class="tp-steps">
-      <li>Choisissez le PDF protégé.</li>
-      <li>Saisissez son mot de passe. S’il s’ouvre sans mot de passe mais empêche l’impression ou la copie, laissez le champ vide.</li>
-      <li>Appuyez sur « Déverrouiller le PDF » et une copie sans mot de passe se télécharge.</li>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>Choisissez le PDF protégé.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 7.5-2"/></svg></span><span>Saisissez son mot de passe. S’il s’ouvre sans mot de passe mais empêche l’impression ou la copie, laissez le champ vide.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>Appuyez sur « Déverrouiller le PDF » et une copie sans mot de passe se télécharge.</span></li>
     </ol>
   </section>
 
-  <section class="tp-wrap tp-section tp-privacy">
+  <section class="tp-wrap tp-section tp-privacy reveal">
     <h2>Vos fichiers ne quittent pas votre appareil</h2>
     <p>Contrairement à d'autres outils en ligne, DocuSmart n'envoie vos documents sur aucun serveur : tout est traité dans votre navigateur. Vous pouvez l'utiliser en toute tranquillité avec des contrats, des factures ou des pièces d'identité. <a href="/privacidad">Lire notre politique de confidentialité (en espagnol)</a>.</p>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal">
     <h2>Questions fréquentes</h2>
     <div class="tp-faq">
       <details>
@@ -190,7 +198,7 @@
     </div>
   </section>
 
-  <section class="tp-wrap tp-section" id="herramientas">
+  <section class="tp-wrap tp-section reveal" id="herramientas">
     <h2>Plus d’outils gratuits</h2>
     <ul class="tp-related">
       <li><a href="/fr/fusionner-pdf"><b>Fusionner des PDF</b><span>Réunit plusieurs PDF en un</span></a></li>
@@ -227,13 +235,13 @@
     </ul>
   </section>
 
-  <section class="tp-wrap tp-section">
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
     <div class="tp-cta">
       <div>
         <h2>Emportez DocuSmart sur votre téléphone</h2>
         <p>L'app Android ajoute un scanner avec détection des bords, un dossier sécurisé par PIN, Word, Excel et PowerPoint, et l'OCR. Elle fonctionne hors connexion.</p>
       </div>
-      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Télécharger sur Google Play</a>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Télécharger sur Google Play</a>
     </div>
   </section>
 </main>
