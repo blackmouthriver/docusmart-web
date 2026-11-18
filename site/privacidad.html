@@ -209,10 +209,25 @@
     <li><strong>Cookies y almacenamiento del navegador:</strong>
       <ul>
         <li><code>ds-consent</code> (almacenamiento local): recuerda si aceptaste o rechazaste la analítica.</li>
-        <li><code>ds-notes</code> (almacenamiento local): tus notas de Modo Estudio. Solo existen en tu navegador.</li>
+        <li><code>ds-lang</code> y <code>ds-appearance</code> (almacenamiento local): el idioma y la apariencia
+        (tema claro u oscuro) que elegiste.</li>
+        <li><code>ds-notes</code> (almacenamiento local): tus notas de Modo Estudio. Las imágenes que agregas a
+        las notas se guardan en la base de datos del navegador <code>docusmart-study</code> (IndexedDB).</li>
+        <li><code>ds-study-history</code> (almacenamiento local) y la base de datos <code>docusmart-study</code>
+        (IndexedDB): la lista de los últimos 10 documentos que leíste en Modo Estudio, con la página en la que
+        ibas, y una copia de los últimos 5 (de hasta 30 MB cada uno) para que puedas retomar la lectura sin
+        volver a elegir el archivo.</li>
+        <li><code>ds-study-highlights</code>, <code>ds-study-stats</code> y <code>ds-study-voice</code>
+        (almacenamiento local): los fragmentos que resaltaste, tus estadísticas de estudio (tiempo de escucha y
+        pomodoros completados) y la voz de lectura que elegiste.</li>
+        <li><code>ds-qr-history</code> (almacenamiento local): los últimos 50 códigos QR que creaste o leíste,
+        con su contenido, para que puedas volver a usarlos.</li>
         <li><code>_ga</code> y <code>_ga_*</code> (cookies de Google Analytics): <strong>solo si aceptas</strong> la
         analítica. Distinguen visitas anónimas y duran hasta 2 años.</li>
       </ul>
+      Todo lo anterior (salvo las cookies <code>_ga</code>) se queda en tu navegador: no se envía a nosotros
+      ni a terceros. Puedes borrarlo cuando quieras eliminando los datos del sitio <strong>docusmart.online</strong>
+      desde la configuración de tu navegador.
     </li>
     <li><strong>Cambiar tu decisión:</strong> en cualquier momento, usa el enlace <em>Preferencias de
     analítica</em> al pie del sitio o en el menú de DocuSmart Web. Si la desactivas, dejamos de enviar
@@ -228,6 +243,12 @@
     (WhatsApp, correo, etc.); el archivo pasa directamente a la app que elijas.</li>
     <li><strong>Cámara:</strong> el lector de QR de DocuSmart Web pide permiso a tu navegador para usar la
     cámara. La imagen se analiza en tu navegador y no se graba ni se envía a ningún lado.</li>
+    <li><strong>Lectura en voz alta:</strong> el Modo Estudio lee con las voces que trae tu navegador o tu
+    sistema. Las voces marcadas como <em>en línea</em> las ofrece el fabricante del navegador (por ejemplo,
+    Google o Microsoft), y el texto que se lee puede enviarse a ese proveedor para generar el audio, según
+    su propia política de privacidad. Si eliges una voz sin esa marca, la lectura ocurre en tu dispositivo.</li>
+    <li><strong>Notificaciones:</strong> el Pomodoro puede pedir permiso a tu navegador para avisarte cuando
+    termina un periodo. El aviso lo genera tu propio navegador; no enviamos notificaciones desde servidores.</li>
     <li><strong>Alojamiento:</strong> el sitio está alojado en Firebase Hosting (Google). Como cualquier
     servidor web, procesa datos técnicos de cada visita (dirección IP, navegador, página pedida) para
     entregar las páginas y proteger el servicio.</li>
