@@ -14,7 +14,8 @@
     "test:coverage": "vitest run --coverage",
     "audit": "npm audit --omit=dev --audit-level=high",
     "pages": "node scripts/generate-tool-pages.mjs",
-    "pages:check": "node scripts/generate-tool-pages.mjs --check"
+    "pages:check": "node scripts/generate-tool-pages.mjs --check",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@firebase/analytics": "^0.10.25",
@@ -38,6 +39,7 @@
     "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
