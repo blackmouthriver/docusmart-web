@@ -13,6 +13,8 @@ import { loadKb } from '../infra/kbLoader'
 import { typingDelay } from '../core/launcher'
 import { kbLangFor } from '../core/reply'
 import { localAiFor, type LocalAi } from '../infra/browserAi'
+import { questionMail } from '../core/sendQuestion'
+import { FEEDBACK_EMAIL } from '../../../shared/files/share'
 
 /** Primera letra en mayúscula (las preguntas de la base se escriben como las escribe la gente). */
 const capitalize = (s: string) => s.charAt(0).toLocaleUpperCase() + s.slice(1)
@@ -22,7 +24,7 @@ const CLOSE_MS = 200
 /** text/ai: respuesta redactada por la IA del navegador (W-70f), mientras se escribe ('writing') y al terminar ('done'). */
 type Msg =
   | { id: number; role: 'user'; text: string }
-  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done' }
+  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done'; question?: string }
 
 export type PanelProps = {
   lang: string
@@ -121,7 +123,8 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
     window.setTimeout(
       () => {
         setTyping(false)
-        setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', reply: r }])
+        // En el "no sé" se guarda la pregunta para ofrecer enviarla a soporte (W-70g).
+        setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', reply: r, ...(r.kind === 'fallback' ? { question: user } : {}) }])
       },
       prefersReducedMotion() ? 0 : typingDelay(length),
     )
@@ -274,10 +277,15 @@ function BotMessage({
     )
   }
   if (r.kind === 'fallback') {
+    // "Enviar esta pregunta" (W-70g) reemplaza al correo genérico; Facebook e Instagram siguen.
+    const send = msg.question ? questionMail(msg.question, { label: ui.sendQuestion, subject: ui.sendSubject, intro: ui.sendIntro }, FEEDBACK_EMAIL, location.pathname) : null
+    const contact = (r.contact?.actions ?? []).filter((a) => !(send && a.href.startsWith('mailto:')))
+    const actions = send ? [send, ...contact] : contact
     return (
       <div className="assistant-bot">
         <p className="assistant-bubble bot">{ui.fallback}</p>
-        {r.contact?.actions && <Actions actions={r.contact.actions} onAction={onAction} />}
+        {actions.length > 0 && <Actions actions={actions} onAction={onAction} />}
+        {send && <small className="assistant-send-note">{ui.sendNote}</small>}
         <Chips title={ui.suggestions} entries={r.suggestions} onChoose={onChoose} />
       </div>
     )

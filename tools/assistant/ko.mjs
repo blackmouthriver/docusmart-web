@@ -5,6 +5,10 @@ export default {
     title: 'DocuSmart 도우미', greeting: '안녕하세요! DocuSmart 도우미입니다. 도구 사용법이나 앱과 웹사이트에 대해 궁금한 점을 무엇이든 물어보세요.', placeholder: '질문을 입력하세요…', send: '보내기', open: '도우미 열기', close: '도우미 닫기', clear: '대화 지우기', suggestions: '추천 질문', related: '이것도 도움이 될 수 있어요',
     fallback: '그 질문에는 답이 없어요. 다르게 물어보시거나 아래 추천 중에서 골라 주세요. 원하시면 저희에게 연락해 주시면 도와드릴게요.', helpful: '도움이 되었나요?', yes: '예', no: '아니요', thanks: '알려 주셔서 감사합니다!', privacyNote: '모든 것이 브라우저 안에서 이루어져요. 입력한 내용은 어디에도 전송되지 않아요.',
     aiBadge: "✨ 브라우저 내장 AI가 저희 지식 베이스를 바탕으로 작성",
+    sendQuestion: "이 질문 보내기",
+    sendSubject: "DocuSmart 도우미에게 질문",
+    sendIntro: "안녕하세요, 도우미가 다음 질문에 답하지 못했습니다:",
+    sendNote: "질문이 입력된 상태로 메일 앱이 열립니다. 보낼지는 직접 결정하세요.",
   },
   entries: [
     { id: 'hola', q: ['안녕하세요', '안녕', '반가워요', '좋은 아침'], a: '안녕하세요! 무엇을 도와드릴까요? PDF 합치기·변환·서명·압축, QR 코드 만들기, 학습 모드 사용법, 파일 보호 방법을 안내해 드릴 수 있어요.', related: ['ayuda', 'que-es', 'privacidad'] },

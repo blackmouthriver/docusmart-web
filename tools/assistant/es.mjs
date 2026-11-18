@@ -38,6 +38,10 @@ export default {
     thanks: '¡Gracias por avisar!',
     privacyNote: 'Todo ocurre en tu navegador: lo que escribes no se envía a ningún lado.',
     aiBadge: "✨ Redactada por la IA de tu navegador a partir de nuestra base",
+    sendQuestion: "Enviar esta pregunta",
+    sendSubject: "Pregunta para el asistente de DocuSmart",
+    sendIntro: "Hola, el asistente no supo responder esta pregunta:",
+    sendNote: "Se abre tu app de correo con la pregunta escrita; tú decides si la envías.",
   },
   entries: [
     { id: 'hola', q: ['hola', 'buenas', 'buenos días', 'buenas tardes', 'hey', 'qué tal'], a: '¡Hola! ¿En qué te ayudo? Puedo explicarte cómo unir, convertir, firmar o comprimir un PDF, crear un QR, usar el Modo Estudio o contarte cómo cuidamos tus archivos.', related: ['ayuda', 'que-es', 'privacidad'] },
