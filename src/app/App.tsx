@@ -10,6 +10,7 @@ import { useT } from '../shared/i18n/I18n'
 import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
+import { loadCollapsed, saveCollapsed } from './sidebarPref'
 import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
 import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 import { Home } from '../features/home/ui/Home'
@@ -61,6 +62,15 @@ const SCREEN_NAMES: Record<string, string> = {
   herramientas: 'Tools',
 }
 
+/** localStorage si está disponible (navegación privada o bloqueado: null). */
+function safeStorage(): Storage | null {
+  try {
+    return localStorage
+  } catch {
+    return null
+  }
+}
+
 export function App() {
   const [route, setRoute] = useState<Route>(parseHash)
   const [openFile, setOpenFile] = useState<File | null>(null)
@@ -70,6 +80,13 @@ export function App() {
   const closeSettings = useCallback(() => setSettingsOpen(false), [])
   const { t, lang } = useT()
   const current = LANGS.find((l) => l.code === lang)!
+  // Barra lateral plegable (solo íconos); se recuerda en este navegador.
+  const [collapsed, setCollapsed] = useState(() => loadCollapsed(safeStorage()))
+  const toggleSidebar = () =>
+    setCollapsed((c) => {
+      saveCollapsed(safeStorage(), !c)
+      return !c
+    })
 
   // Asistente (W-70c/d): el mismo botón flotante de todo el sitio; se oculta en el Visor.
   useEffect(() => mountAssistantLauncher({ lang, inApp: true, hideWhen: () => parseHash().section === 'ver' }), [lang])
@@ -136,21 +153,28 @@ export function App() {
 
   return (
     <AppContext.Provider value={{ openFile, setOpenFile, toast, openSettings }}>
-      <div className="shell">
+      <div className={'shell' + (collapsed ? ' is-collapsed' : '')}>
         <aside className="sidebar">
-          <a className="side-brand" href="/">
-            <img src="/img/icon.svg" alt="" />
-            DocuSmart <small>Web</small>
-          </a>
+          <div className="side-top">
+            <a className="side-brand" href="/" aria-label="DocuSmart Web">
+              <img src="/img/icon.svg" alt="" />
+              <span className="side-brand-text">
+                DocuSmart <small>Web</small>
+              </span>
+            </a>
+            <button type="button" className="side-toggle" aria-expanded={!collapsed} aria-label={t(collapsed ? 'nav.expand' : 'nav.collapse')} title={t(collapsed ? 'nav.expand' : 'nav.collapse')} onClick={toggleSidebar}>
+              <Icon name="back" />
+            </button>
+          </div>
           <nav className="side-nav" aria-label={t('nav.sections')}>
             {NAV.map((n) => (
               <Fragment key={n.section}>
-                <a className="nav-item" href={'#/' + n.section} aria-current={active === n.section && !(n.subs && route.sub) ? 'page' : undefined} aria-expanded={n.subs ? active === n.section : undefined}>
+                <a className="nav-item" href={'#/' + n.section} data-tip={t(n.label)} aria-label={collapsed ? t(n.label) : undefined} aria-current={active === n.section && !(n.subs && route.sub) ? 'page' : undefined} aria-expanded={n.subs ? active === n.section : undefined}>
                   <Icon name={n.icon} />
-                  {t(n.label)}
+                  <span className="nav-label">{t(n.label)}</span>
                   {n.subs && <span className="nav-caret" aria-hidden="true"><Icon name="back" /></span>}
                 </a>
-                {n.subs && active === n.section && (
+                {n.subs && active === n.section && !collapsed && (
                   <div className="nav-subs">
                     {n.subs.map((s) => (
                       <a key={s.sub} className="nav-item nav-sub" href={`#/${n.section}/${s.sub}`} aria-current={route.sub === s.sub ? 'page' : undefined}>
@@ -164,17 +188,19 @@ export function App() {
             ))}
           </nav>
           <div className="side-foot">
-            <button type="button" className="side-settings" onClick={openSettings}>
+            <button type="button" className="side-settings" data-tip={t('settings.open')} aria-label={collapsed ? t('settings.open') : undefined} onClick={openSettings}>
               <Icon name="settings" />
               <span>{t('settings.open')}</span>
               <span aria-hidden="true">{current.flag} {lang.toUpperCase()}</span>
             </button>
-            <div className="privacy-note">
+            <div className="privacy-note" data-tip={t('side.privacy')}>
               <Icon name="shield" />
               <span>{t('side.privacy')}</span>
             </div>
-            <a href="/">{t('side.getApp')}</a>
-            <a className="side-play" href={PLAY_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('landing_cta_click', { cta: 'play_store_sidebar', destination: 'play_store' })}>
+            <a className="side-getapp" href="/">
+              {t('side.getApp')}
+            </a>
+            <a className="side-play" href={PLAY_URL} data-tip="Google Play" aria-label={collapsed ? `${t('side.playOn')} Google Play` : undefined} target="_blank" rel="noopener noreferrer" onClick={() => track('landing_cta_click', { cta: 'play_store_sidebar', destination: 'play_store' })}>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="#2563EB" d="M3.6 2.2a1.3 1.3 0 0 0-.6 1.1v17.4c0 .5.2.9.6 1.1l9.7-9.8z" />
                 <path fill="#22C55E" d="m16.6 8.7-3.3 3.3-9.7-9.8c.3-.2.8-.2 1.2 0z" />
@@ -187,7 +213,7 @@ export function App() {
               </span>
             </a>
             {analyticsConfigured && (
-              <button type="button" className="link-btn" data-consent-open>
+              <button type="button" className="link-btn side-analytics" data-consent-open>
                 {t('side.analytics')}
               </button>
             )}

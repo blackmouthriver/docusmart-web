@@ -14,6 +14,8 @@ const ca: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Estudi",
+  'nav.collapse': "Replegar el menú",
+  'nav.expand': "Desplegar el menú",
   'nav.sections': "Seccions",
   'nav.viewer': "Visor",
   'side.privacy': "Els teus fitxers es processen en aquest navegador. No es pugen a cap servidor.",

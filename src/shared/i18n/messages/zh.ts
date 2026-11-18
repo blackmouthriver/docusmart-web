@@ -14,6 +14,8 @@ const zh: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "二维码",
   'nav.short.study': "学习",
+  'nav.collapse': "收起菜单",
+  'nav.expand': "展开菜单",
   'nav.sections': "栏目",
   'nav.viewer': "查看器",
   'side.privacy': "你的文件在此浏览器中处理，不会上传到任何服务器。",
