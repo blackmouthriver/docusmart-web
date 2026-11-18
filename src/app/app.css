@@ -83,8 +83,9 @@ p { margin: 0; }
 .side-foot a { color: var(--on-night); text-decoration: none; font-weight: 600; }
 .link-btn { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
 .side-foot .link-btn { color: var(--on-night-soft); font-size: 12.5px; }
-.home-foot { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 28px; color: var(--ink-faint); font-size: 13px; }
-.home-foot a { color: inherit; }
+.home-foot { display: flex; flex-wrap: wrap; gap: 0 18px; margin-top: 22px; color: var(--ink-faint); font-size: 13px; }
+/* Relleno vertical para que se toquen fácil con el dedo (~36 px de alto). */
+.home-foot a { color: inherit; padding: 8px 0; }
 
 .main { margin-left: var(--sidebar); min-height: 100dvh; transition: margin-left 260ms var(--ease-out); }
 
@@ -129,7 +130,10 @@ p { margin: 0; }
 @media (max-width: 860px) {
   .sidebar { display: none; }
   .main { margin-left: 0; }
-  .content { padding: 16px 16px calc(96px + env(safe-area-inset-bottom)); }
+  /* Abajo: la barra inferior (~92 px) y el botón del asistente encima de ella (~56 px), para que
+     el final de cada pantalla (por ejemplo, el botón de acción alineado a la derecha) suba por
+     encima de los dos (W-10). */
+  .content { padding: 16px 16px calc(160px + env(safe-area-inset-bottom)); }
   .bottom-nav {
     position: fixed; z-index: 20; left: 0; right: 0; bottom: 0;
     display: grid; grid-template-columns: repeat(5, 1fr);
@@ -209,7 +213,7 @@ p { margin: 0; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .row-end { justify-content: flex-end; }
 .check { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
-.check input { margin-top: 0.3em; flex-shrink: 0; }
+.check input { margin-top: 0.15em; flex-shrink: 0; width: 18px; height: 18px; accent-color: var(--blue); }
 .stack { display: grid; gap: 14px; }
 /* Los hijos de una grilla no se achican por debajo de su contenido: sin esto, un nombre de archivo largo (con nowrap) ensancha la tarjeta en el celular. */
 .stack > * { min-width: 0; }
@@ -303,10 +307,12 @@ p { margin: 0; }
 .file-meta { flex: 1; min-width: 0; }
 .file-meta b { display: block; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .file-meta small { color: var(--ink-faint); font-size: 12.5px; }
-.icon-btn { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; border: 0; background: transparent; color: var(--ink-faint); cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
+.icon-btn { display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; border-radius: 10px; border: 0; background: transparent; color: var(--ink-faint); cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
 .icon-btn:disabled { opacity: .3; cursor: default; }
 .icon-btn svg { width: 18px; height: 18px; }
 @media (hover: hover) and (pointer: fine) { .icon-btn:hover:not(:disabled) { background: #fff; color: var(--ink); } }
+/* En el celular, más grandes para el dedo (W-10). */
+@media (max-width: 860px) { .icon-btn { width: 40px; height: 40px; } }
 
 /* ── Herramientas (lista de opciones como en la app) ─ */
 .tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
