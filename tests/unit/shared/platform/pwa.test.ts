@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { canRegisterServiceWorker, promptInstall, registerServiceWorker, shouldOfferInstall, urlsToCache, watchInstallPrompt } from '../../../../src/shared/platform/pwa'
+import { canRegisterServiceWorker, onOfflineReady, promptInstall, registerServiceWorker, shouldOfferInstall, urlsToCache, watchInstallPrompt } from '../../../../src/shared/platform/pwa'
 
 const DESKTOP = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36'
 const ANDROID = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Mobile Safari/537.36'
@@ -11,6 +11,8 @@ function fakeWindow(opts: { ua?: string; standalone?: boolean; ready?: string; s
   const target = new EventTarget()
   const register = vi.fn().mockResolvedValue(undefined)
   const postMessage = vi.fn()
+  // El service worker también emite eventos (controllerchange, message).
+  const swTarget = new EventTarget()
   const win = {
     addEventListener: target.addEventListener.bind(target),
     removeEventListener: target.removeEventListener.bind(target),
@@ -22,10 +24,25 @@ function fakeWindow(opts: { ua?: string; standalone?: boolean; ready?: string; s
     matchMedia: () => ({ matches: opts.standalone ?? false }),
     navigator: {
       userAgent: opts.ua ?? DESKTOP,
-      ...(opts.sw === false ? {} : { serviceWorker: { register, ready: Promise.resolve({ active: { postMessage } }) } }),
+      ...(opts.sw === false
+        ? {}
+        : {
+            serviceWorker: {
+              register,
+              ready: Promise.resolve({ active: { postMessage } }),
+              addEventListener: swTarget.addEventListener.bind(swTarget),
+              removeEventListener: swTarget.removeEventListener.bind(swTarget),
+            },
+          }),
     },
   }
-  return { win: win as unknown as Window, register, postMessage, dispatch: (e: Event) => target.dispatchEvent(e) }
+  return {
+    win: win as unknown as Window,
+    register,
+    postMessage,
+    dispatch: (e: Event) => target.dispatchEvent(e),
+    dispatchSw: (e: Event) => swTarget.dispatchEvent(e),
+  }
 }
 
 function installEvent(outcome: 'accepted' | 'dismissed') {
@@ -60,6 +77,48 @@ describe('service worker', () => {
     registerServiceWorker(a.win, true)
     await vi.waitFor(() => expect(a.postMessage).toHaveBeenCalled())
     expect(a.postMessage).toHaveBeenCalledWith({ type: 'cache', urls: ['/assets/search-abc.js'] })
+  })
+
+  it('en el navegador no pide descargar todas las herramientas', async () => {
+    const a = fakeWindow()
+    registerServiceWorker(a.win, true)
+    await vi.waitFor(() => expect(a.postMessage).toHaveBeenCalled())
+    await new Promise((r) => setTimeout(r, 10))
+    expect(a.postMessage).not.toHaveBeenCalledWith({ type: 'precache-tools' })
+  })
+
+  it('la app instalada pide todas las herramientas: al abrir, al cambiar de versión y al instalarse', async () => {
+    const a = fakeWindow({ standalone: true })
+    registerServiceWorker(a.win, true)
+    await vi.waitFor(() => expect(a.postMessage).toHaveBeenCalledWith({ type: 'precache-tools' }))
+    a.postMessage.mockClear()
+    a.dispatchSw(new Event('controllerchange'))
+    await vi.waitFor(() => expect(a.postMessage).toHaveBeenCalledWith({ type: 'precache-tools' }))
+
+    const b = fakeWindow()
+    registerServiceWorker(b.win, true)
+    await vi.waitFor(() => expect(b.postMessage).toHaveBeenCalled())
+    b.postMessage.mockClear()
+    b.dispatchSw(new Event('controllerchange'))
+    await new Promise((r) => setTimeout(r, 10))
+    expect(b.postMessage).not.toHaveBeenCalled()
+    b.dispatch(new Event('appinstalled'))
+    await vi.waitFor(() => expect(b.postMessage).toHaveBeenCalledWith({ type: 'precache-tools' }))
+  })
+
+  it('avisa "listo sin conexión" solo con el mensaje del propio sitio', () => {
+    const { win, dispatchSw } = fakeWindow()
+    const cb = vi.fn()
+    const stop = onOfflineReady(cb, win)
+    dispatchSw(new MessageEvent('message', { data: { type: 'offline-ready' }, origin: 'https://otro.com' }))
+    dispatchSw(new MessageEvent('message', { data: { type: 'otra-cosa' }, origin: 'https://docusmart.online' }))
+    expect(cb).not.toHaveBeenCalled()
+    dispatchSw(new MessageEvent('message', { data: { type: 'offline-ready' }, origin: 'https://docusmart.online' }))
+    expect(cb).toHaveBeenCalledTimes(1)
+    stop()
+    dispatchSw(new MessageEvent('message', { data: { type: 'offline-ready' }, origin: 'https://docusmart.online' }))
+    expect(cb).toHaveBeenCalledTimes(1)
+    expect(onOfflineReady(cb, fakeWindow({ sw: false }).win)()).toBeUndefined()
   })
 
   it('solo guarda archivos del propio sitio y de sus carpetas cacheables', () => {
@@ -139,6 +198,8 @@ describe('manifest', () => {
     for (const src of files) expect(existsSync(join(root, 'public', src)), src).toBe(true)
   })
   it('el service worker trae la marca de versión que reemplaza el build', () => {
-    expect(readFileSync(join(root, 'src', 'sw', 'sw.js'), 'utf-8')).toContain("'__SW_VERSION__'")
+    const sw = readFileSync(join(root, 'src', 'sw', 'sw.js'), 'utf-8')
+    expect(sw).toContain("'__SW_VERSION__'")
+    expect(sw).toContain('/*__SW_TOOLS__*/ []')
   })
 })

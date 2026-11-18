@@ -1,5 +1,5 @@
 /**
- * App instalable (W-16): registra el service worker (public/sw.js) y guarda el aviso de
+ * App instalable (W-16): registra el service worker (src/sw/sw.js, publicado como /sw.js) y guarda el aviso de
  * instalación del navegador para ofrecerlo con un botón propio ("Instalar en este equipo").
  *
  * En Android no se ofrece: ahí conviene la app nativa de Google Play, que hace más cosas
@@ -43,21 +43,44 @@ export function urlsToCache(loaded: string[], origin: string): string[] {
   return [...out]
 }
 
-/** Registra el service worker cuando la página ya cargó, para no competir con lo importante. */
+/** ¿Corre como app instalada (ventana propia)? */
+export const isStandalone = (win: Window): boolean => win.matchMedia?.('(display-mode: standalone)').matches ?? false
+
+/**
+ * Registra el service worker cuando la página ya cargó, para no competir con lo importante.
+ * En la app instalada, además pide descargar todas las herramientas para usarlas sin conexión:
+ * al abrirla, al instalarla y cuando se activa una versión nueva (que empieza sin ese código).
+ */
 export function registerServiceWorker(win: Window = window, prod = import.meta.env.PROD): void {
   const nav = win.navigator
   if (!canRegisterServiceWorker({ prod, secure: win.isSecureContext, supported: 'serviceWorker' in nav })) return
+  const sw = nav.serviceWorker
+  const precacheTools = () => void sw.ready.then((reg) => reg.active?.postMessage({ type: 'precache-tools' })).catch(() => undefined)
   const register = () =>
-    void nav.serviceWorker
+    void sw
       .register('/sw.js')
-      .then(() => nav.serviceWorker.ready)
+      .then(() => sw.ready)
       .then((reg) => {
         const loaded = win.performance.getEntriesByType('resource').map((e) => e.name)
         reg.active?.postMessage({ type: 'cache', urls: urlsToCache(loaded, win.location.origin) })
+        if (isStandalone(win)) precacheTools()
       })
       .catch(() => undefined)
+  win.addEventListener('appinstalled', precacheTools)
+  sw.addEventListener?.('controllerchange', () => isStandalone(win) && precacheTools())
   if (win.document.readyState === 'complete') register()
   else win.addEventListener('load', register, { once: true })
+}
+
+/** Avisa cuando la app instalada ya tiene todas las herramientas para usar sin conexión. */
+export function onOfflineReady(cb: () => void, win: Window = window): () => void {
+  const sw = win.navigator.serviceWorker
+  if (!sw?.addEventListener) return () => undefined
+  const onMessage = (e: MessageEvent) => {
+    if (e.origin === win.location.origin && (e.data as { type?: string } | null)?.type === 'offline-ready') cb()
+  }
+  sw.addEventListener('message', onMessage)
+  return () => sw.removeEventListener('message', onMessage)
 }
 
 let deferred: InstallPromptEvent | null = null
@@ -69,7 +92,7 @@ const notify = () => listeners.forEach((l) => l(deferred !== null))
  * Al instalarse (o si el navegador retira el aviso) avisa `false`.
  */
 export function watchInstallPrompt(onChange: (available: boolean) => void, win: Window = window): () => void {
-  const standalone = win.matchMedia?.('(display-mode: standalone)').matches ?? false
+  const standalone = isStandalone(win)
   if (!shouldOfferInstall(win.navigator.userAgent, standalone)) {
     onChange(false)
     return () => undefined

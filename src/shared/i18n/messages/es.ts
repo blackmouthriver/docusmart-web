@@ -15,6 +15,7 @@ export const es = {
   'nav.short.qr': 'QR',
   'nav.short.study': 'Estudio',
   'pwa.install': "Instalar en este equipo",
+  'pwa.offlineReady': "Listo: ya puedes usar las herramientas sin conexión",
   'nav.collapse': "Contraer menú",
   'nav.expand': "Expandir menú",
   'nav.sections': 'Secciones',

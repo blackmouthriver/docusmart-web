@@ -15,6 +15,7 @@ const it: Messages = {
   'nav.short.qr': "QR",
   'nav.short.study': "Studio",
   'pwa.install': "Installa su questo dispositivo",
+  'pwa.offlineReady': "Fatto: ora puoi usare gli strumenti offline",
   'nav.collapse': "Comprimi menu",
   'nav.expand': "Espandi menu",
   'nav.sections': "Sezioni",

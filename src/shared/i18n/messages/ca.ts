@@ -15,6 +15,7 @@ const ca: Messages = {
   'nav.short.qr': "QR",
   'nav.short.study': "Estudi",
   'pwa.install': "Instal·la en aquest dispositiu",
+  'pwa.offlineReady': "Fet: ja pots fer servir les eines sense connexió",
   'nav.collapse': "Replegar el menú",
   'nav.expand': "Desplegar el menú",
   'nav.sections': "Seccions",

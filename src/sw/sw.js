@@ -20,32 +20,57 @@ const STATIC_PREFIXES = ['/pdfjs/', '/qpdf/', '/7z/', '/ocr/', '/img/', '/assist
 // servidor manda Vary: Origin / accept-encoding, y los módulos y fuentes se piden con Origin).
 const MATCH = { ignoreVary: true }
 
+/**
+ * Todo el código de las herramientas (lo arma el build): la app instalada lo descarga de fondo
+ * para que cualquier herramienta funcione sin conexión. Queda afuera el OCR (~17 MB): ese se
+ * guarda la primera vez que se usa con conexión.
+ */
+const TOOLS = /*__SW_TOOLS__*/ []
+
 /** Archivos /assets/ que carga una página (script, estilos, precargas): para tenerla completa sin conexión. */
 function assetsIn(html) {
   return [...new Set([...html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"/g)].map((m) => m[1]))]
 }
 
-// La página avisa qué archivos ya descargó (src/shared/platform/pwa.ts): en la primera visita
-// llegaron antes de que este service worker la controlara, así que se guardan ahora.
+/** Guarda los archivos que falten, de a pocos a la vez. Devuelve cuántos descargó y cuántos fallaron. */
+async function store(urls) {
+  const pages = await caches.open(PAGES)
+  const statics = await caches.open(STATIC)
+  const todo = urls.filter((u) => typeof u === 'string' && u.startsWith('/'))
+  let added = 0
+  let failed = 0
+  for (let i = 0; i < todo.length; i += 6) {
+    await Promise.all(
+      todo.slice(i, i + 6).map(async (u) => {
+        const cache = u.startsWith('/assets/') ? pages : STATIC_PREFIXES.some((p) => u.startsWith(p)) ? statics : null
+        if (!cache || (await cache.match(u, MATCH))) return
+        try {
+          await cache.add(u)
+          added++
+        } catch {
+          failed++
+        }
+      }),
+    )
+  }
+  return { added, failed }
+}
+
+// Mensajes de las páginas (src/shared/platform/pwa.ts):
+//  - "cache": lo que la página ya descargó (en la primera visita llegó antes de que este
+//    service worker la controlara).
+//  - "precache-tools": la app instalada pide todas las herramientas; al terminar se le avisa.
 self.addEventListener('message', (event) => {
   // Solo páginas del propio sitio pueden pedirlo.
   if (event.origin !== self.location.origin) return
   const data = event.data
-  if (data?.type !== 'cache' || !Array.isArray(data.urls)) return
-  event.waitUntil(
-    (async () => {
-      const pages = await caches.open(PAGES)
-      const statics = await caches.open(STATIC)
-      await Promise.allSettled(
-        data.urls
-          .filter((u) => typeof u === 'string' && u.startsWith('/'))
-          .map(async (u) => {
-            const cache = u.startsWith('/assets/') ? pages : STATIC_PREFIXES.some((p) => u.startsWith(p)) ? statics : null
-            if (cache && !(await cache.match(u, MATCH))) await cache.add(u)
-          }),
-      )
-    })(),
-  )
+  if (data?.type === 'cache' && Array.isArray(data.urls)) event.waitUntil(store(data.urls))
+  if (data?.type === 'precache-tools')
+    event.waitUntil(
+      store(TOOLS).then(({ added, failed }) => {
+        if (added > 0 && failed === 0) event.source?.postMessage({ type: 'offline-ready' })
+      }),
+    )
 })
 
 self.addEventListener('install', (event) => {

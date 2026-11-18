@@ -15,6 +15,7 @@ const ru: Messages = {
   'nav.short.qr': "QR",
   'nav.short.study': "Учёба",
   'pwa.install': "Установить на это устройство",
+  'pwa.offlineReady': "Готово: теперь инструменты работают без интернета",
   'nav.collapse': "Свернуть меню",
   'nav.expand': "Развернуть меню",
   'nav.sections': "Разделы",
