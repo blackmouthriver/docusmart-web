@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { canRegisterServiceWorker, captureInstallPrompt, onOfflineReady, onUpdateReady, promptInstall, registerServiceWorker, shouldOfferInstall, UPDATE_CHECK_MS, urlsToCache, watchForUpdates, watchInstallPrompt } from '../../../../src/shared/platform/pwa'
+import { canRegisterServiceWorker, captureInstallPrompt, handleLaunches, onOfflineReady, onUpdateReady, promptInstall, registerServiceWorker, shouldOfferInstall, UPDATE_CHECK_MS, urlsToCache, watchForUpdates, watchInstallPrompt } from '../../../../src/shared/platform/pwa'
 
 const DESKTOP = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36'
 const ANDROID = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Mobile Safari/537.36'
@@ -262,6 +262,31 @@ describe('versión nueva', () => {
   })
 })
 
+describe('una sola ventana', () => {
+  const launchWindow = (hash = '') => {
+    let consumer: ((p: { targetURL?: string }) => void) | null = null
+    const win = { location: { origin: 'https://docusmart.online', hash }, launchQueue: { setConsumer: (c: typeof consumer) => (consumer = c) } }
+    handleLaunches(win as unknown as Window)
+    return { win, launch: (targetURL?: string) => consumer?.({ targetURL }) }
+  }
+  it('desde un acceso directo va a esa herramienta en la ventana abierta', () => {
+    const { win, launch } = launchWindow('#/qr')
+    launch('https://docusmart.online/app/#/pdf/unir')
+    expect(win.location.hash).toBe('#/pdf/unir')
+  })
+  it('desde el ícono (sin #) se queda donde estaba; ignora otros sitios y URLs raras', () => {
+    const { win, launch } = launchWindow('#/estudio/notas')
+    launch('https://docusmart.online/app/')
+    launch('https://otro.com/app/#/pdf/unir')
+    launch('no es url')
+    launch(undefined)
+    expect(win.location.hash).toBe('#/estudio/notas')
+  })
+  it('sin launchQueue (otros navegadores) no hace nada', () => {
+    expect(() => handleLaunches({ location: { origin: 'x', hash: '' } } as unknown as Window)).not.toThrow()
+  })
+})
+
 describe('manifest', () => {
   const root = process.cwd()
   const m = JSON.parse(readFileSync(join(root, 'public', 'manifest.webmanifest'), 'utf-8'))
@@ -269,6 +294,7 @@ describe('manifest', () => {
     expect(m.name).toBeTruthy()
     expect(m.start_url).toBe('/app/')
     expect(m.display).toBe('standalone')
+    expect(m.launch_handler).toEqual({ client_mode: 'focus-existing' })
     const sizes = m.icons.map((i: { sizes: string }) => i.sizes)
     expect(sizes).toContain('192x192')
     expect(sizes).toContain('512x512')

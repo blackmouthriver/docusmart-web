@@ -46,6 +46,27 @@ export function urlsToCache(loaded: string[], origin: string): string[] {
 /** ¿Corre como app instalada (ventana propia)? */
 export const isStandalone = (win: Window): boolean => win.matchMedia?.('(display-mode: standalone)').matches ?? false
 
+type LaunchQueue = { setConsumer: (consumer: (params: { targetURL?: string }) => void) => void }
+
+/**
+ * Una sola ventana de DocuSmart Desktop: el manifest pide enfocar la que ya está abierta
+ * ("launch_handler": focus-existing). Al abrirla desde el ícono se queda donde estaba (no se
+ * pierde lo que el usuario hacía); desde un acceso directo (#/pdf/unir…) va a esa herramienta.
+ */
+export function handleLaunches(win: Window = window): void {
+  const queue = (win as Window & { launchQueue?: LaunchQueue }).launchQueue
+  queue?.setConsumer(({ targetURL }) => {
+    if (!targetURL) return
+    let url: URL
+    try {
+      url = new URL(targetURL)
+    } catch {
+      return
+    }
+    if (url.origin === win.location.origin && url.hash && url.hash !== win.location.hash) win.location.hash = url.hash
+  })
+}
+
 /**
  * Registra el service worker cuando la página ya cargó, para no competir con lo importante.
  * En la app instalada, además pide descargar todas las herramientas para usarlas sin conexión:
