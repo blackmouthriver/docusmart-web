@@ -102,7 +102,9 @@ Facebook e Instagram #51–#52; correo de contacto #53.
   nunca por el texto.
 - **Páginas SEO:** cada idioma de `tools/locales/` traduce los mismos pares de portada que `en.mjs` (el
   generador lo valida). Si un texto es igual en ambos idiomas, repetirlo tal cual, sin espacios extra.
-- **Seguridad:** nada de `innerHTML`, scripts externos ni `data:` para fuentes. Recursos pesados (wasm,
+- **Seguridad:** nada de `innerHTML`, scripts externos ni `data:` para fuentes. La CSP no permite estilos en línea
+  (`style-src 'self'`): ni `<style>` ni `style="…"` en el HTML; los estilos van en archivos `.css` (en React,
+  `style={{…}}` sí funciona porque se aplica por CSSOM). Recursos pesados (wasm,
   modelos OCR, pdf.js) desde `public/` (los copia `scripts/copy-wasm-assets.mjs`).
 - **Fuentes estándar de PDF (pdf-lib):** solo alfabeto latino (WinAnsi); lo que se dibuja en un PDF debe serlo.
 - **Movimiento (W-72):** usar `src/shared/ui/motion.css` (tokens `--ease-out`, `--dur-*`; clases `.reveal`

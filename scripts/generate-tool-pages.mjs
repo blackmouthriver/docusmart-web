@@ -447,7 +447,9 @@ for (const loc of LOCALES) {
     .replace('<!doctype html>', '<!doctype html>\n<!-- Generado por scripts/generate-tool-pages.mjs desde site/index.html. No editar a mano. -->')
     // Un nivel más abajo (site/en/index.html): el script de entrada está un "../" más arriba.
     .replace(`src="${entryScript('landing.ts', 0)}"`, `src="${entryScript('landing.ts', 1)}"`)
+    .replace(`href="${entryScript('landing.css', 0)}"`, `href="${entryScript('landing.css', 1)}"`)
   if (!html.includes(entryScript('landing.ts', 1))) throw new Error(`${SITE_DIR}/index.html no carga ${entryScript('landing.ts', 0)}`)
+  if (!html.includes(entryScript('landing.css', 1))) throw new Error(`${SITE_DIR}/index.html no carga ${entryScript('landing.css', 0)}`)
   emit(`${SITE_DIR}/${loc.lang}/index.html`, landingBlocks(html, loc, `${SITE_DIR}/${loc.lang}/index.html`))
 }
 
