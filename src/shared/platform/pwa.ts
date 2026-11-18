@@ -22,6 +22,26 @@ export function shouldOfferInstall(userAgent: string, standalone: boolean): bool
   return !standalone && !/Android/i.test(userAgent)
 }
 
+export type DesktopBrowser = 'edge' | 'chrome' | 'safari' | 'firefox' | 'other'
+
+/** Navegador, para explicar los pasos exactos (los menús cambian de uno a otro). */
+export function desktopBrowser(userAgent: string): DesktopBrowser {
+  if (/Edg\//.test(userAgent)) return 'edge'
+  if (/Firefox\//.test(userAgent)) return 'firefox'
+  if (/Chrome\//.test(userAgent)) return 'chrome'
+  if (/Safari\//.test(userAgent) && /Macintosh/.test(userAgent)) return 'safari'
+  return 'other'
+}
+
+/**
+ * Qué explica la ayuda de DocuSmart Desktop: cómo instalarla (en el navegador de la
+ * computadora), atajos de la versión instalada, o que en el celular conviene la app de Play.
+ */
+export function desktopGuideMode(userAgent: string, standalone: boolean): 'installed' | 'install' | 'mobile' {
+  if (standalone) return 'installed'
+  return /Android|iPhone|iPad|Mobile/i.test(userAgent) ? 'mobile' : 'install'
+}
+
 /** Carpetas del sitio que el service worker guarda (las mismas que src/sw/sw.js). */
 export const CACHEABLE_PREFIXES = ['/assets/', '/pdfjs/', '/qpdf/', '/7z/', '/ocr/', '/img/', '/assistant/']
 

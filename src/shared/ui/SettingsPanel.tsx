@@ -1,35 +1,18 @@
 // Ajustes de DocuSmart Web, como en la app: idioma, tema, color de acento y tamaño de letra.
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Icon } from './Icon'
 import { Segmented } from './ui'
+import { useDialog } from './useDialog'
 import { LANGS } from '../i18n/languages'
 import { useT } from '../i18n/I18n'
 import { ACCENTS, applyAppearance, loadAppearance, saveAppearance, type Accent, type Appearance, type FontScale, type ThemeMode } from '../../app/appearance'
 import { track } from '../platform/analytics'
-import { prefersReducedMotion } from '../platform/motion'
 
 export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
   const { t, lang, setLang } = useT()
   const [look, setLook] = useState<Appearance>(loadAppearance)
-  const panel = useRef<HTMLDivElement>(null)
-  // Al cerrar, el panel sale animado y luego se desmonta (W-74).
-  const [closing, setClosing] = useState(false)
-  const onClose = useCallback(() => {
-    setClosing(true)
-    setTimeout(close, prefersReducedMotion() ? 0 : 200)
-  }, [close])
-
-  // Esc cierra; el foco entra al panel y vuelve a donde estaba al cerrar.
-  useEffect(() => {
-    const before = document.activeElement as HTMLElement | null
-    panel.current?.querySelector<HTMLElement>('[aria-checked="true"]')?.focus()
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    addEventListener('keydown', onKey)
-    return () => {
-      removeEventListener('keydown', onKey)
-      before?.focus?.()
-    }
-  }, [onClose])
+  // Sale animado al cerrar (W-74); Esc cierra y el foco entra a la opción marcada.
+  const { panel, closing, onClose } = useDialog(close, '[aria-checked="true"]')
 
   const update = (patch: Partial<Appearance>) => {
     const next = { ...look, ...patch }
