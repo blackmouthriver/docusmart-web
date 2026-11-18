@@ -613,20 +613,20 @@ export default {
     ['<b>Android</b> Escanea, convierte y protege', '<b>Android</b> Digitalize, converta e proteja'],
     [
       `<h1 aria-label="Tus documentos, en un solo lugar.">
-          <span class="word" style="--i:0">Tus</span>
-          <span class="word" style="--i:1">documentos,</span>
-          <span class="word" style="--i:2">en</span>
-          <span class="word" style="--i:3">un</span>
-          <span class="word" style="--i:4"><em>solo</em></span>
-          <span class="word" style="--i:5"><em>lugar.</em></span>
+          <span class="word">Tus</span>
+          <span class="word">documentos,</span>
+          <span class="word">en</span>
+          <span class="word">un</span>
+          <span class="word"><em>solo</em></span>
+          <span class="word"><em>lugar.</em></span>
         </h1>`,
       `<h1 aria-label="Seus documentos, em um só lugar.">
-          <span class="word" style="--i:0">Seus</span>
-          <span class="word" style="--i:1">documentos,</span>
-          <span class="word" style="--i:2">em</span>
-          <span class="word" style="--i:3">um</span>
-          <span class="word" style="--i:4"><em>só</em></span>
-          <span class="word" style="--i:5"><em>lugar.</em></span>
+          <span class="word">Seus</span>
+          <span class="word">documentos,</span>
+          <span class="word">em</span>
+          <span class="word">um</span>
+          <span class="word"><em>só</em></span>
+          <span class="word"><em>lugar.</em></span>
         </h1>`,
     ],
     [

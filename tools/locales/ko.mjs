@@ -599,17 +599,17 @@ export default {
     ['<b>Android</b> Escanea, convierte y protege', '<b>Android</b> 스캔·변환·보호'],
     [
       `<h1 aria-label="Tus documentos, en un solo lugar.">
-          <span class="word" style="--i:0">Tus</span>
-          <span class="word" style="--i:1">documentos,</span>
-          <span class="word" style="--i:2">en</span>
-          <span class="word" style="--i:3">un</span>
-          <span class="word" style="--i:4"><em>solo</em></span>
-          <span class="word" style="--i:5"><em>lugar.</em></span>
+          <span class="word">Tus</span>
+          <span class="word">documentos,</span>
+          <span class="word">en</span>
+          <span class="word">un</span>
+          <span class="word"><em>solo</em></span>
+          <span class="word"><em>lugar.</em></span>
         </h1>`,
       `<h1 aria-label="모든 문서를, 한곳에.">
-          <span class="word" style="--i:0">모든</span>
-          <span class="word" style="--i:1">문서를,</span>
-          <span class="word" style="--i:2"><em>한곳에.</em></span>
+          <span class="word">모든</span>
+          <span class="word">문서를,</span>
+          <span class="word"><em>한곳에.</em></span>
         </h1>`,
     ],
     [

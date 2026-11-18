@@ -218,7 +218,7 @@ rendimiento (Lighthouse).
 | W-72 | **Sistema de movimiento común**: duraciones y curvas compartidas, utilidad de aparición al desplazar (IntersectionObserver), transiciones entre páginas (View Transitions API, donde exista) y microinteracciones de botones y tarjetas, para reutilizar en todo el sitio | 🤖 | Hecho (PR #82) |
 | W-73 | **Páginas de herramientas** (372): encabezado animado, pasos ilustrados, FAQ con apertura animada y herramienta con entrada suave | 🤖 | Hecho (PR #83) |
 | W-74 | **App web**: transiciones entre pantallas, estados de carga con esqueletos, animación al terminar un proceso (éxito/descarga) y menús/paneles con movimiento | 🤖 | Hecho (PR #84) |
-| W-75 | **Portada**: revisión con el usuario de lo que ya tiene y ajustes de coherencia con lo nuevo | 🤖 + 👤 | Hecho (revisada con el usuario el 2026-11-17: eligió solo resumir las herramientas → W-77; modo oscuro en la portada hecho en PR #87 y en las herramientas en PR #88; microinteracciones en tarjetas hechas en PR #89; limpieza de estilos en línea queda para más adelante) |
+| W-75 | **Portada**: revisión con el usuario de lo que ya tiene y ajustes de coherencia con lo nuevo | 🤖 + 👤 | Hecho (revisada con el usuario el 2026-11-17: eligió solo resumir las herramientas → W-77; modo oscuro en la portada hecho en PR #87 y en las herramientas en PR #88; microinteracciones en tarjetas hechas en PR #89; limpieza de estilos en línea hecha en PR #90) |
 
 Orden: W-71 → revisar con el usuario → W-72 → W-73/W-74 → W-75.
 
