@@ -41,16 +41,16 @@ _Sin pendientes P0._
 
 ## P2 — SEO y crecimiento
 
-| ID | Ítem | Quién |
-|---|---|---|
-| W-12 | **Imagen para compartir** 1200×630 (`og:image`, `twitter:card=summary_large_image`) para la landing y cada herramienta. Hoy usa una captura vertical | 🛠️ |
-| W-13 | **Más páginas de herramientas**: numerar páginas, marca de agua, ordenar páginas, JPG→PNG, PNG→JPG, imagen→WebP. Solo hay que agregar entradas a `tools/pages.mjs` | 🛠️ |
-| W-14 | **Versión en inglés** de la landing y las herramientas, con `hreflang` (la app ya está en 12 idiomas) | 🛠️ |
-| W-15 | **Eventos clave en GA4**: marcar `landing_cta_click` (destino `play_store`) y `conversion_success` como conversiones, y armar un tablero simple | 👤 (te guío) |
-| W-16 | **PWA**: manifest y service worker para instalar DocuSmart Web y usarla sin conexión. Encaja con la promesa de "nada sale de tu equipo" | 🛠️ |
-| W-17 | **Lighthouse ≥ 95** en rendimiento, accesibilidad, buenas prácticas y SEO; prueba con lector de pantalla (NVDA/TalkBack) | 🛠️ |
-| W-18 | **Android App Links** (`/.well-known/assetlinks.json`): que los enlaces a docusmart.online abran la app si está instalada. Requiere el SHA-256 del certificado de firma de Play | 🛠️👤 |
-| W-19 | **Contenido**: guías breves ("cómo unir PDF en el celular sin subirlos", "cómo pasar fotos a PDF") que enlacen a las herramientas; publicar en AlternativeTo, Product Hunt y Uptodown | 👤🛠️ |
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-12 | **Imagen para compartir** 1200×630 (`og:image`, `twitter:card=summary_large_image`) para la landing y cada herramienta. Hoy usa una captura vertical | 🛠️ | En revisión (una imagen por idioma, `scripts/og-images.py`) |
+| W-13 | **Más páginas de herramientas**: numerar páginas, marca de agua, ordenar páginas, JPG→PNG, PNG→JPG, imagen→WebP. Solo hay que agregar entradas a `tools/pages.mjs` | 🛠️ | Pendiente |
+| W-14 | **Versión en inglés** de la landing y las herramientas, con `hreflang` (la app ya está en 12 idiomas) | 🛠️ | Hecho (portada y herramientas en 12 idiomas con `hreflang`) |
+| W-15 | **Eventos clave en GA4**: marcar `landing_cta_click` (destino `play_store`) y `conversion_success` como conversiones, y armar un tablero simple | 👤 (te guío) | Pendiente |
+| W-16 | **PWA**: manifest y service worker para instalar DocuSmart Web y usarla sin conexión. Encaja con la promesa de "nada sale de tu equipo" | 🛠️ | Pendiente |
+| W-17 | **Lighthouse ≥ 95** en rendimiento, accesibilidad, buenas prácticas y SEO; prueba con lector de pantalla (NVDA/TalkBack) | 🛠️ | Hecho en parte: PageSpeed 100 en las 4 categorías (W-93); falta la prueba con lector de pantalla |
+| W-18 | **Android App Links** (`/.well-known/assetlinks.json`): que los enlaces a docusmart.online abran la app si está instalada. Requiere el SHA-256 del certificado de firma de Play | 🛠️👤 | Pendiente |
+| W-19 | **Contenido**: guías breves ("cómo unir PDF en el celular sin subirlos", "cómo pasar fotos a PDF") que enlacen a las herramientas; publicar en AlternativeTo, Product Hunt y Uptodown | 👤🛠️ | Pendiente |
 
 ## Funciones nuevas en la web
 
@@ -204,7 +204,7 @@ terceros ni IA en la nube.
 | W-70d | Widget en la portada y las páginas de herramientas, cargado bajo demanda, en los 12 idiomas | 🤖 | Hecho (PR #94) |
 | W-70e | Base traducida a los 10 idiomas restantes, analítica con consentimiento (solo IDs) y párrafo en la política de privacidad | 🤖 | Hecho (PR #95) |
 | W-70f | (Opcional) Respuestas redactadas con la IA local del navegador (Chrome Prompt API) cuando esté disponible | 🤖 | Hecho (PR #97) |
-| W-70g | **"Enviar esta pregunta"** cuando el asistente no sabe responder: abre un correo a soporte con la pregunta ya escrita; el usuario decide si lo envía (nada se manda solo). Sirve para conocer las preguntas reales y mejorar la base (ver `docs/CHATBOT.md`, sección 8) | 🤖 | En revisión |
+| W-70g | **"Enviar esta pregunta"** cuando el asistente no sabe responder: abre un correo a soporte con la pregunta ya escrita; el usuario decide si lo envía (nada se manda solo). Sirve para conocer las preguntas reales y mejorar la base (ver `docs/CHATBOT.md`, sección 8) | 🤖 | Hecho (PR #103) |
 
 ## Diseño visual y animaciones de todo el sitio
 
