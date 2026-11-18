@@ -2,8 +2,8 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { buildIndex, expandQuery, search, suggestionsFor, type Kb } from '../../../../src/features/assistant/core/engine'
-import { editDistance, stem, tokenize, typoBudget } from '../../../../src/features/assistant/core/text'
-import { OFF_TOPIC_EN, OFF_TOPIC_ES, QUESTIONS_EN, QUESTIONS_ES } from './questions'
+import { cjkBigrams, editDistance, stem, tokenize, typoBudget } from '../../../../src/features/assistant/core/text'
+import { OFF_TOPIC_EN, OFF_TOPIC_ES, QUESTIONS_EN, QUESTIONS_ES, QUESTIONS_OTHER } from './questions'
 
 const load = (lang: string): Kb => JSON.parse(readFileSync(join(process.cwd(), 'public', 'assistant', `${lang}.json`), 'utf-8')) as Kb
 const ES = buildIndex(load('es'))
@@ -72,6 +72,35 @@ describe('motor', () => {
     for (const q of OFF_TOPIC_ES) expect(search(ES, q).confident, q).toBe(false)
     for (const q of OFF_TOPIC_EN) expect(search(EN, q).confident, q).toBe(false)
   })
+})
+
+describe('chino, japonés y coreano (sin espacios entre palabras)', () => {
+  it('se indexan por pares de caracteres, y lo latino por palabras', () => {
+    expect(cjkBigrams('合并PDF')).toEqual(['合并', '并P', 'PD', 'DF'])
+    expect(cjkBigrams('字')).toEqual(['字'])
+    expect(tokenize('合并PDF文件', 'zh')).toEqual(['合并', 'pdf', '文件'])
+    expect(tokenize('PDFを結合', 'ja')).toEqual(['pdf', 'を結', '結合'])
+    expect(tokenize('PDF 합치기', 'ko')).toEqual(['pdf', '합치', '치기'])
+  })
+  it('las marcas del japonés y las sílabas del coreano no se rompen al normalizar', () => {
+    expect(tokenize('ガイド', 'ja')).toEqual(['ガイ', 'イド'])
+    expect(tokenize('합치기', 'ko')[0]).toBe('합치')
+  })
+  it('los plurales solo se quitan en los idiomas con -s', () => {
+    expect(stem('dateien', 'de')).toBe('dateien')
+    expect(stem('fichiers', 'fr')).toBe('fichier')
+  })
+})
+
+describe('los otros 10 idiomas (≥ 75 % de aciertos)', () => {
+  for (const [lang, cases] of Object.entries(QUESTIONS_OTHER)) {
+    it(lang, () => {
+      const index = buildIndex(load(lang))
+      const { rate, misses } = hitRate(index, cases)
+      expect(cases.length).toBeGreaterThanOrEqual(16)
+      expect(rate, misses.join(' | ')).toBeGreaterThanOrEqual(0.75)
+    })
+  }
 })
 
 describe('conjunto de preguntas de prueba (≥ 85 % de aciertos)', () => {

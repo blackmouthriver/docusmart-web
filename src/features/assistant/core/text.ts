@@ -12,6 +12,22 @@ const STOPWORDS: Record<string, ReadonlySet<string>> = {
   en: new Set(
     'a about an and any are as at be been but by can could do does for from get got have how i if in into is it its me my need not of on or please should so some that the their them then there this to us use want was what when where which will with would you your one two three several multiple many time times'.split(' '),
   ),
+  pt: new Set('a o os as de do da dos das em no na nos nas um uma uns umas e ou para por com sem que como se meu minha meus minhas e sao posso pode quero preciso tem ter fazer isso este esta esse essa ao aos mais muito nao qual quais onde quando eu voce dois tres varios varias'.split(' ')),
+  fr: new Set('le la les l un une des de du d et ou en au aux pour par avec sans que qui comment est sont je j tu il elle on mon ma mes ton ta tes son sa ses ce cet cette ces se puis peux veux faut faire ne n pas plus y a deux trois plusieurs'.split(' ')),
+  it: new Set('il lo la i gli le l un uno una di del della dei delle da in nel nella e o per con senza che come e sono posso puoi voglio devo fare mio mia miei mie questo questa non si due tre vari varie'.split(' ')),
+  de: new Set('der die das den dem des ein eine einen einem einer und oder zu zum zur in im mit ohne fur von auf an ist sind wie was ich du kann will muss mein meine mich mir es sich nicht auch zwei drei mehrere'.split(' ')),
+  ca: new Set('el la els les l un una uns unes de del dels d i o en a al als per amb sense que com es son puc pots vull he fer meu meva meus meves aquest aquesta no dos tres diversos'.split(' ')),
+  eu: new Set('eta edo da dira bat ere nola zer nire nik dut ditut du ahal nahi behar egin hau hori ez bai bi hiru'.split(' ')),
+  ru: new Set('и в во не что как на с со а но или по к ко у о об от для из за мой моя мои я ты это этот эта мне меня можно нужно хочу могу ли два три несколько'.split(' ')),
+}
+/** Idiomas sin espacios entre palabras (o con partículas pegadas): se indexan por pares de caracteres. */
+const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+|[^\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+/gu
+const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u
+/** Pares de caracteres consecutivos (bigramas) de un tramo en chino, japonés o coreano. */
+export function cjkBigrams(run: string): string[] {
+  const chars = [...run]
+  if (chars.length < 2) return chars
+  return chars.slice(0, -1).map((c, i) => c + chars[i + 1])
 }
 
 /** Sinónimos → palabra de la base (después de normalizar y quitar plurales). */
@@ -57,25 +73,31 @@ const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
 }
 
 const MIN_STEM = 3
+const EMPTY: ReadonlySet<string> = new Set()
+
+/** Idiomas con plural en -s (los demás se dejan como están). */
+const PLURAL_S = new Set(['es', 'en', 'pt', 'fr', 'it', 'ca'])
 
 /** Quita plurales simples (pdfs → pdf, imagenes → imagen, archivos → archivo, files → file). */
 export function stem(word: string, lang: string): string {
-  if (word.length <= MIN_STEM) return word
-  if (lang === 'es' && word.endsWith('es') && word.length > 5 && !/[aeiou]es$/.test(word)) return word.slice(0, -2)
+  if (word.length <= MIN_STEM || !PLURAL_S.has(lang)) return word
+  if ((lang === 'es' || lang === 'ca') && word.endsWith('es') && word.length > 5 && !/[aeiou]es$/.test(word)) return word.slice(0, -2)
   if (word.endsWith('s') && !word.endsWith('ss')) return word.slice(0, -1)
   return word
 }
 
 /** Palabras útiles de un texto: normalizadas, sin vacías, con sinónimos y plurales unidos. */
 export function tokenize(text: string, lang: string): string[] {
-  const stop = STOPWORDS[lang] ?? STOPWORDS.en
+  const stop = STOPWORDS[lang] ?? EMPTY
   const syn = SYNONYMS[lang] ?? {}
   return normalizeForSearch(text)
     // "PDF/A" es un formato propio, no "pdf" + "a".
     .replace(/pdf\s*\/\s*a\b/g, 'pdfa')
     .split(/[^\p{L}\p{N}]+/u)
+    .flatMap((w) => (CJK.test(w) ? (w.match(CJK_RUN) ?? []).flatMap((run) => (CJK.test(run) ? cjkBigrams(run) : [run])) : [w]))
     .filter((w) => w && !stop.has(w))
     .map((w) => {
+      if (CJK.test(w)) return w
       const direct = syn[w]
       if (direct) return direct
       const s = stem(w, lang)

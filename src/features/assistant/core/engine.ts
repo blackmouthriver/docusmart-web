@@ -124,7 +124,7 @@ export function search(index: Index, query: string, opts: { context?: string; li
     // Solo cuenta si alguna palabra está en sus preguntas, no únicamente en el texto de la respuesta.
     if (!score || !inQuestion) continue
     score *= orderBoost([...asked], doc.qSeqs)
-    if (doc.entry.q.some((q) => q.split(/\s+/).length > 1 && normalized.includes(normalizeForSearch(q)))) score *= PHRASE_BOOST
+    if (doc.qSeqs.some((seq, i) => seq.length > 1 && normalized.includes(normalizeForSearch(doc.entry.q[i])))) score *= PHRASE_BOOST
     if (!opts.context && !doc.entry.tool) score *= GENERAL_BOOST
     if (doc.entry.tool && doc.entry.id === `tool:${doc.entry.tool}`) score *= MAIN_TOOL_BOOST
     if (opts.context && doc.entry.tool === opts.context) score *= CONTEXT_BOOST

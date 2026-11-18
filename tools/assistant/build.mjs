@@ -6,9 +6,19 @@ import { FACEBOOK_URL, INSTAGRAM_URL, pages } from '../pages.mjs'
 import { LANGS, homePath, hubPath, localized, pagePath } from '../locales/index.mjs'
 import es from './es.mjs'
 import en from './en.mjs'
+import pt from './pt.mjs'
+import fr from './fr.mjs'
+import it from './it.mjs'
+import de from './de.mjs'
+import ca from './ca.mjs'
+import eu from './eu.mjs'
+import ru from './ru.mjs'
+import ja from './ja.mjs'
+import ko from './ko.mjs'
+import zh from './zh.mjs'
 
-/** Idiomas con base propia. Los demás se suman en W-70e. */
-export const KB_OWN = { es, en }
+/** Base propia de los 12 idiomas del sitio (W-70e). */
+export const KB_OWN = { es, en, pt, fr, it, de, ca, eu, ru, ja, ko, zh }
 export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.docsmart'
 export const SUPPORT_EMAIL = 'supportdocusmart@docusmart.online'
 
