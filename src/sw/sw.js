@@ -28,6 +28,8 @@ function assetsIn(html) {
 // La página avisa qué archivos ya descargó (src/shared/platform/pwa.ts): en la primera visita
 // llegaron antes de que este service worker la controlara, así que se guardan ahora.
 self.addEventListener('message', (event) => {
+  // Solo páginas del propio sitio pueden pedirlo.
+  if (event.origin !== self.location.origin) return
   const data = event.data
   if (data?.type !== 'cache' || !Array.isArray(data.urls)) return
   event.waitUntil(
@@ -78,7 +80,8 @@ async function networkFirst(request) {
   const cache = await caches.open(PAGES)
   try {
     const res = await fetch(request)
-    if (res.ok && res.type === 'basic') cache.put(request, res.clone())
+    // Si no se puede guardar (por ejemplo, sin espacio), la página igual se muestra.
+    if (res.ok && res.type === 'basic') await cache.put(request, res.clone()).catch(() => undefined)
     return res
   } catch {
     const url = new URL(request.url)
@@ -95,7 +98,7 @@ async function cacheFirst(request) {
   const hit = await cache.match(request, MATCH)
   if (hit) return hit
   const res = await fetch(request)
-  if (res.ok && res.type === 'basic') cache.put(request, res.clone())
+  if (res.ok && res.type === 'basic') await cache.put(request, res.clone()).catch(() => undefined)
   return res
 }
 
