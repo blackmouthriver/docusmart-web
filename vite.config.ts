@@ -114,7 +114,14 @@ const swVersion = (): Plugin => ({
   closeBundle() {
     const dist = resolve(ROOT, 'dist')
     const sw = resolve(dist, 'sw.js')
-    if (!existsSync(sw)) return
+    // Se lee una sola vez (sin comprobar antes si existe) para no abrir una carrera entre la
+    // comprobación y el uso; si no hay sw.js (build parcial) no hay nada que completar.
+    let source: string
+    try {
+      source = readFileSync(sw, 'utf-8')
+    } catch {
+      return
+    }
     const assets: string[] = []
     const walk = (rel: string) => {
       for (const e of readdirSync(resolve(dist, rel), { withFileTypes: true })) {
@@ -125,7 +132,7 @@ const swVersion = (): Plugin => ({
     }
     walk('assets')
     const tools = [...assets.sort(), ...publicToolFiles()]
-    writeFileSync(sw, readFileSync(sw, 'utf-8').replace('/*__SW_TOOLS__*/ []', JSON.stringify(tools)))
+    writeFileSync(sw, source.replace('/*__SW_TOOLS__*/ []', JSON.stringify(tools)))
   },
 })
 
