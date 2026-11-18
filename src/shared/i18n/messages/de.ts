@@ -14,6 +14,8 @@ const de: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Lernen",
+  'nav.collapse': "Menü einklappen",
+  'nav.expand': "Menü ausklappen",
   'nav.sections': "Bereiche",
   'nav.viewer': "Viewer",
   'side.privacy': "Deine Dateien werden in diesem Browser verarbeitet. Sie werden auf keinen Server hochgeladen.",

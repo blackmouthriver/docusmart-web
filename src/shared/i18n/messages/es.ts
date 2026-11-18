@@ -14,6 +14,8 @@ export const es = {
   'nav.short.pdf': 'PDF',
   'nav.short.qr': 'QR',
   'nav.short.study': 'Estudio',
+  'nav.collapse': "Contraer menú",
+  'nav.expand': "Expandir menú",
   'nav.sections': 'Secciones',
   'nav.viewer': 'Visor',
   'side.privacy': 'Tus archivos se procesan en este navegador. No se suben a ningún servidor.',

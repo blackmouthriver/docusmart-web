@@ -14,6 +14,8 @@ const eu: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Ikasketa",
+  'nav.collapse': "Tolestu menua",
+  'nav.expand': "Zabaldu menua",
   'nav.sections': "Atalak",
   'nav.viewer': "Ikustailea",
   'side.privacy': "Zure fitxategiak nabigatzaile honetan prozesatzen dira. Ez dira inongo zerbitzarira igotzen.",

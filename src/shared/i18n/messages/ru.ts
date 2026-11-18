@@ -14,6 +14,8 @@ const ru: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Учёба",
+  'nav.collapse': "Свернуть меню",
+  'nav.expand': "Развернуть меню",
   'nav.sections': "Разделы",
   'nav.viewer': "Просмотр",
   'side.privacy': "Файлы обрабатываются в этом браузере. Они никуда не загружаются.",

@@ -14,6 +14,8 @@ const ko: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "학습",
+  'nav.collapse': "메뉴 접기",
+  'nav.expand': "메뉴 펼치기",
   'nav.sections': "섹션",
   'nav.viewer': "뷰어",
   'side.privacy': "파일은 이 브라우저에서 처리되며 어떤 서버에도 업로드되지 않습니다.",

@@ -14,6 +14,8 @@ const pt: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Estudo",
+  'nav.collapse': "Recolher menu",
+  'nav.expand': "Expandir menu",
   'nav.sections': "Secções",
   'nav.viewer': "Visualizador",
   'side.privacy': "Os teus ficheiros são processados neste navegador. Nunca são enviados para nenhum servidor.",

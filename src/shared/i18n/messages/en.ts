@@ -14,6 +14,8 @@ const en: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Study",
+  'nav.collapse': "Collapse menu",
+  'nav.expand': "Expand menu",
   'nav.sections': "Sections",
   'nav.viewer': "Viewer",
   'side.privacy': "Your files are processed in this browser. They are never uploaded to any server.",
