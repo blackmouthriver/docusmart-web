@@ -340,6 +340,18 @@
   @media (hover: hover) and (pointer: fine) { .web-tools a:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--line) inset, 0 14px 30px -18px rgba(28,27,26,.35); } }
   @media (max-width: 960px) { .web-tools { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 420px) { .web-tools { grid-template-columns: 1fr; } }
+  /* Resumen por categoría (W-77): tarjeta con ícono, nombre y cantidad; lleva a /herramientas. */
+  .wt-cats { grid-template-columns: repeat(3, 1fr); }
+  .wt-cats a { display: flex; align-items: center; gap: 14px; }
+  .wt-cats b { font-size: 17px; }
+  .wt-cats .wt-text { margin: 0; min-width: 0; color: inherit; font-size: inherit; }
+  .wt-cats .wt-text span { margin-top: 2px; }
+  .wt-cats .wt-ico { margin: 0; display: grid; place-items: center; flex: none; width: 46px; height: 46px; border-radius: 14px; background: var(--blue-soft, rgba(37,99,235,.1)); color: var(--blue); transition: transform 300ms var(--ease-out); }
+  .wt-svg { width: 24px; height: 24px; }
+  @media (hover: hover) and (pointer: fine) { .wt-cats a:hover .wt-ico { transform: scale(1.08) rotate(-4deg); } }
+  .wt-more { display: flex; justify-content: center; margin-top: 28px; }
+  @media (max-width: 960px) { .wt-cats { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 420px) { .wt-cats { grid-template-columns: 1fr; } }
   .tool-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 24px; }
   .tool-chips span { padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; }
   .mini-phone { flex: none; width: 170px; align-self: flex-end; margin-bottom: -60px; border-radius: 26px 0 0 0; padding: 7px 0 0 7px; background: #1a2036; }
@@ -777,41 +789,20 @@
         </div>
         <p class="reveal" style="--d:100ms">Fes-les servir des de qualsevol ordinador o mòbil, sense instal·lar res ni crear compte. Tot es processa al teu equip.</p>
       </div>
-      <ul class="web-tools reveal">
 <!-- tools:start -->
-        <li><a href="/ca/unir-pdf"><b>Unir PDF</b><span>Combina diversos PDF en un</span></a></li>
-        <li><a href="/ca/dividir-pdf"><b>Dividir PDF</b><span>Extreu o separa pàgines</span></a></li>
-        <li><a href="/ca/girar-pdf"><b>Girar PDF</b><span>Endreça pàgines girades</span></a></li>
-        <li><a href="/ca/escanejar-document"><b>Escanejar document</b><span>Foto → PDF net</span></a></li>
-        <li><a href="/ca/omplir-formulari-pdf"><b>Omplir formulari PDF</b><span>Completa PDF emplenables</span></a></li>
-        <li><a href="/ca/editar-pdf"><b>Editar PDF</b><span>Text, imatges i formes</span></a></li>
-        <li><a href="/ca/extreure-imatges-pdf"><b>Extreure imatges d’un PDF</b><span>Fotos en qualitat original</span></a></li>
-        <li><a href="/ca/comparar-pdf"><b>Comparar PDF</b><span>Què ha canviat entre dues versions</span></a></li>
-        <li><a href="/ca/tatxar-pdf"><b>Tatxar PDF</b><span>Elimina dades sensibles</span></a></li>
-        <li><a href="/ca/signar-pdf"><b>Signar PDF</b><span>Dibuixa o puja la teva signatura</span></a></li>
-        <li><a href="/ca/retallar-pdf"><b>Retallar PDF</b><span>Treu marges o deixa una zona</span></a></li>
-        <li><a href="/ca/comprimir-pdf"><b>Comprimir PDF</b><span>Redueix el pes d’un PDF</span></a></li>
-        <li><a href="/ca/protegir-pdf"><b>Protegir PDF amb contrasenya</b><span>Posa contrasenya a un PDF</span></a></li>
-        <li><a href="/ca/desbloquejar-pdf"><b>Desbloquejar PDF</b><span>Treu la contrasenya d’un PDF</span></a></li>
-        <li><a href="/ca/reparar-pdf"><b>Reparar PDF</b><span>Recupera PDF que no s’obren</span></a></li>
-        <li><a href="/ca/pdf-a-pdfa"><b>PDF a PDF/A</b><span>Format d’arxiu a llarg termini</span></a></li>
-        <li><a href="/ca/comprimir-imatge"><b>Comprimir imatge</b><span>Fotos més lleugeres</span></a></li>
-        <li><a href="/ca/redimensionar-imatge"><b>Redimensionar imatge</b><span>Canvia la mida de les fotos</span></a></li>
-        <li><a href="/ca/retallar-imatge"><b>Retallar imatge</b><span>Lliure o en 1:1, 4:3, 16:9…</span></a></li>
-        <li><a href="/ca/girar-imatge"><b>Girar i capgirar imatge</b><span>Gira 90° o capgira</span></a></li>
-        <li><a href="/ca/comprimir-fitxers"><b>Comprimir fitxers (ZIP i 7Z)</b><span>Crea un ZIP o 7Z</span></a></li>
-        <li><a href="/ca/descomprimir-fitxers"><b>Descomprimir RAR, ZIP i 7Z</b><span>Obre RAR, ZIP i 7Z</span></a></li>
-        <li><a href="/ca/ocr-pdf"><b>OCR: reconèixer text</b><span>Text d’escaneigs i fotos</span></a></li>
-        <li><a href="/ca/imatge-a-pdf"><b>Imatge a PDF</b><span>Ajunta fotos en un PDF</span></a></li>
-        <li><a href="/ca/pdf-a-jpg"><b>PDF a JPG</b><span>Cada pàgina com a imatge</span></a></li>
-        <li><a href="/ca/pdf-a-word"><b>PDF a Word</b><span>Document editable (.docx)</span></a></li>
-        <li><a href="/ca/pdf-a-excel"><b>PDF a Excel</b><span>Taules a un full de càlcul</span></a></li>
-        <li><a href="/ca/word-a-pdf"><b>Word a PDF</b><span>Document .docx a PDF</span></a></li>
-        <li><a href="/ca/excel-a-pdf"><b>Excel a PDF</b><span>Fulls .xlsx a PDF</span></a></li>
-        <li><a href="/ca/pdf-a-text"><b>PDF a text</b><span>Extreu el text d’un PDF</span></a></li>
-        <li><a href="/ca/crear-codi-qr"><b>Crear i llegir codis QR</b><span>Genera i escaneja QR</span></a></li>
-<!-- tools:end -->
+      <ul class="web-tools wt-cats" data-stagger="60">
+        <li class="reveal"><a href="/ca/eines#cat-organizar"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4v5a4 4 0 0 0 4 4 4 4 0 0 1 4 4v3M16 4v5a4 4 0 0 1-4 4M5 7l3-3 3 3M13 7l3-3 3 3"/></svg></span><span class="wt-text"><b>Organitzar PDF</b><span>3 eines</span></span></a></li>
+        <li class="reveal"><a href="/ca/eines#cat-editar"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4l5 5L9 20H4v-5zM13 6l5 5M4 22h16"/></svg></span><span class="wt-text"><b>Editar i signar</b><span>5 eines</span></span></a></li>
+        <li class="reveal"><a href="/ca/eines#cat-seguridad"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span class="wt-text"><b>Seguretat</b><span>3 eines</span></span></a></li>
+        <li class="reveal"><a href="/ca/eines#cat-optimizar"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg></span><span class="wt-text"><b>Optimitzar i arxivar</b><span>4 eines</span></span></a></li>
+        <li class="reveal"><a href="/ca/eines#cat-convertir"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg></span><span class="wt-text"><b>Convertir</b><span>7 eines</span></span></a></li>
+        <li class="reveal"><a href="/ca/eines#cat-imagen"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M15 9.5a1.5 1.5 0 1 1 0-.01"/></svg></span><span class="wt-text"><b>Imatge</b><span>4 eines</span></span></a></li>
+        <li class="reveal"><a href="/ca/eines#cat-escanear"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/></svg></span><span class="wt-text"><b>Escanejar i OCR</b><span>2 eines</span></span></a></li>
+        <li class="reveal"><a href="/ca/eines#cat-archivos"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v4H3zM5 8v12h14V8M10 12h4"/></svg></span><span class="wt-text"><b>Fitxers comprimits</b><span>2 eines</span></span></a></li>
+        <li class="reveal"><a href="/ca/eines#cat-qr"><span class="wt-ico"><svg class="wt-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2M14 18h2M18 18h2v2"/></svg></span><span class="wt-text"><b>Codis QR</b><span>1 eina</span></span></a></li>
       </ul>
+      <div class="wt-more reveal"><a class="btn btn-primary" href="/ca/eines">Veure les 31 eines <span aria-hidden="true">→</span></a></div>
+<!-- tools:end -->
     </div>
   </section>
 

@@ -27,9 +27,12 @@ Antes de pedir revisión: `npx tsc -b --noEmit`, `npx vitest run`, `npm run buil
 ## Estructura (detalle en README.md)
 
 - `site/` — HTML (raíz de Vite). `index.html`, `app/index.html` y `privacidad.html` se editan a mano;
-  el resto (31 herramientas × 12 idiomas y `/<idioma>/index.html`) lo genera
-  `scripts/generate-tool-pages.mjs`: **no editarlos a mano**.
-- `src/entries/` — entradas: `app.tsx` (/app/), `landing.ts` (portada), `tool-page.tsx` (páginas de herramienta).
+  el resto (31 herramientas × 12 idiomas, `/herramientas` × 12 y `/<idioma>/index.html`) lo genera
+  `scripts/generate-tool-pages.mjs`: **no editarlos a mano**. Cada herramienta tiene `category` en
+  `tools/pages.mjs` (categorías en `CATEGORIES`, nombres en `ui.cats` de cada idioma); la portada muestra el
+  resumen por categoría y `/herramientas` (`/en/tools`…) las lista en orden alfabético del idioma, con buscador.
+- `src/entries/` — entradas: `app.tsx` (/app/), `landing.ts` (portada), `tool-page.tsx` (páginas de herramienta),
+  `tools-hub.ts` (/herramientas).
 - `src/app/` — armazón de la app: `App.tsx`, `state.ts` (contexto y `go()` de navegación por hash), `appearance.ts`.
 - `src/features/<dominio>/{ui,core,infra}` — dominios: pdf, security (qpdf: comprimir/proteger/desbloquear/reparar),
   pdfa, ocr, convert, image, scan, archive (7-Zip wasm), qr, study, viewer, home.

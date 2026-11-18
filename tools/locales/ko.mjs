@@ -34,6 +34,20 @@ export default {
     footPrivacy: '개인정보 처리방침',
     footConsent: '분석 설정',
     os: '모든 OS(웹 브라우저)',
+    // Categorías y página "Todas las herramientas" (W-76/W-78)
+    cats: { organizar: "PDF 정리", editar: "편집 및 서명", seguridad: "보안", optimizar: "최적화 및 보관", convertir: "변환", imagen: "이미지", escanear: "스캔 및 OCR", archivos: "압축 파일", qr: "QR 코드" },
+    hubSlug: "tools",
+    hubTitle: "무료 도구 전체: PDF, 이미지, QR 등 | DocuSmart",
+    hubDescription: "DocuSmart의 모든 도구를 카테고리별로: PDF 합치기·변환·서명·압축, 이미지 편집, OCR, QR 코드, ZIP 파일. 무료이며 파일을 업로드하지 않습니다.",
+    hubH1: "모든 도구",
+    hubLead: "브라우저에서 작동하는 무료 도구 {n}개. 파일은 업로드되지 않습니다. 카테고리를 고르거나 이름으로 검색하세요.",
+    hubSearch: "도구 검색",
+    hubSearchHint: "예: 합치기, Word, 사진…",
+    hubEmpty: "검색과 일치하는 도구가 없습니다.",
+    hubJump: "카테고리",
+    toolsOne: "도구 1개",
+    toolsMany: "도구 {n}개",
+    seeAll: "도구 {n}개 모두 보기",
   },
   pages: {
     'unir-pdf': {

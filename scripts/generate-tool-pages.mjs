@@ -11,8 +11,8 @@
 // CI verifica que estén al día (`npm run pages:check`).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { FACEBOOK_URL, INSTAGRAM_URL, SITE, TIKTOK_URL, pages } from '../tools/pages.mjs'
-import { ES, LANGS, LOCALES, filePath, homePath, localized, pagePath } from '../tools/locales/index.mjs'
+import { CATEGORIES, FACEBOOK_URL, INSTAGRAM_URL, SITE, TIKTOK_URL, pages } from '../tools/pages.mjs'
+import { ES, LANGS, LOCALES, filePath, homePath, hubFile, hubPath, localized, pagePath, toolCount } from '../tools/locales/index.mjs'
 
 const root = join(import.meta.dirname, '..')
 /** Carpeta de las páginas HTML (raíz de Vite), relativa al proyecto. */
@@ -227,7 +227,7 @@ ${p.faq.map(([q, a]) => `      <details>\n        <summary>${esc(q)}</summary>\n
     <h2>${esc(ui.moreTools)}</h2>
     <ul class="tp-related">
 ${related.map((r) => `      <li><a href="${pagePath(r, loc)}"><b>${esc(localized(r, loc).h1)}</b><span>${esc(localized(r, loc).short)}</span></a></li>`).join('\n')}
-      <li><a href="/app/"><b>${esc(ui.allTools)}</b><span>${esc(ui.openWeb)}</span></a></li>
+      <li><a href="${hubPath(loc)}"><b>${esc(ui.allTools)}</b><span>${esc(toolCount(loc, pages.length))}</span></a></li>
     </ul>
   </section>
 
@@ -264,6 +264,139 @@ ${related.map((r) => `      <li><a href="${pagePath(r, loc)}"><b>${esc(localized
 
 for (const loc of LANGS) for (const page of pages) emit(`${SITE_DIR}/${filePath(page, loc)}`, render(page, loc))
 
+// ── Página "Todas las herramientas" (W-78) ──────────────────────────────────
+/** Herramientas de una categoría, en orden alfabético según el idioma. */
+function toolsIn(cat, loc) {
+  const collator = new Intl.Collator(loc.lang, { sensitivity: 'base', numeric: true })
+  return pages
+    .filter((p) => p.category === cat.id)
+    .map((p) => ({ page: p, l: localized(p, loc) }))
+    .sort((a, b) => collator.compare(a.l.h1, b.l.h1))
+}
+
+function renderHub(loc) {
+  const ui = loc.ui
+  const url = `${SITE}${hubPath(loc)}`
+  const home = homePath(loc)
+  const n = pages.length
+  const structured = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: ui.hubTitle,
+    url,
+    description: ui.hubDescription,
+    inLanguage: loc.lang,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: n,
+      itemListElement: CATEGORIES.flatMap((c) => toolsIn(c, loc)).map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.l.h1, url: `${SITE}${pagePath(t.page, loc)}` })),
+    },
+  }
+  const sections = CATEGORIES.map((c) => {
+    const items = toolsIn(c, loc)
+    return `    <section class="th-cat reveal" id="cat-${c.id}" data-cat aria-labelledby="h-${c.id}">
+      <div class="th-cat-head"><span class="th-cat-ico">${svg(c.icon, 'th-svg')}</span><h2 id="h-${c.id}">${esc(ui.cats[c.id])}</h2><span class="th-count">${esc(toolCount(loc, items.length))}</span></div>
+      <ul class="th-grid">
+${items.map((t) => `        <li data-tool data-search="${esc([t.l.h1, t.l.short, ui.cats[c.id]].join(' '))}"><a href="${pagePath(t.page, loc)}"><span class="th-tool-ico">${svg(toolIcon(t.page.tool), 'th-svg')}</span><span class="th-tool-text"><b>${esc(t.l.h1)}</b><span>${esc(t.l.short)}</span></span></a></li>`).join('\n')}
+      </ul>
+    </section>`
+  }).join('\n')
+
+  return `<!doctype html>
+<!-- Generado por scripts/generate-tool-pages.mjs desde tools/pages.mjs. No editar a mano. -->
+<html lang="${loc.lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>${esc(ui.hubTitle)}</title>
+<meta name="description" content="${esc(ui.hubDescription)}">
+<meta name="theme-color" content="#0B1020">
+<link rel="canonical" href="${url}">
+${alternates(hubPath)}
+<link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DocuSmart">
+<meta property="og:locale" content="${loc.ogLocale}">
+<meta property="og:title" content="${esc(ui.hubTitle)}">
+<meta property="og:description" content="${esc(ui.hubDescription)}">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="${SITE}/img/screen-home.webp">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+${jsonLd(structured)}
+</script>
+</head>
+<body class="tool-page tools-hub">
+<header class="tp-nav">
+  <div class="tp-wrap tp-nav-inner">
+    <a class="tp-brand" href="${home}"><img src="/img/icon.svg" alt="" width="30" height="30">DocuSmart</a>
+    <nav aria-label="${esc(ui.navMain)}">
+      <a href="/app/">${esc(ui.navWebApp)}</a>
+${langMenu(loc, hubPath, 'tp-lang', '      ')}
+      <a class="tp-nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool">${esc(ui.navDownload)}</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="tp-hero th-hero">
+    <div class="tp-wrap">
+      <div class="tp-hero-text">
+      <nav class="tp-crumbs" aria-label="${esc(ui.crumbs)}"><a href="${home}">DocuSmart</a><span aria-hidden="true">›</span><span>${esc(ui.hubH1)}</span></nav>
+      <h1>${esc(ui.hubH1)}</h1>
+      <p class="tp-lead">${esc(ui.hubLead.replace('{n}', String(n)))}</p>
+      <div class="th-search">
+        <label class="th-search-label" for="th-q">${esc(ui.hubSearch)}</label>
+        ${svg('search', 'th-search-ico')}
+        <input id="th-q" type="search" placeholder="${esc(ui.hubSearchHint)}" autocomplete="off" enterkeyhint="search" aria-controls="th-results">
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tp-wrap th-body">
+    <nav class="th-jump" aria-label="${esc(ui.hubJump)}">
+${CATEGORIES.map((c) => `      <a href="#cat-${c.id}" data-jump="${c.id}">${svg(c.icon, 'th-svg')}${esc(ui.cats[c.id])}</a>`).join('\n')}
+    </nav>
+    <div id="th-results" aria-live="polite">
+${sections}
+      <p class="th-empty" hidden>${esc(ui.hubEmpty)}</p>
+    </div>
+  </div>
+
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
+    <div class="tp-cta">
+      <div>
+        <h2>${esc(ui.ctaTitle)}</h2>
+        <p>${esc(ui.ctaText)}</p>
+      </div>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">${esc(ui.ctaBtn)}</a>
+    </div>
+  </section>
+</main>
+
+<footer class="tp-foot">
+  <div class="tp-wrap tp-foot-inner">
+    <span>© DocuSmart</span>
+    <nav aria-label="${esc(ui.footAria)}">
+      <a href="${home}">${esc(ui.footHome)}</a>
+      <a href="/app/">DocuSmart Web</a>
+      <a href="/privacidad">${esc(ui.footPrivacy)}</a>
+      <a href="${FACEBOOK_URL}" target="_blank" rel="noopener">Facebook</a>
+      <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener">Instagram</a>
+      <a href="${TIKTOK_URL}" target="_blank" rel="noopener">TikTok</a>
+      <button type="button" class="link-btn" data-consent-open hidden>${esc(ui.footConsent)}</button>
+    </nav>
+  </div>
+</footer>
+<script type="module" src="${entryScript('tools-hub.ts', loc.lang === 'es' ? 0 : 1)}"></script>
+</body>
+</html>
+`
+}
+
+for (const loc of LANGS) emit(`${SITE_DIR}/${hubFile(loc)}`, renderHub(loc))
+
 // ── Portada ──────────────────────────────────────────────────────────────────
 /** Reemplaza el bloque entre <!-- name:start --> y <!-- name:end -->. */
 function block(html, name, content, file) {
@@ -273,9 +406,15 @@ function block(html, name, content, file) {
 }
 
 function landingBlocks(html, loc, file) {
-  const items = pages
-    .map((p) => `        <li><a href="${pagePath(p, loc)}"><b>${esc(localized(p, loc).h1)}</b><span>${esc(localized(p, loc).short)}</span></a></li>`)
-    .join('\n')
+  const hub = hubPath(loc)
+  const cards = CATEGORIES.map((c) => {
+    const n = pages.filter((p) => p.category === c.id).length
+    return `        <li class="reveal"><a href="${hub}#cat-${c.id}"><span class="wt-ico">${svg(c.icon, 'wt-svg')}</span><span class="wt-text"><b>${esc(loc.ui.cats[c.id])}</b><span>${esc(toolCount(loc, n))}</span></span></a></li>`
+  }).join('\n')
+  const items = `      <ul class="web-tools wt-cats" data-stagger="60">
+${cards}
+      </ul>
+      <div class="wt-more reveal"><a class="btn btn-primary" href="${hub}">${esc(loc.ui.seeAll.replace('{n}', String(pages.length)))} <span aria-hidden="true">→</span></a></div>`
   let out = block(html, 'tools', items, file)
   out = block(out, 'hreflang', alternates(homePath), file)
   out = block(out, 'langs', langMenu(loc, homePath, 'lang-menu', '  '), file)
@@ -316,6 +455,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <!-- Generado por scripts/generate-tool-pages.mjs. No editar a mano. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${entry(homePath, 'monthly', '1.0')}
+${entry(hubPath, 'monthly', '0.9')}
 ${pages.map((p) => entry((l) => pagePath(p, l), 'monthly', '0.9')).join('\n')}
   <url><loc>${SITE}/app/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>${SITE}/privacidad</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>

@@ -31,6 +31,20 @@ export default {
     footPrivacy: 'Pribatutasun-politika',
     footConsent: 'Analitika-hobespenak',
     os: 'Edozein (web nabigatzailea)',
+    // Categorías y página "Todas las herramientas" (W-76/W-78)
+    cats: { organizar: "PDFak antolatu", editar: "Editatu eta sinatu", seguridad: "Segurtasuna", optimizar: "Optimizatu eta artxibatu", convertir: "Bihurtu", imagen: "Irudia", escanear: "Eskaneatu eta OCR", archivos: "Fitxategi konprimituak", qr: "QR kodeak" },
+    hubSlug: "tresnak",
+    hubTitle: "Doako tresna guztiak: PDF, irudia, QR eta gehiago | DocuSmart",
+    hubDescription: "DocuSmarten tresna guztiak kategoriaka: PDFak batu, bihurtu, sinatu eta konprimitu, irudiak editatu, OCR, QR kodeak eta ZIP fitxategiak. Doan eta zure fitxategiak igo gabe.",
+    hubH1: "Tresna guztiak",
+    hubLead: "Nabigatzailean dabiltzan {n} tresna doan, zure fitxategiak igo gabe. Aukeratu kategoria bat edo bilatu izenez.",
+    hubSearch: "Bilatu tresna",
+    hubSearchHint: "Adibidez: batu, Word, argazkia…",
+    hubEmpty: "Ez dago bilaketarekin bat datorren tresnarik.",
+    hubJump: "Kategoriak",
+    toolsOne: "Tresna 1",
+    toolsMany: "{n} tresna",
+    seeAll: "Ikusi {n} tresnak",
   },
   pages: {
     'unir-pdf': {

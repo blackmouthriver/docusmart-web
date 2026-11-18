@@ -14,9 +14,23 @@ export const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61596626852
 export const INSTAGRAM_URL = 'https://www.instagram.com/supportdocusmart/'
 export const TIKTOK_URL = 'https://www.tiktok.com/@docusmartsupport'
 
+/** Categorías de herramientas (W-76), en el orden en que se muestran. Nombres en tools/locales (ui.cats). */
+export const CATEGORIES = [
+  { id: 'organizar', icon: 'merge' },
+  { id: 'editar', icon: 'pen' },
+  { id: 'seguridad', icon: 'lock' },
+  { id: 'optimizar', icon: 'compress' },
+  { id: 'convertir', icon: 'convert' },
+  { id: 'imagen', icon: 'image' },
+  { id: 'escanear', icon: 'camera' },
+  { id: 'archivos', icon: 'archive' },
+  { id: 'qr', icon: 'qr' },
+]
+
 export const pages = [
   {
     slug: 'unir-pdf',
+    category: 'organizar',
     tool: { kind: 'pdf', id: 'unir' },
     title: 'Unir PDF gratis y sin subir archivos | DocuSmart',
     description:
@@ -38,6 +52,7 @@ export const pages = [
   },
   {
     slug: 'dividir-pdf',
+    category: 'organizar',
     tool: { kind: 'pdf', id: 'dividir' },
     title: 'Dividir PDF y extraer páginas gratis | DocuSmart',
     description:
@@ -58,6 +73,7 @@ export const pages = [
   },
   {
     slug: 'rotar-pdf',
+    category: 'organizar',
     tool: { kind: 'pdf', id: 'rotar' },
     title: 'Rotar PDF online gratis, página por página | DocuSmart',
     description:
@@ -78,6 +94,7 @@ export const pages = [
   },
   {
     slug: 'escanear-documento',
+    category: 'escanear',
     tool: { kind: 'pdf', id: 'escanear' },
     title: 'Escáner online gratis: de foto a PDF con el celular | DocuSmart',
     description:
@@ -100,6 +117,7 @@ export const pages = [
   },
   {
     slug: 'llenar-formulario-pdf',
+    category: 'editar',
     tool: { kind: 'pdf', id: 'formulario' },
     title: 'Llenar formulario PDF online gratis | DocuSmart',
     description:
@@ -122,6 +140,7 @@ export const pages = [
   },
   {
     slug: 'editar-pdf',
+    category: 'editar',
     tool: { kind: 'pdf', id: 'editar' },
     title: 'Editar PDF online gratis: agregar texto, imágenes y formas | DocuSmart',
     description:
@@ -144,6 +163,7 @@ export const pages = [
   },
   {
     slug: 'extraer-imagenes-pdf',
+    category: 'optimizar',
     tool: { kind: 'pdf', id: 'imagenes' },
     title: 'Extraer imágenes de un PDF gratis, en calidad original | DocuSmart',
     description:
@@ -166,6 +186,7 @@ export const pages = [
   },
   {
     slug: 'comparar-pdf',
+    category: 'optimizar',
     tool: { kind: 'pdf', id: 'comparar' },
     title: 'Comparar PDF online gratis: ver qué cambió | DocuSmart',
     description:
@@ -188,6 +209,7 @@ export const pages = [
   },
   {
     slug: 'censurar-pdf',
+    category: 'editar',
     tool: { kind: 'pdf', id: 'censurar' },
     title: 'Censurar PDF online gratis: tachar datos de verdad | DocuSmart',
     description:
@@ -210,6 +232,7 @@ export const pages = [
   },
   {
     slug: 'firmar-pdf',
+    category: 'editar',
     tool: { kind: 'pdf', id: 'firmar' },
     title: 'Firmar PDF online gratis, sin registrarte | DocuSmart',
     description:
@@ -232,6 +255,7 @@ export const pages = [
   },
   {
     slug: 'recortar-pdf',
+    category: 'editar',
     tool: { kind: 'pdf', id: 'recortar' },
     title: 'Recortar PDF online gratis: quitar márgenes | DocuSmart',
     description:
@@ -254,6 +278,7 @@ export const pages = [
   },
   {
     slug: 'comprimir-pdf',
+    category: 'optimizar',
     tool: { kind: 'pdf', id: 'comprimir' },
     title: 'Comprimir PDF gratis, sin subir el archivo | DocuSmart',
     description:
@@ -275,6 +300,7 @@ export const pages = [
   },
   {
     slug: 'proteger-pdf',
+    category: 'seguridad',
     tool: { kind: 'pdf', id: 'proteger' },
     title: 'Proteger PDF con contraseña (AES-256) gratis | DocuSmart',
     description:
@@ -295,6 +321,7 @@ export const pages = [
   },
   {
     slug: 'desbloquear-pdf',
+    category: 'seguridad',
     tool: { kind: 'pdf', id: 'desbloquear' },
     title: 'Desbloquear PDF: quitar contraseña gratis | DocuSmart',
     description:
@@ -315,6 +342,7 @@ export const pages = [
   },
   {
     slug: 'reparar-pdf',
+    category: 'seguridad',
     tool: { kind: 'pdf', id: 'reparar' },
     title: 'Reparar PDF dañado gratis, en el navegador | DocuSmart',
     description:
@@ -335,6 +363,7 @@ export const pages = [
   },
   {
     slug: 'pdf-a-pdfa',
+    category: 'optimizar',
     tool: { kind: 'pdf', id: 'pdfa' },
     title: 'Convertir PDF a PDF/A gratis (PDF/A-2b) | DocuSmart',
     description:
@@ -356,6 +385,7 @@ export const pages = [
   },
   {
     slug: 'comprimir-imagen',
+    category: 'imagen',
     tool: { kind: 'img', id: 'comprimir' },
     title: 'Comprimir imagen online gratis: JPG, PNG y WebP | DocuSmart',
     description:
@@ -378,6 +408,7 @@ export const pages = [
   },
   {
     slug: 'redimensionar-imagen',
+    category: 'imagen',
     tool: { kind: 'img', id: 'redimensionar' },
     title: 'Redimensionar imagen online gratis, en pixeles o porcentaje | DocuSmart',
     description:
@@ -400,6 +431,7 @@ export const pages = [
   },
   {
     slug: 'recortar-imagen',
+    category: 'imagen',
     tool: { kind: 'img', id: 'recortar' },
     title: 'Recortar imagen online gratis: libre, 1:1, 4:3 o 16:9 | DocuSmart',
     description:
@@ -421,6 +453,7 @@ export const pages = [
   },
   {
     slug: 'rotar-imagen',
+    category: 'imagen',
     tool: { kind: 'img', id: 'rotar' },
     title: 'Rotar imagen online gratis: girar 90° o voltear | DocuSmart',
     description:
@@ -442,6 +475,7 @@ export const pages = [
   },
   {
     slug: 'comprimir-archivos',
+    category: 'archivos',
     tool: { kind: 'archive', id: 'crear' },
     title: 'Comprimir archivos en ZIP o 7Z online, con contraseña | DocuSmart',
     description:
@@ -463,6 +497,7 @@ export const pages = [
   },
   {
     slug: 'descomprimir-archivos',
+    category: 'archivos',
     tool: { kind: 'archive', id: 'extraer' },
     title: 'Abrir RAR, ZIP y 7Z online: descomprimir gratis | DocuSmart',
     description:
@@ -484,6 +519,7 @@ export const pages = [
   },
   {
     slug: 'ocr-pdf',
+    category: 'escanear',
     tool: { kind: 'pdf', id: 'ocr' },
     title: 'OCR online gratis: texto de PDF escaneados e imágenes | DocuSmart',
     description:
@@ -506,6 +542,7 @@ export const pages = [
   },
   {
     slug: 'imagen-a-pdf',
+    category: 'convertir',
     tool: { kind: 'conv', id: 'img-pdf' },
     title: 'Convertir imagen a PDF (JPG, PNG, foto a PDF) | DocuSmart',
     description:
@@ -527,6 +564,7 @@ export const pages = [
   },
   {
     slug: 'pdf-a-jpg',
+    category: 'convertir',
     tool: { kind: 'conv', id: 'pdf-img' },
     title: 'Convertir PDF a JPG o PNG gratis | DocuSmart',
     description:
@@ -547,6 +585,7 @@ export const pages = [
   },
   {
     slug: 'pdf-a-word',
+    category: 'convertir',
     tool: { kind: 'conv', id: 'pdf-word' },
     title: 'PDF a Word gratis: convertir PDF a DOCX editable | DocuSmart',
     description:
@@ -569,6 +608,7 @@ export const pages = [
   },
   {
     slug: 'pdf-a-excel',
+    category: 'convertir',
     tool: { kind: 'conv', id: 'pdf-excel' },
     title: 'PDF a Excel gratis: convertir tablas de PDF a XLSX | DocuSmart',
     description:
@@ -591,6 +631,7 @@ export const pages = [
   },
   {
     slug: 'word-a-pdf',
+    category: 'convertir',
     tool: { kind: 'conv', id: 'word-pdf' },
     title: 'Word a PDF gratis: convertir DOCX a PDF online | DocuSmart',
     description:
@@ -608,6 +649,7 @@ export const pages = [
   },
   {
     slug: 'excel-a-pdf',
+    category: 'convertir',
     tool: { kind: 'conv', id: 'excel-pdf' },
     title: 'Excel a PDF gratis: convertir XLSX a PDF online | DocuSmart',
     description:
@@ -625,6 +667,7 @@ export const pages = [
   },
   {
     slug: 'pdf-a-texto',
+    category: 'convertir',
     tool: { kind: 'conv', id: 'pdf-txt' },
     title: 'Extraer texto de un PDF (PDF a TXT) gratis | DocuSmart',
     description:
@@ -645,6 +688,7 @@ export const pages = [
   },
   {
     slug: 'crear-codigo-qr',
+    category: 'qr',
     tool: { kind: 'qr' },
     title: 'Crear y leer códigos QR gratis, también con contraseña | DocuSmart',
     description:

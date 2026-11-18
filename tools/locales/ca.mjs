@@ -31,6 +31,20 @@ export default {
     footPrivacy: 'Política de privacitat',
     footConsent: "Preferències d'analítica",
     os: 'Qualsevol (navegador web)',
+    // Categorías y página "Todas las herramientas" (W-76/W-78)
+    cats: { organizar: "Organitzar PDF", editar: "Editar i signar", seguridad: "Seguretat", optimizar: "Optimitzar i arxivar", convertir: "Convertir", imagen: "Imatge", escanear: "Escanejar i OCR", archivos: "Fitxers comprimits", qr: "Codis QR" },
+    hubSlug: "eines",
+    hubTitle: "Totes les eines gratuïtes: PDF, imatge, QR i més | DocuSmart",
+    hubDescription: "Totes les eines de DocuSmart per categoria: unir, convertir, signar i comprimir PDF, editar imatges, OCR, QR i fitxers ZIP. Gratis i sense pujar els teus fitxers.",
+    hubH1: "Totes les eines",
+    hubLead: "{n} eines gratuïtes que funcionen al navegador, sense pujar els teus fitxers. Tria una categoria o cerca pel nom.",
+    hubSearch: "Cerca una eina",
+    hubSearchHint: "Per exemple: unir, Word, foto…",
+    hubEmpty: "Cap eina coincideix amb la cerca.",
+    hubJump: "Categories",
+    toolsOne: "1 eina",
+    toolsMany: "{n} eines",
+    seeAll: "Veure les {n} eines",
   },
   pages: {
     'unir-pdf': {
