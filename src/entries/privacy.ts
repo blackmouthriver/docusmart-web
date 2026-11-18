@@ -3,22 +3,12 @@
 import '../shared/platform/trustedTypes'
 import '../shared/platform/fonts'
 import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
+import { initMotion, scrollBehavior } from '../shared/platform/motion'
 
 applyAppearance(loadAppearance())
 watchSystemTheme(loadAppearance)
-document.documentElement.classList.add('js')
-
-// Aparición suave al entrar en pantalla.
-const reveal = new IntersectionObserver(
-  (entries) =>
-    entries.forEach((e) => {
-      if (!e.isIntersecting) return
-      e.target.classList.add('is-in')
-      reveal.unobserve(e.target)
-    }),
-  { rootMargin: '0px 0px -8% 0px' },
-)
-document.querySelectorAll('.reveal').forEach((el) => reveal.observe(el))
+// Aparición suave al entrar en pantalla (sistema de movimiento común, W-72).
+initMotion()
 
 // Índice: marca la sección que se está leyendo (y la deja a la vista en el celular).
 const links = new Map<string, HTMLAnchorElement>()
@@ -33,7 +23,7 @@ const spy = new IntersectionObserver(
     current?.removeAttribute('aria-current')
     link.setAttribute('aria-current', 'true')
     current = link
-    link.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' })
+    link.scrollIntoView({ block: 'nearest', inline: 'center', behavior: scrollBehavior() })
   },
   { rootMargin: '-20% 0px -65% 0px' },
 )
@@ -45,5 +35,5 @@ if (top) {
   const toggle = () => (top.hidden = scrollY < 600)
   addEventListener('scroll', toggle, { passive: true })
   toggle()
-  top.addEventListener('click', () => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }))
+  top.addEventListener('click', () => scrollTo({ top: 0, behavior: scrollBehavior() }))
 }

@@ -3,6 +3,8 @@ import '../shared/platform/fonts'
 import { initAnalytics, track } from '../shared/platform/analytics'
 import { mountConsentBanner } from '../shared/platform/consent'
 import { rememberLangChoice } from '../shared/platform/langChoice'
+import { initMotion } from '../shared/platform/motion'
+import '../shared/ui/motion.css'
 
 rememberLangChoice()
 
@@ -55,19 +57,8 @@ addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeMenu()
 })
 
-// Entradas al hacer scroll
-const io = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-in')
-        io.unobserve(e.target)
-      }
-    })
-  },
-  { threshold: 0, rootMargin: '0px 0px -8% 0px' },
-)
-document.querySelectorAll('.reveal').forEach((el) => io.observe(el))
+// Entradas al hacer scroll (sistema de movimiento común, W-72)
+initMotion()
 
 // Altura real del recorrido de la línea de escaneo del teléfono
 const phoneScreen = document.querySelector<HTMLElement>('#hero-phone .phone-screen')

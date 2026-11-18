@@ -100,6 +100,11 @@ Facebook e Instagram #51–#52; correo de contacto #53.
 - **Seguridad:** nada de `innerHTML`, scripts externos ni `data:` para fuentes. Recursos pesados (wasm,
   modelos OCR, pdf.js) desde `public/` (los copia `scripts/copy-wasm-assets.mjs`).
 - **Fuentes estándar de PDF (pdf-lib):** solo alfabeto latino (WinAnsi); lo que se dibuja en un PDF debe serlo.
+- **Movimiento (W-72):** usar `src/shared/ui/motion.css` (tokens `--ease-out`, `--dur-*`; clases `.reveal`
+  con `data-stagger` en el padre, `.ds-press`, `.ds-lift`; transición entre páginas) y
+  `src/shared/platform/motion.ts` (`initMotion`, `withViewTransition`, `scrollBehavior`). Solo `transform` y
+  `opacity`, y siempre respetando "reducir movimiento". Las reglas comunes van en `:where()` para que cada
+  página pueda ajustarlas sin pelear especificidad.
 - Comentarios, documentación y mensajes de commit en español.
 
 ## Flujo de trabajo
@@ -110,6 +115,8 @@ Facebook e Instagram #51–#52; correo de contacto #53.
   `docusmart-web-prod` (puerto 5491, sirve `dist/`). Los PDF de prueba van en `dist/prueba*` y se borran al
   terminar (`npm run build` también los borra). No usar archivos reales del usuario.
 - Con el panel del navegador oculto las capturas salen en blanco: verificar con `read_page`/`javascript_tool`.
+  Además, Chromium salta las transiciones entre páginas y deja "Transition was aborted… Page already revealed"
+  en consola: es por el panel oculto, no un error de la web.
 - Al cambiar de idioma en pruebas, devolver `localStorage['ds-lang']` a `'es'`.
 - Nunca pedir ni mostrar tokens o secretos (están en los secretos de GitHub).
 

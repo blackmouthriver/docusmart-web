@@ -12,7 +12,6 @@
   --night: #0B1020;
   --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Plus Jakarta Sans", system-ui, sans-serif;
   --font-body: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --gutter: clamp(16px, 4vw, 40px);
 }
 [data-theme="dark"] {
@@ -95,15 +94,12 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
 .pv-top[hidden] { display: grid; opacity: 0; pointer-events: none; transform: translateY(12px); }
 .pv-foot { max-width: calc(1100px + 2 * var(--gutter)); margin: 48px auto 0; padding: 24px var(--gutter) 48px; color: var(--ink-faint); font-size: 14px; border-top: 1px solid var(--line); }
 
-/* ── Aparición suave al desplazar (solo con JS y sin "reducir movimiento") ── */
-.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); transition-delay: var(--d, 0ms); }
-.js .reveal.is-in { opacity: 1; transform: none; }
+/* ── Entrada del encabezado (la aparición al desplazar viene de shared/ui/motion.css) ── */
 .js .pv-title, .js .pv-lead, .js .pv-updated { animation: pv-rise 700ms var(--ease-out) both; }
 .js .pv-lead { animation-delay: 120ms; }
 @keyframes pv-rise { from { opacity: 0; transform: translateY(14px); } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .js .reveal { opacity: 1; transform: none; transition: none; }
   .js .pv-title, .js .pv-lead, .js .pv-updated { animation: none; }
 }
 
@@ -125,6 +121,5 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
   .pv-layout { display: block; margin: 0; padding: 0; }
   .pv-card { box-shadow: none; padding: 0; margin: 0 0 14px; max-width: none; break-inside: avoid-page; }
   .pv-ico { display: none; }
-  .js .reveal { opacity: 1 !important; transform: none !important; }
   body { background: #fff; color: #000; }
 }
