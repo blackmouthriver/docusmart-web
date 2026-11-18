@@ -4,6 +4,8 @@
 > Hecho: base de conocimiento (`tools/assistant/`, generada en `public/assistant/<idioma>.json`) y motor
 > (`src/features/assistant/core/`): 96 % de aciertos en español, 95 % en inglés y ≥ 94 % en los otros 10 idiomas
 > (W-70e: base propia en los 12 idiomas; chino, japonés y coreano se indexan por pares de caracteres).
+> W-70f: si el navegador trae su IA integrada ya descargada (Prompt API / Gemini Nano; en, es, ja), redacta la
+> respuesta elegida por el motor a partir de su texto, en el dispositivo; con cualquier falla, la respuesta fija.
 > Widget en todo el sitio (W-70c/W-70d): `src/features/assistant/ui/launcher.ts` monta el mismo botón en la portada,
 > las herramientas, /herramientas, la privacidad y la app; el panel (React) y la base se cargan al abrirlo.
 > Objetivo de costo: **USD 0 al mes** en la primera versión.

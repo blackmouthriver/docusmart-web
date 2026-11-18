@@ -4,6 +4,7 @@ export default {
   ui: {
     title: 'Assistente do DocuSmart', greeting: 'Olá! Sou o assistente do DocuSmart. Pergunte como usar uma ferramenta ou o que quiser saber sobre o app e o site.', placeholder: 'Escreva sua pergunta…', send: 'Enviar', open: 'Abrir o assistente', close: 'Fechar o assistente', clear: 'Apagar conversa', suggestions: 'Perguntas sugeridas', related: 'Também pode ajudar',
     fallback: 'Não tenho uma resposta para isso. Tente perguntar de outra forma ou escolha uma destas sugestões; se preferir, escreva para nós e ajudamos.', helpful: 'Isso ajudou?', yes: 'Sim', no: 'Não', thanks: 'Obrigado por avisar!', privacyNote: 'Tudo acontece no seu navegador: o que você escreve não é enviado a lugar nenhum.',
+    aiBadge: "✨ Redigida pela IA do seu navegador a partir da nossa base",
   },
   entries: [
     { id: 'hola', q: ['olá', 'oi', 'bom dia', 'boa tarde'], a: 'Olá! Como posso ajudar? Posso explicar como juntar, converter, assinar ou comprimir um PDF, criar um QR, usar o Modo Estudo ou contar como cuidamos dos seus arquivos.', related: ['ayuda', 'que-es', 'privacidad'] },

@@ -4,6 +4,7 @@ export default {
   ui: {
     title: 'DocuSmart 助手', greeting: '你好！我是 DocuSmart 助手。可以问我如何使用某个工具，或关于应用和网站的任何问题。', placeholder: '输入你的问题…', send: '发送', open: '打开助手', close: '关闭助手', clear: '清除对话', suggestions: '推荐问题', related: '这些可能也有帮助',
     fallback: '这个问题我暂时无法回答。换个说法试试，或从下面的建议中选择；也可以联系我们，我们会帮你。', helpful: '有帮助吗？', yes: '是', no: '否', thanks: '感谢你的反馈！', privacyNote: '一切都在你的浏览器中完成：你输入的内容不会发送到任何地方。',
+    aiBadge: "✨ 由浏览器内置 AI 根据我们的知识库撰写",
   },
   entries: [
     { id: 'hola', q: ['你好', '您好', '早上好', '嗨'], a: '你好！有什么可以帮你？我可以讲解如何合并、转换、签署或压缩 PDF，如何创建二维码、使用学习模式，以及我们如何保护你的文件。', related: ['ayuda', 'que-es', 'privacidad'] },

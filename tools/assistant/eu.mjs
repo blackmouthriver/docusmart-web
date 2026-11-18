@@ -4,6 +4,7 @@ export default {
   ui: {
     title: 'DocuSmart laguntzailea', greeting: 'Kaixo! DocuSmart-en laguntzailea naiz. Galdetu tresna bat nola erabili edo aplikazioari eta webari buruz jakin nahi duzuna.', placeholder: 'Idatzi zure galdera…', send: 'Bidali', open: 'Ireki laguntzailea', close: 'Itxi laguntzailea', clear: 'Ezabatu elkarrizketa', suggestions: 'Iradokitako galderak', related: 'Hau ere lagungarri izan daiteke',
     fallback: 'Ez daukat horren erantzunik. Saiatu beste modu batera galdetzen edo aukeratu iradokizun hauetako bat; nahi baduzu, idatzi iezaguzu eta lagunduko dizugu.', helpful: 'Lagungarria izan da?', yes: 'Bai', no: 'Ez', thanks: 'Eskerrik asko abisatzeagatik!', privacyNote: 'Dena zure nabigatzailean gertatzen da: idazten duzuna ez da inora bidaltzen.',
+    aiBadge: "✨ Zure nabigatzailearen AAk idatzia, gure oinarritik abiatuta",
   },
   entries: [
     { id: 'hola', q: ['kaixo', 'egun on', 'arratsalde on', 'aupa'], a: 'Kaixo! Zertan lagun zaitzaket? PDF bat batu, bihurtu, sinatu edo konprimitzen azal diezazuket, QR bat sortzen, Ikasketa modua erabiltzen edo zure fitxategiak nola zaintzen ditugun.', related: ['ayuda', 'que-es', 'privacidad'] },

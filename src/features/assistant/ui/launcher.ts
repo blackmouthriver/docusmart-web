@@ -2,7 +2,7 @@
 // /herramientas, privacidad y la app web. Sin React y sin innerHTML (Trusted Types): es liviano;
 // el panel (React) y la base se descargan solo al abrirlo.
 // UX: entra con un pequeño rebote, destellos y un halo que late suave; una burbuja de bienvenida
-// una vez por visita; al abrirlo por primera vez se apagan los llamados de atención.
+// una vez por visita; al abrirlo por primera vez, halo y destellos pasan a un modo tranquilo.
 import './assistant.css'
 import { TEASER_DELAY_MS, TEASER_VISIBLE_MS, attentionState, launcherText, markSeen } from '../core/launcher'
 
