@@ -3,12 +3,14 @@ import { flushSync } from 'react-dom'
 import { withViewTransition } from '../shared/platform/motion'
 import { ScreenSkeleton } from '../shared/ui/ui'
 import { Icon, type IconName } from '../shared/ui/Icon'
-import { analyticsConfigured, trackScreen } from '../shared/platform/analytics'
+import { analyticsConfigured, track, trackScreen } from '../shared/platform/analytics'
+import { PLAY_URL } from '../shared/files/share'
 import { AppContext, parseHash, type Route } from './state'
 import { useT } from '../shared/i18n/I18n'
 import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
+import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
 import { Home } from '../features/home/ui/Home'
 // Cada pantalla se descarga al entrar: pdf.js y las librerías de QR no frenan el Inicio.
 const Viewer = lazy(() => import('../features/viewer/ui/Viewer').then((m) => ({ default: m.Viewer })))
@@ -168,6 +170,18 @@ export function App() {
               <span>{t('side.privacy')}</span>
             </div>
             <a href="/">{t('side.getApp')}</a>
+            <a className="side-play" href={PLAY_URL} target="_blank" rel="noopener noreferrer" onClick={() => track('landing_cta_click', { cta: 'play_store_sidebar', destination: 'play_store' })}>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#2563EB" d="M3.6 2.2a1.3 1.3 0 0 0-.6 1.1v17.4c0 .5.2.9.6 1.1l9.7-9.8z" />
+                <path fill="#22C55E" d="m16.6 8.7-3.3 3.3-9.7-9.8c.3-.2.8-.2 1.2 0z" />
+                <path fill="#EF4444" d="m16.6 15.3-11.8 6.5c-.4.2-.9.2-1.2 0l9.7-9.8z" />
+                <path fill="#FBBF24" d="m20.4 10.8-3.8-2.1-3.3 3.3 3.3 3.3 3.8-2.1c.9-.5.9-1.9 0-2.4" />
+              </svg>
+              <span>
+                <small>{t('side.playOn')}</small>
+                <b>Google Play</b>
+              </span>
+            </a>
             {analyticsConfigured && (
               <button type="button" className="link-btn" data-consent-open>
                 {t('side.analytics')}
@@ -175,6 +189,9 @@ export function App() {
             )}
           </div>
         </aside>
+
+        {/* Fondo animado (W-89); el Visor y la lectura van con fondo sólido, como en la app. */}
+        {route.section !== 'ver' && !(route.section === 'estudio' && route.sub === 'lectura') && <AnimatedBackground />}
 
         <main className="main">
           <div className="content">

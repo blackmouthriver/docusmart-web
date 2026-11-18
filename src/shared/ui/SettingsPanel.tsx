@@ -115,6 +115,16 @@ export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
         </section>
 
         <section>
+          <label className="switch-row">
+            <span>
+              <b>{t('settings.animatedBg')}</b>
+              <small>{t('settings.animatedBg.sub')}</small>
+            </span>
+            <input type="checkbox" role="switch" className="switch" checked={look.animatedBg} onChange={(e) => update({ animatedBg: e.target.checked })} />
+          </label>
+        </section>
+
+        <section>
           <h3>{t('settings.font')}</h3>
           <Segmented<FontScale>
             label={t('settings.font')}

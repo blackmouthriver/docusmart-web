@@ -40,7 +40,10 @@ describe('apariencia', () => {
 
   it('lee lo guardado sin aceptar valores raros', () => {
     expect(parseAppearance(null)).toEqual(DEFAULT_APPEARANCE)
-    expect(parseAppearance('{"theme":"dark","accent":"pink","font":"large"}')).toEqual({ theme: 'dark', accent: 'pink', font: 'large' })
+    // Guardado antes de W-89 (sin animatedBg): el fondo animado queda activado, como en la app.
+    expect(parseAppearance('{"theme":"dark","accent":"pink","font":"large"}')).toEqual({ theme: 'dark', accent: 'pink', font: 'large', animatedBg: true })
+    expect(parseAppearance('{"animatedBg":false}').animatedBg).toBe(false)
+    expect(parseAppearance('{"animatedBg":"no"}').animatedBg).toBe(true)
     expect(parseAppearance('{"theme":"neon","accent":"gold","font":9}')).toEqual(DEFAULT_APPEARANCE)
     expect(parseAppearance('no es json')).toEqual(DEFAULT_APPEARANCE)
   })
@@ -57,17 +60,18 @@ describe('apariencia', () => {
   it('se aplica al documento', () => {
     const vars: Record<string, string> = {}
     const root = { dataset: {} as Record<string, string>, style: { colorScheme: '', setProperty: (k: string, v: string) => (vars[k] = v) } }
-    applyAppearance({ theme: 'dark', accent: 'red', font: 'xlarge' }, root as unknown as HTMLElement)
+    applyAppearance({ theme: 'dark', accent: 'red', font: 'xlarge', animatedBg: false }, root as unknown as HTMLElement)
     expect(root.dataset.theme).toBe('dark')
     expect(root.style.colorScheme).toBe('dark')
     expect(vars['--blue']).toBe('#FCA5A5')
     expect(vars['--font-scale']).toBe('1.3')
+    expect(root.dataset.animBg).toBe('off')
   })
 
   it('solo el tema, sin tocar acento ni letra (portada)', () => {
     const setProperty = vi.fn()
     const root = { dataset: {} as Record<string, string>, style: { colorScheme: '', setProperty } }
-    expect(applyTheme({ theme: 'dark', accent: 'red', font: 'xlarge' }, root as unknown as HTMLElement)).toBe('dark')
+    expect(applyTheme({ theme: 'dark', accent: 'red', font: 'xlarge', animatedBg: true }, root as unknown as HTMLElement)).toBe('dark')
     expect(root.dataset.theme).toBe('dark')
     expect(root.style.colorScheme).toBe('dark')
     expect(setProperty).not.toHaveBeenCalled()

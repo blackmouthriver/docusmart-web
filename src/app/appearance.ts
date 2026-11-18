@@ -25,8 +25,9 @@ export const ACCENTS = {
 export type Accent = keyof typeof ACCENTS
 export const FONT_SCALES: Record<FontScale, number> = { normal: 1, large: 1.15, xlarge: 1.3 }
 
-export type Appearance = { theme: ThemeMode; accent: Accent; font: FontScale }
-export const DEFAULT_APPEARANCE: Appearance = { theme: 'system', accent: 'blue', font: 'normal' }
+/** animatedBg: fondo animado detrás del contenido (W-89), activado por defecto como en la app. */
+export type Appearance = { theme: ThemeMode; accent: Accent; font: FontScale; animatedBg: boolean }
+export const DEFAULT_APPEARANCE: Appearance = { theme: 'system', accent: 'blue', font: 'normal', animatedBg: true }
 const STORAGE_KEY = 'ds-appearance'
 
 /** Lee lo guardado, descartando valores que no existen (versiones viejas, datos raros). */
@@ -37,6 +38,7 @@ export function parseAppearance(raw: string | null): Appearance {
       theme: v.theme === 'light' || v.theme === 'dark' || v.theme === 'system' ? v.theme : DEFAULT_APPEARANCE.theme,
       accent: typeof v.accent === 'string' && v.accent in ACCENTS ? (v.accent as Accent) : DEFAULT_APPEARANCE.accent,
       font: typeof v.font === 'string' && v.font in FONT_SCALES ? (v.font as FontScale) : DEFAULT_APPEARANCE.font,
+      animatedBg: typeof v.animatedBg === 'boolean' ? v.animatedBg : DEFAULT_APPEARANCE.animatedBg,
     }
   } catch {
     return { ...DEFAULT_APPEARANCE }
@@ -86,6 +88,7 @@ export function applyAppearance(a: Appearance, root: HTMLElement = document.docu
   const theme = applyTheme(a, root)
   for (const [k, v] of Object.entries(accentVars(a.accent, theme))) root.style.setProperty(k, v)
   root.style.setProperty('--font-scale', String(FONT_SCALES[a.font]))
+  root.dataset.animBg = a.animatedBg ? 'on' : 'off'
 }
 
 /** Con el tema "Sistema", sigue los cambios del sistema operativo. */
