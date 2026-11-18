@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { canRegisterServiceWorker, captureInstallPrompt, handleLaunches, onOfflineReady, onUpdateReady, promptInstall, registerServiceWorker, shouldOfferInstall, UPDATE_CHECK_MS, urlsToCache, watchForUpdates, watchInstallPrompt } from '../../../../src/shared/platform/pwa'
+import { canRegisterServiceWorker, captureInstallPrompt, desktopBrowser, desktopGuideMode, handleLaunches, onOfflineReady, onUpdateReady, promptInstall, registerServiceWorker, shouldOfferInstall, UPDATE_CHECK_MS, urlsToCache, watchForUpdates, watchInstallPrompt } from '../../../../src/shared/platform/pwa'
 
 const DESKTOP = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36'
 const ANDROID = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Mobile Safari/537.36'
@@ -259,6 +259,26 @@ describe('versión nueva', () => {
     const a = fakeWindow()
     registerServiceWorker(a.win, true)
     await vi.waitFor(() => expect(a.win.setInterval).toHaveBeenCalled())
+  })
+})
+
+describe('ayuda de DocuSmart Desktop', () => {
+  const EDGE = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36 Edg/131.0'
+  const FIREFOX = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'
+  const SAFARI_MAC = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15'
+  const IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1'
+  it('reconoce el navegador para dar los pasos exactos', () => {
+    expect(desktopBrowser(EDGE)).toBe('edge')
+    expect(desktopBrowser(DESKTOP)).toBe('chrome')
+    expect(desktopBrowser(FIREFOX)).toBe('firefox')
+    expect(desktopBrowser(SAFARI_MAC)).toBe('safari')
+    expect(desktopBrowser('curl/8')).toBe('other')
+  })
+  it('explica instalarla, los atajos de la instalada o la app de Play en el celular', () => {
+    expect(desktopGuideMode(DESKTOP, false)).toBe('install')
+    expect(desktopGuideMode(EDGE, true)).toBe('installed')
+    expect(desktopGuideMode(ANDROID, false)).toBe('mobile')
+    expect(desktopGuideMode(IPHONE, false)).toBe('mobile')
   })
 })
 

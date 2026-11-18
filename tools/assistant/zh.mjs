@@ -27,7 +27,7 @@ export default {
     { id: 'limites', q: ['使用限制', '能用多少次', '每日限额'], a: '网站没有每日限额：处理特别大的文件时，唯一的限制是设备内存。免费应用每天可转换 5 次、使用 PDF 工具 3 次、保存 8 份扫描；Premium 全部不限。', related: ['precio', 'tamano'] },
     { id: 'tamano', q: ['最大文件大小', '文件太大', '大小限制'], a: '我们不设最大文件大小：处理都在你的设备上完成，上限取决于内存。大文件可能需要更长时间；如果卡住，可以换到电脑上，或先拆分文件。', actions: [['tool', 'dividir-pdf']], related: ['limites', 'lento'] },
     { id: 'lento', q: ['很慢', '花太长时间', '卡住了', '没有反应'], a: '处理会使用你设备的性能。文件较大时，请关闭其他标签页并稍等；旧手机可能更慢。如果一直卡住，请刷新页面，用较小的文件再试一次。', related: ['tamano', 'navegador'] },
-    { id: 'offline', q: ['没有网络能用吗', '需要联网吗', '离线'], a: '安卓应用可以离线打开、转换和编辑。网站需要联网才能加载页面，但你的文件在设备上处理。', actions: [['play']], related: ['web-vs-app'] },
+    { id: 'offline', q: ['没有网络能用吗', '需要联网吗', '离线'], a: "可以。DocuSmart Desktop（安装在电脑上的网页版）会自动下载工具，没有网络也能用；OCR 需要先联网使用一次。在普通浏览器标签页中，之前打开过的内容可以离线使用，Android 应用也能离线使用。", actions: [['play']], related: ['desktop', 'web-vs-app'] },
     { id: 'celular', q: ['手机上能用吗', '可以在手机上使用吗', '平板'], a: '可以。DocuSmart Web 可以在任何手机或平板的浏览器中使用；如果你用安卓，应用还能做更多，并且支持离线。', actions: [['play']], related: ['iphone', 'app-android'] },
     { id: 'iphone', q: ['有 iPhone 应用吗', 'ios', 'ipad', 'App Store'], a: '目前应用仅支持安卓。在 iPhone 和 iPad 上，可以用 Safari 或其他浏览器直接使用 DocuSmart Web，无需安装。', actions: [['page', 'app']], related: ['celular', 'app-android'] },
     { id: 'app-android', q: ['下载应用', '在哪里下载应用', 'Google Play', '安卓应用'], a: 'DocuSmart 安卓应用可在 Google Play 下载。免费，并提供边缘识别扫描仪、PIN 安全文件夹、Word、Excel 和 PowerPoint、OCR，还能离线使用。', actions: [['play']], related: ['web-vs-app', 'prueba'] },
@@ -49,6 +49,9 @@ export default {
     { id: 'pdf-danado', q: ['损坏的 PDF', 'PDF 打不开', 'PDF 文件损坏'], a: '试试“修复 PDF”：它会重建文件结构，让文件重新可以打开。', actions: [['tool', 'reparar-pdf']], related: ['pdf-protegido'] },
     { id: 'descarga', q: ['下载不了', '文件在哪里', '如何保存结果'], a: '完成后点击“下载”，文件会保存到浏览器的下载文件夹。在手机上也可以用“分享”发送到其他应用。', related: ['compartir'] },
     { id: 'compartir', q: ['分享文件', '通过 WhatsApp 发送', '通过邮件发送'], a: '工具完成后，“分享”按钮会调用设备的分享功能：选择 WhatsApp、邮件或其他应用，文件会直接发送，不经过我们的服务器。', related: ['descarga'] },
+    { id: 'desktop', q: ["什么是 DocuSmart Desktop", "安装到电脑", "下载电脑版", "Windows 程序", "桌面应用", "桌面版", "怎么安装 DocuSmart Desktop"], a: "DocuSmart Desktop 就是安装在电脑上的 DocuSmart Web：它会在独立窗口中打开，可以离线使用，并会自动更新。安装方法：用 Chrome 或 Edge 打开网页应用，点按侧边栏中的“安装 DocuSmart Desktop”，那里会显示适合你浏览器的步骤。", actions: [['page', 'app']], related: ['desktop-icono', 'offline', 'desktop-actualizar'] },
+    { id: 'desktop-icono', q: ["在桌面创建图标", "桌面快捷方式", "固定到任务栏", "没有创建桌面图标的选项"], a: "桌面图标由浏览器创建：在 Edge 中打开 edge://apps，右键点击 DocuSmart Desktop →“创建桌面快捷方式”；在 Chrome 中打开 chrome://apps，右键 →“创建快捷方式…”并勾选“桌面”。固定到任务栏：右键点击它的图标 →“固定到任务栏”。", actions: [['page', 'app']], related: ['desktop', 'desktop-actualizar'] },
+    { id: 'desktop-actualizar', q: ["DocuSmart Desktop 怎么更新", "更新桌面版", "安装了两次", "打开了好几个窗口", "卸载 DocuSmart Desktop", "有新版本"], a: "联网打开时会自动更新，无需重新安装，也不会产生第二个副本；如果在打开期间我们发布了新版本，你会看到“更新”。在窗口已打开时再次启动，会切换到那个窗口。卸载方法：打开右上角的 ⋮ 菜单 →“卸载”。", actions: [['page', 'app']], related: ['desktop', 'desktop-icono'] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

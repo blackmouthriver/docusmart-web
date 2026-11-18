@@ -10,6 +10,7 @@ import { useT } from '../shared/i18n/I18n'
 import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
+import { DesktopHelp } from '../shared/ui/DesktopHelp'
 import { loadCollapsed, saveCollapsed } from './sidebarPref'
 import { isStandalone, onOfflineReady, onUpdateReady, promptInstall, watchInstallPrompt } from '../shared/platform/pwa'
 import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
@@ -92,6 +93,9 @@ export function App() {
   // Instalar la web como app (W-16): el botón aparece solo cuando el navegador lo permite.
   const [canInstall, setCanInstall] = useState(false)
   useEffect(() => watchInstallPrompt(setCanInstall), [])
+  const [deskOpen, setDeskOpen] = useState(false)
+  const installed = isStandalone(window)
+  const deskLabel = t(installed ? 'desk.sideInstalled' : 'pwa.install')
   const install = () => {
     track('pwa_install_click')
     void promptInstall().then((ok) => ok && track('pwa_installed'))
@@ -210,12 +214,12 @@ export function App() {
               <span>{t('settings.open')}</span>
               <span aria-hidden="true">{current.flag} {lang.toUpperCase()}</span>
             </button>
-            {canInstall && (
-              <button type="button" className="side-settings side-install" data-tip={t('pwa.install')} aria-label={collapsed ? t('pwa.install') : undefined} onClick={install}>
-                <Icon name="download" />
-                <span>{t('pwa.install')}</span>
-              </button>
-            )}
+            {/* DocuSmart Desktop (W-16): cómo instalarla o, ya instalada, sus atajos (ícono del
+                escritorio, barra de tareas, sin conexión, actualizaciones). */}
+            <button type="button" className="side-settings side-install" data-tip={deskLabel} aria-label={collapsed ? deskLabel : undefined} onClick={() => setDeskOpen(true)}>
+              <Icon name={installed ? 'info' : 'download'} />
+              <span>{deskLabel}</span>
+            </button>
             <div className="privacy-note" data-tip={t('side.privacy')}>
               <Icon name="shield" />
               <span>{t('side.privacy')}</span>
@@ -266,6 +270,7 @@ export function App() {
         </nav>
 
         {settingsOpen && <SettingsPanel onClose={closeSettings} />}
+        {deskOpen && <DesktopHelp onClose={() => setDeskOpen(false)} canInstall={canInstall} onInstall={install} />}
 
         <div className="toast-wrap" aria-live="polite">
           {toasts.map((t) => (

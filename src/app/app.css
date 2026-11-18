@@ -947,6 +947,22 @@ html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms v
 .side-settings span:last-child { margin-left: auto; color: var(--on-night-soft); }
 /* Instalar la web (W-16): mismo botón, con el texto a la izquierda y en el color normal. */
 .side-install span:last-child { margin-left: 0; color: inherit; }
+/* Ayuda de DocuSmart Desktop (mismo diálogo que Ajustes). */
+.desk-head { display: flex; align-items: flex-start; gap: 14px; }
+.desk-head > div { flex: 1; min-width: 0; }
+.desk-head h2 { margin: 2px 0 4px; }
+.desk-head p { margin: 0; color: var(--ink-soft); font-size: 14.5px; line-height: 1.5; }
+.desk-badge { position: relative; flex: none; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 16px; background: linear-gradient(135deg, #1E9BFF, #3B1FE0); box-shadow: 0 12px 26px -12px rgba(37, 99, 235, .8); }
+.desk-badge img { width: 40px; height: 40px; border-radius: 12px; }
+.desk-badge::after { content: ''; position: absolute; inset: -4px; border-radius: 20px; box-shadow: 0 0 0 0 rgba(37, 99, 235, .45); animation: desk-ping 2.6s ease-out infinite; }
+@keyframes desk-ping { to { box-shadow: 0 0 0 12px rgba(37, 99, 235, 0); } }
+.desk-install { align-self: stretch; justify-content: center; }
+.desk-tip { display: flex; gap: 12px; padding: 14px; border-radius: 16px; background: var(--paper-2); }
+.desk-tip h3 { margin: 0 0 3px; font-size: 15px; }
+.desk-tip p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.5; }
+.desk-ico { flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--blue-soft); color: var(--blue); }
+.desk-ico svg { width: 18px; height: 18px; }
+@media (prefers-reduced-motion: reduce) { .desk-badge::after { animation: none; } }
 .settings-backdrop { position: fixed; inset: 0; z-index: 80; display: grid; place-items: end center; background: rgba(7, 10, 18, 0.55); }
 @media (min-width: 720px) { .settings-backdrop { place-items: center; } }
 .settings-panel { width: min(560px, 100%); max-height: min(92dvh, 820px); overflow: auto; padding: 22px 20px calc(20px + env(safe-area-inset-bottom)); border-radius: 28px 28px 0 0; background: var(--card); color: var(--ink); box-shadow: 0 -20px 60px -20px rgba(0, 0, 0, 0.5); }

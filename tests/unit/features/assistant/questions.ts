@@ -89,6 +89,13 @@ export const QUESTIONS_ES: Case[] = [
   ['convertir imagen png a jpeg', t('png-a-jpg')],
   ['convertir imagenes a webp', t('imagen-a-webp')],
   ['pasar jpg a webp para mi pagina web', t('imagen-a-webp')],
+  // DocuSmart Desktop (W-16)
+  ['como instalo docusmart desktop', 'desktop'],
+  ['hay programa para windows', 'desktop'],
+  ['como creo un icono en el escritorio', 'desktop-icono'],
+  ['anclar a la barra de tareas', 'desktop-icono'],
+  ['como se actualiza la version de escritorio', 'desktop-actualizar'],
+  ['se abren varias ventanas', 'desktop-actualizar'],
 ]
 
 export const QUESTIONS_EN: Case[] = [
@@ -161,6 +168,10 @@ export const QUESTIONS_EN: Case[] = [
   ['convert jpg to png', t('jpg-a-png')],
   ['png to jpeg', t('png-a-jpg')],
   ['convert images to webp', t('imagen-a-webp')],
+  // DocuSmart Desktop
+  ['how do I install DocuSmart Desktop', 'desktop'],
+  ['desktop shortcut', 'desktop-icono'],
+  ['uninstall DocuSmart Desktop', 'desktop-actualizar'],
 ]
 
 /** Fuera de tema: el asistente no debe responder con confianza. */
