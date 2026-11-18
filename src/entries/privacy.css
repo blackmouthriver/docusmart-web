@@ -5,7 +5,7 @@
   --line: #E7E5E0;
   --ink: #1C1B1A;
   --ink-soft: #44403C;
-  --ink-faint: #78716C;
+  --ink-faint: #6F6863; /* ≥4,75:1 sobre los fondos claros (W-17) */
   --blue: #2563EB;
   --blue-deep: #1D4ED8;
   --blue-soft: #E0EAFF;
@@ -79,6 +79,8 @@ code { font-size: .88em; padding: 1px 6px; border-radius: 6px; background: var(-
 .pv-card li::marker { color: var(--blue); }
 .pv-card li ul { margin-top: 6px; }
 .table-scroll { overflow-x: auto; border-radius: 14px; box-shadow: 0 0 0 1px var(--line); margin: 16px 0; }
+/* Se puede enfocar para desplazarla con el teclado (W-17). */
+.table-scroll:focus-visible { outline: 3px solid var(--blue, #2563EB); outline-offset: 2px; }
 .pv-card table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 14.5px; }
 .pv-card th, .pv-card td { text-align: left; padding: 12px 14px; vertical-align: top; border-bottom: 1px solid var(--line); }
 .pv-card tr:last-child td { border-bottom: 0; }

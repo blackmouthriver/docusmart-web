@@ -11,8 +11,9 @@ export function HeroCard({ title, subtitle }: { title: string; subtitle: string 
   return (
     <header className="hero-card">
       <span className="hero-shine" aria-hidden="true" />
+      {/* El nombre accesible incluye lo que se ve ("ES"), para quien la usa por voz (W-17). */}
       {app && (
-        <button type="button" className="hero-settings" aria-label={t('settings.open')} title={t('settings.open')} onClick={app.openSettings}>
+        <button type="button" className="hero-settings" aria-label={`${lang.toUpperCase()} · ${t('settings.open')}`} title={t('settings.open')} onClick={app.openSettings}>
           <Icon name="globe" />
           {lang.toUpperCase()}
         </button>

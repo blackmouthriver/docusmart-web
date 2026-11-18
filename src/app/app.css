@@ -9,7 +9,7 @@
   --line-strong: #D6D3CD;
   --ink: #1C1B1A;
   --ink-soft: #57534E;
-  --ink-faint: #78716C;
+  --ink-faint: #6F6863; /* ≥4,75:1 sobre los fondos claros (W-17) */
   --on-night: #E7EAF3;
   --on-night-soft: #94A3B8;
   --blue: #2563EB;

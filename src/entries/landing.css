@@ -11,7 +11,7 @@
   --line: #E7E5E0;
   --ink: #1C1B1A;
   --ink-soft: #57534E;
-  --ink-faint: #78716C;
+  --ink-faint: #6F6863; /* ≥4,75:1 sobre los fondos claros (W-17) */
   --on-night: #E7EAF3;
   --on-night-soft: #94A3B8;
   --blue: #2563EB;
@@ -304,7 +304,7 @@ section { position: relative; }
 .t-qr { grid-column: span 2; }
 .t-lang { grid-column: span 2; background: var(--blue); color: #fff; box-shadow: none; }
 .t-lang p { color: rgba(255,255,255,.8); }
-.t-lang .tag { background: rgba(255,255,255,.16); color: #fff; }
+.t-lang .tag { background: rgba(11,16,32,.22); color: #fff; }
 .tile-visual { margin-top: auto; padding-top: 28px; }
 
 /* Escáner */
@@ -477,7 +477,7 @@ section { position: relative; }
 
 /* Idiomas */
 .langs { display: flex; flex-wrap: wrap; gap: 6px; }
-.langs span { padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.14); font-size: 13px; font-weight: 600; }
+.langs span { padding: 6px 11px; border-radius: 999px; background: rgba(11,16,32,.22); font-size: 13px; font-weight: 600; }
 .lang-big { font-family: var(--font-display); font-weight: 800; font-size: 76px; line-height: .9; letter-spacing: -0.05em; }
 
 @media (max-width: 960px) {
@@ -614,7 +614,8 @@ footer { border-top: 1px solid var(--line); padding: 40px 0 48px; color: var(--i
 .d-80 { --d: 80ms; } .d-100 { --d: 100ms; } .d-160 { --d: 160ms; } .d-300 { --d: 300ms; } .d-420 { --d: 420ms; } .d-520 { --d: 520ms; } .d-620 { --d: 620ms; }
 .dot-red { --dot: #EF4444; } .dot-blue { --dot: #60A5FA; } .dot-green { --dot: #22C55E; } .dot-orange { --dot: #F97316; }
 .dot-violet { --dot: #8B5CF6; } .dot-slate { --dot: #94A3B8; } .dot-cyan { --dot: #06B6D4; } .dot-scan { --dot: #7EE0FF; }
-.fmt-red { background: #EF4444; } .fmt-blue { background: #2563EB; } .fmt-green { background: #16A34A; } .fmt-violet { background: #8B5CF6; }
+/* Texto blanco ≥4,5:1 (W-17). */
+.fmt-red { background: #DC2626; } .fmt-blue { background: #2563EB; } .fmt-green { background: #15803D; } .fmt-violet { background: #7C3AED; }
 .ico-pdf { background: #FEE2E2; color: #EF4444; } .ico-lock { background: #FEF3C7; color: #B45309; }
 .t-scan h3.scan-title { font-size: clamp(26px, 3vw, 36px); max-width: 12ch; }
 .tile-subtitle { margin-top: 6px; }
