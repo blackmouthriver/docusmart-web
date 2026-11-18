@@ -7,101 +7,58 @@
 <meta name="description" content="Qué datos recopila DocuSmart (app Android y docusmart.online), para qué y qué opciones tienes.">
 <link rel="canonical" href="https://docusmart.online/privacidad">
 <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
-<style>
-  :root {
-    --docu-blue: #2563EB;
-    --navy-dark: #0F172A;
-    --slate: #475569;
-    --bg: #F8FAFC;
-    --surface: #FFFFFF;
-    --border: #E2E8F0;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--navy-dark);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.65;
-  }
-  .wrap {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 48px 24px 96px;
-  }
-  header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
-  .mark {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #2563EB, #4338CA);
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 18px;
-    flex: none;
-  }
-  h1 { font-size: 1.7rem; margin: 0; }
-  .updated { color: var(--slate); font-size: 0.9rem; margin: 4px 0 40px; }
-  h2 {
-    font-size: 1.15rem;
-    margin-top: 40px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  p, li { color: #1E293B; }
-  ul { padding-left: 22px; }
-  li { margin-bottom: 6px; }
-  li ul { margin-top: 6px; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0;
-    font-size: 0.92rem;
-  }
-  th, td {
-    text-align: left;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    vertical-align: top;
-  }
-  th { background: #EFF4FF; color: var(--docu-blue); font-weight: 600; }
-  .table-scroll { overflow-x: auto; }
-  .contact {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin-top: 16px;
-  }
-  a { color: var(--docu-blue); }
-  .back { display: inline-block; margin-bottom: 28px; font-size: 0.9rem; text-decoration: none; }
-  footer {
-    margin-top: 56px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    color: var(--slate);
-    font-size: 0.85rem;
-  }
-</style>
+<link rel="stylesheet" href="../src/entries/privacy.css">
 </head>
 <body>
-<div class="wrap">
-  <a class="back" href="/">← Volver a DocuSmart</a>
-  <header>
-    <div class="mark">D</div>
-    <h1>Política de Privacidad de DocuSmart</h1>
-  </header>
-  <p class="updated">Última actualización: 17 de noviembre de 2026</p>
+<header class="pv-hero">
+  <div class="pv-hero-inner">
+    <a class="pv-back" href="/"><svg class="pv-svg pv-back-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg> Volver a DocuSmart</a>
+    <div class="pv-brand"><img src="/img/icon.svg" alt="" width="44" height="44"> DocuSmart</div>
+    <h1 class="pv-title">Política de Privacidad de DocuSmart</h1>
+    <p class="pv-updated">Última actualización: 17 de noviembre de 2026</p>
+    <p class="pv-lead">Tus documentos se quedan contigo. Aquí está, en claro, qué datos usamos y para qué.</p>
+  </div>
+</header>
 
+<section class="pv-summary" aria-labelledby="pv-summary-title">
+  <h2 id="pv-summary-title" class="pv-summary-title">En 30 segundos</h2>
+  <ul class="pv-sum-list">
+      <li class="pv-sum reveal" style="--d:0ms"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span><b>Tus archivos no se suben</b><span>Los documentos se procesan en tu teléfono o en tu navegador; no tenemos servidores que reciban su contenido.</span></li>
+      <li class="pv-sum reveal" style="--d:80ms"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4 21a8 8 0 0 1 16 0"/></svg></span><b>Sin cuenta</b><span>No te pedimos nombre, correo ni teléfono para usar la app ni el sitio.</span></li>
+      <li class="pv-sum reveal" style="--d:160ms"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg></span><b>Analítica opcional en la web</b><span>En docusmart.online solo se mide el uso si aceptas, y puedes cambiar de opinión cuando quieras.</span></li>
+      <li class="pv-sum reveal" style="--d:240ms"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg></span><b>Anuncios y compras con Google</b><span>La app usa AdMob para anuncios y Google Play para Premium; nunca vemos los datos de tu tarjeta.</span></li>
+  </ul>
+  <p class="pv-summary-note">Este resumen es orientativo: lo que vale es el texto completo de abajo.</p>
+</section>
+
+<div class="pv-layout">
+  <nav class="pv-toc" aria-label="Contenido de la política">
+    <p class="pv-toc-title">Contenido</p>
+    <ol>
+        <li><a href="#s1">1. Resumen</a></li>
+        <li><a href="#s2">2. Qué datos recopilamos</a></li>
+        <li><a href="#s3">3. Qué NO recopilamos</a></li>
+        <li><a href="#s4">4. Permisos que solicita la app</a></li>
+        <li><a href="#s5">5. Servicios de terceros</a></li>
+        <li><a href="#s6">6. Seguridad de tus datos</a></li>
+        <li><a href="#s7">7. Retención y eliminación</a></li>
+        <li><a href="#s8">8. Tus opciones</a></li>
+        <li><a href="#s9">9. Menores de edad</a></li>
+        <li><a href="#sitio-web">10. Sitio web y DocuSmart Web</a></li>
+        <li><a href="#s11">11. Cambios a esta política</a></li>
+        <li><a href="#s12">12. Contacto</a></li>
+    </ol>
+  </nav>
+  <main class="pv-main">
+    <div class="pv-card pv-intro reveal">
   <p>Esta política explica qué información recopilan la aplicación móvil <strong>DocuSmart</strong>
   (paquete <code>com.docsmart</code>) y el sitio web <strong>docusmart.online</strong> (incluida la
   versión web, <em>DocuSmart Web</em>), cómo se usa, y qué opciones tienes al respecto. Está escrita
   en lenguaje simple, sin jerga legal innecesaria.</p>
+    </div>
+    <section class="pv-card reveal" aria-labelledby="s1">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20M12 11v6M12 7h.01"/></svg></span><h2 id="s1">1. Resumen</h2></div>
 
-  <h2>1. Resumen</h2>
   <p>DocuSmart es una aplicación para visualizar, convertir, escanear y organizar documentos.
   Está diseñada para funcionar principalmente <strong>de forma local en tu dispositivo</strong>:
   tus documentos, notas, contraseñas y códigos QR se procesan y almacenan en tu teléfono (o en tu
@@ -109,8 +66,10 @@
   reciban el contenido de tus archivos.</p>
   <p>Sí usamos un número reducido de servicios de terceros (detallados abajo) para entender el uso
   general de la app, detectar errores, procesar compras y mostrar anuncios.</p>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s2">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg></span><h2 id="s2">2. Qué datos recopilamos</h2></div>
 
-  <h2>2. Qué datos recopilamos</h2>
   <div class="table-scroll">
   <table>
     <thead><tr><th>Categoría</th><th>Qué incluye</th><th>Para qué</th></tr></thead>
@@ -147,8 +106,10 @@
   </table>
   </div>
   <p>Lo que recopila el sitio web se explica aparte, en la <a href="#sitio-web">sección 10</a>.</p>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s3">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span><h2 id="s3">3. Qué NO recopilamos</h2></div>
 
-  <h2>3. Qué NO recopilamos</h2>
   <ul>
     <li>No pedimos que crees una cuenta — no recopilamos tu nombre, correo ni teléfono para usar la app ni el sitio.</li>
     <li>No leemos ni subimos el contenido de tus documentos (PDF, Word, Excel, imágenes) a ningún
@@ -161,8 +122,10 @@
     informa "correcto" o "incorrecto", nunca el dato biométrico en sí.</li>
     <li>No accedemos a tu ubicación precisa (GPS), contactos, calendario, ni mensajes.</li>
   </ul>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s4">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/></svg></span><h2 id="s4">4. Permisos que solicita la app</h2></div>
 
-  <h2>4. Permisos que solicita la app</h2>
   <div class="table-scroll">
   <table>
     <thead><tr><th>Permiso</th><th>Para qué se usa</th></tr></thead>
@@ -173,8 +136,10 @@
     </tbody>
   </table>
   </div>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s5">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><h2 id="s5">5. Servicios de terceros</h2></div>
 
-  <h2>5. Servicios de terceros</h2>
   <p>Usamos los siguientes servicios, cada uno con su propia política de privacidad:</p>
   <ul>
     <li><strong>Google Firebase Analytics</strong> — analítica de uso de la app (y del sitio web, solo con tu consentimiento).
@@ -191,19 +156,25 @@
       <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de privacidad de Google</a></li>
   </ul>
   <p>Ninguno de estos servicios recibe el contenido de tus documentos, notas o códigos QR.</p>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s6">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h2 id="s6">6. Seguridad de tus datos</h2></div>
 
-  <h2>6. Seguridad de tus datos</h2>
   <p>La Carpeta Segura usa cifrado y verificación por PIN o biometría gestionada por el propio
   sistema operativo Android. Los archivos que proteges se mueven al almacenamiento privado de la
   app (no accesible por otras apps) y el original se elimina de su ubicación previa.</p>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s7">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></span><h2 id="s7">7. Retención y eliminación</h2></div>
 
-  <h2>7. Retención y eliminación</h2>
   <p>Tus documentos, notas y configuración permanecen en tu dispositivo hasta que tú los borres, o
   desinstales la app. Puedes eliminar documentos individuales desde la propia app en cualquier
   momento. Los datos de analítica agregada que ya se enviaron a Firebase se conservan según la
   política de retención estándar de Google Analytics for Firebase.</p>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s8">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><h2 id="s8">8. Tus opciones</h2></div>
 
-  <h2>8. Tus opciones</h2>
   <ul>
     <li>Puedes desactivar la personalización de anuncios desde Ajustes de tu dispositivo Android
     (Google → Anuncios → Restablecer/eliminar el identificador de publicidad).</li>
@@ -214,12 +185,16 @@
     <li>Puedes solicitarnos información sobre qué datos de analítica agregada existen asociados a
     tu uso de la app o del sitio, o pedir su eliminación, escribiéndonos (ver contacto abajo).</li>
   </ul>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s9">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4 21a8 8 0 0 1 16 0"/></svg></span><h2 id="s9">9. Menores de edad</h2></div>
 
-  <h2>9. Menores de edad</h2>
   <p>DocuSmart no está dirigida específicamente a menores de 13 años y no solicitamos
   intencionalmente datos personales de niños.</p>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="sitio-web">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><h2 id="sitio-web">10. Sitio web y DocuSmart Web</h2></div>
 
-  <h2 id="sitio-web">10. Sitio web y DocuSmart Web</h2>
   <p>El sitio <strong>docusmart.online</strong> incluye una página informativa y <strong>DocuSmart Web</strong>
   (<code>docusmart.online/app</code>), una versión para el navegador con visor, convertidor,
   herramientas PDF, códigos QR y Modo Estudio.</p>
@@ -257,18 +232,27 @@
     servidor web, procesa datos técnicos de cada visita (dirección IP, navegador, página pedida) para
     entregar las páginas y proteger el servicio.</li>
   </ul>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s11">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"/></svg></span><h2 id="s11">11. Cambios a esta política</h2></div>
 
-  <h2>11. Cambios a esta política</h2>
   <p>Si actualizamos esta política, cambiaremos la fecha de "Última actualización" en la parte
   superior. Los cambios significativos se reflejarán también en la ficha de la app en Play Store.</p>
+    </section>
+    <section class="pv-card reveal" aria-labelledby="s12">
+      <div class="pv-card-head"><span class="pv-ico"><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18v12H3zM3 7l9 6 9-6"/></svg></span><h2 id="s12">12. Contacto</h2></div>
 
-  <h2>12. Contacto</h2>
   <div class="contact">
     <p>Para preguntas sobre esta política o sobre tus datos, escríbenos a:</p>
     <p><a href="mailto:supportdocusmart@docusmart.online">supportdocusmart@docusmart.online</a></p>
   </div>
-
-  <footer>DocuSmart — com.docsmart · <a href="https://docusmart.online">docusmart.online</a></footer>
+    </section>
+  </main>
 </div>
+
+<button type="button" class="pv-top" aria-label="Volver arriba" hidden><svg class="pv-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+
+<footer class="pv-foot">DocuSmart — com.docsmart · <a href="https://docusmart.online">docusmart.online</a></footer>
+<script type="module" src="../src/entries/privacy.ts"></script>
 </body>
 </html>

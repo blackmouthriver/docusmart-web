@@ -49,7 +49,7 @@ const serveSrcInDev = (): Plugin => ({
   name: 'serve-src-in-dev',
   apply: 'serve',
   // 'pre': antes de que Vite procese y precargue los <script> de la página.
-  transformIndexHtml: { order: 'pre', handler: (html) => html.replace(/src="(?:\.\.\/)+src\//g, `src="${ROOT_URL}/src/`) },
+  transformIndexHtml: { order: 'pre', handler: (html) => html.replace(/(src|href)="(?:\.\.\/)+src\//g, `$1="${ROOT_URL}/src/`) },
 })
 
 // Multipágina: landing en "/", política en "/privacidad", app web en "/app/" y una página por herramienta.
