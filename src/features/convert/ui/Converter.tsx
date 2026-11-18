@@ -23,8 +23,9 @@ type Conv = {
 }
 
 const FMT_COLORS: Record<string, string> = {
-  IMG: '#8B5CF6', PDF: '#EF4444', JPG: '#8B5CF6', PNG: '#8B5CF6', WEBP: '#8B5CF6', BMP: '#8B5CF6',
-  TXT: '#64748B', WORD: '#2563EB', EXCEL: '#16A34A', PPT: '#F97316', HTML: '#06B6D4', CSV: '#16A34A',
+  // Tonos con contraste ≥4,5:1 para el texto blanco (W-17).
+  IMG: '#7C3AED', PDF: '#DC2626', JPG: '#7C3AED', PNG: '#7C3AED', WEBP: '#7C3AED', BMP: '#7C3AED',
+  TXT: '#64748B', WORD: '#2563EB', EXCEL: '#15803D', PPT: '#C2410C', HTML: '#0E7490', CSV: '#15803D',
 }
 const c = (id: string, type: string, from: string, to: string, desc: MessageKey): Conv => ({
   id, type, from, to, desc, fromColor: FMT_COLORS[from], toColor: FMT_COLORS[to],

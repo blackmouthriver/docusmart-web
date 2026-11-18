@@ -89,7 +89,7 @@ function langMenu(current, pathFor, cls, indent) {
   )
   return [
     `<details class="${cls}">`,
-    `  <summary aria-label="${esc(current.ui.langMenu)}: ${esc(current.label)}"><span aria-hidden="true">🌐</span> ${current.lang.toUpperCase()}</summary>`,
+    `  <summary aria-label="${current.lang.toUpperCase()} · ${esc(current.ui.langMenu)}: ${esc(current.label)}"><span aria-hidden="true">🌐</span> ${current.lang.toUpperCase()}</summary>`,
     '  <ul>',
     ...items,
     '  </ul>',
