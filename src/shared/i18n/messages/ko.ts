@@ -14,6 +14,7 @@ const ko: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "학습",
+  'pwa.install': "이 기기에 설치",
   'nav.collapse': "메뉴 접기",
   'nav.expand': "메뉴 펼치기",
   'nav.sections': "섹션",

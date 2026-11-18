@@ -14,6 +14,7 @@ const zh: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "二维码",
   'nav.short.study': "学习",
+  'pwa.install': "安装到此设备",
   'nav.collapse': "收起菜单",
   'nav.expand': "展开菜单",
   'nav.sections': "栏目",

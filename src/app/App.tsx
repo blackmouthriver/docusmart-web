@@ -11,6 +11,7 @@ import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
 import { loadCollapsed, saveCollapsed } from './sidebarPref'
+import { promptInstall, watchInstallPrompt } from '../shared/platform/pwa'
 import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
 import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 import { Home } from '../features/home/ui/Home'
@@ -87,6 +88,14 @@ export function App() {
       saveCollapsed(safeStorage(), !c)
       return !c
     })
+
+  // Instalar la web como app (W-16): el botón aparece solo cuando el navegador lo permite.
+  const [canInstall, setCanInstall] = useState(false)
+  useEffect(() => watchInstallPrompt(setCanInstall), [])
+  const install = () => {
+    track('pwa_install_click')
+    void promptInstall().then((ok) => ok && track('pwa_installed'))
+  }
 
   // Asistente (W-70c/d): el mismo botón flotante de todo el sitio; se oculta en el Visor.
   useEffect(() => mountAssistantLauncher({ lang, inApp: true, hideWhen: () => parseHash().section === 'ver' }), [lang])
@@ -193,6 +202,12 @@ export function App() {
               <span>{t('settings.open')}</span>
               <span aria-hidden="true">{current.flag} {lang.toUpperCase()}</span>
             </button>
+            {canInstall && (
+              <button type="button" className="side-settings side-install" data-tip={t('pwa.install')} aria-label={collapsed ? t('pwa.install') : undefined} onClick={install}>
+                <Icon name="download" />
+                <span>{t('pwa.install')}</span>
+              </button>
+            )}
             <div className="privacy-note" data-tip={t('side.privacy')}>
               <Icon name="shield" />
               <span>{t('side.privacy')}</span>

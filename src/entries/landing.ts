@@ -1,4 +1,5 @@
 import '../shared/platform/trustedTypes'
+import { registerServiceWorker } from '../shared/platform/pwa'
 import '../shared/platform/fonts'
 import { initAnalytics, track } from '../shared/platform/analytics'
 import { mountConsentBanner } from '../shared/platform/consent'
@@ -146,3 +147,6 @@ document.querySelectorAll('details').forEach((d, i) =>
     if (d.open) track('landing_faq_open', { question_index: i + 1 })
   }),
 )
+
+// App instalable y sin conexión (W-16).
+registerServiceWorker()

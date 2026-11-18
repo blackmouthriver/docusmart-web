@@ -14,6 +14,7 @@ const ru: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "Учёба",
+  'pwa.install': "Установить на это устройство",
   'nav.collapse': "Свернуть меню",
   'nav.expand': "Развернуть меню",
   'nav.sections': "Разделы",

@@ -918,6 +918,8 @@ html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms v
 .side-settings { display: flex; align-items: center; gap: 8px; width: 100%; padding: 9px 10px; border: 0; border-radius: 12px; background: rgba(255, 255, 255, 0.06); color: var(--on-night); font-size: 13.5px; cursor: pointer; text-align: left; }
 .side-settings svg { width: 18px; height: 18px; flex: none; }
 .side-settings span:last-child { margin-left: auto; color: var(--on-night-soft); }
+/* Instalar la web (W-16): mismo botón, con el texto a la izquierda y en el color normal. */
+.side-install span:last-child { margin-left: 0; color: inherit; }
 .settings-backdrop { position: fixed; inset: 0; z-index: 80; display: grid; place-items: end center; background: rgba(7, 10, 18, 0.55); }
 @media (min-width: 720px) { .settings-backdrop { place-items: center; } }
 .settings-panel { width: min(560px, 100%); max-height: min(92dvh, 820px); overflow: auto; padding: 22px 20px calc(20px + env(safe-area-inset-bottom)); border-radius: 28px 28px 0 0; background: var(--card); color: var(--ink); box-shadow: 0 -20px 60px -20px rgba(0, 0, 0, 0.5); }

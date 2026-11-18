@@ -14,6 +14,7 @@ const ja: Messages = {
   'nav.short.pdf': "PDF",
   'nav.short.qr': "QR",
   'nav.short.study': "学習",
+  'pwa.install': "このデバイスにインストール",
   'nav.collapse': "メニューを折りたたむ",
   'nav.expand': "メニューを展開",
   'nav.sections': "セクション",

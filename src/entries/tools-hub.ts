@@ -1,6 +1,7 @@
 // Página "Todas las herramientas" (W-78): el listado viene en el HTML (para buscadores);
 // aquí solo el buscador que filtra mientras se escribe y el movimiento común.
 import '../shared/platform/trustedTypes'
+import { registerServiceWorker } from '../shared/platform/pwa'
 import '../shared/platform/fonts'
 import '../shared/ui/motion.css'
 import '../app/app.css'
@@ -56,3 +57,6 @@ function filter(query: string) {
 input?.addEventListener('input', () => filter(input.value))
 // Si el navegador recuerda lo escrito al volver atrás, se aplica de entrada.
 if (input?.value) filter(input.value)
+
+// App instalable y sin conexión (W-16).
+registerServiceWorker()
