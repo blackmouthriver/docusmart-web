@@ -37,7 +37,7 @@ _Sin pendientes P0._
 | W-08 | **Hostinger**: verificación en dos pasos, bloqueo de transferencia del dominio y DNSSEC | 👤 | Las tres activas; el sitio sigue respondiendo |
 | W-09 | **Play Console → Sitio web** = `https://docusmart.online`, y en AdMob confirmar `app-ads.txt` "Autorizado" (24-48 h después) | 👤 | AdMob lo muestra como autorizado |
 | W-10 | **QA visual de la app web en celular**: revisar a 375 px las pantallas de `/app/` (Inicio, Visor, Convertidor, PDF, QR, Estudio). Hasta ahora se probó la lógica, no cada pantalla de la app en móvil | 🛠️ | Ninguna pantalla se desborda ni tiene botones inalcanzables; capturas en el PR. **Hecho (PR #107)**: 33 pantallas sin desbordes; espacio inferior para el botón del asistente, botones de ícono de 40 px, casillas de 18 px y enlaces del pie más altos |
-| W-11 | **Pruebas de punta a punta automáticas** (Playwright) en el CI contra `vite preview` con las cabeceras de producción: landing, las 7 páginas, unir/dividir/convertir/QR y el banner de consentimiento. Fallan ante cualquier violación de CSP o Trusted Types | 🛠️ | Job en verde en el CI y exigido en la protección de `main` |
+| W-11 | **Pruebas de punta a punta automáticas** (Playwright) en el CI contra `vite preview` con las cabeceras de producción: landing, las 7 páginas, unir/dividir/convertir/QR y el banner de consentimiento. Fallan ante cualquier violación de CSP o Trusted Types | 🛠️ | Job en verde en el CI y exigido en la protección de `main` **Hecho (PR #113)**: 21 pruebas (portada, /en/, privacidad, /herramientas, unir PDF, PNG→JPG, proteger PDF, app, ajustes, QR, asistente, ayuda de Desktop y sin conexión), en escritorio y celular, fallan ante cualquier error de consola o de CSP; el despliegue las espera |
 
 ## P2 — SEO y crecimiento
 

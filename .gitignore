@@ -11,3 +11,7 @@ public/7z/
 public/ocr/
 # Caché de `tsc -b`
 *.tsbuildinfo
+
+# Pruebas de punta a punta (Playwright)
+playwright-report/
+test-results/
