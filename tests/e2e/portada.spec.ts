@@ -37,3 +37,11 @@ test('la política de privacidad carga', async ({ page }) => {
   await page.goto('/privacidad')
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Política de Privacidad')
 })
+
+test('ads.txt y app-ads.txt autorizan al editor de Google (AdSense y AdMob)', async ({ request }) => {
+  for (const file of ['/ads.txt', '/app-ads.txt']) {
+    const res = await request.get(file)
+    expect(res.status(), file).toBe(200)
+    expect(await res.text(), file).toContain('google.com, pub-1109506701099935, DIRECT, f08c47fec0942fa0')
+  }
+})

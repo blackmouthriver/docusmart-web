@@ -48,3 +48,5 @@ npx firebase-tools deploy --only hosting
 ```
 
 **AdMob `app-ads.txt`:** coloca el archivo en `public/app-ads.txt` y quedará en `https://docusmart.online/app-ads.txt`. Luego pon `https://docusmart.online` como sitio web del desarrollador en Play Console.
+
+**AdSense `ads.txt` (W-90):** la misma línea del editor está en `public/ads.txt` → `https://docusmart.online/ads.txt`. Con ella se verificó la propiedad del sitio en AdSense (método "Fragmento de ads.txt"), sin cargar ningún script de Google antes del consentimiento.
