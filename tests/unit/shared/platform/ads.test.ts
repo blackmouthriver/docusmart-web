@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { AD_SLOTS, ADS_ORIGIN, ADS_SCRIPT, adsEnabled } from '../../../../src/shared/platform/adsConfig'
-import { adAllowed, adLabel } from '../../../../src/shared/platform/ads'
+import { adAllowed, adLabel, CONSENT_EVENT } from '../../../../src/shared/platform/adsPolicy'
 import { isAllowedScriptUrl, scriptOrigins } from '../../../../src/shared/platform/trustedTypes'
 import { LANGS } from '../../../../src/shared/i18n/languages'
 
@@ -33,6 +33,10 @@ describe('anuncios (W-90)', () => {
     expect(adAllowed('hub', 'granted', FILLED)).toBe(false)
   })
 
+  it('el evento de consentimiento es el mismo que emite la analítica', () => {
+    expect(CONSENT_EVENT).toBe('ds-consent')
+  })
+
   it('la etiqueta "Publicidad" existe en los 12 idiomas y cae al español', () => {
     const labels = new Set(LANGS.map((l) => adLabel(l.code)))
     expect(labels.size).toBe(LANGS.length)
@@ -53,10 +57,10 @@ describe('anuncios (W-90)', () => {
     const open = directive('script-src').includes(ADS_ORIGIN)
     expect(open).toBe(adsEnabled())
     if (adsEnabled()) {
-      expect(directive('frame-src')).toMatch(/googlesyndication\.com/)
-      expect(directive('frame-src')).toMatch(/doubleclick\.net/)
+      expect(directive('frame-src').split(' ')).toContain('https://tpc.googlesyndication.com')
+      expect(directive('frame-src').split(' ')).toContain('https://googleads.g.doubleclick.net')
     } else {
-      expect(csp).not.toMatch(/googlesyndication|doubleclick|adtrafficquality/)
+      for (const host of ['googlesyndication.com', 'doubleclick.net', 'adtrafficquality.google']) expect(csp.includes(host)).toBe(false)
     }
   })
 })
