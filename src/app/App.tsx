@@ -3,7 +3,8 @@ import { flushSync } from 'react-dom'
 import { withViewTransition } from '../shared/platform/motion'
 import { ScreenSkeleton } from '../shared/ui/ui'
 import { Icon, type IconName } from '../shared/ui/Icon'
-import { analyticsConfigured, track, trackScreen } from '../shared/platform/analytics'
+import { consentNeeded, track, trackScreen } from '../shared/platform/analytics'
+import { AdSlot } from '../shared/ui/AdSlot'
 import { PLAY_URL } from '../shared/files/share'
 import { AppContext, parseHash, type Route } from './state'
 import { useT } from '../shared/i18n/I18n'
@@ -239,7 +240,7 @@ export function App() {
                 <b>Google Play</b>
               </span>
             </a>
-            {analyticsConfigured && (
+            {consentNeeded && (
               <button type="button" className="link-btn side-analytics" data-consent-open>
                 {t('side.analytics')}
               </button>
@@ -255,6 +256,8 @@ export function App() {
             <div className="screen" key={route.section === 'estudio' ? route.section : route.section + (route.sub ?? '')}>
               <Suspense fallback={<ScreenSkeleton label={t('common.loading')} />}>{screen}</Suspense>
             </div>
+            {/* Publicidad al pie (W-90), nunca en el Visor ni en la lectura; apagada sin IDs ni consentimiento. */}
+            {route.section !== 'ver' && !(route.section === 'estudio' && route.sub === 'lectura') && <AdSlot place="app" />}
           </div>
         </main>
 

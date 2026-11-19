@@ -3,7 +3,7 @@ import { FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL } from '../../../shared/files/s
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { HeroCard } from '../../../shared/ui/ui'
-import { analyticsConfigured, track } from '../../../shared/platform/analytics'
+import { consentNeeded, track } from '../../../shared/platform/analytics'
 import { kindOf } from '../../../shared/files/files'
 import { useT } from '../../../shared/i18n/I18n'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
@@ -135,7 +135,7 @@ export function Home() {
         <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer">
           TikTok
         </a>
-        {analyticsConfigured && (
+        {consentNeeded && (
           <button type="button" className="link-btn" data-consent-open>
             {t('side.analytics')}
           </button>

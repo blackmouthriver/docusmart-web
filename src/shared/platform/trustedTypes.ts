@@ -7,13 +7,18 @@
  *  - HTML como texto: nunca. El sitio arma el DOM con APIs seguras.
  *  - Código como texto (eval, new Function): nunca.
  *  - URLs de scripts/workers: solo del propio dominio, blob: creados por la
- *    página (pdf.js) y Google Tag Manager (analítica, solo con consentimiento).
+ *    página (pdf.js), Google Tag Manager (analítica, solo con consentimiento)
+ *    y AdSense únicamente cuando los anuncios están activos (W-90).
  *
  * Debe importarse antes que cualquier otro módulo en cada punto de entrada.
  */
-const ALLOWED_SCRIPT_ORIGINS = ['https://www.googletagmanager.com']
+import { adsEnabled, ADS_ORIGIN } from './adsConfig'
 
-export function isAllowedScriptUrl(raw: string, base = location.href): boolean {
+export function scriptOrigins(ads = adsEnabled()): string[] {
+  return ['https://www.googletagmanager.com', ...(ads ? [ADS_ORIGIN] : [])]
+}
+
+export function isAllowedScriptUrl(raw: string, base = location.href, ads = adsEnabled()): boolean {
   let url: URL
   try {
     url = new URL(raw, base)
@@ -21,7 +26,7 @@ export function isAllowedScriptUrl(raw: string, base = location.href): boolean {
     return false
   }
   if (url.protocol === 'blob:') return url.href.startsWith(`blob:${new URL(base).origin}/`)
-  return url.origin === new URL(base).origin || ALLOWED_SCRIPT_ORIGINS.includes(url.origin)
+  return url.origin === new URL(base).origin || scriptOrigins(ads).includes(url.origin)
 }
 
 type TrustedTypesFactory = {

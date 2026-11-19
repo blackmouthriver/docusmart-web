@@ -1,0 +1,12 @@
+/* Espacios de publicidad (W-90): marcados como tales, con alto reservado para que la página no salte. */
+.ad-slot {
+  display: block; width: 100%; max-width: 980px; margin: 28px auto; padding: 0 16px; box-sizing: border-box;
+  text-align: center; clear: both;
+}
+.ad-slot .ad-label {
+  display: block; margin-bottom: 6px; font-size: 11.5px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-faint, #6F6863);
+}
+.ad-slot .adsbygoogle { display: block; min-height: 100px; }
+/* AdSense marca el bloque sin anuncio: se oculta el espacio completo, sin hueco vacío. */
+.ad-slot:has(.adsbygoogle[data-ad-status="unfilled"]) { display: none; }

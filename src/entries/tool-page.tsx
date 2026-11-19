@@ -11,6 +11,7 @@ import { DEFAULT_LANG, isLang } from '../shared/i18n/languages'
 import { loadMessages, tr } from '../shared/i18n/translate'
 import { initAnalytics, track, trackScreen } from '../shared/platform/analytics'
 import { mountConsentBanner } from '../shared/platform/consent'
+import { mountPageAd } from '../shared/platform/ads'
 import { rememberLangChoice } from '../shared/platform/langChoice'
 import '../shared/platform/fonts'
 import '../app/app.css'
@@ -110,6 +111,8 @@ function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
 
 initAnalytics()
 mountConsentBanner()
+// Publicidad (W-90): apagada mientras no haya ID del bloque ni consentimiento.
+mountPageAd('tool')
 rememberLangChoice()
 // Aparición de secciones, pasos escalonados y transición entre páginas (W-72/W-73).
 initMotion()

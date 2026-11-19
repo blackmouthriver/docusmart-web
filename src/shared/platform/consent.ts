@@ -4,7 +4,8 @@
  * visitante entra, o cuando pulsa "Preferencias de analítica" para cambiar
  * su decisión. "Rechazar" tiene el mismo peso visual que "Aceptar".
  */
-import { analyticsConfigured, getConsent, setConsent } from './analytics'
+import { consentNeeded, getConsent, setConsent } from './analytics'
+import { adsEnabled } from './adsConfig'
 import { consentText } from './consentText'
 
 /** Los estilos del banner se descargan solo cuando se muestra: así no bloquean el primer pintado. */
@@ -21,16 +22,19 @@ function buildBanner() {
   const current = getConsent()
   // El idioma de la página: el de la portada o herramienta (/en/…) o el elegido en la app.
   const t = consentText(document.documentElement.lang)
+  // Con anuncios activos (W-90) el aviso cubre también la publicidad.
+  const ads = adsEnabled()
+  const title = ads ? t.adsTitle : t.title
 
   // Se arma con APIs del DOM (no innerHTML): compatible con Trusted Types.
   const el = document.createElement('div')
   el.className = 'ds-consent'
   el.setAttribute('role', 'dialog')
   el.setAttribute('aria-live', 'polite')
-  el.setAttribute('aria-label', t.title)
+  el.setAttribute('aria-label', title)
 
   const p = document.createElement('p')
-  p.append(t.body)
+  p.append(ads ? t.adsBody : t.body)
   if (current) {
     const state = document.createElement('b')
     state.textContent = current === 'granted' ? t.on : t.off
@@ -71,12 +75,12 @@ export function mountConsentBanner() {
   // Los enlaces "Preferencias de analítica" ([data-consent-open]) reabren el banner;
   // si la analítica no está configurada no hay nada que elegir y se ocultan.
   document.querySelectorAll<HTMLElement>('[data-consent-open]').forEach((el) => {
-    el.hidden = !analyticsConfigured
+    el.hidden = !consentNeeded
   })
   document.addEventListener('click', (e) => {
     if (!(e.target as HTMLElement).closest('[data-consent-open]')) return
     e.preventDefault()
-    if (analyticsConfigured) showBanner()
+    if (consentNeeded) showBanner()
   })
-  if (analyticsConfigured && getConsent() === null) showBanner()
+  if (consentNeeded && getConsent() === null) showBanner()
 }

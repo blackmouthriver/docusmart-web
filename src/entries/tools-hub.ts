@@ -9,6 +9,7 @@ import './tool-page.css'
 import './tools-hub.css'
 import { initAnalytics, trackScreen } from '../shared/platform/analytics'
 import { mountConsentBanner } from '../shared/platform/consent'
+import { mountPageAd } from '../shared/platform/ads'
 import { rememberLangChoice } from '../shared/platform/langChoice'
 import { initMotion } from '../shared/platform/motion'
 import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
@@ -17,6 +18,8 @@ import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 
 initAnalytics()
 mountConsentBanner()
+// Publicidad (W-90): apagada mientras no haya ID del bloque ni consentimiento.
+mountPageAd('hub')
 rememberLangChoice()
 initMotion()
 // Tema, acento y tamaño de letra elegidos en Ajustes de la app (también en estas páginas).
