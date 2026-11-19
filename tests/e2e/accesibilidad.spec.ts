@@ -16,7 +16,7 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
 })
 
-const PAGES = ['/', '/en/', '/privacidad', '/herramientas', '/unir-pdf', '/ja/image-to-webp', '/app/', '/app/#/herramientas', '/app/#/pdf', '/app/#/convertir', '/app/#/qr/crear', '/app/#/estudio/notas']
+const PAGES = ['/', '/en/', '/privacidad', '/herramientas', '/unir-pdf', '/ja/image-to-webp', '/guias', '/guias/reducir-tamano-pdf', '/app/', '/app/#/herramientas', '/app/#/pdf', '/app/#/convertir', '/app/#/qr/crear', '/app/#/estudio/notas']
 
 for (const path of PAGES) {
   test(`sin problemas de accesibilidad: ${path} @movil`, async ({ page }) => {
@@ -48,7 +48,7 @@ test('sin problemas de accesibilidad en los diálogos de la app y el asistente',
 
 test('sin problemas de accesibilidad en modo oscuro', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce', colorScheme: 'dark' })
-  for (const path of ['/', '/herramientas', '/unir-pdf', '/app/', '/app/#/convertir']) {
+  for (const path of ['/', '/herramientas', '/unir-pdf', '/guias/firmar-pdf-sin-imprimir', '/app/', '/app/#/convertir']) {
     await page.goto(path)
     await page.waitForLoadState('networkidle')
     expect(await audit(page), path).toEqual([])

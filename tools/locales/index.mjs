@@ -5,6 +5,7 @@
 //   - landing: pares [texto en español, traducción] que se reemplazan en index.html.
 // Para sumar un idioma: crea su archivo y agrégalo a LOCALES.
 import { CATEGORIES, pages } from '../pages.mjs'
+import { guides } from '../guides.mjs'
 import en from './en.mjs'
 import pt from './pt.mjs'
 import fr from './fr.mjs'
@@ -123,4 +124,7 @@ export const generatedHtml = () => [
   ...LANGS.flatMap((loc) => pages.map((p) => filePath(p, loc))),
   ...LOCALES.map((loc) => `${loc.lang}/index.html`),
   ...LANGS.map(hubFile),
+  // Guías (W-19), solo en español.
+  'guias.html',
+  ...guides.map((g) => `guias/${g.slug}.html`),
 ]
