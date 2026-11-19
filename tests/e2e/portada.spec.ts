@@ -45,3 +45,16 @@ test('ads.txt y app-ads.txt autorizan al editor de Google (AdSense y AdMob)', as
     expect(await res.text(), file).toContain('google.com, pub-1109506701099935, DIRECT, f08c47fec0942fa0')
   }
 })
+
+test('con la publicidad apagada no se descarga nada de AdSense ni se reserva espacio (W-90)', async ({ page }) => {
+  const ads: string[] = []
+  page.on('request', (r) => {
+    if (/googlesyndication|doubleclick|adtrafficquality/.test(r.url())) ads.push(r.url())
+  })
+  for (const path of ['/unir-pdf', '/herramientas', '/app/', '/app/#/convertir']) {
+    await page.goto(path)
+    await page.waitForLoadState('networkidle')
+    await expect(page.locator('.ad-slot, ins.adsbygoogle'), path).toHaveCount(0)
+  }
+  expect(ads).toEqual([])
+})

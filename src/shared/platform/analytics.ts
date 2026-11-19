@@ -11,6 +11,7 @@
  *  - Jamás se envían nombres de archivo ni contenido, solo tipos y conteos.
  */
 import type { Analytics } from '@firebase/analytics'
+import { adsEnabled } from './adsConfig'
 
 type Params = Record<string, string | number | boolean>
 
@@ -26,6 +27,9 @@ const config = {
 }
 
 export const analyticsConfigured = Boolean(config.apiKey && config.appId && config.measurementId)
+
+/** Hay algo que consentir: analítica configurada o anuncios activos (W-90). */
+export const consentNeeded = analyticsConfigured || adsEnabled()
 
 let analytics: Analytics | null = null
 let loading: Promise<void> | null = null
@@ -46,6 +50,12 @@ export function setConsent(value: Consent) {
     localStorage.setItem(CONSENT_KEY, value)
   } catch {
     /* almacenamiento bloqueado: el consentimiento dura solo esta visita */
+  }
+  // Avisa a quien dependa de la decisión (los espacios de publicidad, W-90).
+  try {
+    globalThis.dispatchEvent?.(new CustomEvent('ds-consent', { detail: value }))
+  } catch {
+    /* entorno sin eventos: nada que avisar */
   }
   if (value === 'granted') {
     if (analytics) void setCollection(true)
