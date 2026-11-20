@@ -940,7 +940,7 @@ const ja: Messages = {
   'imgt.readyMany': "{n}枚の画像の準備ができました。",
   'imgt.pickMany': "タップして1枚または複数の画像を選択",
   'imgt.pickOne': "タップして画像を選択",
-  'imgt.formats': "JPG、PNG、WebP、GIF、BMP",
+  'imgt.formats': "JPG、PNG、WebP、HEIC、GIF、BMP",
   'imgt.yourImages': "あなたの画像",
   'imgt.previewImage': "画像のプレビュー",
   'imgt.savings': "{before}から{after}に（{pct}%削減）。",

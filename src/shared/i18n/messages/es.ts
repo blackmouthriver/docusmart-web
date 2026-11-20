@@ -944,7 +944,7 @@ export const es = {
   'imgt.readyMany': "{n} imágenes listas.",
   'imgt.pickMany': "Toca para elegir una o varias imágenes",
   'imgt.pickOne': "Toca para elegir una imagen",
-  'imgt.formats': "JPG, PNG, WebP, GIF o BMP",
+  'imgt.formats': "JPG, PNG, WebP, HEIC, GIF o BMP",
   'imgt.yourImages': "Tus imágenes",
   'imgt.previewImage': "Vista previa de tu imagen",
   'imgt.savings': "De {before} a {after} ({pct} % menos).",

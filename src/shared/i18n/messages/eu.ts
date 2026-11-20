@@ -940,7 +940,7 @@ const eu: Messages = {
   'imgt.readyMany': "{n} irudi prest.",
   'imgt.pickMany': "Ukitu irudi bat edo gehiago aukeratzeko",
   'imgt.pickOne': "Ukitu irudi bat aukeratzeko",
-  'imgt.formats': "JPG, PNG, WebP, GIF edo BMP",
+  'imgt.formats': "JPG, PNG, WebP, HEIC, GIF edo BMP",
   'imgt.yourImages': "Zure irudiak",
   'imgt.previewImage': "Zure irudiaren aurrebista",
   'imgt.savings': "{before}-tik {after}-ra (% {pct} gutxiago).",

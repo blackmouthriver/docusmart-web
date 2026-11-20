@@ -2,14 +2,19 @@
  * Herramientas de imagen (comprimir, redimensionar, recortar y rotar): los
  * cálculos, sin canvas, para poder probarlos. El dibujo está en imageCanvas.ts.
  */
+import { looksLikeHeic } from '../../convert/core/heic'
 
 /** Lado máximo que se acepta para no agotar la memoria del navegador (y el límite de canvas de Safari). */
 export const MAX_SIDE = 16384
 export type OutputMime = 'image/jpeg' | 'image/png' | 'image/webp'
 
-/** Formato de salida: se conserva JPG, PNG o WebP; lo demás (GIF, BMP, AVIF…) se guarda como PNG. */
-export function outputMime(inputType: string): OutputMime {
+/**
+ * Formato de salida: se conserva JPG, PNG o WebP; las fotos HEIC del iPhone pasan a JPG (casi
+ * nada las abre y en PNG pesarían muchísimo) y lo demás (GIF, BMP, AVIF…) se guarda como PNG.
+ */
+export function outputMime(inputType: string, name = ''): OutputMime {
   if (inputType === 'image/jpeg' || inputType === 'image/png' || inputType === 'image/webp') return inputType
+  if (looksLikeHeic(name, inputType)) return 'image/jpeg'
   return 'image/png'
 }
 

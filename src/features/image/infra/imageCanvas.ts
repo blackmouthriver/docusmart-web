@@ -1,20 +1,44 @@
 // Dibujo de imágenes con canvas para las herramientas de imagen (excluido de la
 // cobertura como los demás archivos que necesitan el canvas del navegador).
 import { canvasToBlob } from '../../../shared/pdf/pdf'
-import { rotatedSize, type OutputMime, type Transform } from '../core/imageTools'
+import { capSize, rotatedSize, type OutputMime, type Transform } from '../core/imageTools'
+import { isHeic } from '../../convert/core/heic'
 import { tr } from '../../../shared/i18n/translate'
 
 export type LoadedImage = { bmp: ImageBitmap; width: number; height: number }
 
-/** Abre la imagen ya girada según su EXIF (las fotos de celular vienen "acostadas" si no). */
+/**
+ * Abre la imagen ya girada según su EXIF (las fotos de celular vienen "acostadas" si no). Las
+ * fotos HEIC del iPhone, que solo abre Safari, se abren con el decodificador de HEIC a JPG (W-107).
+ */
 export async function loadImage(file: Blob): Promise<LoadedImage> {
   try {
     const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' })
     return { bmp, width: bmp.width, height: bmp.height }
   } catch {
+    if (isHeic(new Uint8Array(await file.slice(0, 64).arrayBuffer()))) {
+      const { heicToCanvas } = await import('../../convert/infra/heicDecoder')
+      const canvas = await heicToCanvas(file)
+      try {
+        const bmp = await createImageBitmap(canvas)
+        return { bmp, width: bmp.width, height: bmp.height }
+      } finally {
+        canvas.width = canvas.height = 0
+      }
+    }
     const e = new Error(tr('libErr.imageOpen'))
     e.name = 'ImageOpenError'
     throw e
+  }
+}
+
+/** Copia en JPG (de hasta 2048 px) para ver en pantalla una foto que el navegador no muestra (HEIC). */
+export async function previewBlob(file: Blob): Promise<Blob> {
+  const img = await loadImage(file)
+  try {
+    return await renderImage(img, { ...capSize(img.width, img.height, 2048), mime: 'image/jpeg', quality: 0.85 })
+  } finally {
+    img.bmp.close()
   }
 }
 

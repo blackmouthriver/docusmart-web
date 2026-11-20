@@ -940,7 +940,7 @@ const ru: Messages = {
   'imgt.readyMany': "Готово изображений: {n}.",
   'imgt.pickMany': "Нажмите, чтобы выбрать одно или несколько изображений",
   'imgt.pickOne': "Нажмите, чтобы выбрать изображение",
-  'imgt.formats': "JPG, PNG, WebP, GIF или BMP",
+  'imgt.formats': "JPG, PNG, WebP, HEIC, GIF или BMP",
   'imgt.yourImages': "Ваши изображения",
   'imgt.previewImage': "Предпросмотр изображения",
   'imgt.savings': "С {before} до {after} (на {pct} % меньше).",
