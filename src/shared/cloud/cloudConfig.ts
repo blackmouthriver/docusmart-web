@@ -8,4 +8,4 @@
  *   y URI de redirección https://docusmart.online/oauth.
  */
 export const GOOGLE_CLIENT_ID = '218283287852-big4u5cam8bg464ddtgs6s434ja4f7nj.apps.googleusercontent.com'
-export const DROPBOX_APP_KEY = ''
+export const DROPBOX_APP_KEY = '41ysmh5vbi68o2t'
