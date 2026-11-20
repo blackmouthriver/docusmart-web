@@ -243,6 +243,15 @@ herramientas **por categoría** y **en orden alfabético** dentro de cada una.
 
 Orden: W-76 (validar categorías) → W-78 → W-77 → W-79. Encaja con el diseño visual (W-72) para las animaciones.
 
+## Contar lo nuevo en la portada y en el asistente (pedido del usuario, 2026-11-20)
+
+Lo agregado entre el 18 y el 20 de noviembre todavía no aparece en la portada ni lo conoce el asistente.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-103 | **Actualizar la portada** (`site/index.html` y sus 11 traducciones en `tools/locales/*.mjs`): mencionar las novedades sin recargarla — **guías paso a paso** en 12 idiomas (enlace a `/guias`), **guardar en Google Drive y Dropbox** (carpeta DocuSmart; los archivos van de tu navegador a tu cuenta, sin pasar por servidores), **renombrar el resultado** antes de descargar o compartir, y **los enlaces abren la app** en Android si está instalada. Revisar que los textos de privacidad sigan siendo exactos con la publicidad (solo con consentimiento). Pasar axe, PageSpeed y las pruebas de la portada | 🤖 + 👤 (revisar textos) | Pendiente |
+| W-104 | **Actualizar la base de conocimiento del asistente** (`tools/assistant/<idioma>.mjs`, 12 idiomas): entradas nuevas o ajustadas sobre guías (dónde están, idiomas), guardar en Google Drive (carpeta DocuSmart, permiso mínimo, cómo quitar el acceso) y en Dropbox (Aplicaciones › DocuSmart), renombrar el archivo antes de guardar, abrir enlaces en la app (App Links), aviso "Privacidad y cookies" y publicidad (solo con consentimiento, cómo cambiar la decisión). Sinónimos en `text.ts` (renombrar/cambiar nombre, nube, carpeta). Pruebas del asistente con preguntas reales en varios idiomas | 🤖 | Pendiente |
+
 ## Guías con imágenes de cada herramienta (pedido del usuario, 2026-11-20)
 
 Que las guías muestren **cómo se ve** cada paso, con capturas reales de la web, y que **cada herramienta**
