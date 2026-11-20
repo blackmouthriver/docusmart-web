@@ -243,6 +243,30 @@ herramientas **por categoría** y **en orden alfabético** dentro de cada una.
 
 Orden: W-76 (validar categorías) → W-78 → W-77 → W-79. Encaja con el diseño visual (W-72) para las animaciones.
 
+## Sincronización entre la app, la web y el escritorio (opción A, 2026-11-19)
+
+Que lo que el usuario hace en la app Android se vea en la web y en DocuSmart Desktop, y al revés, sin tener que
+pensar en cuál usa. La web y Desktop ya son el mismo código (Desktop es la web instalada), así que se sincronizan
+**dos** productos: la app Android y la web.
+
+**Decisión del usuario: opción A — el Google Drive del propio usuario como almacenamiento compartido.**
+Los datos viajan **cifrados en el dispositivo** a la carpeta oculta de la app en el Drive del usuario
+(`appDataFolder`, permiso mínimo `drive.appdata`). DocuSmart **no tiene servidor propio** y nunca ve el contenido.
+Encaja con la promesa de privacidad (el texto pasa a "en tu dispositivo o en **tu** Drive, cifrado") y no tiene costo
+de servidor. Se descartaron, por ahora: B (servidor propio con cifrado de extremo a extremo: costo creciente y más
+superficie que explicar) y C (solo entre dispositivos cercanos: no es sincronización automática).
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-94 | **Base de la sincronización**: inicio de sesión con Google en la app y en la web (la misma cuenta identifica al usuario), acceso a `appDataFolder`, formato común de los datos (versionado) y **cifrado en el dispositivo** con una clave que no sale de los equipos del usuario (derivada o guardada en el almacén seguro de cada plataforma; definir cómo se pasa a un dispositivo nuevo). Resolución de conflictos: gana el cambio más reciente y se guarda una copia del perdedor. Actualizar la política de privacidad (web y app) y el aviso de la promesa "100 % local" | 🤖 + 👤 (validar textos y política) | Pendiente |
+| W-95 | **Etapa 1 — Ajustes e historial**: tema, acento, idioma, tamaño de letra, favoritos y el historial de conversiones/herramientas (solo nombres y tipos, nunca el contenido de los archivos). Sirve para validar la base con datos livianos | 🤖 | Pendiente (depende de W-94) |
+| W-96 | **Etapa 2 — Notas, estudio y agenda**: notas, tarjetas de repaso, progreso y eventos con sus recordatorios (cada plataforma programa sus propios avisos) | 🤖 | Pendiente (depende de W-95) |
+| W-97 | **Etapa 3 — Biblioteca de documentos**: archivos más pesados; subida solo de lo que cambió, sincronización opcional por carpeta y aviso del espacio usado en el Drive del usuario. La Carpeta Segura de la app **no** se sincroniza salvo que el usuario lo active explícitamente | 🤖 + 👤 (decidir límites) | Pendiente (depende de W-96) |
+| W-98 | **Etapa 4 — Premium compartido**: que la suscripción comprada en Play valga en la web y Desktop para la misma cuenta de Google (verificación de la compra; requiere un componente de servidor mínimo o la API de Play Developer — evaluar sin romper la opción A para los datos) | 🤖 + 👤 (Play Console) | Pendiente (depende de W-94) |
+
+Orden: W-94 → W-95 → W-96 → W-97; W-98 puede ir en paralelo después de W-94. Reutiliza lo hecho para guardar en
+Google Drive (W-45). Requiere cambios en la app Android (repo DocuSmart) en cada etapa.
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |
