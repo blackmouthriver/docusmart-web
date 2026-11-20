@@ -162,7 +162,7 @@ const pt: Messages = {
   'save.downloaded': "O arquivo foi baixado.",
   'save.shareError': "Não foi possível compartilhar o arquivo. Baixe-o e envie-o a partir do seu dispositivo.",
   'save.driveDone': "Salvo no seu Google Drive, na pasta DocuSmart, como \"{name}\".",
-  'save.dropboxDone': "Salvo no seu Dropbox, em Aplicativos › DocuSmart{path}.",
+  'save.dropboxDone': "Salvo no seu Dropbox, na pasta do DocuSmart dentro de Aplicativos, como \"{name}\".",
   'save.cloudError': "Não foi possível salvar no {service}.",
   'save.popupBlocked': "O navegador bloqueou a janela de autorização. Permita as janelas pop-up de docusmart.online.",
   'save.authExpired': "A autorização expirou. Tente novamente.",

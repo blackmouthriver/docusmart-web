@@ -30,7 +30,7 @@ test('guarda en Dropbox con el nombre elegido y lo confirma', async ({ page, con
   await page.getByRole('button', { name: 'Unir 2 PDFs' }).click()
   await page.getByRole('textbox', { name: 'Nombre del archivo' }).fill('Contrato final')
   await page.getByRole('button', { name: 'Dropbox' }).click()
-  await expect(page.getByText(/Guardado en tu Dropbox, en Aplicaciones › DocuSmart\/Contrato final\.pdf/)).toBeVisible()
+  await expect(page.getByText('Guardado en tu Dropbox, en la carpeta de DocuSmart dentro de Aplicaciones, como "Contrato final.pdf".')).toBeVisible()
 
   expect(authorize?.searchParams.get('client_id')).toBe('41ysmh5vbi68o2t')
   expect(authorize?.searchParams.get('code_challenge_method')).toBe('S256')

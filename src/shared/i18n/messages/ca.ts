@@ -162,7 +162,7 @@ const ca: Messages = {
   'save.downloaded': "S'ha descarregat el fitxer.",
   'save.shareError': "No s'ha pogut compartir el fitxer. Descarrega'l i envia'l des del teu dispositiu.",
   'save.driveDone': "Desat al teu Google Drive, a la carpeta DocuSmart, com a «{name}».",
-  'save.dropboxDone': "Desat al teu Dropbox, a Aplicacions › DocuSmart{path}.",
+  'save.dropboxDone': "Desat al teu Dropbox, a la carpeta de DocuSmart dins d'Aplicacions, com a «{name}».",
   'save.cloudError': "No s'ha pogut desar a {service}.",
   'save.popupBlocked': "El navegador ha bloquejat la finestra d'autorització. Permet les finestres emergents de docusmart.online.",
   'save.authExpired': "L'autorització ha caducat. Torna-ho a provar.",

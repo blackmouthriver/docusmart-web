@@ -162,7 +162,7 @@ const fr: Messages = {
   'save.downloaded': "Le fichier a été téléchargé.",
   'save.shareError': "Impossible de partager le fichier. Téléchargez-le et envoyez-le depuis votre appareil.",
   'save.driveDone': "Enregistré dans votre Google Drive, dans le dossier DocuSmart, sous « {name} ».",
-  'save.dropboxDone': "Enregistré dans votre Dropbox, dans Applications › DocuSmart{path}.",
+  'save.dropboxDone': "Enregistré dans votre Dropbox, dans le dossier de DocuSmart sous Applications, sous « {name} ».",
   'save.cloudError': "Impossible d'enregistrer dans {service}.",
   'save.popupBlocked': "Votre navigateur a bloqué la fenêtre d'autorisation. Autorisez les fenêtres pop-up de docusmart.online.",
   'save.authExpired': "L'autorisation a expiré. Réessayez.",

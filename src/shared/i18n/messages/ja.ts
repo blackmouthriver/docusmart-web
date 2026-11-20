@@ -162,7 +162,7 @@ const ja: Messages = {
   'save.downloaded': "ファイルをダウンロードしました。",
   'save.shareError': "ファイルを共有できませんでした。ダウンロードして端末から送信してください。",
   'save.driveDone': "Googleドライブの「DocuSmart」フォルダに「{name}」として保存しました。",
-  'save.dropboxDone': "Dropboxの「アプリ › DocuSmart{path}」に保存しました。",
+  'save.dropboxDone': "Dropboxの「アプリ」内にあるDocuSmartのフォルダに「{name}」として保存しました。",
   'save.cloudError': "{service}に保存できませんでした。",
   'save.popupBlocked': "ブラウザが認証ウィンドウをブロックしました。docusmart.onlineのポップアップを許可してください。",
   'save.authExpired': "認証の有効期限が切れました。もう一度お試しください。",

@@ -166,7 +166,7 @@ export const es = {
   'save.downloaded': "El archivo se descargó.",
   'save.shareError': "No se pudo compartir el archivo. Descárgalo y envíalo desde tu dispositivo.",
   'save.driveDone': "Guardado en tu Google Drive, en la carpeta DocuSmart, como \"{name}\".",
-  'save.dropboxDone': "Guardado en tu Dropbox, en Aplicaciones › DocuSmart{path}.",
+  'save.dropboxDone': "Guardado en tu Dropbox, en la carpeta de DocuSmart dentro de Aplicaciones, como \"{name}\".",
   'save.cloudError': "No se pudo guardar en {service}.",
   'save.popupBlocked': "El navegador bloqueó la ventana de autorización. Permite las ventanas emergentes de docusmart.online.",
   'save.authExpired': "La autorización venció. Vuelve a intentarlo.",

@@ -162,7 +162,7 @@ const eu: Messages = {
   'save.downloaded': "Fitxategia deskargatu da.",
   'save.shareError': "Ezin izan da fitxategia partekatu. Deskargatu eta bidali zure gailutik.",
   'save.driveDone': "Zure Google Driveko DocuSmart karpetan gorde da «{name}» izenarekin.",
-  'save.dropboxDone': "Zure Dropboxen gorde da, Aplikazioak › DocuSmart{path} karpetan.",
+  'save.dropboxDone': "Zure Dropboxen gorde da, Aplikazioak barruko DocuSmart karpetan, «{name}» izenarekin.",
   'save.cloudError': "Ezin izan da {service} zerbitzuan gorde.",
   'save.popupBlocked': "Nabigatzaileak baimen-leihoa blokeatu du. Baimendu docusmart.online-ren leiho gainerakorrak.",
   'save.authExpired': "Baimena iraungi da. Saiatu berriro.",
