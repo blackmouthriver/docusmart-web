@@ -493,6 +493,19 @@
     "ko": "jpg-to-png",
     "zh": "jpg-to-png"
   },
+  "heic-a-jpg": {
+    "en": "heic-to-jpg",
+    "pt": "heic-para-jpg",
+    "fr": "heic-en-jpg",
+    "it": "heic-in-jpg",
+    "de": "heic-in-jpg",
+    "ca": "heic-a-jpg",
+    "eu": "heictik-jpgra",
+    "ru": "heic-to-jpg",
+    "ja": "heic-to-jpg",
+    "ko": "heic-to-jpg",
+    "zh": "heic-to-jpg"
+  },
   "png-a-jpg": {
     "en": "png-to-jpg",
     "pt": "png-para-jpg",

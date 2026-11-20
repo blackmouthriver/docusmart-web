@@ -21,12 +21,15 @@ type PdfProps = PreviewProps & { /** Peso a mostrar (el del archivo de Office, n
  */
 export function DocPreview(props: PreviewProps) {
   const s = props.source as Blob & { name?: string }
-  if (s.type.startsWith('image/')) return <ImagePreview {...props} />
+  if (isViewableImage(s.type)) return <ImagePreview {...props} />
   if (s.type.startsWith('text/plain')) return <TextPreview {...props} />
   if (isDocx(s) || isXlsx(s)) return <OfficePreview {...props} />
   if (isPdfLike(s)) return <PdfPreview {...props} />
   return <GenericPreview {...props} />
 }
+
+/** Imágenes que el navegador puede mostrar (HEIC solo lo abre Safari: se muestra como archivo). */
+const isViewableImage = (type: string) => type.startsWith('image/') && !/^image\/hei[cf]/i.test(type)
 
 /** PDF por tipo o extensión (un Blob sin tipo ni nombre se trata como PDF). */
 const isPdfLike = (f: Blob & { name?: string }) => f.type === 'application/pdf' || !!f.name?.toLowerCase().endsWith('.pdf') || (!f.type && !f.name)
@@ -376,7 +379,7 @@ function FileTiles({ files, label, max = 12 }: { files: File[]; label: string; m
 }
 
 function FileThumb({ file }: { file: File }) {
-  if (file.type.startsWith('image/')) return <ImageThumb file={file} />
+  if (isViewableImage(file.type)) return <ImageThumb file={file} />
   if (isPdfLike(file)) return <PdfThumb file={file} />
   return <span className="generic-ext generic-ext-sm">{extOf(file)}</span>
 }

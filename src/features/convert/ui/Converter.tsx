@@ -7,6 +7,8 @@ import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { bundleFiles, resultFile } from '../../../shared/files/share'
 import { OfficeFormatError, docxToPdf, xlsxToPdf } from '../infra/officeRender'
 import { convertImage, imagesToPdf, pdfToImages, pdfToText, type ImageTarget } from '../core/convert'
+import { heicOutputName, jpegQuality, type HeicTarget } from '../core/heic'
+import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
@@ -24,7 +26,7 @@ type Conv = {
 
 const FMT_COLORS: Record<string, string> = {
   // Tonos con contraste ≥4,5:1 para el texto blanco (W-17).
-  IMG: '#7C3AED', PDF: '#DC2626', JPG: '#7C3AED', PNG: '#7C3AED', WEBP: '#7C3AED', BMP: '#7C3AED',
+  IMG: '#7C3AED', HEIC: '#7C3AED', PDF: '#DC2626', JPG: '#7C3AED', PNG: '#7C3AED', WEBP: '#7C3AED', BMP: '#7C3AED',
   TXT: '#64748B', WORD: '#2563EB', EXCEL: '#15803D', PPT: '#C2410C', HTML: '#0E7490', CSV: '#15803D',
 }
 const c = (id: string, type: string, from: string, to: string, desc: MessageKey): Conv => ({
@@ -37,6 +39,7 @@ const IMAGE_CONVS = [
   c('img-png', 'IMAGE_TO_PNG', 'IMG', 'PNG', 'conv.desc.imgPng'),
   c('img-webp', 'IMAGE_TO_WEBP', 'IMG', 'WEBP', 'conv.desc.imgWebp'),
   c('img-bmp', 'IMAGE_TO_BMP', 'IMG', 'BMP', 'conv.desc.imgBmp'),
+  c('heic-jpg', 'HEIC_TO_JPG', 'HEIC', 'JPG', 'conv.desc.heicJpg'),
 ]
 const PDF_CONVS = [
   c('pdf-img', 'PDF_TO_IMAGE', 'PDF', 'IMG', 'conv.desc.pdfImg'),
@@ -119,11 +122,16 @@ export function Converter({ sub }: { sub?: string }) {
 export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: boolean }) {
   const { toast } = useApp()
   const isImageInput = conv.from === 'IMG'
+  const isHeic = conv.id === 'heic-jpg'
+  /** Varias a la vez: imágenes y fotos HEIC. */
+  const multiple = isImageInput || isHeic
   const [files, setFiles] = useState<File[]>([])
   const [busy, setBusy] = useState(false)
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [pdfImgFormat, setPdfImgFormat] = useState<'png' | 'jpg'>('png')
+  const [heicFormat, setHeicFormat] = useState<HeicTarget>('jpg')
+  const [heicQuality, setHeicQuality] = useState(90)
   const [text, setText] = useState<string | null>(null)
   const [wordInfo, setWordInfo] = useState<{ paragraphs: number; tables: number; images: number; headings: number } | null>(null)
   const [excelInfo, setExcelInfo] = useState<{ sheets: number; rows: number; numbers: number } | null>(null)
@@ -132,7 +140,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   const [sheetMode, setSheetMode] = useState<'pages' | 'single'>('pages')
   /** El resultado, para verlo y guardarlo (ya no se descarga solo). */
   const [out, setOut] = useState<{ result: File | null; results?: File[]; saveAs?: File | null } | null>(null)
-  useEffect(() => setOut(null), [files, pdfImgFormat, sheetMode])
+  useEffect(() => setOut(null), [files, pdfImgFormat, sheetMode, heicFormat, heicQuality])
 
   const run = async () => {
     setBusy(true)
@@ -147,6 +155,20 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
     try {
       if (conv.id === 'img-pdf') {
         setOut({ result: resultFile(await imagesToPdf(files), `${baseName(files[0].name)}.pdf`, PDF) })
+      } else if (isHeic) {
+        const { heicToCanvas } = await import('../infra/heicDecoder')
+        const mime = heicFormat === 'jpg' ? 'image/jpeg' : 'image/png'
+        const converted: File[] = []
+        for (let i = 0; i < files.length; i++) {
+          const canvas = await heicToCanvas(files[i])
+          try {
+            converted.push(resultFile(await canvasToBlob(canvas, mime, jpegQuality(heicQuality)), heicOutputName(files[i].name, heicFormat), mime))
+          } finally {
+            canvas.width = canvas.height = 0
+          }
+          setProgress((i + 1) / files.length)
+        }
+        setOut(converted.length === 1 ? { result: converted[0] } : { result: null, results: converted, saveAs: await bundleFiles(converted, `docusmart-${heicFormat}.zip`) })
       } else if (isImageInput) {
         const target = conv.to.toLowerCase() as ImageTarget
         const converted: File[] = []
@@ -207,7 +229,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
       track('conversion_success', { conversion_type: conv.type, file_size_kb: totalKb })
       toast(tr('common.doneReview'))
     } catch (e) {
-      setError(e instanceof OfficeFormatError || (e instanceof Error && e.name === 'OfficeEmptyError') ? e.message : errorMessage(e))
+      setError(e instanceof OfficeFormatError || (e instanceof Error && (e.name === 'OfficeEmptyError' || e.name === 'HeicError')) ? e.message : errorMessage(e))
       track('conversion_error', { conversion_type: conv.type, error_message: e instanceof Error ? e.name : 'error' })
     } finally {
       setBusy(false)
@@ -230,12 +252,12 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         </div>
         <p className="muted">{tr(conv.desc)}</p>
         <DropZone
-          accept={isImageInput ? 'image/*' : conv.id === 'word-pdf' ? '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document' : conv.id === 'excel-pdf' ? '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf'}
-          multiple={isImageInput}
-          title={isImageInput ? tr('conv.pickImages') : conv.id === 'word-pdf' ? tr('conv.pickWord') : conv.id === 'excel-pdf' ? tr('conv.pickExcel') : tr('common.pickPdf')}
+          accept={isImageInput ? 'image/*' : isHeic ? HEIC_ACCEPT : conv.id === 'word-pdf' ? '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document' : conv.id === 'excel-pdf' ? '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf'}
+          multiple={multiple}
+          title={isImageInput ? tr('conv.pickImages') : isHeic ? tr('conv.pickHeic') : conv.id === 'word-pdf' ? tr('conv.pickWord') : conv.id === 'excel-pdf' ? tr('conv.pickExcel') : tr('common.pickPdf')}
           hint={tr('conv.dragFiles')}
           onFiles={(f) => {
-            setFiles((prev) => (isImageInput ? [...prev, ...f] : f))
+            setFiles((prev) => (multiple ? [...prev, ...f] : f))
             setText(null)
             setError(null)
           }}
@@ -273,6 +295,21 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
             <Segmented label={tr('conv.imageFormat')} value={pdfImgFormat} onChange={setPdfImgFormat} options={[{ value: 'png', label: 'PNG' }, { value: 'jpg', label: 'JPG' }]} />
           </div>
         )}
+        {isHeic && (
+          <>
+            <div className="row">
+              <span className="faint">{tr('single.format')}</span>
+              <Segmented label={tr('conv.imageFormat')} value={heicFormat} onChange={setHeicFormat} options={[{ value: 'jpg', label: 'JPG' }, { value: 'png', label: 'PNG' }]} />
+            </div>
+            {heicFormat === 'jpg' && (
+              <label className="field">
+                <span>{tr('conv.heicQuality', { n: heicQuality })}</span>
+                <input type="range" min={50} max={100} step={5} value={heicQuality} onChange={(e) => setHeicQuality(Number(e.target.value))} />
+              </label>
+            )}
+            <small className="faint">{tr('conv.heicNote')}</small>
+          </>
+        )}
         {busy && progress > 0 && <Progress value={progress} />}
         {error && <Notice kind="error">{error}</Notice>}
         {conv.id === 'pdf-word' && !wordInfo && !error && (
@@ -295,8 +332,8 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         </div>
         {files.length > 0 && (
           <BeforeAfter
-            original={isImageInput && files.length > 1 ? undefined : files[0]}
-            originals={isImageInput && files.length > 1 ? files : undefined}
+            original={multiple && files.length > 1 ? undefined : files[0]}
+            originals={multiple && files.length > 1 ? files : undefined}
             result={out?.result ?? null}
             results={out?.results}
             saveAs={out?.saveAs}
@@ -344,6 +381,8 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
 }
 
 const PDF = 'application/pdf'
+// Algunos sistemas no le ponen tipo a las fotos HEIC: también se aceptan por extensión.
+const HEIC_ACCEPT = '.heic,.heif,image/heic,image/heif'
 const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 const XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 

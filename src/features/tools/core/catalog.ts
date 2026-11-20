@@ -74,6 +74,7 @@ export const CATALOG: readonly CatalogTool[] = [
   conv('img-png', 'image', 'conv.desc.imgPng', ['imagen']),
   conv('img-webp', 'image', 'conv.desc.imgWebp', ['imagen']),
   conv('img-bmp', 'image', 'conv.desc.imgBmp', ['imagen']),
+  conv('heic-jpg', 'image', 'conv.desc.heicJpg', ['imagen']),
   conv('pdf-img', 'images', 'conv.desc.pdfImg'),
   conv('pdf-txt', 'text', 'conv.desc.pdfTxt'),
   conv('pdf-word', 'convert', 'conv.desc.pdfWord'),

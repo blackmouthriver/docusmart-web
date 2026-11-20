@@ -723,6 +723,23 @@ export default {
         ["Are my photos uploaded to the internet?", "No. The conversion happens in your browser; your images never leave your device."],
       ],
     },
+    'heic-a-jpg': {
+      slug: 'heic-to-jpg',
+      title: "Convert HEIC to JPG for free, iPhone photos | DocuSmart",
+      description: "Turn your iPhone HEIC photos into JPG or PNG in your browser. Several at once, adjustable quality, free and without uploading your photos.",
+      h1: "HEIC to JPG",
+      howTo: "How to convert HEIC to JPG in 3 steps",
+      lead: "Convert the HEIC photos from your iPhone or iPad to JPG so you can open, send or upload them anywhere. One or many at once, without them leaving your device.",
+      short: "iPhone photos to JPG",
+      steps: ["Choose or drag one or more HEIC photos (.heic or .heif).", "Pick JPG or PNG and, if you like, adjust the JPG quality.", "Press \"Convert\" and download the photos; several come together in a ZIP."],
+      faq: [
+        ["What is a HEIC file?", "It is the format iPhones and iPads use for photos since iOS 11: half the size of a JPG at the same quality, but Windows, many websites and some apps can't open it. Converting it to JPG makes it work everywhere."],
+        ["Is quality lost?", "Very little: at 90% quality the difference isn't noticeable. If you need the image with no loss at all, choose PNG (it is larger)."],
+        ["Will the photo be upright?", "Yes. The rotation saved by the iPhone is applied, so portrait photos stay portrait."],
+        ["Can I convert many photos at once?", "Yes. Choose as many as you want: they are converted one by one and downloaded together in a ZIP."],
+        ["Are my photos uploaded to the internet?", "No. The conversion happens in your browser; only the first time is the HEIC decoder (1.4 MB) downloaded from docusmart.online. In Safari not even that: it uses the system's own."],
+      ],
+    },
     'png-a-jpg': {
       slug: "png-to-jpg",
       title: "Convert PNG to JPG for free | DocuSmart",

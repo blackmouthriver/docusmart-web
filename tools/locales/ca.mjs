@@ -723,6 +723,23 @@ export default {
         ["Les meves fotos es pugen a internet?", "No. La conversió es fa al teu navegador; les teves imatges no surten del teu dispositiu."],
       ],
     },
+    'heic-a-jpg': {
+      slug: "heic-a-jpg",
+      title: "Converteix HEIC a JPG gratis, fotos d'iPhone | DocuSmart",
+      description: "Converteix les teves fotos HEIC d'iPhone a JPG o PNG al navegador. Diverses alhora, qualitat ajustable, gratis i sense pujar les teves fotos.",
+      h1: "HEIC a JPG",
+      howTo: "Com convertir HEIC a JPG en 3 passos",
+      lead: "Converteix les fotos HEIC del teu iPhone o iPad a JPG per obrir-les, enviar-les o pujar-les a qualsevol lloc. Una o moltes alhora, sense que surtin del teu dispositiu.",
+      short: "Fotos d'iPhone a JPG",
+      steps: ["Tria o arrossega una o més fotos HEIC (.heic o .heif).", "Tria JPG o PNG i, si vols, ajusta la qualitat del JPG.", "Prem \"Convertir\" i descarrega les fotos; si són diverses, vénen juntes en un ZIP."],
+      faq: [
+        ["Què és un fitxer HEIC?", "És el format que els iPhone i iPad fan servir per a les fotos des d'iOS 11: la meitat d'un JPG amb la mateixa qualitat, però Windows, molts llocs web i algunes aplicacions no el poden obrir. Convertit a JPG funciona a tot arreu."],
+        ["Es perd qualitat?", "Molt poca: amb un 90 % de qualitat la diferència no es nota. Si necessites la imatge sense cap pèrdua, tria PNG (ocupa més)."],
+        ["La foto sortirà dreta?", "Sí. S'aplica la rotació desada per l'iPhone, de manera que les fotos verticals continuen verticals."],
+        ["Puc convertir moltes fotos alhora?", "Sí. Tria-n'hi tantes com vulguis: es converteixen una a una i es descarreguen juntes en un ZIP."],
+        ["Es pugen les meves fotos a internet?", "No. La conversió es fa al teu navegador; només la primera vegada es descarrega el descodificador d'HEIC (1,4 MB) des de docusmart.online. A Safari ni això: fa servir el del sistema."],
+      ],
+    },
     'png-a-jpg': {
       slug: "png-a-jpg",
       title: "Convertir PNG a JPG gratis | DocuSmart",
