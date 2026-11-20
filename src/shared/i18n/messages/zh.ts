@@ -160,7 +160,7 @@ const zh: Messages = {
   'save.share': "分享",
   'save.downloaded': "文件已下载。",
   'save.shareError': "无法分享该文件。请下载后从你的设备发送。",
-  'save.driveDone': "已保存到你的 Google 云端硬盘，文件名为“{name}”。",
+  'save.driveDone': "已保存到你的 Google 云端硬盘的 DocuSmart 文件夹，文件名为“{name}”。",
   'save.dropboxDone': "已保存到你的 Dropbox：应用 › DocuSmart{path}。",
   'save.cloudError': "无法保存到 {service}。",
   'save.popupBlocked': "浏览器拦截了授权窗口。请允许 docusmart.online 的弹出窗口。",

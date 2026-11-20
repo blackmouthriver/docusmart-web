@@ -6,6 +6,8 @@ import {
   DROPBOX_UPLOAD_URL,
   base64url,
   driveMultipart,
+  DRIVE_FILES_URL,
+  ensureDriveFolder,
   dropboxApiArg,
   dropboxAuthUrl,
   exchangeDropboxCode,
@@ -60,6 +62,11 @@ describe('Google Drive', () => {
     expect((init.headers as Record<string, string>)['Content-Type']).toMatch(/^multipart\/related; boundary=docusmart-/)
   })
 
+  it('sube dentro de la carpeta indicada', async () => {
+    const text = await driveMultipart(file, 'B', 'carpeta1').text()
+    expect(text).toContain('{"name":"Año 2026.pdf","mimeType":"application/pdf","parents":["carpeta1"]}')
+  })
+
   it('token vencido y otros errores', async () => {
     await expect(uploadToDrive(file, 't', (async () => json({}, 401)) as typeof fetch)).rejects.toBeInstanceOf(CloudAuthError)
     await expect(uploadToDrive(file, 't', (async () => json({}, 500)) as typeof fetch)).rejects.toThrow('No se pudo guardar en Google Drive (500).')
@@ -86,5 +93,37 @@ describe('Dropbox', () => {
     expect(url).toBe(DROPBOX_UPLOAD_URL)
     expect((init.headers as Record<string, string>)['Dropbox-API-Arg']).toContain('A\\u00f1o 2026.pdf')
     await expect(uploadToDropbox(file, 't', (async () => json({}, 401)) as typeof fetch)).rejects.toBeInstanceOf(CloudAuthError)
+  })
+})
+
+describe('carpeta DocuSmart en Drive', () => {
+  const calls = (f: ReturnType<typeof vi.fn>) => f.mock.calls.map((c) => [String(c[0]), (c[1] as RequestInit | undefined)?.method ?? 'GET'])
+
+  it('reutiliza la carpeta ya conocida si sigue existiendo y fuera de la papelera', async () => {
+    const f = vi.fn(async () => json({ id: 'k', trashed: false }))
+    expect(await ensureDriveFolder('t', 'k', f as typeof fetch)).toBe('k')
+    expect(calls(f)).toEqual([[`${DRIVE_FILES_URL}/k?fields=id,trashed`, 'GET']])
+  })
+
+  it('si la conocida está en la papelera, busca otra por su marca', async () => {
+    const f = vi.fn().mockResolvedValueOnce(json({ id: 'k', trashed: true })).mockResolvedValueOnce(json({ files: [{ id: 'otra' }] }))
+    expect(await ensureDriveFolder('t', 'k', f as typeof fetch)).toBe('otra')
+    const search = new URL(String(f.mock.calls[1][0]))
+    expect(search.searchParams.get('q')).toContain("appProperties has { key='docusmart' and value='downloads' }")
+    expect(search.searchParams.get('q')).toContain('trashed=false')
+  })
+
+  it('si no existe, la crea con nombre DocuSmart y su marca', async () => {
+    const f = vi.fn().mockResolvedValueOnce(json({ files: [] })).mockResolvedValueOnce(json({ id: 'nueva' }))
+    expect(await ensureDriveFolder('t', undefined, f as typeof fetch)).toBe('nueva')
+    const [url, init] = f.mock.calls[1] as [string, RequestInit]
+    expect(url).toBe(`${DRIVE_FILES_URL}?fields=id`)
+    expect(init.method).toBe('POST')
+    expect(JSON.parse(String(init.body))).toEqual({ name: 'DocuSmart', mimeType: 'application/vnd.google-apps.folder', appProperties: { docusmart: 'downloads' } })
+  })
+
+  it('un token vencido se informa como tal', async () => {
+    await expect(ensureDriveFolder('t', 'k', (async () => json({}, 401)) as typeof fetch)).rejects.toBeInstanceOf(CloudAuthError)
+    await expect(ensureDriveFolder('t', undefined, (async () => json({}, 401)) as typeof fetch)).rejects.toBeInstanceOf(CloudAuthError)
   })
 })

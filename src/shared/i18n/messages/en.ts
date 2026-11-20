@@ -160,7 +160,7 @@ const en: Messages = {
   'save.share': "Share",
   'save.downloaded': "The file was downloaded.",
   'save.shareError': "The file couldn't be shared. Download it and send it from your device.",
-  'save.driveDone': "Saved to your Google Drive as \"{name}\".",
+  'save.driveDone': "Saved to your Google Drive, in the DocuSmart folder, as \"{name}\".",
   'save.dropboxDone': "Saved to your Dropbox, in Apps › DocuSmart{path}.",
   'save.cloudError': "Couldn't save to {service}.",
   'save.popupBlocked': "Your browser blocked the authorization window. Allow pop-ups for docusmart.online.",
