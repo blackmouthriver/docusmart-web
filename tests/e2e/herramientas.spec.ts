@@ -33,6 +33,9 @@ test('el resultado se puede renombrar antes de descargarlo @movil', async ({ pag
   const name = page.getByRole('textbox', { name: 'Nombre del archivo' })
   await expect(name).toBeVisible()
   await name.fill('Contrato: final')
+  // Al salir del campo, el nombre queda limpio y confirmado antes de descargar.
+  await name.blur()
+  await expect(name).toHaveValue('Contrato- final')
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Descargar' }).click()
   expect((await download).suggestedFilename()).toBe('Contrato- final.pdf')
