@@ -18,11 +18,23 @@ test('una guía lleva a su herramienta y a otras guías', async ({ page }) => {
   await expect(page.locator('a[href="/guias/unir-pdf-en-el-celular"]')).toHaveCount(1)
 })
 
-test('solo las páginas en español enlazan a las guías', async ({ page }) => {
+test('las páginas enlazan a las guías de su idioma, o a ninguna si no hay', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('footer a[href="/guias"]')).toHaveCount(1)
   await page.goto('/en/')
-  await expect(page.locator('a[href="/guias"]')).toHaveCount(0)
+  await expect(page.locator('footer a[href="/en/guides"]')).toHaveCount(1)
   await page.goto('/en/merge-pdf')
-  await expect(page.locator('a[href^="/guias"]')).toHaveCount(0)
+  await expect(page.locator('a[href="/en/guides/merge-pdf-on-your-phone"]')).toHaveCount(1)
+  await page.goto('/fr/')
+  await expect(page.locator('a[href*="/guias"], a[href*="/guides"]')).toHaveCount(0)
+})
+
+test('una guía en inglés enlaza a las herramientas en inglés y ofrece las otras versiones', async ({ page }) => {
+  await page.goto('/en/guides/merge-pdf-on-your-phone')
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.locator('.gd-article a[href="/en/merge-pdf"]').first()).toBeVisible()
+  await expect(page.locator('.gd-article a[href="/unir-pdf"]')).toHaveCount(0)
+  await expect(page.locator('link[rel="alternate"][hreflang="pt"]')).toHaveAttribute('href', 'https://docusmart.online/pt/guias/juntar-pdf-no-celular')
+  await page.goto('/pt/guias')
+  await expect(page.locator('.gd-cards > li')).toHaveCount(6)
 })

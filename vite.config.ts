@@ -27,7 +27,7 @@ const cleanUrls = (): Plugin => {
   const rewrite = (req: { url?: string }, _res: unknown, next: () => void) => {
     const [path, query = ''] = (req.url ?? '').split('?')
     // /unir-pdf y /en/merge-pdf → su .html; /en o /en/ → en/index.html (como cleanUrls en Firebase).
-    if (/^(\/[a-z]{2}|\/guias)?\/[a-z0-9-]+$/.test(path) && (existsSync(resolve(SITE, `.${path}.html`)) || existsSync(resolve(ROOT, `public${path}.html`)))) {
+    if (/^(\/[a-z]{2})?(\/[a-z]+)?\/[a-z0-9-]+$/.test(path) && (existsSync(resolve(SITE, `.${path}.html`)) || existsSync(resolve(ROOT, `public${path}.html`)))) {
       req.url = `${path}.html${query ? `?${query}` : ''}`
     } else if (/^\/[a-z]{2}\/?$/.test(path) && existsSync(resolve(SITE, `.${path.replace(/\/$/, '')}/index.html`))) {
       req.url = `${path.replace(/\/$/, '')}/index.html${query ? `?${query}` : ''}`

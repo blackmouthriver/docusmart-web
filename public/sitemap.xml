@@ -8425,13 +8425,213 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url><loc>https://docusmart.online/guias</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://docusmart.online/guias/unir-pdf-en-el-celular</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://docusmart.online/guias/pasar-fotos-a-pdf</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://docusmart.online/guias/reducir-tamano-pdf</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://docusmart.online/guias/firmar-pdf-sin-imprimir</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://docusmart.online/guias/escanear-documentos-con-el-celular</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://docusmart.online/guias/proteger-pdf-con-contrasena</loc><lastmod>2026-11-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url>
+    <loc>https://docusmart.online/guias</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/guides</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pt/guias</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/guias/unir-pdf-en-el-celular</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/guides/merge-pdf-on-your-phone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pt/guias/juntar-pdf-no-celular</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/guias/pasar-fotos-a-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/guides/photos-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pt/guias/fotos-para-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/guias/reducir-tamano-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/guides/reduce-pdf-size</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pt/guias/reduzir-tamanho-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/guias/firmar-pdf-sin-imprimir</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/guides/sign-pdf-without-printing</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/guias/escanear-documentos-con-el-celular</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/guides/scan-documents-with-your-phone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/guias/proteger-pdf-con-contrasena</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/en/guides/password-protect-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/pt/guias/proteger-pdf-com-senha</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url><loc>https://docusmart.online/app/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://docusmart.online/privacidad</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
