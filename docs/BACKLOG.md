@@ -295,6 +295,19 @@ Hoy Imagen tiene comprimir, redimensionar, recortar y rotar; las conversiones (a
 | W-127 | **Conectar con Outlook (Microsoft Graph):** registrar la app en Microsoft Entra ID (👤 crea el registro y comparte el ID de aplicación, que es público; nunca el secreto). Ventana emergente de autorización como con Google; permisos mínimos `Calendars.ReadWrite` y `Tasks.ReadWrite` (To Do) o `Notes.ReadWrite` (OneNote). Los eventos van del navegador a la cuenta del usuario, sin servidores. Cuentas personales funcionan directo; en cuentas de empresa el administrador puede tener que aprobarla. Actualizar privacidad y CSP | 🤖 + 👤 | Pendiente (fase 2, después de W-126) |
 | W-128 | **Google Calendar** con el mismo flujo que Drive (scope de calendario mínimo; requiere revisar la pantalla de consentimiento en Google Cloud) | 🤖 + 👤 | Pendiente (opcional) |
 
+## Nichos por cubrir (análisis del 2026-11-20, pedido del usuario)
+
+Lo que la gente busca y DocuSmart todavía no resuelve. Todo debe seguir siendo local (sin subir archivos), como el resto del sitio.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-129 | **Trámites y documentos oficiales (LatAm):** guías y plantillas para los papeles que más se piden (cédula por ambas caras en una sola hoja, certificados, derechos de petición, cartas de autorización), con páginas por país y búsquedas en español. Se apoya en W-122 (foto tamaño documento), escanear, comprimir y firmar | 🤖 | Pendiente |
+| W-130 | **Cuentas de cobro, cotizaciones y recibos:** formulario con numeración, datos del emisor guardados en el navegador, totales e impuestos, firma y salida en PDF. Muy buscado por independientes y pequeños negocios | 🤖 | Pendiente |
+| W-131 | **Hoja de vida (CV):** plantillas sencillas y compatibles con ATS, foto opcional (usa W-121/W-122), exportar a PDF y DOCX | 🤖 | Pendiente |
+| W-132 | **Audio y video:** convertir (MP4↔MP3, extraer audio), recortar y comprimir con ffmpeg.wasm en el navegador. Revisar el peso del wasm (~30 MB, se descarga solo al usarla), la licencia LGPL y la memoria en celulares | 🤖 | Pendiente |
+| W-133 | **Audio a texto y dictado:** transcribir notas de voz y reuniones con Whisper en el navegador (modelo que se descarga una vez y queda en caché, como Quitar fondo); salida TXT, DOCX o subtítulos SRT | 🤖 | Pendiente |
+| W-134 | **Educación:** ampliar Modo Estudio con tarjetas de repaso y cuestionarios a partir de un PDF o de las notas, y formatos de citas (APA, IEEE) | 🤖 | Pendiente |
+
 ## Guías con imágenes de cada herramienta (pedido del usuario, 2026-11-20)
 
 Que las guías muestren **cómo se ve** cada paso, con capturas reales de la web, y que **cada herramienta**
