@@ -69,11 +69,13 @@ const shape = (g: { sections: Array<{ body: GuideBlock[] }>; steps: unknown[]; f
 const links = (g: { sections: Array<{ body: GuideBlock[] }> }) =>
   g.sections.flatMap((s) => s.body.flatMap(texts)).flatMap((t) => [...t.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1]))
 
+const CJK = new Set(['ja', 'ko', 'zh'])
+
 describe('guías traducidas (W-19)', () => {
   const translated = GUIDE_LANGS.filter((l) => l !== 'es')
 
-  it('hay guías al menos en inglés y portugués', () => {
-    expect(translated).toEqual(expect.arrayContaining(['en', 'pt']))
+  it('hay guías en los 12 idiomas del sitio', () => {
+    expect(translated.sort()).toEqual(['ca', 'de', 'en', 'eu', 'fr', 'it', 'ja', 'ko', 'pt', 'ru', 'zh'])
   })
 
   for (const lang of translated) {
@@ -84,7 +86,8 @@ describe('guías traducidas (W-19)', () => {
         expect(links(t), `${lang}/${t.slug}`).toEqual(links(g))
         expect(t.slug).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
         expect(t.title.length, t.slug).toBeLessThanOrEqual(90)
-        expect(t.description.length, t.slug).toBeGreaterThanOrEqual(110)
+        // Japonés, coreano y chino son más densos: la misma información cabe en menos caracteres.
+        expect(t.description.length, t.slug).toBeGreaterThanOrEqual(CJK.has(lang) ? 50 : 110)
         expect(t.description.length, t.slug).toBeLessThanOrEqual(175)
       }
     })

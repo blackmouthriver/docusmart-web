@@ -18,7 +18,7 @@ test('una guía lleva a su herramienta y a otras guías', async ({ page }) => {
   await expect(page.locator('a[href="/guias/unir-pdf-en-el-celular"]')).toHaveCount(1)
 })
 
-test('las páginas enlazan a las guías de su idioma, o a ninguna si no hay', async ({ page }) => {
+test('las páginas enlazan a las guías de su idioma', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('footer a[href="/guias"]')).toHaveCount(1)
   await page.goto('/en/')
@@ -26,7 +26,9 @@ test('las páginas enlazan a las guías de su idioma, o a ninguna si no hay', as
   await page.goto('/en/merge-pdf')
   await expect(page.locator('a[href="/en/guides/merge-pdf-on-your-phone"]')).toHaveCount(1)
   await page.goto('/fr/')
-  await expect(page.locator('a[href*="/guias"], a[href*="/guides"]')).toHaveCount(0)
+  await expect(page.locator('footer a[href="/fr/guides"]')).toHaveCount(1)
+  await page.goto('/ja/merge-pdf')
+  await expect(page.locator('a[href="/ja/guides/merge-pdf-on-your-phone"]')).toHaveCount(1)
 })
 
 test('una guía en inglés enlaza a las herramientas en inglés y ofrece las otras versiones', async ({ page }) => {

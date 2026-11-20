@@ -5,6 +5,15 @@
 import { guides } from '../guides.mjs'
 import en from './en.mjs'
 import pt from './pt.mjs'
+import fr from './fr.mjs'
+import it from './it.mjs'
+import de from './de.mjs'
+import ca from './ca.mjs'
+import eu from './eu.mjs'
+import ru from './ru.mjs'
+import ja from './ja.mjs'
+import ko from './ko.mjs'
+import zh from './zh.mjs'
 
 /** Textos fijos de las páginas de guías, en español. */
 export const ES_GUIDE_UI = {
@@ -24,7 +33,8 @@ export const ES_GUIDE_UI = {
   related: 'Guías relacionadas',
 }
 
-const TRANSLATIONS = { en, pt }
+// Mismo orden que los idiomas del sitio (tools/locales).
+const TRANSLATIONS = { en, pt, fr, it, de, ca, eu, ru, ja, ko, zh }
 
 /** Idiomas que tienen guías (el español primero). */
 export const GUIDE_LANGS = ['es', ...Object.keys(TRANSLATIONS)]

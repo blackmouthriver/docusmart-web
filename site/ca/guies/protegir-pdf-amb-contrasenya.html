@@ -1,0 +1,316 @@
+<!doctype html>
+<!-- Generado por scripts/generate-tool-pages.mjs desde tools/guides. No editar a mano. -->
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Com posar contrasenya a un PDF (i quan convé fer-ho) | DocuSmart</title>
+<meta name="description" content="Protegeix un PDF amb contrasenya i xifratge AES-256, controla si es pot imprimir o copiar i aprèn a compartir la clau de manera segura. De franc i sense pujar el fitxer.">
+<meta name="theme-color" content="#0B1020">
+<link rel="canonical" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya">
+<link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena">
+<link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf">
+<link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha">
+<link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe">
+<link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password">
+<link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen">
+<link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya">
+<link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu">
+<link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem">
+<link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf">
+<link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf">
+<link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf">
+<link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena">
+<link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="DocuSmart">
+<meta property="og:locale" content="ca_ES">
+<meta property="og:title" content="Com posar contrasenya a un PDF (i quan convé fer-ho) | DocuSmart">
+<meta property="og:description" content="Protegeix un PDF amb contrasenya i xifratge AES-256, controla si es pot imprimir o copiar i aprèn a compartir la clau de manera segura. De franc i sense pujar el fitxer.">
+<meta property="og:url" content="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya">
+<meta property="og:image" content="https://docusmart.online/img/og/ca.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Com posar contrasenya a un PDF",
+    "description": "Protegeix un PDF amb contrasenya i xifratge AES-256, controla si es pot imprimir o copiar i aprèn a compartir la clau de manera segura. De franc i sense pujar el fitxer.",
+    "url": "https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya",
+    "inLanguage": "ca",
+    "datePublished": "2026-11-18",
+    "dateModified": "2026-11-18",
+    "image": "https://docusmart.online/img/og/ca.jpg",
+    "author": {
+      "@type": "Organization",
+      "name": "DocuSmart",
+      "url": "https://docusmart.online"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "DocuSmart",
+      "url": "https://docusmart.online",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://docusmart.online/img/pwa/icon-512.png"
+      }
+    },
+    "mainEntityOfPage": "https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Com posar contrasenya a un PDF",
+    "totalTime": "PT4M",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Obre Protegir PDF",
+        "text": "Obre l'eina Protegir PDF de docusmart.online i tria el document."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Escriu la contrasenya",
+        "text": "Escriu-la dues vegades per confirmar-la."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Tria els permisos",
+        "text": "Marca si es permet imprimir, copiar o modificar."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 4,
+        "name": "Protegeix i baixa",
+        "text": "Toca «Protegeix PDF» i es baixa el document xifrat."
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Fins a quin punt és segur?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fa servir xifratge AES-256, l'estàndard més fort dels PDF. La seguretat real depèn que la contrasenya sigui difícil d'endevinar."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "La meva contrasenya s'envia a algun servidor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. El xifratge es fa al navegador; ni el fitxer ni la contrasenya surten del teu dispositiu."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Puc treure la contrasenya a un PDF d'una altra persona?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Només si en coneixes la contrasenya. DocuSmart no trenca contrasenyes d'obertura."
+        }
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "DocuSmart",
+        "item": "https://docusmart.online/ca/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Guies",
+        "item": "https://docusmart.online/ca/guies"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Com posar contrasenya a un PDF",
+        "item": "https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"
+      }
+    ]
+  }
+]
+</script>
+</head>
+<body class="tool-page guide-page">
+<header class="tp-nav">
+  <div class="tp-wrap tp-nav-inner">
+    <a class="tp-brand" href="/ca/"><img src="/img/icon.svg" alt="" width="30" height="30">DocuSmart</a>
+    <nav aria-label="Principal">
+      <a href="/ca/eines">Eines</a>
+      <a href="/ca/guies">Guies</a>
+      <a href="/app/">App web</a>
+      <details class="tp-lang">
+        <summary aria-label="CA · Idioma: Català"><span aria-hidden="true">🌐</span> CA</summary>
+        <ul>
+          <li><a href="/guias/proteger-pdf-con-contrasena" hreflang="es" lang="es" data-set-lang="es">Español</a></li>
+          <li><a href="/en/guides/password-protect-pdf" hreflang="en" lang="en" data-set-lang="en">English</a></li>
+          <li><a href="/pt/guias/proteger-pdf-com-senha" hreflang="pt" lang="pt" data-set-lang="pt">Português</a></li>
+          <li><a href="/fr/guides/proteger-pdf-mot-de-passe" hreflang="fr" lang="fr" data-set-lang="fr">Français</a></li>
+          <li><a href="/it/guide/proteggere-pdf-con-password" hreflang="it" lang="it" data-set-lang="it">Italiano</a></li>
+          <li><a href="/de/anleitungen/pdf-mit-passwort-schuetzen" hreflang="de" lang="de" data-set-lang="de">Deutsch</a></li>
+          <li><a href="/ca/guies/protegir-pdf-amb-contrasenya" hreflang="ca" lang="ca" data-set-lang="ca" aria-current="page">Català</a></li>
+          <li><a href="/eu/gidak/pdf-pasahitzarekin-babestu" hreflang="eu" lang="eu" data-set-lang="eu">Euskara</a></li>
+          <li><a href="/ru/rukovodstva/zashchitit-pdf-parolem" hreflang="ru" lang="ru" data-set-lang="ru">Русский</a></li>
+          <li><a href="/ja/guides/password-protect-pdf" hreflang="ja" lang="ja" data-set-lang="ja">日本語</a></li>
+          <li><a href="/ko/guides/password-protect-pdf" hreflang="ko" lang="ko" data-set-lang="ko">한국어</a></li>
+          <li><a href="/zh/guides/password-protect-pdf" hreflang="zh" lang="zh" data-set-lang="zh">中文</a></li>
+        </ul>
+      </details>
+      <a class="tp-nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_guide">Baixar l'app</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="tp-hero gd-hero">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
+      <nav class="tp-crumbs" aria-label="Ruta"><a href="/ca/">DocuSmart</a><span aria-hidden="true">›</span><a href="/ca/guies">Guies</a><span aria-hidden="true">›</span><span>Com posar contrasenya a un PDF</span></nav>
+      <h1>Com posar contrasenya a un PDF</h1>
+      <p class="tp-lead">Un PDF amb les teves dades personals, financeres o mèdiques que viatja per correu o per xat pot acabar a qualsevol lloc. Posar-hi contrasenya costa un minut i evita que l'obri qui no l'ha d'obrir.</p>
+      <p class="gd-meta"><span><svg class="gd-meta-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20M12 7v5l3 2"/></svg>4 min de lectura</span><span>Actualitzada el <time datetime="2026-11-18">18 de novembre del 2026</time></span></p>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <article class="tp-wrap gd-article">
+    <section class="gd-section reveal">
+      <h2>Quan convé protegir un PDF</h2>
+      <ul>
+        <li>Documents d'identitat, extractes bancaris, nòmines o declaracions de la renda.</li>
+        <li>Historials clínics, resultats d'anàlisis o baixes mèdiques.</li>
+        <li>Contractes o propostes que no vols que circulin.</li>
+        <li>Qualsevol fitxer que hagis d'enviar per un canal que no controles, com un correu que es reenvia o un grup de xat.</li>
+      </ul>
+    </section>
+    <section class="gd-section reveal">
+      <h2>Pas a pas</h2>
+      <p>Obre <a href="/ca/protegir-pdf">Protegir PDF</a> i tria el document. Escriu la contrasenya dues vegades.</p>
+      <p>Decideix què es permet amb el PDF obert: imprimir, copiar text o modificar-lo. Toca «Protegeix PDF» i es baixa la versió xifrada. S'obre amb Adobe Acrobat, Chrome, Edge i l'app de DocuSmart, que demanen la contrasenya.</p>
+    </section>
+    <section class="gd-section reveal">
+      <h2>Una bona contrasenya i com compartir-la</h2>
+      <ul>
+        <li>Fes servir com a mínim 10 caràcters; una frase curta amb números és fàcil de recordar i difícil d'endevinar.</li>
+        <li>No facis servir el teu DNI ni la teva data de naixement: és el primer que algú provaria.</li>
+        <li><strong>No enviïs mai la contrasenya pel mateix mitjà que el PDF.</strong> Si el fitxer va per correu, envia la clau per missatge o digues-la per telèfon.</li>
+      </ul>
+      <aside class="gd-tip"><svg class="gd-tip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20M12 11v6M12 7h.01"/></svg><p>Desa la contrasenya en un lloc segur. Si l'oblides, no es pot recuperar: ni DocuSmart pot obrir el PDF, perquè la clau no surt mai del teu dispositiu.</p></aside>
+    </section>
+    <section class="gd-section reveal">
+      <h2>Què protegeix cada opció</h2>
+      <p>La <strong>contrasenya d'obertura</strong> és la protecció de debò: sense ella, el fitxer xifrat no es pot llegir. Els <strong>permisos</strong> (imprimir, copiar, modificar) són una altra cosa: indiquen als lectors de PDF què han de permetre un cop obert el document.</p>
+      <p>Els programes seriosos respecten aquests permisos, però qui ja té la contrasenya els pot treure amb algunes eines. Fes-los servir per evitar còpies accidentals o canvis casuals, no com a única barrera. Si algú no ha de veure una dada, no li donis la contrasenya o tatxa aquesta dada abans d'enviar el fitxer.</p>
+    </section>
+    <section class="gd-section reveal">
+      <h2>Contrasenya no és el mateix que tatxar</h2>
+      <p>La contrasenya impedeix obrir el fitxer, però qui la tingui veurà tot el contingut. Si necessites compartir un document amagant només certes dades (un número de compte, una adreça), fes servir <a href="/ca/tatxar-pdf">Tatxar PDF</a>: elimina de debò el text de sota les zones tapades, en lloc de posar-hi un simple requadre negre a sobre.</p>
+    </section>
+    <section class="gd-section reveal">
+      <h2>Treure la contrasenya després</h2>
+      <p>Si més endavant necessites una còpia sense protecció, <a href="/ca/desbloquejar-pdf">Desbloquejar PDF</a> la treu, sempre que coneguis la contrasenya. Fes-lo servir només amb documents propis o que tinguis dret a modificar.</p>
+    </section>
+    <section class="gd-section reveal">
+      <h2>Resum ràpid</h2>
+      <ol class="gd-steps">
+        <li><b>Obre Protegir PDF.</b> Obre l'eina Protegir PDF de docusmart.online i tria el document.</li>
+        <li><b>Escriu la contrasenya.</b> Escriu-la dues vegades per confirmar-la.</li>
+        <li><b>Tria els permisos.</b> Marca si es permet imprimir, copiar o modificar.</li>
+        <li><b>Protegeix i baixa.</b> Toca «Protegeix PDF» i es baixa el document xifrat.</li>
+      </ol>
+    </section>
+  </article>
+
+  <section class="tp-wrap tp-section reveal">
+    <h2>Eines d'aquesta guia</h2>
+    <ul class="tp-related">
+      <li><a href="/ca/protegir-pdf"><b>Protegir PDF amb contrasenya</b><span>Posa contrasenya a un PDF</span></a></li>
+      <li><a href="/ca/desbloquejar-pdf"><b>Desbloquejar PDF</b><span>Treu la contrasenya d’un PDF</span></a></li>
+      <li><a href="/ca/tatxar-pdf"><b>Tatxar PDF</b><span>Elimina dades sensibles</span></a></li>
+    </ul>
+  </section>
+
+  <section class="tp-wrap tp-section reveal">
+    <h2>Preguntes freqüents</h2>
+    <div class="tp-faq">
+      <details>
+        <summary>Fins a quin punt és segur?</summary>
+        <p>Fa servir xifratge AES-256, l'estàndard més fort dels PDF. La seguretat real depèn que la contrasenya sigui difícil d'endevinar.</p>
+      </details>
+      <details>
+        <summary>La meva contrasenya s'envia a algun servidor?</summary>
+        <p>No. El xifratge es fa al navegador; ni el fitxer ni la contrasenya surten del teu dispositiu.</p>
+      </details>
+      <details>
+        <summary>Puc treure la contrasenya a un PDF d'una altra persona?</summary>
+        <p>Només si en coneixes la contrasenya. DocuSmart no trenca contrasenyes d'obertura.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="tp-wrap tp-section reveal">
+    <h2>Més guies</h2>
+    <ul class="tp-related">
+      <li><a href="/ca/guies/unir-pdf-al-mobil"><b>Com unir PDF al mòbil sense pujar els teus fitxers</b><span>4 min de lectura</span></a></li>
+      <li><a href="/ca/guies/fotos-a-pdf"><b>Com passar fotos a PDF, diverses en un sol fitxer</b><span>4 min de lectura</span></a></li>
+      <li><a href="/ca/guies/reduir-mida-pdf"><b>Com reduir la mida d'un PDF</b><span>5 min de lectura</span></a></li>
+      <li><a href="/ca/guies/signar-pdf-sense-imprimir"><b>Com signar un PDF sense imprimir-lo</b><span>4 min de lectura</span></a></li>
+      <li><a href="/ca/guies/escanejar-documents-amb-el-mobil"><b>Com escanejar documents amb el mòbil</b><span>5 min de lectura</span></a></li>
+    </ul>
+  </section>
+
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
+    <div class="tp-cta">
+      <div>
+        <h2>Porta DocuSmart al mòbil</h2>
+        <p>L'app per a Android afegeix escàner amb detecció de vores, carpeta segura amb PIN, Word, Excel i PowerPoint, i OCR. Funciona sense connexió.</p>
+      </div>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_guide_cta">Baixa-la a Google Play</a>
+    </div>
+  </section>
+</main>
+
+<footer class="tp-foot">
+  <div class="tp-wrap tp-foot-inner">
+    <span>© DocuSmart</span>
+    <nav aria-label="Peu de pàgina">
+      <a href="/ca/">Inici</a>
+      <a href="/ca/eines">Totes les eines</a>
+      <a href="/ca/guies">Guies</a>
+      <a href="/app/">DocuSmart Web</a>
+      <a href="/privacidad">Política de privacitat</a>
+      <a href="https://www.facebook.com/profile.php?id=61596626852763" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/supportdocusmart/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@docusmartsupport" target="_blank" rel="noopener">TikTok</a>
+      <button type="button" class="link-btn" data-consent-open hidden>Preferències d'analítica</button>
+    </nav>
+  </div>
+</footer>
+<script type="module" src="../../../src/entries/guide.ts"></script>
+</body>
+</html>

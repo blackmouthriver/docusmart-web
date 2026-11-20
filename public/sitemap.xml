@@ -8430,6 +8430,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -8439,6 +8448,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -8448,6 +8466,177 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/fr/guides</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/it/guide</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/de/anleitungen</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ca/guies</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/eu/gidak</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ru/rukovodstva</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ja/guides</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ko/guides</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/zh/guides</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -8457,6 +8646,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8467,6 +8665,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8477,6 +8684,186 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/it/guide/unire-pdf-sul-cellulare</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ca/guies/unir-pdf-al-mobil</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ja/guides/merge-pdf-on-your-phone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ko/guides/merge-pdf-on-your-phone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/zh/guides/merge-pdf-on-your-phone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/juntar-pdf-no-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/fusionner-pdf-sur-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/unire-pdf-sul-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-auf-dem-handy-zusammenfuegen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/unir-pdf-al-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdfak-mugikorrean-batu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/obedinit-pdf-na-telefone"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/merge-pdf-on-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/merge-pdf-on-your-phone"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/unir-pdf-en-el-celular"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8487,6 +8874,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8497,6 +8893,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8507,6 +8912,186 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/fr/guides/photos-en-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/it/guide/foto-in-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/de/anleitungen/fotos-in-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ca/guies/fotos-a-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ru/rukovodstva/foto-v-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ja/guides/photos-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ko/guides/photos-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/zh/guides/photos-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/fotos-para-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/photos-en-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/foto-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/fotos-in-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/fotos-a-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/argazkiak-pdf-bihurtu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/foto-v-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/photos-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/photos-to-pdf"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/pasar-fotos-a-pdf"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8517,6 +9102,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8527,6 +9121,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8537,6 +9140,186 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/fr/guides/reduire-taille-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/it/guide/ridurre-dimensione-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/de/anleitungen/pdf-verkleinern</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ca/guies/reduir-mida-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/eu/gidak/pdf-tamaina-murriztu</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ja/guides/reduce-pdf-size</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ko/guides/reduce-pdf-size</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/zh/guides/reduce-pdf-size</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/reduzir-tamanho-pdf"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/reduire-taille-pdf"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/ridurre-dimensione-pdf"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-verkleinern"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/reduir-mida-pdf"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-tamaina-murriztu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/umenshit-razmer-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/reduce-pdf-size"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/reduce-pdf-size"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/reducir-tamano-pdf"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8547,6 +9330,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8557,6 +9349,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8567,6 +9368,186 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/fr/guides/signer-pdf-sans-imprimer</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/it/guide/firmare-pdf-senza-stampare</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ca/guies/signar-pdf-sense-imprimir</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ja/guides/sign-pdf-without-printing</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ko/guides/sign-pdf-without-printing</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/zh/guides/sign-pdf-without-printing</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/assinar-pdf-sem-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/signer-pdf-sans-imprimer"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/firmare-pdf-senza-stampare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-ohne-drucken-unterschreiben"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/signar-pdf-sense-imprimir"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-sinatu-inprimatu-gabe"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/podpisat-pdf-bez-pechati"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/sign-pdf-without-printing"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/sign-pdf-without-printing"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/firmar-pdf-sin-imprimir"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8577,6 +9558,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8587,6 +9577,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8597,6 +9596,186 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/fr/guides/numeriser-documents-avec-mobile</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ja/guides/scan-documents-with-your-phone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ko/guides/scan-documents-with-your-phone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/zh/guides/scan-documents-with-your-phone</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/digitalizar-documentos-com-o-celular"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/numeriser-documents-avec-mobile"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/scansionare-documenti-con-il-cellulare"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/dokumente-mit-dem-handy-scannen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/escanejar-documents-amb-el-mobil"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/dokumentuak-mugikorrarekin-eskaneatu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/skanirovat-dokumenty-telefonom"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/scan-documents-with-your-phone"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/scan-documents-with-your-phone"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/escanear-documentos-con-el-celular"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8607,6 +9786,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8617,6 +9805,15 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -8627,6 +9824,186 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/it/guide/proteggere-pdf-con-password</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ja/guides/password-protect-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/ko/guides/password-protect-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://docusmart.online/zh/guides/password-protect-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://docusmart.online/en/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/guias/proteger-pdf-com-senha"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/guides/proteger-pdf-mot-de-passe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://docusmart.online/it/guide/proteggere-pdf-con-password"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://docusmart.online/de/anleitungen/pdf-mit-passwort-schuetzen"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/guies/protegir-pdf-amb-contrasenya"/>
+    <xhtml:link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/gidak/pdf-pasahitzarekin-babestu"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/rukovodstva/zashchitit-pdf-parolem"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/guides/password-protect-pdf"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/guides/password-protect-pdf"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://docusmart.online/guias/proteger-pdf-con-contrasena"/>
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
