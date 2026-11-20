@@ -164,7 +164,7 @@ export const es = {
   'save.share': "Compartir",
   'save.downloaded': "El archivo se descargó.",
   'save.shareError': "No se pudo compartir el archivo. Descárgalo y envíalo desde tu dispositivo.",
-  'save.driveDone': "Guardado en tu Google Drive como \"{name}\".",
+  'save.driveDone': "Guardado en tu Google Drive, en la carpeta DocuSmart, como \"{name}\".",
   'save.dropboxDone': "Guardado en tu Dropbox, en Aplicaciones › DocuSmart{path}.",
   'save.cloudError': "No se pudo guardar en {service}.",
   'save.popupBlocked': "El navegador bloqueó la ventana de autorización. Permite las ventanas emergentes de docusmart.online.",

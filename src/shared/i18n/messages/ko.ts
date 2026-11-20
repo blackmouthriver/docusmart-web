@@ -160,7 +160,7 @@ const ko: Messages = {
   'save.share': "공유",
   'save.downloaded': "파일을 다운로드했습니다.",
   'save.shareError': "파일을 공유할 수 없습니다. 다운로드한 후 기기에서 보내세요.",
-  'save.driveDone': "Google 드라이브에 \"{name}\"(으)로 저장했습니다.",
+  'save.driveDone': "Google 드라이브의 DocuSmart 폴더에 \"{name}\"(으)로 저장했습니다.",
   'save.dropboxDone': "Dropbox의 앱 › DocuSmart{path}에 저장했습니다.",
   'save.cloudError': "{service}에 저장할 수 없습니다.",
   'save.popupBlocked': "브라우저가 인증 창을 차단했습니다. docusmart.online의 팝업을 허용하세요.",

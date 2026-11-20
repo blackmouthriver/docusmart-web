@@ -160,7 +160,7 @@ const ru: Messages = {
   'save.share': "Поделиться",
   'save.downloaded': "Файл скачан.",
   'save.shareError': "Не удалось поделиться файлом. Скачайте его и отправьте со своего устройства.",
-  'save.driveDone': "Сохранено в ваш Google Диск как «{name}».",
+  'save.driveDone': "Сохранено в ваш Google Диск, в папку DocuSmart, как «{name}».",
   'save.dropboxDone': "Сохранено в ваш Dropbox, в Приложения › DocuSmart{path}.",
   'save.cloudError': "Не удалось сохранить в {service}.",
   'save.popupBlocked': "Браузер заблокировал окно авторизации. Разрешите всплывающие окна для docusmart.online.",

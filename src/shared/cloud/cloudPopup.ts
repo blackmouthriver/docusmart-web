@@ -15,6 +15,7 @@ import {
   parseCallback,
   pkceChallenge,
   randomToken,
+  ensureDriveFolder,
   uploadToDrive,
   uploadToDropbox,
   type OAuthCallback,
@@ -101,9 +102,20 @@ async function dropboxToken(signal?: AbortSignal): Promise<string> {
   return dropbox
 }
 
+/** ID de la carpeta "DocuSmart" ya encontrada en esta visita (solo en memoria). */
+let driveFolder: string | undefined
+
 export async function saveToDrive(file: File, signal?: AbortSignal) {
   try {
-    return await uploadToDrive(file, await googleToken(signal))
+    const token = await googleToken(signal)
+    // Los archivos van a la carpeta "DocuSmart"; si no se puede preparar, a la raíz (nunca se pierde el guardado).
+    try {
+      driveFolder = await ensureDriveFolder(token, driveFolder)
+    } catch (e) {
+      if (e instanceof CloudAuthError) throw e
+      driveFolder = undefined
+    }
+    return await uploadToDrive(file, token, fetch, driveFolder)
   } catch (e) {
     if (e instanceof CloudAuthError) google = null
     throw e
