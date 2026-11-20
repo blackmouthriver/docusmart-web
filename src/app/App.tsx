@@ -184,10 +184,13 @@ export function App() {
                 DocuSmart <small>Web</small>
               </span>
             </a>
-            <button type="button" className="side-toggle" aria-expanded={!collapsed} aria-label={t(collapsed ? 'nav.expand' : 'nav.collapse')} title={t(collapsed ? 'nav.expand' : 'nav.collapse')} onClick={toggleSidebar}>
-              <Icon name="back" />
-            </button>
           </div>
+          {/* Pestaña para plegar/desplegar, en la mitad del borde derecho: no tapa la marca. */}
+          <button type="button" className="side-toggle" aria-expanded={!collapsed} aria-label={t(collapsed ? 'nav.expand' : 'nav.collapse')} title={t(collapsed ? 'nav.expand' : 'nav.collapse')} onClick={toggleSidebar}>
+            <Icon name="back" />
+          </button>
+          {/* Navegación y pie se desplazan cuando la ventana es baja: nada queda cortado. */}
+          <div className="side-scroll">
           <nav className="side-nav" aria-label={t('nav.sections')}>
             {NAV.map((n) => (
               <Fragment key={n.section}>
@@ -245,6 +248,7 @@ export function App() {
                 {t('side.analytics')}
               </button>
             )}
+          </div>
           </div>
         </aside>
 
