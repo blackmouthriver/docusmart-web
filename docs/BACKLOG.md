@@ -243,6 +243,21 @@ herramientas **por categoría** y **en orden alfabético** dentro de cada una.
 
 Orden: W-76 (validar categorías) → W-78 → W-77 → W-79. Encaja con el diseño visual (W-72) para las animaciones.
 
+## Guías con imágenes de cada herramienta (pedido del usuario, 2026-11-20)
+
+Que las guías muestren **cómo se ve** cada paso, con capturas reales de la web, y que **cada herramienta**
+tenga su guía ilustrada. Hoy las 6 guías (W-19) son solo texto y cubren 13 de las 37 herramientas.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-99 | **Capturas automáticas de cada herramienta**: script de Playwright (`scripts/screenshots.mjs`) que abre cada una de las 37 herramientas con archivos de muestra (PDF e imágenes generados por el script, nunca documentos reales) y captura sus estados clave: pantalla inicial, archivo cargado/opciones y resultado. Tema claro, ancho de escritorio (1280 px) y de celular (390 px). Salida en `public/img/guides/<herramienta>/<paso>-<ancho>.webp`, optimizada (WebP, ≤ 80 KB) y con tamaño fijo para no mover la página (CLS). Se regeneran con un comando cuando cambia la interfaz; una prueba avisa si una guía apunta a una captura que no existe | 🤖 | Pendiente |
+| W-100 | **Imágenes en las guías existentes**: nuevo bloque `{ img: '<herramienta>/<paso>', alt: '…' }` en `tools/guides*.mjs`; el generador lo convierte en `<figure>` con `<picture>` (celular/escritorio), `loading="lazy"`, `width`/`height` y `alt` descriptivo traducido. Las 6 guías × 12 idiomas usan las capturas en su idioma cuando la interfaz cambia de idioma (botones visibles), o la española con `alt` traducido si el texto de la captura no importa | 🤖 | Pendiente (depende de W-99) |
+| W-101 | **Una guía ilustrada por herramienta**: completar las guías para las 24 herramientas que aún no tienen (dividir, rotar, ordenar, numerar, marca de agua, editar, comparar, censurar, recortar, OCR, PDF/A, reparar, extraer imágenes, PDF a Word/Excel/texto/JPG, Word/Excel a PDF, imagen: comprimir/redimensionar/recortar/rotar/convertir, ZIP crear/extraer, QR), cada una con sus pasos y capturas; enlazadas desde la página de su herramienta ("Guía con imágenes"). Primero en español y luego en los 12 idiomas, como W-19 | 🤖 + 👤 (revisar textos) | Pendiente (depende de W-99 y W-100) |
+| W-102 | **Imágenes en buscadores y redes**: usar la mejor captura de cada guía como `og:image` y en el `Article` de los datos estructurados, para que la guía se vea con imagen al compartirla y en Google Imágenes | 🤖 | Pendiente (depende de W-100) |
+
+Orden: W-99 → W-100 → W-101 → W-102. Cuidados: peso de la página (lazy, WebP, tamaño fijo), accesibilidad (`alt`
+que describe lo que se ve, no "imagen de…"), y que las capturas no muestren datos personales ni anuncios.
+
 ## Sincronización entre la app, la web y el escritorio (opción A, 2026-11-19)
 
 Que lo que el usuario hace en la app Android se vea en la web y en DocuSmart Desktop, y al revés, sin tener que
