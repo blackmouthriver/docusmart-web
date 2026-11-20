@@ -100,7 +100,7 @@ export const guides = [
         h2: 'Paso a paso con Imagen a PDF',
         body: [
           'Abre [Imagen a PDF](/imagen-a-pdf) y elige tus imágenes. Acepta JPG, PNG, WebP, BMP y GIF, y puedes mezclarlos.',
-          'Ordénalas con las flechas: cada imagen será una página, en ese orden. Toca "Convertir y descargar" y listo: tienes un único PDF.',
+          'Ordénalas con las flechas: cada imagen será una página, en ese orden. Toca "Convertir" y listo: tienes un único PDF.',
         ],
       },
       {
@@ -139,7 +139,7 @@ export const guides = [
       { name: 'Abre Imagen a PDF', text: 'Entra a docusmart.online/imagen-a-pdf.' },
       { name: 'Elige las fotos', text: 'Selecciona las imágenes (JPG, PNG, WebP, BMP o GIF).' },
       { name: 'Ordénalas', text: 'Usa las flechas: cada imagen será una página en ese orden.' },
-      { name: 'Convierte', text: 'Toca "Convertir y descargar" para obtener un solo PDF.' },
+      { name: 'Convierte', text: 'Toca "Convertir" para obtener un solo PDF.' },
     ],
     faq: [
       ['¿Puedo poner varias fotos en una sola página?', 'Imagen a PDF pone una foto por página, que es lo que suelen pedir los trámites. Si necesitas varias en una hoja, júntalas antes en una sola imagen.'],
@@ -238,7 +238,7 @@ export const guides = [
         h2: 'Paso a paso',
         body: [
           'Abre [Firmar PDF](/firmar-pdf) y elige el documento. Crea tu firma con cualquiera de las tres formas.',
-          'Arrástrala al lugar donde va la firma y ajusta su tamaño. Si el documento pide iniciales en cada hoja, usa "Repetir en todas las páginas". Toca "Firmar y descargar".',
+          'Arrástrala al lugar donde va la firma y ajusta su tamaño. Si el documento pide iniciales en cada hoja, usa "Repetir en todas las páginas". Toca "Firmar PDF".',
         ],
       },
       {
@@ -276,7 +276,7 @@ export const guides = [
       { name: 'Abre Firmar PDF', text: 'Entra a docusmart.online/firmar-pdf y elige el documento.' },
       { name: 'Crea tu firma', text: 'Dibújala, escribe tu nombre o sube una foto de tu firma en papel.' },
       { name: 'Colócala', text: 'Arrástrala a su lugar y ajusta el tamaño; puedes repetirla en todas las páginas.' },
-      { name: 'Descarga', text: 'Toca "Firmar y descargar" para obtener el PDF firmado.' },
+      { name: 'Descarga', text: 'Toca "Firmar PDF" para obtener el PDF firmado.' },
     ],
     faq: [
       ['¿Puedo firmar desde el celular?', 'Sí. En el celular puedes dibujar la firma con el dedo o tomarle una foto a tu firma en papel.'],
@@ -307,7 +307,7 @@ export const guides = [
         body: [
           'Abre [Escanear documento](/escanear-documento) y toca "Tomar foto": en el celular se abre la cámara. También puedes elegir fotos que ya tengas.',
           'Revisa las esquinas que encontró DocuSmart; si alguna quedó mal, arrástrala hasta la punta de la hoja. Elige el filtro "Documento" para blanquear el papel y quitar sombras. Agrega más páginas si el documento tiene varias hojas.',
-          'Toca "Guardar PDF". Si marcas "Hacer el PDF buscable", además se reconoce el texto para que puedas buscar palabras y copiarlas.',
+          'Toca "Crear PDF". Si marcas "Hacer el PDF buscable", además se reconoce el texto para que puedas buscar palabras y copiarlas.',
         ],
       },
       {
@@ -339,7 +339,7 @@ export const guides = [
       { name: 'Abre Escanear documento', text: 'Entra a docusmart.online/escanear-documento y toca "Tomar foto".' },
       { name: 'Ajusta las esquinas', text: 'Revisa el recorte y arrastra las esquinas si hace falta.' },
       { name: 'Elige el filtro', text: 'El filtro "Documento" blanquea el papel y quita sombras.' },
-      { name: 'Guarda el PDF', text: 'Toca "Guardar PDF"; marca "Hacer el PDF buscable" para reconocer el texto.' },
+      { name: 'Guarda el PDF', text: 'Toca "Crear PDF"; marca "Hacer el PDF buscable" para reconocer el texto.' },
     ],
     faq: [
       ['¿Necesito instalar una app?', 'No. Funciona en el navegador del celular o del computador. La app de Android es opcional, para escanear sin conexión.'],

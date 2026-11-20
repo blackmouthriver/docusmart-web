@@ -10,14 +10,17 @@ import './guide.css'
 import { initAnalytics, trackScreen } from '../shared/platform/analytics'
 import { mountConsentBanner } from '../shared/platform/consent'
 import { initMotion } from '../shared/platform/motion'
+import { rememberLangChoice } from '../shared/platform/langChoice'
 import { applyAppearance, loadAppearance, watchSystemTheme } from '../app/appearance'
 import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 
 initAnalytics()
 mountConsentBanner()
+rememberLangChoice()
 initMotion()
 applyAppearance(loadAppearance())
 watchSystemTheme(loadAppearance)
-trackScreen(location.pathname === '/guias' ? 'Guides' : 'Guide')
-mountAssistantLauncher({ lang: 'es' })
+// Índice (/guias, /en/guides…) o una guía (/guias/<slug>, /en/guides/<slug>…).
+trackScreen(/^(\/[a-z]{2})?\/[a-z]+$/.test(location.pathname) ? 'Guides' : 'Guide')
+mountAssistantLauncher({ lang: document.documentElement.lang })
 registerServiceWorker()
