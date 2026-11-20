@@ -49,4 +49,6 @@ npx firebase-tools deploy --only hosting
 
 **AdMob `app-ads.txt`:** coloca el archivo en `public/app-ads.txt` y quedará en `https://docusmart.online/app-ads.txt`. Luego pon `https://docusmart.online` como sitio web del desarrollador en Play Console.
 
+**App Links (W-18):** `public/.well-known/assetlinks.json` autoriza a `com.docsmart` firmada con el **certificado de la clave de firma de apps de Play** (SHA-256 `0D:90:B5:7C:…:4A:E8:9C`, leído de la app instalada desde Play Store). Si Google cambia la clave de firma, actualizar la huella. El dominio `www` no se declara en la app: redirige y Android no sigue redirecciones al verificar.
+
 **AdSense `ads.txt` (W-90):** la misma línea del editor está en `public/ads.txt` → `https://docusmart.online/ads.txt`. Con ella se verificó la propiedad del sitio en AdSense (método "Fragmento de ads.txt"), sin cargar ningún script de Google antes del consentimiento.
