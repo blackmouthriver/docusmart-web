@@ -1170,5 +1170,22 @@ const de: Messages = {
   'hash.cert.size': "Größe",
   'hash.cert.footer': "Erstellt mit DocuSmart (docusmart.online) auf dem Gerät: Die Dateien wurden nicht hochgeladen.",
   'hash.cert.fileName': "integritaetszertifikat",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "Hintergrund entfernen",
+  'imgt.removeBg.desc': "Stellt Personen, Tiere oder Objekte mit KI frei",
+  'imgt.title.removeBg': "So sieht es ohne Hintergrund aus",
+  'bg.background': "Hintergrund",
+  'bg.transparent': "Transparent",
+  'bg.white': "Weiß",
+  'bg.color': "Farbe",
+  'bg.pickColor': "Hintergrundfarbe",
+  'bg.tip': "Funktioniert am besten mit einem klaren Motiv: einer Person, einem Produkt oder einem Tier. Das Ergebnis wird als PNG gespeichert.",
+  'bg.firstTime': "Beim ersten Mal wird das KI-Modell ({size}) von docusmart.online heruntergeladen und in deinem Browser gespeichert. Deine Bilder werden nie hochgeladen.",
+  'bg.downloading': "KI-Modell wird heruntergeladen… {pct} %",
+  'bg.preparing': "KI wird vorbereitet…",
+  'bg.run': "Hintergrund entfernen",
+  'bg.failedModel': "Die KI konnte nicht vorbereitet werden. Prüfe deine Verbindung und versuche es erneut.",
+  'file.noBg': "ohne-hintergrund",
+  'file.zipNoBg': "bilder-ohne-hintergrund",
 }
 export default de

@@ -1174,6 +1174,23 @@ export const es = {
   'hash.cert.size': "Tamaño",
   'hash.cert.footer': "Generado con DocuSmart (docusmart.online) en el dispositivo: los archivos no se subieron.",
   'hash.cert.fileName': "certificado-de-integridad",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "Quitar fondo",
+  'imgt.removeBg.desc': "Recorta personas, animales u objetos con IA",
+  'imgt.title.removeBg': "Así quedó sin fondo",
+  'bg.background': "Fondo",
+  'bg.transparent': "Transparente",
+  'bg.white': "Blanco",
+  'bg.color': "Color",
+  'bg.pickColor': "Color del fondo",
+  'bg.tip': "Funciona mejor con un sujeto claro: una persona, un producto o un animal. El resultado se guarda en PNG.",
+  'bg.firstTime': "La primera vez se descarga el modelo de IA ({size}) desde docusmart.online y queda guardado en tu navegador. Tus imágenes nunca se suben.",
+  'bg.downloading': "Descargando el modelo de IA… {pct} %",
+  'bg.preparing': "Preparando la IA…",
+  'bg.run': "Quitar fondo",
+  'bg.failedModel': "No se pudo preparar la IA. Revisa tu conexión e inténtalo de nuevo.",
+  'file.noBg': "sin-fondo",
+  'file.zipNoBg': "imagenes-sin-fondo",
 }
 
 export type MessageKey = keyof typeof es

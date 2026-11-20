@@ -421,6 +421,23 @@ export default {
         ['Minhas fotos são enviadas à internet?', 'Não. Tudo é feito dentro do seu navegador.'],
       ],
     },
+    'quitar-fondo': {
+      slug: 'remover-fundo',
+      title: 'Remover fundo de imagem grátis, com IA e sem enviar | DocuSmart',
+      description: 'Elimine o fundo de fotos de pessoas, produtos ou animais com IA que funciona no seu navegador. PNG transparente ou fundo colorido, grátis e sem enviar nada.',
+      h1: 'Remover fundo de uma imagem',
+      howTo: 'Como remover o fundo de uma imagem em 3 passos',
+      lead: 'Recorte automaticamente a pessoa, o produto ou o animal da sua foto e fique com um PNG transparente ou com o fundo da cor que quiser.',
+      short: 'Recorte com IA, sem enviar a foto',
+      steps: ['Escolha uma ou várias fotos (JPG, PNG ou WebP).', 'Escolha o fundo: transparente, branco ou da cor que quiser.', 'Toque em "Remover fundo" e baixe o PNG; com várias fotos, todas juntas em um ZIP.'],
+      faq: [
+        ['Minhas fotos são enviadas para a internet?', 'Não. A IA roda dentro do seu navegador: suas fotos nunca saem do seu aparelho. Só na primeira vez o modelo de IA é baixado de docusmart.online e fica salvo para as próximas vezes.'],
+        ['Com quais fotos funciona melhor?', 'Com um assunto bem definido: uma pessoa, um produto, um animal ou um objeto que se destaque do fundo. Fundos muito parecidos com o assunto ou cabelos muito finos podem ficar menos precisos.'],
+        ['Posso colocar um fundo branco para um documento?', 'Sim. Escolha "Branco" para fotos de documentos ou lojas on-line, ou qualquer outra cor.'],
+        ['Por que demora na primeira vez?', 'Porque baixa o modelo de IA (cerca de 90 MB). Depois ele fica salvo no seu navegador e cada foto leva só alguns segundos, dependendo do seu aparelho.'],
+        ["É grátis? Coloca marca d'água?", "É grátis, sem cadastro, sem limite de fotos e sem marca d'água. O resultado mantém a resolução da sua foto."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',

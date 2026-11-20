@@ -421,6 +421,23 @@ export default {
         ['Mes photos sont-elles envoyées sur Internet ?', 'Non. Tout se fait dans votre navigateur.'],
       ],
     },
+    'quitar-fondo': {
+      slug: 'supprimer-arriere-plan',
+      title: "Supprimer l'arrière-plan d'une image gratuitement, avec l'IA et sans envoi | DocuSmart",
+      description: "Effacez l'arrière-plan des photos de personnes, de produits ou d'animaux grâce à une IA qui fonctionne dans votre navigateur. PNG transparent ou fond coloré, gratuit et sans rien envoyer.",
+      h1: "Supprimer l'arrière-plan d'une image",
+      howTo: "Comment supprimer l'arrière-plan d'une image en 3 étapes",
+      lead: "Détourez automatiquement la personne, le produit ou l'animal de votre photo et obtenez un PNG transparent ou un arrière-plan de la couleur de votre choix.",
+      short: 'Détourage par IA, sans envoyer la photo',
+      steps: ['Choisissez une ou plusieurs photos (JPG, PNG ou WebP).', "Choisissez l'arrière-plan : transparent, blanc ou de la couleur de votre choix.", "Appuyez sur « Supprimer l'arrière-plan » et téléchargez le PNG ; avec plusieurs photos, toutes ensemble dans un ZIP."],
+      faq: [
+        ['Mes photos sont-elles envoyées sur internet ?', "Non. L'IA fonctionne dans votre navigateur : vos photos ne quittent jamais votre appareil. La première fois seulement, le modèle d'IA est téléchargé depuis docusmart.online et reste enregistré pour les fois suivantes."],
+        ['Avec quelles photos cela fonctionne-t-il le mieux ?', "Avec un sujet net : une personne, un produit, un animal ou un objet qui se distingue de l'arrière-plan. Un arrière-plan très proche du sujet ou des cheveux très fins peuvent donner un résultat moins précis."],
+        ['Puis-je mettre un fond blanc pour un document ?', "Oui. Choisissez « Blanc » pour les photos d'identité ou les boutiques en ligne, ou n'importe quelle autre couleur."],
+        ['Pourquoi est-ce plus lent la première fois ?', "Parce que le modèle d'IA (environ 90 Mo) est téléchargé. Ensuite, il reste enregistré dans votre navigateur et chaque photo ne prend que quelques secondes, selon votre appareil."],
+        ['Est-ce gratuit ? Y a-t-il un filigrane ?', "C'est gratuit, sans inscription, sans limite de photos et sans filigrane. Le résultat conserve la résolution de votre photo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',

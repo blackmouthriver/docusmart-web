@@ -1170,5 +1170,22 @@ const it: Messages = {
   'hash.cert.size': "Dimensione",
   'hash.cert.footer': "Generato con DocuSmart (docusmart.online) sul dispositivo: i file non sono stati caricati.",
   'hash.cert.fileName': "certificato-di-integrita",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "Rimuovi sfondo",
+  'imgt.removeBg.desc': "Scontorna persone, animali o oggetti con l'IA",
+  'imgt.title.removeBg': "Ecco il risultato senza sfondo",
+  'bg.background': "Sfondo",
+  'bg.transparent': "Trasparente",
+  'bg.white': "Bianco",
+  'bg.color': "Colore",
+  'bg.pickColor': "Colore dello sfondo",
+  'bg.tip': "Funziona meglio con un soggetto ben definito: una persona, un prodotto o un animale. Il risultato viene salvato in PNG.",
+  'bg.firstTime': "La prima volta il modello di IA ({size}) viene scaricato da docusmart.online e resta salvato nel tuo browser. Le tue immagini non vengono mai caricate.",
+  'bg.downloading': "Download del modello di IA… {pct}%",
+  'bg.preparing': "Preparazione dell'IA…",
+  'bg.run': "Rimuovi sfondo",
+  'bg.failedModel': "Impossibile preparare l'IA. Controlla la connessione e riprova.",
+  'file.noBg': "senza-sfondo",
+  'file.zipNoBg': "immagini-senza-sfondo",
 }
 export default it

@@ -421,6 +421,23 @@ export default {
         ['Les meves fotos es pugen a internet?', 'No. Tot es fa dins del teu navegador.'],
       ],
     },
+    'quitar-fondo': {
+      slug: 'treure-fons',
+      title: "Treure el fons d'una imatge gratis, amb IA i sense pujar-la | DocuSmart",
+      description: 'Elimina el fons de fotos de persones, productes o animals amb una IA que funciona al teu navegador. PNG transparent o fons de color, gratis i sense pujar res.',
+      h1: "Treure el fons d'una imatge",
+      howTo: "Com treure el fons d'una imatge en 3 passos",
+      lead: "Retalla automàticament la persona, el producte o l'animal de la teva foto i queda't amb un PNG transparent o amb el fons del color que vulguis.",
+      short: 'Retalla amb IA, sense pujar la foto',
+      steps: ['Tria una o diverses fotos (JPG, PNG o WebP).', 'Tria el fons: transparent, blanc o del color que vulguis.', 'Prem "Treure el fons" i baixa el PNG; amb diverses fotos, totes juntes en un ZIP.'],
+      faq: [
+        ['Les meves fotos es pugen a internet?', "No. La IA funciona dins del teu navegador: les teves fotos no surten mai del teu dispositiu. Només la primera vegada es baixa el model d'IA des de docusmart.online i queda desat per a les properes vegades."],
+        ['Amb quines fotos funciona millor?', 'Amb un subjecte clar: una persona, un producte, un animal o un objecte que es distingeixi del fons. Els fons molt semblants al subjecte o els cabells molt fins poden quedar menys precisos.'],
+        ['Puc posar un fons blanc per a un document?', 'Sí. Tria "Blanc" per a fotos de documents o botigues en línia, o qualsevol altre color.'],
+        ['Per què triga la primera vegada?', "Perquè baixa el model d'IA (uns 90 MB). Després queda desat al teu navegador i cada foto triga només uns segons, segons el teu dispositiu."],
+        ["És gratis? Posa marca d'aigua?", "És gratis, sense registre, sense límit de fotos i sense marca d'aigua. El resultat conserva la resolució de la teva foto."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',

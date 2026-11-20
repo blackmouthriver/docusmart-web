@@ -426,6 +426,23 @@ export default {
         ['Nire argazkiak internetera igotzen dira?', 'Ez. Dena zure nabigatzailean egiten da.'],
       ],
     },
+    'quitar-fondo': {
+      slug: 'atzeko-planoa-kendu',
+      title: 'Kendu irudi baten atzeko planoa doan, AArekin eta igo gabe | DocuSmart',
+      description: 'Ezabatu pertsonen, produktuen edo animalien argazkien atzeko planoa zure nabigatzailean dabilen AArekin. PNG gardena edo koloretako atzeko planoa, doan eta ezer igo gabe.',
+      h1: 'Kendu irudi baten atzeko planoa',
+      howTo: 'Nola kendu irudi baten atzeko planoa 3 urratsetan',
+      lead: 'Moztu automatikoki zure argazkiko pertsona, produktua edo animalia, eta gorde PNG garden bat edo nahi duzun koloreko atzeko planoa duen irudi bat.',
+      short: 'Moztu AArekin, argazkia igo gabe',
+      steps: ['Aukeratu argazki bat edo gehiago (JPG, PNG edo WebP).', 'Aukeratu atzeko planoa: gardena, zuria edo nahi duzun kolorekoa.', 'Sakatu «Kendu atzeko planoa» eta deskargatu PNGa; hainbat argazkirekin, denak batera ZIP batean.'],
+      faq: [
+        ['Nire argazkiak internetera igotzen dira?', 'Ez. AA zure nabigatzailean exekutatzen da: zure argazkiak ez dira inoiz zure gailutik ateratzen. Lehen aldian bakarrik deskargatzen da AA eredua docusmart.online-etik, eta hurrengo aldietarako gordeta geratzen da.'],
+        ['Zer argazkirekin dabil hobeto?', 'Subjektu argi batekin: pertsona bat, produktu bat, animalia bat edo atzeko planotik bereizten den objektu bat. Subjektuaren antz handia duten atzeko planoak edo ile oso fina ez dira hain zehatz geratzen.'],
+        ['Atzeko plano zuria jar dezaket dokumentu baterako?', 'Bai. Aukeratu «Zuria» dokumentuetako edo lineako dendetako argazkietarako, edo beste edozein kolore.'],
+        ['Zergatik behar du denbora gehiago lehen aldian?', 'AA eredua deskargatzen duelako (90 MB inguru). Gero zure nabigatzailean gordeta geratzen da, eta argazki bakoitzak segundo gutxi batzuk behar ditu, zure gailuaren arabera.'],
+        ['Doakoa da? Ur-markarik jartzen du?', 'Doakoa da, erregistratu gabe, argazki-mugarik gabe eta ur-markarik gabe. Emaitzak zure argazkiaren bereizmena gordetzen du.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',

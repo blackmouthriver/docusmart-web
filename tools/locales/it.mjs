@@ -421,6 +421,23 @@ export default {
         ['Le mie foto vengono caricate su internet?', 'No. Tutto avviene nel tuo browser.'],
       ],
     },
+    'quitar-fondo': {
+      slug: 'rimuovere-sfondo',
+      title: "Rimuovere lo sfondo da un'immagine gratis, con IA e senza caricarla | DocuSmart",
+      description: "Elimina lo sfondo dalle foto di persone, prodotti o animali con un'IA che funziona nel tuo browser. PNG trasparente o sfondo colorato, gratis e senza caricare nulla.",
+      h1: "Rimuovere lo sfondo da un'immagine",
+      howTo: "Come rimuovere lo sfondo da un'immagine in 3 passaggi",
+      lead: "Scontorna automaticamente la persona, il prodotto o l'animale della tua foto e ottieni un PNG trasparente o uno sfondo del colore che preferisci.",
+      short: 'Scontorna con IA, senza caricare la foto',
+      steps: ['Scegli una o più foto (JPG, PNG o WebP).', 'Scegli lo sfondo: trasparente, bianco o del colore che preferisci.', 'Premi "Rimuovi sfondo" e scarica il PNG; con più foto, tutte insieme in uno ZIP.'],
+      faq: [
+        ['Le mie foto vengono caricate su internet?', "No. L'IA funziona nel tuo browser: le tue foto non lasciano mai il tuo dispositivo. Solo la prima volta il modello di IA viene scaricato da docusmart.online e resta salvato per le volte successive."],
+        ['Con quali foto funziona meglio?', 'Con un soggetto ben definito: una persona, un prodotto, un animale o un oggetto che si distingua dallo sfondo. Sfondi molto simili al soggetto o capelli molto sottili possono risultare meno precisi.'],
+        ['Posso mettere uno sfondo bianco per un documento?', 'Sì. Scegli "Bianco" per le foto dei documenti o per i negozi online, oppure qualsiasi altro colore.'],
+        ['Perché la prima volta ci mette di più?', 'Perché scarica il modello di IA (circa 90 MB). Poi resta salvato nel tuo browser e ogni foto richiede solo pochi secondi, a seconda del tuo dispositivo.'],
+        ['È gratis? Aggiunge una filigrana?', 'È gratis, senza registrazione, senza limite di foto e senza filigrana. Il risultato mantiene la risoluzione della tua foto.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',

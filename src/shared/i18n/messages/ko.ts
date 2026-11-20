@@ -1170,5 +1170,22 @@ const ko: Messages = {
   'hash.cert.size': "크기",
   'hash.cert.footer': "DocuSmart(docusmart.online)로 기기에서 생성: 파일은 업로드되지 않았습니다.",
   'hash.cert.fileName': "integrity-certificate",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "배경 제거",
+  'imgt.removeBg.desc': "AI로 사람, 동물, 사물을 잘라내기",
+  'imgt.title.removeBg': "배경을 제거한 이미지입니다",
+  'bg.background': "배경",
+  'bg.transparent': "투명",
+  'bg.white': "흰색",
+  'bg.color': "색상",
+  'bg.pickColor': "배경 색상",
+  'bg.tip': "사람, 제품, 동물처럼 주제가 뚜렷한 사진에서 가장 잘 작동합니다. 결과는 PNG로 저장됩니다.",
+  'bg.firstTime': "처음 한 번만 AI 모델({size})을 docusmart.online에서 다운로드해 브라우저에 저장합니다. 이미지는 절대 업로드되지 않습니다.",
+  'bg.downloading': "AI 모델 다운로드 중… {pct}%",
+  'bg.preparing': "AI 준비 중…",
+  'bg.run': "배경 제거",
+  'bg.failedModel': "AI를 준비하지 못했습니다. 연결을 확인하고 다시 시도하세요.",
+  'file.noBg': "no-background",
+  'file.zipNoBg': "images-no-background",
 }
 export default ko

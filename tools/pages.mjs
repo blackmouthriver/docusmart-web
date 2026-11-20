@@ -9,7 +9,7 @@
 //       { kind: 'hash' }
 //
 // alsoIn: otras categorías donde también se lista (W-119), sin duplicar la página.
-//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar' }
+//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo' }
 
 export const SITE = 'https://docusmart.online'
 /** Redes sociales de DocuSmart (pie de página y datos estructurados). */
@@ -498,6 +498,30 @@ export const pages = [
       ['¿Por qué mi foto se ve girada en algunos programas?', 'Muchas cámaras guardan la orientación como un dato aparte (EXIF) que no todos los programas leen. DocuSmart aplica ese dato y guarda la foto ya derecha, sin depender de él.'],
       ['¿Puedo girar varias fotos a la vez?', 'Sí: el mismo giro se aplica a todas las imágenes que elijas y puedes descargarlas juntas en un ZIP.'],
       ['¿Mis fotos se suben a internet?', 'No. Todo se hace dentro de tu navegador.'],
+    ],
+  },
+  {
+    slug: 'quitar-fondo',
+    category: 'imagen',
+    tool: { kind: 'img', id: 'fondo' },
+    title: 'Quitar fondo de una imagen gratis, con IA y sin subirla | DocuSmart',
+    description:
+      'Elimina el fondo de fotos de personas, productos o animales con IA que funciona en tu navegador. PNG transparente o fondo de color, gratis y sin subir nada.',
+    h1: 'Quitar fondo de una imagen',
+    howTo: 'Cómo quitar el fondo de una imagen en 3 pasos',
+    lead: 'Recorta automáticamente a la persona, el producto o el animal de tu foto y quédate con un PNG transparente o con el fondo del color que quieras.',
+    short: 'Recorta con IA, sin subir la foto',
+    steps: [
+      'Elige una o varias fotos (JPG, PNG o WebP).',
+      'Escoge el fondo: transparente, blanco o del color que quieras.',
+      'Pulsa "Quitar fondo" y descarga el PNG; con varias fotos, todas juntas en un ZIP.',
+    ],
+    faq: [
+      ['¿Mis fotos se suben a internet?', 'No. La IA corre dentro de tu navegador: tus fotos nunca salen de tu equipo. Solo la primera vez se descarga el modelo de IA desde docusmart.online y queda guardado para las próximas veces.'],
+      ['¿Con qué fotos funciona mejor?', 'Con un sujeto claro: una persona, un producto, un animal o un objeto que se distinga del fondo. Fondos muy parecidos al sujeto o cabello muy fino pueden quedar menos precisos.'],
+      ['¿Puedo poner un fondo blanco para un documento?', 'Sí. Elige "Blanco" para fotos de documentos o tiendas en línea, o cualquier otro color.'],
+      ['¿Por qué tarda la primera vez?', 'Porque descarga el modelo de IA (unos 90 MB). Después queda guardado en tu navegador y cada foto tarda solo unos segundos, según tu equipo.'],
+      ['¿Es gratis? ¿Pone marca de agua?', 'Es gratis, sin registro, sin límite de fotos y sin marca de agua. El resultado conserva la resolución de tu foto.'],
     ],
   },
   {

@@ -1170,5 +1170,22 @@ const ja: Messages = {
   'hash.cert.size': "サイズ",
   'hash.cert.footer': "DocuSmart（docusmart.online）で端末上で作成：ファイルはアップロードされていません。",
   'hash.cert.fileName': "integrity-certificate",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "背景を削除",
+  'imgt.removeBg.desc': "人物・動物・物をAIで切り抜き",
+  'imgt.title.removeBg': "背景を削除した画像はこちら",
+  'bg.background': "背景",
+  'bg.transparent': "透明",
+  'bg.white': "白",
+  'bg.color': "色",
+  'bg.pickColor': "背景の色",
+  'bg.tip': "人物、商品、動物など、被写体がはっきりした写真に最適です。結果はPNGで保存されます。",
+  'bg.firstTime': "初回のみAIモデル（{size}）をdocusmart.onlineからダウンロードし、ブラウザーに保存します。画像がアップロードされることはありません。",
+  'bg.downloading': "AIモデルをダウンロード中… {pct}%",
+  'bg.preparing': "AIを準備中…",
+  'bg.run': "背景を削除",
+  'bg.failedModel': "AIを準備できませんでした。接続を確認して、もう一度お試しください。",
+  'file.noBg': "no-background",
+  'file.zipNoBg': "images-no-background",
 }
 export default ja

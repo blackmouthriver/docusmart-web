@@ -1170,5 +1170,22 @@ const fr: Messages = {
   'hash.cert.size': "Taille",
   'hash.cert.footer': "Généré avec DocuSmart (docusmart.online) sur l'appareil : les fichiers n'ont pas été envoyés.",
   'hash.cert.fileName': "certificat-d-integrite",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "Supprimer l'arrière-plan",
+  'imgt.removeBg.desc': "Détoure des personnes, des animaux ou des objets avec l'IA",
+  'imgt.title.removeBg': "Voici le résultat sans arrière-plan",
+  'bg.background': "Arrière-plan",
+  'bg.transparent': "Transparent",
+  'bg.white': "Blanc",
+  'bg.color': "Couleur",
+  'bg.pickColor': "Couleur de l'arrière-plan",
+  'bg.tip': "Fonctionne mieux avec un sujet net : une personne, un produit ou un animal. Le résultat est enregistré en PNG.",
+  'bg.firstTime': "La première fois, le modèle d'IA ({size}) est téléchargé depuis docusmart.online et reste enregistré dans votre navigateur. Vos images ne sont jamais envoyées.",
+  'bg.downloading': "Téléchargement du modèle d'IA… {pct} %",
+  'bg.preparing': "Préparation de l'IA…",
+  'bg.run': "Supprimer l'arrière-plan",
+  'bg.failedModel': "Impossible de préparer l'IA. Vérifiez votre connexion et réessayez.",
+  'file.noBg': "sans-arriere-plan",
+  'file.zipNoBg': "images-sans-arriere-plan",
 }
 export default fr

@@ -421,6 +421,23 @@ export default {
         ['Werden meine Fotos ins Internet hochgeladen?', 'Nein. Alles passiert in deinem Browser.'],
       ],
     },
+    'quitar-fondo': {
+      slug: 'hintergrund-entfernen',
+      title: 'Bildhintergrund kostenlos entfernen, mit KI und ohne Upload | DocuSmart',
+      description: 'Entferne den Hintergrund von Fotos mit Personen, Produkten oder Tieren mit einer KI, die in deinem Browser läuft. Transparentes PNG oder farbiger Hintergrund, kostenlos und ohne Upload.',
+      h1: 'Hintergrund aus einem Bild entfernen',
+      howTo: 'So entfernst du den Hintergrund eines Bildes in 3 Schritten',
+      lead: 'Stelle die Person, das Produkt oder das Tier auf deinem Foto automatisch frei und erhalte ein transparentes PNG oder einen Hintergrund in der Farbe deiner Wahl.',
+      short: 'Mit KI freistellen, ohne Upload',
+      steps: ['Wähle ein oder mehrere Fotos (JPG, PNG oder WebP).', 'Wähle den Hintergrund: transparent, weiß oder in einer Farbe deiner Wahl.', 'Tippe auf „Hintergrund entfernen“ und lade das PNG herunter; bei mehreren Fotos alle zusammen in einer ZIP.'],
+      faq: [
+        ['Werden meine Fotos ins Internet hochgeladen?', 'Nein. Die KI läuft in deinem Browser: Deine Fotos verlassen nie dein Gerät. Nur beim ersten Mal wird das KI-Modell von docusmart.online heruntergeladen und für die nächsten Male gespeichert.'],
+        ['Mit welchen Fotos funktioniert es am besten?', 'Mit einem klaren Motiv: einer Person, einem Produkt, einem Tier oder einem Objekt, das sich vom Hintergrund abhebt. Hintergründe, die dem Motiv sehr ähneln, oder sehr feines Haar können ungenauer werden.'],
+        ['Kann ich einen weißen Hintergrund für ein Dokument verwenden?', 'Ja. Wähle „Weiß“ für Passfotos oder Onlineshops oder eine beliebige andere Farbe.'],
+        ['Warum dauert es beim ersten Mal länger?', 'Weil das KI-Modell (rund 90 MB) heruntergeladen wird. Danach bleibt es in deinem Browser gespeichert, und jedes Foto dauert je nach Gerät nur wenige Sekunden.'],
+        ['Ist es kostenlos? Gibt es ein Wasserzeichen?', 'Es ist kostenlos, ohne Anmeldung, ohne Fotolimit und ohne Wasserzeichen. Das Ergebnis behält die Auflösung deines Fotos.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',

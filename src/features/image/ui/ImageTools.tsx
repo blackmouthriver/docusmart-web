@@ -28,6 +28,7 @@ import {
   type ResizeSpec,
   type Transform,
 } from '../core/imageTools'
+import { MODEL as BG_MODEL, backgroundOutputName, parseBackground } from '../core/background'
 import type { Margins } from '../../pdf/core/pdfCrop'
 import { track } from '../../../shared/platform/analytics'
 import { CropStage } from '../../pdf/ui/CropTool'
@@ -39,6 +40,7 @@ const TOOLS: Array<{ id: string; name: MessageKey; desc: MessageKey; icon: IconN
   { id: 'redimensionar', name: 'imgt.resize', desc: 'imgt.resize.desc', icon: 'resize', cls: 'ico-blue' },
   { id: 'recortar', name: 'imgt.crop', desc: 'imgt.crop.desc', icon: 'crop', cls: 'ico-amber' },
   { id: 'rotar', name: 'imgt.rotate', desc: 'imgt.rotate.desc', icon: 'rotate', cls: 'ico-violet' },
+  { id: 'fondo', name: 'imgt.removeBg', desc: 'imgt.removeBg.desc', icon: 'eraser', cls: 'ico-cyan' },
 ]
 
 // Conversiones de formato (W-119): viven en Convertir, pero también se ofrecen aquí.
@@ -54,6 +56,7 @@ export const IMAGE_TOOLS: Record<string, ComponentType> = {
   redimensionar: ResizeImageTool,
   recortar: CropImageTool,
   rotar: RotateImageTool,
+  fondo: RemoveBackgroundTool,
 }
 
 export function ImageToolsScreen({ sub }: { sub?: string }) {
@@ -408,6 +411,88 @@ function RotateImageTool() {
         </div>
       </Panel>
       {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipRotatedImages')}.zip`} toolName="rotate_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.rotateOne')} />}
+    </div>
+  )
+}
+
+/* ───────────── Quitar fondo (W-121) ───────────── */
+
+type BgChoice = 'transparent' | 'white' | 'color'
+
+function RemoveBackgroundTool() {
+  const b = useBatch('remove_background')
+  const [choice, setChoice] = useState<BgChoice>('transparent')
+  const [color, setColor] = useState('#2563eb')
+  const [cached, setCached] = useState<boolean | null>(null)
+  const [download, setDownload] = useState<number | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  useEffect(() => {
+    void import('../infra/backgroundModel').then((m) => m.isModelCached()).then(setCached, () => setCached(false))
+  }, [])
+  const pick = (c: BgChoice) => {
+    setChoice(c)
+    b.setResults(null)
+  }
+  const run = async () => {
+    setError(null)
+    const { prepareBackgroundRemover, removeBackground } = await import('../infra/backgroundRemover')
+    try {
+      setDownload(0)
+      await prepareBackgroundRemover((f) => setDownload(f))
+      setCached(true)
+    } catch (e) {
+      setError(tr('bg.failedModel'))
+      track('app_error', { error_context: 'remove_background_model', error_message: e instanceof Error ? e.name : 'error' })
+      return
+    } finally {
+      setDownload(null)
+    }
+    const background = parseBackground(choice === 'white' ? '#ffffff' : choice === 'color' ? color : '')
+    await b.run(async (file) => {
+      const r = await removeBackground(file, background)
+      return { name: backgroundOutputName(file.name, tr('file.noBg')), blob: r.blob, width: r.width, height: r.height }
+    })
+  }
+  return (
+    <div className="stack">
+      <Panel>
+        {b.picker()}
+        <div className="field">
+          <span>{tr('bg.background')}</span>
+          <Segmented
+            label={tr('bg.background')}
+            value={choice}
+            onChange={pick}
+            options={[
+              { value: 'transparent', label: tr('bg.transparent') },
+              { value: 'white', label: tr('bg.white') },
+              { value: 'color', label: tr('bg.color') },
+            ]}
+          />
+        </div>
+        {choice === 'color' && (
+          <label className="field bg-color">
+            <span>{tr('bg.pickColor')}</span>
+            <input type="color" value={color} onChange={(e) => { setColor(e.target.value); b.setResults(null) }} />
+          </label>
+        )}
+        <small className="faint">{tr('bg.tip')}</small>
+        {cached === false && <Notice kind="info">{tr('bg.firstTime', { size: formatBytes(BG_MODEL.bytes) })}</Notice>}
+        {download !== null && (
+          <div className="stack" style={{ gap: 6 }} role="status">
+            <small>{download < 1 ? tr('bg.downloading', { pct: Math.round(download * 100) }) : tr('bg.preparing')}</small>
+            <Progress value={download} />
+          </div>
+        )}
+        {b.busy && <Progress value={b.progress} />}
+        {error && <Notice kind="error">{error}</Notice>}
+        <div className="row row-end">
+          <BusyButton busy={b.busy || download !== null} disabled={!b.files.length} onClick={run} icon="eraser">
+            {tr('bg.run')}
+          </BusyButton>
+        </div>
+      </Panel>
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipNoBg')}.zip`} toolName="remove_background" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.removeBg')} />}
     </div>
   )
 }
