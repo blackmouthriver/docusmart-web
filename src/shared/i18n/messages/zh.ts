@@ -932,6 +932,7 @@ const zh: Messages = {
   'imgt.crop.desc': "自由或 1:1、4:3、16:9…",
   'imgt.rotate': "旋转和翻转",
   'imgt.rotate.desc': "旋转 90° 或镜像翻转",
+  'imgt.convertTitle': "转换格式",
   'imgt.heroSub': "压缩、调整大小、裁剪和旋转照片，无需上传到任何服务器。",
   'imgt.back': "返回图片工具",
   'imgt.privacy': "照片的隐藏数据（EXIF），例如 GPS 位置，会被移除。",

@@ -44,7 +44,8 @@ function filter(query: string) {
   for (const section of sections) {
     let shown = 0
     section.querySelectorAll<HTMLElement>('[data-tool]').forEach((li) => {
-      const ok = matchesQuery(li.dataset.search ?? '', query)
+      // Al buscar, las herramientas listadas en dos categorías aparecen una sola vez (W-119).
+      const ok = matchesQuery(li.dataset.search ?? '', query) && !(query.trim() && li.dataset.also !== undefined)
       li.hidden = !ok
       if (ok) shown++
     })

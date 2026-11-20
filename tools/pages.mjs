@@ -7,6 +7,8 @@
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
 //       { kind: 'hash' }
+//
+// alsoIn: otras categorías donde también se lista (W-119), sin duplicar la página.
 //       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar' }
 
 export const SITE = 'https://docusmart.online'
@@ -801,6 +803,7 @@ export const pages = [
   {
     slug: 'jpg-a-png',
     category: 'convertir',
+    alsoIn: ['imagen'],
     tool: { kind: 'conv', id: 'img-png' },
     title: "Convertir JPG a PNG gratis | DocuSmart",
     description: "Convierte imágenes JPG (y WebP, GIF o BMP) a PNG sin perder calidad. Varias a la vez, gratis, sin registro y sin subir tus fotos.",
@@ -823,6 +826,7 @@ export const pages = [
   {
     slug: 'png-a-jpg',
     category: 'convertir',
+    alsoIn: ['imagen'],
     tool: { kind: 'conv', id: 'img-jpg' },
     title: "Convertir PNG a JPG gratis | DocuSmart",
     description: "Convierte imágenes PNG (y WebP, GIF o BMP) a JPG para que pesen menos y se abran en cualquier lado. Varias a la vez, gratis y sin subirlas.",
@@ -845,6 +849,7 @@ export const pages = [
   {
     slug: 'imagen-a-webp',
     category: 'convertir',
+    alsoIn: ['imagen'],
     tool: { kind: 'conv', id: 'img-webp' },
     title: "Convertir imagen a WebP (JPG y PNG a WebP) gratis | DocuSmart",
     description: "Convierte JPG, PNG y otras imágenes a WebP, el formato moderno que pesa menos y hace que tu web cargue más rápido. Gratis y sin subirlas.",

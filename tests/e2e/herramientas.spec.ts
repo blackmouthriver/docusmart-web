@@ -66,3 +66,29 @@ test('la página de una herramienta en otro idioma usa su imagen y sus textos', 
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://docusmart.online/img/og/ja.jpg')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('画像をWebPに')
 })
+
+test('las conversiones de imagen también aparecen en Imagen, sin duplicarse al buscar (W-119)', async ({ page }) => {
+  await page.goto('/herramientas')
+  await expect(page.locator('#cat-imagen a[href="/jpg-a-png"]')).toHaveCount(1)
+  await expect(page.locator('#cat-convertir a[href="/jpg-a-png"]')).toHaveCount(1)
+  await page.locator('#th-q').fill('png')
+  await expect(page.locator('.th-grid a[href="/jpg-a-png"]:visible')).toHaveCount(1)
+
+  await page.goto('/app/#/imagen')
+  await expect(page.getByRole('heading', { name: 'Cambiar de formato' })).toBeVisible()
+  await page.getByRole('button', { name: /Imagen a PNG/ }).click()
+  await expect(page).toHaveURL(/#\/convertir\/img-png$/)
+})
+
+test('rotar imagen ofrece voltear en horizontal y en vertical (W-120)', async ({ page }) => {
+  await page.goto('/rotar-imagen')
+  await upload(page, [{ name: 'foto.png', mimeType: 'image/png', buffer: PNG }])
+  const h = page.getByRole('button', { name: 'Voltear horizontal' })
+  await h.click()
+  await expect(h).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('button', { name: 'Voltear vertical' })).toHaveAttribute('aria-pressed', 'false')
+  await page.getByRole('button', { name: 'Aplicar giro' }).click()
+  const download = page.waitForEvent('download')
+  await page.getByRole('button', { name: 'Descargar' }).click()
+  expect((await download).suggestedFilename()).toMatch(/\.png$/)
+})

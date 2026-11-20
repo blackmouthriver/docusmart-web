@@ -932,6 +932,7 @@ const ko: Messages = {
   'imgt.crop.desc': "자유 또는 1:1, 4:3, 16:9…",
   'imgt.rotate': "회전 및 뒤집기",
   'imgt.rotate.desc': "90° 회전하거나 거울처럼 반전",
+  'imgt.convertTitle': "형식 변환",
   'imgt.heroSub': "사진을 서버에 올리지 않고 압축, 크기 조정, 자르기, 회전하세요.",
   'imgt.back': "이미지 도구로 돌아가기",
   'imgt.privacy': "GPS 위치 같은 사진의 숨은 데이터(EXIF)는 제거됩니다.",
