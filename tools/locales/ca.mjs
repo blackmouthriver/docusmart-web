@@ -455,6 +455,23 @@ export default {
         ["És gratis? Posa marca d'aigua?", "És gratis, sense registre i sense marca d'aigua."],
       ],
     },
+    'marca-de-agua-imagen': {
+      slug: "marca-aigua-imatge",
+      title: "Marca d'aigua a fotos gratis: text o logo, per lots | DocuSmart",
+      description: "Posa el teu nom o el teu logo a les fotos al navegador: posició, mida, opacitat o en mosaic, a moltes alhora. Gratis i sense pujar les teves imatges.",
+      h1: "Marca d'aigua a imatges",
+      howTo: "Com posar una marca d'aigua a una foto en 3 passos",
+      lead: "Protegeix les teves fotos i els teus productes amb un text o el teu logo a sobre. Tria on va, com de gran i com de transparent, i aplica-ho a totes les imatges alhora.",
+      short: "Text o logo sobre les teves fotos",
+      steps: ["Tria una o diverses imatges (JPG, PNG, WebP o HEIC).", "Escriu el text o tria el teu logo i ajusta la posició, la mida i l'opacitat mirant la previsualització.", "Prem \"Aplica la marca d'aigua\" i baixa el resultat; amb diverses imatges, totes juntes en un ZIP."],
+      faq: [
+        ["Puc fer servir el meu logo?", "Sí. Tria \"Logo\" i puja la teva imatge; un PNG amb fons transparent queda millor. El pots posar en un racó, al centre o repetit en mosaic."],
+        ["Què és la marca en mosaic?", "És el text o el logo repetit en diagonal per tota la foto. Costa molt més de treure que una marca en un racó, per això s'utilitza en fotos de productes, immobles o documents."],
+        ["S'aplica igual a moltes fotos?", "Sí. La marca es calcula segons l'amplada de cada imatge, així que es veu igual en fotos grans i petites, verticals o horitzontals. Es baixen totes juntes en un ZIP."],
+        ["La foto perd qualitat?", "No es redueix: la imatge conserva la mida i el format (JPG, PNG o WebP; les HEIC de l'iPhone es desen en JPG). A més, s'eliminen les dades ocultes de la foto (EXIF), com la ubicació GPS."],
+        ["Les meves fotos es pugen a internet?", "No. La marca d'aigua es posa dins del teu navegador: les teves fotos i el teu logo no surten mai del teu dispositiu."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',

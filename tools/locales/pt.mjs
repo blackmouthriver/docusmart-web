@@ -455,6 +455,23 @@ export default {
         ["É grátis? Coloca marca d'água?", "É grátis, sem cadastro e sem marca d'água."],
       ],
     },
+    'marca-de-agua-imagen': {
+      slug: "marca-dagua-imagem",
+      title: "Marca d’água em fotos grátis: texto ou logo, em lote | DocuSmart",
+      description: "Coloque seu nome ou logo nas suas fotos no navegador: posição, tamanho, opacidade ou em mosaico, em várias de uma vez. Grátis e sem enviar suas imagens.",
+      h1: "Marca d’água em imagens",
+      howTo: "Como colocar marca d’água em uma foto em 3 passos",
+      lead: "Proteja suas fotos e seus produtos com um texto ou seu logo por cima. Escolha onde fica, o tamanho e a transparência, e aplique a todas as imagens de uma vez.",
+      short: "Texto ou logo nas suas fotos",
+      steps: ["Escolha uma ou várias imagens (JPG, PNG, WebP ou HEIC).", "Escreva o texto ou escolha seu logo e ajuste a posição, o tamanho e a opacidade olhando a pré-visualização.", "Toque em \"Aplicar marca d’água\" e baixe o resultado; com várias imagens, todas juntas em um ZIP."],
+      faq: [
+        ["Posso usar meu logo?", "Sim. Escolha \"Logo\" e envie sua imagem; um PNG com fundo transparente fica melhor. Você pode colocá-lo em um canto, no centro ou repetido em mosaico."],
+        ["O que é a marca em mosaico?", "É o texto ou o logo repetido na diagonal sobre toda a foto. É muito mais difícil de remover que uma marca no canto, por isso é usada em fotos de produtos, imóveis ou documentos."],
+        ["Fica igual em muitas fotos?", "Sim. A marca é calculada pela largura de cada imagem, então fica igual em fotos grandes e pequenas, verticais ou horizontais. Todas são baixadas juntas em um ZIP."],
+        ["A foto perde qualidade?", "Não é reduzida: a imagem mantém o tamanho e o formato (JPG, PNG ou WebP; as HEIC do iPhone são salvas em JPG). Além disso, os dados ocultos da foto (EXIF), como a localização GPS, são removidos."],
+        ["Minhas fotos são enviadas para a internet?", "Não. A marca d’água é aplicada dentro do seu navegador: suas fotos e seu logo nunca saem do seu dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',

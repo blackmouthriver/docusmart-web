@@ -455,6 +455,23 @@ export default {
         ['Ist es kostenlos? Gibt es ein Wasserzeichen?', 'Es ist kostenlos, ohne Registrierung und ohne Wasserzeichen.'],
       ],
     },
+    'marca-de-agua-imagen': {
+      slug: "bild-wasserzeichen",
+      title: "Wasserzeichen auf Fotos gratis: Text oder Logo, stapelweise | DocuSmart",
+      description: "Setze deinen Namen oder dein Logo im Browser auf deine Fotos: Position, Größe, Deckkraft oder gekachelt, auf viele auf einmal. Gratis und ohne Upload.",
+      h1: "Wasserzeichen auf Bildern",
+      howTo: "So fügst du einem Foto in 3 Schritten ein Wasserzeichen hinzu",
+      lead: "Schütze deine Fotos und Produkte mit einem Text oder deinem Logo darüber. Wähle Position, Größe und Transparenz und wende es auf alle Bilder auf einmal an.",
+      short: "Text oder Logo auf deinen Fotos",
+      steps: ["Wähle ein oder mehrere Bilder (JPG, PNG, WebP oder HEIC).", "Gib den Text ein oder wähle dein Logo und stelle Position, Größe und Deckkraft anhand der Vorschau ein.", "Tippe auf „Wasserzeichen anwenden“ und lade das Ergebnis herunter; bei mehreren Bildern alle zusammen in einer ZIP-Datei."],
+      faq: [
+        ["Kann ich mein Logo verwenden?", "Ja. Wähle „Logo“ und lade dein Bild hoch; ein PNG mit transparentem Hintergrund sieht am besten aus. Du kannst es in eine Ecke, in die Mitte oder gekachelt setzen."],
+        ["Was ist ein gekacheltes Wasserzeichen?", "Der Text oder das Logo wird diagonal über das ganze Foto wiederholt. Das lässt sich viel schwerer entfernen als ein Zeichen in der Ecke und wird deshalb für Produkt-, Immobilien- oder Dokumentfotos genutzt."],
+        ["Wird es auf viele Fotos gleich angewendet?", "Ja. Das Zeichen richtet sich nach der Breite jedes Bildes und sieht daher auf großen und kleinen, Hoch- und Querformat-Fotos gleich aus. Alle werden zusammen als ZIP heruntergeladen."],
+        ["Verliert das Foto an Qualität?", "Es wird nicht verkleinert: Das Bild behält Größe und Format (JPG, PNG oder WebP; HEIC-Fotos vom iPhone werden als JPG gespeichert). Außerdem werden versteckte Fotodaten (EXIF) wie der GPS-Standort entfernt."],
+        ["Werden meine Fotos ins Internet hochgeladen?", "Nein. Das Wasserzeichen wird in deinem Browser gesetzt: Deine Fotos und dein Logo verlassen nie dein Gerät."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',

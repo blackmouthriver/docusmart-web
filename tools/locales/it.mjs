@@ -455,6 +455,23 @@ export default {
         ['È gratis? Aggiunge una filigrana?', 'È gratis, senza registrazione e senza filigrana.'],
       ],
     },
+    'marca-de-agua-imagen': {
+      slug: "filigrana-immagine",
+      title: "Filigrana sulle foto gratis: testo o logo, in blocco | DocuSmart",
+      description: "Metti il tuo nome o il tuo logo sulle foto nel browser: posizione, dimensione, opacità o a mosaico, su molte insieme. Gratis e senza caricare le immagini.",
+      h1: "Filigrana sulle immagini",
+      howTo: "Come mettere una filigrana su una foto in 3 passaggi",
+      lead: "Proteggi le tue foto e i tuoi prodotti con un testo o il tuo logo sopra. Scegli dove va, quanto è grande e quanto è trasparente, e applicalo a tutte le immagini in una volta.",
+      short: "Testo o logo sulle tue foto",
+      steps: ["Scegli una o più immagini (JPG, PNG, WebP o HEIC).", "Scrivi il testo o scegli il tuo logo e regola posizione, dimensione e opacità guardando l'anteprima.", "Premi \"Applica filigrana\" e scarica il risultato; con più immagini, tutte insieme in uno ZIP."],
+      faq: [
+        ["Posso usare il mio logo?", "Sì. Scegli \"Logo\" e carica la tua immagine; un PNG con sfondo trasparente rende meglio. Puoi metterlo in un angolo, al centro o ripeterlo a mosaico."],
+        ["Cos'è la filigrana a mosaico?", "È il testo o il logo ripetuto in diagonale su tutta la foto. È molto più difficile da rimuovere di un marchio in un angolo, per questo si usa per foto di prodotti, immobili o documenti."],
+        ["Viene applicata allo stesso modo a tante foto?", "Sì. La filigrana si calcola in base alla larghezza di ogni immagine, quindi appare uguale su foto grandi e piccole, verticali od orizzontali. Si scaricano tutte insieme in uno ZIP."],
+        ["La foto perde qualità?", "Non viene ridotta: l'immagine mantiene dimensioni e formato (JPG, PNG o WebP; le HEIC dell'iPhone vengono salvate in JPG). Inoltre vengono rimossi i dati nascosti della foto (EXIF), come la posizione GPS."],
+        ["Le mie foto vengono caricate su internet?", "No. La filigrana viene applicata nel tuo browser: le tue foto e il tuo logo non lasciano mai il tuo dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',

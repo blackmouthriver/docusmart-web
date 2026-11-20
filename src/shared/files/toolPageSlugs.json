@@ -298,6 +298,19 @@
     "ko": "passport-photo",
     "zh": "passport-photo"
   },
+  "marca-de-agua-imagen": {
+    "en": "watermark-image",
+    "pt": "marca-dagua-imagem",
+    "fr": "filigrane-image",
+    "it": "filigrana-immagine",
+    "de": "bild-wasserzeichen",
+    "ca": "marca-aigua-imatge",
+    "eu": "irudi-ur-marka",
+    "ru": "add-watermark-to-image",
+    "ja": "add-watermark-to-image",
+    "ko": "add-watermark-to-image",
+    "zh": "add-watermark-to-image"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",
