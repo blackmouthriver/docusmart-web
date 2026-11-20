@@ -46,19 +46,6 @@ test('ads.txt y app-ads.txt autorizan al editor de Google (AdSense y AdMob)', as
   }
 })
 
-test('con la publicidad apagada no se descarga nada de AdSense ni se reserva espacio (W-90)', async ({ page }) => {
-  const ads: string[] = []
-  page.on('request', (r) => {
-    if (/googlesyndication|doubleclick|adtrafficquality/.test(r.url())) ads.push(r.url())
-  })
-  for (const path of ['/unir-pdf', '/herramientas', '/app/', '/app/#/convertir']) {
-    await page.goto(path)
-    await page.waitForLoadState('networkidle')
-    await expect(page.locator('.ad-slot, ins.adsbygoogle'), path).toHaveCount(0)
-  }
-  expect(ads).toEqual([])
-})
-
 test('assetlinks.json autoriza a la app de Play a abrir los enlaces (W-18)', async ({ request }) => {
   const res = await request.get('/.well-known/assetlinks.json', { maxRedirects: 0 })
   expect(res.status()).toBe(200)

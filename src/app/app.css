@@ -85,7 +85,7 @@ p { margin: 0; }
 .side-foot .link-btn { color: var(--on-night-soft); font-size: 12.5px; }
 .home-foot { display: flex; flex-wrap: wrap; gap: 0 18px; margin-top: 22px; color: var(--ink-faint); font-size: 13px; }
 /* Relleno vertical para que se toquen fácil con el dedo (~36 px de alto). */
-.home-foot a { color: inherit; padding: 8px 0; }
+.home-foot a, .home-foot .link-btn { color: inherit; padding: 8px 0; min-height: 24px; }
 
 .main { margin-left: var(--sidebar); min-height: 100dvh; transition: margin-left 420ms cubic-bezier(.22, 1, .36, 1); }
 

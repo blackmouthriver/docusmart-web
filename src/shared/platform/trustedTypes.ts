@@ -14,8 +14,12 @@
  */
 import { adsEnabled, ADS_ORIGIN } from './adsConfig'
 
+/** Scripts que carga AdSense además del principal: verificación de tráfico y mensaje de consentimiento. */
+const ADS_EXTRA_ORIGINS = ['https://tpc.googlesyndication.com', 'https://fundingchoicesmessages.google.com']
+const ADS_HOST_SUFFIX = '.adtrafficquality.google'
+
 export function scriptOrigins(ads = adsEnabled()): string[] {
-  return ['https://www.googletagmanager.com', ...(ads ? [ADS_ORIGIN] : [])]
+  return ['https://www.googletagmanager.com', ...(ads ? [ADS_ORIGIN, ...ADS_EXTRA_ORIGINS] : [])]
 }
 
 export function isAllowedScriptUrl(raw: string, base = location.href, ads = adsEnabled()): boolean {
@@ -26,6 +30,7 @@ export function isAllowedScriptUrl(raw: string, base = location.href, ads = adsE
     return false
   }
   if (url.protocol === 'blob:') return url.href.startsWith(`blob:${new URL(base).origin}/`)
+  if (ads && url.protocol === 'https:' && url.hostname.endsWith(ADS_HOST_SUFFIX)) return true
   return url.origin === new URL(base).origin || scriptOrigins(ads).includes(url.origin)
 }
 

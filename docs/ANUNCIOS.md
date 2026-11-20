@@ -1,4 +1,8 @@
-# Publicidad en la web (W-90) — cómo activarla
+# Publicidad en la web (W-90)
+
+> **Estado (2026-11-20): ACTIVADA.** IDs en `adsConfig.ts`, CSP abierta (incluye `trusted-types … goog#html 'allow-duplicates'` y `style-src 'unsafe-inline'`, que AdSense necesita: probado con las cabeceras de producción sin violaciones), aviso "Privacidad y cookies" que vuelve a preguntar a quien decidió antes de los anuncios (`ds-consent-scope`), política de privacidad actualizada y E2E en `tests/e2e/anuncios.spec.ts`. Los anuncios aparecen cuando AdSense marque el sitio como "Listo". Lo de abajo queda como referencia.
+
+## Cómo se activó
 
 La base ya está en el código y está **apagada**. Mientras `AD_SLOTS` (en
 `src/shared/platform/adsConfig.ts`) esté vacío:

@@ -16,6 +16,8 @@ import { adsEnabled } from './adsConfig'
 type Params = Record<string, string | number | boolean>
 
 const CONSENT_KEY = 'ds-consent'
+/** Con anuncios activos (W-90), la decisión debe haberse tomado viendo el aviso que los menciona. */
+const SCOPE_KEY = 'ds-consent-scope'
 export type Consent = 'granted' | 'denied'
 
 const config = {
@@ -39,6 +41,8 @@ const queue: Array<[string, Params | undefined]> = []
 export function getConsent(): Consent | null {
   try {
     const v = localStorage.getItem(CONSENT_KEY)
+    // Una decisión anterior a los anuncios no vale para ellos: se vuelve a preguntar.
+    if (adsEnabled() && localStorage.getItem(SCOPE_KEY) !== 'ads') return null
     return v === 'granted' || v === 'denied' ? v : null
   } catch {
     return null
@@ -48,6 +52,7 @@ export function getConsent(): Consent | null {
 export function setConsent(value: Consent) {
   try {
     localStorage.setItem(CONSENT_KEY, value)
+    if (adsEnabled()) localStorage.setItem(SCOPE_KEY, 'ads')
   } catch {
     /* almacenamiento bloqueado: el consentimiento dura solo esta visita */
   }

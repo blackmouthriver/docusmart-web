@@ -51,6 +51,12 @@ describe('anuncios (W-90)', () => {
     expect(scriptOrigins(true)).toContain(ADS_ORIGIN)
     expect(isAllowedScriptUrl(ADS_SCRIPT, base, false)).toBe(false)
     expect(isAllowedScriptUrl(ADS_SCRIPT, base, true)).toBe(true)
+    // Scripts auxiliares de AdSense: verificación de tráfico y mensaje de consentimiento.
+    expect(isAllowedScriptUrl('https://ep2.adtrafficquality.google/sodar/x.js', base, true)).toBe(true)
+    expect(isAllowedScriptUrl('https://fundingchoicesmessages.google.com/i/x.js', base, true)).toBe(true)
+    expect(isAllowedScriptUrl('https://ep2.adtrafficquality.google/sodar/x.js', base, false)).toBe(false)
+    expect(isAllowedScriptUrl('https://evil-adtrafficquality.google.example/x.js', base, true)).toBe(false)
+    expect(isAllowedScriptUrl('http://ep2.adtrafficquality.google/x.js', base, true)).toBe(false)
   })
 
   it('la CSP de firebase.json se abre a AdSense si y solo si los anuncios están activos', () => {

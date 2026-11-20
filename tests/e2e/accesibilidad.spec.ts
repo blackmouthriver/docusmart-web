@@ -54,3 +54,12 @@ test('sin problemas de accesibilidad en modo oscuro', async ({ page }) => {
     expect(await audit(page), path).toEqual([])
   }
 })
+
+test.describe('aviso de privacidad y cookies', () => {
+  test.use({ presetConsent: 'none' })
+  test('sin problemas de accesibilidad @movil', async ({ page }) => {
+    await page.goto('/unir-pdf')
+    await expect(page.getByRole('dialog', { name: 'Privacidad y cookies' })).toBeVisible()
+    expect(await audit(page)).toEqual([])
+  })
+})
