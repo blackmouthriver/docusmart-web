@@ -8,7 +8,11 @@ test('la app carga y la barra lateral lleva a Todas las herramientas, con carrus
   await expect(page).toHaveURL(/#\/herramientas/)
   await expect(page.locator('.tools-marquee .tools-track')).toHaveCount(2)
   await page.getByPlaceholder(/Por ejemplo/).fill('marca de agua')
-  await expect(page.locator('.tools-grid .quick')).toHaveCount(1)
+  // La de PDF y la de imágenes (W-123), una vez cada una.
+  const found = page.locator('.tools-grid .quick')
+  await expect(found).toHaveCount(2)
+  await expect(found.filter({ hasText: 'Un texto en diagonal sobre cada página' })).toHaveCount(1)
+  await expect(found.filter({ hasText: 'Texto o logo sobre tus fotos, por lotes' })).toHaveCount(1)
 })
 
 test('Ajustes se abre, cambia el tema y se cierra con Esc', async ({ page }) => {

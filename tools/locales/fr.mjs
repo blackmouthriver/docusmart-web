@@ -455,6 +455,23 @@ export default {
         ['Est-ce gratuit ? Y a-t-il un filigrane ?', "C'est gratuit, sans inscription et sans filigrane."],
       ],
     },
+    'marca-de-agua-imagen': {
+      slug: "filigrane-image",
+      title: "Filigrane sur photos gratuit : texte ou logo, par lots | DocuSmart",
+      description: "Ajoutez votre nom ou votre logo sur vos photos dans le navigateur : position, taille, opacité ou mosaïque, sur plusieurs à la fois. Gratuit et sans envoi.",
+      h1: "Filigrane sur images",
+      howTo: "Comment ajouter un filigrane à une photo en 3 étapes",
+      lead: "Protégez vos photos et vos produits avec un texte ou votre logo par-dessus. Choisissez l'emplacement, la taille et la transparence, puis appliquez-le à toutes vos images d'un coup.",
+      short: "Texte ou logo sur vos photos",
+      steps: ["Choisissez une ou plusieurs images (JPG, PNG, WebP ou HEIC).", "Saisissez le texte ou choisissez votre logo, puis réglez la position, la taille et l'opacité en regardant l'aperçu.", "Appuyez sur « Appliquer le filigrane » et téléchargez le résultat ; avec plusieurs images, toutes ensemble dans un ZIP."],
+      faq: [
+        ["Puis-je utiliser mon logo ?", "Oui. Choisissez « Logo » et ajoutez votre image ; un PNG à fond transparent donne le meilleur résultat. Vous pouvez le placer dans un coin, au centre ou le répéter en mosaïque."],
+        ["Qu'est-ce qu'un filigrane en mosaïque ?", "C'est le texte ou le logo répété en diagonale sur toute la photo. Il est bien plus difficile à retirer qu'une marque dans un coin, c'est pourquoi on l'utilise pour les photos de produits, de biens immobiliers ou de documents."],
+        ["Est-il appliqué de la même façon à toutes les photos ?", "Oui. Le filigrane est dimensionné selon la largeur de chaque image : il a le même aspect sur les grandes et les petites photos, verticales ou horizontales. Elles sont téléchargées ensemble dans un ZIP."],
+        ["La photo perd-elle en qualité ?", "Elle n'est pas réduite : l'image garde sa taille et son format (JPG, PNG ou WebP ; les HEIC de l'iPhone sont enregistrées en JPG). Les données cachées de la photo (EXIF), comme la position GPS, sont aussi supprimées."],
+        ["Mes photos sont-elles envoyées sur Internet ?", "Non. Le filigrane est ajouté dans votre navigateur : vos photos et votre logo ne quittent jamais votre appareil."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',

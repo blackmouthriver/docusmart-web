@@ -455,6 +455,23 @@ export default {
         ['Is it free? Does it add a watermark?', 'It is free, with no sign-up and no watermark.'],
       ],
     },
+    'marca-de-agua-imagen': {
+      slug: 'watermark-image',
+      title: 'Free photo watermark: text or logo, in batches | DocuSmart',
+      description: 'Put your name or logo on your photos in the browser: position, size, opacity or tiled, on many at once. Free and without uploading your images.',
+      h1: 'Watermark images',
+      howTo: 'How to watermark a photo in 3 steps',
+      lead: 'Protect your photos and products with text or your logo on top. Choose where it goes, how big and how transparent, and apply it to all your images at once.',
+      short: 'Text or logo on your photos',
+      steps: ['Choose one or more images (JPG, PNG, WebP or HEIC).', 'Type the text or choose your logo, and adjust the position, size and opacity while watching the preview.', 'Press "Apply watermark" and download the result; with several images, all together in a ZIP.'],
+      faq: [
+        ['Can I use my logo?', 'Yes. Choose "Logo" and upload your image; a PNG with a transparent background looks best. You can place it in a corner, in the center or repeated as a tile.'],
+        ['What is a tiled watermark?', 'It is the text or logo repeated diagonally across the whole photo. It is much harder to remove than a mark in a corner, which is why it is used for product, real estate or document photos.'],
+        ['Is it applied the same way to many photos?', 'Yes. The mark is sized by the width of each image, so it looks the same on large and small, portrait or landscape photos. They are all downloaded together in a ZIP.'],
+        ['Does the photo lose quality?', 'It is not shrunk: the image keeps its size and format (JPG, PNG or WebP; iPhone HEIC photos are saved as JPG). Hidden photo data (EXIF), such as the GPS location, is also removed.'],
+        ['Are my photos uploaded to the internet?', 'No. The watermark is added inside your browser: your photos and your logo never leave your device.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

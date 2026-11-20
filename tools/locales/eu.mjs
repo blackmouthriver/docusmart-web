@@ -460,6 +460,23 @@ export default {
         ['Doakoa da? Ur-markarik jartzen du?', 'Doakoa da, erregistratu gabe eta ur-markarik gabe.'],
       ],
     },
+    'marca-de-agua-imagen': {
+      slug: "irudi-ur-marka",
+      title: "Ur-marka argazkietan doan: testua edo logoa, multzoka | DocuSmart",
+      description: "Jarri zure izena edo logoa argazkietan nabigatzailean: kokapena, tamaina, opakutasuna edo mosaikoan, askotan aldi berean. Doan eta irudiak igo gabe.",
+      h1: "Ur-marka irudietan",
+      howTo: "Nola jarri ur-marka argazki bati 3 urratsetan",
+      lead: "Babestu zure argazkiak eta produktuak testu batekin edo zure logoarekin gainean. Aukeratu non doan, zein handia eta zein gardena, eta aplikatu irudi guztiei batera.",
+      short: "Testua edo logoa zure argazkietan",
+      steps: ["Aukeratu irudi bat edo gehiago (JPG, PNG, WebP edo HEIC).", "Idatzi testua edo aukeratu zure logoa, eta doitu kokapena, tamaina eta opakutasuna aurrebistari begira.", "Sakatu «Aplikatu ur-marka» eta deskargatu emaitza; hainbat irudirekin, denak batera ZIP batean."],
+      faq: [
+        ["Nire logoa erabil dezaket?", "Bai. Aukeratu «Logoa» eta igo zure irudia; atzeko plano gardena duen PNG bat hobeto geratzen da. Izkina batean, erdian edo mosaikoan errepikatuta jar dezakezu."],
+        ["Zer da mosaikoko marka?", "Testua edo logoa argazki osoan diagonalean errepikatuta da. Izkinako marka bat baino askoz zailagoa da kentzen; horregatik erabiltzen da produktu, etxebizitza edo dokumentuen argazkietan."],
+        ["Argazki askori berdin aplikatzen zaie?", "Bai. Marka irudi bakoitzaren zabaleraren arabera kalkulatzen da, beraz berdin ikusten da argazki handi eta txikietan, bertikal edo horizontaletan. Denak batera deskargatzen dira ZIP batean."],
+        ["Argazkiak kalitatea galtzen du?", "Ez da txikitzen: irudiak bere tamaina eta formatua gordetzen ditu (JPG, PNG edo WebP; iPhoneko HEICak JPG gisa gordetzen dira). Gainera, argazkiaren datu ezkutuak (EXIF) kentzen dira, GPS kokapena adibidez."],
+        ["Nire argazkiak internetera igotzen dira?", "Ez. Ur-marka zure nabigatzailean jartzen da: zure argazkiak eta logoa ez dira inoiz zure gailutik ateratzen."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',

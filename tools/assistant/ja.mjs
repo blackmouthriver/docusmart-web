@@ -62,6 +62,7 @@ export default {
     { id: 'quitar-fondo', q: ['写真の背景を消す', '背景 削除', '背景 透明', '人物を切り抜き', '背景なし png', '写真の背景を白にする', '画像 背景 透過', 'remove background'], a: '「背景を削除」を使ってください。AIが人物・商品・動物を切り抜き、透明なPNG、白い背景、または好きな色の背景にします。ブラウザー内で動くので写真はアップロードされません。初回のみAIモデル（約90 MB）をダウンロードして保存します。', actions: [['tool', 'quitar-fondo']], related: ['privacidad'] },
     { id: 'foto-tamano-documento', q: ['証明写真', 'パスポート写真', 'ビザ用の写真', '証明写真 白背景', 'パスポート 35x45', '履歴書 写真 サイズ', '身分証 写真', 'passport photo'], a: '「証明写真」を使ってください。サイズ（パスポート・ビザは35 × 45 mm、米国は2 × 2 in、30 × 40 mm やその他）を選び、顔を枠に合わせて、AIで白い背景にします。300 dpiのJPG、または複数枚を並べた10 × 15 cmシートとしてダウンロードできます。すべてブラウザー内で行われます。', actions: [['tool', 'foto-tamano-documento']], related: ['quitar-fondo'] },
     { id: 'heic-a-jpg', q: ['heic jpg 変換', 'heic 変換', 'heic ファイルを開く', 'iphone 写真 windows', 'iphone 写真 jpg に変換', 'heif ファイル', 'iphoneの写真が開けない', 'heic to jpg'], a: '「HEIC を JPG に」を使ってください。iPhone の HEIC 写真を JPG（または PNG）に変換します。複数まとめて、好きな画質で変換できます。変換はブラウザ内で行われ、写真はアップロードされません。', actions: [['tool', 'heic-a-jpg']] },
+    { id: 'marca-de-agua-imagen', q: ["写真に透かし", "写真にロゴを入れる", "画像 透かし", "写真を保護したい", "写真に名前を入れる", "複数の写真に透かし", "watermark"], a: "「画像」の「透かし」を使ってください。写真にテキストやロゴを入れ、位置（またはタイル状）、サイズ、不透明度を選んで、複数の画像にまとめて適用できます。PDFには「PDF」の「透かし」があります。", actions: [['tool', 'marca-de-agua-imagen'], ['tool', 'marca-de-agua-pdf']] },
     { id: 'contacto', q: ['お問い合わせ', 'サポート', '人と話したい', '問題があります', 'バグを報告'], a: 'supportdocusmart@docusmart.online へのメール、または Facebook か Instagram でご連絡ください。お返事します。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

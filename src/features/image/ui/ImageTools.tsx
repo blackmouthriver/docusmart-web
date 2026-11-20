@@ -1,5 +1,5 @@
-// Herramientas de imagen: comprimir, redimensionar, recortar, rotar, quitar fondo y foto tamaño documento, en el navegador.
-import { useEffect, useMemo, useState, type ComponentType, type ReactNode } from 'react'
+// Herramientas de imagen: comprimir, redimensionar, recortar, rotar, quitar fondo, foto tamaño documento y marca de agua, en el navegador.
+import { useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from 'react'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Progress, Segmented, errorMessage } from '../../../shared/ui/ui'
@@ -30,6 +30,8 @@ import {
 } from '../core/imageTools'
 import { MODEL as BG_MODEL, backgroundOutputName, parseBackground } from '../core/background'
 import { looksLikeHeic } from '../../convert/core/heic'
+import { WATERMARK_POSITIONS, clampPercent, type WatermarkPosition } from '../core/watermark'
+import type { Mark } from '../infra/watermarkCanvas'
 import { ID_MAX_MM, ID_MIN_MM, ID_PRESETS, formatMm, idPhotoName, idPixels, parseSizeMm, portraitCrop, sheetLayout, type IdPresetId, type IdSize } from '../core/idPhoto'
 import type { Margins } from '../../pdf/core/pdfCrop'
 import { track } from '../../../shared/platform/analytics'
@@ -44,6 +46,7 @@ const TOOLS: Array<{ id: string; name: MessageKey; desc: MessageKey; icon: IconN
   { id: 'rotar', name: 'imgt.rotate', desc: 'imgt.rotate.desc', icon: 'rotate', cls: 'ico-violet' },
   { id: 'fondo', name: 'imgt.removeBg', desc: 'imgt.removeBg.desc', icon: 'eraser', cls: 'ico-cyan' },
   { id: 'documento', name: 'imgt.idPhoto', desc: 'imgt.idPhoto.desc', icon: 'user', cls: 'ico-blue' },
+  { id: 'marca', name: 'imgt.watermark', desc: 'imgt.watermark.desc', icon: 'stamp', cls: 'ico-green' },
 ]
 
 // Conversiones de formato (W-119): viven en Convertir, pero también se ofrecen aquí.
@@ -62,6 +65,7 @@ export const IMAGE_TOOLS: Record<string, ComponentType> = {
   rotar: RotateImageTool,
   fondo: RemoveBackgroundTool,
   documento: IdPhotoTool,
+  marca: WatermarkImageTool,
 }
 
 export function ImageToolsScreen({ sub }: { sub?: string }) {
@@ -795,5 +799,156 @@ function IdPhotoTool() {
       </div>
       {file && output && <BeforeAfter original={file} result={output} toolName="id_photo" title={tr('imgt.title.idPhoto')} />}
     </Panel>
+  )
+}
+
+/* ───────────── Marca de agua (W-123) ───────────── */
+
+function WatermarkImageTool() {
+  const b = useBatch('watermark_image')
+  const [kind, setKind] = useState<'text' | 'logo'>('text')
+  const [text, setText] = useState('')
+  const [color, setColor] = useState('#ffffff')
+  const [logoFile, setLogoFile] = useState<File | null>(null)
+  const [logo, setLogo] = useState<ImageBitmap | null>(null)
+  const [size, setSize] = useState(30)
+  const [opacity, setOpacity] = useState(50)
+  const [position, setPosition] = useState<WatermarkPosition>('br')
+  const [error, setError] = useState<string | null>(null)
+  const logoInput = useRef<HTMLInputElement>(null)
+  const canvas = useRef<HTMLCanvasElement>(null)
+  const [preview, setPreview] = useState<ImageBitmap | null>(null)
+
+  // El logo se abre una vez (y se libera al cambiarlo).
+  useEffect(() => {
+    setLogo(null)
+    setError(null)
+    if (!logoFile) return
+    let alive = true
+    let bmp: ImageBitmap | null = null
+    void import('../infra/imageCanvas')
+      .then((m) => m.loadImage(logoFile))
+      .then((img) => {
+        bmp = img.bmp
+        if (alive) setLogo(img.bmp)
+        else img.bmp.close()
+      })
+      .catch((e: unknown) => alive && setError(errorMessage(e)))
+    return () => {
+      alive = false
+      bmp?.close()
+    }
+  }, [logoFile])
+
+  // Copia reducida de la primera imagen para la vista previa.
+  const first = b.files[0] ?? null
+  useEffect(() => {
+    setPreview(null)
+    if (!first) return
+    let alive = true
+    let bmp: ImageBitmap | null = null
+    void import('../infra/watermarkCanvas')
+      .then((m) => m.previewBitmap(first))
+      .then((p) => {
+        bmp = p
+        if (alive) setPreview(p)
+        else p.close()
+      })
+      .catch(() => undefined)
+    return () => {
+      alive = false
+      bmp?.close()
+    }
+  }, [first])
+
+  const mark: Mark | null =
+    kind === 'text' ? (text.trim() ? { kind, text, color, size, opacity, position } : null) : logo ? { kind, logo, size, opacity, position } : null
+
+  useEffect(() => {
+    const target = canvas.current
+    if (!target || !preview) return
+    void import('../infra/watermarkCanvas').then((m) => m.drawPreview(target, preview, mark))
+  })
+
+  const change = <T,>(set: (v: T) => void) => (v: T) => {
+    set(v)
+    b.setResults(null)
+  }
+
+  const run = () => {
+    if (!mark) return
+    return b.run(async (file) => {
+      const { applyWatermark } = await import('../infra/watermarkCanvas')
+      const mime = outputMime(file.type, file.name)
+      const r = await applyWatermark(file, mark, mime)
+      return { name: outputName(file.name, tr('file.watermark'), mime), ...r }
+    })
+  }
+
+  return (
+    <div className="stack">
+      <Panel>
+        {b.picker()}
+        <div className="field">
+          <span>{tr('wmi.kind')}</span>
+          <Segmented label={tr('wmi.kind')} value={kind} onChange={change(setKind)} options={[{ value: 'text', label: tr('wmi.text') }, { value: 'logo', label: tr('wmi.logo') }]} />
+        </div>
+        {kind === 'text' ? (
+          <div className="row">
+            <label className="field" style={{ flex: 3, minWidth: 180 }}>
+              <span>{tr('wmi.textLabel')}</span>
+              <input className="input" type="text" maxLength={80} value={text} placeholder={tr('wmi.textPlaceholder')} onChange={(e) => change(setText)(e.target.value)} />
+            </label>
+            <label className="field bg-color" style={{ flex: 1, minWidth: 90 }}>
+              <span>{tr('wmi.color')}</span>
+              <input type="color" value={color} onChange={(e) => change(setColor)(e.target.value)} />
+            </label>
+          </div>
+        ) : (
+          <div className="row">
+            <button type="button" className="btn btn-soft btn-sm" onClick={() => logoInput.current?.click()}>
+              <Icon name="upload" /> {logoFile ? tr('wmi.changeLogo') : tr('wmi.pickLogo')}
+            </button>
+            {logoFile && <span className="faint">{logoFile.name}</span>}
+            <input ref={logoInput} type="file" accept="image/png,image/webp,image/jpeg,image/svg+xml" hidden aria-label={tr('wmi.pickLogo')} onChange={(e) => { change(setLogoFile)(e.target.files?.[0] ?? null); e.target.value = '' }} />
+          </div>
+        )}
+        {kind === 'logo' && <small className="faint">{tr('wmi.logoTip')}</small>}
+        <label className="field">
+          <span>{tr('wmi.position')}</span>
+          <select className="input" value={position} onChange={(e) => change(setPosition)(e.target.value as WatermarkPosition)}>
+            {WATERMARK_POSITIONS.map((p) => (
+              <option key={p} value={p}>{tr(`wmi.pos.${p}` as MessageKey)}</option>
+            ))}
+          </select>
+        </label>
+        <div className="row">
+          <label className="field" style={{ flex: 1, minWidth: 160 }}>
+            <span>{tr('wmi.size', { n: size })}</span>
+            <input type="range" min={5} max={90} step={1} value={size} onChange={(e) => change(setSize)(clampPercent(Number(e.target.value), 5, 90, 30))} />
+          </label>
+          <label className="field" style={{ flex: 1, minWidth: 160 }}>
+            <span>{tr('wmi.opacity', { n: opacity })}</span>
+            <input type="range" min={10} max={100} step={5} value={opacity} onChange={(e) => change(setOpacity)(clampPercent(Number(e.target.value), 10, 100, 50))} />
+          </label>
+        </div>
+        {preview && (
+          <figure className="wm-preview">
+            <canvas ref={canvas} role="img" aria-label={tr('wmi.preview')} />
+            {b.files.length > 1 && <figcaption className="faint">{tr('wmi.sameMark', { n: b.files.length })}</figcaption>}
+          </figure>
+        )}
+        <small className="faint">{tr('imgt.keepFormat')} {tr('imgt.privacy')}</small>
+        {b.files.length > 0 && !mark && <small className="faint">{kind === 'text' ? tr('wmi.needText') : tr('wmi.needLogo')}</small>}
+        {error && <Notice kind="error">{error}</Notice>}
+        {b.busy && <Progress value={b.progress} />}
+        <div className="row row-end">
+          <BusyButton busy={b.busy} disabled={!b.files.length || !mark} onClick={run} icon="stamp">
+            {b.files.length > 1 ? tr('wmi.runN', { n: b.files.length }) : tr('wmi.run')}
+          </BusyButton>
+        </div>
+      </Panel>
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipWatermark')}.zip`} toolName="watermark_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.watermark')} />}
+    </div>
   )
 }

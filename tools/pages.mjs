@@ -9,7 +9,7 @@
 //       { kind: 'hash' }
 //
 // alsoIn: otras categorías donde también se lista (W-119), sin duplicar la página.
-//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo'|'documento' }
+//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo'|'documento'|'marca' }
 
 export const SITE = 'https://docusmart.online'
 /** Redes sociales de DocuSmart (pie de página y datos estructurados). */
@@ -550,6 +550,30 @@ export const pages = [
       ['¿Sale del tamaño correcto al imprimir?', 'Sí. La foto se guarda en JPG a 300 ppp, con la resolución marcada en el archivo, así que se imprime a la medida exacta. Con "Hoja 10 × 15 cm" obtienes varias copias con una línea suave para recortar, lista para cualquier laboratorio o impresora de fotos.'],
       ['¿Mis fotos se suben a internet?', 'No. Todo, incluida la IA del fondo, se hace dentro de tu navegador: tu foto nunca sale de tu equipo.'],
       ['¿Es gratis? ¿Pone marca de agua?', 'Es gratis, sin registro y sin marca de agua.'],
+    ],
+  },
+  {
+    slug: 'marca-de-agua-imagen',
+    category: 'imagen',
+    tool: { kind: 'img', id: 'marca' },
+    title: 'Marca de agua en fotos gratis: texto o logo, por lotes | DocuSmart',
+    description:
+      'Pon tu nombre o tu logo sobre tus fotos en el navegador: posición, tamaño, opacidad o en mosaico, en muchas a la vez. Gratis y sin subir tus imágenes.',
+    h1: 'Marca de agua en imágenes',
+    howTo: 'Cómo poner marca de agua a una foto en 3 pasos',
+    lead: 'Protege tus fotos y tus productos con un texto o tu logo encima. Eliges dónde va, qué tan grande y qué tan transparente, y lo aplicas a todas tus imágenes de una vez.',
+    short: 'Texto o logo sobre tus fotos',
+    steps: [
+      'Elige una o varias imágenes (JPG, PNG, WebP o HEIC).',
+      'Escribe el texto o elige tu logo, y ajusta la posición, el tamaño y la opacidad mirando la vista previa.',
+      'Pulsa "Aplicar marca de agua" y descarga el resultado; con varias imágenes, todas juntas en un ZIP.',
+    ],
+    faq: [
+      ['¿Puedo usar mi logo?', 'Sí. Elige "Logo" y sube tu imagen; un PNG con fondo transparente queda mejor. Puedes ponerlo en una esquina, en el centro o repetido en mosaico.'],
+      ['¿Qué es la marca en mosaico?', 'Es el texto o el logo repetido en diagonal sobre toda la foto. Cuesta mucho más quitarlo que una marca en una esquina, por eso se usa en fotos de productos, inmuebles o documentos.'],
+      ['¿Se aplica igual a muchas fotos?', 'Sí. La marca se calcula según el ancho de cada imagen, así que se ve igual en fotos grandes y pequeñas, verticales u horizontales. Se descargan todas juntas en un ZIP.'],
+      ['¿Pierde calidad la foto?', 'No se reduce: la imagen conserva su tamaño y su formato (JPG, PNG o WebP; las HEIC del iPhone se guardan en JPG). Además se quitan los datos ocultos de la foto (EXIF), como la ubicación GPS.'],
+      ['¿Mis fotos se suben a internet?', 'No. La marca de agua se pone dentro de tu navegador: tus fotos y tu logo nunca salen de tu equipo.'],
     ],
   },
   {
