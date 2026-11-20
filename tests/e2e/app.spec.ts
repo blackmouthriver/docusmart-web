@@ -61,6 +61,9 @@ test('el menú lateral se desplaza en ventanas bajas y la pestaña de plegar no 
   const toggle = await page.getByRole('button', { name: 'Contraer menú' }).boundingBox()
   const brand = await page.locator('.side-brand').boundingBox()
   expect(toggle!.y).toBeGreaterThan(brand!.y + brand!.height)
+  // Y queda entera fuera de la barra: no tapa la barra de desplazamiento del menú.
+  const sidebar = await page.locator('.sidebar').boundingBox()
+  expect(toggle!.x).toBeGreaterThanOrEqual(sidebar!.x + sidebar!.width - 0.5)
   await page.getByRole('button', { name: 'Contraer menú' }).click()
   await expect(page.getByRole('button', { name: 'Expandir menú' })).toBeVisible()
   await page.getByRole('button', { name: 'Expandir menú' }).click()

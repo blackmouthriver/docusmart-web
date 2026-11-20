@@ -16,7 +16,7 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
 })
 
-const PAGES = ['/', '/en/', '/privacidad', '/herramientas', '/unir-pdf', '/ja/image-to-webp', '/guias', '/guias/reducir-tamano-pdf', '/en/guides/sign-pdf-without-printing', '/pt/guias', '/app/', '/app/#/herramientas', '/app/#/pdf', '/app/#/convertir', '/app/#/qr/crear', '/app/#/estudio/notas']
+const PAGES = ['/', '/en/', '/privacidad', '/herramientas', '/unir-pdf', '/ja/image-to-webp', '/guias', '/guias/reducir-tamano-pdf', '/en/guides/sign-pdf-without-printing', '/pt/guias', '/de/anleitungen/pdf-verkleinern', '/ja/guides/photos-to-pdf', '/app/', '/app/#/herramientas', '/app/#/pdf', '/app/#/convertir', '/app/#/qr/crear', '/app/#/estudio/notas']
 
 for (const path of PAGES) {
   test(`sin problemas de accesibilidad: ${path} @movil`, async ({ page }) => {
