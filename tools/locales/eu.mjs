@@ -321,6 +321,28 @@ export default {
         ['Fitxategia igotzen da?', 'Ez. Konponketa zure nabigatzailean gertatzen da.'],
       ],
     },
+    'calcular-hash': {
+      slug: 'hasha-kalkulatu',
+      title: 'Kalkulatu eta egiaztatu SHA-256 edo MD5 hasha online | DocuSmart',
+      description:
+        'Kalkulatu edozein fitxategiren SHA-256, SHA-512, SHA-1 edo MD5 hasha, egiaztatu bat datorren edo alderatu bi fitxategi. Doan eta ezer igo gabe: dena zure nabigatzailean gertatzen da.',
+      h1: 'Kalkulatu eta egiaztatu hasha (SHA-256, MD5)',
+      howTo: 'Nola kalkulatu edo egiaztatu fitxategi baten hasha 3 urratsetan',
+      lead: 'Egiaztatu dokumentu bat ez dela aldatu: kalkulatu bere hatz-marka digitala, egiaztatu eman dizutenarekin edo alderatu bi fitxategi, zure ekipotik irten gabe.',
+      short: 'Fitxategien hatz-marka digitala',
+      steps: [
+        'Aukeratu «Kalkulatu», «Egiaztatu» edo «Alderatu» eta gehitu fitxategia (edozein mota: PDFa, argazkiak, ZIPa…).',
+        'Hautatu algoritmoa (SHA-256 gomendatua) edo itsatsi eman dizuten hasha; DocuSmart-ek ezagutzen du SHA-256, SHA-512, SHA-1 edo MD5 den.',
+        'Kopiatu hasha, deskargatu zerrenda edo PDF osotasun-ziurtagiri bat, edo begiratu bat datorren.',
+      ],
+      faq: [
+        ['Zer da hash bat?', 'Fitxategiaren hatz-marka digitala da: bere edukitik kalkulatzen den letra eta zenbaki segida bat. Fitxategia aldatzen bada, byte bakar batean bada ere, hasha guztiz desberdina da.'],
+        ['Zertarako balio du?', 'Bidali dizuten dokumentu bat jatorrizko bera dela egiaztatzeko (kontratuak, lizitazioak, frogak, deskargak), fitxategi bat data jakin batean nolakoa zen jasotzeko edo bi fitxategi berdinak diren jakiteko ireki gabe.'],
+        ['Zein algoritmo erabili?', 'SHA-256 da gaur egungo estandarra eta gomendatua. SHA-512 are luzeagoa da. MD5 eta SHA-1 argitaratutako baturekin alderatzeko balio dute, baina jada ez dira seguruak faltsifikazioen aurka.'],
+        ['Zer da osotasun-ziurtagiria?', 'Zure fitxategien izena, tamaina, data eta hasha dituen PDF bat. Geroago norbaitek bat aldatzen badu, bere hasha berriro kalkulatzean ez da ziurtagirikoarekin bat etorriko.'],
+        ['Nire fitxategiak igotzen dira?', 'Ez. Hasha zure nabigatzailearen barruan kalkulatzen da: zure fitxategiak ez dira inoiz zure ekipotik irteten.'],
+      ],
+    },
     'pdf-a-pdfa': {
       slug: 'pdftik-pdfara',
       title: 'Bihurtu PDFa PDF/A formatura doan (PDF/A-2b) | DocuSmart',

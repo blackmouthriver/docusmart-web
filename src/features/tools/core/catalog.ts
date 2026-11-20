@@ -60,6 +60,7 @@ export const CATALOG: readonly CatalogTool[] = [
   pdf('proteger', 'seguridad', 'lock'),
   pdf('desbloquear', 'seguridad', 'unlock'),
   pdf('reparar', 'seguridad', 'wrench'),
+  { key: 'hash/calcular', category: 'seguridad', icon: 'fingerprint', name: 'tools.hash', desc: 'tools.hash.desc', section: 'hash', sub: 'calcular' },
   pdf('comprimir', 'optimizar', 'compress'),
   pdf('pdfa', 'optimizar', 'archive'),
   pdf('comparar', 'optimizar', 'compare'),

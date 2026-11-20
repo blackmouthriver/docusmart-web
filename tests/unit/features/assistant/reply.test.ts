@@ -20,6 +20,8 @@ describe('contexto de la pantalla', () => {
     expect(contextForRoute(ES, 'imagen', 'rotar')).toBe('rotar-imagen')
     expect(contextForRoute(ES, 'qr', 'leer')).toBe('crear-codigo-qr')
     expect(contextForRoute(ES, 'qr')).toBe('crear-codigo-qr')
+    expect(contextForRoute(ES, 'hash', 'calcular')).toBe('calcular-hash')
+    expect(contextForRoute(ES, 'hash', 'verificar')).toBe('calcular-hash')
   })
   it('sin herramienta en pantallas generales', () => {
     expect(contextForRoute(ES, '')).toBeUndefined()

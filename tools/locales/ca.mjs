@@ -321,6 +321,23 @@ export default {
         ['Es puja el fitxer?', 'No. La reparació passa al teu navegador.'],
       ],
     },
+    'calcular-hash': {
+      slug: 'calcular-hash',
+      title: 'Calcular i verificar hash SHA-256 o MD5 en línia | DocuSmart',
+      description: 'Calcula el hash SHA-256, SHA-512, SHA-1 o MD5 de qualsevol fitxer, verifica que coincideixi o compara dos fitxers. Gratis i sense pujar res: tot passa al navegador.',
+      h1: 'Calcular i verificar hash (SHA-256, MD5)',
+      howTo: 'Com calcular o verificar el hash d’un fitxer en 3 passos',
+      lead: 'Comprova que un document no s’ha modificat: calcula’n l’empremta digital, verifica-la amb la que t’han donat o compara dos fitxers, sense que surtin del teu dispositiu.',
+      short: 'Empremta digital de fitxers',
+      steps: ['Tria "Calcular", "Verificar" o "Comparar" i afegeix el fitxer (qualsevol tipus: PDF, fotos, ZIP…).', 'Escull l’algorisme (SHA-256 recomanat) o enganxa el hash que t’han donat; DocuSmart reconeix si és SHA-256, SHA-512, SHA-1 o MD5.', 'Copia el hash, descarrega la llista o un certificat d’integritat en PDF, o mira si coincideix.'],
+      faq: [
+        ['Què és un hash?', 'És una empremta digital del fitxer: una sèrie de lletres i números que es calcula a partir del seu contingut. Si el fitxer canvia, encara que sigui en un sol byte, el hash és completament diferent.'],
+        ['Per a què serveix?', 'Per comprovar que un document que t’han enviat és el mateix original (contractes, licitacions, proves, descàrregues), deixar constància de com era un fitxer en una data o saber si dos fitxers són idèntics sense obrir-los.'],
+        ['Quin algorisme faig servir?', 'SHA-256 és l’estàndard actual i el recomanat. SHA-512 és encara més llarg. MD5 i SHA-1 serveixen per comparar amb sumes publicades, però ja no es consideren segurs contra falsificacions.'],
+        ['Què és el certificat d’integritat?', 'Un PDF amb el nom, la mida, la data i el hash dels teus fitxers. Si més endavant algú en modifica un, en tornar a calcular-ne el hash ja no coincidirà amb el del certificat.'],
+        ['Es pugen els meus fitxers?', 'No. El hash es calcula dins del teu navegador: els teus fitxers no surten mai del teu dispositiu.'],
+      ],
+    },
     'pdf-a-pdfa': {
       slug: 'pdf-a-pdfa',
       title: 'Convertir PDF a PDF/A gratis (PDF/A-2b) | DocuSmart',
