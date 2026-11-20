@@ -15,7 +15,13 @@ function fakeCanvas() {
       ctx.calls.push('draw')
     },
   }
-  return { width: 0, height: 0, ctx, getContext: () => ctx }
+  return {
+    width: 0,
+    height: 0,
+    ctx,
+    getContext: () => ctx as FakeCtx | null,
+    toBlob: (done: (b: Blob) => void, type: string) => done(new Blob(['x'], { type })),
+  }
 }
 
 const heicPhoto = fakeCanvas()
@@ -26,25 +32,18 @@ const heicToCanvas = vi.fn(async () => {
 })
 vi.mock('../../../../../src/features/convert/infra/heicDecoder', () => ({ heicToCanvas }))
 
-const { openImage } = await import('../../../../../src/features/convert/core/convert')
+const { convertImage, openImage } = await import('../../../../../src/features/convert/core/convert')
 
 const JPEG = new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 16, 0x4a, 0x46, 0x49, 0x46, 0, 1])], { type: 'image/jpeg' })
 const HEIC = new Blob([new Uint8Array(HEIC_SQUARES)], { type: 'image/heic' })
 
 describe('openImage (abre también fotos HEIC)', () => {
-  let made: ReturnType<typeof fakeCanvas>[]
   beforeEach(() => {
-    made = []
     heicPhoto.ctx.calls = []
     heicPhoto.ctx.globalCompositeOperation = 'source-over'
     heicToCanvas.mockClear()
-    vi.stubGlobal('document', {
-      createElement: () => {
-        const c = fakeCanvas()
-        made.push(c)
-        return c
-      },
-    })
+    heicPhoto.getContext = () => heicPhoto.ctx
+    vi.stubGlobal('document', { createElement: () => fakeCanvas() })
     // El navegador abre JPG pero no HEIC (como Chrome, Edge o Firefox).
     vi.stubGlobal('createImageBitmap', async (b: Blob) => {
       if (b.type === 'image/heic') throw new DOMException('The source image could not be decoded.', 'InvalidStateError')
@@ -76,5 +75,20 @@ describe('openImage (abre también fotos HEIC)', () => {
     const broken = new Blob([new Uint8Array([1, 2, 3, 4])], { type: 'image/heic' })
     await expect(openImage(broken)).rejects.toThrow('could not be decoded')
     expect(heicToCanvas).not.toHaveBeenCalled()
+  })
+
+  it('si el canvas de la foto HEIC no da contexto, avisa en vez de seguir', async () => {
+    heicPhoto.getContext = () => null
+    await expect(openImage(HEIC, '#ffffff')).rejects.toThrow('Canvas no disponible')
+  })
+
+  it('convertImage: una foto HEIC a PNG o a JPG (con fondo blanco)', async () => {
+    const png = await convertImage(new File([HEIC], 'IMG_0001.HEIC', { type: 'image/heic' }), 'png')
+    expect(png.type).toBe('image/png')
+    expect(heicPhoto.ctx.calls).toEqual([])
+    const jpg = await convertImage(new File([HEIC], 'IMG_0001.HEIC', { type: 'image/heic' }), 'jpg')
+    expect(jpg.type).toBe('image/jpeg')
+    expect(heicPhoto.ctx.calls).toEqual(['fill #ffffff destination-over'])
+    expect(heicToCanvas).toHaveBeenCalledTimes(2)
   })
 })
