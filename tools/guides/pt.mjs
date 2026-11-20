@@ -235,7 +235,7 @@ export default {
         {
           h2: 'Se também for preciso preencher dados',
           body: [
-            'Muitos documentos para assinar são formulários: nome, número do documento, data. Se o PDF tiver campos preenchíveis, complete-os primeiro com o [Preencher formulário](/llenar-formulario-pdf) e depois assine. Antes de enviar, marque "Achatar" para que as respostas fiquem fixas.',
+            'Muitos documentos para assinar são formulários: nome, número do documento, data. Se o PDF tiver campos preenchíveis, complete-os primeiro com o [Preencher formulário](/llenar-formulario-pdf) e depois assine. Antes de enviar, marque "Nivelar" para que as respostas fiquem fixas.',
           ],
         },
         {

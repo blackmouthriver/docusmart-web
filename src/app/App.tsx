@@ -85,11 +85,32 @@ export function App() {
   const current = LANGS.find((l) => l.code === lang)!
   // Barra lateral plegable (solo íconos); se recuerda en este navegador.
   const [collapsed, setCollapsed] = useState(() => loadCollapsed(safeStorage()))
-  const toggleSidebar = () =>
-    setCollapsed((c) => {
-      saveCollapsed(safeStorage(), !c)
-      return !c
-    })
+  // Animación al plegar/desplegar: al plegar, primero se desvanecen los textos y después
+  // se angosta la barra; al desplegar, la barra se ensancha y los textos entran en cascada.
+  const [sideAnim, setSideAnim] = useState<'' | 'is-opening' | 'is-closing'>('')
+  const animTimer = useRef<number | undefined>(undefined)
+  const toggleSidebar = () => {
+    const closing = !collapsed
+    saveCollapsed(safeStorage(), closing)
+    window.clearTimeout(animTimer.current)
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      setCollapsed(closing)
+      return
+    }
+    if (closing) {
+      setSideAnim('is-closing')
+      animTimer.current = window.setTimeout(() => {
+        setCollapsed(true)
+        animTimer.current = window.setTimeout(() => setSideAnim(''), 420)
+      }, 150)
+    } else {
+      setCollapsed(false)
+      setSideAnim('is-opening')
+      animTimer.current = window.setTimeout(() => setSideAnim(''), 700)
+    }
+  }
+  useEffect(() => () => window.clearTimeout(animTimer.current), [])
 
   // Instalar la web como app (W-16): el botón aparece solo cuando el navegador lo permite.
   const [canInstall, setCanInstall] = useState(false)
@@ -175,7 +196,7 @@ export function App() {
 
   return (
     <AppContext.Provider value={{ openFile, setOpenFile, toast, openSettings }}>
-      <div className={'shell' + (collapsed ? ' is-collapsed' : '')}>
+      <div className={'shell' + (collapsed ? ' is-collapsed' : '') + (sideAnim ? ` ${sideAnim}` : '')}>
         <aside className="sidebar">
           <div className="side-top">
             <a className="side-brand" href="/" aria-label="DocuSmart Web">

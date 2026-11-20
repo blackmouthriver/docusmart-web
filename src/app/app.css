@@ -87,18 +87,38 @@ p { margin: 0; }
 /* Relleno vertical para que se toquen fácil con el dedo (~36 px de alto). */
 .home-foot a { color: inherit; padding: 8px 0; }
 
-.main { margin-left: var(--sidebar); min-height: 100dvh; transition: margin-left 260ms var(--ease-out); }
+.main { margin-left: var(--sidebar); min-height: 100dvh; transition: margin-left 420ms cubic-bezier(.22, 1, .36, 1); }
 
 /* ── Barra lateral plegable: solo íconos, con su nombre al pasar el ratón o con el foco ── */
-.sidebar { transition: width 260ms var(--ease-out), padding 260ms var(--ease-out); }
+.sidebar { transition: width 420ms cubic-bezier(.22, 1, .36, 1), padding 420ms cubic-bezier(.22, 1, .36, 1); }
 .side-top { display: flex; align-items: center; gap: 6px; padding-bottom: 22px; }
 .side-top .side-brand { flex: 1; min-width: 0; padding-bottom: 0; }
 .side-brand-text { display: flex; align-items: center; gap: 10px; white-space: nowrap; transition: opacity 180ms ease; }
 /* Pestaña de plegar: queda entera fuera del borde derecho (right = -width), a media altura,
    como un recuadro pegado a la barra; así nunca tapa la barra de desplazamiento del menú. */
-.side-toggle { position: absolute; top: 50%; right: -24px; z-index: 2; display: grid; place-items: center; width: 24px; height: 52px; padding: 0; border: 0; border-radius: 0 12px 12px 0; background: var(--night); color: var(--on-night-soft); box-shadow: 3px 0 12px -4px rgba(0, 0, 0, .45); cursor: pointer; transform: translateY(-50%); transition: background-color 150ms ease, color 150ms ease, width 150ms var(--ease-out), right 150ms var(--ease-out); }
-.side-toggle svg { width: 16px; height: 16px; transition: transform 260ms var(--ease-out); }
-.side-toggle:hover, .side-toggle:focus-visible { background: var(--night-2, #111729); color: #fff; width: 28px; right: -28px; }
+.side-toggle { position: absolute; top: 50%; right: -18px; z-index: 2; display: grid; place-items: center; width: 18px; height: 46px; padding: 0; border: 0; border-radius: 0 10px 10px 0; background: var(--night); color: var(--on-night-soft); box-shadow: 3px 0 12px -4px rgba(0, 0, 0, .45); cursor: pointer; transform: translateY(-50%); transition: background-color 150ms ease, color 150ms ease, width 150ms var(--ease-out), right 150ms var(--ease-out); }
+.side-toggle svg { width: 14px; height: 14px; transition: transform 520ms cubic-bezier(.34, 1.56, .64, 1); }
+.shell.is-opening .side-toggle, .shell.is-closing .side-toggle { animation: side-tab-pulse 520ms cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes side-tab-pulse { 40% { transform: translateY(-50%) scaleY(1.12); } }
+/* Al plegar: los textos se desvanecen hacia la izquierda antes de que la barra se angoste. */
+.shell.is-closing .nav-label, .shell.is-closing .nav-caret, .shell.is-closing .side-brand-text, .shell.is-closing .side-foot span,
+.shell.is-closing .side-getapp, .shell.is-closing .side-analytics { opacity: 0; transform: translateX(-8px); transition: opacity 150ms ease, transform 150ms ease; }
+/* Al desplegar: la marca y cada opción entran en cascada. */
+.shell.is-opening .side-brand-text, .shell.is-opening .nav-label, .shell.is-opening .nav-caret, .shell.is-opening .side-foot span,
+.shell.is-opening .side-getapp, .shell.is-opening .side-analytics { animation: side-text-in 420ms cubic-bezier(.22, 1, .36, 1) both; }
+.shell.is-opening .side-nav > :nth-child(2) .nav-label { animation-delay: 30ms; }
+.shell.is-opening .side-nav > :nth-child(3) .nav-label { animation-delay: 60ms; }
+.shell.is-opening .side-nav > :nth-child(4) .nav-label { animation-delay: 90ms; }
+.shell.is-opening .side-nav > :nth-child(5) .nav-label { animation-delay: 120ms; }
+.shell.is-opening .side-nav > :nth-child(6) .nav-label { animation-delay: 150ms; }
+.shell.is-opening .side-nav > :nth-child(7) .nav-label { animation-delay: 180ms; }
+.shell.is-opening .side-nav > :nth-child(n+8) .nav-label { animation-delay: 210ms; }
+.shell.is-opening .side-foot span, .shell.is-opening .side-getapp, .shell.is-opening .side-analytics { animation-delay: 160ms; }
+@keyframes side-text-in { from { opacity: 0; transform: translateX(-10px); } }
+/* Los íconos dan un pequeño salto al cambiar el ancho. */
+.shell.is-opening .nav-item > svg, .shell.is-closing .nav-item > svg { animation: side-icon-pop 420ms cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes side-icon-pop { 45% { transform: scale(1.15); } }
+.side-toggle:hover, .side-toggle:focus-visible { background: var(--night-2, #111729); color: #fff; width: 22px; right: -22px; }
 .side-toggle:focus-visible { outline: 2px solid var(--scan); outline-offset: 2px; }
 /* Navegación y pie con desplazamiento propio; la barra de desplazamiento es fina y oscura. */
 .side-scroll { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; margin: 0 -6px; padding: 0 6px; scrollbar-width: thin; scrollbar-color: var(--night-line) transparent; }
@@ -132,6 +152,7 @@ p { margin: 0; }
 .shell.is-collapsed .privacy-note[data-tip]::after { white-space: normal; width: 220px; }
 @media (prefers-reduced-motion: reduce) {
   .sidebar, .main, .side-toggle, .shell.is-collapsed [data-tip]::after { transition: none; }
+  .shell.is-opening *, .shell.is-closing * { animation: none !important; transition: none !important; }
 }
 .content { max-width: 1040px; margin: 0 auto; padding: 28px 32px 64px; }
 
