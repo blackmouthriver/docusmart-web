@@ -153,9 +153,20 @@ describe('analytics con Firebase configurado', () => {
   it('arranca sola si el visitante ya había aceptado antes', async () => {
     const { store } = stubBrowser()
     store.set('ds-consent', 'granted')
+    store.set('ds-consent-scope', 'ads')
     const a = await loadModule(true)
     a.initAnalytics()
     await vi.waitFor(() => expect(fa.initializeAnalytics).toHaveBeenCalledTimes(1))
+  })
+
+  it('con anuncios activos, una aceptación anterior a ellos se vuelve a preguntar (W-90)', async () => {
+    const { store } = stubBrowser()
+    store.set('ds-consent', 'granted')
+    const a = await loadModule(true)
+    expect(a.getConsent()).toBeNull()
+    a.setConsent('denied')
+    expect(store.get('ds-consent-scope')).toBe('ads')
+    expect(a.getConsent()).toBe('denied')
   })
 
   it('si el navegador no soporta Analytics, no lo inicializa', async () => {

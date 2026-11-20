@@ -17,11 +17,11 @@ export type AdPlace = 'tool' | 'hub' | 'app'
 /** `data-ad-slot` de cada bloque Display adaptable creado en AdSense. */
 export const AD_SLOTS: Record<AdPlace, string> = {
   /** "Herramienta – entre pasos y preguntas" */
-  tool: '',
+  tool: '2392088871',
   /** "Herramientas – entre categorías" */
-  hub: '',
+  hub: '5485156078',
   /** "App web – pie de pantalla" */
-  app: '',
+  app: '3739783383',
 }
 
 export function adsEnabled(slots: Record<AdPlace, string> = AD_SLOTS): boolean {

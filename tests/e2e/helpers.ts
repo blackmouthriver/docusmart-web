@@ -37,8 +37,27 @@ export const PNG = Buffer.from(
  * (incluye las violaciones de CSP y Trusted Types, que el navegador informa como errores).
  * Usa `allowConsoleErrors` en las pruebas que provocan errores a propósito (por ejemplo, sin red).
  */
-export const test = base.extend<{ consoleErrors: string[]; allowConsoleErrors: boolean }>({
+export const test = base.extend<{ consoleErrors: string[]; allowConsoleErrors: boolean; presetConsent: 'denied' | 'none'; consentPreset: void }>({
   allowConsoleErrors: [false, { option: true }],
+  /**
+   * Con anuncios activos (W-90) el aviso de cookies aparece siempre y tapa los botones de abajo.
+   * Por defecto las pruebas entran con la decisión "Rechazar" ya tomada; las que prueban el aviso
+   * o los anuncios usan `presetConsent: 'none'` y deciden ellas.
+   */
+  presetConsent: ['denied', { option: true }],
+  consentPreset: [
+    async ({ page, presetConsent }, use) => {
+      if (presetConsent === 'denied')
+        await page.addInitScript(() => {
+          if (localStorage.getItem('ds-consent') === null) {
+            localStorage.setItem('ds-consent', 'denied')
+            localStorage.setItem('ds-consent-scope', 'ads')
+          }
+        })
+      await use()
+    },
+    { auto: true },
+  ],
   consoleErrors: [
     async ({ page, allowConsoleErrors }, use) => {
       const errors: string[] = []
