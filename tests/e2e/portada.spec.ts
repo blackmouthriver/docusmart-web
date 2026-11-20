@@ -58,3 +58,14 @@ test('con la publicidad apagada no se descarga nada de AdSense ni se reserva esp
   }
   expect(ads).toEqual([])
 })
+
+test('assetlinks.json autoriza a la app de Play a abrir los enlaces (W-18)', async ({ request }) => {
+  const res = await request.get('/.well-known/assetlinks.json', { maxRedirects: 0 })
+  expect(res.status()).toBe(200)
+  expect(res.headers()['content-type']).toContain('application/json')
+  const [link] = await res.json()
+  expect(link.relation).toEqual(['delegate_permission/common.handle_all_urls'])
+  expect(link.target.package_name).toBe('com.docsmart')
+  // Certificado de la clave de firma de apps de Play (no el de subida ni el de depuración).
+  expect(link.target.sha256_cert_fingerprints).toEqual(['0D:90:B5:7C:BF:D5:B4:87:BB:2B:04:21:2B:25:71:90:AC:40:7D:0C:1C:DA:AB:A5:03:A4:D3:70:AC:4A:E8:9C'])
+})

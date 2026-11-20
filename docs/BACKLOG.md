@@ -49,7 +49,7 @@ _Sin pendientes P0._
 | W-15 | **Eventos clave en GA4**: marcar `landing_cta_click` (destino `play_store`) y `conversion_success` como conversiones, y armar un tablero simple | 👤 (te guío) | Pendiente |
 | W-16 | **PWA**: manifest y service worker para instalar DocuSmart Web y usarla sin conexión. Encaja con la promesa de "nada sale de tu equipo" | 🛠️ | Hecho (PR #106, #108, #109, #110 y #111; probado por el usuario sin conexión el 2026-11-18): instalable como **DocuSmart Desktop**, funciona sin conexión (descarga todas las herramientas salvo el OCR), se actualiza sola con aviso «Actualizar», una sola ventana, ayuda para instalarla y crear el ícono del escritorio, y respuestas en el asistente |
 | W-17 | **Lighthouse ≥ 95** en rendimiento, accesibilidad, buenas prácticas y SEO; prueba con lector de pantalla (NVDA/TalkBack) | 🛠️ | Hecho (PR #114): PageSpeed 100 en las 4 categorías (W-93) y revisión automática con axe (WCAG 2.2 AA) en el CI: 12 páginas en escritorio y celular, diálogos, asistente y modo oscuro, sin problemas. Arreglos: contraste del gris atenuado y de las insignias de formato, nombre accesible del selector de idioma y tablas desplazables con teclado. Queda opcional una pasada manual con NVDA/TalkBack |
-| W-18 | **Android App Links** (`/.well-known/assetlinks.json`): que los enlaces a docusmart.online abran la app si está instalada. Requiere el SHA-256 del certificado de firma de Play | 🛠️👤 | Pendiente |
+| W-18 | **Android App Links** (`/.well-known/assetlinks.json`): que los enlaces a docusmart.online abran la app si está instalada. Requiere el SHA-256 del certificado de firma de Play | 🛠️👤 | **Web lista** (2026-11-19): `assetlinks.json` con el certificado de firma de Play (`com.docsmart`). La app abre las 28 herramientas que también tiene (rama `claude/w18-app-links` del repo Android). Falta publicar esa versión de la app en Play |
 | W-19 | **Contenido**: guías breves ("cómo unir PDF en el celular sin subirlos", "cómo pasar fotos a PDF") que enlacen a las herramientas; publicar en AlternativeTo, Product Hunt y Uptodown | 👤🛠️ | **Guías hechas** (2026-11-18): `/guias` con 6 guías en español (`tools/guides.mjs`), datos estructurados Article/HowTo/FAQ, sitemap y enlaces desde las herramientas en español. Faltan: traducirlas a los 12 idiomas, más guías y publicar en directorios (👤) |
 
 ## Funciones nuevas en la web
@@ -242,6 +242,30 @@ herramientas **por categoría** y **en orden alfabético** dentro de cada una.
 | W-79 | **App web**: la pantalla de herramientas usa las mismas categorías y el mismo orden alfabético, con buscador; el inicio muestra las categorías como accesos | 🤖 | Hecho (PR #86) |
 
 Orden: W-76 (validar categorías) → W-78 → W-77 → W-79. Encaja con el diseño visual (W-72) para las animaciones.
+
+## Sincronización entre la app, la web y el escritorio (opción A, 2026-11-19)
+
+Que lo que el usuario hace en la app Android se vea en la web y en DocuSmart Desktop, y al revés, sin tener que
+pensar en cuál usa. La web y Desktop ya son el mismo código (Desktop es la web instalada), así que se sincronizan
+**dos** productos: la app Android y la web.
+
+**Decisión del usuario: opción A — el Google Drive del propio usuario como almacenamiento compartido.**
+Los datos viajan **cifrados en el dispositivo** a la carpeta oculta de la app en el Drive del usuario
+(`appDataFolder`, permiso mínimo `drive.appdata`). DocuSmart **no tiene servidor propio** y nunca ve el contenido.
+Encaja con la promesa de privacidad (el texto pasa a "en tu dispositivo o en **tu** Drive, cifrado") y no tiene costo
+de servidor. Se descartaron, por ahora: B (servidor propio con cifrado de extremo a extremo: costo creciente y más
+superficie que explicar) y C (solo entre dispositivos cercanos: no es sincronización automática).
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-94 | **Base de la sincronización**: inicio de sesión con Google en la app y en la web (la misma cuenta identifica al usuario), acceso a `appDataFolder`, formato común de los datos (versionado) y **cifrado en el dispositivo** con una clave que no sale de los equipos del usuario (derivada o guardada en el almacén seguro de cada plataforma; definir cómo se pasa a un dispositivo nuevo). Resolución de conflictos: gana el cambio más reciente y se guarda una copia del perdedor. Actualizar la política de privacidad (web y app) y el aviso de la promesa "100 % local" | 🤖 + 👤 (validar textos y política) | Pendiente |
+| W-95 | **Etapa 1 — Ajustes e historial**: tema, acento, idioma, tamaño de letra, favoritos y el historial de conversiones/herramientas (solo nombres y tipos, nunca el contenido de los archivos). Sirve para validar la base con datos livianos | 🤖 | Pendiente (depende de W-94) |
+| W-96 | **Etapa 2 — Notas, estudio y agenda**: notas, tarjetas de repaso, progreso y eventos con sus recordatorios (cada plataforma programa sus propios avisos) | 🤖 | Pendiente (depende de W-95) |
+| W-97 | **Etapa 3 — Biblioteca de documentos**: archivos más pesados; subida solo de lo que cambió, sincronización opcional por carpeta y aviso del espacio usado en el Drive del usuario. La Carpeta Segura de la app **no** se sincroniza salvo que el usuario lo active explícitamente | 🤖 + 👤 (decidir límites) | Pendiente (depende de W-96) |
+| W-98 | **Etapa 4 — Premium compartido**: que la suscripción comprada en Play valga en la web y Desktop para la misma cuenta de Google (verificación de la compra; requiere un componente de servidor mínimo o la API de Play Developer — evaluar sin romper la opción A para los datos) | 🤖 + 👤 (Play Console) | Pendiente (depende de W-94) |
+
+Orden: W-94 → W-95 → W-96 → W-97; W-98 puede ir en paralelo después de W-94. Reutiliza lo hecho para guardar en
+Google Drive (W-45). Requiere cambios en la app Android (repo DocuSmart) en cada etapa.
 
 ## Mantenimiento y limpieza
 
