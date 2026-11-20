@@ -940,7 +940,7 @@ const ca: Messages = {
   'imgt.readyMany': "{n} imatges llestes.",
   'imgt.pickMany': "Toca per triar una o diverses imatges",
   'imgt.pickOne': "Toca per triar una imatge",
-  'imgt.formats': "JPG, PNG, WebP, GIF o BMP",
+  'imgt.formats': "JPG, PNG, WebP, HEIC, GIF o BMP",
   'imgt.yourImages': "Les teves imatges",
   'imgt.previewImage': "Previsualització de la teva imatge",
   'imgt.savings': "De {before} a {after} ({pct} % menys).",

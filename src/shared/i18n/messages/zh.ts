@@ -940,7 +940,7 @@ const zh: Messages = {
   'imgt.readyMany': "{n} 张图片已就绪。",
   'imgt.pickMany': "点按选择一张或多张图片",
   'imgt.pickOne': "点按选择一张图片",
-  'imgt.formats': "JPG、PNG、WebP、GIF 或 BMP",
+  'imgt.formats': "JPG、PNG、WebP、HEIC、GIF 或 BMP",
   'imgt.yourImages': "你的图片",
   'imgt.previewImage': "图片预览",
   'imgt.savings': "从 {before} 减到 {after}（减少 {pct}%）。",

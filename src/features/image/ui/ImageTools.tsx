@@ -29,6 +29,7 @@ import {
   type Transform,
 } from '../core/imageTools'
 import { MODEL as BG_MODEL, backgroundOutputName, parseBackground } from '../core/background'
+import { looksLikeHeic } from '../../convert/core/heic'
 import { ID_MAX_MM, ID_MIN_MM, ID_PRESETS, formatMm, idPhotoName, idPixels, parseSizeMm, portraitCrop, sheetLayout, type IdPresetId, type IdSize } from '../core/idPhoto'
 import type { Margins } from '../../pdf/core/pdfCrop'
 import { track } from '../../../shared/platform/analytics'
@@ -111,7 +112,8 @@ export function ImageToolsScreen({ sub }: { sub?: string }) {
 /* ───────────── Base para procesar varias imágenes ───────────── */
 
 type Result = { name: string; blob: Blob; before: number; width: number; height: number; error?: undefined } | { name: string; error: string }
-const ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif'
+// HEIC también por extensión: algunos sistemas no le ponen tipo a las fotos del iPhone.
+const ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif,image/heic,image/heif,.heic,.heif'
 
 function useBatch(toolName: string) {
   const { toast } = useApp()
@@ -240,17 +242,27 @@ function ResultThumb({ blob }: { blob: Blob }) {
 function useObjectUrl(blob: Blob | null) {
   const [url, setUrl] = useState<string | null>(null)
   useEffect(() => {
-    if (!blob) return setUrl(null)
-    // El archivo lo elige el usuario: se re-empaqueta con un tipo de imagen y solo se
-    // usa una URL blob: de este mismo sitio (nunca texto del archivo como HTML).
-    const type = /^image\/(jpeg|png|webp|gif|bmp|avif)$/.test(blob.type) ? blob.type : 'image/png'
-    const u = URL.createObjectURL(new Blob([blob], { type }))
-    if (!isOwnBlobUrl(u)) {
-      URL.revokeObjectURL(u)
-      return setUrl(null)
+    setUrl(null)
+    if (!blob) return
+    let alive = true
+    let u: string | null = null
+    // Una foto HEIC solo la muestra Safari: para verla (y recortarla) se usa una copia en JPG.
+    const name = (blob as Blob & { name?: string }).name ?? ''
+    const source = looksLikeHeic(name, blob.type) ? import('../infra/imageCanvas').then((m) => m.previewBlob(blob)) : Promise.resolve(blob)
+    void source
+      .then((b) => {
+        if (!alive) return
+        // El archivo lo elige el usuario: se re-empaqueta con un tipo de imagen y solo se
+        // usa una URL blob: de este mismo sitio (nunca texto del archivo como HTML).
+        const type = /^image\/(jpeg|png|webp|gif|bmp|avif)$/.test(b.type) ? b.type : 'image/png'
+        u = URL.createObjectURL(new Blob([b], { type }))
+        if (isOwnBlobUrl(u)) setUrl(u)
+      })
+      .catch(() => undefined)
+    return () => {
+      alive = false
+      if (u) URL.revokeObjectURL(u)
     }
-    setUrl(u)
-    return () => URL.revokeObjectURL(u)
   }, [blob])
   return url
 }
@@ -273,7 +285,8 @@ function CompressImageTool() {
         const size = capSize(img.width, img.height, plan.maxSide)
         const blob = await renderImage(img, { ...size, mime: plan.mime, quality: plan.quality })
         // Si no se gana nada, se devuelve la original.
-        if (blob.size >= file.size) return { name: outputName(file.name, tr('file.imgOptimized'), outputMime(file.type)), blob: file, width: img.width, height: img.height }
+        // Una foto HEIC siempre se convierte: devolverla tal cual no le sirve a quien no puede abrirla.
+        if (blob.size >= file.size && !looksLikeHeic(file.name, file.type)) return { name: outputName(file.name, tr('file.imgOptimized'), outputMime(file.type)), blob: file, width: img.width, height: img.height }
         return { name: outputName(file.name, tr('file.imgCompressed'), plan.mime), blob, ...size }
       } finally {
         img.bmp.close()
@@ -320,7 +333,7 @@ function ResizeImageTool() {
       const img = await loadImage(file)
       try {
         const size = fitSize(img.width, img.height, spec)
-        const mime = outputMime(file.type)
+        const mime = outputMime(file.type, file.name)
         return { name: outputName(file.name, `${size.width}x${size.height}`, mime), blob: await renderImage(img, { ...size, mime, quality: 0.92 }), ...size }
       } finally {
         img.bmp.close()
@@ -383,7 +396,7 @@ function RotateImageTool() {
       const { loadImage, renderImage } = await import('../infra/imageCanvas')
       const img = await loadImage(file)
       try {
-        const mime = outputMime(file.type)
+        const mime = outputMime(file.type, file.name)
         return { name: outputName(file.name, tr('file.imgRotated'), mime), blob: await renderImage(img, { transform: t, mime, quality: 0.92 }), ...rotatedSize(img.width, img.height, t) }
       } finally {
         img.bmp.close()
@@ -559,7 +572,7 @@ function CropImageTool() {
     try {
       const { loadImage, renderImage } = await import('../infra/imageCanvas')
       const img = await loadImage(file)
-      const mime = outputMime(file.type)
+      const mime = outputMime(file.type, file.name)
       const blob = await renderImage(img, { crop: px, mime, quality: 0.92 })
       img.bmp.close()
       setOutput(resultFile(blob, outputName(file.name, tr('file.imgCropped'), mime), mime))

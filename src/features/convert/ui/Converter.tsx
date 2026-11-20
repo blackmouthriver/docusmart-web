@@ -252,7 +252,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         </div>
         <p className="muted">{tr(conv.desc)}</p>
         <DropZone
-          accept={isImageInput ? 'image/*' : isHeic ? HEIC_ACCEPT : conv.id === 'word-pdf' ? '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document' : conv.id === 'excel-pdf' ? '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf'}
+          accept={isImageInput ? IMAGE_ACCEPT : isHeic ? HEIC_ACCEPT : conv.id === 'word-pdf' ? '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document' : conv.id === 'excel-pdf' ? '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf'}
           multiple={multiple}
           title={isImageInput ? tr('conv.pickImages') : isHeic ? tr('conv.pickHeic') : conv.id === 'word-pdf' ? tr('conv.pickWord') : conv.id === 'excel-pdf' ? tr('conv.pickExcel') : tr('common.pickPdf')}
           hint={tr('conv.dragFiles')}
@@ -383,6 +383,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
 const PDF = 'application/pdf'
 // Algunos sistemas no le ponen tipo a las fotos HEIC: también se aceptan por extensión.
 const HEIC_ACCEPT = '.heic,.heif,image/heic,image/heif'
+const IMAGE_ACCEPT = `image/*,${HEIC_ACCEPT}`
 const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 const XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 

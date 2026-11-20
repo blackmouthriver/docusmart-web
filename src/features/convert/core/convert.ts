@@ -1,6 +1,7 @@
 /** Conversiones de imagen y PDF en el navegador (subconjunto de las 17 de la app). */
 import { PDFDocument } from 'pdf-lib'
 import { canvasToBlob, closePdf, extractText, openPdf, renderPage } from '../../../shared/pdf/pdf'
+import { isHeic } from './heic'
 
 export type ImageTarget = 'jpg' | 'png' | 'webp' | 'bmp'
 
@@ -62,9 +63,30 @@ export function canvasToBmp(canvas: HTMLCanvasElement): Blob {
   return new Blob([buf], { type: 'image/bmp' })
 }
 
+/**
+ * Como fileToCanvas, pero también abre fotos HEIC del iPhone (que solo abre Safari) con el
+ * decodificador de HEIC a JPG (W-107), que se carga solo cuando hace falta.
+ */
+export async function openImage(file: Blob, background?: string): Promise<HTMLCanvasElement> {
+  try {
+    return await fileToCanvas(file, background)
+  } catch (e) {
+    if (!isHeic(new Uint8Array(await file.slice(0, 64).arrayBuffer()))) throw e
+    const { heicToCanvas } = await import('../infra/heicDecoder')
+    const photo = await heicToCanvas(file)
+    if (!background) return photo
+    const ctx = photo.getContext('2d')
+    if (!ctx) throw new Error('Canvas no disponible')
+    ctx.globalCompositeOperation = 'destination-over'
+    ctx.fillStyle = background
+    ctx.fillRect(0, 0, photo.width, photo.height)
+    return photo
+  }
+}
+
 export async function convertImage(file: File, target: ImageTarget, quality = 0.92): Promise<Blob> {
   // JPG y BMP no tienen transparencia: fondo blanco, como en la app.
-  const canvas = await fileToCanvas(file, target === 'jpg' || target === 'bmp' ? '#ffffff' : undefined)
+  const canvas = await openImage(file, target === 'jpg' || target === 'bmp' ? '#ffffff' : undefined)
   if (target === 'bmp') return canvasToBmp(canvas)
   return canvasToBlob(canvas, IMAGE_MIME[target], quality)
 }
@@ -78,7 +100,7 @@ export async function imagesToPdf(files: File[]): Promise<Uint8Array> {
     if (type === 'image/jpeg') image = await doc.embedJpg(await file.arrayBuffer())
     else if (type === 'image/png') image = await doc.embedPng(await file.arrayBuffer())
     else {
-      const canvas = await fileToCanvas(file, '#ffffff')
+      const canvas = await openImage(file, '#ffffff')
       const blob = await canvasToBlob(canvas, 'image/jpeg', 0.92)
       image = await doc.embedJpg(await blob.arrayBuffer())
     }

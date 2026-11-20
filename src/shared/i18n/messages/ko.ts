@@ -940,7 +940,7 @@ const ko: Messages = {
   'imgt.readyMany': "이미지 {n}개가 준비되었습니다.",
   'imgt.pickMany': "탭하여 이미지를 하나 이상 선택",
   'imgt.pickOne': "탭하여 이미지 선택",
-  'imgt.formats': "JPG, PNG, WebP, GIF 또는 BMP",
+  'imgt.formats': "JPG, PNG, WebP, HEIC, GIF 또는 BMP",
   'imgt.yourImages': "내 이미지",
   'imgt.previewImage': "이미지 미리 보기",
   'imgt.savings': "{before}에서 {after}(으)로 ({pct}% 감소).",

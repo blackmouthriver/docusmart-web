@@ -23,6 +23,11 @@ describe('formatos y nombres', () => {
     expect(outputMime('image/webp')).toBe('image/webp')
     expect(outputMime('image/gif')).toBe('image/png')
     expect(outputMime('')).toBe('image/png')
+    // Las fotos HEIC del iPhone pasan a JPG, por tipo o por extensión (W-107).
+    expect(outputMime('image/heic')).toBe('image/jpeg')
+    expect(outputMime('', 'IMG_0001.HEIC')).toBe('image/jpeg')
+    expect(outputMime('image/heif', 'foto.heif')).toBe('image/jpeg')
+    expect(outputMime('', 'foto.gif')).toBe('image/png')
   })
 
   it('arma el nombre de salida', () => {

@@ -940,7 +940,7 @@ const it: Messages = {
   'imgt.readyMany': "{n} immagini pronte.",
   'imgt.pickMany': "Tocca per scegliere una o più immagini",
   'imgt.pickOne': "Tocca per scegliere un'immagine",
-  'imgt.formats': "JPG, PNG, WebP, GIF o BMP",
+  'imgt.formats': "JPG, PNG, WebP, HEIC, GIF o BMP",
   'imgt.yourImages': "Le tue immagini",
   'imgt.previewImage': "Anteprima della tua immagine",
   'imgt.savings': "Da {before} a {after} ({pct}% in meno).",
