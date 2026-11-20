@@ -443,6 +443,23 @@ export default {
         ['Doakoa da? Ur-markarik jartzen du?', 'Doakoa da, erregistratu gabe, argazki-mugarik gabe eta ur-markarik gabe. Emaitzak zure argazkiaren bereizmena gordetzen du.'],
       ],
     },
+    'foto-tamano-documento': {
+      slug: 'nortasun-argazkia',
+      title: 'Pasaporte eta NAN argazkia doan, atzeko plano zuriarekin | DocuSmart',
+      description: 'Egin zure pasaporte, bisatu edo nortasun-agiriaren argazkia: 3,5 × 4,5 cm, 2 × 2 in, 3 × 4 cm edo beste edozein neurri, atzeko plano zuriarekin eta 10 × 15 cm-ko inprimatze-orriarekin. Ezer igo gabe.',
+      h1: 'Pasaporte eta nortasun-agiriaren argazkia',
+      howTo: 'Nola egin pasaporte-argazki bat 3 urratsetan',
+      lead: 'Moztu zure argazkia pasaporte, bisatu edo nortasun-agiri baten neurri zehatzera, jarri atzeko plano zuria eta deskargatu bidaltzeko prest, edo inprimatu hainbat kopia orri batean.',
+      short: 'Pasaportea, bisatua edo nortasun-agiria',
+      steps: ['Aukeratu aurrez aurreko argazki bat, argi onarekin (telefonoko argazki batek balio du).', 'Aukeratu neurria (3,5 × 4,5 cm, 2 × 2 in, 3 × 4 cm…), doitu aurpegia eta aukeratu atzeko planoa: zuria, kolore bat edo jatorrizkoa.', 'Sakatu «Sortu argazkia» eta deskargatu argazki bakarra edo hainbat kopiako 10 × 15 cm-ko orria inprimatzeko.'],
+      faq: [
+        ['Zer neurri behar dut?', 'Agiriaren eta herrialdearen araberakoa da: 3,5 × 4,5 cm da ohikoena pasaporte eta bisatuetarako (Europar Batasuna, Schengen eta Latinoamerikako zati handi bat); AEBetako bisatuek eta pasaporteek 2 × 2 hazbete (51 × 51 mm) eskatzen dituzte, eta nortasun-agiri askok 3 × 4 cm erabiltzen dute. Beste bat behar baduzu, idatzi «Beste neurri bat» aukeran. Begiratu beti agiria egiten duen erakundearen baldintzak.'],
+        ['Nola lortzen dut atzeko plano zuria?', 'Aukeratu «Zuria» eta AAk pertsona atzeko planotik bereizten du zure nabigatzailearen barruan. Lehen aldian bakarrik deskargatzen da AA eredua (90 MB inguru), eta gordeta geratzen da. Zure argazkiak jada atzeko plano zuria badu, aukeratu «Jatorrizkoa» eta ez da ezer deskargatzen.'],
+        ['Neurri egokian inprimatuko da?', 'Bai. Argazkia 300 ppp-ko JPG gisa gordetzen da, bereizmena fitxategian bertan ezarrita, beraz neurri zehatzean inprimatzen da. «10 × 15 cm-ko orria» aukerarekin hainbat kopia lortzen dituzu, mozteko marra argi batekin, edozein argazki-dendatan edo argazki-inprimagailuan erabiltzeko prest.'],
+        ['Nire argazkiak internetera igotzen dira?', 'Ez. Dena, atzeko planoko AA barne, zure nabigatzailearen barruan gertatzen da: zure argazkia ez da inoiz zure gailutik ateratzen.'],
+        ['Doakoa da? Ur-markarik jartzen du?', 'Doakoa da, erregistratu gabe eta ur-markarik gabe.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',

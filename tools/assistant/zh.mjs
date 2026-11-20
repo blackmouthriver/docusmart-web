@@ -60,6 +60,7 @@ export default {
     { id: 'publicidad', q: ['为什么有广告', '广告', '去掉广告', '广告能看到我的文件吗', '隐私与 Cookie', 'adsense'], a: '广告让网站保持免费，只有当你在“隐私与 Cookie”提示中同意后才会显示；首页和工具上方从不显示广告。广告看不到你的文件，因为所有处理都在你的浏览器中完成。你可以随时在网站底部的“分析偏好设置”中更改。', actions: [['page', 'privacy']], related: ['analitica', 'privacidad'] },
     { id: 'hash', q: ['计算哈希', 'sha256', 'md5', 'checksum', '校验和', '校验文件完整性', '检查文件是否被修改', '比较两个文件', '文档数字指纹', '完整性证书'], a: '请使用“文件哈希与完整性”：它可以计算任意文件的 SHA-256（或 SHA-512、SHA-1、MD5），校验是否与你收到的哈希值一致，或比较两个文件。你还可以下载哈希列表或 PDF 完整性证书。一切都在浏览器中计算，无需上传任何内容。', actions: [['tool', 'calcular-hash']], related: ['privacidad'] },
     { id: 'quitar-fondo', q: ['去除照片背景', '抠图', '透明背景', '把人从照片中抠出来', '无背景 png', '照片换白底', '删除图片背景', 'remove background'], a: '请使用“去除背景”：AI 会抠出人物、商品或动物，给你一张透明 PNG，或白色、任意颜色的背景。它在浏览器中运行，所以照片不会上传；只有第一次需要下载 AI 模型（约 90 MB）并保存下来。', actions: [['tool', 'quitar-fondo']], related: ['privacidad'] },
+    { id: 'foto-tamano-documento', q: ['证件照', '护照照片', '签证照片', '白底照片', '一寸照片', '二寸照片', '身份证照片', 'passport photo'], a: '请使用“证件照”：选择尺寸（护照和签证 35 × 45 mm，美国 2 × 2 in，30 × 40 mm 或其他），对准人脸，AI 会换成白色背景。可下载 300 dpi 的 JPG，或排有多张的 10 × 15 cm 排版用于打印。一切都在浏览器中完成。', actions: [['tool', 'foto-tamano-documento']], related: ['quitar-fondo'] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

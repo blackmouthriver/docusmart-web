@@ -438,6 +438,23 @@ export default {
         ["És gratis? Posa marca d'aigua?", "És gratis, sense registre, sense límit de fotos i sense marca d'aigua. El resultat conserva la resolució de la teva foto."],
       ],
     },
+    'foto-tamano-documento': {
+      slug: 'foto-carnet',
+      title: 'Foto carnet en línia gratis, amb fons blanc | DocuSmart',
+      description: 'Fes la foto del passaport, visat o DNI: 35 × 45 mm, 2 × 2 in, 30 × 40 mm o una altra mida, amb fons blanc i full de 10 × 15 cm. Sense pujar res.',
+      h1: 'Foto carnet',
+      howTo: 'Com fer una foto carnet en 3 passos',
+      lead: "Retalla la teva foto a la mida exacta d'un passaport, un visat o un DNI, posa-li fons blanc i baixa-la a punt per enviar, o imprimeix-ne diverses còpies en un sol full.",
+      short: 'Passaport, visat o DNI',
+      steps: ['Tria una foto de cara i amb bona llum (una foto del mòbil serveix).', "Tria la mida (35 × 45 mm, 2 × 2 in, 30 × 40 mm…), enquadra la cara i tria el fons: blanc, un color o l'original.", 'Prem "Crea la foto" i baixa la foto sola o un full de 10 × 15 cm amb diverses còpies per imprimir.'],
+      faq: [
+        ['Quina mida necessito?', "Depèn del document i del país: 35 × 45 mm és la més habitual per a passaports i visats (Unió Europea, Schengen i bona part d'Amèrica Llatina); els visats i passaports dels EUA exigeixen 2 × 2 polzades (51 × 51 mm), i molts DNI fan servir 30 × 40 mm. Si en necessites una altra, escriu-la a \"Una altra mida\". Revisa sempre els requisits de l'entitat que emet el document."],
+        ['Com aconsegueixo el fons blanc?', "Tria \"Blanc\" i la IA separa la persona del fons dins del teu navegador. Només la primera vegada es baixa el model d'IA (uns 90 MB) i queda desat. Si la teva foto ja té fons blanc, tria \"Original\" i no es baixa res."],
+        ["S'imprimirà a la mida correcta?", "Sí. La foto es desa com a JPG a 300 ppp amb la resolució gravada al fitxer, així que s'imprimeix a la mida exacta. Amb \"Full 10 × 15 cm\" obtens diverses còpies amb una línia de tall suau, a punt per a qualsevol laboratori o impressora fotogràfica."],
+        ['Les meves fotos es pugen a internet?', 'No. Tot, inclosa la IA del fons, passa dins del teu navegador: la teva foto no surt mai del teu dispositiu.'],
+        ["És gratis? Posa marca d'aigua?", "És gratis, sense registre i sense marca d'aigua."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',

@@ -9,7 +9,7 @@
 //       { kind: 'hash' }
 //
 // alsoIn: otras categorías donde también se lista (W-119), sin duplicar la página.
-//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo' }
+//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo'|'documento' }
 
 export const SITE = 'https://docusmart.online'
 /** Redes sociales de DocuSmart (pie de página y datos estructurados). */
@@ -526,6 +526,30 @@ export const pages = [
       ['¿Puedo poner un fondo blanco para un documento?', 'Sí. Elige "Blanco" para fotos de documentos o tiendas en línea, o cualquier otro color.'],
       ['¿Por qué tarda la primera vez?', 'Porque descarga el modelo de IA (unos 90 MB). Después queda guardado en tu navegador y cada foto tarda solo unos segundos, según tu equipo.'],
       ['¿Es gratis? ¿Pone marca de agua?', 'Es gratis, sin registro, sin límite de fotos y sin marca de agua. El resultado conserva la resolución de tu foto.'],
+    ],
+  },
+  {
+    slug: 'foto-tamano-documento',
+    category: 'imagen',
+    tool: { kind: 'img', id: 'documento' },
+    title: 'Foto tamaño pasaporte o documento gratis, con fondo blanco | DocuSmart',
+    description:
+      'Haz tu foto para pasaporte, visa o cédula: 3,5 × 4,5 cm, 2 × 2 in, 3 × 4 cm u otra medida, con fondo blanco y hoja de 10 × 15 cm para imprimir. Sin subirla.',
+    h1: 'Foto tamaño documento',
+    howTo: 'Cómo hacer una foto para documento en 3 pasos',
+    lead: 'Recorta tu foto a la medida exacta del pasaporte, la visa o la cédula, ponle fondo blanco y descárgala lista para enviar o para imprimir varias copias en una hoja.',
+    short: 'Pasaporte, visa o cédula',
+    steps: [
+      'Elige una foto de frente, con buena luz (sirve una del celular).',
+      'Escoge la medida (3,5 × 4,5 cm, 2 × 2 in, 3 × 4 cm…), encuadra la cara y elige el fondo: blanco, de color o el original.',
+      'Pulsa "Crear foto" y descarga la foto sola o la hoja de 10 × 15 cm con varias copias para imprimir.',
+    ],
+    faq: [
+      ['¿Qué medida necesito?', 'Depende del documento y del país: 3,5 × 4,5 cm es la más usada para pasaportes y visas (Unión Europea, Schengen y gran parte de América Latina); la visa y el pasaporte de Estados Unidos piden 2 × 2 pulgadas (5 × 5 cm), y muchas cédulas y carnés usan 3 × 4 cm. Si te piden otra, escríbela en "Otra medida". Revisa siempre los requisitos de la entidad.'],
+      ['¿Cómo se pone el fondo blanco?', 'Elige "Blanco" y la IA separa a la persona del fondo dentro de tu navegador. Solo la primera vez se descarga el modelo de IA (unos 90 MB) y queda guardado. Si tu foto ya tiene fondo blanco, elige "Original" y no se descarga nada.'],
+      ['¿Sale del tamaño correcto al imprimir?', 'Sí. La foto se guarda en JPG a 300 ppp, con la resolución marcada en el archivo, así que se imprime a la medida exacta. Con "Hoja 10 × 15 cm" obtienes varias copias con una línea suave para recortar, lista para cualquier laboratorio o impresora de fotos.'],
+      ['¿Mis fotos se suben a internet?', 'No. Todo, incluida la IA del fondo, se hace dentro de tu navegador: tu foto nunca sale de tu equipo.'],
+      ['¿Es gratis? ¿Pone marca de agua?', 'Es gratis, sin registro y sin marca de agua.'],
     ],
   },
   {

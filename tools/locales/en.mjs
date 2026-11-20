@@ -438,6 +438,23 @@ export default {
         ['Is it free? Does it add a watermark?', 'It is free, with no sign-up, no photo limit and no watermark. The result keeps the resolution of your photo.'],
       ],
     },
+    'foto-tamano-documento': {
+      slug: 'passport-photo',
+      title: 'Free passport and ID photo maker with a white background | DocuSmart',
+      description: 'Make your passport, visa or ID card photo: 35 × 45 mm, 2 × 2 in, 30 × 40 mm or any size, with a white background and a 4 × 6 in print sheet. No upload.',
+      h1: 'Passport and ID photo',
+      howTo: 'How to make a passport photo in 3 steps',
+      lead: 'Crop your photo to the exact size of a passport, visa or ID card, give it a white background and download it ready to send, or print several copies on one sheet.',
+      short: 'Passport, visa or ID card',
+      steps: ['Choose a front-facing photo with good light (a phone photo works).', 'Pick the size (35 × 45 mm, 2 × 2 in, 30 × 40 mm…), frame the face and choose the background: white, a color or the original.', 'Press "Create photo" and download the single photo or a 4 × 6 in sheet with several copies to print.'],
+      faq: [
+        ['Which size do I need?', 'It depends on the document and the country: 35 × 45 mm is the most common for passports and visas (European Union, Schengen and much of Latin America); US visas and passports require 2 × 2 inches (51 × 51 mm), and many ID cards use 30 × 40 mm. If you need another one, type it in "Other size". Always check the requirements of the issuing office.'],
+        ['How do I get a white background?', 'Choose "White" and the AI separates the person from the background inside your browser. Only the first time is the AI model (about 90 MB) downloaded, and it stays stored. If your photo already has a white background, choose "Original" and nothing is downloaded.'],
+        ['Will it print at the right size?', 'Yes. The photo is saved as a 300 dpi JPG with the resolution set in the file, so it prints at the exact size. With "4 × 6 in sheet" you get several copies with a light cutting line, ready for any photo lab or photo printer.'],
+        ['Are my photos uploaded to the internet?', 'No. Everything, including the background AI, happens inside your browser: your photo never leaves your device.'],
+        ['Is it free? Does it add a watermark?', 'It is free, with no sign-up and no watermark.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

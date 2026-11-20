@@ -1,4 +1,4 @@
-// Herramientas de imagen: comprimir, redimensionar, recortar y rotar, en el navegador.
+// Herramientas de imagen: comprimir, redimensionar, recortar, rotar, quitar fondo y foto tamaño documento, en el navegador.
 import { useEffect, useMemo, useState, type ComponentType, type ReactNode } from 'react'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
@@ -14,6 +14,7 @@ import {
   cropPixels,
   fitSize,
   isIdentity,
+  lockAspect,
   marginsToRect,
   outputMime,
   outputName,
@@ -24,11 +25,11 @@ import {
   savedPercent,
   type AspectName,
   type CompressLevel,
-  type CropRect,
   type ResizeSpec,
   type Transform,
 } from '../core/imageTools'
 import { MODEL as BG_MODEL, backgroundOutputName, parseBackground } from '../core/background'
+import { ID_MAX_MM, ID_MIN_MM, ID_PRESETS, formatMm, idPhotoName, idPixels, parseSizeMm, portraitCrop, sheetLayout, type IdPresetId, type IdSize } from '../core/idPhoto'
 import type { Margins } from '../../pdf/core/pdfCrop'
 import { track } from '../../../shared/platform/analytics'
 import { CropStage } from '../../pdf/ui/CropTool'
@@ -41,6 +42,7 @@ const TOOLS: Array<{ id: string; name: MessageKey; desc: MessageKey; icon: IconN
   { id: 'recortar', name: 'imgt.crop', desc: 'imgt.crop.desc', icon: 'crop', cls: 'ico-amber' },
   { id: 'rotar', name: 'imgt.rotate', desc: 'imgt.rotate.desc', icon: 'rotate', cls: 'ico-violet' },
   { id: 'fondo', name: 'imgt.removeBg', desc: 'imgt.removeBg.desc', icon: 'eraser', cls: 'ico-cyan' },
+  { id: 'documento', name: 'imgt.idPhoto', desc: 'imgt.idPhoto.desc', icon: 'user', cls: 'ico-blue' },
 ]
 
 // Conversiones de formato (W-119): viven en Convertir, pero también se ofrecen aquí.
@@ -57,6 +59,7 @@ export const IMAGE_TOOLS: Record<string, ComponentType> = {
   recortar: CropImageTool,
   rotar: RotateImageTool,
   fondo: RemoveBackgroundTool,
+  documento: IdPhotoTool,
 }
 
 export function ImageToolsScreen({ sub }: { sub?: string }) {
@@ -543,14 +546,7 @@ function CropImageTool() {
   const onChange = (m: Margins) => {
     const ratio = ASPECTS[aspect]
     if (!ratio || !dims) return setMargins(m)
-    const r: CropRect = marginsToRect(m)
-    let h = (r.w * dims.width) / ratio / dims.height
-    let w = r.w
-    if (r.y + h > 1) {
-      h = 1 - r.y
-      w = (h * dims.height * ratio) / dims.width
-    }
-    setMargins(rectToMargins({ x: r.x, y: r.y, w, h }))
+    setMargins(rectToMargins(lockAspect(marginsToRect(m), dims.width, dims.height, ratio)))
   }
 
   const px = useMemo(() => (dims ? cropPixels(dims.width, dims.height, marginsToRect(margins)) : null), [dims, margins])
@@ -608,6 +604,182 @@ function CropImageTool() {
         </BusyButton>
       </div>
       {file && output && <BeforeAfter original={file} result={output} toolName="crop_image" title={tr('imgt.title.cropOne')} />}
+    </Panel>
+  )
+}
+
+/* ───────────── Foto tamaño documento (W-122) ───────────── */
+
+type IdBg = 'original' | 'white' | 'color'
+
+function IdPhotoTool() {
+  const { toast } = useApp()
+  const [file, setFile] = useState<File | null>(null)
+  const [output, setOutput] = useState<File | null>(null)
+  const url = useObjectUrl(file)
+  const [dims, setDims] = useState<{ width: number; height: number } | null>(null)
+  const [preset, setPreset] = useState<IdPresetId | 'custom'>('35x45')
+  const [customW, setCustomW] = useState('35')
+  const [customH, setCustomH] = useState('45')
+  const [bg, setBg] = useState<IdBg>('white')
+  const [color, setColor] = useState('#dbeafe')
+  const [layout, setLayout] = useState<'single' | 'sheet'>('single')
+  const [margins, setMargins] = useState<Margins>({ top: 0, right: 0, bottom: 0, left: 0 })
+  const [cached, setCached] = useState<boolean | null>(null)
+  const [modelProgress, setModelProgress] = useState<number | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const size: IdSize | null = preset === 'custom' ? parseSizeMm(customW, customH) : (ID_PRESETS.find((p) => p.id === preset) ?? null)
+  const aspect = size ? size.w / size.h : null
+
+  useEffect(() => {
+    void import('../infra/backgroundModel').then((m) => m.isModelCached()).then(setCached, () => setCached(false))
+  }, [])
+
+  useEffect(() => {
+    setDims(null)
+    setError(null)
+    setOutput(null)
+    if (!file) return
+    let cancelled = false
+    void import('../infra/imageCanvas').then(async ({ loadImage }) => {
+      try {
+        const img = await loadImage(file)
+        img.bmp.close()
+        if (!cancelled) setDims({ width: img.width, height: img.height })
+      } catch (e) {
+        if (!cancelled) setError(errorMessage(e))
+      }
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [file])
+
+  // Al cambiar la foto o la medida, el recuadro vuelve a su posición inicial con la nueva proporción.
+  useEffect(() => {
+    if (dims && aspect) setMargins(rectToMargins(portraitCrop(dims.width, dims.height, aspect)))
+    setOutput(null)
+  }, [dims, aspect])
+
+  const onChange = (m: Margins) => {
+    if (!dims || !aspect) return
+    setMargins(rectToMargins(lockAspect(marginsToRect(m), dims.width, dims.height, aspect)))
+    setOutput(null)
+  }
+  const reset = <T,>(set: (v: T) => void) => (v: T) => {
+    set(v)
+    setOutput(null)
+  }
+
+  const px = useMemo(() => (dims ? cropPixels(dims.width, dims.height, marginsToRect(margins)) : null), [dims, margins])
+  const copies = size ? sheetLayout(size).cells.length : 0
+  const locale = document.documentElement.lang || 'es'
+
+  const save = async () => {
+    if (!file || !px || !size) return
+    setError(null)
+    const background = bg === 'original' ? null : parseBackground(bg === 'white' ? '#ffffff' : color)
+    if (background) {
+      try {
+        setModelProgress(0)
+        const { prepareBackgroundRemover } = await import('../infra/backgroundRemover')
+        await prepareBackgroundRemover((f) => setModelProgress(f))
+        setCached(true)
+      } catch (e) {
+        setError(tr('bg.failedModel'))
+        track('app_error', { error_context: 'id_photo_model', error_message: e instanceof Error ? e.name : 'error' })
+        return
+      } finally {
+        setModelProgress(null)
+      }
+    }
+    setBusy(true)
+    try {
+      const { renderIdPhoto } = await import('../infra/idPhotoCanvas')
+      const r = await renderIdPhoto(file, { crop: px, size, background, layout })
+      setOutput(resultFile(r.blob, idPhotoName(file.name, tr(layout === 'sheet' ? 'file.idSheet' : 'file.idPhoto')), 'image/jpeg'))
+      track('image_tool_used', { tool_name: 'id_photo', files: 1, ok: 1 })
+      toast(tr('common.doneReview'))
+    } catch (e) {
+      setError(errorMessage(e))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <Panel>
+      {!file ? (
+        <DropZone accept={ACCEPT} title={tr('imgt.pickOne')} hint={tr('imgt.formats')} onFiles={([f]) => setFile(f)} />
+      ) : (
+        <ul className="file-list" style={{ marginTop: 0 }}>
+          <FileRow file={file} extra={dims ? `${dims.width}×${dims.height} px` : tr('common.reading')} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>{tr('common.change')}</button>} />
+        </ul>
+      )}
+      <label className="field">
+        <span>{tr('idp.size')}</span>
+        <select className="input" value={preset} onChange={(e) => reset(setPreset)(e.target.value as IdPresetId | 'custom')}>
+          {ID_PRESETS.map((p) => (
+            <option key={p.id} value={p.id}>{tr(`idp.p.${p.id}` as MessageKey)}</option>
+          ))}
+          <option value="custom">{tr('idp.custom')}</option>
+        </select>
+      </label>
+      {preset === 'custom' && (
+        <div className="row">
+          <label className="field" style={{ flex: 1, minWidth: 120 }}>
+            <span>{tr('idp.widthMm')}</span>
+            <input className="input" type="text" inputMode="decimal" value={customW} onChange={(e) => reset(setCustomW)(e.target.value)} />
+          </label>
+          <label className="field" style={{ flex: 1, minWidth: 120 }}>
+            <span>{tr('idp.heightMm')}</span>
+            <input className="input" type="text" inputMode="decimal" value={customH} onChange={(e) => reset(setCustomH)(e.target.value)} />
+          </label>
+        </div>
+      )}
+      {!size && <Notice kind="error">{tr('idp.badSize', { min: ID_MIN_MM, max: ID_MAX_MM })}</Notice>}
+      {url && dims && size && (
+        <>
+          <small className="faint">{tr('idp.frame')}</small>
+          <CropStage url={url} margins={margins} onChange={onChange} />
+          <div className="row" style={{ justifyContent: 'space-between' }}>
+            <span className="faint">{tr('idp.printSize', { size: formatMm(size, locale), w: idPixels(size).width, h: idPixels(size).height })}</span>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setDims({ ...dims })}><Icon name="reset" /> {tr('crop.reset')}</button>
+          </div>
+        </>
+      )}
+      <div className="field">
+        <span>{tr('bg.background')}</span>
+        <Segmented label={tr('bg.background')} value={bg} onChange={reset(setBg)} options={[{ value: 'white', label: tr('bg.white') }, { value: 'color', label: tr('bg.color') }, { value: 'original', label: tr('idp.bgOriginal') }]} />
+      </div>
+      {bg === 'color' && (
+        <label className="field bg-color">
+          <span>{tr('bg.pickColor')}</span>
+          <input type="color" value={color} onChange={(e) => reset(setColor)(e.target.value)} />
+        </label>
+      )}
+      {bg !== 'original' && cached === false && <Notice kind="info">{tr('bg.firstTime', { size: formatBytes(BG_MODEL.bytes) })}</Notice>}
+      <div className="field">
+        <span>{tr('idp.output')}</span>
+        <Segmented label={tr('idp.output')} value={layout} onChange={reset(setLayout)} options={[{ value: 'single', label: tr('idp.single') }, { value: 'sheet', label: tr('idp.sheet') }]} />
+        {layout === 'sheet' && size && <small className="faint">{tr('idp.sheetHint', { n: copies })}</small>}
+      </div>
+      <small className="faint">{tr('idp.check')} {tr('imgt.privacy')}</small>
+      {modelProgress !== null && (
+        <div className="stack" style={{ gap: 6 }} role="status">
+          <small>{modelProgress < 1 ? tr('bg.downloading', { pct: Math.round(modelProgress * 100) }) : tr('bg.preparing')}</small>
+          <Progress value={modelProgress} />
+        </div>
+      )}
+      {error && <Notice kind="error">{error}</Notice>}
+      <div className="row row-end">
+        <BusyButton busy={busy || modelProgress !== null} disabled={!px || !size || (layout === 'sheet' && copies === 0)} onClick={save} icon="user">
+          {tr('idp.run')}
+        </BusyButton>
+      </div>
+      {file && output && <BeforeAfter original={file} result={output} toolName="id_photo" title={tr('imgt.title.idPhoto')} />}
     </Panel>
   )
 }

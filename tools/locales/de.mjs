@@ -438,6 +438,23 @@ export default {
         ['Ist es kostenlos? Gibt es ein Wasserzeichen?', 'Es ist kostenlos, ohne Anmeldung, ohne Fotolimit und ohne Wasserzeichen. Das Ergebnis behält die Auflösung deines Fotos.'],
       ],
     },
+    'foto-tamano-documento': {
+      slug: 'passbild',
+      title: 'Passbild online kostenlos erstellen, mit weißem Hintergrund | DocuSmart',
+      description: 'Erstelle dein Foto für Reisepass, Visum oder Ausweis: 35 × 45 mm, 2 × 2 Zoll, 30 × 40 mm oder eigene Größe, weißer Hintergrund und Druckbogen 10 × 15 cm. Ohne Upload.',
+      h1: 'Passbild',
+      howTo: 'So erstellst du ein Passbild in 3 Schritten',
+      lead: 'Schneide dein Foto auf die exakte Größe eines Reisepasses, Visums oder Ausweises zu, gib ihm einen weißen Hintergrund und lade es versandfertig herunter, oder drucke mehrere Kopien auf einem Bogen.',
+      short: 'Reisepass, Visum oder Ausweis',
+      steps: ['Wähle ein frontales Foto mit gutem Licht (ein Handyfoto genügt).', 'Wähle die Größe (35 × 45 mm, 2 × 2 Zoll, 30 × 40 mm …), rahme das Gesicht ein und wähle den Hintergrund: weiß, eine Farbe oder das Original.', 'Tippe auf „Foto erstellen“ und lade das einzelne Foto oder einen Bogen 10 × 15 cm mit mehreren Kopien zum Drucken herunter.'],
+      faq: [
+        ['Welche Größe brauche ich?', 'Das hängt vom Dokument und vom Land ab: 35 × 45 mm ist die gängigste Größe für Reisepässe und Visa (Europäische Union, Schengen und weite Teile Lateinamerikas); US-Visa und -Pässe verlangen 2 × 2 Zoll (51 × 51 mm), und viele Ausweise verwenden 30 × 40 mm. Brauchst du eine andere, gib sie unter „Andere Größe“ ein. Prüfe immer die Anforderungen der ausstellenden Stelle.'],
+        ['Wie bekomme ich einen weißen Hintergrund?', 'Wähle „Weiß“, und die KI trennt die Person in deinem Browser vom Hintergrund. Nur beim ersten Mal wird das KI-Modell (ca. 90 MB) heruntergeladen und bleibt gespeichert. Hat dein Foto schon einen weißen Hintergrund, wähle „Original“, dann wird nichts heruntergeladen.'],
+        ['Wird es in der richtigen Größe gedruckt?', 'Ja. Das Foto wird als JPG mit 300 dpi gespeichert, die Auflösung ist in der Datei hinterlegt, sodass es in exakter Größe gedruckt wird. Mit „Bogen 10 × 15 cm“ erhältst du mehrere Kopien mit einer dezenten Schnittlinie, bereit für jedes Fotolabor oder jeden Fotodrucker.'],
+        ['Werden meine Fotos ins Internet hochgeladen?', 'Nein. Alles, auch die KI für den Hintergrund, läuft in deinem Browser ab: Dein Foto verlässt nie dein Gerät.'],
+        ['Ist es kostenlos? Gibt es ein Wasserzeichen?', 'Es ist kostenlos, ohne Registrierung und ohne Wasserzeichen.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',

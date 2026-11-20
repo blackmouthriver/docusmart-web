@@ -85,6 +85,7 @@ export const CATALOG: readonly CatalogTool[] = [
   img('recortar', 'crop', 'imgt.crop'),
   img('rotar', 'rotate', 'imgt.rotate'),
   img('fondo', 'eraser', 'imgt.removeBg'),
+  img('documento', 'user', 'imgt.idPhoto'),
   { key: 'archivos/crear', category: 'archivos', icon: 'archive', name: 'tools.arch.create', desc: 'tools.arch.create.desc', section: 'archivos', sub: 'crear' },
   { key: 'archivos/extraer', category: 'archivos', icon: 'folder', name: 'tools.arch.extract', desc: 'tools.arch.extract.desc', section: 'archivos', sub: 'extraer' },
   { key: 'qr/crear', category: 'qr', icon: 'qr', name: 'qr.create', desc: 'quick.makeQr.hint', section: 'qr', sub: 'crear' },

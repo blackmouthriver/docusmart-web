@@ -106,6 +106,17 @@ export function centeredCrop(imgW: number, imgH: number, aspect: number | null):
   return { x: (1 - w) / 2, y: 0, w, h: 1 }
 }
 
+/** Con proporción fija (ancho/alto en pixeles), el alto sigue al ancho; si no cabe, manda el alto. */
+export function lockAspect(r: CropRect, imgW: number, imgH: number, aspect: number): CropRect {
+  let h = (r.w * imgW) / aspect / imgH
+  let w = r.w
+  if (r.y + h > 1) {
+    h = 1 - r.y
+    w = (h * imgH * aspect) / imgW
+  }
+  return { x: r.x, y: r.y, w, h }
+}
+
 /** Recorte en pixeles enteros, siempre dentro de la imagen y de al menos 1×1. */
 export function cropPixels(imgW: number, imgH: number, r: CropRect) {
   const x = Math.min(imgW - 1, Math.max(0, Math.round(r.x * imgW)))

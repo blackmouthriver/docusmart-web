@@ -438,6 +438,23 @@ export default {
         ['È gratis? Aggiunge una filigrana?', 'È gratis, senza registrazione, senza limite di foto e senza filigrana. Il risultato mantiene la risoluzione della tua foto.'],
       ],
     },
+    'foto-tamano-documento': {
+      slug: 'foto-tessera',
+      title: 'Foto tessera online gratis, con sfondo bianco | DocuSmart',
+      description: "Crea la foto per passaporto, visto o carta d'identità: 35 × 45 mm, 2 × 2 in, 30 × 40 mm o altra misura, sfondo bianco e foglio 10 × 15 cm. Senza caricare nulla.",
+      h1: 'Foto tessera',
+      howTo: 'Come fare la foto tessera in 3 passaggi',
+      lead: "Ritaglia la tua foto alla misura esatta di un passaporto, un visto o una carta d'identità, dalle uno sfondo bianco e scaricala pronta da inviare, oppure stampa più copie su un solo foglio.",
+      short: "Passaporto, visto o carta d'identità",
+      steps: ['Scegli una foto frontale e ben illuminata (va bene una foto scattata con il telefono).', "Scegli la misura (35 × 45 mm, 2 × 2 in, 30 × 40 mm…), inquadra il viso e scegli lo sfondo: bianco, un colore o l'originale.", 'Premi "Crea foto" e scarica la foto singola o un foglio 10 × 15 cm con più copie da stampare.'],
+      faq: [
+        ['Quale misura mi serve?', "Dipende dal documento e dal paese: 35 × 45 mm è la più comune per passaporti e visti (Unione Europea, Schengen e gran parte dell'America Latina); i visti e i passaporti USA richiedono 2 × 2 pollici (51 × 51 mm) e molte carte d'identità usano 30 × 40 mm. Se te ne serve un'altra, scrivila in \"Altra misura\". Controlla sempre i requisiti dell'ente che rilascia il documento."],
+        ['Come ottengo lo sfondo bianco?', "Scegli \"Bianco\" e l'IA separa la persona dallo sfondo all'interno del tuo browser. Solo la prima volta viene scaricato il modello di IA (circa 90 MB), che poi resta salvato. Se la tua foto ha già lo sfondo bianco, scegli \"Originale\" e non si scarica nulla."],
+        ['Verrà stampata della misura giusta?', 'Sì. La foto viene salvata come JPG a 300 dpi con la risoluzione impostata nel file, quindi si stampa nella misura esatta. Con "Foglio 10 × 15 cm" ottieni più copie con una leggera linea di taglio, pronte per qualsiasi laboratorio o stampante fotografica.'],
+        ['Le mie foto vengono caricate su internet?', "No. Tutto, compresa l'IA per lo sfondo, avviene nel tuo browser: la tua foto non lascia mai il dispositivo."],
+        ['È gratis? Aggiunge una filigrana?', 'È gratis, senza registrazione e senza filigrana.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',
