@@ -1170,5 +1170,22 @@ const en: Messages = {
   'hash.cert.size': "Size",
   'hash.cert.footer': "Generated with DocuSmart (docusmart.online) on the device: the files were not uploaded.",
   'hash.cert.fileName': "integrity-certificate",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "Remove background",
+  'imgt.removeBg.desc': "Cut out people, animals or objects with AI",
+  'imgt.title.removeBg': "Here's your image without the background",
+  'bg.background': "Background",
+  'bg.transparent': "Transparent",
+  'bg.white': "White",
+  'bg.color': "Color",
+  'bg.pickColor': "Background color",
+  'bg.tip': "Works best with a clear subject: a person, a product or an animal. The result is saved as PNG.",
+  'bg.firstTime': "The first time, the AI model ({size}) is downloaded from docusmart.online and stored in your browser. Your images are never uploaded.",
+  'bg.downloading': "Downloading the AI model… {pct}%",
+  'bg.preparing': "Preparing the AI…",
+  'bg.run': "Remove background",
+  'bg.failedModel': "Couldn't prepare the AI. Check your connection and try again.",
+  'file.noBg': "no-background",
+  'file.zipNoBg': "images-no-background",
 }
 export default en

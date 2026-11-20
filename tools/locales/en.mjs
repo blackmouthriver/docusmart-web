@@ -421,6 +421,23 @@ export default {
         ['Are my photos uploaded to the internet?', 'No. Everything happens inside your browser.'],
       ],
     },
+    'quitar-fondo': {
+      slug: 'remove-background',
+      title: 'Remove the background from an image for free, with AI and no upload | DocuSmart',
+      description: 'Remove the background from photos of people, products or animals with AI that runs in your browser. Transparent PNG or colored background, free and without uploading anything.',
+      h1: 'Remove background from an image',
+      howTo: 'How to remove the background from an image in 3 steps',
+      lead: 'Automatically cut out the person, product or animal in your photo and get a transparent PNG or a background in any color you like.',
+      short: 'Cut out with AI, no upload',
+      steps: ['Choose one or more photos (JPG, PNG or WebP).', 'Pick the background: transparent, white or any color you like.', 'Press "Remove background" and download the PNG; with several photos, all together in a ZIP.'],
+      faq: [
+        ['Are my photos uploaded to the internet?', 'No. The AI runs inside your browser: your photos never leave your device. Only the first time is the AI model downloaded from docusmart.online, and it stays stored for next time.'],
+        ['Which photos does it work best with?', 'With a clear subject: a person, a product, an animal or an object that stands out from the background. Backgrounds very similar to the subject or very fine hair may come out less precise.'],
+        ['Can I use a white background for a document?', 'Yes. Choose "White" for ID photos or online stores, or any other color.'],
+        ['Why is it slow the first time?', 'Because it downloads the AI model (about 90 MB). After that it stays stored in your browser and each photo takes only a few seconds, depending on your device.'],
+        ['Is it free? Does it add a watermark?', 'It is free, with no sign-up, no photo limit and no watermark. The result keeps the resolution of your photo.'],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

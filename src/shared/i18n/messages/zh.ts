@@ -1170,5 +1170,22 @@ const zh: Messages = {
   'hash.cert.size': "大小",
   'hash.cert.footer': "由 DocuSmart（docusmart.online）在设备上生成：文件未被上传。",
   'hash.cert.fileName': "integrity-certificate",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "去除背景",
+  'imgt.removeBg.desc': "用 AI 抠出人物、动物或物品",
+  'imgt.title.removeBg': "这是去除背景后的图片",
+  'bg.background': "背景",
+  'bg.transparent': "透明",
+  'bg.white': "白色",
+  'bg.color': "颜色",
+  'bg.pickColor': "背景颜色",
+  'bg.tip': "主体清晰的照片效果最好：一个人、一件商品或一只动物。结果会保存为 PNG。",
+  'bg.firstTime': "首次使用时会从 docusmart.online 下载 AI 模型（{size}），并保存在你的浏览器中。你的图片永远不会被上传。",
+  'bg.downloading': "正在下载 AI 模型… {pct}%",
+  'bg.preparing': "正在准备 AI…",
+  'bg.run': "去除背景",
+  'bg.failedModel': "无法准备 AI。请检查网络连接后重试。",
+  'file.noBg': "no-background",
+  'file.zipNoBg': "images-no-background",
 }
 export default zh

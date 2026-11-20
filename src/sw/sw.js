@@ -15,7 +15,8 @@ const VERSION = '__SW_VERSION__'
 const PAGES = `ds-pages-${VERSION}`
 const STATIC = 'ds-static'
 const SHELL = ['/app/', '/']
-const STATIC_PREFIXES = ['/pdfjs/', '/qpdf/', '/7z/', '/ocr/', '/img/', '/assistant/']
+// /models/ (Quitar fondo, ~90 MB) no pasa por aquí: la herramienta lo guarda en su propia caché.
+const STATIC_PREFIXES = ['/pdfjs/', '/qpdf/', '/7z/', '/ocr/', '/ort/', '/img/', '/assistant/']
 // Los archivos son del propio sitio y no cambian según quién los pida: se ignora Vary (el
 // servidor manda Vary: Origin / accept-encoding, y los módulos y fuentes se piden con Origin).
 const MATCH = { ignoreVary: true }

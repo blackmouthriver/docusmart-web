@@ -1170,5 +1170,22 @@ const ca: Messages = {
   'hash.cert.size': "Mida",
   'hash.cert.footer': "Generat amb DocuSmart (docusmart.online) al dispositiu: els fitxers no s'han pujat.",
   'hash.cert.fileName': "certificat-d-integritat",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "Treure el fons",
+  'imgt.removeBg.desc': "Retalla persones, animals o objectes amb IA",
+  'imgt.title.removeBg': "Així ha quedat sense fons",
+  'bg.background': "Fons",
+  'bg.transparent': "Transparent",
+  'bg.white': "Blanc",
+  'bg.color': "Color",
+  'bg.pickColor': "Color del fons",
+  'bg.tip': "Funciona millor amb un subjecte clar: una persona, un producte o un animal. El resultat es desa en PNG.",
+  'bg.firstTime': "La primera vegada es baixa el model d'IA ({size}) des de docusmart.online i queda desat al teu navegador. Les teves imatges no es pugen mai.",
+  'bg.downloading': "Baixant el model d'IA… {pct} %",
+  'bg.preparing': "Preparant la IA…",
+  'bg.run': "Treure el fons",
+  'bg.failedModel': "No s'ha pogut preparar la IA. Revisa la connexió i torna-ho a provar.",
+  'file.noBg': "sense-fons",
+  'file.zipNoBg': "imatges-sense-fons",
 }
 export default ca

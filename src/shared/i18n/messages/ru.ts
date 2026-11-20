@@ -1170,5 +1170,22 @@ const ru: Messages = {
   'hash.cert.size': "Размер",
   'hash.cert.footer': "Создано в DocuSmart (docusmart.online) на устройстве: файлы не загружались.",
   'hash.cert.fileName': "integrity-certificate",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "Удалить фон",
+  'imgt.removeBg.desc': "Вырезает людей, животных или предметы с помощью ИИ",
+  'imgt.title.removeBg': "Вот результат без фона",
+  'bg.background': "Фон",
+  'bg.transparent': "Прозрачный",
+  'bg.white': "Белый",
+  'bg.color': "Цвет",
+  'bg.pickColor': "Цвет фона",
+  'bg.tip': "Лучше всего работает с чётким объектом: человеком, товаром или животным. Результат сохраняется в PNG.",
+  'bg.firstTime': "В первый раз модель ИИ ({size}) скачивается с docusmart.online и сохраняется в вашем браузере. Ваши изображения никогда не загружаются.",
+  'bg.downloading': "Скачивание модели ИИ… {pct} %",
+  'bg.preparing': "Подготовка ИИ…",
+  'bg.run': "Удалить фон",
+  'bg.failedModel': "Не удалось подготовить ИИ. Проверьте подключение и попробуйте снова.",
+  'file.noBg': "no-background",
+  'file.zipNoBg': "images-no-background",
 }
 export default ru

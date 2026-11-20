@@ -1170,5 +1170,22 @@ const eu: Messages = {
   'hash.cert.size': "Tamaina",
   'hash.cert.footer': "DocuSmart-ekin (docusmart.online) gailuan sortua: fitxategiak ez dira igo.",
   'hash.cert.fileName': "osotasun-ziurtagiria",
+  // Quitar fondo (W-121)
+  'imgt.removeBg': "Kendu atzeko planoa",
+  'imgt.removeBg.desc': "Moztu pertsonak, animaliak edo objektuak AArekin",
+  'imgt.title.removeBg': "Hona hemen atzeko planorik gabe",
+  'bg.background': "Atzeko planoa",
+  'bg.transparent': "Gardena",
+  'bg.white': "Zuria",
+  'bg.color': "Kolorea",
+  'bg.pickColor': "Atzeko planoaren kolorea",
+  'bg.tip': "Hobeto dabil subjektu argi batekin: pertsona bat, produktu bat edo animalia bat. Emaitza PNG formatuan gordetzen da.",
+  'bg.firstTime': "Lehen aldian AA eredua ({size}) docusmart.online-etik deskargatzen da eta zure nabigatzailean gordeta geratzen da. Zure irudiak ez dira inoiz igotzen.",
+  'bg.downloading': "AA eredua deskargatzen… % {pct}",
+  'bg.preparing': "AA prestatzen…",
+  'bg.run': "Kendu atzeko planoa",
+  'bg.failedModel': "Ezin izan da AA prestatu. Egiaztatu konexioa eta saiatu berriro.",
+  'file.noBg': "fondorik-gabe",
+  'file.zipNoBg': "irudiak-fondorik-gabe",
 }
 export default eu

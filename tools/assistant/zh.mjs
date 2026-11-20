@@ -59,6 +59,7 @@ export default {
     { id: 'abrir-en-app', q: ['链接会打开应用', '在应用中打开链接', '不想打开应用', '用浏览器打开而不是应用', '链接跳转到应用'], a: '如果你在 Android 上安装了 DocuSmart，点击 docusmart.online 上某个工具的链接（例如“合并 PDF”）会直接在应用中打开。如果你更想用浏览器，可以长按链接并选择在浏览器中打开，或者在 Android 的 设置 → 应用 → DocuSmart → 默认打开 中关闭。', actions: [['play']], related: ['desktop'] },
     { id: 'publicidad', q: ['为什么有广告', '广告', '去掉广告', '广告能看到我的文件吗', '隐私与 Cookie', 'adsense'], a: '广告让网站保持免费，只有当你在“隐私与 Cookie”提示中同意后才会显示；首页和工具上方从不显示广告。广告看不到你的文件，因为所有处理都在你的浏览器中完成。你可以随时在网站底部的“分析偏好设置”中更改。', actions: [['page', 'privacy']], related: ['analitica', 'privacidad'] },
     { id: 'hash', q: ['计算哈希', 'sha256', 'md5', 'checksum', '校验和', '校验文件完整性', '检查文件是否被修改', '比较两个文件', '文档数字指纹', '完整性证书'], a: '请使用“文件哈希与完整性”：它可以计算任意文件的 SHA-256（或 SHA-512、SHA-1、MD5），校验是否与你收到的哈希值一致，或比较两个文件。你还可以下载哈希列表或 PDF 完整性证书。一切都在浏览器中计算，无需上传任何内容。', actions: [['tool', 'calcular-hash']], related: ['privacidad'] },
+    { id: 'quitar-fondo', q: ['去除照片背景', '抠图', '透明背景', '把人从照片中抠出来', '无背景 png', '照片换白底', '删除图片背景', 'remove background'], a: '请使用“去除背景”：AI 会抠出人物、商品或动物，给你一张透明 PNG，或白色、任意颜色的背景。它在浏览器中运行，所以照片不会上传；只有第一次需要下载 AI 模型（约 90 MB）并保存下来。', actions: [['tool', 'quitar-fondo']], related: ['privacidad'] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

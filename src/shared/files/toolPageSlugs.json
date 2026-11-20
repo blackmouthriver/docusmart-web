@@ -272,6 +272,19 @@
     "ko": "rotate-image",
     "zh": "rotate-image"
   },
+  "quitar-fondo": {
+    "en": "remove-background",
+    "pt": "remover-fundo",
+    "fr": "supprimer-arriere-plan",
+    "it": "rimuovere-sfondo",
+    "de": "hintergrund-entfernen",
+    "ca": "treure-fons",
+    "eu": "atzeko-planoa-kendu",
+    "ru": "remove-background",
+    "ja": "remove-background",
+    "ko": "remove-background",
+    "zh": "remove-background"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

@@ -2,3 +2,5 @@
 *.webp binary
 *.png binary
 *.svg text eol=lf
+*.bin binary
+*.onnx binary

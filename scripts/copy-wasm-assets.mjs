@@ -6,7 +6,7 @@
 //    decodificadores wasm de pdf.js.
 //  - public/qpdf/: qpdf compilado a wasm (comprimir, proteger, desbloquear y
 //    reparar PDF).
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 const root = join(import.meta.dirname, '..')
@@ -59,7 +59,28 @@ for (const lang of ['spa', 'eng']) {
   cpSync(join(modules, '@tesseract.js-data', lang, '4.0.0_best_int', `${lang}.traineddata.gz`), join(ocrOut, 'lang', `${lang}.traineddata.gz`))
 }
 
+// ── onnxruntime-web (Quitar fondo, W-121) ──────────────────────────
+// Solo el motor wasm sin hilos extra ni WebGPU: el modelo (public/models/isnet/) se carga aparte.
+const ort = join(modules, 'onnxruntime-web')
+const ortOut = fresh(join(pub, 'ort'))
+for (const f of ['ort-wasm-simd-threaded.mjs', 'ort-wasm-simd-threaded.wasm']) cpSync(join(ort, 'dist', f), join(ortOut, f))
+// El paquete no trae el archivo LICENSE (su package.json declara MIT): se escribe el aviso.
+writeFileSync(
+  join(ortOut, 'LICENSE.txt'),
+  `onnxruntime-web - MIT License
+
+Copyright (c) Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+`,
+)
+
 for (const f of [
+  join(ortOut, 'ort-wasm-simd-threaded.wasm'),
   join(pdfjsOut, 'standard_fonts'),
   join(qpdfOut, 'qpdf.wasm'),
   join(sevenZipOut, '7zz.wasm'),
@@ -68,4 +89,4 @@ for (const f of [
 ]) {
   if (!existsSync(f)) throw new Error(`Falta un recurso: ${f}`)
 }
-console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/, public/7z/ y public/ocr/')
+console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/, public/7z/, public/ocr/ y public/ort/')
