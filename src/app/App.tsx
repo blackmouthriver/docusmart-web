@@ -91,6 +91,8 @@ export function App() {
   // se angosta la barra; al desplegar, la barra se ensancha y los textos entran en cascada.
   const [sideAnim, setSideAnim] = useState<'' | 'is-opening' | 'is-closing'>('')
   const animTimer = useRef<number | undefined>(undefined)
+  // Título del HTML (descriptivo, para buscadores): se conserva en el inicio del navegador.
+  const htmlTitle = useRef(document.title)
   const toggleSidebar = () => {
     const closing = !collapsed
     saveCollapsed(safeStorage(), closing)
@@ -148,8 +150,10 @@ export function App() {
     trackScreen(route.sub ? `${name}/${route.sub}` : name)
     const nav = NAV.find((n) => n.section === route.section)
     // Instalada en la computadora se llama DocuSmart Desktop (W-16); en el navegador, DocuSmart Web.
-    const brand = isStandalone(window) ? 'DocuSmart Desktop' : 'DocuSmart Web'
-    document.title = route.section === '' ? brand : `${t(nav?.label ?? 'nav.viewer')} · ${brand}`
+    const standalone = isStandalone(window)
+    const brand = standalone ? 'DocuSmart Desktop' : 'DocuSmart Web'
+    if (route.section !== '') document.title = `${t(nav?.label ?? 'nav.viewer')} · ${brand}`
+    else document.title = standalone || !htmlTitle.current ? brand : htmlTitle.current
   }, [route.section, route.sub, t])
 
   const nextToastId = useRef(0)
