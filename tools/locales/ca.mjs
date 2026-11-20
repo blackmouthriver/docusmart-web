@@ -94,7 +94,7 @@ export default {
       howTo: 'Com girar un PDF en 3 passos',
       lead: 'Endreça les pàgines que han quedat de costat o del revés, una per una o totes alhora.',
       short: 'Endreça pàgines girades',
-      steps: ['Tria el PDF.', 'Toca cada pàgina per girar-la 90°, o fes servir "Girar-les totes".', 'Prem "Desar el PDF girat" i baixa el document corregit.'],
+      steps: ['Tria el PDF.', 'Toca cada pàgina per girar-la 90°, o fes servir "Gira-les totes".', 'Prem "Gira el PDF" i baixa el document corregit.'],
       faq: [
         ['Puc girar només una pàgina?', 'Sí. Cada toc gira aquesta pàgina 90°; les altres es queden com eren.'],
         ['El gir és permanent?', 'Sí, queda desat al PDF nou i es veurà igual en qualsevol lector.'],
@@ -330,7 +330,7 @@ export default {
       howTo: 'Com convertir un PDF a PDF/A en 3 passos',
       lead: 'Passa els teus documents al format estàndard d’arxiu perquè es vegin igual d’aquí a molts anys, sense dependre de lletres ni programes externs.',
       short: 'Format d’arxiu a llarg termini',
-      steps: ['Tria el PDF.', 'Prem "Convertir a PDF/A".', 'Es baixa el PDF/A-2b i t’expliquem què s’ha ajustat per complir la norma.'],
+      steps: ['Tria el PDF.', 'Prem "Converteix a PDF/A".', 'Es baixa el PDF/A-2b i t’expliquem què s’ha ajustat per complir la norma.'],
       faq: [
         ['Què és PDF/A?', 'És la versió de PDF pensada per arxivar (norma ISO 19005): el fitxer porta a dins les lletres, el perfil de color i les metadades, i no pot dependre de res extern. El demanen molts tràmits amb entitats públiques, jutjats i universitats.'],
         ['Quin nivell de PDF/A crea?', 'PDF/A-2b, el nivell més utilitzat: garanteix que el document es vegi igual en el futur. El validem amb veraPDF, el validador de referència de la PDF Association.'],
@@ -643,7 +643,7 @@ export default {
       steps: [
         "Tria o arrossega el PDF.",
         "Escriu el text de la marca (fins a 40 caràcters), per exemple \"CONFIDENCIAL\".",
-        "Prem \"Aplica la marca d’aigua\" i descarrega el PDF.",
+        "Prem \"Aplica la marca d'aigua\" i descarrega el PDF.",
       ],
       faq: [
         ["Com es veu la marca d’aigua?", "Com un text gran en diagonal, blau i semitransparent, al centre de cada pàgina. El contingut es continua llegint a sota."],

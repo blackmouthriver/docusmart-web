@@ -94,7 +94,7 @@ export default {
       howTo: 'How to rotate a PDF in 3 steps',
       lead: 'Straighten pages that ended up sideways or upside down, one by one or all at once.',
       short: 'Straighten rotated pages',
-      steps: ['Choose the PDF.', 'Tap each page to turn it 90°, or use "Rotate all".', 'Press "Save rotated PDF" and download the corrected document.'],
+      steps: ['Choose the PDF.', 'Tap each page to turn it 90°, or use "Rotate all".', 'Press "Rotate PDF" and download the corrected document.'],
       faq: [
         ['Can I rotate just one page?', 'Yes. Each tap turns that page 90°; the others stay as they were.'],
         ['Is the rotation permanent?', "Yes, it's saved in the new PDF and will look the same in any reader."],
@@ -134,7 +134,7 @@ export default {
       steps: [
         'Choose the PDF form: DocuSmart finds its fields and marks them on the page.',
         'Type your answers; tapping a box on the page opens its field, and vice versa.',
-        'If you are going to send it, tick "Flatten" so the answers become fixed, and press "Fill in form".',
+        'If you are going to send it, tick "Flatten" so the answers become fixed, and press "Fill in the form".',
       ],
       faq: [
         ['Which forms work?', 'PDFs with fillable fields (AcroForm), which are the vast majority: text boxes, checkboxes, options, drop-down lists and lists. If a PDF has no fields, you can write on top with "Edit PDF".'],
