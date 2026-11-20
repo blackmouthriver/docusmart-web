@@ -157,6 +157,7 @@ const zh: Messages = {
   'dp.previewTitle': "文档预览",
   'dp.placeholder': "结果将显示在这里",
   'save.download': "下载",
+  'save.nameLabel': "文件名",
   'save.share': "分享",
   'save.downloaded': "文件已下载。",
   'save.shareError': "无法分享该文件。请下载后从你的设备发送。",

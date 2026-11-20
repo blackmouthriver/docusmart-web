@@ -157,6 +157,7 @@ const ko: Messages = {
   'dp.previewTitle': "문서 미리보기",
   'dp.placeholder': "여기에 결과가 표시됩니다",
   'save.download': "다운로드",
+  'save.nameLabel': "파일 이름",
   'save.share': "공유",
   'save.downloaded': "파일을 다운로드했습니다.",
   'save.shareError': "파일을 공유할 수 없습니다. 다운로드한 후 기기에서 보내세요.",

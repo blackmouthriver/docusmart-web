@@ -157,6 +157,7 @@ const ca: Messages = {
   'dp.previewTitle': "Previsualització del teu document",
   'dp.placeholder': "Aquí veuràs el resultat",
   'save.download': "Descarrega",
+  'save.nameLabel': "Nom del fitxer",
   'save.share': "Comparteix",
   'save.downloaded': "S'ha descarregat el fitxer.",
   'save.shareError': "No s'ha pogut compartir el fitxer. Descarrega'l i envia'l des del teu dispositiu.",

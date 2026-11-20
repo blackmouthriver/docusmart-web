@@ -157,6 +157,7 @@ const ru: Messages = {
   'dp.previewTitle': "Предпросмотр документа",
   'dp.placeholder': "Здесь появится результат",
   'save.download': "Скачать",
+  'save.nameLabel': "Имя файла",
   'save.share': "Поделиться",
   'save.downloaded': "Файл скачан.",
   'save.shareError': "Не удалось поделиться файлом. Скачайте его и отправьте со своего устройства.",

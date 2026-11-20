@@ -880,6 +880,10 @@ html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms v
 .doc-preview-stage img { display: block; max-width: 100%; max-height: 56vh; width: auto; height: auto; background: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(28, 27, 26, 0.2); }
 .doc-placeholder { border: 2px dashed var(--line-strong); background: transparent; }
 .save-options { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Nombre del resultado: editable antes de guardar; la extensión queda fija al lado. */
+.save-name-row { display: flex; align-items: center; gap: 0; }
+.save-name-row .input { flex: 1; min-width: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.save-name-ext { display: grid; place-items: center; align-self: stretch; padding: 0 12px; border-radius: 0 12px 12px 0; background: var(--paper-2); color: var(--ink-soft); font-size: 14px; font-weight: 600; white-space: nowrap; }
 .save-options .btn { flex: 1 1 160px; justify-content: center; }
 @media (max-width: 480px) {
   .before-after { gap: 8px; }

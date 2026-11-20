@@ -23,6 +23,24 @@ test('unir dos PDF y descargar el resultado', async ({ page }) => {
   expect((await download).suggestedFilename()).toMatch(/\.pdf$/)
 })
 
+test('el resultado se puede renombrar antes de descargarlo @movil', async ({ page }) => {
+  await page.goto('/unir-pdf')
+  await upload(page, [
+    { name: 'a.pdf', mimeType: 'application/pdf', buffer: makePdf(2) },
+    { name: 'b.pdf', mimeType: 'application/pdf', buffer: makePdf(1) },
+  ])
+  await page.getByRole('button', { name: 'Unir 2 PDFs' }).click()
+  const name = page.getByRole('textbox', { name: 'Nombre del archivo' })
+  await expect(name).toBeVisible()
+  await name.fill('Contrato: final')
+  // Al salir del campo, el nombre queda limpio y confirmado antes de descargar.
+  await name.blur()
+  await expect(name).toHaveValue('Contrato- final')
+  const download = page.waitForEvent('download')
+  await page.getByRole('button', { name: 'Descargar' }).click()
+  expect((await download).suggestedFilename()).toBe('Contrato- final.pdf')
+})
+
 test('convertir PNG a JPG @movil', async ({ page }) => {
   await page.goto('/png-a-jpg')
   await upload(page, [{ name: 'logo.png', mimeType: 'image/png', buffer: PNG }])

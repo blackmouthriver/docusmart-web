@@ -161,6 +161,7 @@ export const es = {
   'dp.previewTitle': "Vista previa de tu documento",
   'dp.placeholder': "Aquí verás el resultado",
   'save.download': "Descargar",
+  'save.nameLabel': "Nombre del archivo",
   'save.share': "Compartir",
   'save.downloaded': "El archivo se descargó.",
   'save.shareError': "No se pudo compartir el archivo. Descárgalo y envíalo desde tu dispositivo.",

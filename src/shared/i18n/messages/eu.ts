@@ -157,6 +157,7 @@ const eu: Messages = {
   'dp.previewTitle': "Zure dokumentuaren aurrebista",
   'dp.placeholder': "Hemen ikusiko duzu emaitza",
   'save.download': "Deskargatu",
+  'save.nameLabel': "Fitxategiaren izena",
   'save.share': "Partekatu",
   'save.downloaded': "Fitxategia deskargatu da.",
   'save.shareError': "Ezin izan da fitxategia partekatu. Deskargatu eta bidali zure gailutik.",

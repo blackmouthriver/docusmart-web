@@ -157,6 +157,7 @@ const ja: Messages = {
   'dp.previewTitle': "書類のプレビュー",
   'dp.placeholder': "ここに結果が表示されます",
   'save.download': "ダウンロード",
+  'save.nameLabel': "ファイル名",
   'save.share': "共有",
   'save.downloaded': "ファイルをダウンロードしました。",
   'save.shareError': "ファイルを共有できませんでした。ダウンロードして端末から送信してください。",
