@@ -56,3 +56,14 @@ test('assetlinks.json autoriza a la app de Play a abrir los enlaces (W-18)', asy
   // Certificado de la clave de firma de apps de Play (no el de subida ni el de depuración).
   expect(link.target.sha256_cert_fingerprints).toEqual(['0D:90:B5:7C:BF:D5:B4:87:BB:2B:04:21:2B:25:71:90:AC:40:7D:0C:1C:DA:AB:A5:03:A4:D3:70:AC:4A:E8:9C'])
 })
+
+test('la portada cuenta lo nuevo y enlaza a las guías y herramientas de su idioma (W-103)', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.getByRole('heading', { name: 'Lo nuevo en DocuSmart' })).toBeVisible()
+  await expect(page.locator('.wt-news-grid > li')).toHaveCount(4)
+  await expect(page.locator('a[data-news="guides"]')).toHaveAttribute('href', '/guias')
+  await page.goto('/en/')
+  await expect(page.locator('a[data-news="guides"]')).toHaveAttribute('href', '/en/guides')
+  await expect(page.locator('a[data-track="news_cloud"]')).toHaveAttribute('href', '/en/tools')
+  await expect(page.locator('.wt-news-title')).not.toHaveText('Lo nuevo en DocuSmart')
+})

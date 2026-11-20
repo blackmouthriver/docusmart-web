@@ -830,5 +830,15 @@ export default {
     ['>Política de privacidad<', '>隐私政策（西班牙语）<'],
     ['>Preferencias de analítica<', '>分析偏好设置<'],
     ['>Contacto<', '>联系我们<'],
+    // Bloque "Lo nuevo en DocuSmart" (W-103)
+    ['Lo nuevo en DocuSmart', 'DocuSmart 新功能'],
+    ['Guías paso a paso', '分步指南'],
+    ['Aprende a unir, comprimir, firmar, escanear y proteger documentos en pocos minutos, en 12 idiomas.', '几分钟学会合并、压缩、签署、扫描和保护文档，支持 12 种语言。'],
+    ['Guarda en Google Drive o Dropbox', '保存到 Google 云端硬盘或 Dropbox'],
+    ['Si lo eliges, el resultado va directo a una carpeta DocuSmart en tu cuenta, sin pasar por nuestros servidores.', '如果你选择此项，结果会直接存入你账户中的 DocuSmart 文件夹，不经过我们的服务器。'],
+    ['Ponle el nombre que quieras', '随心命名'],
+    ['Renombra el archivo antes de descargarlo, compartirlo o guardarlo en la nube.', '在下载、分享或保存到云端之前重命名文件。'],
+    ['Los enlaces abren la app', '链接直接打开应用'],
+    ['Si tienes DocuSmart en Android, los enlaces de docusmart.online abren la herramienta directamente en la app.', '如果你的 Android 设备上装有 DocuSmart，docusmart.online 的链接会直接在应用中打开对应工具。'],
   ],
 }

@@ -889,5 +889,15 @@ export default {
     ['>Política de privacidad<', '>Política de privacitat (en castellà)<'],
     ['>Preferencias de analítica<', '>Preferències d’analítica<'],
     ['>Contacto<', '>Contacte<'],
+    // Bloque "Lo nuevo en DocuSmart" (W-103)
+    ['Lo nuevo en DocuSmart', 'Novetats de DocuSmart'],
+    ['Guías paso a paso', 'Guies pas a pas'],
+    ['Aprende a unir, comprimir, firmar, escanear y proteger documentos en pocos minutos, en 12 idiomas.', 'Aprèn a unir, comprimir, signar, escanejar i protegir documents en pocs minuts, en 12 idiomes.'],
+    ['Guarda en Google Drive o Dropbox', 'Desa a Google Drive o Dropbox'],
+    ['Si lo eliges, el resultado va directo a una carpeta DocuSmart en tu cuenta, sin pasar por nuestros servidores.', 'Si ho tries, el resultat va directament a una carpeta DocuSmart del teu compte, sense passar pels nostres servidors.'],
+    ['Ponle el nombre que quieras', 'Posa-li el nom que vulguis'],
+    ['Renombra el archivo antes de descargarlo, compartirlo o guardarlo en la nube.', 'Canvia el nom del fitxer abans de baixar-lo, compartir-lo o desar-lo al núvol.'],
+    ['Los enlaces abren la app', 'Els enllaços obren l’app'],
+    ['Si tienes DocuSmart en Android, los enlaces de docusmart.online abren la herramienta directamente en la app.', 'Si tens DocuSmart a Android, els enllaços de docusmart.online obren l’eina directament a l’app.'],
   ],
 }
