@@ -279,8 +279,8 @@ Hoy Imagen tiene comprimir, redimensionar, recortar y rotar; las conversiones (a
 
 | ID | Ítem | Quién | Estado |
 |---|---|---|---|
-| W-119 | **Conversiones de imagen también en Imágenes:** mostrar JPG↔PNG, a WebP y a BMP en la categoría Imagen (app, `/herramientas` y portada) sin duplicar páginas | 🤖 | Pendiente (prioridad 1) |
-| W-120 | **Voltear y espejo** dentro de Rotar imagen (horizontal y vertical) | 🤖 | Pendiente (prioridad 1) |
+| W-119 | **Conversiones de imagen también en Imágenes:** mostrar JPG↔PNG, a WebP y a BMP en la categoría Imagen (app, `/herramientas` y portada) sin duplicar páginas | 🤖 | ✅ Hecho (2026-11-20): Imagen de la app con "Cambiar de formato"; `/herramientas` y portada las listan también en Imagen (`alsoIn`); al buscar aparecen una vez |
+| W-120 | **Voltear y espejo** dentro de Rotar imagen (horizontal y vertical) | 🤖 | ✅ Hecho (2026-11-20): ya existía (Espejo y Vertical); los botones ahora dicen "Voltear horizontal" y "Voltear vertical" en 12 idiomas |
 | W-121 | **Quitar fondo** (idea del usuario) con un modelo de segmentación en el navegador (ONNX/WebGPU, ~40-80 MB que se descargan solo al usarla y quedan en caché). Salida PNG transparente o con color de fondo (blanco para documentos). Revisar licencia del modelo, memoria en celulares y CSP (`wasm-unsafe-eval`, origen del modelo). Absorbe la parte de "quitar fondo" de W-115 | 🤖 | Pendiente (prioridad 2) |
 | W-122 | **Foto tamaño documento** (cédula, pasaporte, visa): recorte a medida + fondo blanco (usa W-121); reemplaza esa parte de W-115 | 🤖 | Pendiente |
 | W-123 | **Marca de agua en imágenes** (texto o logo, posición, opacidad), por lotes | 🤖 | Pendiente |

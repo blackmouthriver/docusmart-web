@@ -293,10 +293,12 @@ for (const loc of LANGS) for (const page of pages) emit(`${SITE_DIR}/${filePath(
 
 // ── Página "Todas las herramientas" (W-78) ──────────────────────────────────
 /** Herramientas de una categoría, en orden alfabético según el idioma. */
+/** ¿La página se lista en la categoría? (la suya o una de alsoIn, W-119). */
+const inCategory = (p, id) => p.category === id || (p.alsoIn ?? []).includes(id)
 function toolsIn(cat, loc) {
   const collator = new Intl.Collator(loc.lang, { sensitivity: 'base', numeric: true })
   return pages
-    .filter((p) => p.category === cat.id)
+    .filter((p) => inCategory(p, cat.id))
     .map((p) => ({ page: p, l: localized(p, loc) }))
     .sort((a, b) => collator.compare(a.l.h1, b.l.h1))
 }
@@ -316,7 +318,7 @@ function renderHub(loc) {
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: n,
-      itemListElement: CATEGORIES.flatMap((c) => toolsIn(c, loc)).map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.l.h1, url: `${SITE}${pagePath(t.page, loc)}` })),
+      itemListElement: CATEGORIES.flatMap((c) => toolsIn(c, loc).filter((t) => t.page.category === c.id)).map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.l.h1, url: `${SITE}${pagePath(t.page, loc)}` })),
     },
   }
   const sections = CATEGORIES.map((c) => {
@@ -324,7 +326,7 @@ function renderHub(loc) {
     return `    <section class="th-cat reveal" id="cat-${c.id}" data-cat aria-labelledby="h-${c.id}">
       <div class="th-cat-head"><span class="th-cat-ico">${svg(c.icon, 'th-svg')}</span><h2 id="h-${c.id}">${esc(ui.cats[c.id])}</h2><span class="th-count">${esc(toolCount(loc, items.length))}</span></div>
       <ul class="th-grid">
-${items.map((t) => `        <li data-tool data-search="${esc([t.l.h1, t.l.short, ui.cats[c.id]].join(' '))}"><a href="${pagePath(t.page, loc)}"><span class="th-tool-ico">${svg(toolIcon(t.page.tool), 'th-svg')}</span><span class="th-tool-text"><b>${esc(t.l.h1)}</b><span>${esc(t.l.short)}</span></span></a></li>`).join('\n')}
+${items.map((t) => `        <li data-tool${t.page.category === c.id ? '' : ' data-also'} data-search="${esc([t.l.h1, t.l.short, ui.cats[c.id]].join(' '))}"><a href="${pagePath(t.page, loc)}"><span class="th-tool-ico">${svg(toolIcon(t.page.tool), 'th-svg')}</span><span class="th-tool-text"><b>${esc(t.l.h1)}</b><span>${esc(t.l.short)}</span></span></a></li>`).join('\n')}
       </ul>
     </section>`
   }).join('\n')
@@ -785,7 +787,7 @@ function block(html, name, content, file) {
 function landingBlocks(html, loc, file) {
   const hub = hubPath(loc)
   const cards = CATEGORIES.map((c) => {
-    const n = pages.filter((p) => p.category === c.id).length
+    const n = pages.filter((p) => inCategory(p, c.id)).length
     return `        <li class="reveal"><a href="${hub}#cat-${c.id}"><span class="wt-ico">${svg(c.icon, 'wt-svg')}</span><span class="wt-text"><b>${esc(loc.ui.cats[c.id])}</b><span>${esc(toolCount(loc, n))}</span></span></a></li>`
   }).join('\n')
   const items = `      <ul class="web-tools wt-cats" data-stagger="60">

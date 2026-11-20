@@ -41,6 +41,14 @@ const TOOLS: Array<{ id: string; name: MessageKey; desc: MessageKey; icon: IconN
   { id: 'rotar', name: 'imgt.rotate', desc: 'imgt.rotate.desc', icon: 'rotate', cls: 'ico-violet' },
 ]
 
+// Conversiones de formato (W-119): viven en Convertir, pero también se ofrecen aquí.
+const CONVERSIONS: Array<{ id: string; name: MessageKey; desc: MessageKey }> = [
+  { id: 'img-jpg', name: 'conv.name.img-jpg', desc: 'conv.desc.imgJpg' },
+  { id: 'img-png', name: 'conv.name.img-png', desc: 'conv.desc.imgPng' },
+  { id: 'img-webp', name: 'conv.name.img-webp', desc: 'conv.desc.imgWebp' },
+  { id: 'img-bmp', name: 'conv.name.img-bmp', desc: 'conv.desc.imgBmp' },
+]
+
 export const IMAGE_TOOLS: Record<string, ComponentType> = {
   comprimir: CompressImageTool,
   redimensionar: ResizeImageTool,
@@ -71,6 +79,18 @@ export function ImageToolsScreen({ sub }: { sub?: string }) {
                 <span>
                   <b>{tr(t.name)}</b>
                   <small>{tr(t.desc)}</small>
+                </span>
+              </button>
+            ))}
+          </div>
+          <h2 className="section-title">{tr('imgt.convertTitle')}</h2>
+          <div className="tool-grid">
+            {CONVERSIONS.map((c) => (
+              <button key={c.id} type="button" className="tool-card" onClick={() => go('convertir', c.id)}>
+                <span className="ico ico-violet"><Icon name="convert" /></span>
+                <span>
+                  <b>{tr(c.name)}</b>
+                  <small>{tr(c.desc)}</small>
                 </span>
               </button>
             ))}

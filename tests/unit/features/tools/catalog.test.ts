@@ -30,9 +30,19 @@ describe('catálogo de la app', () => {
   })
   it('cuenta las herramientas de cada categoría', () => {
     const n = countByCategory()
-    expect(Object.values(n).reduce((a, b) => a + b, 0)).toBe(CATALOG.length)
+    // Las herramientas con categorías adicionales (W-119) cuentan en cada una.
+    const extra = CATALOG.reduce((k, x) => k + (x.also?.length ?? 0), 0)
+    expect(Object.values(n).reduce((a, b) => a + b, 0)).toBe(CATALOG.length + extra)
     expect(n.organizar).toBe(5)
     expect(n.qr).toBe(2)
+    expect(n.imagen).toBe(8)
+  })
+  it('las conversiones de imagen también están en Imagen, pero al buscar aparecen una vez (W-119)', () => {
+    const t = (k: string) => (es as Record<string, string>)[k] ?? k
+    const imagen = groupTools(t, 'es').find((g) => g.id === 'imagen')!
+    expect(imagen.tools.map((x) => x.key)).toEqual(expect.arrayContaining(['convertir/img-png', 'convertir/img-jpg', 'imagen/rotar']))
+    const found = groupTools(t, 'es', 'png').flatMap((g) => g.tools.map((x) => `${g.id}:${x.key}`))
+    expect(found.filter((k) => k.endsWith('convertir/img-png'))).toEqual(['convertir:convertir/img-png'])
   })
 })
 

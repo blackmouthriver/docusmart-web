@@ -33,13 +33,15 @@ export type CatalogTool = {
   /** Pantalla de destino: go(section, sub). */
   section: string
   sub: string
+  /** Otras categorías donde también se muestra (W-119: las conversiones de imagen también en Imagen). */
+  also?: CategoryId[]
 }
 
 const pdf = (id: string, category: CategoryId, icon: IconName): CatalogTool => ({
   key: `pdf/${id}`, category, icon, name: `tool.${id}` as MessageKey, desc: `tool.${id}.desc` as MessageKey, section: 'pdf', sub: id,
 })
-const conv = (id: string, icon: IconName, desc: MessageKey): CatalogTool => ({
-  key: `convertir/${id}`, category: 'convertir', icon, name: `conv.name.${id}` as MessageKey, desc, section: 'convertir', sub: id,
+const conv = (id: string, icon: IconName, desc: MessageKey, also?: CategoryId[]): CatalogTool => ({
+  key: `convertir/${id}`, category: 'convertir', icon, name: `conv.name.${id}` as MessageKey, desc, section: 'convertir', sub: id, ...(also && { also }),
 })
 const img = (id: string, icon: IconName, name: MessageKey): CatalogTool => ({
   key: `imagen/${id}`, category: 'imagen', icon, name, desc: `${name}.desc` as MessageKey, section: 'imagen', sub: id,
@@ -68,10 +70,10 @@ export const CATALOG: readonly CatalogTool[] = [
   pdf('escanear', 'escanear', 'camera'),
   pdf('ocr', 'escanear', 'text'),
   conv('img-pdf', 'image', 'conv.desc.imgPdf'),
-  conv('img-jpg', 'image', 'conv.desc.imgJpg'),
-  conv('img-png', 'image', 'conv.desc.imgPng'),
-  conv('img-webp', 'image', 'conv.desc.imgWebp'),
-  conv('img-bmp', 'image', 'conv.desc.imgBmp'),
+  conv('img-jpg', 'image', 'conv.desc.imgJpg', ['imagen']),
+  conv('img-png', 'image', 'conv.desc.imgPng', ['imagen']),
+  conv('img-webp', 'image', 'conv.desc.imgWebp', ['imagen']),
+  conv('img-bmp', 'image', 'conv.desc.imgBmp', ['imagen']),
   conv('pdf-img', 'images', 'conv.desc.pdfImg'),
   conv('pdf-txt', 'text', 'conv.desc.pdfTxt'),
   conv('pdf-word', 'convert', 'conv.desc.pdfWord'),
@@ -90,19 +92,23 @@ export const CATALOG: readonly CatalogTool[] = [
 
 export type CategoryGroup = { id: CategoryId; icon: IconName; tools: CatalogTool[] }
 
+/** ¿La herramienta se muestra en la categoría? (la suya o una adicional). */
+export const inCategory = (x: CatalogTool, id: CategoryId) => x.category === id || !!x.also?.includes(id)
+
 /**
  * Herramientas agrupadas por categoría (en el orden de CATEGORIES), cada grupo en orden
  * alfabético del idioma y filtradas por la búsqueda (nombre, descripción o categoría).
+ * Al buscar, cada herramienta aparece una sola vez (en su categoría principal).
  * Las categorías sin resultados no aparecen.
  */
 export function groupTools(t: (key: MessageKey) => string, lang: string, query = '', catalog: readonly CatalogTool[] = CATALOG): CategoryGroup[] {
   return CATEGORIES.map((c) => {
     const catName = t(`cat.${c.id}` as MessageKey)
-    const tools = catalog.filter((x) => x.category === c.id && matchesQuery(`${t(x.name)} ${t(x.desc)} ${catName}`, query))
+    const tools = catalog.filter((x) => (query.trim() ? x.category === c.id : inCategory(x, c.id)) && matchesQuery(`${t(x.name)} ${t(x.desc)} ${catName}`, query))
     return { ...c, tools: sortByName(tools, (x) => t(x.name), lang) }
   }).filter((g) => g.tools.length > 0)
 }
 
-/** Cuántas herramientas tiene cada categoría (para los accesos del inicio). */
+/** Cuántas herramientas se ven en cada categoría (para los accesos del inicio), contando las adicionales. */
 export const countByCategory = (catalog: readonly CatalogTool[] = CATALOG): Record<CategoryId, number> =>
-  Object.fromEntries(CATEGORIES.map((c) => [c.id, catalog.filter((x) => x.category === c.id).length])) as Record<CategoryId, number>
+  Object.fromEntries(CATEGORIES.map((c) => [c.id, catalog.filter((x) => inCategory(x, c.id)).length])) as Record<CategoryId, number>

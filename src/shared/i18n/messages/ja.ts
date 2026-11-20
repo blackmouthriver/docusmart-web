@@ -932,6 +932,7 @@ const ja: Messages = {
   'imgt.crop.desc': "自由、または1:1、4:3、16:9…",
   'imgt.rotate': "回転と反転",
   'imgt.rotate.desc': "90°回転、または鏡のように反転",
+  'imgt.convertTitle': "形式を変換",
   'imgt.heroSub': "写真をサーバーにアップロードせずに、圧縮・サイズ変更・トリミング・回転できます。",
   'imgt.back': "画像ツールに戻る",
   'imgt.privacy': "位置情報などの写真の隠しデータ（EXIF）は削除されます。",
