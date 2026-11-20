@@ -3,6 +3,7 @@
 // sus traducciones) y resuelve las acciones a enlaces. scripts/generate-tool-pages.mjs la escribe en
 // public/assistant/<idioma>.json (estático, se descarga solo al abrir el asistente).
 import { FACEBOOK_URL, INSTAGRAM_URL, pages } from '../pages.mjs'
+import { guidesIndexPath } from '../guides/index.mjs'
 import { LANGS, homePath, hubPath, localized, pagePath } from '../locales/index.mjs'
 import es from './es.mjs'
 import en from './en.mjs'
@@ -34,6 +35,7 @@ export const PAGES = {
   convert: () => ({ href: '/app/#/convertir', app: 'convertir' }),
   facebook: () => ({ href: FACEBOOK_URL, external: true }),
   instagram: () => ({ href: INSTAGRAM_URL, external: true }),
+  guides: (loc) => ({ href: guidesIndexPath(loc.lang) }),
 }
 
 /** Ruta de la herramienta dentro de la app web (#/pdf/unir…), como en src/features/tools/core/catalog.ts. */

@@ -68,3 +68,18 @@ test('el menú lateral se desplaza en ventanas bajas y la pestaña de plegar no 
   await expect(page.getByRole('button', { name: 'Expandir menú' })).toBeVisible()
   await page.getByRole('button', { name: 'Expandir menú' }).click()
 })
+
+test('el asistente conoce las novedades: renombrar, guardar en la nube, guías y anuncios (W-104)', async ({ page }) => {
+  await page.goto('/app/')
+  await page.getByRole('button', { name: 'Asistente de DocuSmart' }).click()
+  const input = page.getByPlaceholder('Escribe tu pregunta…')
+  const ask = async (q: string, expected: RegExp) => {
+    await input.fill(q)
+    await input.press('Enter')
+    await expect(page.locator('.assistant-bubble.bot').last()).toContainText(expected, { timeout: 15_000 })
+  }
+  await ask('cómo le cambio el nombre al archivo', /Nombre del archivo/)
+  await ask('puedo guardar en google drive', /carpeta DocuSmart/)
+  await ask('hay tutoriales', /Guías/)
+  await ask('por qué hay anuncios', /Privacidad y cookies/)
+})

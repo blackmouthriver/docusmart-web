@@ -887,5 +887,15 @@ export default {
     ['>Política de privacidad<', '>Pribatutasun-politika (gaztelaniaz)<'],
     ['>Preferencias de analítica<', '>Analitika-hobespenak<'],
     ['>Contacto<', '>Harremanetarako<'],
+    // Bloque "Lo nuevo en DocuSmart" (W-103)
+    ['Lo nuevo en DocuSmart', 'DocuSmart-en berritasunak'],
+    ['Guías paso a paso', 'Urratsez urratseko gidak'],
+    ['Aprende a unir, comprimir, firmar, escanear y proteger documentos en pocos minutos, en 12 idiomas.', 'Ikasi dokumentuak elkartzen, konprimitzen, sinatzen, eskaneatzen eta babesten minutu gutxitan, 12 hizkuntzatan.'],
+    ['Guarda en Google Drive o Dropbox', 'Gorde Google Driven edo Dropboxen'],
+    ['Si lo eliges, el resultado va directo a una carpeta DocuSmart en tu cuenta, sin pasar por nuestros servidores.', 'Hala aukeratzen baduzu, emaitza zuzenean zure kontuko DocuSmart karpeta batera doa, gure zerbitzarietatik pasatu gabe.'],
+    ['Ponle el nombre que quieras', 'Jarri nahi duzun izena'],
+    ['Renombra el archivo antes de descargarlo, compartirlo o guardarlo en la nube.', 'Aldatu fitxategiaren izena deskargatu, partekatu edo hodeian gorde aurretik.'],
+    ['Los enlaces abren la app', 'Estekek aplikazioa irekitzen dute'],
+    ['Si tienes DocuSmart en Android, los enlaces de docusmart.online abren la herramienta directamente en la app.', 'Androiden DocuSmart baduzu, docusmart.online-ko estekek tresna zuzenean aplikazioan irekitzen dute.'],
   ],
 }

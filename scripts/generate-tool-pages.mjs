@@ -826,6 +826,9 @@ for (const loc of LOCALES) {
     .replace(`href="${entryScript('landing.css', 0)}"`, `href="${entryScript('landing.css', 1)}"`)
   if (!html.includes(entryScript('landing.ts', 1))) throw new Error(`${SITE_DIR}/index.html no carga ${entryScript('landing.ts', 0)}`)
   if (!html.includes(entryScript('landing.css', 1))) throw new Error(`${SITE_DIR}/index.html no carga ${entryScript('landing.css', 0)}`)
+  // Lo nuevo (W-103): la tarjeta de guías lleva al índice de guías del idioma.
+  html = html.replace('href="/guias" data-news="guides"', `href="${guidesIndexPath(loc.lang)}" data-news="guides"`)
+  html = html.replaceAll('href="/herramientas" data-track="news_', `href="${hubPath(loc)}" data-track="news_`)
   emit(`${SITE_DIR}/${loc.lang}/index.html`, landingBlocks(html, loc, `${SITE_DIR}/${loc.lang}/index.html`))
 }
 

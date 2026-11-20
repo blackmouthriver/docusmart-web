@@ -888,5 +888,15 @@ export default {
     ['>Política de privacidad<', '>Datenschutzerklärung (auf Spanisch)<'],
     ['>Preferencias de analítica<', '>Analyse-Einstellungen<'],
     ['>Contacto<', '>Kontakt<'],
+    // Bloque "Lo nuevo en DocuSmart" (W-103)
+    ['Lo nuevo en DocuSmart', 'Neu in DocuSmart'],
+    ['Guías paso a paso', 'Schritt-für-Schritt-Anleitungen'],
+    ['Aprende a unir, comprimir, firmar, escanear y proteger documentos en pocos minutos, en 12 idiomas.', 'Lerne in wenigen Minuten, Dokumente zusammenzufügen, zu komprimieren, zu unterschreiben, zu scannen und zu schützen – in 12 Sprachen.'],
+    ['Guarda en Google Drive o Dropbox', 'In Google Drive oder Dropbox speichern'],
+    ['Si lo eliges, el resultado va directo a una carpeta DocuSmart en tu cuenta, sin pasar por nuestros servidores.', 'Wenn du willst, landet das Ergebnis direkt in einem DocuSmart-Ordner in deinem Konto, ohne über unsere Server zu laufen.'],
+    ['Ponle el nombre que quieras', 'Dein Dateiname, deine Wahl'],
+    ['Renombra el archivo antes de descargarlo, compartirlo o guardarlo en la nube.', 'Benenne die Datei um, bevor du sie herunterlädst, teilst oder in der Cloud speicherst.'],
+    ['Los enlaces abren la app', 'Links öffnen die App'],
+    ['Si tienes DocuSmart en Android, los enlaces de docusmart.online abren la herramienta directamente en la app.', 'Wenn du DocuSmart auf Android hast, öffnen Links von docusmart.online das Tool direkt in der App.'],
   ],
 }

@@ -872,5 +872,15 @@ export default {
     ['>Política de privacidad<', '>개인정보 처리방침(스페인어)<'],
     ['>Preferencias de analítica<', '>분석 설정<'],
     ['>Contacto<', '>문의<'],
+    // Bloque "Lo nuevo en DocuSmart" (W-103)
+    ['Lo nuevo en DocuSmart', 'DocuSmart의 새로운 기능'],
+    ['Guías paso a paso', '단계별 가이드'],
+    ['Aprende a unir, comprimir, firmar, escanear y proteger documentos en pocos minutos, en 12 idiomas.', '문서 병합, 압축, 서명, 스캔, 보호 방법을 몇 분 만에 배워 보세요. 12개 언어로 제공됩니다.'],
+    ['Guarda en Google Drive o Dropbox', 'Google Drive 또는 Dropbox에 저장'],
+    ['Si lo eliges, el resultado va directo a una carpeta DocuSmart en tu cuenta, sin pasar por nuestros servidores.', '원하면 결과물이 저희 서버를 거치지 않고 내 계정의 DocuSmart 폴더로 바로 저장됩니다.'],
+    ['Ponle el nombre que quieras', '원하는 이름을 붙이세요'],
+    ['Renombra el archivo antes de descargarlo, compartirlo o guardarlo en la nube.', '다운로드, 공유 또는 클라우드에 저장하기 전에 파일 이름을 바꿀 수 있습니다.'],
+    ['Los enlaces abren la app', '링크가 앱에서 열립니다'],
+    ['Si tienes DocuSmart en Android, los enlaces de docusmart.online abren la herramienta directamente en la app.', 'Android에 DocuSmart가 설치되어 있으면 docusmart.online 링크가 앱에서 바로 해당 도구를 엽니다.'],
   ],
 }

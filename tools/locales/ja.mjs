@@ -871,5 +871,15 @@ export default {
     ['>Política de privacidad<', '>プライバシーポリシー（スペイン語）<'],
     ['>Preferencias de analítica<', '>アナリティクスの設定<'],
     ['>Contacto<', '>お問い合わせ<'],
+    // Bloque "Lo nuevo en DocuSmart" (W-103)
+    ['Lo nuevo en DocuSmart', 'DocuSmart の新機能'],
+    ['Guías paso a paso', 'ステップごとのガイド'],
+    ['Aprende a unir, comprimir, firmar, escanear y proteger documentos en pocos minutos, en 12 idiomas.', '文書の結合、圧縮、署名、スキャン、保護の方法を数分で学べます。12 言語に対応。'],
+    ['Guarda en Google Drive o Dropbox', 'Google ドライブや Dropbox に保存'],
+    ['Si lo eliges, el resultado va directo a una carpeta DocuSmart en tu cuenta, sin pasar por nuestros servidores.', '選択すると、結果は当社のサーバーを経由せず、お使いのアカウントの DocuSmart フォルダに直接保存されます。'],
+    ['Ponle el nombre que quieras', '好きな名前を付けられます'],
+    ['Renombra el archivo antes de descargarlo, compartirlo o guardarlo en la nube.', 'ダウンロード、共有、クラウド保存の前にファイル名を変更できます。'],
+    ['Los enlaces abren la app', 'リンクからアプリが開きます'],
+    ['Si tienes DocuSmart en Android, los enlaces de docusmart.online abren la herramienta directamente en la app.', 'Android に DocuSmart を入れていれば、docusmart.online のリンクからツールがアプリで直接開きます。'],
   ],
 }

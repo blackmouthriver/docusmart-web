@@ -105,7 +105,8 @@ p { margin: 0; }
   width: calc(100% - 2 * var(--gutter)); max-width: 1080px;
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   height: 60px; padding: 0 10px 0 16px; border-radius: 999px;
-  background: rgba(11, 16, 32, .55); color: var(--on-night);
+  /* .8 y no .55: aunque pase un instante sobre una sección clara antes de cambiar a claro, el texto mantiene contraste AA (W-17). */
+  background: rgba(11, 16, 32, .8); color: var(--on-night);
   backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
   box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset;
   transition: background-color 300ms ease, box-shadow 300ms ease, color 300ms ease;
@@ -420,6 +421,14 @@ section { position: relative; }
 }
 @media (max-width: 1080px) { .wt-desktop { grid-template-columns: 250px minmax(0, 1fr); gap: 28px; } .wd-monitor { width: 230px; } .wd-window { height: 140px; } }
 @media (max-width: 860px) { .wt-desktop { display: none; } }
+/* Lo nuevo (W-103): cuatro tarjetas con ícono, título y una línea; reusan el estilo de las categorías. */
+.wt-news { margin-top: 40px; }
+.wt-news-title { margin: 0 0 16px; font-family: var(--font-display); font-size: clamp(22px, 3vw, 28px); letter-spacing: -0.02em; }
+.wt-news-grid { grid-template-columns: repeat(4, 1fr); }
+.wt-news-grid a { align-items: flex-start; }
+.wt-news-grid .wt-text span { line-height: 1.5; }
+@media (max-width: 1080px) { .wt-news-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .wt-news-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) {
   .wt-desktop::before, .wt-desktop::after, .wd-glow, .wd-monitor, .wd-t, .wd-badge, .wd-arrow, .wd-offline::after, .wd-spark { animation: none; }
   .wt-desktop::after { display: none; }

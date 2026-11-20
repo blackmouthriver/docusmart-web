@@ -48,6 +48,8 @@ const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
     hoja: 'pagina', ordeno: 'ordenar', reordenar: 'ordenar', enumerar: 'numerar', enumero: 'numerar', numero: 'numerar',
     costo: 'precio', cuesta: 'precio', pagar: 'precio', pago: 'precio', gratis: 'precio', gratuito: 'precio', gratuita: 'precio', cobran: 'precio',
     movil: 'celular', telefono: 'celular', smartphone: 'celular',
+    // Novedades (W-104): renombrar el resultado y guardar en la nube.
+    renombro: 'renombrar', renombre: 'renombrar', rename: 'renombrar', nube: 'drive', onedrive: 'drive', anuncio: 'publicidad', propaganda: 'publicidad', tutorial: 'guia', tutoriales: 'guia', manual: 'guia',
     comprimido: 'zip', descomprimir: 'extraer', generar: 'crear', genero: 'crear', creo: 'crear',
     escuchar: 'voz', leer: 'lectura', audio: 'voz',
     suscripcion: 'premium', plan: 'premium',
@@ -56,6 +58,7 @@ const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
   },
   en: {
     combine: 'merge', join: 'merge', joining: 'merge', unite: 'merge', glue: 'merge',
+    renaming: 'rename', renamed: 'rename', cloud: 'drive', ad: 'ads', advert: 'ads', adverts: 'ads', advertising: 'ads', tutorial: 'guide', tutorials: 'guide', manual: 'guide', howto: 'guide',
     separate: 'split', cut: 'split', divide: 'split',
     turn: 'rotate', flip: 'rotate', straighten: 'rotate',
     reduce: 'compress', shrink: 'compress', smaller: 'compress',
