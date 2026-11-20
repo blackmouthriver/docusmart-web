@@ -321,6 +321,23 @@ export default {
         ['Il file viene caricato?', 'No. La riparazione avviene nel tuo browser.'],
       ],
     },
+    'calcular-hash': {
+      slug: 'calcolare-hash',
+      title: 'Calcolare e verificare hash SHA-256 o MD5 online | DocuSmart',
+      description: "Calcola l'hash SHA-256, SHA-512, SHA-1 o MD5 di qualsiasi file, verifica che coincida o confronta due file. Gratis e senza caricare nulla: tutto nel tuo browser.",
+      h1: 'Calcolare e verificare hash (SHA-256, MD5)',
+      howTo: "Come calcolare o verificare l'hash di un file in 3 passi",
+      lead: 'Controlla che un documento non sia stato modificato: calcola la sua impronta digitale, verificala con quella che ti hanno dato o confronta due file, senza che escano dal tuo dispositivo.',
+      short: 'Impronta digitale dei file',
+      steps: ['Scegli "Calcola", "Verifica" o "Confronta" e aggiungi il file (qualsiasi tipo: PDF, foto, ZIP…).', "Scegli l'algoritmo (consigliato SHA-256) o incolla l'hash che ti hanno dato; DocuSmart riconosce se è SHA-256, SHA-512, SHA-1 o MD5.", "Copia l'hash, scarica l'elenco o un certificato di integrità in PDF, oppure guarda se coincide."],
+      faq: [
+        ["Cos'è un hash?", "È l'impronta digitale del file: una serie di lettere e numeri calcolata a partire dal suo contenuto. Se il file cambia, anche di un solo byte, l'hash è completamente diverso."],
+        ['A cosa serve?', "Per verificare che un documento che ti hanno inviato sia lo stesso originale (contratti, gare d'appalto, prove, download), lasciare traccia di com'era un file in una certa data o sapere se due file sono identici senza aprirli."],
+        ['Quale algoritmo uso?', 'SHA-256 è lo standard attuale e quello consigliato. SHA-512 è ancora più lungo. MD5 e SHA-1 servono per confrontare con somme pubblicate, ma non sono più considerati sicuri contro le falsificazioni.'],
+        ["Cos'è il certificato di integrità?", 'Un PDF con nome, dimensione, data e hash dei tuoi file. Se in seguito qualcuno ne modifica uno, ricalcolando il suo hash non coinciderà più con quello del certificato.'],
+        ['I miei file vengono caricati?', "No. L'hash viene calcolato nel tuo browser: i tuoi file non escono mai dal tuo dispositivo."],
+      ],
+    },
     'pdf-a-pdfa': {
       slug: 'pdf-in-pdfa',
       title: 'Convertire PDF in PDF/A gratis (PDF/A-2b) | DocuSmart',

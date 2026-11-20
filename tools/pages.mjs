@@ -6,6 +6,7 @@
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt'|'pdf-word'|'pdf-excel'|'word-pdf'|'excel-pdf' }
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
+//       { kind: 'hash' }
 //       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar' }
 
 export const SITE = 'https://docusmart.online'
@@ -359,6 +360,30 @@ export const pages = [
       ['¿Qué tipo de daños puede reparar?', 'Sobre todo problemas de estructura: la tabla interna de referencias perdida o corrida, o el final del archivo dañado. Si faltan partes del contenido (por ejemplo, una descarga que se cortó a la mitad), puede que no se recupere.'],
       ['¿Funciona con PDF con contraseña?', 'Primero quítale la contraseña con "Desbloquear PDF" y luego repáralo.'],
       ['¿Se sube el archivo?', 'No. La reparación ocurre en tu navegador.'],
+    ],
+  },
+  {
+    slug: 'calcular-hash',
+    category: 'seguridad',
+    tool: { kind: 'hash' },
+    title: 'Calcular y verificar hash SHA-256 o MD5 online | DocuSmart',
+    description:
+      'Calcula el hash SHA-256, SHA-512, SHA-1 o MD5 de cualquier archivo, verifica que coincida o compara dos archivos. Gratis y sin subir nada: todo pasa en tu navegador.',
+    h1: 'Calcular y verificar hash (SHA-256, MD5)',
+    howTo: 'Cómo calcular o verificar el hash de un archivo en 3 pasos',
+    lead: 'Comprueba que un documento no fue modificado: calcula su huella digital, verifícala contra la que te dieron o compara dos archivos, sin que salgan de tu equipo.',
+    short: 'Huella digital de archivos',
+    steps: [
+      'Elige "Calcular", "Verificar" o "Comparar" y agrega el archivo (cualquier tipo: PDF, fotos, ZIP…).',
+      'Escoge el algoritmo (SHA-256 recomendado) o pega el hash que te dieron; DocuSmart reconoce si es SHA-256, SHA-512, SHA-1 o MD5.',
+      'Copia el hash, descarga la lista o un certificado de integridad en PDF, o mira si coincide.',
+    ],
+    faq: [
+      ['¿Qué es un hash?', 'Es una huella digital del archivo: una serie de letras y números que se calcula a partir de su contenido. Si el archivo cambia, aunque sea en un solo byte, el hash es completamente distinto.'],
+      ['¿Para qué sirve?', 'Para comprobar que un documento que te enviaron es el mismo original (contratos, licitaciones, pruebas, descargas), dejar constancia de cómo estaba un archivo en una fecha o saber si dos archivos son idénticos sin abrirlos.'],
+      ['¿Qué algoritmo uso?', 'SHA-256 es el estándar actual y el recomendado. SHA-512 es aún más largo. MD5 y SHA-1 sirven para comparar con sumas publicadas, pero ya no se consideran seguros contra falsificaciones.'],
+      ['¿Qué es el certificado de integridad?', 'Un PDF con el nombre, tamaño, fecha y hash de tus archivos. Si más adelante alguien modifica uno, al calcular su hash de nuevo ya no coincidirá con el del certificado.'],
+      ['¿Se suben mis archivos?', 'No. El hash se calcula dentro de tu navegador: tus archivos nunca salen de tu equipo.'],
     ],
   },
   {

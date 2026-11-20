@@ -321,6 +321,23 @@ export default {
         ['Le fichier est-il envoyé ?', 'Non. La réparation se fait dans votre navigateur.'],
       ],
     },
+    'calcular-hash': {
+      slug: 'calculer-hash',
+      title: 'Calculer et vérifier un hash SHA-256 ou MD5 en ligne | DocuSmart',
+      description: "Calculez le hash SHA-256, SHA-512, SHA-1 ou MD5 d'un fichier, vérifiez-le ou comparez deux fichiers. Gratuit et sans rien envoyer : tout se fait dans le navigateur.",
+      h1: 'Calculer et vérifier un hash (SHA-256, MD5)',
+      howTo: "Comment calculer ou vérifier le hash d'un fichier en 3 étapes",
+      lead: "Vérifiez qu'un document n'a pas été modifié : calculez son empreinte numérique, comparez-la à celle qu'on vous a donnée ou comparez deux fichiers, sans qu'ils quittent votre appareil.",
+      short: 'Empreinte numérique des fichiers',
+      steps: ['Choisissez « Calculer », « Vérifier » ou « Comparer » et ajoutez le fichier (tout type : PDF, photos, ZIP…).', "Choisissez l'algorithme (SHA-256 recommandé) ou collez le hash qu'on vous a donné ; DocuSmart reconnaît s'il s'agit de SHA-256, SHA-512, SHA-1 ou MD5.", "Copiez le hash, téléchargez la liste ou un certificat d'intégrité en PDF, ou voyez s'il correspond."],
+      faq: [
+        ["Qu'est-ce qu'un hash ?", "C'est l'empreinte numérique du fichier : une suite de lettres et de chiffres calculée à partir de son contenu. Si le fichier change, ne serait-ce que d'un seul octet, le hash est complètement différent."],
+        ['À quoi ça sert ?', "À vérifier qu'un document qu'on vous a envoyé est bien l'original (contrats, appels d'offres, preuves, téléchargements), à garder une trace de l'état d'un fichier à une date donnée ou à savoir si deux fichiers sont identiques sans les ouvrir."],
+        ['Quel algorithme utiliser ?', 'SHA-256 est la norme actuelle et celui que nous recommandons. SHA-512 est encore plus long. MD5 et SHA-1 servent à comparer avec des sommes publiées, mais ne sont plus considérés comme sûrs contre les falsifications.'],
+        ["Qu'est-ce que le certificat d'intégrité ?", "Un PDF avec le nom, la taille, la date et le hash de vos fichiers. Si quelqu'un modifie plus tard l'un d'eux, son hash recalculé ne correspondra plus à celui du certificat."],
+        ['Mes fichiers sont-ils envoyés ?', 'Non. Le hash est calculé dans votre navigateur : vos fichiers ne quittent jamais votre appareil.'],
+      ],
+    },
     'pdf-a-pdfa': {
       slug: 'pdf-en-pdfa',
       title: 'Convertir un PDF en PDF/A gratuitement (PDF/A-2b) | DocuSmart',

@@ -321,6 +321,23 @@ export default {
         ['Is the file uploaded?', 'No. The repair happens in your browser.'],
       ],
     },
+    'calcular-hash': {
+      slug: 'file-hash-checker',
+      title: 'File hash checker: SHA-256 and MD5 online | DocuSmart',
+      description: 'Calculate the SHA-256, SHA-512, SHA-1 or MD5 hash of any file, verify a checksum or compare two files. Free, with nothing uploaded: it all runs in your browser.',
+      h1: 'Calculate and verify a file hash (SHA-256, MD5)',
+      howTo: 'How to calculate or verify a file hash in 3 steps',
+      lead: "Check that a document hasn't been modified: calculate its digital fingerprint, verify it against the one you were given or compare two files, without them leaving your device.",
+      short: 'Digital fingerprint of files',
+      steps: ['Choose "Calculate", "Verify" or "Compare" and add the file (any type: PDF, photos, ZIP…).', "Pick the algorithm (SHA-256 recommended) or paste the hash you were given; DocuSmart recognises whether it's SHA-256, SHA-512, SHA-1 or MD5.", 'Copy the hash, download the list or a PDF integrity certificate, or see whether it matches.'],
+      faq: [
+        ['What is a hash?', "It's a digital fingerprint of the file: a string of letters and numbers calculated from its content. If the file changes, even by a single byte, the hash is completely different."],
+        ['What is it for?', 'To check that a document you were sent is the same as the original (contracts, tenders, evidence, downloads), to keep a record of what a file looked like on a given date, or to know whether two files are identical without opening them.'],
+        ['Which algorithm should I use?', "SHA-256 is today's standard and the recommended one. SHA-512 is even longer. MD5 and SHA-1 are fine for comparing with published checksums, but they are no longer considered secure against forgery."],
+        ['What is the integrity certificate?', 'A PDF with the name, size, date and hash of your files. If someone later modifies one of them, calculating its hash again will no longer match the one in the certificate.'],
+        ['Are my files uploaded?', 'No. The hash is calculated inside your browser: your files never leave your device.'],
+      ],
+    },
     'pdf-a-pdfa': {
       slug: 'pdf-to-pdfa',
       title: 'Convert PDF to PDF/A for free (PDF/A-2b) | DocuSmart',

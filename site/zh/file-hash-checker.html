@@ -1,0 +1,300 @@
+<!doctype html>
+<!-- Generado por scripts/generate-tool-pages.mjs desde tools/pages.mjs. No editar a mano. -->
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>在线计算和校验 SHA-256 或 MD5 哈希 | DocuSmart</title>
+<meta name="description" content="计算任意文件的 SHA-256、SHA-512、SHA-1 或 MD5 哈希值，校验是否一致，或比较两个文件。免费且无需上传：一切都在你的浏览器中完成。">
+<meta name="theme-color" content="#0B1020">
+<link rel="canonical" href="https://docusmart.online/zh/file-hash-checker">
+<link rel="alternate" hreflang="es" href="https://docusmart.online/calcular-hash">
+<link rel="alternate" hreflang="en" href="https://docusmart.online/en/file-hash-checker">
+<link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/calcular-hash">
+<link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/calculer-hash">
+<link rel="alternate" hreflang="it" href="https://docusmart.online/it/calcolare-hash">
+<link rel="alternate" hreflang="de" href="https://docusmart.online/de/hash-berechnen">
+<link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/calcular-hash">
+<link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/hasha-kalkulatu">
+<link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/file-hash-checker">
+<link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/file-hash-checker">
+<link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/file-hash-checker">
+<link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/file-hash-checker">
+<link rel="alternate" hreflang="x-default" href="https://docusmart.online/calcular-hash">
+<link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DocuSmart">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="在线计算和校验 SHA-256 或 MD5 哈希 | DocuSmart">
+<meta property="og:description" content="计算任意文件的 SHA-256、SHA-512、SHA-1 或 MD5 哈希值，校验是否一致，或比较两个文件。免费且无需上传：一切都在你的浏览器中完成。">
+<meta property="og:url" content="https://docusmart.online/zh/file-hash-checker">
+<meta property="og:image" content="https://docusmart.online/img/og/zh.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "计算和校验哈希（SHA-256、MD5） · DocuSmart",
+    "url": "https://docusmart.online/zh/file-hash-checker",
+    "description": "计算任意文件的 SHA-256、SHA-512、SHA-1 或 MD5 哈希值，校验是否一致，或比较两个文件。免费且无需上传：一切都在你的浏览器中完成。",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "任意（网页浏览器）",
+    "isAccessibleForFree": true,
+    "inLanguage": "zh",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "DocuSmart",
+      "url": "https://docusmart.online",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61596626852763",
+        "https://www.instagram.com/supportdocusmart/",
+        "https://www.tiktok.com/@docusmartsupport"
+      ]
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "什么是哈希值？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "它是文件的数字指纹：根据文件内容计算出的一串字母和数字。只要文件有变化，哪怕只改动一个字节，哈希值也会完全不同。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "它有什么用？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "用来确认别人发给你的文档就是原件（合同、招标文件、证据、下载文件），记录某个文件在某一日期的状态，或在不打开文件的情况下判断两个文件是否相同。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "应该用哪种算法？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SHA-256 是当前的标准，也是推荐选择。SHA-512 更长。MD5 和 SHA-1 可用于与公布的校验和比对，但已不再能可靠地防止伪造。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "什么是完整性证书？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "一份包含文件名称、大小、日期和哈希值的 PDF。如果以后有人修改了其中某个文件，重新计算哈希值时就会与证书上的不一致。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "我的文件会被上传吗？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "不会。哈希值在你的浏览器中计算：文件永远不会离开你的设备。"
+        }
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "DocuSmart",
+        "item": "https://docusmart.online/zh/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "计算和校验哈希（SHA-256、MD5）",
+        "item": "https://docusmart.online/zh/file-hash-checker"
+      }
+    ]
+  }
+]
+</script>
+</head>
+<body class="tool-page">
+<header class="tp-nav">
+  <div class="tp-wrap tp-nav-inner">
+    <a class="tp-brand" href="/zh/"><img src="/img/icon.svg" alt="" width="30" height="30">DocuSmart</a>
+    <nav aria-label="主菜单">
+      <a href="#herramientas">工具</a>
+      <a href="/app/">网页版</a>
+      <details class="tp-lang">
+        <summary aria-label="ZH · 语言: 中文"><span aria-hidden="true">🌐</span> ZH</summary>
+        <ul>
+          <li><a href="/calcular-hash" hreflang="es" lang="es" data-set-lang="es">Español</a></li>
+          <li><a href="/en/file-hash-checker" hreflang="en" lang="en" data-set-lang="en">English</a></li>
+          <li><a href="/pt/calcular-hash" hreflang="pt" lang="pt" data-set-lang="pt">Português</a></li>
+          <li><a href="/fr/calculer-hash" hreflang="fr" lang="fr" data-set-lang="fr">Français</a></li>
+          <li><a href="/it/calcolare-hash" hreflang="it" lang="it" data-set-lang="it">Italiano</a></li>
+          <li><a href="/de/hash-berechnen" hreflang="de" lang="de" data-set-lang="de">Deutsch</a></li>
+          <li><a href="/ca/calcular-hash" hreflang="ca" lang="ca" data-set-lang="ca">Català</a></li>
+          <li><a href="/eu/hasha-kalkulatu" hreflang="eu" lang="eu" data-set-lang="eu">Euskara</a></li>
+          <li><a href="/ru/file-hash-checker" hreflang="ru" lang="ru" data-set-lang="ru">Русский</a></li>
+          <li><a href="/ja/file-hash-checker" hreflang="ja" lang="ja" data-set-lang="ja">日本語</a></li>
+          <li><a href="/ko/file-hash-checker" hreflang="ko" lang="ko" data-set-lang="ko">한국어</a></li>
+          <li><a href="/zh/file-hash-checker" hreflang="zh" lang="zh" data-set-lang="zh" aria-current="page">中文</a></li>
+        </ul>
+      </details>
+      <a class="tp-nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool">下载应用</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="tp-hero">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
+      <nav class="tp-crumbs" aria-label="路径"><a href="/zh/">DocuSmart</a><span aria-hidden="true">›</span><span>计算和校验哈希（SHA-256、MD5）</span></nav>
+      <h1>计算和校验哈希（SHA-256、MD5）</h1>
+      <p class="tp-lead">确认文档未被修改：计算它的数字指纹，与你收到的值核对，或比较两个文件，文件始终不离开你的设备。</p>
+      <ul class="tp-badges">
+        <li>无需上传文件</li>
+        <li>免费、无需注册</li>
+        <li>在浏览器中运行</li>
+      </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5A7.5 7.5 0 0 1 19.5 12v1M4.5 10.5A7.5 7.5 0 0 0 4.5 13M8 18.5c1-1.8 1.5-3.8 1.5-6a2.5 2.5 0 0 1 5 0c0 1.2-.1 2.4-.3 3.5M12 12c0 3.2-.8 6-2.3 8.5M17.4 16.5c-.3 1.4-.8 2.8-1.4 4M12 3a9 9 0 0 1 3 .5"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-wrap tp-tool" aria-label="工具">
+    <div id="tool" data-kind="hash" data-slug="calcular-hash">
+      <noscript><p class="tp-noscript">要使用此工具，请在浏览器中启用 JavaScript。所有处理都在你的设备上完成。</p></noscript>
+    </div>
+  </section>
+
+  <section class="tp-wrap tp-section reveal">
+    <h2>计算或校验文件哈希的 3 个步骤</h2>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>选择“计算”“校验”或“比较”，然后添加文件（任意类型：PDF、照片、ZIP…）。</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5A7.5 7.5 0 0 1 19.5 12v1M4.5 10.5A7.5 7.5 0 0 0 4.5 13M8 18.5c1-1.8 1.5-3.8 1.5-6a2.5 2.5 0 0 1 5 0c0 1.2-.1 2.4-.3 3.5M12 12c0 3.2-.8 6-2.3 8.5M17.4 16.5c-.3 1.4-.8 2.8-1.4 4M12 3a9 9 0 0 1 3 .5"/></svg></span><span>选择算法（推荐 SHA-256），或粘贴你收到的哈希值；DocuSmart 会识别它是 SHA-256、SHA-512、SHA-1 还是 MD5。</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>复制哈希值，下载列表或 PDF 完整性证书，或查看是否一致。</span></li>
+    </ol>
+  </section>
+
+  <section class="tp-wrap tp-section tp-privacy reveal">
+    <h2>你的文件不会离开你的设备</h2>
+    <p>与其他在线工具不同，DocuSmart 不会把你的文档上传到任何服务器：一切都在浏览器中处理。处理合同、发票或身份证件也能完全放心。 <a href="/privacidad">阅读我们的隐私政策（西班牙语）</a>.</p>
+  </section>
+
+  <section class="tp-wrap tp-section reveal">
+    <h2>常见问题</h2>
+    <div class="tp-faq">
+      <details>
+        <summary>什么是哈希值？</summary>
+        <p>它是文件的数字指纹：根据文件内容计算出的一串字母和数字。只要文件有变化，哪怕只改动一个字节，哈希值也会完全不同。</p>
+      </details>
+      <details>
+        <summary>它有什么用？</summary>
+        <p>用来确认别人发给你的文档就是原件（合同、招标文件、证据、下载文件），记录某个文件在某一日期的状态，或在不打开文件的情况下判断两个文件是否相同。</p>
+      </details>
+      <details>
+        <summary>应该用哪种算法？</summary>
+        <p>SHA-256 是当前的标准，也是推荐选择。SHA-512 更长。MD5 和 SHA-1 可用于与公布的校验和比对，但已不再能可靠地防止伪造。</p>
+      </details>
+      <details>
+        <summary>什么是完整性证书？</summary>
+        <p>一份包含文件名称、大小、日期和哈希值的 PDF。如果以后有人修改了其中某个文件，重新计算哈希值时就会与证书上的不一致。</p>
+      </details>
+      <details>
+        <summary>我的文件会被上传吗？</summary>
+        <p>不会。哈希值在你的浏览器中计算：文件永远不会离开你的设备。</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="tp-wrap tp-section reveal" id="herramientas">
+    <h2>更多免费工具</h2>
+    <ul class="tp-related">
+      <li><a href="/zh/merge-pdf"><b>合并 PDF</b><span>多个 PDF 合而为一</span></a></li>
+      <li><a href="/zh/split-pdf"><b>拆分 PDF</b><span>提取或拆分页面</span></a></li>
+      <li><a href="/zh/rotate-pdf"><b>旋转 PDF</b><span>摆正方向不对的页面</span></a></li>
+      <li><a href="/zh/scan-document"><b>扫描文档</b><span>照片 → 干净的 PDF</span></a></li>
+      <li><a href="/zh/fill-pdf-form"><b>填写 PDF 表单</b><span>填写可填写的 PDF</span></a></li>
+      <li><a href="/zh/edit-pdf"><b>编辑 PDF</b><span>文字、图片和形状</span></a></li>
+      <li><a href="/zh/extract-images-from-pdf"><b>提取 PDF 中的图片</b><span>原始画质的照片</span></a></li>
+      <li><a href="/zh/compare-pdf"><b>比较 PDF</b><span>两个版本之间的改动</span></a></li>
+      <li><a href="/zh/redact-pdf"><b>涂黑 PDF</b><span>删除敏感信息</span></a></li>
+      <li><a href="/zh/sign-pdf"><b>签署 PDF</b><span>手写或上传签名</span></a></li>
+      <li><a href="/zh/crop-pdf"><b>裁剪 PDF</b><span>去除边距或保留区域</span></a></li>
+      <li><a href="/zh/compress-pdf"><b>压缩 PDF</b><span>减小 PDF 体积</span></a></li>
+      <li><a href="/zh/protect-pdf"><b>为 PDF 设置密码</b><span>给 PDF 加密码</span></a></li>
+      <li><a href="/zh/unlock-pdf"><b>解锁 PDF</b><span>移除 PDF 密码</span></a></li>
+      <li><a href="/zh/repair-pdf"><b>修复 PDF</b><span>恢复打不开的 PDF</span></a></li>
+      <li><a href="/zh/pdf-to-pdfa"><b>PDF 转 PDF/A</b><span>长期归档格式</span></a></li>
+      <li><a href="/zh/compress-image"><b>压缩图片</b><span>更轻巧的照片</span></a></li>
+      <li><a href="/zh/resize-image"><b>调整图片尺寸</b><span>更改照片尺寸</span></a></li>
+      <li><a href="/zh/crop-image"><b>裁剪图片</b><span>自由或 1:1、4:3、16:9…</span></a></li>
+      <li><a href="/zh/rotate-image"><b>旋转和翻转图片</b><span>旋转 90° 或翻转</span></a></li>
+      <li><a href="/zh/zip-files"><b>压缩文件（ZIP 和 7Z）</b><span>创建 ZIP 或 7Z</span></a></li>
+      <li><a href="/zh/unzip-files"><b>解压 RAR、ZIP 和 7Z</b><span>打开 RAR、ZIP 和 7Z</span></a></li>
+      <li><a href="/zh/ocr-pdf"><b>OCR：识别文字</b><span>识别扫描件和照片中的文字</span></a></li>
+      <li><a href="/zh/image-to-pdf"><b>图片转 PDF</b><span>把照片合成一个 PDF</span></a></li>
+      <li><a href="/zh/pdf-to-jpg"><b>PDF 转 JPG</b><span>每页转为一张图片</span></a></li>
+      <li><a href="/zh/pdf-to-word"><b>PDF 转 Word</b><span>可编辑文档（.docx）</span></a></li>
+      <li><a href="/zh/pdf-to-excel"><b>PDF 转 Excel</b><span>表格转为电子表格</span></a></li>
+      <li><a href="/zh/word-to-pdf"><b>Word 转 PDF</b><span>.docx 文档转 PDF</span></a></li>
+      <li><a href="/zh/excel-to-pdf"><b>Excel 转 PDF</b><span>.xlsx 工作表转 PDF</span></a></li>
+      <li><a href="/zh/pdf-to-text"><b>PDF 转文字</b><span>提取 PDF 中的文字</span></a></li>
+      <li><a href="/zh/qr-code-generator"><b>生成和读取二维码</b><span>生成和扫描二维码</span></a></li>
+      <li><a href="/zh/reorder-pdf-pages"><b>调整 PDF 页面顺序</b><span>调整页面顺序</span></a></li>
+      <li><a href="/zh/add-page-numbers-to-pdf"><b>为 PDF 添加页码</b><span>添加页码</span></a></li>
+      <li><a href="/zh/add-watermark-to-pdf"><b>PDF 添加水印</b><span>在每页加上文字</span></a></li>
+      <li><a href="/zh/jpg-to-png"><b>JPG 转 PNG</b><span>将图片转为 PNG</span></a></li>
+      <li><a href="/zh/png-to-jpg"><b>PNG 转 JPG</b><span>将图片转为 JPG</span></a></li>
+      <li><a href="/zh/image-to-webp"><b>图片转 WebP</b><span>将图片转为 WebP</span></a></li>
+      <li><a href="/zh/tools"><b>全部工具</b><span>38 个工具</span></a></li>
+    </ul>
+  </section>
+
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
+    <div class="tp-cta">
+      <div>
+        <h2>把 DocuSmart 装进手机</h2>
+        <p>Android 应用还提供边缘检测扫描、PIN 保护的安全文件夹、Word、Excel 和 PowerPoint，以及 OCR。可离线使用。</p>
+      </div>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">在 Google Play 下载</a>
+    </div>
+  </section>
+</main>
+
+<footer class="tp-foot">
+  <div class="tp-wrap tp-foot-inner">
+    <span>© DocuSmart</span>
+    <nav aria-label="页脚">
+      <a href="/zh/">首页</a>
+      <a href="/app/">DocuSmart Web</a>
+      <a href="/zh/guides">指南</a>
+      <a href="/privacidad">隐私政策</a>
+      <a href="https://www.facebook.com/profile.php?id=61596626852763" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/supportdocusmart/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@docusmartsupport" target="_blank" rel="noopener">TikTok</a>
+      <button type="button" class="link-btn" data-consent-open hidden>分析偏好设置</button>
+    </nav>
+  </div>
+</footer>
+<script type="module" src="../../src/entries/tool-page.tsx"></script>
+</body>
+</html>

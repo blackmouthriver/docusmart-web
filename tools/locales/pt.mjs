@@ -321,6 +321,23 @@ export default {
         ['O arquivo é enviado?', 'Não. O reparo acontece no seu navegador.'],
       ],
     },
+    'calcular-hash': {
+      slug: 'calcular-hash',
+      title: 'Calcular e verificar hash SHA-256 ou MD5 online | DocuSmart',
+      description: 'Calcule o hash SHA-256, SHA-512, SHA-1 ou MD5 de qualquer arquivo, verifique se coincide ou compare dois arquivos. Grátis e sem enviar nada: tudo no seu navegador.',
+      h1: 'Calcular e verificar hash (SHA-256, MD5)',
+      howTo: 'Como calcular ou verificar o hash de um arquivo em 3 passos',
+      lead: 'Comprove que um documento não foi modificado: calcule a impressão digital dele, verifique-a com a que você recebeu ou compare dois arquivos, sem que saiam do seu aparelho.',
+      short: 'Impressão digital de arquivos',
+      steps: ['Escolha "Calcular", "Verificar" ou "Comparar" e adicione o arquivo (qualquer tipo: PDF, fotos, ZIP…).', 'Escolha o algoritmo (SHA-256 recomendado) ou cole o hash que você recebeu; o DocuSmart reconhece se é SHA-256, SHA-512, SHA-1 ou MD5.', 'Copie o hash, baixe a lista ou um certificado de integridade em PDF, ou veja se coincide.'],
+      faq: [
+        ['O que é um hash?', 'É uma impressão digital do arquivo: uma sequência de letras e números calculada a partir do conteúdo. Se o arquivo mudar, mesmo que seja em um único byte, o hash é completamente diferente.'],
+        ['Para que serve?', 'Para comprovar que um documento que enviaram para você é o mesmo original (contratos, licitações, provas, downloads), registrar como um arquivo estava em uma data ou saber se dois arquivos são idênticos sem abri-los.'],
+        ['Qual algoritmo devo usar?', 'SHA-256 é o padrão atual e o recomendado. SHA-512 é ainda mais longo. MD5 e SHA-1 servem para comparar com somas publicadas, mas já não são considerados seguros contra falsificações.'],
+        ['O que é o certificado de integridade?', 'Um PDF com o nome, o tamanho, a data e o hash dos seus arquivos. Se mais tarde alguém modificar um deles, ao calcular o hash de novo ele não vai coincidir com o do certificado.'],
+        ['Meus arquivos são enviados?', 'Não. O hash é calculado dentro do seu navegador: seus arquivos nunca saem do seu aparelho.'],
+      ],
+    },
     'pdf-a-pdfa': {
       slug: 'pdf-para-pdfa',
       title: 'Converter PDF para PDF/A grátis (PDF/A-2b) | DocuSmart',

@@ -194,6 +194,19 @@
     "ko": "repair-pdf",
     "zh": "repair-pdf"
   },
+  "calcular-hash": {
+    "en": "file-hash-checker",
+    "pt": "calcular-hash",
+    "fr": "calculer-hash",
+    "it": "calcolare-hash",
+    "de": "hash-berechnen",
+    "ca": "calcular-hash",
+    "eu": "hasha-kalkulatu",
+    "ru": "file-hash-checker",
+    "ja": "file-hash-checker",
+    "ko": "file-hash-checker",
+    "zh": "file-hash-checker"
+  },
   "pdf-a-pdfa": {
     "en": "pdf-to-pdfa",
     "pt": "pdf-para-pdfa",

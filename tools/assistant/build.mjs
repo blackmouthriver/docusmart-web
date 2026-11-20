@@ -44,6 +44,7 @@ export function appRoute(tool) {
   if (tool.kind === 'conv') return `convertir/${tool.id}`
   if (tool.kind === 'img') return `imagen/${tool.id}`
   if (tool.kind === 'archive') return `archivos/${tool.id}`
+  if (tool.kind === 'hash') return 'hash/calcular'
   return 'qr/crear'
 }
 

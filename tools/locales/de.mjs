@@ -321,6 +321,23 @@ export default {
         ['Wird die Datei hochgeladen?', 'Nein. Die Reparatur passiert in deinem Browser.'],
       ],
     },
+    'calcular-hash': {
+      slug: 'hash-berechnen',
+      title: 'Hash berechnen und prüfen: SHA-256 und MD5 online | DocuSmart',
+      description: 'Berechne den SHA-256-, SHA-512-, SHA-1- oder MD5-Hash jeder Datei, prüfe eine Prüfsumme oder vergleiche zwei Dateien. Kostenlos und ohne Upload: alles im Browser.',
+      h1: 'Hash berechnen und prüfen (SHA-256, MD5)',
+      howTo: 'Den Hash einer Datei in 3 Schritten berechnen oder prüfen',
+      lead: 'Prüfe, ob ein Dokument verändert wurde: Berechne seinen digitalen Fingerabdruck, gleiche ihn mit dem erhaltenen ab oder vergleiche zwei Dateien, ohne dass sie dein Gerät verlassen.',
+      short: 'Digitaler Fingerabdruck von Dateien',
+      steps: ['Wähle „Berechnen“, „Prüfen“ oder „Vergleichen“ und füge die Datei hinzu (jeder Typ: PDF, Fotos, ZIP…).', 'Wähle den Algorithmus (SHA-256 empfohlen) oder füge den erhaltenen Hash ein; DocuSmart erkennt, ob es SHA-256, SHA-512, SHA-1 oder MD5 ist.', 'Kopiere den Hash, lade die Liste oder ein Integritätszertifikat als PDF herunter oder sieh nach, ob er übereinstimmt.'],
+      faq: [
+        ['Was ist ein Hash?', 'Ein digitaler Fingerabdruck der Datei: eine Folge aus Buchstaben und Zahlen, die aus ihrem Inhalt berechnet wird. Ändert sich die Datei auch nur um ein einziges Byte, ist der Hash komplett anders.'],
+        ['Wofür ist das gut?', 'Um zu prüfen, ob ein zugeschicktes Dokument dem Original entspricht (Verträge, Ausschreibungen, Beweise, Downloads), festzuhalten, wie eine Datei zu einem bestimmten Zeitpunkt aussah, oder herauszufinden, ob zwei Dateien identisch sind, ohne sie zu öffnen.'],
+        ['Welchen Algorithmus soll ich nehmen?', 'SHA-256 ist der aktuelle Standard und die Empfehlung. SHA-512 ist noch länger. MD5 und SHA-1 eignen sich zum Abgleich mit veröffentlichten Prüfsummen, gelten aber nicht mehr als sicher gegen Fälschungen.'],
+        ['Was ist das Integritätszertifikat?', 'Ein PDF mit Name, Größe, Datum und Hash deiner Dateien. Verändert später jemand eine davon, stimmt ihr neu berechneter Hash nicht mehr mit dem im Zertifikat überein.'],
+        ['Werden meine Dateien hochgeladen?', 'Nein. Der Hash wird in deinem Browser berechnet: Deine Dateien verlassen nie dein Gerät.'],
+      ],
+    },
     'pdf-a-pdfa': {
       slug: 'pdf-in-pdfa',
       title: 'PDF kostenlos in PDF/A umwandeln (PDF/A-2b) | DocuSmart',

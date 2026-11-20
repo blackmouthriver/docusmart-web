@@ -50,6 +50,7 @@ const ImageTool = lazy(() =>
     },
   })),
 )
+const HashTool = lazy(() => import('../features/integrity/ui/HashTool').then((m) => ({ default: () => <m.HashTool /> })))
 const QrTools = lazy(() =>
   import('../features/qr/ui/Qr').then((m) => ({
     default: () => (
@@ -105,6 +106,7 @@ function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
   if (kind === 'conv' && id) return <ConvertTool id={id} />
   if (kind === 'qr') return <QrTools />
   if (kind === 'archive') return <ArchiveTool id={id} />
+  if (kind === 'hash') return <HashTool />
   if (kind === 'img' && id) return <ImageTool id={id} />
   return null
 }

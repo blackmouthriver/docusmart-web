@@ -58,6 +58,7 @@ export default {
     { id: 'renombrar', q: ['修改文件名', '重命名 pdf', '改名', '给文件起名', '下载的文件名不对', '怎么重命名结果', '选择文件名'], a: '可以。工具完成后，在“下载”上方有“文件名”输入框：输入你想要的名称，扩展名（例如 .pdf）会自动保留。下载、分享、Google Drive 和 Dropbox 都会使用这个名称。', actions: [['page', 'tools']], related: ['guardar-nube'] },
     { id: 'abrir-en-app', q: ['链接会打开应用', '在应用中打开链接', '不想打开应用', '用浏览器打开而不是应用', '链接跳转到应用'], a: '如果你在 Android 上安装了 DocuSmart，点击 docusmart.online 上某个工具的链接（例如“合并 PDF”）会直接在应用中打开。如果你更想用浏览器，可以长按链接并选择在浏览器中打开，或者在 Android 的 设置 → 应用 → DocuSmart → 默认打开 中关闭。', actions: [['play']], related: ['desktop'] },
     { id: 'publicidad', q: ['为什么有广告', '广告', '去掉广告', '广告能看到我的文件吗', '隐私与 Cookie', 'adsense'], a: '广告让网站保持免费，只有当你在“隐私与 Cookie”提示中同意后才会显示；首页和工具上方从不显示广告。广告看不到你的文件，因为所有处理都在你的浏览器中完成。你可以随时在网站底部的“分析偏好设置”中更改。', actions: [['page', 'privacy']], related: ['analitica', 'privacidad'] },
+    { id: 'hash', q: ['计算哈希', 'sha256', 'md5', 'checksum', '校验和', '校验文件完整性', '检查文件是否被修改', '比较两个文件', '文档数字指纹', '完整性证书'], a: '请使用“文件哈希与完整性”：它可以计算任意文件的 SHA-256（或 SHA-512、SHA-1、MD5），校验是否与你收到的哈希值一致，或比较两个文件。你还可以下载哈希列表或 PDF 完整性证书。一切都在浏览器中计算，无需上传任何内容。', actions: [['tool', 'calcular-hash']], related: ['privacidad'] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

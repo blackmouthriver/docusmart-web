@@ -1,0 +1,300 @@
+<!doctype html>
+<!-- Generado por scripts/generate-tool-pages.mjs desde tools/pages.mjs. No editar a mano. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculer et vérifier un hash SHA-256 ou MD5 en ligne | DocuSmart</title>
+<meta name="description" content="Calculez le hash SHA-256, SHA-512, SHA-1 ou MD5 d'un fichier, vérifiez-le ou comparez deux fichiers. Gratuit et sans rien envoyer : tout se fait dans le navigateur.">
+<meta name="theme-color" content="#0B1020">
+<link rel="canonical" href="https://docusmart.online/fr/calculer-hash">
+<link rel="alternate" hreflang="es" href="https://docusmart.online/calcular-hash">
+<link rel="alternate" hreflang="en" href="https://docusmart.online/en/file-hash-checker">
+<link rel="alternate" hreflang="pt" href="https://docusmart.online/pt/calcular-hash">
+<link rel="alternate" hreflang="fr" href="https://docusmart.online/fr/calculer-hash">
+<link rel="alternate" hreflang="it" href="https://docusmart.online/it/calcolare-hash">
+<link rel="alternate" hreflang="de" href="https://docusmart.online/de/hash-berechnen">
+<link rel="alternate" hreflang="ca" href="https://docusmart.online/ca/calcular-hash">
+<link rel="alternate" hreflang="eu" href="https://docusmart.online/eu/hasha-kalkulatu">
+<link rel="alternate" hreflang="ru" href="https://docusmart.online/ru/file-hash-checker">
+<link rel="alternate" hreflang="ja" href="https://docusmart.online/ja/file-hash-checker">
+<link rel="alternate" hreflang="ko" href="https://docusmart.online/ko/file-hash-checker">
+<link rel="alternate" hreflang="zh" href="https://docusmart.online/zh/file-hash-checker">
+<link rel="alternate" hreflang="x-default" href="https://docusmart.online/calcular-hash">
+<link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DocuSmart">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Calculer et vérifier un hash SHA-256 ou MD5 en ligne | DocuSmart">
+<meta property="og:description" content="Calculez le hash SHA-256, SHA-512, SHA-1 ou MD5 d'un fichier, vérifiez-le ou comparez deux fichiers. Gratuit et sans rien envoyer : tout se fait dans le navigateur.">
+<meta property="og:url" content="https://docusmart.online/fr/calculer-hash">
+<meta property="og:image" content="https://docusmart.online/img/og/fr.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculer et vérifier un hash (SHA-256, MD5) · DocuSmart",
+    "url": "https://docusmart.online/fr/calculer-hash",
+    "description": "Calculez le hash SHA-256, SHA-512, SHA-1 ou MD5 d'un fichier, vérifiez-le ou comparez deux fichiers. Gratuit et sans rien envoyer : tout se fait dans le navigateur.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Tous (navigateur web)",
+    "isAccessibleForFree": true,
+    "inLanguage": "fr",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "DocuSmart",
+      "url": "https://docusmart.online",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61596626852763",
+        "https://www.instagram.com/supportdocusmart/",
+        "https://www.tiktok.com/@docusmartsupport"
+      ]
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Qu'est-ce qu'un hash ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "C'est l'empreinte numérique du fichier : une suite de lettres et de chiffres calculée à partir de son contenu. Si le fichier change, ne serait-ce que d'un seul octet, le hash est complètement différent."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "À quoi ça sert ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "À vérifier qu'un document qu'on vous a envoyé est bien l'original (contrats, appels d'offres, preuves, téléchargements), à garder une trace de l'état d'un fichier à une date donnée ou à savoir si deux fichiers sont identiques sans les ouvrir."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quel algorithme utiliser ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SHA-256 est la norme actuelle et celui que nous recommandons. SHA-512 est encore plus long. MD5 et SHA-1 servent à comparer avec des sommes publiées, mais ne sont plus considérés comme sûrs contre les falsifications."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Qu'est-ce que le certificat d'intégrité ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Un PDF avec le nom, la taille, la date et le hash de vos fichiers. Si quelqu'un modifie plus tard l'un d'eux, son hash recalculé ne correspondra plus à celui du certificat."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Mes fichiers sont-ils envoyés ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Le hash est calculé dans votre navigateur : vos fichiers ne quittent jamais votre appareil."
+        }
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "DocuSmart",
+        "item": "https://docusmart.online/fr/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Calculer et vérifier un hash (SHA-256, MD5)",
+        "item": "https://docusmart.online/fr/calculer-hash"
+      }
+    ]
+  }
+]
+</script>
+</head>
+<body class="tool-page">
+<header class="tp-nav">
+  <div class="tp-wrap tp-nav-inner">
+    <a class="tp-brand" href="/fr/"><img src="/img/icon.svg" alt="" width="30" height="30">DocuSmart</a>
+    <nav aria-label="Principal">
+      <a href="#herramientas">Outils</a>
+      <a href="/app/">App web</a>
+      <details class="tp-lang">
+        <summary aria-label="FR · Langue: Français"><span aria-hidden="true">🌐</span> FR</summary>
+        <ul>
+          <li><a href="/calcular-hash" hreflang="es" lang="es" data-set-lang="es">Español</a></li>
+          <li><a href="/en/file-hash-checker" hreflang="en" lang="en" data-set-lang="en">English</a></li>
+          <li><a href="/pt/calcular-hash" hreflang="pt" lang="pt" data-set-lang="pt">Português</a></li>
+          <li><a href="/fr/calculer-hash" hreflang="fr" lang="fr" data-set-lang="fr" aria-current="page">Français</a></li>
+          <li><a href="/it/calcolare-hash" hreflang="it" lang="it" data-set-lang="it">Italiano</a></li>
+          <li><a href="/de/hash-berechnen" hreflang="de" lang="de" data-set-lang="de">Deutsch</a></li>
+          <li><a href="/ca/calcular-hash" hreflang="ca" lang="ca" data-set-lang="ca">Català</a></li>
+          <li><a href="/eu/hasha-kalkulatu" hreflang="eu" lang="eu" data-set-lang="eu">Euskara</a></li>
+          <li><a href="/ru/file-hash-checker" hreflang="ru" lang="ru" data-set-lang="ru">Русский</a></li>
+          <li><a href="/ja/file-hash-checker" hreflang="ja" lang="ja" data-set-lang="ja">日本語</a></li>
+          <li><a href="/ko/file-hash-checker" hreflang="ko" lang="ko" data-set-lang="ko">한국어</a></li>
+          <li><a href="/zh/file-hash-checker" hreflang="zh" lang="zh" data-set-lang="zh">中文</a></li>
+        </ul>
+      </details>
+      <a class="tp-nav-cta" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool">Télécharger l'app</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="tp-hero">
+    <div class="tp-wrap tp-hero-grid">
+      <div class="tp-hero-text">
+      <nav class="tp-crumbs" aria-label="Fil d'Ariane"><a href="/fr/">DocuSmart</a><span aria-hidden="true">›</span><span>Calculer et vérifier un hash (SHA-256, MD5)</span></nav>
+      <h1>Calculer et vérifier un hash (SHA-256, MD5)</h1>
+      <p class="tp-lead">Vérifiez qu'un document n'a pas été modifié : calculez son empreinte numérique, comparez-la à celle qu'on vous a donnée ou comparez deux fichiers, sans qu'ils quittent votre appareil.</p>
+      <ul class="tp-badges">
+        <li>Sans envoyer vos fichiers</li>
+        <li>Gratuit et sans inscription</li>
+        <li>Fonctionne dans le navigateur</li>
+      </ul>
+      </div>
+      <div class="tp-hero-art" aria-hidden="true">
+        <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
+        <span class="tp-tile"><svg class="tp-tile-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5A7.5 7.5 0 0 1 19.5 12v1M4.5 10.5A7.5 7.5 0 0 0 4.5 13M8 18.5c1-1.8 1.5-3.8 1.5-6a2.5 2.5 0 0 1 5 0c0 1.2-.1 2.4-.3 3.5M12 12c0 3.2-.8 6-2.3 8.5M17.4 16.5c-.3 1.4-.8 2.8-1.4 4M12 3a9 9 0 0 1 3 .5"/></svg><span class="tp-scan"></span></span>
+        <span class="tp-chip tp-chip-a"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span>
+        <span class="tp-chip tp-chip-b"><svg class="tp-chip-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="tp-wrap tp-tool" aria-label="Outil">
+    <div id="tool" data-kind="hash" data-slug="calcular-hash">
+      <noscript><p class="tp-noscript">Pour utiliser cet outil, activez JavaScript dans votre navigateur. Tout se passe sur votre appareil.</p></noscript>
+    </div>
+  </section>
+
+  <section class="tp-wrap tp-section reveal">
+    <h2>Comment calculer ou vérifier le hash d'un fichier en 3 étapes</h2>
+    <ol class="tp-steps" data-stagger="120">
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>Choisissez « Calculer », « Vérifier » ou « Comparer » et ajoutez le fichier (tout type : PDF, photos, ZIP…).</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5A7.5 7.5 0 0 1 19.5 12v1M4.5 10.5A7.5 7.5 0 0 0 4.5 13M8 18.5c1-1.8 1.5-3.8 1.5-6a2.5 2.5 0 0 1 5 0c0 1.2-.1 2.4-.3 3.5M12 12c0 3.2-.8 6-2.3 8.5M17.4 16.5c-.3 1.4-.8 2.8-1.4 4M12 3a9 9 0 0 1 3 .5"/></svg></span><span>Choisissez l'algorithme (SHA-256 recommandé) ou collez le hash qu'on vous a donné ; DocuSmart reconnaît s'il s'agit de SHA-256, SHA-512, SHA-1 ou MD5.</span></li>
+      <li class="reveal"><span class="tp-step-ico"><svg class="tp-step-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></span><span>Copiez le hash, téléchargez la liste ou un certificat d'intégrité en PDF, ou voyez s'il correspond.</span></li>
+    </ol>
+  </section>
+
+  <section class="tp-wrap tp-section tp-privacy reveal">
+    <h2>Vos fichiers ne quittent pas votre appareil</h2>
+    <p>Contrairement à d'autres outils en ligne, DocuSmart n'envoie vos documents sur aucun serveur : tout est traité dans votre navigateur. Vous pouvez l'utiliser en toute tranquillité avec des contrats, des factures ou des pièces d'identité. <a href="/privacidad">Lire notre politique de confidentialité (en espagnol)</a>.</p>
+  </section>
+
+  <section class="tp-wrap tp-section reveal">
+    <h2>Questions fréquentes</h2>
+    <div class="tp-faq">
+      <details>
+        <summary>Qu'est-ce qu'un hash ?</summary>
+        <p>C'est l'empreinte numérique du fichier : une suite de lettres et de chiffres calculée à partir de son contenu. Si le fichier change, ne serait-ce que d'un seul octet, le hash est complètement différent.</p>
+      </details>
+      <details>
+        <summary>À quoi ça sert ?</summary>
+        <p>À vérifier qu'un document qu'on vous a envoyé est bien l'original (contrats, appels d'offres, preuves, téléchargements), à garder une trace de l'état d'un fichier à une date donnée ou à savoir si deux fichiers sont identiques sans les ouvrir.</p>
+      </details>
+      <details>
+        <summary>Quel algorithme utiliser ?</summary>
+        <p>SHA-256 est la norme actuelle et celui que nous recommandons. SHA-512 est encore plus long. MD5 et SHA-1 servent à comparer avec des sommes publiées, mais ne sont plus considérés comme sûrs contre les falsifications.</p>
+      </details>
+      <details>
+        <summary>Qu'est-ce que le certificat d'intégrité ?</summary>
+        <p>Un PDF avec le nom, la taille, la date et le hash de vos fichiers. Si quelqu'un modifie plus tard l'un d'eux, son hash recalculé ne correspondra plus à celui du certificat.</p>
+      </details>
+      <details>
+        <summary>Mes fichiers sont-ils envoyés ?</summary>
+        <p>Non. Le hash est calculé dans votre navigateur : vos fichiers ne quittent jamais votre appareil.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="tp-wrap tp-section reveal" id="herramientas">
+    <h2>Plus d’outils gratuits</h2>
+    <ul class="tp-related">
+      <li><a href="/fr/fusionner-pdf"><b>Fusionner des PDF</b><span>Réunit plusieurs PDF en un</span></a></li>
+      <li><a href="/fr/diviser-pdf"><b>Diviser un PDF</b><span>Extrait ou sépare des pages</span></a></li>
+      <li><a href="/fr/pivoter-pdf"><b>Faire pivoter un PDF</b><span>Redresse les pages tournées</span></a></li>
+      <li><a href="/fr/scanner-document"><b>Scanner un document</b><span>Photo → PDF propre</span></a></li>
+      <li><a href="/fr/remplir-formulaire-pdf"><b>Remplir un formulaire PDF</b><span>Complète les PDF remplissables</span></a></li>
+      <li><a href="/fr/modifier-pdf"><b>Modifier un PDF</b><span>Texte, images et formes</span></a></li>
+      <li><a href="/fr/extraire-images-pdf"><b>Extraire les images d'un PDF</b><span>Photos en qualité d'origine</span></a></li>
+      <li><a href="/fr/comparer-pdf"><b>Comparer des PDF</b><span>Ce qui a changé entre deux versions</span></a></li>
+      <li><a href="/fr/caviarder-pdf"><b>Caviarder un PDF</b><span>Supprime les données sensibles</span></a></li>
+      <li><a href="/fr/signer-pdf"><b>Signer un PDF</b><span>Dessinez ou importez votre signature</span></a></li>
+      <li><a href="/fr/rogner-pdf"><b>Rogner un PDF</b><span>Retire les marges ou garde une zone</span></a></li>
+      <li><a href="/fr/compresser-pdf"><b>Compresser un PDF</b><span>Réduit le poids d'un PDF</span></a></li>
+      <li><a href="/fr/proteger-pdf"><b>Protéger un PDF par mot de passe</b><span>Met un mot de passe sur un PDF</span></a></li>
+      <li><a href="/fr/deverrouiller-pdf"><b>Déverrouiller un PDF</b><span>Retire le mot de passe d'un PDF</span></a></li>
+      <li><a href="/fr/reparer-pdf"><b>Réparer un PDF</b><span>Récupère les PDF qui ne s'ouvrent pas</span></a></li>
+      <li><a href="/fr/pdf-en-pdfa"><b>PDF en PDF/A</b><span>Format d'archivage à long terme</span></a></li>
+      <li><a href="/fr/compresser-image"><b>Compresser une image</b><span>Photos plus légères</span></a></li>
+      <li><a href="/fr/redimensionner-image"><b>Redimensionner une image</b><span>Change la taille des photos</span></a></li>
+      <li><a href="/fr/rogner-image"><b>Rogner une image</b><span>Libre ou en 1:1, 4:3, 16:9…</span></a></li>
+      <li><a href="/fr/pivoter-image"><b>Faire pivoter et retourner une image</b><span>Tourne de 90° ou retourne</span></a></li>
+      <li><a href="/fr/compresser-fichiers"><b>Compresser des fichiers (ZIP et 7Z)</b><span>Crée un ZIP ou un 7Z</span></a></li>
+      <li><a href="/fr/decompresser-fichiers"><b>Décompresser des RAR, ZIP et 7Z</b><span>Ouvre RAR, ZIP et 7Z</span></a></li>
+      <li><a href="/fr/ocr-pdf"><b>OCR : reconnaître le texte</b><span>Texte des scans et photos</span></a></li>
+      <li><a href="/fr/image-en-pdf"><b>Image en PDF</b><span>Réunit des photos en un PDF</span></a></li>
+      <li><a href="/fr/pdf-en-jpg"><b>PDF en JPG</b><span>Chaque page en image</span></a></li>
+      <li><a href="/fr/pdf-en-word"><b>PDF en Word</b><span>Document modifiable (.docx)</span></a></li>
+      <li><a href="/fr/pdf-en-excel"><b>PDF en Excel</b><span>Tableaux vers un tableur</span></a></li>
+      <li><a href="/fr/word-en-pdf"><b>Word en PDF</b><span>Document .docx en PDF</span></a></li>
+      <li><a href="/fr/excel-en-pdf"><b>Excel en PDF</b><span>Feuilles .xlsx en PDF</span></a></li>
+      <li><a href="/fr/pdf-en-texte"><b>PDF en texte</b><span>Extrait le texte d'un PDF</span></a></li>
+      <li><a href="/fr/generateur-code-qr"><b>Créer et lire des codes QR</b><span>Génère et scanne des QR</span></a></li>
+      <li><a href="/fr/organiser-pages-pdf"><b>Organiser les pages d’un PDF</b><span>Changez l’ordre des pages</span></a></li>
+      <li><a href="/fr/numeroter-pages-pdf"><b>Numéroter les pages d’un PDF</b><span>Ajoutez des numéros de page</span></a></li>
+      <li><a href="/fr/filigrane-pdf"><b>Filigrane PDF</b><span>Ajoutez un texte sur chaque page</span></a></li>
+      <li><a href="/fr/jpg-en-png"><b>JPG en PNG</b><span>Convertissez des images en PNG</span></a></li>
+      <li><a href="/fr/png-en-jpg"><b>PNG en JPG</b><span>Convertissez des images en JPG</span></a></li>
+      <li><a href="/fr/image-en-webp"><b>Image en WebP</b><span>Convertissez des images en WebP</span></a></li>
+      <li><a href="/fr/outils"><b>Tous les outils</b><span>38 outils</span></a></li>
+    </ul>
+  </section>
+
+  <section class="tp-wrap tp-section reveal" data-reveal="scale">
+    <div class="tp-cta">
+      <div>
+        <h2>Emportez DocuSmart sur votre téléphone</h2>
+        <p>L'app Android ajoute un scanner avec détection des bords, un dossier sécurisé par PIN, Word, Excel et PowerPoint, et l'OCR. Elle fonctionne hors connexion.</p>
+      </div>
+      <a class="btn btn-primary ds-press" href="https://play.google.com/store/apps/details?id=com.docsmart" target="_blank" rel="noopener" data-track="play_store_tool_cta">Télécharger sur Google Play</a>
+    </div>
+  </section>
+</main>
+
+<footer class="tp-foot">
+  <div class="tp-wrap tp-foot-inner">
+    <span>© DocuSmart</span>
+    <nav aria-label="Pied de page">
+      <a href="/fr/">Accueil</a>
+      <a href="/app/">DocuSmart Web</a>
+      <a href="/fr/guides">Guides</a>
+      <a href="/privacidad">Politique de confidentialité</a>
+      <a href="https://www.facebook.com/profile.php?id=61596626852763" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/supportdocusmart/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@docusmartsupport" target="_blank" rel="noopener">TikTok</a>
+      <button type="button" class="link-btn" data-consent-open hidden>Préférences d'analyse</button>
+    </nav>
+  </div>
+</footer>
+<script type="module" src="../../src/entries/tool-page.tsx"></script>
+</body>
+</html>
