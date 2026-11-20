@@ -72,7 +72,11 @@ async function cutOut(image: ImageBitmap, background: Background, maxSide: numbe
 }
 
 self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
+  // Un worker dedicado solo recibe mensajes de la página que lo creó (origen vacío o el propio);
+  // cualquier otro origen, o un mensaje que no es de los esperados, se ignora.
+  if (e.origin && e.origin !== self.location.origin) return
   const msg = e.data
+  if (msg?.type !== 'load' && msg?.type !== 'run') return
   try {
     if (msg.type === 'load') {
       session ??= await ort.InferenceSession.create(new Uint8Array(msg.model), { executionProviders: ['wasm'], graphOptimizationLevel: 'all', logSeverityLevel: 3 })

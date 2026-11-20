@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createHash } from 'node:crypto'
-import { readFileSync, statSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import {
   MODEL,
@@ -90,9 +90,10 @@ describe('archivos del modelo publicados', () => {
     const hash = createHash('sha256')
     let total = 0
     for (const p of MODEL.parts) {
-      const file = resolve(dir, p.file)
-      expect(statSync(file).size, p.file).toBe(p.bytes)
-      hash.update(readFileSync(file))
+      // Se lee una sola vez (sin consultar antes su tamaño) para no abrir una carrera.
+      const data = readFileSync(resolve(dir, p.file))
+      expect(data.length, p.file).toBe(p.bytes)
+      hash.update(data)
       total += p.bytes
     }
     expect(total).toBe(MODEL.bytes)
