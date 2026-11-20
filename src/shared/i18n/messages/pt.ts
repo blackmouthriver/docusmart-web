@@ -157,6 +157,7 @@ const pt: Messages = {
   'dp.previewTitle': "Pré-visualização do seu documento",
   'dp.placeholder': "Aqui você verá o resultado",
   'save.download': "Baixar",
+  'save.nameLabel': "Nome do arquivo",
   'save.share': "Compartilhar",
   'save.downloaded': "O arquivo foi baixado.",
   'save.shareError': "Não foi possível compartilhar o arquivo. Baixe-o e envie-o a partir do seu dispositivo.",

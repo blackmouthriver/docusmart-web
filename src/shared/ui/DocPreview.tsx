@@ -1,9 +1,9 @@
 // Vista previa de documentos: antes y después lado a lado, opciones para guardar el
 // resultado e invitación a recomendar DocuSmart.
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Icon } from './Icon'
 import { Notice } from './ui'
-import { download, formatBytes, isOwnBlobUrl, safeMimeType } from '../files/files'
+import { baseName, download, extensionOf, formatBytes, isOwnBlobUrl, renamed, safeMimeType } from '../files/files'
 import { PLAY_URL, appShareLinks, toolShareUrl, canShareFile, docSummary, feedbackMailto, shareFile } from '../files/share'
 import { tr } from '../i18n/translate'
 import { useT } from '../i18n/I18n'
@@ -167,8 +167,13 @@ function PdfPreview({ source, page, label, onPages, password, displaySize, note 
 type CloudState = { kind: 'drive' | 'dropbox'; status: 'busy' | 'done'; text?: string; link?: string } | null
 
 /** Descargar, compartir con la hoja del sistema y guardar en Google Drive o Dropbox. */
-export function SaveOptions({ file, toolName }: { file: File; toolName: string }) {
+export function SaveOptions({ file: original, toolName }: { file: File; toolName: string }) {
   const { toast } = useApp()
+  // El usuario puede cambiar el nombre antes de descargar, compartir o guardar en la nube.
+  const [base, setBase] = useState(() => baseName(original.name))
+  useEffect(() => setBase(baseName(original.name)), [original])
+  const file = useMemo(() => renamed(original, base), [original, base])
+  const ext = extensionOf(original.name)
   const [error, setError] = useState<string | null>(null)
   const [cloud, setCloud] = useState<CloudState>(null)
   const [enabled, setEnabled] = useState({ drive: false, dropbox: false })
@@ -187,7 +192,7 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
       abort.current?.abort()
     }
   }, [])
-  // Otro resultado: se olvida lo guardado antes.
+  // Otro resultado u otro nombre: se olvida lo guardado antes.
   useEffect(() => setCloud(null), [file])
 
   const save = () => {
@@ -233,6 +238,27 @@ export function SaveOptions({ file, toolName }: { file: File; toolName: string }
 
   return (
     <div className="stack" style={{ gap: 10 }}>
+      <label className="field save-name">
+        <span>{tr('save.nameLabel')}</span>
+        <span className="save-name-row">
+          <input
+            className="input"
+            value={base}
+            maxLength={120}
+            spellCheck={false}
+            autoComplete="off"
+            enterKeyHint="done"
+            aria-describedby={ext ? 'save-name-ext' : undefined}
+            onChange={(e) => setBase(e.target.value)}
+            onBlur={() => setBase(baseName(file.name))}
+          />
+          {ext && (
+            <span className="save-name-ext" id="save-name-ext">
+              {ext}
+            </span>
+          )}
+        </span>
+      </label>
       <div className="save-options">
         <button type="button" className="btn btn-primary save-main" onClick={save}>
           <Icon name="download" />

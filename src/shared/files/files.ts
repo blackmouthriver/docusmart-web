@@ -20,6 +20,30 @@ export function baseName(name: string) {
   return name.replace(/\.[^.]+$/, '')
 }
 
+/** Extensión con el punto (".pdf"), o "" si no tiene. */
+export function extensionOf(name: string): string {
+  return /\.[^.]+$/.exec(name)?.[0] ?? ''
+}
+
+/**
+ * Nombre que eligió el usuario para el resultado: sin caracteres que los sistemas de archivos
+ * no aceptan, sin espacios sobrantes y de largo razonable; vacío = el nombre original.
+ */
+export function cleanBaseName(input: string, fallback: string): string {
+  const clean = input
+    .replace(/[\\/:*?"<>|\u0000-\u001f]/g, '-')
+    .replace(/\s+/g, ' ')
+    .replace(/^[\s.]+|[\s.]+$/g, '')
+    .slice(0, 120)
+  return clean || fallback
+}
+
+/** El mismo archivo con otro nombre (conserva la extensión y el tipo); si no cambia, el mismo objeto. */
+export function renamed(file: File, base: string): File {
+  const name = cleanBaseName(base, baseName(file.name)) + extensionOf(file.name)
+  return name === file.name ? file : new File([file], name, { type: file.type, lastModified: file.lastModified })
+}
+
 // Tipos que el sitio genera a propósito. Cualquier otro (text/html, image/svg+xml…)
 // se descarga como binario: aunque alguien abriera el blob, el navegador no lo interpreta.
 const SAFE_DOWNLOAD_TYPES = new Set([

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { baseName, download, formatBytes, isOwnBlobUrl, kindOf, parsePageRanges, safeFilename, safeMimeType } from '../../../../src/shared/files/files'
+import { baseName, cleanBaseName, download, extensionOf, renamed, formatBytes, isOwnBlobUrl, kindOf, parsePageRanges, safeFilename, safeMimeType } from '../../../../src/shared/files/files'
 
 const file = (name: string, type = '') => new File([''], name, { type })
 
@@ -103,5 +103,29 @@ describe('descargas seguras', () => {
       expect(() => download(new Uint8Array([1]), 'a.pdf', 'application/pdf')).toThrow()
       expect(anchors).toHaveLength(0)
     })
+  })
+})
+
+describe('renombrar el resultado', () => {
+  it('extensión del nombre', () => {
+    expect(extensionOf('informe.final.pdf')).toBe('.pdf')
+    expect(extensionOf('sin-extension')).toBe('')
+  })
+
+  it('limpia lo que los sistemas de archivos no aceptan y vuelve al original si queda vacío', () => {
+    expect(cleanBaseName('  Factura: marzo/2026?  ', 'x')).toBe('Factura- marzo-2026-')
+    expect(cleanBaseName('...', 'original')).toBe('original')
+    expect(cleanBaseName('', 'original')).toBe('original')
+    expect(cleanBaseName('a'.repeat(200), 'x')).toHaveLength(120)
+  })
+
+  it('conserva la extensión y el tipo; sin cambios devuelve el mismo archivo', () => {
+    const f = new File(['%PDF'], 'unido.pdf', { type: 'application/pdf', lastModified: 5 })
+    expect(renamed(f, 'unido')).toBe(f)
+    const r = renamed(f, 'Contrato firmado')
+    expect(r.name).toBe('Contrato firmado.pdf')
+    expect(r.type).toBe('application/pdf')
+    expect(r.lastModified).toBe(5)
+    expect(r.size).toBe(f.size)
   })
 })
