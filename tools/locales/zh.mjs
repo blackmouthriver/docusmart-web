@@ -684,9 +684,10 @@ export default {
     ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "在电脑上通过 Chrome 或 Edge 安装桌面版：它会像普通程序一样在独立窗口中打开，并且可以离线使用。"],
     ["Instalar DocuSmart Desktop", "安装 DocuSmart Desktop"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — 所有文档，尽在一处'],
+    ["Herramientas PDF gratis sin subir archivos | DocuSmart", "免费 PDF 工具，无需上传文件 | DocuSmart"],
     [
-      'Escanea, convierte, une y protege tus documentos desde Android. 17 conversiones, herramientas PDF, carpeta segura y modo estudio. Tus archivos se procesan en tu teléfono.',
-      '在 Android 上扫描、转换、合并和保护你的文档。17 种转换、PDF 工具、安全文件夹和学习模式。文件都在你的手机上处理。',
+      "Une, comprime, convierte y firma PDF gratis en el navegador o escanea con la app Android. Sin registro y sin subir archivos: todo se procesa en tu equipo.",
+      "在浏览器中免费合并、压缩、转换和签署 PDF，或用 Android 应用扫描。无需注册，无需上传文件：一切都在你的设备上处理。",
     ],
     ['Escanea, convierte y protege tus documentos sin que salgan de tu teléfono.', '扫描、转换和保护你的文档，文件不离开手机。'],
     ['aria-label="DocuSmart, inicio"', 'aria-label="DocuSmart 首页"'],
