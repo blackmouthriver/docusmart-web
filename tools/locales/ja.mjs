@@ -742,9 +742,10 @@ export default {
     ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "パソコンのChromeまたはEdgeからデスクトップ版をインストールできます。専用のウィンドウで普通のアプリのように開き、オフラインでも使えます。"],
     ["Instalar DocuSmart Desktop", "DocuSmart Desktop をインストール"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — 書類をひとつの場所に'],
+    ["Herramientas PDF gratis sin subir archivos | DocuSmart", "無料のPDFツール、ファイルのアップロード不要 | DocuSmart"],
     [
-      'Escanea, convierte, une y protege tus documentos desde Android. 17 conversiones, herramientas PDF, carpeta segura y modo estudio. Tus archivos se procesan en tu teléfono.',
-      'Androidで書類をスキャン、変換、結合、保護。17種類の変換、PDFツール、安全なフォルダー、学習モード。ファイルはスマホの中で処理されます。',
+      "Une, comprime, convierte y firma PDF gratis en el navegador o escanea con la app Android. Sin registro y sin subir archivos: todo se procesa en tu equipo.",
+      "PDFの結合・圧縮・変換・署名をブラウザで無料で。Androidアプリでスキャンも可能。登録不要、ファイルはアップロードされず、すべて端末内で処理されます。",
     ],
     ['Escanea, convierte y protege tus documentos sin que salgan de tu teléfono.', '書類をスマホの外に出さずに、スキャン・変換・保護。'],
     ['aria-label="DocuSmart, inicio"', 'aria-label="DocuSmart ホーム"'],

@@ -742,9 +742,10 @@ export default {
     ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "컴퓨터의 Chrome 또는 Edge에서 데스크톱 버전을 설치하세요. 일반 프로그램처럼 별도 창에서 열리고 인터넷 없이도 작동합니다."],
     ["Instalar DocuSmart Desktop", "DocuSmart Desktop 설치"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — 모든 문서를 한곳에'],
+    ["Herramientas PDF gratis sin subir archivos | DocuSmart", "무료 PDF 도구, 파일 업로드 없이 | DocuSmart"],
     [
-      'Escanea, convierte, une y protege tus documentos desde Android. 17 conversiones, herramientas PDF, carpeta segura y modo estudio. Tus archivos se procesan en tu teléfono.',
-      'Android에서 문서를 스캔하고, 변환하고, 합치고, 보호하세요. 17가지 변환, PDF 도구, 보안 폴더, 공부 모드. 파일은 휴대폰 안에서 처리됩니다.',
+      "Une, comprime, convierte y firma PDF gratis en el navegador o escanea con la app Android. Sin registro y sin subir archivos: todo se procesa en tu equipo.",
+      "브라우저에서 PDF를 무료로 병합, 압축, 변환, 서명하거나 Android 앱으로 스캔하세요. 가입 없이, 파일 업로드 없이 모든 작업이 기기에서 처리됩니다.",
     ],
     ['Escanea, convierte y protege tus documentos sin que salgan de tu teléfono.', '문서를 휴대폰 밖으로 내보내지 않고 스캔·변환·보호하세요.'],
     ['aria-label="DocuSmart, inicio"', 'aria-label="DocuSmart 홈"'],

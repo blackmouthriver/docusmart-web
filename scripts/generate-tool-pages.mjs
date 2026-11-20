@@ -11,7 +11,7 @@
 // CI verifica que estén al día (`npm run pages:check`).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { CATEGORIES, FACEBOOK_URL, INSTAGRAM_URL, SITE, TIKTOK_URL, pages } from '../tools/pages.mjs'
+import { CATEGORIES, FACEBOOK_URL, INSTAGRAM_URL, PAGES_UPDATED, PRIVACY_UPDATED, SITE, TIKTOK_URL, pages } from '../tools/pages.mjs'
 import { KB_OWN, buildKb, kbJson } from '../tools/assistant/build.mjs'
 import { GUIDES_UPDATED } from '../tools/guides.mjs'
 import { GUIDE_LANGS, guideFile, guidePath, guideUi, guides, guidesIndexFile, guidesIndexPath, hasGuides, localizedGuide } from '../tools/guides/index.mjs'
@@ -784,6 +784,54 @@ function block(html, name, content, file) {
   return html.replace(re, () => `<!-- ${name}:start -->\n${content}\n<!-- ${name}:end -->`)
 }
 
+/** Datos estructurados de la portada: organización, sitio, app de Android y app web (sin valoraciones inventadas). */
+function landingLd(html, loc, file) {
+  const m = html.match(/<meta name="description" content="([^"]*)">/)
+  if (!m) throw new Error(`${file} no tiene <meta name="description">`)
+  const description = m[1].replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+  const url = `${SITE}${homePath(loc)}`
+  const org = { '@id': `${SITE}/#org` }
+  const graph = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        ...org,
+        name: 'DocuSmart',
+        url: `${SITE}/`,
+        logo: `${SITE}/img/pwa/icon-512.png`,
+        email: 'supportdocusmart@docusmart.online',
+        sameAs: [PLAY, FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL],
+      },
+      { '@type': 'WebSite', '@id': `${url}#website`, name: 'DocuSmart', url, description, inLanguage: loc.lang, publisher: org },
+      {
+        '@type': 'MobileApplication',
+        name: 'DocuSmart',
+        operatingSystem: 'Android',
+        applicationCategory: 'BusinessApplication',
+        description,
+        inLanguage: loc.lang,
+        image: `${SITE}/img/pwa/icon-512.png`,
+        installUrl: PLAY,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        publisher: org,
+      },
+      {
+        '@type': 'WebApplication',
+        name: 'DocuSmart Web',
+        url: `${SITE}/app/`,
+        applicationCategory: 'UtilitiesApplication',
+        operatingSystem: loc.ui.os,
+        browserRequirements: 'requires JavaScript',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        publisher: org,
+      },
+    ],
+  }
+  return `<script type="application/ld+json">\n${jsonLd(graph)}\n</script>`
+}
+
 function landingBlocks(html, loc, file) {
   const hub = hubPath(loc)
   const cards = CATEGORIES.map((c) => {
@@ -795,6 +843,7 @@ ${cards}
       </ul>
       <div class="wt-more reveal"><a class="btn btn-primary" href="${hub}">${esc(loc.ui.seeAll.replace('{n}', String(pages.length)))} <span aria-hidden="true">→</span></a></div>`
   let out = block(html, 'tools', items, file)
+  out = block(out, 'ldjson', landingLd(html, loc, file), file)
   out = block(out, 'hreflang', alternates(homePath), file)
   out = block(out, 'langs', langMenu(loc, homePath, 'lang-menu', '  '), file)
   return out
@@ -840,7 +889,7 @@ const entry = (pathFor, freq, prio) => {
   const links = [...LANGS.map((l) => [l.lang, pathFor(l)]), ['x-default', pathFor(ES)]]
     .map(([hl, p]) => `    <xhtml:link rel="alternate" hreflang="${hl}" href="${SITE}${p}"/>`)
     .join('\n')
-  return LANGS.map((l) => `  <url>\n    <loc>${SITE}${pathFor(l)}</loc>\n${links}\n    <changefreq>${freq}</changefreq>\n    <priority>${prio}</priority>\n  </url>`).join('\n')
+  return LANGS.map((l) => `  <url>\n    <loc>${SITE}${pathFor(l)}</loc>\n${links}\n    <lastmod>${PAGES_UPDATED}</lastmod>\n    <changefreq>${freq}</changefreq>\n    <priority>${prio}</priority>\n  </url>`).join('\n')
 }
 /** Guías en el sitemap: una <url> por idioma, con sus alternativas. */
 function guideEntries() {
@@ -852,7 +901,7 @@ function guideEntries() {
       (l) => `  <url>\n    <loc>${SITE}${pathFor(l)}</loc>\n${links}\n${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ''}    <changefreq>monthly</changefreq>\n    <priority>${prio}</priority>\n  </url>`,
     ).join('\n')
   }
-  return [entryFor(guidesIndexPath, '0.8'), ...guides.map((g) => entryFor((l) => guidePath(g, l), '0.7', GUIDES_UPDATED))].join('\n')
+  return [entryFor(guidesIndexPath, '0.8', GUIDES_UPDATED), ...guides.map((g) => entryFor((l) => guidePath(g, l), '0.7', GUIDES_UPDATED))].join('\n')
 }
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <!-- Generado por scripts/generate-tool-pages.mjs. No editar a mano. -->
@@ -861,8 +910,8 @@ ${entry(homePath, 'monthly', '1.0')}
 ${entry(hubPath, 'monthly', '0.9')}
 ${pages.map((p) => entry((l) => pagePath(p, l), 'monthly', '0.9')).join('\n')}
 ${guideEntries()}
-  <url><loc>${SITE}/app/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>${SITE}/privacidad</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>${SITE}/app/</loc><lastmod>${PAGES_UPDATED}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>${SITE}/privacidad</loc><lastmod>${PRIVACY_UPDATED}</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
 `
 emit('public/sitemap.xml', sitemap)

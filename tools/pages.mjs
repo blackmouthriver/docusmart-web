@@ -16,6 +16,10 @@ export const SITE = 'https://docusmart.online'
 export const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61596626852763'
 export const INSTAGRAM_URL = 'https://www.instagram.com/supportdocusmart/'
 export const TIKTOK_URL = 'https://www.tiktok.com/@docusmartsupport'
+/** Última revisión del contenido de portada, /herramientas y páginas de herramienta (<lastmod> del sitemap). Actualizar al cambiar sus textos. */
+export const PAGES_UPDATED = '2026-11-20'
+/** Fecha de la versión vigente de /privacidad (<lastmod> del sitemap). */
+export const PRIVACY_UPDATED = '2026-11-12'
 
 /** Categorías de herramientas (W-76), en el orden en que se muestran. Nombres en tools/locales (ui.cats). */
 export const CATEGORIES = [

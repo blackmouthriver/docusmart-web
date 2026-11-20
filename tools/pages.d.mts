@@ -28,6 +28,8 @@ export const SITE: string
 export const FACEBOOK_URL: string
 export const INSTAGRAM_URL: string
 export const TIKTOK_URL: string
+export const PAGES_UPDATED: string
+export const PRIVACY_UPDATED: string
 /** Categorías de herramientas (W-76), en orden de presentación; el nombre está en ui.cats de cada idioma. */
 export const CATEGORIES: Array<{ id: CategoryId; icon: string }>
 export const pages: ToolPage[]

@@ -751,9 +751,10 @@ export default {
     ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Installiere die Desktop-Version über Chrome oder Edge auf deinem Computer: Sie öffnet sich in einem eigenen Fenster wie ein Programm und funktioniert offline."],
     ["Instalar DocuSmart Desktop", "DocuSmart Desktop installieren"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — Alle deine Dokumente an einem Ort'],
+    ["Herramientas PDF gratis sin subir archivos | DocuSmart", "Kostenlose PDF-Tools ohne Datei-Upload | DocuSmart"],
     [
-      'Escanea, convierte, une y protege tus documentos desde Android. 17 conversiones, herramientas PDF, carpeta segura y modo estudio. Tus archivos se procesan en tu teléfono.',
-      'Scanne, konvertiere, füge zusammen und schütze deine Dokumente unter Android. 17 Konvertierungen, PDF-Werkzeuge, sicherer Ordner und Lernmodus. Deine Dateien werden auf deinem Handy verarbeitet.',
+      "Une, comprime, convierte y firma PDF gratis en el navegador o escanea con la app Android. Sin registro y sin subir archivos: todo se procesa en tu equipo.",
+      "PDFs kostenlos im Browser zusammenfügen, komprimieren, umwandeln und signieren – oder mit der Android-App scannen. Ohne Anmeldung, ohne Upload.",
     ],
     ['Escanea, convierte y protege tus documentos sin que salgan de tu teléfono.', 'Scanne, konvertiere und schütze deine Dokumente, ohne dass sie dein Handy verlassen.'],
     ['aria-label="DocuSmart, inicio"', 'aria-label="DocuSmart, Startseite"'],
