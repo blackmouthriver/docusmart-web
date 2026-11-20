@@ -723,6 +723,23 @@ export default {
         ["Minhas fotos são enviadas para a internet?", "Não. A conversão acontece no seu navegador; suas imagens não saem do seu dispositivo."],
       ],
     },
+    'heic-a-jpg': {
+      slug: "heic-para-jpg",
+      title: "Converter HEIC para JPG grátis, fotos do iPhone | DocuSmart",
+      description: "Transforme suas fotos HEIC do iPhone em JPG ou PNG no navegador. Várias de uma vez, qualidade ajustável, grátis e sem enviar suas fotos.",
+      h1: "HEIC para JPG",
+      howTo: "Como converter HEIC para JPG em 3 passos",
+      lead: "Converta as fotos HEIC do seu iPhone ou iPad para JPG para abri-las, enviá-las ou publicá-las em qualquer lugar. Uma ou várias de uma vez, sem que saiam do seu dispositivo.",
+      short: "Fotos do iPhone para JPG",
+      steps: ["Escolha ou arraste uma ou mais fotos HEIC (.heic ou .heif).", "Escolha JPG ou PNG e, se quiser, ajuste a qualidade do JPG.", "Toque em \"Converter\" e baixe as fotos; se forem várias, vêm juntas em um ZIP."],
+      faq: [
+        ["O que é um arquivo HEIC?", "É o formato que iPhones e iPads usam para fotos desde o iOS 11: metade do tamanho de um JPG com a mesma qualidade, mas o Windows, muitos sites e alguns aplicativos não conseguem abri-lo. Convertê-lo para JPG faz com que funcione em qualquer lugar."],
+        ["Perde-se qualidade?", "Muito pouca: com 90% de qualidade a diferença não é perceptível. Se precisar da imagem sem nenhuma perda, escolha PNG (ocupa mais)."],
+        ["A foto sai na posição correta?", "Sim. Aplica-se a rotação salva pelo iPhone, então as fotos na vertical continuam na vertical."],
+        ["Posso converter várias fotos de uma vez?", "Sim. Escolha quantas quiser: são convertidas uma a uma e baixadas juntas em um ZIP."],
+        ["Minhas fotos são enviadas para a internet?", "Não. A conversão acontece no seu navegador; apenas na primeira vez o decodificador de HEIC (1,4 MB) é baixado de docusmart.online. No Safari nem isso: ele usa o do próprio sistema."],
+      ],
+    },
     'png-a-jpg': {
       slug: "png-para-jpg",
       title: "Converter PNG para JPG grátis | DocuSmart",

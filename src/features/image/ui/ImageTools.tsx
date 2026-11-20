@@ -51,6 +51,7 @@ const CONVERSIONS: Array<{ id: string; name: MessageKey; desc: MessageKey }> = [
   { id: 'img-png', name: 'conv.name.img-png', desc: 'conv.desc.imgPng' },
   { id: 'img-webp', name: 'conv.name.img-webp', desc: 'conv.desc.imgWebp' },
   { id: 'img-bmp', name: 'conv.name.img-bmp', desc: 'conv.desc.imgBmp' },
+  { id: 'heic-jpg', name: 'conv.name.heic-jpg', desc: 'conv.desc.heicJpg' },
 ]
 
 export const IMAGE_TOOLS: Record<string, ComponentType> = {

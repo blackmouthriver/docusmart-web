@@ -673,6 +673,27 @@ export default {
         ["我的照片会上传到网上吗？", "不会。转换在你的浏览器中完成，图片不会离开你的设备。"],
       ],
     },
+    'heic-a-jpg': {
+      slug: "heic-to-jpg",
+      title: "免费将 HEIC 转换为 JPG，iPhone 照片 | DocuSmart",
+      description: "在浏览器中将 iPhone 的 HEIC 照片转换为 JPG 或 PNG。可一次转换多张，质量可调，免费且无需上传照片。",
+      h1: "HEIC 转 JPG",
+      howTo: "三步将 HEIC 转换为 JPG",
+      lead: "把 iPhone 或 iPad 上的 HEIC 照片转成 JPG，随处都能打开、发送或上传。一张或多张一次完成，不离开你的设备。",
+      short: "iPhone 照片转为 JPG",
+      steps: [
+        "选择或拖入一张或多张 HEIC 照片（.heic 或 .heif）。",
+        "选择 JPG 或 PNG，需要的话可调整 JPG 质量。",
+        "点按“转换”并下载照片；如果有多张，会打包成一个 ZIP。",
+      ],
+      faq: [
+        ["什么是 HEIC 文件？", "这是 iPhone 和 iPad 自 iOS 11 起用于照片的格式：同等画质下体积只有 JPG 的一半，但 Windows、许多网站和部分应用无法打开。转换成 JPG 后就能随处使用。"],
+        ["会损失画质吗？", "非常少：质量为 90% 时几乎看不出差别。如果需要完全无损的图片，请选择 PNG（文件会更大）。"],
+        ["照片方向会正确吗？", "会。会应用 iPhone 保存的旋转信息，所以竖拍的照片仍然是竖的。"],
+        ["可以一次转换很多张照片吗？", "可以。想选多少就选多少，会逐张转换，并打包成 ZIP 一起下载。"],
+        ["我的照片会上传到网上吗？", "不会。转换在你的浏览器中完成；只有首次使用时会从 docusmart.online 下载 HEIC 解码器（1.4 MB）。在 Safari 中连这一步也不需要：它使用系统自带的解码器。"],
+      ],
+    },
     'png-a-jpg': {
       slug: "png-to-jpg",
       title: "免费将 PNG 转换为 JPG | DocuSmart",

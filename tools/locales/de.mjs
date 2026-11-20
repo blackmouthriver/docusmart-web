@@ -723,6 +723,23 @@ export default {
         ["Werden meine Fotos ins Internet hochgeladen?", "Nein. Die Umwandlung passiert in deinem Browser; deine Bilder verlassen dein Gerät nicht."],
       ],
     },
+    'heic-a-jpg': {
+      slug: "heic-in-jpg",
+      title: "HEIC in JPG umwandeln – kostenlos, iPhone-Fotos | DocuSmart",
+      description: "Wandle deine iPhone-HEIC-Fotos im Browser in JPG oder PNG um. Mehrere auf einmal, einstellbare Qualität, kostenlos und ohne Upload deiner Fotos.",
+      h1: "HEIC in JPG",
+      howTo: "So wandelst du HEIC in JPG um – in 3 Schritten",
+      lead: "Wandle die HEIC-Fotos von deinem iPhone oder iPad in JPG um, damit du sie überall öffnen, senden oder hochladen kannst. Eins oder viele auf einmal, ohne dass sie dein Gerät verlassen.",
+      short: "iPhone-Fotos in JPG",
+      steps: ["Wähle ein oder mehrere HEIC-Fotos (.heic oder .heif) aus oder ziehe sie hinein.", "Wähle JPG oder PNG und passe bei Bedarf die JPG-Qualität an.", "Tippe auf „Konvertieren“ und lade die Fotos herunter; mehrere kommen gemeinsam in einer ZIP-Datei."],
+      faq: [
+        ["Was ist eine HEIC-Datei?", "Das ist das Format, das iPhones und iPads seit iOS 11 für Fotos verwenden: bei gleicher Qualität halb so groß wie ein JPG, aber Windows, viele Websites und einige Apps können es nicht öffnen. Als JPG funktioniert es überall."],
+        ["Geht Qualität verloren?", "Sehr wenig: Bei 90 % Qualität ist der Unterschied nicht sichtbar. Wenn du das Bild ganz ohne Verlust brauchst, wähle PNG (die Datei wird größer)."],
+        ["Steht das Foto aufrecht?", "Ja. Die vom iPhone gespeicherte Drehung wird angewendet, Hochformat-Fotos bleiben also im Hochformat."],
+        ["Kann ich viele Fotos auf einmal umwandeln?", "Ja. Wähle so viele aus, wie du willst: Sie werden nacheinander umgewandelt und gemeinsam als ZIP heruntergeladen."],
+        ["Werden meine Fotos ins Internet hochgeladen?", "Nein. Die Umwandlung geschieht in deinem Browser; nur beim ersten Mal wird der HEIC-Decoder (1,4 MB) von docusmart.online geladen. In Safari nicht einmal das: Er nutzt den des Systems."],
+      ],
+    },
     'png-a-jpg': {
       slug: "png-in-jpg",
       title: "PNG in JPG umwandeln – kostenlos | DocuSmart",

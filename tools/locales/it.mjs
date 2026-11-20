@@ -723,6 +723,23 @@ export default {
         ["Le mie foto vengono caricate su internet?", "No. La conversione avviene nel tuo browser; le tue immagini non lasciano il tuo dispositivo."],
       ],
     },
+    'heic-a-jpg': {
+      slug: "heic-in-jpg",
+      title: "Converti HEIC in JPG gratis, foto iPhone | DocuSmart",
+      description: "Trasforma le tue foto HEIC dell'iPhone in JPG o PNG nel browser. Più file insieme, qualità regolabile, gratis e senza caricare le tue foto.",
+      h1: "HEIC in JPG",
+      howTo: "Come convertire HEIC in JPG in 3 passaggi",
+      lead: "Converti le foto HEIC del tuo iPhone o iPad in JPG per aprirle, inviarle o caricarle ovunque. Una o molte insieme, senza che lascino il tuo dispositivo.",
+      short: "Foto iPhone in JPG",
+      steps: ["Scegli o trascina una o più foto HEIC (.heic o .heif).", "Scegli JPG o PNG e, se vuoi, regola la qualità del JPG.", "Premi \"Converti\" e scarica le foto; se sono più di una, arrivano insieme in uno ZIP."],
+      faq: [
+        ["Cos'è un file HEIC?", "È il formato che iPhone e iPad usano per le foto da iOS 11: la metà di un JPG a parità di qualità, ma Windows, molti siti e alcune app non riescono ad aprirlo. Convertirlo in JPG lo fa funzionare ovunque."],
+        ["Si perde qualità?", "Pochissima: al 90% di qualità la differenza non si nota. Se ti serve l'immagine senza alcuna perdita, scegli PNG (pesa di più)."],
+        ["La foto esce dritta?", "Sì. Viene applicata la rotazione salvata dall'iPhone, quindi le foto verticali restano verticali."],
+        ["Posso convertire molte foto insieme?", "Sì. Scegline quante vuoi: vengono convertite una alla volta e scaricate insieme in uno ZIP."],
+        ["Le mie foto vengono caricate su internet?", "No. La conversione avviene nel tuo browser; solo la prima volta il decodificatore HEIC (1,4 MB) viene scaricato da docusmart.online. In Safari nemmeno quello: usa quello del sistema."],
+      ],
+    },
     'png-a-jpg': {
       slug: "png-in-jpg",
       title: "Convertire PNG in JPG gratis | DocuSmart",

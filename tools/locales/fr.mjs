@@ -723,6 +723,23 @@ export default {
         ["Mes photos sont-elles envoyées sur internet ?", "Non. La conversion se fait dans votre navigateur ; vos images ne quittent pas votre appareil."],
       ],
     },
+    'heic-a-jpg': {
+      slug: "heic-en-jpg",
+      title: "Convertir HEIC en JPG gratuit, photos iPhone | DocuSmart",
+      description: "Transformez vos photos HEIC d'iPhone en JPG ou PNG dans votre navigateur. Plusieurs à la fois, qualité réglable, gratuit et sans envoyer vos photos.",
+      h1: "HEIC en JPG",
+      howTo: "Comment convertir HEIC en JPG en 3 étapes",
+      lead: "Convertissez les photos HEIC de votre iPhone ou iPad en JPG pour les ouvrir, les envoyer ou les publier n'importe où. Une ou plusieurs à la fois, sans qu'elles quittent votre appareil.",
+      short: "Photos d'iPhone en JPG",
+      steps: ["Choisissez ou glissez une ou plusieurs photos HEIC (.heic ou .heif).", "Choisissez JPG ou PNG et, si vous le souhaitez, réglez la qualité du JPG.", "Appuyez sur « Convertir » et téléchargez les photos ; si elles sont plusieurs, elles arrivent ensemble dans un ZIP."],
+      faq: [
+        ["Qu'est-ce qu'un fichier HEIC ?", "C'est le format que les iPhone et iPad utilisent pour les photos depuis iOS 11 : deux fois plus léger qu'un JPG à qualité égale, mais Windows, de nombreux sites et certaines applications ne savent pas l'ouvrir. Le convertir en JPG le rend lisible partout."],
+        ["Perd-on en qualité ?", "Très peu : à 90 % de qualité, la différence n'est pas perceptible. Si vous voulez l'image sans aucune perte, choisissez PNG (plus lourd)."],
+        ["La photo sera-t-elle dans le bon sens ?", "Oui. La rotation enregistrée par l'iPhone est appliquée, donc les photos en portrait restent en portrait."],
+        ["Puis-je convertir plusieurs photos à la fois ?", "Oui. Choisissez-en autant que vous voulez : elles sont converties une par une et téléchargées ensemble dans un ZIP."],
+        ["Mes photos sont-elles envoyées sur Internet ?", "Non. La conversion se fait dans votre navigateur ; seul le décodeur HEIC (1,4 Mo) est téléchargé depuis docusmart.online la première fois. Dans Safari, même pas : il utilise celui du système."],
+      ],
+    },
     'png-a-jpg': {
       slug: "png-en-jpg",
       title: "Convertir PNG en JPG gratuitement | DocuSmart",

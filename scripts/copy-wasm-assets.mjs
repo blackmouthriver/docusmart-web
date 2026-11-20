@@ -6,6 +6,7 @@
 //    decodificadores wasm de pdf.js.
 //  - public/qpdf/: qpdf compilado a wasm (comprimir, proteger, desbloquear y
 //    reparar PDF).
+//  - public/heic/: libheif compilado a wasm (fotos HEIC de iPhone).
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
@@ -79,7 +80,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 `,
 )
 
+// ── libheif (HEIC a JPG, W-107) ────────────────────────────────────
+// LGPL-3.0 (libheif y el decodificador libde265): se distribuye sin modificar y con su licencia.
+const heif = join(modules, 'libheif-js', 'libheif-wasm')
+const heifOut = fresh(join(pub, 'heic'))
+cpSync(join(heif, 'libheif.wasm'), join(heifOut, 'libheif.wasm'))
+cpSync(join(heif, 'LICENSE'), join(heifOut, 'LICENSE.txt'))
+
 for (const f of [
+  join(heifOut, 'libheif.wasm'),
   join(ortOut, 'ort-wasm-simd-threaded.wasm'),
   join(pdfjsOut, 'standard_fonts'),
   join(qpdfOut, 'qpdf.wasm'),
@@ -89,4 +98,4 @@ for (const f of [
 ]) {
   if (!existsSync(f)) throw new Error(`Falta un recurso: ${f}`)
 }
-console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/, public/7z/, public/ocr/ y public/ort/')
+console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/, public/7z/, public/ocr/, public/ort/ y public/heic/')

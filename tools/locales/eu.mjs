@@ -728,6 +728,27 @@ export default {
         ["Nire argazkiak internetera igotzen dira?", "Ez. Bihurketa zure nabigatzailean egiten da; zure irudiak ez dira zure gailutik ateratzen."],
       ],
     },
+    'heic-a-jpg': {
+      slug: "heictik-jpgra",
+      title: "Bihurtu HEIC JPG doan, iPhoneko argazkiak | DocuSmart",
+      description: "Pasatu zure iPhoneko HEIC argazkiak JPG edo PNG formatura nabigatzailean. Hainbat batera, kalitate doigarria, doan eta argazkiak igo gabe.",
+      h1: "HEICtik JPGra",
+      howTo: "Nola bihurtu HEIC JPG 3 urratsetan",
+      lead: "Bihurtu zure iPhone edo iPadeko HEIC argazkiak JPG formatura, edonon ireki, bidali edo igo ahal izateko. Bat edo asko batera, zure gailutik atera gabe.",
+      short: "iPhoneko argazkiak JPG formatura",
+      steps: [
+        "Aukeratu edo arrastatu HEIC argazki bat edo gehiago (.heic edo .heif).",
+        "Hautatu JPG edo PNG eta, nahi baduzu, doitu JPGren kalitatea.",
+        "Sakatu «Bihurtu» eta deskargatu argazkiak; hainbat badira, ZIP batean batera datoz.",
+      ],
+      faq: [
+        ["Zer da HEIC fitxategi bat?", "iOS 11tik aurrera iPhone eta iPadek argazkietarako erabiltzen duten formatua da: kalitate berarekin JPG baten tamainaren erdia hartzen du, baina Windowsek, webgune askok eta aplikazio batzuek ezin dute ireki. JPGra bihurtuta, edonon funtzionatzen du."],
+        ["Kalitatea galtzen da?", "Oso gutxi: % 90eko kalitatean aldea ez da nabaritzen. Inolako galerarik gabeko irudia behar baduzu, aukeratu PNG (handiagoa da)."],
+        ["Argazkia zuzen geratuko da?", "Bai. iPhonek gordetako biraketa aplikatzen da, beraz argazki bertikalak bertikal geratzen dira."],
+        ["Argazki asko batera bihur ditzaket?", "Bai. Aukeratu nahi dituzun guztiak: banan-banan bihurtzen dira eta ZIP batean batera deskargatzen dira."],
+        ["Nire argazkiak internetera igotzen dira?", "Ez. Bihurketa zure nabigatzailean egiten da; lehen aldian bakarrik deskargatzen da HEIC deskodetzailea (1,4 MB) docusmart.online-etik. Safarin hori ere ez: sistemaren berbera erabiltzen du."],
+      ],
+    },
     'png-a-jpg': {
       slug: "pngtik-jpgra",
       title: "Bihurtu PNG JPG doan | DocuSmart",
