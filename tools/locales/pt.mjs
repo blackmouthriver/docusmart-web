@@ -77,7 +77,7 @@ export default {
       short: 'Extraia ou separe páginas',
       steps: [
         'Escolha o PDF que você quer dividir.',
-        'Toque nas páginas que quer manter, digite um intervalo como "1-3, 5" ou escolha "Cada página em separado".',
+        'Toque nas páginas que quer manter, digite um intervalo como "1-3, 5" ou escolha "Cada página separada".',
         'Baixe o resultado: um PDF com as páginas escolhidas ou um .zip com uma página por arquivo.',
       ],
       faq: [
@@ -94,7 +94,7 @@ export default {
       howTo: 'Como girar um PDF em 3 passos',
       lead: 'Endireite as páginas que ficaram de lado ou de cabeça para baixo, uma por uma ou todas de uma vez.',
       short: 'Endireite páginas giradas',
-      steps: ['Escolha o PDF.', 'Toque em cada página para girá-la 90°, ou use "Rodar todas".', 'Toque em "Rodar PDF" e baixe o documento corrigido.'],
+      steps: ['Escolha o PDF.', 'Toque em cada página para girá-la 90°, ou use "Girar todas".', 'Toque em "Girar PDF" e baixe o documento corrigido.'],
       faq: [
         ['Posso girar só uma página?', 'Sim. Cada toque gira essa página 90°; as outras ficam como estavam.'],
         ['A rotação é permanente?', 'Sim, fica salva no PDF novo e aparecerá igual em qualquer leitor.'],
@@ -126,7 +126,7 @@ export default {
       slug: 'preencher-formulario-pdf',
       title: 'Preencher formulário PDF online grátis | DocuSmart',
       description:
-        'Preencha os campos de um formulário PDF pelo navegador: textos, caixas, opções e listas, com a página à vista. Achate-o para enviar. Grátis e sem enviar o arquivo.',
+        'Preencha os campos de um formulário PDF pelo navegador: textos, caixas, opções e listas, com a página à vista. Nivele-o para enviar. Grátis e sem enviar o arquivo.',
       h1: 'Preencher formulário PDF',
       howTo: 'Como preencher um formulário PDF em 3 passos',
       lead: 'Complete solicitações, inscrições e formulários PDF preenchíveis sem imprimi-los nem instalar programas, vendo na página onde vai cada resposta.',
@@ -134,12 +134,12 @@ export default {
       steps: [
         'Escolha o formulário PDF: o DocuSmart encontra os campos e os marca sobre a página.',
         'Escreva suas respostas; ao tocar em uma caixa da página o campo abre, e vice-versa.',
-        'Se for enviá-lo, marque "Achatar" para que as respostas fiquem fixas, e toque em "Preencher formulário".',
+        'Se for enviá-lo, marque "Nivelar" para que as respostas fiquem fixas, e toque em "Preencher formulário".',
       ],
       faq: [
         ['Quais formulários funcionam?', 'PDFs com campos preenchíveis (AcroForm), que são a grande maioria: caixas de texto, caixas de seleção, opções, listas suspensas e listas. Se um PDF não tem campos, você pode escrever por cima com "Editar PDF".'],
-        ['O que significa achatar?', 'Transforma as respostas em parte fixa do documento: aparecem iguais em qualquer leitor e ninguém pode mudá-las sem deixar rastro. Sem achatar, o formulário continua editável.'],
-        ['Posso continuar preenchendo depois?', 'Sim, se não achatar: abra o PDF salvo de novo aqui ou em qualquer leitor e suas respostas continuarão nos campos.'],
+        ['O que significa nivelar?', 'Transforma as respostas em parte fixa do documento: aparecem iguais em qualquer leitor e ninguém pode mudá-las sem deixar rastro. Sem nivelar, o formulário continua editável.'],
+        ['Posso continuar preenchendo depois?', 'Sim, se não nivelar: abra o PDF salvo de novo aqui ou em qualquer leitor e suas respostas continuarão nos campos.'],
         ['Meus dados são enviados à internet?', 'Não. O formulário e suas respostas são processados dentro do seu navegador.'],
       ],
     },
@@ -157,8 +157,8 @@ export default {
         'Ajuste tamanho, cor e posição, e toque em "Aplicar alterações".',
       ],
       faq: [
-        ['Posso mudar o texto que o PDF já tem?', 'Você pode cobri-lo com a ferramenta "Tapar" (um retângulo branco) e escrever o texto novo por cima com "Texto". O resultado parece corrigido.'],
-        ['"Tapar" apaga o que está embaixo?', 'Não: só cobre, mas o texto original continua dentro do arquivo. Se precisa eliminar dados sensíveis de verdade, use "Ocultar dados do PDF".'],
+        ['Posso mudar o texto que o PDF já tem?', 'Você pode escondê-lo com a ferramenta "Cobrir" (um retângulo branco) e escrever o texto novo por cima com "Texto". O resultado parece corrigido.'],
+        ['"Cobrir" apaga o que está embaixo?', 'Não: só cobre, mas o texto original continua dentro do arquivo. Se precisa eliminar dados sensíveis de verdade, use "Ocultar dados do PDF".'],
         ['Que fontes posso usar?', 'Três famílias padrão de PDF (sans, serif e monoespaçada), normal ou negrito, com acentos. Emojis e outros alfabetos não podem ser salvos com essas fontes.'],
         ['Meus arquivos são enviados à internet?', 'Não. Tudo é feito dentro do seu navegador, sem cadastro.'],
       ],
@@ -172,7 +172,7 @@ export default {
       howTo: 'Como extrair as imagens de um PDF em 3 passos',
       lead: 'Recupere as fotos, logotipos e gráficos que estão dentro de um PDF, exatamente como foram salvos, sem capturas de tela nem perda de qualidade.',
       short: 'Fotos em qualidade original',
-      steps: ['Escolha o PDF.', 'Toque em "Procurar imagens": aparecem todas as fotos e gráficos que ele contém.', 'Escolha as que quiser e baixe uma por uma ou todas juntas em um ZIP.'],
+      steps: ['Escolha o PDF.', 'Toque em "Buscar imagens": aparecem todas as fotos e gráficos que ele contém.', 'Escolha as que quiser e baixe uma por uma ou todas juntas em um ZIP.'],
       faq: [
         ['As imagens perdem qualidade?', 'Não. As fotos JPEG são copiadas byte por byte, idênticas às originais, e as demais são salvas como PNG, que não perde qualidade.'],
         ['Qual a diferença para "PDF para JPG"?', '"PDF para JPG" transforma cada página inteira em uma imagem. "Extrair imagens" tira só as fotos e gráficos que estão dentro, cada um separado e no tamanho original.'],
@@ -643,7 +643,7 @@ export default {
       steps: [
         "Escolha ou arraste o PDF.",
         "Escreva o texto da marca (até 40 caracteres), por exemplo \"CONFIDENCIAL\".",
-        "Toque em \"Aplicar marca de água\" e baixe o PDF.",
+        "Toque em \"Aplicar marca d’água\" e baixe o PDF.",
       ],
       faq: [
         ["Como fica a marca d’água?", "Como um texto grande na diagonal, azul e semitransparente, no centro de cada página. O conteúdo continua legível embaixo."],

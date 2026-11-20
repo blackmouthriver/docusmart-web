@@ -173,7 +173,7 @@ export default {
         {
           h2: "Urratsez urrats",
           body: [
-            "Ireki [Konprimitu PDFa](/comprimir-pdf), aukeratu fitxategia eta hautatu maila. Ukitu «Konprimatu PDFa»: aurreko eta ondorengo pisua ikusiko duzu, eta emaitza deskargatzen da.",
+            "Ireki [Konprimitu PDFa](/comprimir-pdf), aukeratu fitxategia eta hautatu maila. Ukitu «Konprimitu PDFa»: aurreko eta ondorengo pisua ikusiko duzu, eta emaitza deskargatzen da.",
             "PDFa dagoeneko optimizatuta bazegoen eta ezin bada gehiago murriztu, DocuSmart-ek abisatu egiten dizu eta ez du kopia berdin edo astunagorik deskargatzen.",
           ],
         },
@@ -198,7 +198,7 @@ export default {
         { name: "Ireki Konprimitu PDFa", text: "Ireki docusmart.online webguneko Konprimitu PDFa tresna." },
         { name: "Aukeratu fitxategia", text: "Hautatu astunegia den PDFa." },
         { name: "Hautatu maila", text: "«Galerarik gabe» dokumentu digitaletarako; «Ertaina» edo «Handia» eskaneatutakoetarako eta argazkietarako." },
-        { name: "Konprimitu", text: "Ukitu «Konprimatu PDFa», begiratu zenbat murriztu den eta deskargatu emaitza." },
+        { name: "Konprimitu", text: "Ukitu «Konprimitu PDFa», begiratu zenbat murriztu den eta deskargatu emaitza." },
       ],
       faq: [
         ["Konprimitzeak dokumentua hondatzen du?", "«Galerarik gabe» mailarekin, ez: edukia berdin-berdin geratzen da. «Ertaina» eta «Handia» mailekin orriak irudi arinago bihurtzen dira; ondo irakurtzen dira, baina testu hautagarria galtzen dute."],
