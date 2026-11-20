@@ -77,7 +77,7 @@ export default {
       short: 'Extraia ou separe páginas',
       steps: [
         'Escolha o PDF que você quer dividir.',
-        'Toque nas páginas que quer manter, digite um intervalo como "1-3, 5" ou escolha "Cada página separada".',
+        'Toque nas páginas que quer manter, digite um intervalo como "1-3, 5" ou escolha "Cada página em separado".',
         'Baixe o resultado: um PDF com as páginas escolhidas ou um .zip com uma página por arquivo.',
       ],
       faq: [
@@ -94,7 +94,7 @@ export default {
       howTo: 'Como girar um PDF em 3 passos',
       lead: 'Endireite as páginas que ficaram de lado ou de cabeça para baixo, uma por uma ou todas de uma vez.',
       short: 'Endireite páginas giradas',
-      steps: ['Escolha o PDF.', 'Toque em cada página para girá-la 90°, ou use "Girar todas".', 'Toque em "Salvar PDF girado" e baixe o documento corrigido.'],
+      steps: ['Escolha o PDF.', 'Toque em cada página para girá-la 90°, ou use "Rodar todas".', 'Toque em "Rodar PDF" e baixe o documento corrigido.'],
       faq: [
         ['Posso girar só uma página?', 'Sim. Cada toque gira essa página 90°; as outras ficam como estavam.'],
         ['A rotação é permanente?', 'Sim, fica salva no PDF novo e aparecerá igual em qualquer leitor.'],
@@ -157,8 +157,8 @@ export default {
         'Ajuste tamanho, cor e posição, e toque em "Aplicar alterações".',
       ],
       faq: [
-        ['Posso mudar o texto que o PDF já tem?', 'Você pode cobri-lo com a ferramenta "Cobrir" (um retângulo branco) e escrever o texto novo por cima com "Texto". O resultado parece corrigido.'],
-        ['"Cobrir" apaga o que está embaixo?', 'Não: só cobre, mas o texto original continua dentro do arquivo. Se precisa eliminar dados sensíveis de verdade, use "Ocultar dados do PDF".'],
+        ['Posso mudar o texto que o PDF já tem?', 'Você pode cobri-lo com a ferramenta "Tapar" (um retângulo branco) e escrever o texto novo por cima com "Texto". O resultado parece corrigido.'],
+        ['"Tapar" apaga o que está embaixo?', 'Não: só cobre, mas o texto original continua dentro do arquivo. Se precisa eliminar dados sensíveis de verdade, use "Ocultar dados do PDF".'],
         ['Que fontes posso usar?', 'Três famílias padrão de PDF (sans, serif e monoespaçada), normal ou negrito, com acentos. Emojis e outros alfabetos não podem ser salvos com essas fontes.'],
         ['Meus arquivos são enviados à internet?', 'Não. Tudo é feito dentro do seu navegador, sem cadastro.'],
       ],
@@ -172,7 +172,7 @@ export default {
       howTo: 'Como extrair as imagens de um PDF em 3 passos',
       lead: 'Recupere as fotos, logotipos e gráficos que estão dentro de um PDF, exatamente como foram salvos, sem capturas de tela nem perda de qualidade.',
       short: 'Fotos em qualidade original',
-      steps: ['Escolha o PDF.', 'Toque em "Buscar imagens": aparecem todas as fotos e gráficos que ele contém.', 'Escolha as que quiser e baixe uma por uma ou todas juntas em um ZIP.'],
+      steps: ['Escolha o PDF.', 'Toque em "Procurar imagens": aparecem todas as fotos e gráficos que ele contém.', 'Escolha as que quiser e baixe uma por uma ou todas juntas em um ZIP.'],
       faq: [
         ['As imagens perdem qualidade?', 'Não. As fotos JPEG são copiadas byte por byte, idênticas às originais, e as demais são salvas como PNG, que não perde qualidade.'],
         ['Qual a diferença para "PDF para JPG"?', '"PDF para JPG" transforma cada página inteira em uma imagem. "Extrair imagens" tira só as fotos e gráficos que estão dentro, cada um separado e no tamanho original.'],

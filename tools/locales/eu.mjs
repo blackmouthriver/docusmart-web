@@ -77,7 +77,7 @@ export default {
       short: 'Atera edo banatu orriak',
       steps: [
         'Aukeratu zatitu nahi duzun PDFa.',
-        'Ukitu gorde nahi dituzun orriak, idatzi «1-3, 5» bezalako tarte bat edo aukeratu «Orri bakoitza bereizita».',
+        'Ukitu gorde nahi dituzun orriak, idatzi «1-3, 5» bezalako tarte bat edo aukeratu «Orri bakoitza bere aldetik».',
         'Deskargatu emaitza: aukeratutako orriak dituen PDF bat edo fitxategi bakoitzeko orri bat duen .zip bat.',
       ],
       faq: [
@@ -94,7 +94,7 @@ export default {
       howTo: 'Nola biratu PDF bat 3 urratsetan',
       lead: 'Zuzendu alboz edo buruz behera geratu diren orriak, banan-banan edo denak batera.',
       short: 'Zuzendu biratutako orriak',
-      steps: ['Aukeratu PDFa.', 'Ukitu orri bakoitza 90° biratzeko, edo erabili «Biratu guztiak».', 'Sakatu «Gorde biratutako PDFa» eta deskargatu zuzendutako dokumentua.'],
+      steps: ['Aukeratu PDFa.', 'Ukitu orri bakoitza 90° biratzeko, edo erabili «Biratu denak».', 'Sakatu «Biratu PDFa» eta deskargatu zuzendutako dokumentua.'],
       faq: [
         ['Orri bakar bat biratu dezaket?', 'Bai. Ukitu bakoitzak orri hori 90° biratzen du; besteak zeuden bezala geratzen dira.'],
         ['Biraketa iraunkorra da?', 'Bai, PDF berrian gordetzen da eta edozein irakurgailutan berdin ikusiko da.'],
@@ -262,11 +262,11 @@ export default {
       short: 'Murriztu PDF baten pisua',
       steps: [
         'Aukeratu edo arrastatu PDFa.',
-        'Aukeratu maila: «Galerarik gabe»k dena gordetzen du; «Ertaina» eta «Altua» mailek askoz gehiago murrizten dute eskaneatu eta argazkien pisua.',
+        'Aukeratu maila: «Galerarik gabe»k dena gordetzen du; «Ertaina» eta «Handia» mailek askoz gehiago murrizten dute eskaneatu eta argazkien pisua.',
         'Sakatu «Konprimitu PDFa»: zenbat murriztu den ikusiko duzu eta fitxategia deskargatuko da.',
       ],
       faq: [
-        ['Zein konpresio-maila aukeratu?', '«Galerarik gabe»k fitxategia optimizatzen du kalitatea ukitu gabe eta testuak hautagarria izaten jarraitzen du. PDFa eskaneatu bat bada edo argazki asko baditu, «Ertaina» edo «Altua» mailek askoz gehiago murrizten dute, testua irudi bihurtzearen truke.'],
+        ['Zein konpresio-maila aukeratu?', '«Galerarik gabe»k fitxategia optimizatzen du kalitatea ukitu gabe eta testuak hautagarria izaten jarraitzen du. PDFa eskaneatu bat bada edo argazki asko baditu, «Ertaina» edo «Handia» mailek askoz gehiago murrizten dute, testua irudi bihurtzearen truke.'],
         ['Nire PDFa internetera igotzen da?', 'Ez. Konpresioa zure nabigatzailean egiten da: fitxategia ez da inoiz zure gailutik irteten.'],
         ['Zergatik ez da batzuetan murrizten?', 'PDF batzuk optimizatuta datoz jada. Kasu horretan DocuSmartek abisatzen dizu eta ez du fitxategi berdin edo astunagorik deskargatzen.'],
         ['Tamaina-mugarik ba al dago?', 'Ez dago muga finkorik; zure gailuaren memoriaren araberakoa da. PDF oso handiek pixka bat gehiago iraun dezakete.'],
@@ -330,7 +330,7 @@ export default {
       howTo: 'Nola bihurtu PDF bat PDF/A formatura 3 urratsetan',
       lead: 'Pasa zure dokumentuak artxibatzeko formatu estandarrera urte askoren buruan ere berdin ikus daitezen, kanpoko letra-tipo edo programen menpe egon gabe.',
       short: 'Epe luzerako artxibo-formatua',
-      steps: ['Aukeratu PDFa.', 'Sakatu «Bihurtu PDF/A formatura».', 'PDF/A-2b deskargatzen da eta araua betetzeko zer doitu den esaten dizugu.'],
+      steps: ['Aukeratu PDFa.', 'Sakatu «Bihurtu PDF/A-ra».', 'PDF/A-2b deskargatzen da eta araua betetzeko zer doitu den esaten dizugu.'],
       faq: [
         ['Zer da PDF/A?', 'Artxibatzeko pentsatutako PDF bertsioa da (ISO 19005 araua): fitxategiak bere letra-tipoak, kolore-profila eta metadatuak ditu barruan, eta ezin du kanpoko ezeren menpe egon. Erakunde publiko, epaitegi eta unibertsitateekiko izapide askotan eskatzen da.'],
         ['Zein PDF/A maila sortzen du?', 'PDF/A-2b, gehien erabiltzen den maila: dokumentua etorkizunean berdin ikusiko dela bermatzen du. veraPDFrekin baliozkotzen dugu, PDF Associationen erreferentziazko baliozkotzailearekin.'],

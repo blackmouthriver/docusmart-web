@@ -94,7 +94,7 @@ export default {
       howTo: 'Comment faire pivoter un PDF en 3 étapes',
       lead: 'Redressez les pages de travers ou à l’envers, une par une ou toutes à la fois.',
       short: 'Redresse les pages tournées',
-      steps: ['Choisissez le PDF.', 'Touchez chaque page pour la tourner de 90°, ou utilisez « Tout faire pivoter ».', 'Appuyez sur « Enregistrer le PDF pivoté » et téléchargez le document corrigé.'],
+      steps: ['Choisissez le PDF.', 'Touchez chaque page pour la tourner de 90°, ou utilisez « Tout faire pivoter ».', 'Appuyez sur « Faire pivoter le PDF » et téléchargez le document corrigé.'],
       faq: [
         ['Puis-je faire pivoter une seule page ?', 'Oui. Chaque toucher tourne cette page de 90° ; les autres restent comme avant.'],
         ['La rotation est-elle permanente ?', "Oui, elle est enregistrée dans le nouveau PDF et s'affichera pareil dans n'importe quel lecteur."],
@@ -382,7 +382,7 @@ export default {
       howTo: 'Comment rogner une image en 3 étapes',
       lead: 'Retirez le superflu d’une photo ou donnez-lui le format exact voulu : carré pour votre profil, 16:9 pour une bannière ou 4:3 pour l’impression.',
       short: 'Libre ou en 1:1, 4:3, 16:9…',
-      steps: ['Choisissez l’image.', 'Choisissez des proportions (ou « Libre ») et ajustez le cadre en faisant glisser ses bords, ses coins ou le cadre entier.', 'Appuyez sur « Rogner l’image ».'],
+      steps: ['Choisissez l’image.', 'Choisissez des proportions (ou « Libre ») et ajustez le cadre en faisant glisser ses bords, ses coins ou le cadre entier.', 'Appuyez sur « Rogner une image ».'],
       faq: [
         ['Quelles proportions pour une photo de profil ?', '1:1 (carré). Pour les bannières et vidéos, 16:9 ; pour les stories, 9:16 ; et pour les photos imprimées, 4:3 ou 3:4.'],
         ['Perd-on en qualité ?', 'Non : seule la partie hors du cadre est retirée ; la partie conservée garde sa résolution.'],

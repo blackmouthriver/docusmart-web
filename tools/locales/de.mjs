@@ -94,7 +94,7 @@ export default {
       howTo: 'Ein PDF in 3 Schritten drehen',
       lead: 'Richte Seiten aus, die quer oder auf dem Kopf stehen, einzeln oder alle auf einmal.',
       short: 'Gedrehte Seiten ausrichten',
-      steps: ['Wähle das PDF.', 'Tippe auf jede Seite, um sie um 90° zu drehen, oder nutze „Alle drehen“.', 'Tippe auf „Gedrehtes PDF speichern“ und lade das korrigierte Dokument herunter.'],
+      steps: ['Wähle das PDF.', 'Tippe auf jede Seite, um sie um 90° zu drehen, oder nutze „Alle drehen“.', 'Tippe auf „PDF drehen“ und lade das korrigierte Dokument herunter.'],
       faq: [
         ['Kann ich nur eine Seite drehen?', 'Ja. Jedes Antippen dreht diese Seite um 90°; die anderen bleiben, wie sie waren.'],
         ['Ist die Drehung dauerhaft?', 'Ja, sie wird im neuen PDF gespeichert und sieht in jedem Reader gleich aus.'],
@@ -244,7 +244,7 @@ export default {
       howTo: 'Ein PDF in 3 Schritten zuschneiden',
       lead: 'Entferne überflüssige Ränder oder behalte nur den Teil der Seite, der dich interessiert, auf allen Seiten oder nur auf einer.',
       short: 'Ränder entfernen oder Bereich behalten',
-      steps: ['Wähle das PDF.', 'Ziehe die Kanten des Rahmens in der Vorschau oder tippe auf „Weiße Ränder entfernen“.', 'Wähle, ob alle Seiten oder nur die aktuelle zugeschnitten werden, und tippe auf „PDF zuschneiden“.'],
+      steps: ['Wähle das PDF.', 'Ziehe die Kanten des Rahmens in der Vorschau oder tippe auf „Leere Ränder entfernen“.', 'Wähle, ob alle Seiten oder nur die aktuelle zugeschnitten werden, und tippe auf „PDF zuschneiden“.'],
       faq: [
         ['Geht beim Zuschneiden Qualität verloren?', 'Nein. Das Zuschneiden ändert nur den sichtbaren Bereich jeder Seite: Text und Bilder bleiben gleich und der Text bleibt markierbar.'],
         ['Wird das Abgeschnittene aus der Datei gelöscht?', 'Nein: Es ist verborgen, aber noch im PDF. Um sensible Informationen zu entfernen, reicht Zuschneiden nicht; nutze ein Schwärzungswerkzeug.'],

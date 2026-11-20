@@ -84,7 +84,7 @@ export const pages = [
     steps: [
       'Elige el PDF.',
       'Toca cada página para girarla 90°, o usa "Rotar todas".',
-      'Pulsa "Guardar PDF rotado" y descarga el documento corregido.',
+      'Pulsa "Rotar PDF" y descarga el documento corregido.',
     ],
     faq: [
       ['¿Puedo rotar solo una página?', 'Sí. Cada toque gira esa página 90°; las demás quedan como estaban.'],
@@ -106,7 +106,7 @@ export const pages = [
     steps: [
       'Pulsa "Tomar foto" (en el celular se abre la cámara) o elige fotos que ya tengas. Pon la hoja sobre una superficie oscura y con buena luz.',
       'Revisa las esquinas que encontró DocuSmart y elige un filtro: Documento blanquea el papel y quita sombras. Agrega más páginas si quieres.',
-      'Pulsa "Guardar PDF" (marca "Hacer el PDF buscable" para poder buscar el texto) o descarga las páginas como JPG.',
+      'Pulsa "Crear PDF" (marca "Hacer el PDF buscable" para poder buscar el texto) o descarga las páginas como JPG.',
     ],
     faq: [
       ['¿Necesito instalar una app?', 'No. Funciona en el navegador del celular o del computador. Si escaneas seguido, la app Android de DocuSmart también lo hace sin conexión.'],
@@ -129,7 +129,7 @@ export const pages = [
     steps: [
       'Elige el formulario PDF: DocuSmart encuentra sus campos y los marca sobre la página.',
       'Escribe tus respuestas; al tocar un recuadro de la página se abre su campo, y al revés.',
-      'Si lo vas a enviar, marca "Aplanar" para que las respuestas queden fijas, y pulsa "Guardar y descargar".',
+      'Si lo vas a enviar, marca "Aplanar" para que las respuestas queden fijas, y pulsa "Llenar formulario".',
     ],
     faq: [
       ['¿Qué formularios funcionan?', 'Los PDF con campos rellenables (AcroForm), que son la gran mayoría: cuadros de texto, casillas, opciones, listas desplegables y listas. Si un PDF no tiene campos, puedes escribir encima con "Editar PDF".'],
@@ -152,7 +152,7 @@ export const pages = [
     steps: [
       'Elige el PDF.',
       'Usa la barra de herramientas: Texto, Imagen, Rectángulo, Círculo, Resaltar o Tapar. Toca o arrastra sobre la página para agregarlos.',
-      'Ajusta tamaño, color y posición, y pulsa "Guardar y descargar".',
+      'Ajusta tamaño, color y posición, y pulsa "Aplicar cambios".',
     ],
     faq: [
       ['¿Puedo cambiar el texto que ya tiene el PDF?', 'Puedes taparlo con la herramienta "Tapar" (un recuadro blanco) y escribir el texto nuevo encima con "Texto". El resultado se ve como si lo hubieras corregido.'],
@@ -221,7 +221,7 @@ export const pages = [
     steps: [
       'Elige el PDF.',
       'Busca una palabra o marca todos los correos o números largos; también puedes arrastrar sobre la página para tapar cualquier zona.',
-      'Revisa las páginas y pulsa "Censurar y descargar".',
+      'Revisa las páginas y pulsa "Censurar PDF".',
     ],
     faq: [
       ['¿Por qué no basta con poner un recuadro negro?', 'Porque el texto sigue debajo: cualquiera puede copiarlo o quitar el recuadro. DocuSmart vuelve a dibujar cada página censurada como imagen, con las zonas en negro, y así el texto original desaparece del archivo.'],
@@ -244,7 +244,7 @@ export const pages = [
     steps: [
       'Elige el PDF que quieres firmar.',
       'Crea tu firma: dibújala, escribe tu nombre o sube una foto de tu firma en papel.',
-      'Arrástrala a su lugar, ajusta el tamaño (puedes repetirla en todas las páginas) y pulsa "Firmar y descargar".',
+      'Arrástrala a su lugar, ajusta el tamaño (puedes repetirla en todas las páginas) y pulsa "Firmar PDF".',
     ],
     faq: [
       ['¿Tiene validez legal?', 'Es una firma electrónica simple: la imagen de tu firma sobre el documento, como firmar a mano. Sirve para la mayoría de los trámites cotidianos; cuando se exige una firma digital con certificado, necesitas el servicio de una entidad certificadora.'],
@@ -267,7 +267,7 @@ export const pages = [
     steps: [
       'Elige el PDF.',
       'Arrastra los bordes del recuadro sobre la vista previa, o pulsa "Quitar márgenes en blanco".',
-      'Elige si se recortan todas las páginas o solo la actual y pulsa "Recortar y descargar".',
+      'Elige si se recortan todas las páginas o solo la actual y pulsa "Recortar PDF".',
     ],
     faq: [
       ['¿Se pierde calidad al recortar?', 'No. El recorte solo cambia la zona visible de cada página: el texto y las imágenes quedan iguales y el texto se puede seguir seleccionando.'],
@@ -443,7 +443,7 @@ export const pages = [
     steps: [
       'Elige la imagen.',
       'Escoge una proporción (o "Libre") y ajusta el recuadro arrastrando sus bordes, esquinas o el recuadro entero.',
-      'Pulsa "Recortar y descargar".',
+      'Pulsa "Recortar imagen".',
     ],
     faq: [
       ['¿Qué proporción uso para una foto de perfil?', '1:1 (cuadrada). Para portadas y videos, 16:9; para historias, 9:16; y para fotos impresas, 4:3 o 3:4.'],
@@ -465,7 +465,7 @@ export const pages = [
     steps: [
       'Elige una o varias imágenes.',
       'Gira a la izquierda o a la derecha, o voltea en horizontal (espejo) o vertical, mirando la vista previa.',
-      'Pulsa "Aplicar y guardar" y descarga el resultado.',
+      'Pulsa "Aplicar giro" y descarga el resultado.',
     ],
     faq: [
       ['¿Por qué mi foto se ve girada en algunos programas?', 'Muchas cámaras guardan la orientación como un dato aparte (EXIF) que no todos los programas leen. DocuSmart aplica ese dato y guarda la foto ya derecha, sin depender de él.'],
@@ -553,7 +553,7 @@ export const pages = [
     steps: [
       'Elige o arrastra tus imágenes (JPG, PNG, WebP, BMP o GIF).',
       'Ordénalas con las flechas: cada imagen será una página.',
-      'Pulsa "Convertir y descargar" para obtener el PDF.',
+      'Pulsa "Convertir" para obtener el PDF.',
     ],
     faq: [
       ['¿Qué formatos de imagen acepta?', 'JPG, PNG, WebP, BMP y GIF. Puedes mezclarlos en el mismo PDF.'],
@@ -596,7 +596,7 @@ export const pages = [
     howTo: 'Cómo convertir un PDF a Word en 3 pasos',
     steps: [
       'Elige el PDF.',
-      'Pulsa "Convertir y descargar".',
+      'Pulsa "Convertir".',
       'Abre el .docx en Word, Google Docs o LibreOffice y revisa el resultado.',
     ],
     faq: [
@@ -619,7 +619,7 @@ export const pages = [
     howTo: 'Cómo convertir un PDF a Excel en 3 pasos',
     steps: [
       'Elige el PDF.',
-      'Escoge si quieres una hoja por página o todo en una sola hoja, y pulsa "Convertir y descargar".',
+      'Escoge si quieres una hoja por página o todo en una sola hoja, y pulsa "Convertir".',
       'Abre el .xlsx en Excel, Google Sheets o LibreOffice: los números ya se pueden sumar.',
     ],
     faq: [
@@ -640,7 +640,7 @@ export const pages = [
     lead: 'Pasa tus documentos de Word a PDF para enviarlos o imprimirlos tal como deben verse, sin instalar nada.',
     short: 'Documento .docx a PDF',
     howTo: 'Cómo convertir Word a PDF en 3 pasos',
-    steps: ['Elige el documento de Word (.docx).', 'Pulsa "Convertir y descargar".', 'Listo: el PDF se descarga con títulos, listas, tablas e imágenes.'],
+    steps: ['Elige el documento de Word (.docx).', 'Pulsa "Convertir".', 'Listo: el PDF se descarga con títulos, listas, tablas e imágenes.'],
     faq: [
       ['¿Queda igual que en Word?', 'Conserva el contenido y la estructura: títulos, negrita, cursiva, subrayado, listas, tablas, imágenes y saltos de página. La fuente y algunos detalles de diseño pueden variar, porque se usan fuentes estándar de PDF.'],
       ['¿Sirve con archivos .doc antiguos?', 'No: solo .docx (Word 2007 en adelante). Abre el .doc en Word y guárdalo como .docx.'],
@@ -658,7 +658,7 @@ export const pages = [
     lead: 'Convierte tus hojas de cálculo en un PDF ordenado y fácil de leer o imprimir, hoja por hoja.',
     short: 'Hojas .xlsx a PDF',
     howTo: 'Cómo convertir Excel a PDF en 3 pasos',
-    steps: ['Elige el libro de Excel (.xlsx).', 'Pulsa "Convertir y descargar".', 'Cada hoja queda como una tabla en el PDF, con su encabezado en cada página.'],
+    steps: ['Elige el libro de Excel (.xlsx).', 'Pulsa "Convertir".', 'Cada hoja queda como una tabla en el PDF, con su encabezado en cada página.'],
     faq: [
       ['¿Qué pasa si la hoja es muy ancha?', 'Con más de 6 columnas el PDF usa página horizontal, y con más de 10 una letra más pequeña, para que todo quepa.'],
       ['¿Se conservan los colores y las fórmulas?', 'Se conservan los valores (los resultados de las fórmulas), con los números alineados a la derecha. Los colores, bordes y gráficos de Excel no se incluyen.'],
@@ -677,7 +677,7 @@ export const pages = [
     short: 'Extrae el texto de un PDF',
     steps: [
       'Elige el PDF.',
-      'Pulsa "Convertir y descargar": se genera un archivo .txt.',
+      'Pulsa "Convertir": se genera un archivo .txt.',
       'También puedes ver el texto en pantalla y copiarlo con un clic.',
     ],
     faq: [
