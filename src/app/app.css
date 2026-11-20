@@ -94,10 +94,11 @@ p { margin: 0; }
 .side-top { display: flex; align-items: center; gap: 6px; padding-bottom: 22px; }
 .side-top .side-brand { flex: 1; min-width: 0; padding-bottom: 0; }
 .side-brand-text { display: flex; align-items: center; gap: 10px; white-space: nowrap; transition: opacity 180ms ease; }
-/* Pestaña de plegar: sale del borde derecho, a media altura, como un recuadro pegado a la barra. */
-.side-toggle { position: absolute; top: 50%; right: -14px; z-index: 2; display: grid; place-items: center; width: 28px; height: 52px; padding: 0; border: 0; border-radius: 0 12px 12px 0; background: var(--night); color: var(--on-night-soft); box-shadow: 3px 0 12px -4px rgba(0, 0, 0, .45); cursor: pointer; transform: translateY(-50%); transition: background-color 150ms ease, color 150ms ease, width 150ms var(--ease-out), right 150ms var(--ease-out); }
+/* Pestaña de plegar: queda entera fuera del borde derecho (right = -width), a media altura,
+   como un recuadro pegado a la barra; así nunca tapa la barra de desplazamiento del menú. */
+.side-toggle { position: absolute; top: 50%; right: -24px; z-index: 2; display: grid; place-items: center; width: 24px; height: 52px; padding: 0; border: 0; border-radius: 0 12px 12px 0; background: var(--night); color: var(--on-night-soft); box-shadow: 3px 0 12px -4px rgba(0, 0, 0, .45); cursor: pointer; transform: translateY(-50%); transition: background-color 150ms ease, color 150ms ease, width 150ms var(--ease-out), right 150ms var(--ease-out); }
 .side-toggle svg { width: 16px; height: 16px; transition: transform 260ms var(--ease-out); }
-.side-toggle:hover, .side-toggle:focus-visible { background: var(--night-2, #111729); color: #fff; width: 32px; right: -18px; }
+.side-toggle:hover, .side-toggle:focus-visible { background: var(--night-2, #111729); color: #fff; width: 28px; right: -28px; }
 .side-toggle:focus-visible { outline: 2px solid var(--scan); outline-offset: 2px; }
 /* Navegación y pie con desplazamiento propio; la barra de desplazamiento es fina y oscura. */
 .side-scroll { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; margin: 0 -6px; padding: 0 6px; scrollbar-width: thin; scrollbar-color: var(--night-line) transparent; }
