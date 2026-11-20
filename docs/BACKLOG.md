@@ -258,11 +258,11 @@ Frente a iLovePDF, Smallpdf, PDF24, Adobe Acrobat online, Sejda, PDFgear y TinyW
 
 | ID | Ítem | Quién | Estado |
 |---|---|---|---|
-| W-105 | **Hash e integridad de documentos** (idea del usuario): calcular SHA-256 (y SHA-1/MD5 por compatibilidad) de uno o varios archivos con `crypto.subtle`; **verificar** contra un hash pegado (coincide / el archivo cambió); **comparar dos archivos** (¿idénticos?); copiar o descargar los hashes en .txt y un **certificado de integridad en PDF** (nombre, tamaño, fecha, hash). Página en 12 idiomas, guía y entrada del asistente | 🤖 | Pendiente (prioridad 1) |
+| W-105 | **Hash e integridad de documentos** (idea del usuario): calcular SHA-256 (y SHA-1/MD5 por compatibilidad) de uno o varios archivos con `crypto.subtle`; **verificar** contra un hash pegado (coincide / el archivo cambió); **comparar dos archivos** (¿idénticos?); copiar o descargar los hashes en .txt y un **certificado de integridad en PDF** (nombre, tamaño, fecha, hash). Página en 12 idiomas, guía y entrada del asistente | 🤖 | ✅ Hecho (PR #133, 2026-11-20): `/calcular-hash` y `#/hash` en la app, 12 idiomas |
 | W-106 | **Quitar metadatos** de PDF (autor, programa, fechas), fotos (EXIF y GPS) y Office: mostrar qué datos tiene el archivo antes y después | 🤖 | Pendiente (prioridad 2) |
 | W-107 | **HEIC a JPG** (fotos de iPhone), por lotes y con calidad ajustable | 🤖 | Pendiente (prioridad 3) |
 | W-108 | **Imagen a texto (OCR)** reutilizando el motor del OCR de PDF; copiar o descargar .txt | 🤖 | Pendiente (prioridad 4) |
-| W-109 | **Lector de QR** desde una imagen o la cámara (pareja del generador ya existente); abrir enlaces solo con confirmación | 🤖 | Pendiente (prioridad 5) |
+| W-109 | **Lector de QR** desde una imagen o la cámara: ya existe en la app web (`#/qr/leer`) y comparte página con el generador; falta su **página propia** (`/leer-codigo-qr`) para buscadores | 🤖 | Pendiente (prioridad 5) |
 | W-110 | **Flujos encadenados:** al terminar una herramienta, "¿Y ahora?" con 3 sugerencias que reciben el resultado sin volver a elegir el archivo (unir → comprimir → firmar) | 🤖 | Pendiente |
 | W-111 | **Procesamiento por lotes** visible: aplicar comprimir, convertir o renombrar a varios archivos y descargar un ZIP | 🤖 | Pendiente |
 | W-112 | **Comunicar la privacidad en cada herramienta:** sello "Tu archivo no sale de tu dispositivo" y aviso de que funciona sin conexión | 🤖 + 👤 (textos) | Pendiente |
@@ -272,6 +272,28 @@ Frente a iLovePDF, Smallpdf, PDF24, Adobe Acrobat online, Sejda, PDFgear y TinyW
 | W-116 | **Audio y video con ffmpeg.wasm:** comprimir video, video a GIF y extraer audio (MP3). Cargar el motor (~30 MB) solo al usarlo y cuidar la memoria en celulares | 🤖 | Pendiente (después de W-105 a W-109) |
 | W-117 | **Firma con certificado digital** (.p12/.pfx) con validez, para empresas | 🤖 | Pendiente (complejo) |
 | W-118 | **SEO de nicho en español:** páginas para búsquedas concretas (reducir PDF para SECOP, unir PDF para la DIAN, foto de cédula a PDF) | 🤖 + 👤 (validar trámites) | Pendiente |
+
+## Imágenes: lo que falta (revisión del 2026-11-20, pedido del usuario)
+
+Hoy Imagen tiene comprimir, redimensionar, recortar y rotar; las conversiones (a JPG, PNG, WebP, BMP y PDF) existen pero están solo en Convertir, por eso no se encuentran desde Imágenes. Lee JPG, PNG, WebP, GIF, BMP y AVIF. Todo sigue siendo local.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-119 | **Conversiones de imagen también en Imágenes:** mostrar JPG↔PNG, a WebP y a BMP en la categoría Imagen (app, `/herramientas` y portada) sin duplicar páginas | 🤖 | Pendiente (prioridad 1) |
+| W-120 | **Voltear y espejo** dentro de Rotar imagen (horizontal y vertical) | 🤖 | Pendiente (prioridad 1) |
+| W-121 | **Quitar fondo** (idea del usuario) con un modelo de segmentación en el navegador (ONNX/WebGPU, ~40-80 MB que se descargan solo al usarla y quedan en caché). Salida PNG transparente o con color de fondo (blanco para documentos). Revisar licencia del modelo, memoria en celulares y CSP (`wasm-unsafe-eval`, origen del modelo). Absorbe la parte de "quitar fondo" de W-115 | 🤖 | Pendiente (prioridad 2) |
+| W-122 | **Foto tamaño documento** (cédula, pasaporte, visa): recorte a medida + fondo blanco (usa W-121); reemplaza esa parte de W-115 | 🤖 | Pendiente |
+| W-123 | **Marca de agua en imágenes** (texto o logo, posición, opacidad), por lotes | 🤖 | Pendiente |
+| W-124 | **Más formatos:** salida AVIF, ICO (favicon con varios tamaños) y GIF; entrada SVG→PNG y TIFF. HEIC→JPG sigue en W-107 | 🤖 | Pendiente |
+| W-125 | **Ajustes básicos:** brillo, contraste, saturación, blanco y negro y enderezar | 🤖 | Pendiente |
+
+## Agenda y notas con Outlook (pedido del usuario, 2026-11-20)
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-126 | **Agenda local** en Modo Estudio (junto a Notas): eventos y recordatorios guardados en el navegador; exportar e importar `.ics` (lo abren Outlook, Google Calendar y el calendario del iPhone). Notas exportables en `.txt`/`.md` | 🤖 | Pendiente (fase 1) |
+| W-127 | **Conectar con Outlook (Microsoft Graph):** registrar la app en Microsoft Entra ID (👤 crea el registro y comparte el ID de aplicación, que es público; nunca el secreto). Ventana emergente de autorización como con Google; permisos mínimos `Calendars.ReadWrite` y `Tasks.ReadWrite` (To Do) o `Notes.ReadWrite` (OneNote). Los eventos van del navegador a la cuenta del usuario, sin servidores. Cuentas personales funcionan directo; en cuentas de empresa el administrador puede tener que aprobarla. Actualizar privacidad y CSP | 🤖 + 👤 | Pendiente (fase 2, después de W-126) |
+| W-128 | **Google Calendar** con el mismo flujo que Drive (scope de calendario mínimo; requiere revisar la pantalla de consentimiento en Google Cloud) | 🤖 + 👤 | Pendiente (opcional) |
 
 ## Guías con imágenes de cada herramienta (pedido del usuario, 2026-11-20)
 
