@@ -438,6 +438,23 @@ export default {
         ['Est-ce gratuit ? Y a-t-il un filigrane ?', "C'est gratuit, sans inscription, sans limite de photos et sans filigrane. Le résultat conserve la résolution de votre photo."],
       ],
     },
+    'foto-tamano-documento': {
+      slug: 'photo-identite',
+      title: "Photo d'identité en ligne gratuite, avec fond blanc | DocuSmart",
+      description: "Réalisez votre photo de passeport, visa ou carte d'identité : 35 × 45 mm, 2 × 2 po, 30 × 40 mm ou autre, fond blanc et planche 10 × 15 cm. Sans envoi.",
+      h1: "Photo d'identité",
+      howTo: "Comment faire une photo d'identité en 3 étapes",
+      lead: "Recadrez votre photo à la taille exacte d'un passeport, d'un visa ou d'une carte d'identité, donnez-lui un fond blanc et téléchargez-la prête à envoyer, ou imprimez plusieurs copies sur une seule planche.",
+      short: "Passeport, visa ou carte d'identité",
+      steps: ['Choisissez une photo de face, bien éclairée (une photo de téléphone convient).', "Choisissez la taille (35 × 45 mm, 2 × 2 po, 30 × 40 mm…), cadrez le visage et choisissez le fond : blanc, une couleur ou l'original.", 'Appuyez sur « Créer la photo » et téléchargez la photo seule ou une planche 10 × 15 cm avec plusieurs copies à imprimer.'],
+      faq: [
+        ['Quelle taille me faut-il ?', "Cela dépend du document et du pays : 35 × 45 mm est la plus courante pour les passeports et les visas (Union européenne, espace Schengen et une grande partie de l'Amérique latine) ; les visas et passeports américains exigent 2 × 2 pouces (51 × 51 mm), et beaucoup de cartes d'identité utilisent 30 × 40 mm. S'il vous en faut une autre, saisissez-la dans « Autre taille ». Vérifiez toujours les exigences de l'organisme émetteur."],
+        ['Comment obtenir un fond blanc ?', "Choisissez « Blanc » et l'IA sépare la personne du fond dans votre navigateur. Le modèle d'IA (environ 90 Mo) n'est téléchargé qu'à la première utilisation, puis il reste enregistré. Si votre photo a déjà un fond blanc, choisissez « Original » et rien n'est téléchargé."],
+        ['Sera-t-elle imprimée à la bonne taille ?', "Oui. La photo est enregistrée en JPG à 300 ppp, avec la résolution inscrite dans le fichier, donc elle s'imprime à la taille exacte. Avec « Planche 10 × 15 cm », vous obtenez plusieurs copies avec un trait de coupe discret, prêtes pour n'importe quel laboratoire ou imprimante photo."],
+        ['Mes photos sont-elles envoyées sur Internet ?', "Non. Tout, y compris l'IA du fond, se passe dans votre navigateur : votre photo ne quitte jamais votre appareil."],
+        ['Est-ce gratuit ? Y a-t-il un filigrane ?', "C'est gratuit, sans inscription et sans filigrane."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',

@@ -285,6 +285,19 @@
     "ko": "remove-background",
     "zh": "remove-background"
   },
+  "foto-tamano-documento": {
+    "en": "passport-photo",
+    "pt": "foto-para-documento",
+    "fr": "photo-identite",
+    "it": "foto-tessera",
+    "de": "passbild",
+    "ca": "foto-carnet",
+    "eu": "nortasun-argazkia",
+    "ru": "passport-photo",
+    "ja": "passport-photo",
+    "ko": "passport-photo",
+    "zh": "passport-photo"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

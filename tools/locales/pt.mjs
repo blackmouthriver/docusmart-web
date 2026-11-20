@@ -438,6 +438,23 @@ export default {
         ["É grátis? Coloca marca d'água?", "É grátis, sem cadastro, sem limite de fotos e sem marca d'água. O resultado mantém a resolução da sua foto."],
       ],
     },
+    'foto-tamano-documento': {
+      slug: 'foto-para-documento',
+      title: 'Foto para documento online grátis, com fundo branco | DocuSmart',
+      description: 'Faça a foto do passaporte, visto ou RG: 3,5 × 4,5 cm, 2 × 2 pol., 3 × 4 cm ou outra medida, com fundo branco e folha 10 × 15 cm. Sem enviar nada.',
+      h1: 'Foto para documento',
+      howTo: 'Como fazer a foto para documento em 3 passos',
+      lead: 'Recorte sua foto na medida exata de um passaporte, visto ou RG, coloque fundo branco e baixe pronta para enviar, ou imprima várias cópias em uma só folha.',
+      short: 'Passaporte, visto ou RG',
+      steps: ['Escolha uma foto de frente e com boa luz (uma foto de celular serve).', 'Escolha a medida (3,5 × 4,5 cm, 2 × 2 pol., 3 × 4 cm…), enquadre o rosto e escolha o fundo: branco, uma cor ou o original.', 'Toque em "Criar foto" e baixe a foto única ou uma folha 10 × 15 cm com várias cópias para imprimir.'],
+      faq: [
+        ['Que medida eu preciso?', 'Depende do documento e do país: 3,5 × 4,5 cm é a mais comum em passaportes e vistos (União Europeia, Schengen e boa parte da América Latina); vistos e passaportes dos EUA exigem 2 × 2 polegadas (51 × 51 mm), e muitos documentos de identidade usam 3 × 4 cm. Se precisar de outra, digite em "Outra medida". Confira sempre os requisitos do órgão emissor.'],
+        ['Como consigo o fundo branco?', 'Escolha "Branco" e a IA separa a pessoa do fundo dentro do seu navegador. Só na primeira vez o modelo de IA (cerca de 90 MB) é baixado e fica salvo. Se sua foto já tem fundo branco, escolha "Original" e nada é baixado.'],
+        ['Vai imprimir no tamanho certo?', 'Sim. A foto é salva como JPG de 300 dpi com a resolução gravada no arquivo, então imprime exatamente na medida. Com "Folha 10 × 15 cm" você recebe várias cópias com uma linha de corte suave, prontas para qualquer laboratório ou impressora fotográfica.'],
+        ['Minhas fotos são enviadas para a internet?', 'Não. Tudo, inclusive a IA do fundo, acontece dentro do seu navegador: sua foto nunca sai do seu dispositivo.'],
+        ["É grátis? Coloca marca d'água?", "É grátis, sem cadastro e sem marca d'água."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',
