@@ -224,7 +224,7 @@ export function SaveOptions({ file: original, toolName }: { file: File; toolName
         setCloud({ kind, status: 'done', text: tr('save.driveDone', { name: r.name }), link: r.link })
       } else {
         const r = await m.saveToDropbox(file, abort.current.signal)
-        setCloud({ kind, status: 'done', text: tr('save.dropboxDone', { path: r.path }), link: 'https://www.dropbox.com/home' })
+        setCloud({ kind, status: 'done', text: tr('save.dropboxDone', { name: r.path.split('/').pop() || file.name }), link: 'https://www.dropbox.com/home' })
       }
       track('result_saved', { tool_name: toolName, method: kind })
     } catch (e) {
