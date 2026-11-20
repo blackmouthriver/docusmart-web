@@ -249,8 +249,29 @@ Lo agregado entre el 18 y el 20 de noviembre todavía no aparece en la portada n
 
 | ID | Ítem | Quién | Estado |
 |---|---|---|---|
-| W-103 | **Actualizar la portada** (`site/index.html` y sus 11 traducciones en `tools/locales/*.mjs`): mencionar las novedades sin recargarla — **guías paso a paso** en 12 idiomas (enlace a `/guias`), **guardar en Google Drive y Dropbox** (carpeta DocuSmart; los archivos van de tu navegador a tu cuenta, sin pasar por servidores), **renombrar el resultado** antes de descargar o compartir, y **los enlaces abren la app** en Android si está instalada. Revisar que los textos de privacidad sigan siendo exactos con la publicidad (solo con consentimiento). Pasar axe, PageSpeed y las pruebas de la portada | 🤖 + 👤 (revisar textos) | Pendiente |
-| W-104 | **Actualizar la base de conocimiento del asistente** (`tools/assistant/<idioma>.mjs`, 12 idiomas): entradas nuevas o ajustadas sobre guías (dónde están, idiomas), guardar en Google Drive (carpeta DocuSmart, permiso mínimo, cómo quitar el acceso) y en Dropbox (Aplicaciones › DocuSmart), renombrar el archivo antes de guardar, abrir enlaces en la app (App Links), aviso "Privacidad y cookies" y publicidad (solo con consentimiento, cómo cambiar la decisión). Sinónimos en `text.ts` (renombrar/cambiar nombre, nube, carpeta). Pruebas del asistente con preguntas reales en varios idiomas | 🤖 | Pendiente |
+| W-103 | **Actualizar la portada** (`site/index.html` y sus 11 traducciones en `tools/locales/*.mjs`): mencionar las novedades sin recargarla — **guías paso a paso** en 12 idiomas (enlace a `/guias`), **guardar en Google Drive y Dropbox** (carpeta DocuSmart; los archivos van de tu navegador a tu cuenta, sin pasar por servidores), **renombrar el resultado** antes de descargar o compartir, y **los enlaces abren la app** en Android si está instalada. Revisar que los textos de privacidad sigan siendo exactos con la publicidad (solo con consentimiento). Pasar axe, PageSpeed y las pruebas de la portada | 🤖 + 👤 (revisar textos) | ✅ Hecho (PR #131, 2026-11-20) |
+| W-104 | **Actualizar la base de conocimiento del asistente** (`tools/assistant/<idioma>.mjs`, 12 idiomas): entradas nuevas o ajustadas sobre guías (dónde están, idiomas), guardar en Google Drive (carpeta DocuSmart, permiso mínimo, cómo quitar el acceso) y en Dropbox (Aplicaciones › DocuSmart), renombrar el archivo antes de guardar, abrir enlaces en la app (App Links), aviso "Privacidad y cookies" y publicidad (solo con consentimiento, cómo cambiar la decisión). Sinónimos en `text.ts` (renombrar/cambiar nombre, nube, carpeta). Pruebas del asistente con preguntas reales en varios idiomas | 🤖 | ✅ Hecho (PR #131, 2026-11-20) |
+
+## Herramientas nuevas y mejoras frente a la competencia (análisis del 2026-11-20)
+
+Frente a iLovePDF, Smallpdf, PDF24, Adobe Acrobat online, Sejda, PDFgear y TinyWow, DocuSmart gana en privacidad (todo local), sin límites diarios, 12 idiomas y web + Android + escritorio. Pierde en marca/SEO, en la fidelidad de PDF→Word/Excel, con archivos muy grandes y en flujos encadenados y por lotes. Todas las herramientas nuevas se procesan en el dispositivo, como las actuales.
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-105 | **Hash e integridad de documentos** (idea del usuario): calcular SHA-256 (y SHA-1/MD5 por compatibilidad) de uno o varios archivos con `crypto.subtle`; **verificar** contra un hash pegado (coincide / el archivo cambió); **comparar dos archivos** (¿idénticos?); copiar o descargar los hashes en .txt y un **certificado de integridad en PDF** (nombre, tamaño, fecha, hash). Página en 12 idiomas, guía y entrada del asistente | 🤖 | Pendiente (prioridad 1) |
+| W-106 | **Quitar metadatos** de PDF (autor, programa, fechas), fotos (EXIF y GPS) y Office: mostrar qué datos tiene el archivo antes y después | 🤖 | Pendiente (prioridad 2) |
+| W-107 | **HEIC a JPG** (fotos de iPhone), por lotes y con calidad ajustable | 🤖 | Pendiente (prioridad 3) |
+| W-108 | **Imagen a texto (OCR)** reutilizando el motor del OCR de PDF; copiar o descargar .txt | 🤖 | Pendiente (prioridad 4) |
+| W-109 | **Lector de QR** desde una imagen o la cámara (pareja del generador ya existente); abrir enlaces solo con confirmación | 🤖 | Pendiente (prioridad 5) |
+| W-110 | **Flujos encadenados:** al terminar una herramienta, "¿Y ahora?" con 3 sugerencias que reciben el resultado sin volver a elegir el archivo (unir → comprimir → firmar) | 🤖 | Pendiente |
+| W-111 | **Procesamiento por lotes** visible: aplicar comprimir, convertir o renombrar a varios archivos y descargar un ZIP | 🤖 | Pendiente |
+| W-112 | **Comunicar la privacidad en cada herramienta:** sello "Tu archivo no sale de tu dispositivo" y aviso de que funciona sin conexión | 🤖 + 👤 (textos) | Pendiente |
+| W-113 | **Herramientas de texto:** contador de palabras y caracteres, comparar dos textos (diff) y generador de contraseñas | 🤖 | Pendiente |
+| W-114 | **Más Office:** PowerPoint a PDF, PDF a PowerPoint y CSV ↔ Excel | 🤖 | Pendiente |
+| W-115 | **Imagen avanzada:** quitar fondo (modelo local) y foto tamaño documento (cédula, pasaporte, visa) | 🤖 | Pendiente |
+| W-116 | **Audio y video con ffmpeg.wasm:** comprimir video, video a GIF y extraer audio (MP3). Cargar el motor (~30 MB) solo al usarlo y cuidar la memoria en celulares | 🤖 | Pendiente (después de W-105 a W-109) |
+| W-117 | **Firma con certificado digital** (.p12/.pfx) con validez, para empresas | 🤖 | Pendiente (complejo) |
+| W-118 | **SEO de nicho en español:** páginas para búsquedas concretas (reducir PDF para SECOP, unir PDF para la DIAN, foto de cédula a PDF) | 🤖 + 👤 (validar trámites) | Pendiente |
 
 ## Guías con imágenes de cada herramienta (pedido del usuario, 2026-11-20)
 
