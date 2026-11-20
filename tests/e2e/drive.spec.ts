@@ -4,7 +4,8 @@
 import { expect, makePdf, test, upload } from './helpers'
 
 test('el resultado ofrece Google Drive y pide solo el permiso drive.file', async ({ page, context }) => {
-  await context.route(/accounts\.google\.com/, (route) => route.fulfill({ contentType: 'text/html', body: '<title>Google</title>' }))
+  const isGoogle = (u: URL) => u.protocol === 'https:' && u.hostname === 'accounts.google.com'
+  await context.route(isGoogle, (route) => route.fulfill({ contentType: 'text/html', body: '<title>Google</title>' }))
   await page.goto('/unir-pdf')
   await upload(page, [
     { name: 'a.pdf', mimeType: 'application/pdf', buffer: makePdf(2) },
@@ -17,7 +18,7 @@ test('el resultado ofrece Google Drive y pide solo el permiso drive.file', async
   const popupPromise = context.waitForEvent('page')
   await drive.click()
   const popup = await popupPromise
-  await popup.waitForURL(/accounts\.google\.com/)
+  await popup.waitForURL(isGoogle)
   const url = new URL(popup.url())
   expect(url.searchParams.get('client_id')).toBe('218283287852-big4u5cam8bg464ddtgs6s434ja4f7nj.apps.googleusercontent.com')
   expect(url.searchParams.get('redirect_uri')).toMatch(/\/oauth$/)
