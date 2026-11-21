@@ -54,19 +54,22 @@ function svg(name, cls) {
 }
 /** Ícono de cada herramienta, el mismo que usa en la app web (PdfTools, ImageTools, Converter…). */
 const PDF_ICONS = { unir: 'merge', reordenar: 'reorder', numerar: 'hash', marca: 'stamp', dividir: 'split', rotar: 'rotate', escanear: 'camera', formulario: 'form', editar: 'edit', imagenes: 'images', comparar: 'compare', censurar: 'redact', firmar: 'pen', recortar: 'crop', comprimir: 'compress', proteger: 'lock', desbloquear: 'unlock', reparar: 'wrench', ocr: 'text', pdfa: 'archive' }
-const IMG_ICONS = { comprimir: 'compress', redimensionar: 'resize', recortar: 'crop', rotar: 'rotate', fondo: 'eraser', documento: 'user', marca: 'stamp', ajustar: 'settings' }
+const IMG_ICONS = { comprimir: 'compress', redimensionar: 'resize', recortar: 'crop', rotar: 'rotate', fondo: 'eraser', documento: 'user', marca: 'stamp', ajustar: 'settings', texto: 'text' }
 const CONV_ICONS = { 'img-pdf': 'image', 'img-png': 'image', 'img-jpg': 'image', 'img-webp': 'image', 'heic-jpg': 'image', 'img-gif': 'image', 'img-avif': 'image', 'img-ico': 'image', 'svg-png': 'image', 'tiff-jpg': 'image', 'pdf-img': 'images', 'pdf-txt': 'text' }
 function toolIcon({ kind, id }) {
   if (kind === 'pdf') return PDF_ICONS[id] ?? 'pdf'
   if (kind === 'img') return IMG_ICONS[id] ?? 'image'
   if (kind === 'conv') return CONV_ICONS[id] ?? 'convert'
   if (kind === 'archive') return id === 'extraer' ? 'folder' : 'archive'
+  if (kind === 'meta') return 'eraser'
   if (kind === 'hash') return 'fingerprint'
-  return 'qr'
+  if (kind === 'media') return { audio: 'music', convertir: 'convert', recortar: 'scissors', comprimir: 'compress' }[id] ?? 'video'
+  if (kind === 'doc') return id === 'cv' ? 'user' : 'file'
+  return id === 'leer' ? 'camera' : 'qr'
 }
 /** Los tres pasos: elegir → la herramienta → descargar (escribir en el QR, cámara al escanear). */
 function stepIcons(tool) {
-  const first = tool.kind === 'qr' ? 'type' : tool.id === 'escanear' ? 'camera' : 'upload'
+  const first = tool.kind === 'qr' && tool.id !== 'leer' ? 'type' : tool.id === 'escanear' || tool.id === 'leer' ? 'camera' : 'upload'
   return [first, toolIcon(tool), 'download']
 }
 

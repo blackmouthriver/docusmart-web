@@ -50,7 +50,12 @@ const ImageTool = lazy(() =>
     },
   })),
 )
+const MediaTool = lazy(() => import('../features/media/ui/Media').then((m) => ({ default: ({ id }: { id: string }) => <m.MediaTool id={id as 'audio'} /> })))
+const MetadataTool = lazy(() => import('../features/metadata/ui/Metadata').then((m) => ({ default: m.MetadataTool })))
+const CvTool = lazy(() => import('../features/cv/ui/Cv').then((m) => ({ default: m.CvTool })))
+const BillingTool = lazy(() => import('../features/billing/ui/Billing').then((m) => ({ default: m.BillingTool })))
 const HashTool = lazy(() => import('../features/integrity/ui/HashTool').then((m) => ({ default: () => <m.HashTool /> })))
+const ReadQrTool = lazy(() => import('../features/qr/ui/Qr').then((m) => ({ default: m.ReadQr })))
 const QrTools = lazy(() =>
   import('../features/qr/ui/Qr').then((m) => ({
     default: () => (
@@ -104,9 +109,12 @@ function ToolHost({ children }: { children: ReactNode }) {
 function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
   if (kind === 'pdf' && id) return <PdfTool id={id} />
   if (kind === 'conv' && id) return <ConvertTool id={id} />
-  if (kind === 'qr') return <QrTools />
+  if (kind === 'qr') return id === 'leer' ? <ReadQrTool /> : <QrTools />
   if (kind === 'archive') return <ArchiveTool id={id} />
+  if (kind === 'meta') return <MetadataTool />
   if (kind === 'hash') return <HashTool />
+  if (kind === 'media' && id) return <MediaTool id={id} />
+  if (kind === 'doc') return id === 'cv' ? <CvTool /> : <BillingTool />
   if (kind === 'img' && id) return <ImageTool id={id} />
   return null
 }

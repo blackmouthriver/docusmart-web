@@ -18,7 +18,9 @@ describe('contexto de la pantalla', () => {
     expect(contextForRoute(ES, 'pdf', 'unir')).toBe('unir-pdf')
     expect(contextForRoute(ES, 'convertir', 'pdf-word')).toBe('pdf-a-word')
     expect(contextForRoute(ES, 'imagen', 'rotar')).toBe('rotar-imagen')
-    expect(contextForRoute(ES, 'qr', 'leer')).toBe('crear-codigo-qr')
+    // El lector tiene su propia página (W-109).
+    expect(contextForRoute(ES, 'qr', 'leer')).toBe('leer-codigo-qr')
+    expect(contextForRoute(ES, 'qr', 'crear')).toBe('crear-codigo-qr')
     expect(contextForRoute(ES, 'qr')).toBe('crear-codigo-qr')
     expect(contextForRoute(ES, 'hash', 'calcular')).toBe('calcular-hash')
     expect(contextForRoute(ES, 'hash', 'verificar')).toBe('calcular-hash')

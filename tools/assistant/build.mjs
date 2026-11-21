@@ -44,8 +44,11 @@ export function appRoute(tool) {
   if (tool.kind === 'conv') return `convertir/${tool.id}`
   if (tool.kind === 'img') return `imagen/${tool.id}`
   if (tool.kind === 'archive') return `archivos/${tool.id}`
+  if (tool.kind === 'meta') return 'metadatos/quitar'
   if (tool.kind === 'hash') return 'hash/calcular'
-  return 'qr/crear'
+  if (tool.kind === 'media') return `multimedia/${tool.id}`
+  if (tool.kind === 'doc') return `documentos/${tool.id}`
+  return `qr/${tool.id ?? 'crear'}`
 }
 
 function resolveAction(action, loc, labels, where) {

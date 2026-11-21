@@ -13,7 +13,7 @@ import { clampPlacement, defaultPlacement, opaqueBounds, removeLightBackground, 
 import { track } from '../../../shared/platform/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
 
-type Signature = { url: string; png: Uint8Array; aspect: number }
+export type Signature = { url: string; png: Uint8Array; aspect: number }
 type Mode = 'draw' | 'type' | 'image'
 
 const INK = { negro: '#1C1B1A', azul: '#1D3FA8' } as const
@@ -256,7 +256,7 @@ function resize(p: Placement, w: number): Placement {
 
 /* ───────────── Crear la firma ───────────── */
 
-function SignatureEditor({ onDone, onCancel }: { onDone: (s: Signature) => void; onCancel?: () => void }) {
+export function SignatureEditor({ onDone, onCancel }: { onDone: (s: Signature) => void; onCancel?: () => void }) {
   const [mode, setMode] = useState<Mode>('draw')
   const [ink, setInk] = useState<InkName>('negro')
   const [name, setName] = useState('')

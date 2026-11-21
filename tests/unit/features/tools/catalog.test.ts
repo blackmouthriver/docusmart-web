@@ -9,6 +9,14 @@ const tEs = (k: MessageKey) => es[k]
 const tEn = (k: MessageKey) => en[k]
 
 describe('catálogo de la app', () => {
+  it('cada categoría tiene su nombre traducido en la app (no la clave cat.<id>)', async () => {
+    const { LANGS } = await import('../../../../src/shared/i18n/languages')
+    for (const { code } of LANGS) {
+      const mod = await import(`../../../../src/shared/i18n/messages/${code}.ts`)
+      const msgs = (mod.default ?? mod[code]) as Record<string, string>
+      for (const c of CATEGORIES) expect(msgs[`cat.${c.id}`], `${code}: cat.${c.id}`).toBeTruthy()
+    }
+  })
   it('usa las mismas categorías, en el mismo orden e íconos, que el sitio', () => {
     expect(CATEGORIES.map((c) => [c.id, c.icon])).toEqual(SITE_CATEGORIES.map((c) => [c.id, c.icon]))
   })
@@ -22,7 +30,7 @@ describe('catálogo de la app', () => {
   })
   it('cada herramienta con página propia está en la misma categoría que en el sitio', () => {
     const route = (kind: string, id?: string) =>
-      kind === 'pdf' ? `pdf/${id}` : kind === 'conv' ? `convertir/${id}` : kind === 'img' ? `imagen/${id}` : kind === 'archive' ? `archivos/${id}` : kind === 'hash' ? 'hash/calcular' : 'qr/crear'
+      kind === 'pdf' ? `pdf/${id}` : kind === 'conv' ? `convertir/${id}` : kind === 'img' ? `imagen/${id}` : kind === 'archive' ? `archivos/${id}` : kind === 'hash' ? 'hash/calcular' : kind === 'meta' ? 'metadatos/quitar' : kind === 'doc' ? `documentos/${id}` : kind === 'media' ? `multimedia/${id}` : `qr/${id ?? 'crear'}`
     for (const p of pages) {
       const tool = CATALOG.find((x) => x.key === route(p.tool.kind, p.tool.id))
       expect(tool?.category, p.slug).toBe(p.category)
@@ -35,7 +43,9 @@ describe('catálogo de la app', () => {
     expect(Object.values(n).reduce((a, b) => a + b, 0)).toBe(CATALOG.length + extra)
     expect(n.organizar).toBe(5)
     expect(n.qr).toBe(2)
-    expect(n.imagen).toBe(18)
+    expect(n.documentos).toBe(2)
+    expect(n.multimedia).toBe(4)
+    expect(n.imagen).toBe(19)
   })
   it('marca las herramientas que procesan varios archivos y existe Renombrar archivos (W-111)', () => {
     const batch = CATALOG.filter((x) => x.batch).map((x) => x.key)
@@ -64,8 +74,10 @@ describe('groupTools', () => {
   })
   it('filtra por nombre, descripción o categoría y oculta las categorías vacías', () => {
     const word = groupTools(tEs, 'es', 'word')
-    expect(word.map((g) => g.id)).toEqual(['convertir'])
-    expect(word[0].tools.map((x) => x.sub).sort()).toEqual(['pdf-word', 'word-pdf'])
+    expect(word.map((g) => g.id)).toEqual(['documentos', 'convertir', 'escanear'])
+    expect(word[2].tools.map((x) => x.sub)).toEqual(['texto'])
+    expect(word[0].tools.map((x) => x.sub)).toEqual(['cv'])
+    expect(word[1].tools.map((x) => x.sub).sort()).toEqual(['pdf-word', 'word-pdf'])
     const seguridad = groupTools(tEs, 'es', 'seguridad')
     expect(seguridad.map((g) => g.id)).toEqual(['seguridad'])
     expect(groupTools(tEs, 'es', 'zzzz')).toEqual([])

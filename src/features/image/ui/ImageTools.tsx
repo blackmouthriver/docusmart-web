@@ -37,6 +37,7 @@ import { ID_MAX_MM, ID_MIN_MM, ID_PRESETS, formatMm, idPhotoName, idPixels, pars
 import type { Margins } from '../../pdf/core/pdfCrop'
 import { track } from '../../../shared/platform/analytics'
 import { CropStage } from '../../pdf/ui/CropTool'
+import { ImageToTextTool } from '../../ocr/ui/ImageToText'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 
@@ -49,6 +50,7 @@ const TOOLS: Array<{ id: string; name: MessageKey; desc: MessageKey; icon: IconN
   { id: 'documento', name: 'imgt.idPhoto', desc: 'imgt.idPhoto.desc', icon: 'user', cls: 'ico-blue' },
   { id: 'marca', name: 'imgt.watermark', desc: 'imgt.watermark.desc', icon: 'stamp', cls: 'ico-green' },
   { id: 'ajustar', name: 'imgt.adjust', desc: 'imgt.adjust.desc', icon: 'settings', cls: 'ico-amber' },
+  { id: 'texto', name: 'imgt.toText', desc: 'imgt.toText.desc', icon: 'text', cls: 'ico-cyan' },
 ]
 
 // Conversiones de formato (W-119): viven en Convertir, pero también se ofrecen aquí.
@@ -74,6 +76,7 @@ export const IMAGE_TOOLS: Record<string, ComponentType> = {
   documento: IdPhotoTool,
   marca: WatermarkImageTool,
   ajustar: AdjustImageTool,
+  texto: ImageToTextTool,
 }
 
 export function ImageToolsScreen({ sub }: { sub?: string }) {

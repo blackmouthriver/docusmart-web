@@ -8,16 +8,18 @@ import type { IconName } from '../../../shared/ui/Icon'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { matchesQuery, sortByName } from '../../../shared/i18n/search'
 
-export type CategoryId = 'organizar' | 'editar' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'escanear' | 'archivos' | 'qr'
+export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'multimedia' | 'escanear' | 'archivos' | 'qr'
 
 /** En el mismo orden e íconos que CATEGORIES de tools/pages.mjs (una prueba lo verifica). */
 export const CATEGORIES: ReadonlyArray<{ id: CategoryId; icon: IconName }> = [
   { id: 'organizar', icon: 'merge' },
   { id: 'editar', icon: 'pen' },
+  { id: 'documentos', icon: 'file' },
   { id: 'seguridad', icon: 'lock' },
   { id: 'optimizar', icon: 'compress' },
   { id: 'convertir', icon: 'convert' },
   { id: 'imagen', icon: 'image' },
+  { id: 'multimedia', icon: 'video' },
   { id: 'escanear', icon: 'camera' },
   { id: 'archivos', icon: 'archive' },
   { id: 'qr', icon: 'qr' },
@@ -49,6 +51,10 @@ const img = (id: string, icon: IconName, name: MessageKey): CatalogTool => ({
   key: `imagen/${id}`, category: 'imagen', icon, name, desc: `${name}.desc` as MessageKey, section: 'imagen', sub: id,
 })
 
+const media = (id: string, icon: IconName): CatalogTool => ({
+  key: `multimedia/${id}`, category: 'multimedia', icon, name: `tools.media.${id}` as MessageKey, desc: `tools.media.${id}.desc` as MessageKey, section: 'multimedia', sub: id,
+})
+
 const ENTRIES: readonly CatalogTool[] = [
   pdf('unir', 'organizar', 'merge'),
   pdf('dividir', 'organizar', 'split'),
@@ -64,6 +70,9 @@ const ENTRIES: readonly CatalogTool[] = [
   pdf('proteger', 'seguridad', 'lock'),
   pdf('desbloquear', 'seguridad', 'unlock'),
   pdf('reparar', 'seguridad', 'wrench'),
+  { key: 'documentos/cv', category: 'documentos', icon: 'user', name: 'tools.cv', desc: 'tools.cv.desc', section: 'documentos', sub: 'cv' },
+  { key: 'documentos/cobro', category: 'documentos', icon: 'file', name: 'tools.billing', desc: 'tools.billing.desc', section: 'documentos', sub: 'cobro' },
+  { key: 'metadatos/quitar', category: 'seguridad', icon: 'eraser', name: 'tools.meta', desc: 'tools.meta.desc', section: 'metadatos', sub: 'quitar' },
   { key: 'hash/calcular', category: 'seguridad', icon: 'fingerprint', name: 'tools.hash', desc: 'tools.hash.desc', section: 'hash', sub: 'calcular' },
   pdf('comprimir', 'optimizar', 'compress'),
   pdf('pdfa', 'optimizar', 'archive'),
@@ -71,6 +80,7 @@ const ENTRIES: readonly CatalogTool[] = [
   pdf('imagenes', 'optimizar', 'images'),
   pdf('escanear', 'escanear', 'camera'),
   pdf('ocr', 'escanear', 'text'),
+  { key: 'imagen/texto', category: 'escanear', icon: 'text', name: 'imgt.toText', desc: 'imgt.toText.desc', section: 'imagen', sub: 'texto', also: ['imagen'] },
   conv('img-pdf', 'image', 'conv.desc.imgPdf'),
   conv('img-jpg', 'image', 'conv.desc.imgJpg', ['imagen']),
   conv('img-png', 'image', 'conv.desc.imgPng', ['imagen']),
@@ -96,6 +106,10 @@ const ENTRIES: readonly CatalogTool[] = [
   img('documento', 'user', 'imgt.idPhoto'),
   img('marca', 'stamp', 'imgt.watermark'),
   img('ajustar', 'settings', 'imgt.adjust'),
+  media('audio', 'music'),
+  media('convertir', 'convert'),
+  media('recortar', 'scissors'),
+  media('comprimir', 'compress'),
   { key: 'archivos/crear', category: 'archivos', icon: 'archive', name: 'tools.arch.create', desc: 'tools.arch.create.desc', section: 'archivos', sub: 'crear' },
   { key: 'archivos/extraer', category: 'archivos', icon: 'folder', name: 'tools.arch.extract', desc: 'tools.arch.extract.desc', section: 'archivos', sub: 'extraer' },
   { key: 'archivos/renombrar', category: 'archivos', icon: 'edit', name: 'tools.arch.rename', desc: 'tools.arch.rename.desc', section: 'archivos', sub: 'renombrar' },
@@ -113,6 +127,7 @@ const BATCH_KEYS = new Set([
   'imagen/marca',
   'imagen/ajustar',
   'archivos/renombrar',
+  'metadatos/quitar',
   ...['img-jpg', 'img-png', 'img-webp', 'img-bmp', 'img-gif', 'img-avif', 'img-ico', 'heic-jpg', 'svg-png', 'tiff-jpg'].map((id) => `convertir/${id}`),
 ])
 
