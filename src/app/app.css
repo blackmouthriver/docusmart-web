@@ -212,6 +212,13 @@ p { margin: 0; }
 .privacy-seal svg { width: 16px; height: 16px; margin-top: 1px; }
 .privacy-seal-extra { grid-column: 2; font-weight: 500; opacity: .92; }
 
+/* ¿Y ahora? (W-110) */
+.next-steps { margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line); }
+.next-steps h3 { font-size: 16px; }
+.next-steps p { margin: 2px 0 10px; }
+.next-steps-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.next-step svg { width: 18px; height: 18px; flex: none; }
+
 .section-title { margin: 32px 0 14px; font-size: 22px; font-weight: 700; }
 .section-sub { color: var(--ink-soft); margin: -8px 0 16px; }
 
