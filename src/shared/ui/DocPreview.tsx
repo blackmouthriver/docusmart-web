@@ -11,6 +11,7 @@ import { PageNav, usePdfPreview } from '../../features/pdf/ui/PdfPreview'
 import { isDocx, isXlsx } from '../../features/convert/infra/officeRender'
 import { useApp } from '../../app/state'
 import { track } from '../platform/analytics'
+import { NextSteps } from '../../features/tools/ui/NextSteps'
 
 type PreviewProps = { source: Blob; page: number; label: string; onPages?: (n: number) => void; password?: string }
 type PdfProps = PreviewProps & { /** Peso a mostrar (el del archivo de Office, no el del PDF de muestra). */ displaySize?: number; note?: string }
@@ -304,6 +305,7 @@ export function SaveOptions({ file: original, toolName }: { file: File; toolName
       )}
       {shareable && !busy && <small className="faint">{tr('save.shareHint')}</small>}
       {error && <Notice kind="error">{error}</Notice>}
+      <NextSteps file={file} toolName={toolName} />
     </div>
   )
 }
