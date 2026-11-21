@@ -47,6 +47,14 @@ describe('catálogo de la app', () => {
     expect(n.multimedia).toBe(4)
     expect(n.imagen).toBe(19)
   })
+  it('marca las herramientas que procesan varios archivos y existe Renombrar archivos (W-111)', () => {
+    const batch = CATALOG.filter((x) => x.batch).map((x) => x.key)
+    expect(batch).toEqual(expect.arrayContaining(['pdf/comprimir', 'imagen/comprimir', 'imagen/rotar', 'archivos/renombrar', 'convertir/img-jpg', 'convertir/heic-jpg']))
+    // las que trabajan con un solo archivo no llevan la marca
+    for (const key of ['pdf/unir', 'pdf/firmar', 'pdf/proteger', 'qr/crear', 'hash/calcular']) expect(CATALOG.find((x) => x.key === key)?.batch, key).toBeUndefined()
+    const rename = CATALOG.find((x) => x.key === 'archivos/renombrar')!
+    expect([rename.section, rename.sub, rename.category]).toEqual(['archivos', 'renombrar', 'archivos'])
+  })
   it('las conversiones de imagen también están en Imagen, pero al buscar aparecen una vez (W-119)', () => {
     const t = (k: string) => (es as Record<string, string>)[k] ?? k
     const imagen = groupTools(t, 'es').find((g) => g.id === 'imagen')!

@@ -37,6 +37,8 @@ export type CatalogTool = {
   sub: string
   /** Otras categorías donde también se muestra (W-119: las conversiones de imagen también en Imagen). */
   also?: CategoryId[]
+  /** Procesa varios archivos a la vez y los entrega en un ZIP (W-111): se marca con "Varios archivos". */
+  batch?: boolean
 }
 
 const pdf = (id: string, category: CategoryId, icon: IconName): CatalogTool => ({
@@ -53,7 +55,7 @@ const media = (id: string, icon: IconName): CatalogTool => ({
   key: `multimedia/${id}`, category: 'multimedia', icon, name: `tools.media.${id}` as MessageKey, desc: `tools.media.${id}.desc` as MessageKey, section: 'multimedia', sub: id,
 })
 
-export const CATALOG: readonly CatalogTool[] = [
+const ENTRIES: readonly CatalogTool[] = [
   pdf('unir', 'organizar', 'merge'),
   pdf('dividir', 'organizar', 'split'),
   pdf('rotar', 'organizar', 'rotate'),
@@ -110,9 +112,26 @@ export const CATALOG: readonly CatalogTool[] = [
   media('comprimir', 'compress'),
   { key: 'archivos/crear', category: 'archivos', icon: 'archive', name: 'tools.arch.create', desc: 'tools.arch.create.desc', section: 'archivos', sub: 'crear' },
   { key: 'archivos/extraer', category: 'archivos', icon: 'folder', name: 'tools.arch.extract', desc: 'tools.arch.extract.desc', section: 'archivos', sub: 'extraer' },
+  { key: 'archivos/renombrar', category: 'archivos', icon: 'edit', name: 'tools.arch.rename', desc: 'tools.arch.rename.desc', section: 'archivos', sub: 'renombrar' },
   { key: 'qr/crear', category: 'qr', icon: 'qr', name: 'qr.create', desc: 'quick.makeQr.hint', section: 'qr', sub: 'crear' },
   { key: 'qr/leer', category: 'qr', icon: 'camera', name: 'qr.read', desc: 'quick.readQr.hint', section: 'qr', sub: 'leer' },
 ]
+
+/** Herramientas que aceptan varios archivos a la vez y los entregan en un ZIP (W-111). */
+const BATCH_KEYS = new Set([
+  'pdf/comprimir',
+  'imagen/comprimir',
+  'imagen/redimensionar',
+  'imagen/rotar',
+  'imagen/fondo',
+  'imagen/marca',
+  'imagen/ajustar',
+  'archivos/renombrar',
+  'metadatos/quitar',
+  ...['img-jpg', 'img-png', 'img-webp', 'img-bmp', 'img-gif', 'img-avif', 'img-ico', 'heic-jpg', 'svg-png', 'tiff-jpg'].map((id) => `convertir/${id}`),
+])
+
+export const CATALOG: readonly CatalogTool[] = ENTRIES.map((x) => (BATCH_KEYS.has(x.key) ? { ...x, batch: true } : x))
 
 export type CategoryGroup = { id: CategoryId; icon: IconName; tools: CatalogTool[] }
 
