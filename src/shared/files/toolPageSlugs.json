@@ -441,6 +441,45 @@
     "ko": "qr-code-reader",
     "zh": "qr-code-reader"
   },
+  "contador-de-palabras": {
+    "en": "word-counter",
+    "pt": "contador-de-palavras",
+    "fr": "compteur-de-mots",
+    "it": "conta-parole",
+    "de": "woerter-zaehlen",
+    "ca": "comptador-de-paraules",
+    "eu": "hitz-kontagailua",
+    "ru": "word-counter",
+    "ja": "word-counter",
+    "ko": "word-counter",
+    "zh": "word-counter"
+  },
+  "comparar-textos": {
+    "en": "compare-text",
+    "pt": "comparar-textos",
+    "fr": "comparer-textes",
+    "it": "confronta-testi",
+    "de": "texte-vergleichen",
+    "ca": "comparar-textos",
+    "eu": "testuak-alderatu",
+    "ru": "compare-text",
+    "ja": "compare-text",
+    "ko": "compare-text",
+    "zh": "compare-text"
+  },
+  "generador-de-contrasenas": {
+    "en": "password-generator",
+    "pt": "gerador-de-senhas",
+    "fr": "generateur-mot-de-passe",
+    "it": "generatore-password",
+    "de": "passwort-generator",
+    "ca": "generador-de-contrasenyes",
+    "eu": "pasahitz-sortzailea",
+    "ru": "password-generator",
+    "ja": "password-generator",
+    "ko": "password-generator",
+    "zh": "password-generator"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

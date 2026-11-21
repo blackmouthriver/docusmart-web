@@ -6,10 +6,11 @@ export type ToolSpec =
   | { kind: 'doc'; id: 'cobro' | 'cv' }
   | { kind: 'media'; id: 'audio' | 'convertir' | 'recortar' | 'comprimir' }
   | { kind: 'meta'; id?: undefined }
+  | { kind: 'text'; id: 'contar' | 'comparar' | 'contrasena' }
   | { kind: 'archive'; id: 'crear' | 'extraer' }
   | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' | 'texto' }
 
-export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'multimedia' | 'escanear' | 'archivos' | 'qr'
+export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'multimedia' | 'escanear' | 'archivos' | 'qr' | 'texto'
 
 export interface ToolPage {
   slug: string
