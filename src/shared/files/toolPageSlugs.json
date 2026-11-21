@@ -597,6 +597,58 @@
     "ko": "excel-to-pdf",
     "zh": "excel-to-pdf"
   },
+  "powerpoint-a-pdf": {
+    "en": "powerpoint-to-pdf",
+    "pt": "powerpoint-para-pdf",
+    "fr": "powerpoint-en-pdf",
+    "it": "powerpoint-in-pdf",
+    "de": "powerpoint-in-pdf",
+    "ca": "powerpoint-a-pdf",
+    "eu": "powerpoint-pdfra",
+    "ru": "powerpoint-to-pdf",
+    "ja": "powerpoint-to-pdf",
+    "ko": "powerpoint-to-pdf",
+    "zh": "powerpoint-to-pdf"
+  },
+  "pdf-a-powerpoint": {
+    "en": "pdf-to-powerpoint",
+    "pt": "pdf-para-powerpoint",
+    "fr": "pdf-en-powerpoint",
+    "it": "pdf-in-powerpoint",
+    "de": "pdf-in-powerpoint",
+    "ca": "pdf-a-powerpoint",
+    "eu": "pdf-powerpointera",
+    "ru": "pdf-to-powerpoint",
+    "ja": "pdf-to-powerpoint",
+    "ko": "pdf-to-powerpoint",
+    "zh": "pdf-to-powerpoint"
+  },
+  "csv-a-excel": {
+    "en": "csv-to-excel",
+    "pt": "csv-para-excel",
+    "fr": "csv-en-excel",
+    "it": "csv-in-excel",
+    "de": "csv-in-excel",
+    "ca": "csv-a-excel",
+    "eu": "csv-excelera",
+    "ru": "csv-to-excel",
+    "ja": "csv-to-excel",
+    "ko": "csv-to-excel",
+    "zh": "csv-to-excel"
+  },
+  "excel-a-csv": {
+    "en": "excel-to-csv",
+    "pt": "excel-para-csv",
+    "fr": "excel-en-csv",
+    "it": "excel-in-csv",
+    "de": "excel-in-csv",
+    "ca": "excel-a-csv",
+    "eu": "excel-csvra",
+    "ru": "excel-to-csv",
+    "ja": "excel-to-csv",
+    "ko": "excel-to-csv",
+    "zh": "excel-to-csv"
+  },
   "pdf-a-texto": {
     "en": "pdf-to-text",
     "pt": "pdf-para-texto",
