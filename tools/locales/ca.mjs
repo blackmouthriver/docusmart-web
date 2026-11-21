@@ -157,7 +157,7 @@ export default {
         'Ajusta la mida, el color i la posició, i prem "Aplicar canvis".',
       ],
       faq: [
-        ['Puc canviar el text que ja té el PDF?', 'El pots tapar amb l’eina "Tapar" (un requadre blanc) i escriure-hi el text nou a sobre amb "Text". El resultat es veu com si l’haguessis corregit.'],
+        ['Puc canviar el text que ja té el PDF?', 'Sí. Amb "Substitueix" toques un paràgraf o una línia i escrius el text nou: l\'original s\'esborra del document (ja no es pot seleccionar ni cercar) i el nou queda al mateix lloc, amb la mateixa mida i el mateix color, reorganitzat a la mateixa amplada.'],
         ['"Tapar" esborra el que hi ha a sota?', 'No: ho cobreix, però el text original continua dins del fitxer. Si has d’eliminar dades sensibles de debò, fes servir "Tatxar PDF".'],
         ['Quines lletres puc fer servir?', 'Tres famílies (sans, serif i monoespaiada), en normal o negreta, amb accents, ç i l·l, i també altres alfabets: ciríl·lic, grec, xinès, japonès i coreà. Els emojis no es desen.'],
         ['Els meus fitxers es pugen a internet?', 'No. Tot es fa dins del teu navegador, sense registre.'],

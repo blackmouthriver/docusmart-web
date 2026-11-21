@@ -157,7 +157,7 @@ export default {
         'Passe Größe, Farbe und Position an und tippe auf „Änderungen anwenden“.',
       ],
       faq: [
-        ['Kann ich vorhandenen Text im PDF ändern?', 'Du kannst ihn mit „Abdecken“ (ein weißes Rechteck) überdecken und mit „Text“ den neuen Text darüberschreiben. Das Ergebnis sieht korrigiert aus.'],
+        ['Kann ich vorhandenen Text im PDF ändern?', 'Ja. Mit „Ersetzen“ tippst du auf einen Absatz oder eine Zeile und schreibst den neuen Text: Das Original wird aus dem Dokument entfernt (es lässt sich nicht mehr markieren oder suchen) und der neue Text steht an derselben Stelle, in derselben Größe und Farbe, auf dieselbe Breite umbrochen.'],
         ['Löscht „Abdecken“, was darunter liegt?', 'Nein: Es verdeckt es nur, der Originaltext bleibt in der Datei. Um sensible Daten wirklich zu entfernen, nutze „PDF schwärzen“.'],
         ['Welche Schriften kann ich nutzen?', 'Drei Familien (Sans, Serif und Monospace), normal oder fett, mit Umlauten und Akzenten und auch anderen Schriften: Kyrillisch, Griechisch, Chinesisch, Japanisch und Koreanisch. Emojis werden nicht gespeichert.'],
         ['Werden meine Dateien ins Internet hochgeladen?', 'Nein. Alles passiert in deinem Browser, ohne Anmeldung.'],

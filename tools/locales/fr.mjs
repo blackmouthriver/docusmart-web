@@ -157,7 +157,7 @@ export default {
         'Ajustez taille, couleur et position, puis appuyez sur « Appliquer les modifications ».',
       ],
       faq: [
-        ['Puis-je changer le texte déjà présent ?', 'Vous pouvez le couvrir avec l’outil « Masquer » (un rectangle blanc) et écrire le nouveau texte par-dessus avec « Texte ». Le résultat semble corrigé.'],
+        ['Puis-je changer le texte déjà présent ?', 'Oui. Avec « Remplacer », touchez un paragraphe ou une ligne et écrivez le nouveau texte : l\'original est supprimé du document (il ne peut plus être sélectionné ni recherché) et le nouveau reste au même endroit, avec la même taille et la même couleur, réparti sur la même largeur.'],
         ['« Masquer » efface-t-il ce qu’il y a dessous ?', 'Non : il le couvre, mais le texte d’origine reste dans le fichier. Pour supprimer vraiment des données sensibles, utilisez « Caviarder un PDF ».'],
         ['Quelles polices puis-je utiliser ?', 'Trois familles (sans, serif et monospace), en normal ou en gras, avec les accents et aussi d\'autres alphabets : cyrillique, grec, chinois, japonais et coréen. Les emojis ne sont pas enregistrés.'],
         ['Mes fichiers sont-ils envoyés sur Internet ?', 'Non. Tout se fait dans votre navigateur, sans inscription.'],

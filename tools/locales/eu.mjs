@@ -157,7 +157,7 @@ export default {
         'Doitu tamaina, kolorea eta kokapena, eta sakatu «Aplikatu aldaketak».',
       ],
       faq: [
-        ['PDFak duen testua alda dezaket?', '«Estali» tresnarekin estal dezakezu (lauki zuri bat) eta testu berria gainean idatzi «Testua» tresnarekin. Emaitzak zuzendu izan bazenu bezalako itxura du.'],
+        ['PDFak duen testua alda dezaket?', 'Bai. "Ordeztu" erabiliz paragrafo edo lerro bat ukitu eta testu berria idazten duzu: jatorrizkoa dokumentutik ezabatzen da (ezin da gehiago hautatu edo bilatu) eta berria leku, tamaina eta kolore berean geratzen da, zabalera berean berrantolatuta.'],
         ['«Estali»k azpian dagoena ezabatzen du?', 'Ez: estali egiten du, baina jatorrizko testua fitxategian dago oraindik. Datu sentikorrak benetan ezabatu behar badituzu, erabili «Ezabatu PDFko datuak».'],
         ['Zein letra-tipo erabil ditzaket?', 'Hiru familia (sans, serif eta monoespaziatua), normalean edo lodian, azentuekin eta beste alfabeto batzuekin ere: zirilikoa, grekoa, txinera, japoniera eta koreera. Emojiak ez dira gordetzen.'],
         ['Nire fitxategiak internetera igotzen dira?', 'Ez. Dena zure nabigatzailean egiten da, erregistratu gabe.'],

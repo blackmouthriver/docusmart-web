@@ -166,7 +166,7 @@ export const pages = [
       'Ajusta tamaño, color y posición, y pulsa "Aplicar cambios".',
     ],
     faq: [
-      ['¿Puedo cambiar el texto que ya tiene el PDF?', 'Puedes taparlo con la herramienta "Tapar" (un recuadro blanco) y escribir el texto nuevo encima con "Texto". El resultado se ve como si lo hubieras corregido.'],
+      ['¿Puedo cambiar el texto que ya tiene el PDF?', 'Sí. Con "Reemplazar" tocas un párrafo o una línea y escribes el texto nuevo: el original se borra del documento (ya no se puede seleccionar ni buscar) y el nuevo queda en el mismo lugar, tamaño y color, reacomodado al mismo ancho.'],
       ['¿"Tapar" borra lo que hay debajo?', 'No: lo cubre, pero el texto original sigue dentro del archivo. Si necesitas eliminar datos sensibles de verdad, usa "Censurar PDF".'],
       ['¿Qué letras puedo usar?', 'Tres familias (sans, serif y monoespaciada), en normal o negrita, con tildes y ñ, y también otros alfabetos: cirílico, griego, chino, japonés y coreano. Los emojis no se guardan.'],
       ['¿Mis archivos se suben a internet?', 'No. Todo se hace dentro de tu navegador, sin registro.'],

@@ -157,7 +157,7 @@ export default {
         'Ajuste tamanho, cor e posição, e toque em "Aplicar alterações".',
       ],
       faq: [
-        ['Posso mudar o texto que o PDF já tem?', 'Você pode escondê-lo com a ferramenta "Cobrir" (um retângulo branco) e escrever o texto novo por cima com "Texto". O resultado parece corrigido.'],
+        ['Posso mudar o texto que o PDF já tem?', 'Sim. Com "Substituir" você toca em um parágrafo ou linha e escreve o texto novo: o original é removido do documento (não pode mais ser selecionado nem pesquisado) e o novo fica no mesmo lugar, tamanho e cor, reorganizado na mesma largura.'],
         ['"Cobrir" apaga o que está embaixo?', 'Não: só cobre, mas o texto original continua dentro do arquivo. Se precisa eliminar dados sensíveis de verdade, use "Ocultar dados do PDF".'],
         ['Que fontes posso usar?', 'Três famílias (sans, serif e monoespaçada), normal ou negrito, com acentos e também outros alfabetos: cirílico, grego, chinês, japonês e coreano. Emojis não são salvos.'],
         ['Meus arquivos são enviados à internet?', 'Não. Tudo é feito dentro do seu navegador, sem cadastro.'],
