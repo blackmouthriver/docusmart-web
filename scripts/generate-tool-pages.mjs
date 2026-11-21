@@ -62,6 +62,7 @@ function toolIcon({ kind, id }) {
   if (kind === 'conv') return CONV_ICONS[id] ?? 'convert'
   if (kind === 'archive') return id === 'extraer' ? 'folder' : 'archive'
   if (kind === 'hash') return 'fingerprint'
+  if (kind === 'media') return { audio: 'music', convertir: 'convert', recortar: 'scissors', comprimir: 'compress' }[id] ?? 'video'
   if (kind === 'doc') return id === 'cv' ? 'user' : 'file'
   return 'qr'
 }

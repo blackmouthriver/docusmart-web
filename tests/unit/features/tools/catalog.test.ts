@@ -22,7 +22,7 @@ describe('catálogo de la app', () => {
   })
   it('cada herramienta con página propia está en la misma categoría que en el sitio', () => {
     const route = (kind: string, id?: string) =>
-      kind === 'pdf' ? `pdf/${id}` : kind === 'conv' ? `convertir/${id}` : kind === 'img' ? `imagen/${id}` : kind === 'archive' ? `archivos/${id}` : kind === 'hash' ? 'hash/calcular' : kind === 'doc' ? `documentos/${id}` : 'qr/crear'
+      kind === 'pdf' ? `pdf/${id}` : kind === 'conv' ? `convertir/${id}` : kind === 'img' ? `imagen/${id}` : kind === 'archive' ? `archivos/${id}` : kind === 'hash' ? 'hash/calcular' : kind === 'doc' ? `documentos/${id}` : kind === 'media' ? `multimedia/${id}` : 'qr/crear'
     for (const p of pages) {
       const tool = CATALOG.find((x) => x.key === route(p.tool.kind, p.tool.id))
       expect(tool?.category, p.slug).toBe(p.category)
@@ -36,6 +36,7 @@ describe('catálogo de la app', () => {
     expect(n.organizar).toBe(5)
     expect(n.qr).toBe(2)
     expect(n.documentos).toBe(2)
+    expect(n.multimedia).toBe(4)
     expect(n.imagen).toBe(18)
   })
   it('las conversiones de imagen también están en Imagen, pero al buscar aparecen una vez (W-119)', () => {

@@ -350,6 +350,58 @@
     "ko": "resume-builder",
     "zh": "resume-builder"
   },
+  "video-a-mp3": {
+    "en": "video-to-mp3",
+    "pt": "video-para-mp3",
+    "fr": "video-en-mp3",
+    "it": "video-in-mp3",
+    "de": "video-zu-mp3",
+    "ca": "video-a-mp3",
+    "eu": "bideoa-mp3ra",
+    "ru": "video-to-mp3",
+    "ja": "video-to-mp3",
+    "ko": "video-to-mp3",
+    "zh": "video-to-mp3"
+  },
+  "convertir-video": {
+    "en": "convert-video",
+    "pt": "converter-video",
+    "fr": "convertir-video",
+    "it": "convertire-video",
+    "de": "video-konvertieren",
+    "ca": "convertir-video",
+    "eu": "bideoa-bihurtu",
+    "ru": "convert-video",
+    "ja": "convert-video",
+    "ko": "convert-video",
+    "zh": "convert-video"
+  },
+  "recortar-audio-video": {
+    "en": "trim-video",
+    "pt": "cortar-video",
+    "fr": "couper-video",
+    "it": "tagliare-video",
+    "de": "video-schneiden",
+    "ca": "retallar-video",
+    "eu": "bideoa-moztu",
+    "ru": "trim-video",
+    "ja": "trim-video",
+    "ko": "trim-video",
+    "zh": "trim-video"
+  },
+  "comprimir-video": {
+    "en": "compress-video",
+    "pt": "comprimir-video",
+    "fr": "compresser-video",
+    "it": "comprimere-video",
+    "de": "video-komprimieren",
+    "ca": "comprimir-video",
+    "eu": "bideoa-konprimitu",
+    "ru": "compress-video",
+    "ja": "compress-video",
+    "ko": "compress-video",
+    "zh": "compress-video"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

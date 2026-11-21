@@ -8,7 +8,7 @@ import type { IconName } from '../../../shared/ui/Icon'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { matchesQuery, sortByName } from '../../../shared/i18n/search'
 
-export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'escanear' | 'archivos' | 'qr'
+export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'multimedia' | 'escanear' | 'archivos' | 'qr'
 
 /** En el mismo orden e íconos que CATEGORIES de tools/pages.mjs (una prueba lo verifica). */
 export const CATEGORIES: ReadonlyArray<{ id: CategoryId; icon: IconName }> = [
@@ -19,6 +19,7 @@ export const CATEGORIES: ReadonlyArray<{ id: CategoryId; icon: IconName }> = [
   { id: 'optimizar', icon: 'compress' },
   { id: 'convertir', icon: 'convert' },
   { id: 'imagen', icon: 'image' },
+  { id: 'multimedia', icon: 'video' },
   { id: 'escanear', icon: 'camera' },
   { id: 'archivos', icon: 'archive' },
   { id: 'qr', icon: 'qr' },
@@ -46,6 +47,10 @@ const conv = (id: string, icon: IconName, desc: MessageKey, also?: CategoryId[])
 })
 const img = (id: string, icon: IconName, name: MessageKey): CatalogTool => ({
   key: `imagen/${id}`, category: 'imagen', icon, name, desc: `${name}.desc` as MessageKey, section: 'imagen', sub: id,
+})
+
+const media = (id: string, icon: IconName): CatalogTool => ({
+  key: `multimedia/${id}`, category: 'multimedia', icon, name: `tools.media.${id}` as MessageKey, desc: `tools.media.${id}.desc` as MessageKey, section: 'multimedia', sub: id,
 })
 
 export const CATALOG: readonly CatalogTool[] = [
@@ -97,6 +102,10 @@ export const CATALOG: readonly CatalogTool[] = [
   img('documento', 'user', 'imgt.idPhoto'),
   img('marca', 'stamp', 'imgt.watermark'),
   img('ajustar', 'settings', 'imgt.adjust'),
+  media('audio', 'music'),
+  media('convertir', 'convert'),
+  media('recortar', 'scissors'),
+  media('comprimir', 'compress'),
   { key: 'archivos/crear', category: 'archivos', icon: 'archive', name: 'tools.arch.create', desc: 'tools.arch.create.desc', section: 'archivos', sub: 'crear' },
   { key: 'archivos/extraer', category: 'archivos', icon: 'folder', name: 'tools.arch.extract', desc: 'tools.arch.extract.desc', section: 'archivos', sub: 'extraer' },
   { key: 'qr/crear', category: 'qr', icon: 'qr', name: 'qr.create', desc: 'quick.makeQr.hint', section: 'qr', sub: 'crear' },

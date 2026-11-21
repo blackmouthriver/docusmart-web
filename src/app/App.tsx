@@ -23,6 +23,7 @@ const Converter = lazy(() => import('../features/convert/ui/Converter').then((m)
 const PdfTools = lazy(() => import('../features/pdf/ui/PdfTools').then((m) => ({ default: m.PdfTools })))
 const QrScreen = lazy(() => import('../features/qr/ui/Qr').then((m) => ({ default: m.QrScreen })))
 const Study = lazy(() => import('../features/study/ui/Study').then((m) => ({ default: m.Study })))
+const MediaScreen = lazy(() => import('../features/media/ui/Media').then((m) => ({ default: m.MediaScreen })))
 const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((m) => ({ default: m.ArchiveScreen })))
 const ToolsScreen = lazy(() => import('../features/tools/ui/ToolsScreen').then((m) => ({ default: m.ToolsScreen })))
 const CvScreen = lazy(() => import('../features/cv/ui/Cv').then((m) => ({ default: m.CvScreen })))
@@ -54,6 +55,7 @@ const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: 
   { section: 'qr', label: 'nav.qr', short: 'nav.short.qr', icon: 'qr', subs: QR_SUBS },
   { section: 'estudio', label: 'nav.study', short: 'nav.short.study', icon: 'study', subs: STUDY_SUBS },
   { section: 'imagen', label: 'nav.image', short: 'nav.image', icon: 'image', mobile: false },
+  { section: 'multimedia', label: 'nav.media', short: 'nav.media', icon: 'video', mobile: false },
   { section: 'archivos', label: 'nav.archive', short: 'nav.archive', icon: 'archive', mobile: false },
 ]
 
@@ -67,6 +69,7 @@ const SCREEN_NAMES: Record<string, string> = {
   archivos: 'Archive',
   hash: 'Hash',
   documentos: 'Documents',
+  multimedia: 'Media',
   imagen: 'ImageTools',
   herramientas: 'Tools',
 }
@@ -228,6 +231,9 @@ export function App() {
       break
     case 'hash':
       screen = <HashScreen sub={route.sub} />
+      break
+    case 'multimedia':
+      screen = <MediaScreen sub={route.sub} />
       break
     case 'documentos':
       screen = route.sub === 'cv' ? <CvScreen /> : <BillingScreen />
