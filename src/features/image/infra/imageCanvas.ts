@@ -2,23 +2,24 @@
 // cobertura como los demás archivos que necesitan el canvas del navegador).
 import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { capSize, rotatedSize, type OutputMime, type Transform } from '../core/imageTools'
-import { isHeic } from '../../convert/core/heic'
+import { specialImage } from '../../convert/core/formats'
 import { tr } from '../../../shared/i18n/translate'
 
 export type LoadedImage = { bmp: ImageBitmap; width: number; height: number }
 
 /**
  * Abre la imagen ya girada según su EXIF (las fotos de celular vienen "acostadas" si no). Las
- * fotos HEIC del iPhone, que solo abre Safari, se abren con el decodificador de HEIC a JPG (W-107).
+ * fotos HEIC del iPhone (W-107), los SVG y los TIFF (W-124), que el navegador no abre solo, se
+ * abren con sus decodificadores.
  */
 export async function loadImage(file: Blob): Promise<LoadedImage> {
   try {
     const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' })
     return { bmp, width: bmp.width, height: bmp.height }
   } catch {
-    if (isHeic(new Uint8Array(await file.slice(0, 64).arrayBuffer()))) {
-      const { heicToCanvas } = await import('../../convert/infra/heicDecoder')
-      const canvas = await heicToCanvas(file)
+    if (specialImage(new Uint8Array(await file.slice(0, 2048).arrayBuffer()))) {
+      const { specialToCanvas } = await import('../../convert/infra/formatCodecs')
+      const canvas = (await specialToCanvas(file))!
       try {
         const bmp = await createImageBitmap(canvas)
         return { bmp, width: bmp.width, height: bmp.height }
@@ -32,7 +33,7 @@ export async function loadImage(file: Blob): Promise<LoadedImage> {
   }
 }
 
-/** Copia en JPG (de hasta 2048 px) para ver en pantalla una foto que el navegador no muestra (HEIC). */
+/** Copia en JPG (de hasta 2048 px) para ver en pantalla una imagen que el navegador no muestra (HEIC, TIFF, SVG). */
 export async function previewBlob(file: Blob): Promise<Blob> {
   const img = await loadImage(file)
   try {

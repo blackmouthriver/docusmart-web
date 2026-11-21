@@ -64,6 +64,11 @@ export default {
     { id: 'heic-a-jpg', q: ['heic jpg 변환', 'heic 변환', 'heic 파일 열기', '아이폰 사진 윈도우', '아이폰 사진 jpg로 변환', 'heif 파일', '아이폰 사진이 안 열려요', 'heic to jpg'], a: '"HEIC를 JPG로"를 사용하세요. iPhone HEIC 사진을 JPG(또는 PNG)로 변환하며, 여러 장을 한 번에 원하는 화질로 바꿀 수 있습니다. 변환은 브라우저에서 이루어지며 사진은 업로드되지 않습니다.', actions: [['tool', 'heic-a-jpg']] },
     { id: 'marca-de-agua-imagen', q: ["사진 워터마크", "사진에 로고 넣기", "이미지 워터마크", "사진 보호하기", "사진에 이름 넣기", "여러 사진에 워터마크", "watermark"], a: "이미지의 \"워터마크\"를 사용하세요. 사진에 텍스트나 로고를 넣고 위치(또는 바둑판식), 크기, 불투명도를 골라 여러 이미지에 한 번에 적용할 수 있습니다. PDF에는 PDF의 \"워터마크\"가 있습니다.", actions: [['tool', 'marca-de-agua-imagen'], ['tool', 'marca-de-agua-pdf']] },
     { id: 'ajustar-imagen', q: ["사진 밝기 조정", "어두운 사진 밝게", "대비 높이기", "사진 흑백으로", "비뚤어진 사진 바로잡기", "이미지 채도", "사진 보정"], a: "\"이미지 조정\"을 사용하세요. 밝기, 대비, 채도를 바꾸고 흑백으로 만들거나 수평을 맞출 수 있으며, 바로 미리보고 여러 사진에 한 번에 적용할 수 있습니다. 모두 브라우저에서 처리됩니다.", actions: [['tool', 'ajustar-imagen']] },
+    { id: 'imagen-a-gif', q: ["gif로 변환", "png를 gif로", "jpg를 gif로", "이미지를 gif로", "사진을 gif로"], a: "\"이미지를 GIF로\"를 사용하세요. JPG, PNG, WebP를 투명도를 유지한 채 GIF로 여러 장 한 번에 변환합니다. 브라우저에서 처리됩니다.", actions: [['tool', 'imagen-a-gif']] },
+    { id: 'imagen-a-avif', q: ["avif로 변환", "jpg를 avif로", "png를 avif로", "이미지를 avif로", "avif 형식"], a: "\"이미지를 AVIF로\"를 사용하세요. 웹에서 가장 가벼운 형식이며 투명도도 지원합니다. 처음에는 인코더(3.5 MB)를 내려받고, 브라우저에서 처리됩니다.", actions: [['tool', 'imagen-a-avif']] },
+    { id: 'png-a-ico', q: ["파비콘 만들기", "png를 ico로", "ico로 변환", "웹사이트 아이콘", "favicon.ico"], a: "\"이미지를 ICO로\"를 사용하세요. PNG, JPG, SVG로 16~256 px 크기를 하나의 .ico에 담은 파비콘을 만듭니다.", actions: [['tool', 'png-a-ico']] },
+    { id: 'svg-a-png', q: ["svg를 png로", "svg 변환", "svg 파일 열기", "svg를 이미지로", "svg 로고를 png로"], a: "\"SVG를 PNG로\"를 사용하세요. SVG 로고와 일러스트를 배경이 투명한 고해상도 PNG로 브라우저에서 변환합니다.", actions: [['tool', 'svg-a-png']] },
+    { id: 'tiff-a-jpg', q: ["tiff를 jpg로", "tif를 jpg로", "tiff 변환", "tif 파일 열기", "tiff 스캔"], a: "\"TIFF를 JPG로\"를 사용하세요. TIFF 스캔과 사진을 가볍고 어디서나 쓸 수 있는 JPG로 여러 개 한 번에 브라우저에서 변환합니다.", actions: [['tool', 'tiff-a-jpg']] },
     { id: 'contacto', q: ['연락처', '고객지원', '사람과 이야기하기', '문제가 있어요', '오류 신고'], a: 'supportdocusmart@docusmart.online로 메일을 보내거나 Facebook, Instagram으로 연락 주시면 답변드릴게요.', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

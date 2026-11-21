@@ -7,6 +7,7 @@
 //  - public/qpdf/: qpdf compilado a wasm (comprimir, proteger, desbloquear y
 //    reparar PDF).
 //  - public/heic/: libheif compilado a wasm (fotos HEIC de iPhone).
+//  - public/avif/: codificador AVIF en wasm (Convertir a AVIF).
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
@@ -87,7 +88,15 @@ const heifOut = fresh(join(pub, 'heic'))
 cpSync(join(heif, 'libheif.wasm'), join(heifOut, 'libheif.wasm'))
 cpSync(join(heif, 'LICENSE'), join(heifOut, 'LICENSE.txt'))
 
+// ── Codificador AVIF (Convertir a AVIF, W-124) ────────────────────
+// @jsquash/avif (Apache-2.0, libavif + aom): solo la versión de un hilo; se distribuye sin modificar.
+const avif = join(modules, '@jsquash', 'avif')
+const avifOut = fresh(join(pub, 'avif'))
+cpSync(join(avif, 'codec', 'enc', 'avif_enc.wasm'), join(avifOut, 'avif_enc.wasm'))
+cpSync(join(avif, 'LICENSE'), join(avifOut, 'LICENSE.txt'))
+
 for (const f of [
+  join(avifOut, 'avif_enc.wasm'),
   join(heifOut, 'libheif.wasm'),
   join(ortOut, 'ort-wasm-simd-threaded.wasm'),
   join(pdfjsOut, 'standard_fonts'),
@@ -98,4 +107,4 @@ for (const f of [
 ]) {
   if (!existsSync(f)) throw new Error(`Falta un recurso: ${f}`)
 }
-console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/, public/7z/, public/ocr/, public/ort/ y public/heic/')
+console.log('Recursos wasm copiados a public/pdfjs/, public/qpdf/, public/7z/, public/ocr/, public/ort/, public/heic/ y public/avif/')

@@ -29,7 +29,7 @@ import {
   type Transform,
 } from '../core/imageTools'
 import { MODEL as BG_MODEL, backgroundOutputName, parseBackground } from '../core/background'
-import { looksLikeHeic } from '../../convert/core/heic'
+import { looksSpecial } from '../../convert/core/formats'
 import { WATERMARK_POSITIONS, clampPercent, type WatermarkPosition } from '../core/watermark'
 import type { Mark } from '../infra/watermarkCanvas'
 import { MAX_ANGLE, NEUTRAL, clampAdjust, isNeutral, signed, type Adjustments } from '../core/adjust'
@@ -57,7 +57,12 @@ const CONVERSIONS: Array<{ id: string; name: MessageKey; desc: MessageKey }> = [
   { id: 'img-png', name: 'conv.name.img-png', desc: 'conv.desc.imgPng' },
   { id: 'img-webp', name: 'conv.name.img-webp', desc: 'conv.desc.imgWebp' },
   { id: 'img-bmp', name: 'conv.name.img-bmp', desc: 'conv.desc.imgBmp' },
+  { id: 'img-gif', name: 'conv.name.img-gif', desc: 'conv.desc.imgGif' },
+  { id: 'img-avif', name: 'conv.name.img-avif', desc: 'conv.desc.imgAvif' },
+  { id: 'img-ico', name: 'conv.name.img-ico', desc: 'conv.desc.imgIco' },
   { id: 'heic-jpg', name: 'conv.name.heic-jpg', desc: 'conv.desc.heicJpg' },
+  { id: 'svg-png', name: 'conv.name.svg-png', desc: 'conv.desc.svgPng' },
+  { id: 'tiff-jpg', name: 'conv.name.tiff-jpg', desc: 'conv.desc.tiffJpg' },
 ]
 
 export const IMAGE_TOOLS: Record<string, ComponentType> = {
@@ -119,8 +124,8 @@ export function ImageToolsScreen({ sub }: { sub?: string }) {
 /* ───────────── Base para procesar varias imágenes ───────────── */
 
 type Result = { name: string; blob: Blob; before: number; width: number; height: number; error?: undefined } | { name: string; error: string }
-// HEIC también por extensión: algunos sistemas no le ponen tipo a las fotos del iPhone.
-const ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif,image/heic,image/heif,.heic,.heif'
+// HEIC, SVG y TIFF también por extensión: algunos sistemas no les ponen tipo.
+const ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif,image/heic,image/heif,.heic,.heif,image/svg+xml,.svg,image/tiff,.tif,.tiff'
 
 function useBatch(toolName: string) {
   const { toast } = useApp()
@@ -253,9 +258,9 @@ function useObjectUrl(blob: Blob | null) {
     if (!blob) return
     let alive = true
     let u: string | null = null
-    // Una foto HEIC solo la muestra Safari: para verla (y recortarla) se usa una copia en JPG.
+    // HEIC, TIFF y SVG no se muestran tal cual: para verlos (y recortarlos) se usa una copia en JPG.
     const name = (blob as Blob & { name?: string }).name ?? ''
-    const source = looksLikeHeic(name, blob.type) ? import('../infra/imageCanvas').then((m) => m.previewBlob(blob)) : Promise.resolve(blob)
+    const source = looksSpecial(name, blob.type) ? import('../infra/imageCanvas').then((m) => m.previewBlob(blob)) : Promise.resolve(blob)
     void source
       .then((b) => {
         if (!alive) return
@@ -292,8 +297,8 @@ function CompressImageTool() {
         const size = capSize(img.width, img.height, plan.maxSide)
         const blob = await renderImage(img, { ...size, mime: plan.mime, quality: plan.quality })
         // Si no se gana nada, se devuelve la original.
-        // Una foto HEIC siempre se convierte: devolverla tal cual no le sirve a quien no puede abrirla.
-        if (blob.size >= file.size && !looksLikeHeic(file.name, file.type)) return { name: outputName(file.name, tr('file.imgOptimized'), outputMime(file.type)), blob: file, width: img.width, height: img.height }
+        // Un HEIC, SVG o TIFF siempre se convierte: devolverlo tal cual no le sirve a quien no puede abrirlo.
+        if (blob.size >= file.size && !looksSpecial(file.name, file.type)) return { name: outputName(file.name, tr('file.imgOptimized'), outputMime(file.type)), blob: file, width: img.width, height: img.height }
         return { name: outputName(file.name, tr('file.imgCompressed'), plan.mime), blob, ...size }
       } finally {
         img.bmp.close()

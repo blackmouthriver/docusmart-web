@@ -35,7 +35,7 @@ describe('catálogo de la app', () => {
     expect(Object.values(n).reduce((a, b) => a + b, 0)).toBe(CATALOG.length + extra)
     expect(n.organizar).toBe(5)
     expect(n.qr).toBe(2)
-    expect(n.imagen).toBe(13)
+    expect(n.imagen).toBe(18)
   })
   it('las conversiones de imagen también están en Imagen, pero al buscar aparecen una vez (W-119)', () => {
     const t = (k: string) => (es as Record<string, string>)[k] ?? k
