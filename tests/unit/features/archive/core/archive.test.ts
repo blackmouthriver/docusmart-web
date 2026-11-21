@@ -1,8 +1,13 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import { resolve } from 'node:path'
 import { gzipSync } from 'node:zlib'
+import { zipSync } from 'fflate'
 import {
   ArchiveError,
+  ArchiveTooBigError,
+  MAX_EXTRACT_BYTES,
+  MAX_EXTRACT_FILES,
+  checkExtractLimits,
   WrongArchivePasswordError,
   createArchive,
   extractArchive,
@@ -110,4 +115,28 @@ describe('archive (7-Zip en wasm)', () => {
     expect(safeEntryPath('C:\\Users\\a<b>.txt')).toBe('C_/Users/a_b_.txt')
     expect(safeEntryPath('./')).toBe('archivo')
   })
+})
+
+describe('topes contra bombas de descompresión', () => {
+  it('checkExtractLimits acepta lo normal y rechaza tamaños o cantidades excesivas', () => {
+    expect(() => checkExtractLimits([{ size: 10, isDir: false }, { size: 0, isDir: true }])).not.toThrow()
+    expect(() => checkExtractLimits([{ size: MAX_EXTRACT_BYTES + 1, isDir: false }])).toThrow(ArchiveTooBigError)
+    expect(() => checkExtractLimits([{ size: 6, isDir: false }, { size: 6, isDir: false }], 10)).toThrow(ArchiveTooBigError)
+    expect(() => checkExtractLimits([{ size: 1, isDir: false }, { size: 1, isDir: false }], 100, 1)).toThrow(ArchiveTooBigError)
+    // Las carpetas y los tamaños inválidos no cuentan.
+    expect(() => checkExtractLimits([{ size: Number.NaN, isDir: false }, { size: 1e12, isDir: true }], 10)).not.toThrow()
+    try {
+      checkExtractLimits([{ size: 6, isDir: false }, { size: 6, isDir: false }], 10)
+    } catch (e) {
+      expect(e).toBeInstanceOf(ArchiveError)
+      expect((e as ArchiveTooBigError).bytes).toBe(12)
+      expect((e as ArchiveTooBigError).files).toBe(2)
+    }
+  })
+
+  it('un ZIP con demasiados archivos se rechaza antes de descomprimirlo', async () => {
+    const many = Object.fromEntries(Array.from({ length: MAX_EXTRACT_FILES + 1 }, (_, i) => [`f/${i}.txt`, new Uint8Array(0)]))
+    const zip = zipSync(many, { level: 0 })
+    await expect(extractArchive('bomba.zip', zip)).rejects.toBeInstanceOf(ArchiveTooBigError)
+  }, 60_000)
 })
