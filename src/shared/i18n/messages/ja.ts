@@ -1117,6 +1117,7 @@ const ja: Messages = {
   'cat.organizar': "PDF の整理",
   'cat.editar': "編集と署名",
   'cat.documentos': "書類を作成",
+  'cat.multimedia': "音声と動画",
   'cat.seguridad': "セキュリティ",
   'cat.optimizar': "最適化と保存",
   'cat.convertir': "変換",

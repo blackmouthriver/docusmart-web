@@ -1117,6 +1117,7 @@ const ko: Messages = {
   'cat.organizar': "PDF 정리",
   'cat.editar': "편집 및 서명",
   'cat.documentos': "문서 만들기",
+  'cat.multimedia': "오디오 및 동영상",
   'cat.seguridad': "보안",
   'cat.optimizar': "최적화 및 보관",
   'cat.convertir': "변환",

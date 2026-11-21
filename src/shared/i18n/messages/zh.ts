@@ -1117,6 +1117,7 @@ const zh: Messages = {
   'cat.organizar': "整理 PDF",
   'cat.editar': "编辑与签名",
   'cat.documentos': "创建文档",
+  'cat.multimedia': "音频和视频",
   'cat.seguridad': "安全",
   'cat.optimizar': "优化与归档",
   'cat.convertir': "转换",

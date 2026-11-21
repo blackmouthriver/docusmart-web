@@ -1117,6 +1117,7 @@ const ru: Messages = {
   'cat.organizar': "Упорядочить PDF",
   'cat.editar': "Редактировать и подписать",
   'cat.documentos': "Создать документы",
+  'cat.multimedia': "Аудио и видео",
   'cat.seguridad': "Безопасность",
   'cat.optimizar': "Оптимизация и архив",
   'cat.convertir': "Конвертировать",

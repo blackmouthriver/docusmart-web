@@ -9,6 +9,14 @@ const tEs = (k: MessageKey) => es[k]
 const tEn = (k: MessageKey) => en[k]
 
 describe('catálogo de la app', () => {
+  it('cada categoría tiene su nombre traducido en la app (no la clave cat.<id>)', async () => {
+    const { LANGS } = await import('../../../../src/shared/i18n/languages')
+    for (const { code } of LANGS) {
+      const mod = await import(`../../../../src/shared/i18n/messages/${code}.ts`)
+      const msgs = (mod.default ?? mod[code]) as Record<string, string>
+      for (const c of CATEGORIES) expect(msgs[`cat.${c.id}`], `${code}: cat.${c.id}`).toBeTruthy()
+    }
+  })
   it('usa las mismas categorías, en el mismo orden e íconos, que el sitio', () => {
     expect(CATEGORIES.map((c) => [c.id, c.icon])).toEqual(SITE_CATEGORIES.map((c) => [c.id, c.icon]))
   })

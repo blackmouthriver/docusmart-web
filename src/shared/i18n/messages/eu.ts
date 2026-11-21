@@ -1117,6 +1117,7 @@ const eu: Messages = {
   'cat.organizar': "PDFak antolatu",
   'cat.editar': "Editatu eta sinatu",
   'cat.documentos': "Dokumentuak sortu",
+  'cat.multimedia': "Audioa eta bideoa",
   'cat.seguridad': "Segurtasuna",
   'cat.optimizar': "Optimizatu eta artxibatu",
   'cat.convertir': "Bihurtu",

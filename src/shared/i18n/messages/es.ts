@@ -1121,6 +1121,7 @@ export const es = {
   'cat.organizar': "Organizar PDF",
   'cat.editar': "Editar y firmar",
   'cat.documentos': "Crear documentos",
+  'cat.multimedia': "Audio y video",
   'cat.seguridad': "Seguridad",
   'cat.optimizar': "Optimizar y archivar",
   'cat.convertir': "Convertir",
