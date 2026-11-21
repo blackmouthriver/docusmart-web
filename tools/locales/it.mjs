@@ -604,6 +604,23 @@ export default {
         ["I miei file vengono caricati su internet?", "No. Tutto avviene nel tuo browser: le tue foto e i tuoi documenti non lasciano mai il tuo dispositivo."],
       ],
     },
+    'imagen-a-texto': {
+      slug: "immagine-in-testo",
+      title: "Immagine in testo online gratis (OCR): copia il testo da una foto | DocuSmart",
+      description: "Estrai il testo da foto, screenshot e documenti scansionati per copiarlo, modificarlo o salvarlo in Word o .txt. Gratis, senza account né caricamenti.",
+      h1: "Immagine in testo (OCR)",
+      howTo: "Come trasformare un'immagine in testo in 3 passaggi",
+      lead: "Copia in pochi secondi il testo dalla foto di un documento, da uno screenshot o da un cartello, senza riscriverlo a mano e senza che l'immagine lasci il tuo dispositivo.",
+      short: "Copia il testo da qualsiasi foto",
+      steps: ["Scegli una o più immagini (JPG, PNG, WebP o HEIC) oppure incolla uno screenshot con Ctrl+V.", "Scegli la lingua del testo e premi \"Riconosci testo\".", "Rivedi e correggi il testo, poi premi \"Copia\" o scaricalo in .txt o Word."],
+      faq: [
+        ["Quanto è preciso?", "Con foto nitide, dritte e ben illuminate, il riconoscimento è molto buono. Se la foto è sfocata o storta, lo strumento ti avvisa della bassa qualità e puoi correggere il testo prima di copiarlo."],
+        ["Riconosce la scrittura a mano?", "Funziona con testo stampato o sullo schermo. La scrittura a mano viene riconosciuta bene molto raramente."],
+        ["Posso convertire più immagini alla volta?", "Sì. Scegli più immagini e il testo di tutte esce insieme, separato per immagine se vuoi. Così puoi trasformare un documento di più foto in un unico file Word."],
+        ["Quali lingue riconosce?", "Spagnolo e inglese, o entrambe insieme se il documento le mescola. Il motore viene scaricato la prima volta e resta salvato nel tuo browser."],
+        ["Le mie immagini vengono caricate su internet?", "No. Il riconoscimento avviene nel tuo browser con il processore del tuo dispositivo: le tue foto non lasciano mai il tuo dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',

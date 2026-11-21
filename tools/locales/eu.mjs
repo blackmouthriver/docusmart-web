@@ -609,6 +609,23 @@ export default {
         ["Nire fitxategiak internetera igotzen dira?", "Ez. Dena zure nabigatzailean egiten da: zure argazkiak eta dokumentuak ez dira inoiz zure gailutik ateratzen."],
       ],
     },
+    'imagen-a-texto': {
+      slug: "irudia-testura",
+      title: "Iruditik testura online doan (OCR): kopiatu argazki baten testua | DocuSmart",
+      description: "Atera testua argazki, pantaila-argazki eta eskaneatutako dokumentuetatik, kopiatu, editatu edo Word edo .txt-ra pasatzeko. Doan eta erregistrorik gabe.",
+      h1: "Iruditik testura (OCR)",
+      howTo: "Nola pasatu irudi bat testura 3 urratsetan",
+      lead: "Kopiatu dokumentu baten argazkiaren, pantaila-argazki baten edo kartel baten testua segundotan, eskuz idatzi gabe eta irudia zure gailutik atera gabe.",
+      short: "Kopiatu edozein argazkiren testua",
+      steps: ["Aukeratu irudi bat edo gehiago (JPG, PNG, WebP edo HEIC) edo itsatsi pantaila-argazki bat Ctrl+V-rekin.", "Aukeratu testuaren hizkuntza eta sakatu «Testua ezagutu».", "Berrikusi eta zuzendu testua; ondoren, sakatu «Kopiatu» edo deskargatu .txt edo Word formatuan."],
+      faq: [
+        ["Zein zehatza da?", "Argazki garbi, zuzen eta ondo argiztatuekin, ezagutza oso ona da. Argazkia lausoa edo okertuta badago, tresnak kalitate baxuaz ohartarazten dizu eta testua zuzen dezakezu kopiatu aurretik."],
+        ["Eskuz idatzitako letra ezagutzen du?", "Testu inprimatuarekin edo pantailakoarekin funtzionatzen du. Eskuz idatzitako letra ia inoiz ez da ondo ezagutzen."],
+        ["Hainbat irudi pasa ditzaket aldi berean?", "Bai. Aukeratu hainbat irudi eta guztien testua batera aterako da, nahi baduzu irudika bereizita. Horrela, hainbat argazkiz osatutako dokumentu bat Word bakar batera pasa dezakezu."],
+        ["Zein hizkuntza ezagutzen ditu?", "Gaztelania eta ingelesa, edo biak batera dokumentuak bi hizkuntzak nahasten baditu. Motorra lehen aldian deskargatzen da eta zure nabigatzailean gordeta geratzen da."],
+        ["Nire irudiak internetera igotzen dira?", "Ez. Ezagutza zure nabigatzailean egiten da, zure gailuaren prozesadorearekin: zure argazkiak ez dira inoiz zure gailutik ateratzen."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',

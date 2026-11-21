@@ -415,6 +415,19 @@
     "ko": "remove-metadata",
     "zh": "remove-metadata"
   },
+  "imagen-a-texto": {
+    "en": "image-to-text",
+    "pt": "imagem-para-texto",
+    "fr": "image-en-texte",
+    "it": "immagine-in-testo",
+    "de": "bild-zu-text",
+    "ca": "imatge-a-text",
+    "eu": "irudia-testura",
+    "ru": "image-to-text",
+    "ja": "image-to-text",
+    "ko": "image-to-text",
+    "zh": "image-to-text"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

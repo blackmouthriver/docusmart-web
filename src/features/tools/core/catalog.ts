@@ -78,6 +78,7 @@ export const CATALOG: readonly CatalogTool[] = [
   pdf('imagenes', 'optimizar', 'images'),
   pdf('escanear', 'escanear', 'camera'),
   pdf('ocr', 'escanear', 'text'),
+  { key: 'imagen/texto', category: 'escanear', icon: 'text', name: 'imgt.toText', desc: 'imgt.toText.desc', section: 'imagen', sub: 'texto', also: ['imagen'] },
   conv('img-pdf', 'image', 'conv.desc.imgPdf'),
   conv('img-jpg', 'image', 'conv.desc.imgJpg', ['imagen']),
   conv('img-png', 'image', 'conv.desc.imgPng', ['imagen']),

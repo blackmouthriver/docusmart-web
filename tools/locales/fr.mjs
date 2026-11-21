@@ -604,6 +604,23 @@ export default {
         ["Mes fichiers sont-ils envoyés sur internet ?", "Non. Tout se fait dans votre navigateur : vos photos et documents ne quittent jamais votre appareil."],
       ],
     },
+    'imagen-a-texto': {
+      slug: "image-en-texte",
+      title: "Image en texte en ligne gratuit (OCR) : copiez le texte d'une photo | DocuSmart",
+      description: "Extrayez le texte de photos, de captures et de documents scannés pour le copier, le modifier ou l'enregistrer en Word ou .txt. Gratuit, sans inscription.",
+      h1: "Image en texte (OCR)",
+      howTo: "Comment convertir une image en texte en 3 étapes",
+      lead: "Copiez en quelques secondes le texte d'une photo de document, d'une capture d'écran ou d'un panneau, sans le retaper et sans que l'image quitte votre appareil.",
+      short: "Copiez le texte de n'importe quelle photo",
+      steps: ["Choisissez une ou plusieurs images (JPG, PNG, WebP ou HEIC) ou collez une capture avec Ctrl+V.", "Choisissez la langue du texte et appuyez sur «Reconnaître le texte».", "Relisez et corrigez le texte, puis appuyez sur «Copier» ou téléchargez-le en .txt ou Word."],
+      faq: [
+        ["Quelle est la précision ?", "Avec des photos nettes, droites et bien éclairées, la reconnaissance est très bonne. Si la photo est floue ou de travers, l'outil vous signale la faible qualité et vous pouvez corriger le texte avant de le copier."],
+        ["Reconnaît-il l'écriture manuscrite ?", "Il fonctionne avec du texte imprimé ou affiché à l'écran. L'écriture manuscrite est rarement bien reconnue."],
+        ["Puis-je convertir plusieurs images à la fois ?", "Oui. Choisissez plusieurs images et le texte de toutes sort ensemble, séparé par image si vous le souhaitez. Vous pouvez ainsi transformer un document de plusieurs photos en un seul fichier Word."],
+        ["Quelles langues reconnaît-il ?", "L'espagnol et l'anglais, ou les deux à la fois si le document mélange les deux langues. Le moteur est téléchargé la première fois et reste enregistré dans votre navigateur."],
+        ["Mes images sont-elles envoyées sur internet ?", "Non. La reconnaissance se fait dans votre navigateur avec le processeur de votre appareil : vos photos ne quittent jamais votre appareil."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',
