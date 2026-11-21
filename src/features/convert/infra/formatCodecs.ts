@@ -1,6 +1,7 @@
 // Más formatos de imagen (W-124): abrir SVG y TIFF, y guardar en GIF, AVIF e ICO. Las librerías se
 // cargan solo al usarlas. Excluido de la cobertura como los demás adaptadores con canvas y wasm.
 import { canvasToBlob } from '../../../shared/pdf/pdf'
+import { svgDataUrl } from '../../../shared/files/files'
 import { ICO_SIZES, containSquare, icoFromPngs, specialImage, svgRenderSize } from '../core/formats'
 
 function newCanvas(width: number, height: number) {
@@ -17,20 +18,16 @@ function newCanvas(width: number, height: number) {
  * con un tamaño cómodo si el dibujo es pequeño (es vectorial: se agranda sin perder nitidez).
  */
 export async function svgToCanvas(file: Blob): Promise<HTMLCanvasElement> {
-  const text = await file.text()
-  const size = svgRenderSize(text)
-  const url = URL.createObjectURL(new Blob([text], { type: 'image/svg+xml' }))
-  try {
-    const img = new Image()
-    img.decoding = 'async'
-    img.src = url
-    await img.decode()
-    const { canvas, ctx } = newCanvas(size.width, size.height)
-    ctx.drawImage(img, 0, 0, size.width, size.height)
-    return canvas
-  } finally {
-    URL.revokeObjectURL(url)
-  }
+  const size = svgRenderSize(await file.text())
+  const img = new Image()
+  img.decoding = 'async'
+  // Como `data:` y no `blob:` (W-135): el navegador no deja abrirlo como página, así que su código
+  // nunca corre con el origen del sitio.
+  img.src = await svgDataUrl(new Blob([file], { type: 'image/svg+xml' }))
+  await img.decode()
+  const { canvas, ctx } = newCanvas(size.width, size.height)
+  ctx.drawImage(img, 0, 0, size.width, size.height)
+  return canvas
 }
 
 /** La primera página de un TIFF en un canvas (UTIF, MIT: sin compresión, LZW, Deflate, PackBits y JPEG). */
