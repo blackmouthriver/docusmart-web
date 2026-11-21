@@ -2,18 +2,19 @@
 import { useMemo, useState } from 'react'
 import { useApp } from '../../../app/state'
 import { Icon } from '../../../shared/ui/Icon'
-import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../../../shared/ui/ui'
+import { BusyButton, DropZone, FileRow, Notice, Progress } from '../../../shared/ui/ui'
 import { baseName, download } from '../../../shared/files/files'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { tr } from '../../../shared/i18n/translate'
 import type { OcrLang, OcrProgress, OcrResult } from '../core/ocr'
+import { OcrLangPicker, useDefaultOcrLang } from './OcrLangPicker'
 import { track } from '../../../shared/platform/analytics'
 
 export function OcrTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
-  const [lang, setLang] = useState<OcrLang>('spa')
+  const [lang, setLang] = useState<OcrLang>(useDefaultOcrLang())
   const [wantPdf, setWantPdf] = useState(true)
   const [progress, setProgress] = useState<OcrProgress | null>(null)
   const [result, setResult] = useState<OcrResult | null>(null)
@@ -65,19 +66,7 @@ export function OcrTool() {
             <FileRow file={file} actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => { setFile(null); setResult(null); setError(null) }}>{tr('common.change')}</button>} />
           </ul>
         )}
-        <div className="field">
-          <span>{tr('ocr.docLang')}</span>
-          <Segmented
-            label={tr('ocr.lang')}
-            value={lang}
-            onChange={setLang}
-            options={[
-              { value: 'spa', label: tr('ocr.spanish') },
-              { value: 'eng', label: tr('ocr.english') },
-              { value: 'spa+eng', label: tr('ocr.both') },
-            ]}
-          />
-        </div>
+        <OcrLangPicker value={lang} onChange={setLang} disabled={busy} />
         <label className="check">
           <input type="checkbox" checked={wantPdf} onChange={(e) => setWantPdf(e.target.checked)} />
           <span>{tr('ocr.wantPdf')}</span>

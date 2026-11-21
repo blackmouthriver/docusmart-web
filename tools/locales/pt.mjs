@@ -617,7 +617,7 @@ export default {
         ["Qual é a precisão?", "Com fotos nítidas, retas e bem iluminadas, o reconhecimento é muito bom. Se a foto estiver desfocada ou torta, a ferramenta avisa sobre a baixa qualidade e você pode corrigir o texto antes de copiá-lo."],
         ["Reconhece letra manuscrita?", "Funciona com texto impresso ou de tela. A letra escrita à mão quase nunca é bem reconhecida."],
         ["Posso converter várias imagens de uma vez?", "Sim. Escolha várias imagens e o texto de todas sai junto, separado por imagem se você quiser. Assim você pode transformar um documento de várias fotos em um único Word."],
-        ["Quais idiomas reconhece?", "Espanhol e inglês, ou os dois ao mesmo tempo se o documento misturar ambos. O mecanismo é baixado na primeira vez e fica salvo no seu navegador."],
+        ["Quais idiomas reconhece?", "12 idiomas: espanhol, inglês, português, francês, italiano, alemão, catalão, basco, russo, japonês, coreano e chinês. Se o documento mistura o seu idioma com inglês, marque que também tem texto em inglês. Cada idioma é baixado na primeira vez que você o usa e fica salvo no seu navegador."],
         ["Minhas imagens são enviadas para a internet?", "Não. O reconhecimento acontece no seu navegador, com o processador do seu aparelho: suas fotos nunca saem do seu dispositivo."],
       ],
     },
@@ -809,14 +809,14 @@ export default {
     'ocr-pdf': {
       slug: 'ocr-pdf',
       title: 'OCR online grátis: texto de PDFs digitalizados e imagens | DocuSmart',
-      description: 'Reconheça o texto de um PDF digitalizado ou de uma foto e transforme-o em texto editável ou em um PDF pesquisável. Em espanhol e inglês, grátis e sem enviar o arquivo.',
+      description: 'Reconheça o texto de um PDF digitalizado ou de uma foto e transforme-o em texto editável ou em um PDF pesquisável. Em 12 idiomas, grátis e sem enviar o arquivo.',
       h1: 'OCR: reconhecer texto',
       howTo: 'Como reconhecer texto com OCR em 3 passos',
       lead: 'Transforme uma digitalização ou uma foto de um documento em texto que você pode copiar, editar ou pesquisar, sem digitar de novo.',
       short: 'Texto de digitalizações e fotos',
       steps: [
         'Escolha um PDF digitalizado ou uma imagem (JPG, PNG ou WebP).',
-        'Escolha o idioma do documento: espanhol, inglês ou ambos.',
+        'Escolha o idioma do documento (e marque se também tem texto em inglês).',
         'Toque em "Reconhecer texto": copie o resultado ou baixe-o como .txt ou como PDF pesquisável.',
       ],
       faq: [

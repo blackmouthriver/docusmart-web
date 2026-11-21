@@ -128,8 +128,10 @@ describe('documentos escaneados (W-61)', () => {
   })
 
   it('elige el idioma del OCR según el de la web', () => {
-    expect(ocrLangFor('es')).toBe('spa')
+    // El idioma de la web, más inglés (salvo en inglés).
+    expect(ocrLangFor('es')).toBe('spa+eng')
     expect(ocrLangFor('en')).toBe('eng')
-    expect(ocrLangFor('fr')).toBe('spa+eng')
+    expect(ocrLangFor('fr')).toBe('fra+eng')
+    expect(ocrLangFor('ja')).toBe('jpn+eng')
   })
 })

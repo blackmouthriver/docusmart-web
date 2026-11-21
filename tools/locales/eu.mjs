@@ -622,7 +622,7 @@ export default {
         ["Zein zehatza da?", "Argazki garbi, zuzen eta ondo argiztatuekin, ezagutza oso ona da. Argazkia lausoa edo okertuta badago, tresnak kalitate baxuaz ohartarazten dizu eta testua zuzen dezakezu kopiatu aurretik."],
         ["Eskuz idatzitako letra ezagutzen du?", "Testu inprimatuarekin edo pantailakoarekin funtzionatzen du. Eskuz idatzitako letra ia inoiz ez da ondo ezagutzen."],
         ["Hainbat irudi pasa ditzaket aldi berean?", "Bai. Aukeratu hainbat irudi eta guztien testua batera aterako da, nahi baduzu irudika bereizita. Horrela, hainbat argazkiz osatutako dokumentu bat Word bakar batera pasa dezakezu."],
-        ["Zein hizkuntza ezagutzen ditu?", "Gaztelania eta ingelesa, edo biak batera dokumentuak bi hizkuntzak nahasten baditu. Motorra lehen aldian deskargatzen da eta zure nabigatzailean gordeta geratzen da."],
+        ["Zein hizkuntza ezagutzen ditu?", "12 hizkuntza: gaztelania, ingelesa, portugesa, frantsesa, italiera, alemana, katalana, euskara, errusiera, japoniera, koreera eta txinera. Dokumentuak bere hizkuntza ingelesarekin nahasten badu, markatu ingelesezko testua ere baduela. Hizkuntza bakoitza erabiltzen duzun lehen aldian deskargatzen da eta zure nabigatzailean gordeta geratzen da."],
         ["Nire irudiak internetera igotzen dira?", "Ez. Ezagutza zure nabigatzailean egiten da, zure gailuaren prozesadorearekin: zure argazkiak ez dira inoiz zure gailutik ateratzen."],
       ],
     },
@@ -814,14 +814,14 @@ export default {
     'ocr-pdf': {
       slug: 'ocr-pdf',
       title: 'OCR linean doan: PDF eskaneatu eta irudietako testua | DocuSmart',
-      description: 'Ezagutu PDF eskaneatu baten edo argazki baten testua eta bihurtu testu editagarri edo PDF bilagarri. Gaztelaniaz eta ingelesez, doan eta fitxategia igo gabe.',
+      description: 'Ezagutu PDF eskaneatu baten edo argazki baten testua eta bihurtu testu editagarri edo PDF bilagarri. 12 hizkuntzatan, doan eta fitxategia igo gabe.',
       h1: 'OCR: ezagutu testua',
       howTo: 'Nola ezagutu testua OCRrekin 3 urratsetan',
       lead: 'Bihurtu dokumentu baten eskaneatu edo argazki bat kopiatu, editatu edo bilatu dezakezun testu, berriro idatzi gabe.',
       short: 'Eskaneatu eta argazkietako testua',
       steps: [
         'Aukeratu PDF eskaneatu bat edo irudi bat (JPG, PNG edo WebP).',
-        'Aukeratu dokumentuaren hizkuntza: gaztelania, ingelesa edo biak.',
+        'Aukeratu dokumentuaren hizkuntza (eta markatu ingelesezko testua ere baduen).',
         'Sakatu «Ezagutu testua»: kopiatu emaitza edo deskargatu .txt gisa edo PDF bilagarri gisa.',
       ],
       faq: [

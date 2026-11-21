@@ -325,7 +325,7 @@ export const guides = [
       {
         h2: 'Reconocer el texto de un escaneo que ya tienes',
         body: [
-          'Si ya tienes un PDF escaneado o una foto y necesitas copiar su texto, usa [OCR PDF](/ocr-pdf): reconoce texto impreso en español e inglés y te lo da para copiar, como archivo .txt o como PDF buscable. Funciona mejor con escaneos nítidos y derechos; la letra a mano suele reconocerse mal.',
+          'Si ya tienes un PDF escaneado o una foto y necesitas copiar su texto, usa [OCR PDF](/ocr-pdf): reconoce texto impreso en 12 idiomas (español, inglés, portugués, francés, ruso, japonés, chino y más) y te lo da para copiar, como archivo .txt o como PDF buscable. Funciona mejor con escaneos nítidos y derechos; la letra a mano suele reconocerse mal.',
         ],
       },
       {

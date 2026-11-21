@@ -313,7 +313,7 @@ export default {
         {
           h2: "Dagoeneko duzun eskaneatu baten testua ezagutzea",
           body: [
-            "Eskaneatutako PDF bat edo argazki bat baduzu eta haren testua kopiatu behar baduzu, erabili [OCR: ezagutu testua](/ocr-pdf): gaztelaniaz eta ingelesez inprimatutako testua ezagutzen du eta kopiatzeko ematen dizu, .txt fitxategi gisa edo PDF bilagarri gisa. Hobeto dabil eskaneatu garbi eta zuzenekin; eskuz idatzitako letra gaizki ezagutu ohi da.",
+            "Eskaneatutako PDF bat edo argazki bat baduzu eta haren testua kopiatu behar baduzu, erabili [OCR: ezagutu testua](/ocr-pdf): 12 hizkuntzatan (euskaraz, gaztelaniaz, ingelesez, frantsesez, errusieraz, japonieraz, txineraz eta gehiagotan) inprimatutako testua ezagutzen du eta kopiatzeko ematen dizu, .txt fitxategi gisa edo PDF bilagarri gisa. Hobeto dabil eskaneatu garbi eta zuzenekin; eskuz idatzitako letra gaizki ezagutu ohi da.",
           ],
         },
         {
