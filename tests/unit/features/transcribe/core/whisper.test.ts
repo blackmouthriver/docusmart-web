@@ -91,20 +91,22 @@ describe('espectrograma', () => {
     expect(Math.max(...f[0])).toBeGreaterThan(0)
     expect(f.every((row) => row.every((v) => v >= 0))).toBe(true)
   })
-  it('log-mel: forma, rango normalizado y un tono que sube su banda', () => {
-    const silence = logMel(new Float32Array(SAMPLE_RATE))
-    expect(silence.length).toBe(N_MELS * N_FRAMES)
-    expect(Math.max(...silence.subarray(0, 100))).toBeLessThanOrEqual(-1)
-    const tone = Float32Array.from({ length: SAMPLE_RATE }, (_, i) => Math.sin((2 * Math.PI * 1000 * i) / SAMPLE_RATE))
-    const mel = logMel(tone)
+  // Un solo espectrograma completo (30 s de cuadros): en el CI, con cobertura, tarda varios segundos.
+  it('log-mel: forma, recorte a 30 s, piso de silencio y un tono que sube su banda', { timeout: 60_000 }, () => {
+    // 1 s de tono de 1 kHz y luego silencio, en un audio más largo que 30 s (se recorta).
+    const audio = new Float32Array(CHUNK_SAMPLES + 10)
+    for (let i = 0; i < SAMPLE_RATE; i++) audio[i] = Math.sin((2 * Math.PI * 1000 * i) / SAMPLE_RATE)
+    const mel = logMel(audio)
+    expect(mel.length).toBe(N_MELS * N_FRAMES)
     const frame = 50
     const col = Array.from({ length: N_MELS }, (_, m) => mel[m * N_FRAMES + frame])
     const peak = col.indexOf(Math.max(...col))
     // 1 kHz cae cerca de la banda mel 28 en la escala de Whisper.
     expect(peak).toBeGreaterThan(20)
     expect(peak).toBeLessThan(36)
-    // Más largo que 30 s: se recorta.
-    expect(logMel(new Float32Array(CHUNK_SAMPLES + 10)).length).toBe(N_MELS * N_FRAMES)
+    // El silencio queda en el piso: 8 unidades (log10) por debajo del máximo, normalizado.
+    const max = Math.max(...col)
+    expect(mel[2000]).toBeCloseTo(max - 2, 5)
   })
 })
 
