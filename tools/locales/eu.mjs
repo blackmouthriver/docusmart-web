@@ -230,7 +230,7 @@ export default {
         'Arrastatu bere lekura, doitu tamaina (orri guztietan errepika dezakezu) eta sakatu «Sinatu PDFa».',
       ],
       faq: [
-        ['Baliozkotasun legala du?', 'Sinadura elektroniko sinplea da: zure sinaduraren irudia dokumentuaren gainean, eskuz sinatzea bezala. Eguneroko izapide gehienetarako balio du; ziurtagiridun sinadura digitala eskatzen denean, ziurtagiri-erakunde baten zerbitzua behar duzu.'],
+        ['Baliozkotasun legala du?', 'Nola sinatzen duzun araberakoa da. Zure sinaduraren irudia sinadura elektroniko sinplea da, eguneroko izapide gehienetarako baliozkoa. "Sinatu nire ziurtagiri digitalarekin ere (.p12 edo .pfx)" ere markatzen baduzu, PDFak zure ziurtagiriarekin egindako sinadura digitala darama, Adobe Acrobat-ek eta beste irakurgailu batzuek egiaztatzen dutena; haren baliozkotasun juridikoa ziurtagiria eman zuen erakundearen araberakoa da.'],
         ['Nire sinadura nonbait gordetzen da?', 'Ez. Sinadura eta PDFa zure nabigatzailean prozesatzen dira eta ez dira inongo zerbitzarira igotzen. Orria ixtean, sinadura ezabatzen da.'],
         ['Hainbat orri sina ditzaket?', 'Bai. Gehitu sinadura nahi duzun orri bakoitzean, edo erabili «Errepikatu orri guztietan» dokumentu osoan zure inizialak jartzeko.'],
         ['Nola atera argazki on bat nire sinadurari?', 'Sinatu tinta ilunarekin paper zurian eta atera argazkia argi onarekin eta itzalik gabe. DocuSmartek hondo zuria automatikoki kentzen du.'],

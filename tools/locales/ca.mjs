@@ -230,7 +230,7 @@ export default {
         'Arrossega-la al seu lloc, ajusta’n la mida (la pots repetir a totes les pàgines) i prem "Signar PDF".',
       ],
       faq: [
-        ['Té validesa legal?', 'És una signatura electrònica simple: la imatge de la teva signatura sobre el document, com signar a mà. Serveix per a la majoria de tràmits quotidians; quan s’exigeix una signatura digital amb certificat, necessites el servei d’una entitat certificadora.'],
+        ['Té validesa legal?', 'Depèn de com signis. La imatge de la teva signatura és una signatura electrònica simple, vàlida per a la majoria de tràmits quotidians. Si a més marques "Signar també amb el meu certificat digital (.p12 o .pfx)", el PDF porta una signatura digital amb el teu certificat, que Adobe Acrobat i altres lectors verifiquen; la seva validesa legal depèn de l\'entitat que va emetre el certificat.'],
         ['Es desa la meva signatura en algun lloc?', 'No. La signatura i el PDF es processen dins del teu navegador i no es pugen a cap servidor. En tancar la pàgina, la signatura s’esborra.'],
         ['Puc signar diverses pàgines?', 'Sí. Afegeix la signatura a cada pàgina que vulguis, o fes servir "Repetir a totes les pàgines" per posar les teves inicials a tot el document.'],
         ['Com faig una bona foto de la meva signatura?', 'Signa amb tinta fosca sobre paper blanc i fes la foto amb bona llum i sense ombres. DocuSmart treu el fons blanc automàticament.'],

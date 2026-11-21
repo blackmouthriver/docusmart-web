@@ -230,7 +230,7 @@ export default {
         'Drag it into place, adjust the size (you can repeat it on every page) and press "Sign PDF".',
       ],
       faq: [
-        ['Is it legally valid?', "It's a simple electronic signature: the image of your signature on the document, like signing by hand. It works for most everyday paperwork; when a digital signature with a certificate is required, you need a certification authority's service."],
+        ['Is it legally valid?', "It depends on how you sign. The image of your signature is a simple electronic signature, valid for most everyday paperwork. If you also tick \"Also sign with my digital certificate (.p12 or .pfx)\", the PDF carries a digital signature with your certificate, which Adobe Acrobat and other readers verify; its legal validity depends on the authority that issued the certificate."],
         ['Is my signature stored anywhere?', 'No. The signature and the PDF are processed inside your browser and are not uploaded to any server. When you close the page, the signature is gone.'],
         ['Can I sign several pages?', 'Yes. Add the signature to every page you want, or use "Repeat on every page" to put your initials on the whole document.'],
         ['How do I take a good photo of my signature?', 'Sign with dark ink on white paper and take the photo in good light without shadows. DocuSmart removes the white background automatically.'],
