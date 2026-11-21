@@ -472,6 +472,23 @@ export default {
         ['Are my photos uploaded to the internet?', 'No. The watermark is added inside your browser: your photos and your logo never leave your device.'],
       ],
     },
+    'ajustar-imagen': {
+      slug: "adjust-image",
+      title: "Adjust photo brightness, contrast and color for free | DocuSmart",
+      description: "Improve your photos in the browser: brightness, contrast, saturation, black and white and straighten, with a preview and on many at once. Free, no upload.",
+      h1: "Adjust image",
+      howTo: "How to adjust a photo's brightness and color in 3 steps",
+      lead: "Brighten a dark photo, make the colors pop, turn it black and white or straighten the horizon. See the result instantly and apply it to all your photos at once.",
+      short: "Brightness, contrast, color and straighten",
+      steps: ["Choose one or more images (JPG, PNG, WebP or HEIC).", "Move the brightness, contrast, saturation or angle, or tick \"Black and white\", while watching the preview.", "Press \"Apply adjustments\" and download the result; with several images, all together in a ZIP."],
+      faq: [
+        ["How do I brighten a dark photo?", "Raise the brightness and, if it looks dull, the contrast a little. With \"Compare with the original\" you see the before and after in the same preview."],
+        ["What is straightening for?", "To fix crooked photos, like a tilted horizon or a document photographed at an angle. The photo is rotated up to 15° and trimmed a little so no empty corners are left."],
+        ["Can I turn several photos black and white?", "Yes. Choose them all, tick \"Black and white\" and they are converted with the same settings; they download together in a ZIP."],
+        ["Does the photo lose quality?", "It keeps its size and format (JPG, PNG or WebP; iPhone HEIC photos are saved as JPG). Only straightening trims the edges a little. Hidden photo data (EXIF), such as the GPS location, is also removed."],
+        ["Are my photos uploaded to the internet?", "No. The adjustments happen inside your browser: your photos never leave your device."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

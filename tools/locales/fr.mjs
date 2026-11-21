@@ -472,6 +472,23 @@ export default {
         ["Mes photos sont-elles envoyées sur Internet ?", "Non. Le filigrane est ajouté dans votre navigateur : vos photos et votre logo ne quittent jamais votre appareil."],
       ],
     },
+    'ajustar-imagen': {
+      slug: "ajuster-image",
+      title: "Régler luminosité, contraste et couleur d'une photo | DocuSmart",
+      description: "Améliorez vos photos dans le navigateur : luminosité, contraste, saturation, noir et blanc et redressement, avec aperçu et sur plusieurs à la fois. Gratuit.",
+      h1: "Ajuster l'image",
+      howTo: "Comment régler la luminosité et la couleur d'une photo en 3 étapes",
+      lead: "Éclaircissez une photo sombre, ravivez les couleurs, passez-la en noir et blanc ou redressez l'horizon. Voyez le résultat aussitôt et appliquez-le à toutes vos photos d'un coup.",
+      short: "Luminosité, contraste, couleur et redressement",
+      steps: ["Choisissez une ou plusieurs images (JPG, PNG, WebP ou HEIC).", "Réglez la luminosité, le contraste, la saturation ou l'angle, ou cochez « Noir et blanc », en regardant l'aperçu.", "Appuyez sur « Appliquer les réglages » et téléchargez le résultat ; avec plusieurs images, toutes ensemble dans un ZIP."],
+      faq: [
+        ["Comment éclaircir une photo sombre ?", "Augmentez la luminosité et, si elle paraît terne, un peu le contraste. Avec « Comparer avec l'original », vous voyez l'avant et l'après dans le même aperçu."],
+        ["À quoi sert le redressement ?", "À corriger les photos de travers, comme un horizon penché ou un document photographié de biais. La photo est tournée jusqu'à 15° et légèrement rognée pour ne pas laisser de coins vides."],
+        ["Puis-je passer plusieurs photos en noir et blanc ?", "Oui. Choisissez-les toutes, cochez « Noir et blanc » et elles sont converties avec les mêmes réglages ; elles se téléchargent ensemble dans un ZIP."],
+        ["La photo perd-elle en qualité ?", "Elle garde sa taille et son format (JPG, PNG ou WebP ; les HEIC de l'iPhone sont enregistrées en JPG). Seul le redressement rogne un peu les bords. Les données cachées de la photo (EXIF), comme la position GPS, sont aussi supprimées."],
+        ["Mes photos sont-elles envoyées sur Internet ?", "Non. Les réglages se font dans votre navigateur : vos photos ne quittent jamais votre appareil."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',

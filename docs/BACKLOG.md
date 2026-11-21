@@ -285,7 +285,7 @@ Hoy Imagen tiene comprimir, redimensionar, recortar y rotar; las conversiones (a
 | W-122 | **Foto tamaño documento** (cédula, pasaporte, visa): recorte a medida + fondo blanco (usa W-121); reemplaza esa parte de W-115 | 🤖 | ✅ Hecho (2026-11-20): `/foto-tamano-documento` y `#/imagen/documento`; 3,5 × 4,5 cm, 2 × 2 in, 3 × 4 cm, 4 × 5 cm, 2,5 × 3 cm u otra medida; fondo blanco, de color (IA de W-121) u original; JPG a 300 ppp con la resolución marcada (JFIF) y hoja de 10 × 15 cm para imprimir; 12 idiomas |
 | W-123 | **Marca de agua en imágenes** (texto o logo, posición, opacidad), por lotes | 🤖 | ✅ Hecho (2026-11-20): `/marca-de-agua-imagen` y `#/imagen/marca`; texto (con color) o logo, 9 posiciones, diagonal o en mosaico, tamaño según el ancho de cada imagen y opacidad; vista previa al instante; por lotes en ZIP; acepta HEIC; 12 idiomas |
 | W-124 | **Más formatos:** salida AVIF, ICO (favicon con varios tamaños) y GIF; entrada SVG→PNG y TIFF. HEIC→JPG sigue en W-107 | 🤖 | Pendiente |
-| W-125 | **Ajustes básicos:** brillo, contraste, saturación, blanco y negro y enderezar | 🤖 | Pendiente |
+| W-125 | **Ajustes básicos:** brillo, contraste, saturación, blanco y negro y enderezar | 🤖 | ✅ Hecho (2026-11-20): `/ajustar-imagen` y `#/imagen/ajustar`; brillo, contraste y saturación (−100 a +100), blanco y negro y enderezar hasta 15° con recorte sin esquinas vacías; vista previa al instante con «Comparar con la original»; por lotes en ZIP; acepta HEIC; 12 idiomas |
 
 ## Agenda y notas con Outlook (pedido del usuario, 2026-11-20)
 

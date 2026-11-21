@@ -1,4 +1,4 @@
-// Herramientas de imagen: comprimir, redimensionar, recortar, rotar, quitar fondo, foto tamaño documento y marca de agua, en el navegador.
+// Herramientas de imagen: comprimir, redimensionar, recortar, rotar, quitar fondo, foto tamaño documento, marca de agua y ajustes, en el navegador.
 import { useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from 'react'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
@@ -32,6 +32,7 @@ import { MODEL as BG_MODEL, backgroundOutputName, parseBackground } from '../cor
 import { looksLikeHeic } from '../../convert/core/heic'
 import { WATERMARK_POSITIONS, clampPercent, type WatermarkPosition } from '../core/watermark'
 import type { Mark } from '../infra/watermarkCanvas'
+import { MAX_ANGLE, NEUTRAL, clampAdjust, isNeutral, signed, type Adjustments } from '../core/adjust'
 import { ID_MAX_MM, ID_MIN_MM, ID_PRESETS, formatMm, idPhotoName, idPixels, parseSizeMm, portraitCrop, sheetLayout, type IdPresetId, type IdSize } from '../core/idPhoto'
 import type { Margins } from '../../pdf/core/pdfCrop'
 import { track } from '../../../shared/platform/analytics'
@@ -47,6 +48,7 @@ const TOOLS: Array<{ id: string; name: MessageKey; desc: MessageKey; icon: IconN
   { id: 'fondo', name: 'imgt.removeBg', desc: 'imgt.removeBg.desc', icon: 'eraser', cls: 'ico-cyan' },
   { id: 'documento', name: 'imgt.idPhoto', desc: 'imgt.idPhoto.desc', icon: 'user', cls: 'ico-blue' },
   { id: 'marca', name: 'imgt.watermark', desc: 'imgt.watermark.desc', icon: 'stamp', cls: 'ico-green' },
+  { id: 'ajustar', name: 'imgt.adjust', desc: 'imgt.adjust.desc', icon: 'settings', cls: 'ico-amber' },
 ]
 
 // Conversiones de formato (W-119): viven en Convertir, pero también se ofrecen aquí.
@@ -66,6 +68,7 @@ export const IMAGE_TOOLS: Record<string, ComponentType> = {
   fondo: RemoveBackgroundTool,
   documento: IdPhotoTool,
   marca: WatermarkImageTool,
+  ajustar: AdjustImageTool,
 }
 
 export function ImageToolsScreen({ sub }: { sub?: string }) {
@@ -817,7 +820,6 @@ function WatermarkImageTool() {
   const [error, setError] = useState<string | null>(null)
   const logoInput = useRef<HTMLInputElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
-  const [preview, setPreview] = useState<ImageBitmap | null>(null)
 
   // El logo se abre una vez (y se libera al cambiarlo).
   useEffect(() => {
@@ -841,25 +843,7 @@ function WatermarkImageTool() {
   }, [logoFile])
 
   // Copia reducida de la primera imagen para la vista previa.
-  const first = b.files[0] ?? null
-  useEffect(() => {
-    setPreview(null)
-    if (!first) return
-    let alive = true
-    let bmp: ImageBitmap | null = null
-    void import('../infra/watermarkCanvas')
-      .then((m) => m.previewBitmap(first))
-      .then((p) => {
-        bmp = p
-        if (alive) setPreview(p)
-        else p.close()
-      })
-      .catch(() => undefined)
-    return () => {
-      alive = false
-      bmp?.close()
-    }
-  }, [first])
+  const preview = usePreviewBitmap(b.files[0] ?? null)
 
   const mark: Mark | null =
     kind === 'text' ? (text.trim() ? { kind, text, color, size, opacity, position } : null) : logo ? { kind, logo, size, opacity, position } : null
@@ -933,7 +917,7 @@ function WatermarkImageTool() {
           </label>
         </div>
         {preview && (
-          <figure className="wm-preview">
+          <figure className="live-preview">
             <canvas ref={canvas} role="img" aria-label={tr('wmi.preview')} />
             {b.files.length > 1 && <figcaption className="faint">{tr('wmi.sameMark', { n: b.files.length })}</figcaption>}
           </figure>
@@ -949,6 +933,112 @@ function WatermarkImageTool() {
         </div>
       </Panel>
       {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipWatermark')}.zip`} toolName="watermark_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.watermark')} />}
+    </div>
+  )
+}
+
+/* ───────────── Ajustar imagen (W-125) ───────────── */
+
+/** Copia reducida de la primera imagen, para redibujar la vista previa al instante (se libera al cambiarla). */
+function usePreviewBitmap(file: File | null) {
+  const [bmp, setBmp] = useState<ImageBitmap | null>(null)
+  useEffect(() => {
+    setBmp(null)
+    if (!file) return
+    let alive = true
+    let made: ImageBitmap | null = null
+    void import('../infra/imageCanvas')
+      .then((m) => m.previewBitmap(file))
+      .then((p) => {
+        made = p
+        if (alive) setBmp(p)
+        else p.close()
+      })
+      .catch(() => undefined)
+    return () => {
+      alive = false
+      made?.close()
+    }
+  }, [file])
+  return bmp
+}
+
+function AdjustImageTool() {
+  const b = useBatch('adjust_image')
+  const [adj, setAdj] = useState<Adjustments>(NEUTRAL)
+  const [original, setOriginal] = useState(false)
+  const canvas = useRef<HTMLCanvasElement>(null)
+  const preview = usePreviewBitmap(b.files[0] ?? null)
+
+  useEffect(() => {
+    const target = canvas.current
+    if (!target || !preview) return
+    void import('../infra/adjustCanvas').then((m) => m.drawAdjustedPreview(target, preview, adj, original))
+  }, [preview, adj, original])
+
+  const set = (patch: Partial<Adjustments>) => {
+    setAdj((a) => ({ ...a, ...patch }))
+    b.setResults(null)
+  }
+  const slider = (key: 'brightness' | 'contrast' | 'saturation', label: MessageKey) => (
+    <label className="field" style={{ flex: 1, minWidth: 160 }}>
+      <span>{tr(label, { n: signed(adj[key]) })}</span>
+      <input type="range" min={-100} max={100} step={1} value={adj[key]} disabled={key === 'saturation' && adj.grayscale} onChange={(e) => set({ [key]: clampAdjust(Number(e.target.value)) })} />
+    </label>
+  )
+
+  const run = () =>
+    b.run(async (file) => {
+      const { renderAdjusted } = await import('../infra/adjustCanvas')
+      const mime = outputMime(file.type, file.name)
+      const r = await renderAdjusted(file, adj, mime)
+      return { name: outputName(file.name, tr('file.adjusted'), mime), ...r }
+    })
+
+  return (
+    <div className="stack">
+      <Panel>
+        {b.picker()}
+        <div className="row">
+          {slider('brightness', 'adj.brightness')}
+          {slider('contrast', 'adj.contrast')}
+        </div>
+        <div className="row">
+          {slider('saturation', 'adj.saturation')}
+          <label className="field" style={{ flex: 1, minWidth: 160 }}>
+            <span>{tr('adj.straighten', { n: signed(adj.angle) })}</span>
+            <input type="range" min={-MAX_ANGLE} max={MAX_ANGLE} step={0.5} value={adj.angle} onChange={(e) => set({ angle: clampAdjust(Number(e.target.value), MAX_ANGLE) })} />
+          </label>
+        </div>
+        <div className="row" style={{ justifyContent: 'space-between' }}>
+          <label className="check">
+            <input type="checkbox" checked={adj.grayscale} onChange={(e) => set({ grayscale: e.target.checked })} />
+            <span>{tr('adj.grayscale')}</span>
+          </label>
+          <button type="button" className="btn btn-ghost btn-sm" disabled={isNeutral(adj)} onClick={() => set(NEUTRAL)}><Icon name="reset" /> {tr('crop.reset')}</button>
+        </div>
+        {adj.angle !== 0 && <small className="faint">{tr('adj.straightenTip')}</small>}
+        {preview && (
+          <figure className="live-preview">
+            <canvas ref={canvas} role="img" aria-label={original ? tr('adj.originalPreview') : tr('adj.preview')} />
+            <figcaption className="row" style={{ justifyContent: 'center' }}>
+              <button type="button" className="btn btn-soft btn-sm" aria-pressed={original} disabled={isNeutral(adj)} onClick={() => setOriginal((o) => !o)}>
+                <Icon name="eye" /> {tr('adj.compare')}
+              </button>
+              {b.files.length > 1 && <span className="faint">{tr('adj.same', { n: b.files.length })}</span>}
+            </figcaption>
+          </figure>
+        )}
+        <small className="faint">{tr('imgt.keepFormat')} {tr('imgt.privacy')}</small>
+        {b.files.length > 0 && isNeutral(adj) && <small className="faint">{tr('adj.pickChange')}</small>}
+        {b.busy && <Progress value={b.progress} />}
+        <div className="row row-end">
+          <BusyButton busy={b.busy} disabled={!b.files.length || isNeutral(adj)} onClick={run} icon="check">
+            {b.files.length > 1 ? tr('adj.runN', { n: b.files.length }) : tr('adj.run')}
+          </BusyButton>
+        </div>
+      </Panel>
+      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipAdjusted')}.zip`} toolName="adjust_image" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.adjust')} />}
     </div>
   )
 }

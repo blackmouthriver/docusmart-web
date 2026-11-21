@@ -477,6 +477,23 @@ export default {
         ["Nire argazkiak internetera igotzen dira?", "Ez. Ur-marka zure nabigatzailean jartzen da: zure argazkiak eta logoa ez dira inoiz zure gailutik ateratzen."],
       ],
     },
+    'ajustar-imagen': {
+      slug: "irudia-doitu",
+      title: "Argazki baten distira, kontrastea eta kolorea doitu doan | DocuSmart",
+      description: "Hobetu zure argazkiak nabigatzailean: distira, kontrastea, saturazioa, zuri-beltza eta zuzendu, aurrebistarekin eta askotan batera. Doan eta igo gabe.",
+      h1: "Doitu irudia",
+      howTo: "Nola doitu argazki baten distira eta kolorea 3 urratsetan",
+      lead: "Argitu argazki ilun bat, eman bizitasun gehiago koloreei, jarri zuri-beltzean edo zuzendu horizontea. Emaitza berehala ikusten duzu eta argazki guztiei batera aplikatzen diezu.",
+      short: "Distira, kontrastea, kolorea eta zuzendu",
+      steps: ["Aukeratu irudi bat edo gehiago (JPG, PNG, WebP edo HEIC).", "Mugitu distira, kontrastea, saturazioa edo angelua, edo markatu «Zuri-beltza», aurrebistari begira.", "Sakatu «Aplikatu doikuntzak» eta deskargatu emaitza; hainbat irudirekin, denak batera ZIP batean."],
+      faq: [
+        ["Nola argitzen dut argazki ilun bat?", "Igo distira eta, itzalita ikusten bada, pixka bat kontrastea. «Konparatu jatorrizkoarekin» erabiliz, aurretik eta ondoren ikusten dituzu aurrebista berean."],
+        ["Zertarako balio du zuzentzeak?", "Argazki okerrak zuzentzeko, hala nola horizonte okertu bat edo alboz ateratako dokumentu bat. Argazkia 15° arte biratzen da eta pixka bat mozten da, izkina hutsik gera ez daitezen."],
+        ["Hainbat argazki zuri-beltzean jar ditzaket?", "Bai. Aukeratu denak, markatu «Zuri-beltza» eta doikuntza berekin bihurtzen dira; denak batera deskargatzen dira ZIP batean."],
+        ["Argazkiak kalitatea galtzen du?", "Bere tamaina eta formatua gordetzen ditu (JPG, PNG edo WebP; iPhoneko HEICak JPG gisa gordetzen dira). Zuzentzean bakarrik mozten dira ertzak pixka bat. Gainera, argazkiaren datu ezkutuak (EXIF) kentzen dira, GPS kokapena adibidez."],
+        ["Nire argazkiak internetera igotzen dira?", "Ez. Doikuntzak zure nabigatzailean egiten dira: zure argazkiak ez dira inoiz zure gailutik ateratzen."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',
