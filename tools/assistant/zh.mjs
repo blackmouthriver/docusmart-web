@@ -42,7 +42,7 @@ export default {
     { id: 'voz-no-funciona', q: ['听不到声音', '不朗读', '没有声音'], a: '朗读使用浏览器或系统自带的语音。调高音量，或换一个声音、换一个浏览器（Chrome 和 Edge 的语音更多）。部分“在线”语音需要联网。', related: ['lectura', 'navegador'] },
     { id: 'notas', q: ['做笔记', '笔记'], a: '在学习模式 → 笔记中写下你的笔记并添加图片。笔记只保存在你的浏览器中。', actions: [['page', 'study']], related: ['estudio', 'datos-guardados'] },
     { id: 'pomodoro', q: ['番茄钟', '计时器', '专注'], a: '在学习模式 → 番茄钟中，以 25 分钟为一个时段学习并适当休息；每个时段结束时会提醒你，并可查看统计。', actions: [['page', 'study']], related: ['estudio'] },
-    { id: 'qr-leer', q: ['读取二维码', '扫描二维码', '二维码识别'], a: '在二维码 → 读取中使用摄像头，或选择含有二维码的图片。如果是 DocuSmart 加密的二维码，会要求输入密码。', actions: [['page', 'qr']], related: ['qr-protegido', 'qr-historial'] },
+    { id: 'qr-leer', q: ['读取二维码', '扫描二维码', '二维码识别'], a: '在二维码 → 读取中使用摄像头，或选择含有二维码的图片。如果是 DocuSmart 加密的二维码，会要求输入密码。', actions: [['tool', 'leer-codigo-qr']], related: ['qr-protegido', 'qr-historial'] },
     { id: 'qr-protegido', q: ['带密码的二维码', '加密二维码', '私密二维码'], a: '创建二维码时选择“加密”并设置密码：内容会被加密，只有知道密码的人才能用 DocuSmart（网站或应用）读取。', actions: [['tool', 'crear-codigo-qr']], related: ['qr-leer'] },
     { id: 'qr-historial', q: ['二维码记录', '我创建的二维码'], a: '在二维码 → 记录中，可以看到最近创建或读取的二维码，只保存在你的浏览器中。', actions: [['page', 'qr']], related: ['qr-leer'] },
     { id: 'pdf-protegido', q: ['PDF 有密码', '被锁定的 PDF', '打不开 PDF'], a: '如果知道密码，可以用“PDF 解锁”去除密码。没有密码就无法打开——这正是它保护文档的方式。', actions: [['tool', 'desbloquear-pdf']], related: ['pdf-danado'] },

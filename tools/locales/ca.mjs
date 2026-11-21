@@ -621,6 +621,23 @@ export default {
         ["Les meves imatges es pugen a internet?", "No. El reconeixement es fa al teu navegador amb el processador del teu equip: les teves fotos no surten mai del teu dispositiu."],
       ],
     },
+    'leer-codigo-qr': {
+      slug: "llegir-codi-qr",
+      title: "Llegir codis QR en línia gratis amb la càmera o una imatge | DocuSmart",
+      description: "Escaneja un codi QR amb la càmera o des d'una foto o captura: obre enllaços, copia textos, desa contactes i mira la contrasenya Wi-Fi. Gratis i sense apps.",
+      h1: "Llegir codi QR",
+      howTo: "Com llegir un codi QR en 3 passos",
+      lead: "Llegeix qualsevol codi QR des del navegador, amb la càmera del mòbil o de l'ordinador, o des d'una foto o una captura de pantalla, sense instal·lar cap aplicació.",
+      short: "Escaneja un QR amb la càmera o una foto",
+      steps: ["Prem \"Obrir càmera\" i apunta al codi, o canvia a \"Des d'una imatge\" per fer servir una foto o una captura.", "El codi es llegeix sol: veuràs el contingut i quin tipus de dada és (enllaç, text, Wi-Fi, contacte, correu o telèfon).", "Obre l'enllaç, copia el text, desa el contacte o copia la contrasenya del Wi-Fi."],
+      faq: [
+        ["Necessito instal·lar una aplicació?", "No. Funciona al navegador del mòbil o de l'ordinador. La primera vegada, el navegador et demana permís per fer servir la càmera."],
+        ["Puc llegir un QR que és en una foto o en una captura?", "Sí. Tria \"Des d'una imatge\" i escull la foto, o enganxa la captura amb Ctrl+V. Serveix per als QR que t'envien per xat o que apareixen a la teva pròpia pantalla."],
+        ["És segur obrir l'enllaç d'un QR?", "Abans d'obrir un enllaç et mostrem a quin lloc porta, perquè comprovis que és el que esperes. Un QR pot portar a qualsevol pàgina, així que desconfia dels que et demanen dades o pagaments."],
+        ["Llegeix els QR protegits amb contrasenya?", "Sí. Si el codi es va crear amb DocuSmart i té contrasenya, te la demana per mostrar-ne el contingut."],
+        ["S'envia la imatge a algun servidor?", "No. El codi es llegeix al teu navegador: ni la imatge de la càmera ni les teves fotos surten del teu dispositiu."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',

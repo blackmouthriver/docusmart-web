@@ -621,6 +621,23 @@ export default {
         ["Werden meine Bilder ins Internet hochgeladen?", "Nein. Die Erkennung läuft in deinem Browser mit dem Prozessor deines Geräts: Deine Fotos verlassen dein Gerät nie."],
       ],
     },
+    'leer-codigo-qr': {
+      slug: "qr-code-lesen",
+      title: "QR-Code online kostenlos lesen mit Kamera oder Bild | DocuSmart",
+      description: "Scanne einen QR-Code per Kamera, Foto oder Screenshot: Links öffnen, Texte kopieren, Kontakte speichern und das Wi-Fi-Passwort sehen. Kostenlos, ohne App.",
+      h1: "QR-Code lesen",
+      howTo: "So liest du einen QR-Code in 3 Schritten",
+      lead: "Lies jeden QR-Code direkt im Browser, mit der Kamera deines Handys oder Computers oder aus einem Foto oder Screenshot, ohne eine App zu installieren.",
+      short: "Scanne einen QR mit der Kamera oder einem Foto",
+      steps: ["Tippe auf „Kamera öffnen“ und richte sie auf den Code, oder wechsle zu „Aus Bild“, um ein Foto oder einen Screenshot zu verwenden.", "Der Code wird automatisch gelesen: Du siehst den Inhalt und die Art der Daten (Link, Text, Wi-Fi, Kontakt, E-Mail oder Telefon).", "Öffne den Link, kopiere den Text, speichere den Kontakt oder kopiere das Wi-Fi-Passwort."],
+      faq: [
+        ["Muss ich eine App installieren?", "Nein. Es funktioniert im Browser deines Handys oder Computers. Beim ersten Mal fragt der Browser nach der Erlaubnis, die Kamera zu verwenden."],
+        ["Kann ich einen QR-Code auf einem Foto oder Screenshot lesen?", "Ja. Wähle „Aus Bild“ und such das Foto aus, oder füge den Screenshot mit Strg+V ein. Ideal für QR-Codes, die du im Chat bekommst oder die auf deinem eigenen Bildschirm erscheinen."],
+        ["Ist es sicher, den Link eines QR-Codes zu öffnen?", "Bevor du einen Link öffnest, zeigen wir dir, zu welcher Website er führt, damit du prüfen kannst, ob es die erwartete ist. Ein QR-Code kann zu jeder Seite führen, sei also vorsichtig bei solchen, die nach Daten oder Zahlungen fragen."],
+        ["Liest es passwortgeschützte QR-Codes?", "Ja. Wurde der Code mit DocuSmart erstellt und hat ein Passwort, wirst du danach gefragt, um den Inhalt anzuzeigen."],
+        ["Wird das Bild an einen Server gesendet?", "Nein. Der Code wird in deinem Browser gelesen: Weder das Kamerabild noch deine Fotos verlassen dein Gerät."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',

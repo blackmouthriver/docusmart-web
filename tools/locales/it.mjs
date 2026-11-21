@@ -621,6 +621,23 @@ export default {
         ["Le mie immagini vengono caricate su internet?", "No. Il riconoscimento avviene nel tuo browser con il processore del tuo dispositivo: le tue foto non lasciano mai il tuo dispositivo."],
       ],
     },
+    'leer-codigo-qr': {
+      slug: "leggere-codice-qr",
+      title: "Leggere codici QR online gratis con la fotocamera o un'immagine | DocuSmart",
+      description: "Scansiona un codice QR con la fotocamera o da una foto o uno screenshot: apri link, copia testi, salva contatti e vedi la password Wi-Fi. Gratis, senza app.",
+      h1: "Leggere codice QR",
+      howTo: "Come leggere un codice QR in 3 passaggi",
+      lead: "Leggi qualsiasi codice QR dal browser, con la fotocamera del telefono o del computer, oppure da una foto o uno screenshot, senza installare nessuna app.",
+      short: "Scansiona un QR con la fotocamera o una foto",
+      steps: ["Premi \"Apri fotocamera\" e inquadra il codice, oppure passa a \"Da immagine\" per usare una foto o uno screenshot.", "Il codice viene letto da solo: vedrai il contenuto e il tipo di dato (link, testo, Wi-Fi, contatto, e-mail o telefono).", "Apri il link, copia il testo, salva il contatto o copia la password del Wi-Fi."],
+      faq: [
+        ["Devo installare un'app?", "No. Funziona nel browser del telefono o del computer. La prima volta il browser ti chiede il permesso di usare la fotocamera."],
+        ["Posso leggere un QR che si trova in una foto o in uno screenshot?", "Sì. Scegli \"Da immagine\" e seleziona la foto, oppure incolla lo screenshot con Ctrl+V. Utile per i QR che ti inviano in chat o che compaiono sul tuo schermo."],
+        ["È sicuro aprire il link di un QR?", "Prima di aprire un link ti mostriamo a quale sito porta, così puoi verificare che sia quello previsto. Un QR può portare a qualsiasi pagina, quindi diffida di quelli che ti chiedono dati o pagamenti."],
+        ["Legge i QR protetti da password?", "Sì. Se il codice è stato creato con DocuSmart e ha una password, te la chiede per mostrarne il contenuto."],
+        ["L'immagine viene inviata a un server?", "No. Il codice viene letto nel tuo browser: né l'immagine della fotocamera né le tue foto lasciano il tuo dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',

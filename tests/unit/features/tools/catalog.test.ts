@@ -30,7 +30,7 @@ describe('catálogo de la app', () => {
   })
   it('cada herramienta con página propia está en la misma categoría que en el sitio', () => {
     const route = (kind: string, id?: string) =>
-      kind === 'pdf' ? `pdf/${id}` : kind === 'conv' ? `convertir/${id}` : kind === 'img' ? `imagen/${id}` : kind === 'archive' ? `archivos/${id}` : kind === 'hash' ? 'hash/calcular' : kind === 'meta' ? 'metadatos/quitar' : kind === 'doc' ? `documentos/${id}` : kind === 'media' ? `multimedia/${id}` : 'qr/crear'
+      kind === 'pdf' ? `pdf/${id}` : kind === 'conv' ? `convertir/${id}` : kind === 'img' ? `imagen/${id}` : kind === 'archive' ? `archivos/${id}` : kind === 'hash' ? 'hash/calcular' : kind === 'meta' ? 'metadatos/quitar' : kind === 'doc' ? `documentos/${id}` : kind === 'media' ? `multimedia/${id}` : `qr/${id ?? 'crear'}`
     for (const p of pages) {
       const tool = CATALOG.find((x) => x.key === route(p.tool.kind, p.tool.id))
       expect(tool?.category, p.slug).toBe(p.category)
