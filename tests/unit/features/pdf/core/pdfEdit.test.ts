@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { PDFDocument, PDFName, degrees } from 'pdf-lib'
+import { PDFDocument, PDFName, StandardFonts, degrees, rgb } from 'pdf-lib'
+import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import { inflateSync } from 'fflate'
 import { BASELINE, applyEdits, hexToRgb, textLines, viewRectToPdf, type EditItem } from '../../../../../src/features/pdf/core/pdfEdit'
 import { encodePng } from '../../../../../src/features/pdf/core/pdfImages'
@@ -130,5 +131,51 @@ describe('applyEdits', () => {
     const jpg = Uint8Array.from(atob('/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k='), (c) => c.charCodeAt(0))
     const out = await applyEdits(await makePdf(), [{ kind: 'image', page: 0, x: 0, y: 0, w: 1, h: 1, data: jpg, format: 'jpg' }])
     expect(new TextDecoder('latin1').decode(out)).toContain('/DCTDecode')
+  })
+})
+
+describe('reemplazar texto de verdad (W-140)', () => {
+  async function withText() {
+    const d = await PDFDocument.create()
+    const page = d.addPage([400, 300])
+    const font = await d.embedFont(StandardFonts.Helvetica)
+    page.drawRectangle({ x: 0, y: 0, width: 400, height: 300, color: rgb(0.92, 0.95, 1) })
+    page.drawText('Total a pagar: 1.000', { x: 40, y: 250, size: 12, font })
+    page.drawText('Otra línea que queda', { x: 40, y: 200, size: 12, font })
+    return d.save()
+  }
+  const text = async (bytes: Uint8Array) => {
+    const d = await getDocument({ data: bytes.slice() }).promise
+    return (await (await d.getPage(1)).getTextContent()).items.map((it) => ('str' in it ? it.str : '')).filter((s) => s.trim()).join(' | ')
+  }
+
+  it('la capa "erase" borra el texto original y el nuevo se escribe en su lugar', async () => {
+    const items: EditItem[] = [
+      { kind: 'erase', page: 0, x: 35 / 400, y: 35 / 300, w: 150 / 400, h: 20 / 300, stroke: null, fill: '#EBF2FF', strokeWidth: 0 },
+      { kind: 'text', page: 0, x: 40 / 400, y: 39 / 300, text: 'Total a pagar: 2.500', size: 12, color: '#000000', font: 'helvetica', bold: false },
+    ]
+    const out = await applyEdits(await withText(), items)
+    const t = await text(out)
+    expect(t).not.toContain('1.000')
+    expect(t).toContain('Total a pagar: 2.500')
+    expect(t).toContain('Otra línea que queda')
+    // Se borró, no se tapó: no hay rectángulo del color de fondo dibujado encima.
+    expect(await pageOps(out, 0)).not.toMatch(/0\.92156\d* 0\.94901\d* 1 rg/)
+  })
+
+  it('si no encuentra texto en la zona, la tapa con el color de fondo', async () => {
+    const items: EditItem[] = [{ kind: 'erase', page: 0, x: 0.5, y: 0.8, w: 0.1, h: 0.05, stroke: null, fill: '#EBF2FF', strokeWidth: 0 }]
+    const ops = await pageOps(await applyEdits(await withText(), items), 0)
+    expect(ops).toMatch(/0\.92156\d* 0\.94901\d* 1 rg/)
+  })
+
+  it('un texto con ancho se corta por palabras, con su interlineado', async () => {
+    const items: EditItem[] = [{ kind: 'text', page: 0, x: 0.1, y: 0.1, text: 'uno dos tres cuatro cinco seis siete ocho', size: 10, color: '#000', font: 'helvetica', bold: false, width: 0.3, lineHeight: 1.5 }]
+    const ops = await pageOps(await applyEdits(await makePdf(), items), 0)
+    const ys = [...ops.matchAll(/1 0 0 1 [\d.]+ ([\d.]+) Tm/g)].map((m) => Number(m[1]))
+    expect(new Set(ys).size).toBeGreaterThan(1)
+    // Entre líneas: 1.5 × 10 pt.
+    const rows = [...new Set(ys)].sort((a, b) => b - a)
+    expect(rows[0] - rows[1]).toBeCloseTo(15)
   })
 })

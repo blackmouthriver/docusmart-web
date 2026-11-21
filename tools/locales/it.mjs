@@ -157,7 +157,7 @@ export default {
         'Regola dimensione, colore e posizione, e premi "Applica modifiche".',
       ],
       faq: [
-        ['Posso cambiare il testo già presente nel PDF?', 'Puoi coprirlo con lo strumento "Copri" (un riquadro bianco) e scriverci sopra il nuovo testo con "Testo". Il risultato sembra corretto.'],
+        ['Posso cambiare il testo già presente nel PDF?', 'Sì. Con "Sostituisci" tocchi un paragrafo o una riga e scrivi il nuovo testo: l\'originale viene eliminato dal documento (non si può più selezionare né cercare) e il nuovo resta nello stesso punto, con la stessa dimensione e lo stesso colore, ridistribuito sulla stessa larghezza.'],
         ['"Copri" cancella ciò che c’è sotto?', 'No: lo copre, ma il testo originale resta nel file. Se devi eliminare davvero dati sensibili, usa "Oscurare PDF".'],
         ['Quali caratteri posso usare?', 'Tre famiglie (sans, serif e monospazio), normale o grassetto, con gli accenti e anche altri alfabeti: cirillico, greco, cinese, giapponese e coreano. Le emoji non vengono salvate.'],
         ['I miei file vengono caricati su internet?', 'No. Tutto avviene nel tuo browser, senza registrazione.'],

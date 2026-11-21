@@ -1,15 +1,22 @@
 /**
  * Editar PDF: agrega texto, imágenes y formas sobre las páginas, como capas
- * nuevas (el contenido original no se toca). Las posiciones son fracciones
- * (0 a 1) de la página tal como se ve, igual que en Firmar y Censurar.
+ * nuevas. Las posiciones son fracciones (0 a 1) de la página tal como se ve,
+ * igual que en Firmar y Censurar. La capa "erase" (Reemplazar texto, W-140) sí
+ * quita del contenido de la página el texto original que cae dentro de ella.
  */
 import { PDFDocument, degrees, rgb, type PDFImage } from 'pdf-lib'
-import { drawPieces, fontsForText, type FontFamily, type FontSet } from '../../../shared/pdf/pdfFonts'
+import { drawPieces, fontsForText, wrapPieces, type FontFamily, type FontSet } from '../../../shared/pdf/pdfFonts'
 import { viewToPdf } from './pdfSign'
+import { eraseText, type Zone } from './pdfContent'
 
 export type FontName = 'helvetica' | 'times' | 'courier'
-export type TextItem = { kind: 'text'; page: number; x: number; y: number; text: string; size: number; color: string; font: FontName; bold: boolean }
-export type BoxKind = 'rect' | 'ellipse' | 'highlight' | 'whiteout'
+/**
+ * `width`: ancho del párrafo (fracción de la página) para cortar las líneas largas, como un
+ * párrafo reemplazado; `lineHeight`: interlineado en tamaños de letra (sin él, 1.2).
+ */
+export type TextItem = { kind: 'text'; page: number; x: number; y: number; text: string; size: number; color: string; font: FontName; bold: boolean; width?: number; lineHeight?: number }
+/** `erase`: borra el texto original de la zona (si no lo encuentra, la tapa con `fill` o blanco). */
+export type BoxKind = 'rect' | 'ellipse' | 'highlight' | 'whiteout' | 'erase'
 export type BoxItem = { kind: BoxKind; page: number; x: number; y: number; w: number; h: number; stroke: string | null; fill: string | null; strokeWidth: number }
 export type ImageItem = { kind: 'image'; page: number; x: number; y: number; w: number; h: number; data: Uint8Array; format: 'png' | 'jpg' }
 export type EditItem = TextItem | BoxItem | ImageItem
@@ -56,8 +63,26 @@ export async function applyEdits(bytes: ArrayBuffer | Uint8Array, items: EditIte
   }
   const images = new Map<Uint8Array, PDFImage>()
 
+  // Primero se borra el texto original de las zonas "erase", página por página.
+  const erased = new Set<EditItem>()
+  const erases = items.filter((i): i is BoxItem => i.kind === 'erase' && isPlaceable(i))
+  for (const p of new Set(erases.map((e) => e.page))) {
+    const page = doc.getPage(p)
+    const box = page.getCropBox()
+    const rotation = page.getRotation().angle
+    const mine = erases.filter((e) => e.page === p)
+    const zones: Zone[] = mine.map((e) => viewRectToPdf(e.x, e.y, e.w, e.h, box, rotation))
+    let found: boolean[] = []
+    try {
+      found = eraseText(doc, p, zones)
+    } catch {
+      // Contenido que no se pudo leer: se tapa como antes.
+    }
+    mine.forEach((e, k) => found[k] && erased.add(e))
+  }
+
   for (const item of items) {
-    if (!isPlaceable(item)) continue
+    if (!isPlaceable(item) || erased.has(item)) continue
     const page = doc.getPage(item.page)
     const box = page.getCropBox()
     const rotation = page.getRotation().angle
@@ -66,10 +91,17 @@ export async function applyEdits(bytes: ArrayBuffer | Uint8Array, items: EditIte
 
     if (item.kind === 'text') {
       const set = fonts.get(item.font)!
-      textLines(item.text).forEach((line, i) => {
-        const pieces = set.pieces(line, item.bold ? 'bold' : 'regular')
+      const viewW = turns % 2 ? box.height : box.width
+      const style = item.bold ? 'bold' : 'regular'
+      // Cada línea del texto; con ancho, las largas se cortan por palabras como en un párrafo.
+      const rows = textLines(item.text).flatMap((line) => {
+        const pieces = set.pieces(line, style)
+        return item.width ? wrapPieces(pieces, item.size, item.width * viewW) : [pieces]
+      })
+      const lh = item.lineHeight ?? LINE_HEIGHT
+      rows.forEach((pieces, i) => {
         if (!pieces.some((p) => !p.space)) return
-        const v = item.y + (BASELINE[item.font] * item.size + i * LINE_HEIGHT * item.size) / viewH
+        const v = item.y + (BASELINE[item.font] * item.size + i * lh * item.size) / viewH
         const at = viewToPdf(item.x, v, box, rotation)
         drawPieces(page, pieces, { x: at.x, y: at.y, size: item.size, color: hexToRgb(item.color), rotateDeg: turns * 90, degrees })
       })
@@ -102,6 +134,7 @@ export function isPlaceable(item: EditItem): boolean {
 function boxStyle(item: BoxItem) {
   if (item.kind === 'highlight') return { color: hexToRgb(item.fill ?? '#FDE047'), opacity: 0.4, borderWidth: 0 }
   if (item.kind === 'whiteout') return { color: rgb(1, 1, 1), borderWidth: 0 }
+  if (item.kind === 'erase') return { color: item.fill ? hexToRgb(item.fill) : rgb(1, 1, 1), borderWidth: 0 }
   return {
     color: item.fill ? hexToRgb(item.fill) : undefined,
     borderColor: item.stroke ? hexToRgb(item.stroke) : undefined,

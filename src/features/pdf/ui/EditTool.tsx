@@ -11,13 +11,13 @@ import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { applyEdits, type BoxKind, type EditItem, type FontName } from '../core/pdfEdit'
 import { areaFromCorners } from '../core/pdfRedact'
-import { groupLines, inkColor, lineFrame, replacementFor, type TextLineBox } from '../core/pdfReplace'
+import { backgroundColor, groupLines, groupParagraphs, inkColor, lineFrame, replacementFor, type TextLineBox } from '../core/pdfReplace'
 import { track } from '../../../shared/platform/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
 import { EDIT_PDF, clearHandOff, peekHandOff } from '../../../shared/files/handoff'
 
 type Item = EditItem & { id: number }
-type Tool = 'select' | 'text' | 'replace' | BoxKind
+type Tool = 'select' | 'text' | 'replace' | Exclude<BoxKind, 'erase'>
 /** Línea del PDF que se puede reemplazar, con su caja en fracciones de la página. */
 type ReplaceTarget = { key: string; text: string; frame: { x: number; y: number; w: number; h: number } }
 
@@ -86,7 +86,8 @@ export function EditTool() {
       .then(({ pages: sizes, texts }) => {
         if (cancelled) return
         const byPage = new Map<number, TextLineBox[]>()
-        sizes.forEach((_, i) => byPage.set(i, groupLines(texts.filter((t) => t.page === i))))
+        // Párrafos (líneas seguidas con la misma letra): se reemplazan enteros y el texto nuevo se reacomoda.
+        sizes.forEach((_, i) => byPage.set(i, groupParagraphs(groupLines(texts.filter((t) => t.page === i)))))
         setLines({ byPage, sizes })
       })
       .catch((e) => !cancelled && setError(errorMessage(e)))
@@ -108,19 +109,19 @@ export function EditTool() {
         })
       : []
 
-  /** Color del texto original, medido en la vista previa de la página (si está dibujada). */
-  const lineInk = (f: { x: number; y: number; w: number; h: number }) => {
+  /** Pixeles de una zona de la vista previa de la página (si está dibujada). */
+  const pixels = (f: { x: number; y: number; w: number; h: number }) => {
     const c = canvas.current
     const ctx = c?.getContext('2d', { willReadFrequently: true })
-    if (!c || !ctx) return '#1C1B1A'
+    if (!c || !ctx) return null
     const x = Math.max(0, Math.floor(f.x * c.width))
     const y = Math.max(0, Math.floor(f.y * c.height))
     const w = Math.max(1, Math.min(c.width - x, Math.ceil(f.w * c.width)))
     const h = Math.max(1, Math.min(c.height - y, Math.ceil(f.h * c.height)))
     try {
-      return inkColor(ctx.getImageData(x, y, w, h).data)
+      return ctx.getImageData(x, y, w, h).data
     } catch {
-      return '#1C1B1A'
+      return null
     }
   }
 
@@ -129,9 +130,11 @@ export function EditTool() {
     const line = lines?.byPage.get(page)?.[index]
     const size = lines?.sizes[page]
     if (!line || !size) return
-    const [box, text] = replacementFor(line, page, size.width, size.height)
+    const px = pixels(lineFrame(line, size.width, size.height))
+    // El color sale del PDF; si no, se mide en la vista previa. El fondo, para tapar si no se puede borrar.
+    const [box, text] = replacementFor(line, page, size.width, size.height, px ? backgroundColor(px) : null)
     add(box)
-    add({ ...text, color: lineInk(lineFrame(line, size.width, size.height)) })
+    add(line.color || !px ? text : { ...text, color: inkColor(px) })
     setReplaced((r) => new Set([...r, key]))
     setTool('select')
     setTimeout(() => textArea.current?.select(), 0)
@@ -493,12 +496,15 @@ const labelOf = (it: Item) => tr(`edit.kind.${it.kind}` as MessageKey)
 function itemStyle(it: Item, scale: number): CSSProperties {
   const pos: CSSProperties = { left: `${it.x * 100}%`, top: `${it.y * 100}%` }
   if (it.kind === 'text') {
-    return { ...pos, fontSize: it.size * scale, fontFamily: CSS_FONT[it.font], fontWeight: it.bold ? 700 : 400, color: it.color }
+    const para: CSSProperties = it.width ? { width: `${it.width * 100}%`, whiteSpace: 'pre-wrap', lineHeight: it.lineHeight ?? 1.2 } : {}
+    return { ...pos, fontSize: it.size * scale, fontFamily: CSS_FONT[it.font], fontWeight: it.bold ? 700 : 400, color: it.color, ...para }
   }
   const size: CSSProperties = { ...pos, width: `${it.w * 100}%`, height: `${it.h * 100}%` }
   if (it.kind === 'image') return size
   if (it.kind === 'highlight') return { ...size, background: it.fill ?? '#FDE047' }
   if (it.kind === 'whiteout') return { ...size, background: '#fff' }
+  // En la vista previa el texto original se tapa con el color de fondo; al guardar se borra de verdad.
+  if (it.kind === 'erase') return { ...size, background: it.fill ?? '#fff' }
   return {
     ...size,
     background: it.fill ?? 'transparent',
@@ -564,6 +570,7 @@ function Properties({ item, textArea, onChange, onRemove }: { item: Item; textAr
       )}
       {item.kind === 'highlight' && <Swatches label={tr('edit.highlighter')} colors={HIGHLIGHTS} value={item.fill} onChange={(fill) => onChange({ fill: fill ?? '#FDE047' })} />}
       {item.kind === 'whiteout' && <small className="faint">{tr('edit.whiteoutHint')}</small>}
+      {item.kind === 'erase' && <small className="faint">{tr('edit.eraseHint')}</small>}
     </div>
   )
 }

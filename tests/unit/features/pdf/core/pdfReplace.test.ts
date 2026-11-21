@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { groupLines, inkColor, lineFrame, replacementFor } from '../../../../../src/features/pdf/core/pdfReplace'
+import { backgroundColor, groupLines, groupParagraphs, inkColor, lineFrame, replacementFor } from '../../../../../src/features/pdf/core/pdfReplace'
 import { BASELINE } from '../../../../../src/features/pdf/core/pdfEdit'
 import type { TextFrag } from '../../../../../src/features/convert/core/pdfWord'
 
@@ -48,9 +48,9 @@ describe('inkColor', () => {
 describe('replacementFor', () => {
   const line = { text: 'Total: $2.000.000', x: 60, y: 200, w: 100, size: 12, bold: true, family: 'serif' as const }
 
-  it('tapa la línea y escribe el texto en el mismo lugar, tamaño y estilo', () => {
+  it('borra la línea y escribe el texto en el mismo lugar, tamaño y estilo', () => {
     const [box, text] = replacementFor(line, 1, 600, 800)
-    expect(box).toMatchObject({ kind: 'whiteout', page: 1 })
+    expect(box).toMatchObject({ kind: 'erase', page: 1, fill: null })
     expect(box.x).toBeLessThan(60 / 600)
     expect(box.x + box.w).toBeGreaterThan(160 / 600)
     expect(box.y).toBeLessThan((200 - 12) / 800)
@@ -77,5 +77,45 @@ describe('replacementFor', () => {
     expect(f.x).toBeCloseTo(0.1)
     expect(f.y).toBeLessThan(0.25)
     expect(f.y + f.h).toBeGreaterThan(0.25)
+  })
+})
+
+describe('párrafos (W-140)', () => {
+  const L = (text: string, y: number, o = {}) => ({ text, x: 60, y, w: 300, size: 12, bold: false, family: 'sans' as const, color: '1F3A5F', ...o })
+
+  it('une las líneas seguidas del mismo párrafo y separa al cambiar el estilo o el interlineado', () => {
+    const paras = groupParagraphs([
+      L('Título del informe', 100, { size: 18, bold: true }),
+      L('Primera línea del párrafo que se cor-', 130),
+      L('ta con guion y sigue en la siguiente', 145),
+      L('línea del mismo párrafo.', 160, { w: 140 }),
+      L('Otro párrafo más abajo', 200),
+      L('En rojo', 215, { color: 'C00000' }),
+    ])
+    expect(paras.map((p) => [p.text, p.lines])).toEqual([
+      ['Título del informe', 1],
+      ['Primera línea del párrafo que se corta con guion y sigue en la siguiente línea del mismo párrafo.', 3],
+      ['Otro párrafo más abajo', 1],
+      ['En rojo', 1],
+    ])
+    expect(paras[1]).toMatchObject({ y: 130, gap: 15, w: 300, color: '1F3A5F' })
+    expect(lineFrame(paras[1], 600, 800).h * 800).toBeCloseTo(12 * 1.25 + 30)
+  })
+
+  it('el reemplazo de un párrafo lo borra entero y escribe con el mismo color, ancho e interlineado', () => {
+    const [p] = groupParagraphs([L('Una línea', 130), L('y otra', 145)])
+    const [box, text] = replacementFor(p, 0, 600, 800, '#EAF2FF')
+    expect(box).toMatchObject({ kind: 'erase', fill: '#EAF2FF' })
+    expect((box.y + box.h) * 800).toBeGreaterThan(145)
+    expect(text).toMatchObject({ text: 'Una línea y otra', color: '#1F3A5F', lineHeight: 15 / 12 })
+    expect(text.width! * 600).toBeCloseTo(312)
+    // Una sola línea no se corta: queda como antes.
+    expect(replacementFor(L('Sola', 100), 0, 600, 800)[1].width).toBeUndefined()
+  })
+
+  it('backgroundColor: el color más frecuente de la zona', () => {
+    const px = (...colors: number[][]) => colors.flatMap((c) => [...c, 255])
+    expect(backgroundColor(px([234, 242, 255], [234, 242, 255], [20, 20, 20]))).toBe('#EAF2FF')
+    expect(backgroundColor([])).toBe('#FFFFFF')
   })
 })

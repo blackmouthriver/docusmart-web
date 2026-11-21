@@ -157,7 +157,7 @@ export default {
         'Adjust size, colour and position, and press "Apply changes".',
       ],
       faq: [
-        ['Can I change the text already in the PDF?', 'You can cover it with the "Cover" tool (a white box) and write the new text on top with "Text". The result looks as if you had corrected it.'],
+        ['Can I change the text already in the PDF?', 'Yes. With "Replace" you tap a paragraph or line and type the new text: the original is removed from the document (it can no longer be selected or searched) and the new one stays in the same place, size and color, reflowed to the same width.'],
         ['Does "Cover" delete what\'s underneath?', 'No: it covers it, but the original text is still inside the file. If you need to truly remove sensitive data, use "Redact PDF".'],
         ['Which fonts can I use?', 'Three families (sans, serif and monospace), in regular or bold, with accented letters and other alphabets too: Cyrillic, Greek, Chinese, Japanese and Korean. Emojis aren\'t saved.'],
         ['Are my files uploaded to the internet?', 'No. Everything happens inside your browser, without signing up.'],
