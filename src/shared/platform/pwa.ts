@@ -161,12 +161,45 @@ export function onUpdateReady(cb: () => void, win: Window = window): () => void 
   }
 }
 
+const OFFLINE_FLAG = 'ds-offline-ready'
+
+/** Recuerda que la app instalada ya guardó todas las herramientas (el aviso del service worker llega una sola vez). */
+function markOfflineReady(win: Window): void {
+  try {
+    win.localStorage.setItem(OFFLINE_FLAG, '1')
+  } catch {
+    /* sin almacenamiento (navegación privada): solo se pierde el recuerdo */
+  }
+}
+
+/**
+ * ¿Se puede asegurar que la app funciona sin conexión? Solo la app instalada guarda todas las herramientas,
+ * y solo cuando ya lo avisó y el service worker controla la página. En una pestaña normal no se promete.
+ */
+export function isOfflineReady(win: Window = window): boolean {
+  try {
+    return isStandalone(win) && !!win.navigator.serviceWorker?.controller && win.localStorage.getItem(OFFLINE_FLAG) === '1'
+  } catch {
+    return false
+  }
+}
+
+export type ConnectivityNote = 'offline' | 'ready' | 'none'
+
+/** Qué decir sobre la conexión junto al sello de privacidad: sin red ahora, lista para usarse sin red, o nada. */
+export function connectivityNote(online: boolean, offlineReady: boolean): ConnectivityNote {
+  if (!online) return 'offline'
+  return offlineReady ? 'ready' : 'none'
+}
+
 /** Avisa cuando la app instalada ya tiene todas las herramientas para usar sin conexión. */
 export function onOfflineReady(cb: () => void, win: Window = window): () => void {
   const sw = win.navigator.serviceWorker
   if (!sw?.addEventListener) return () => undefined
   const onMessage = (e: MessageEvent) => {
-    if (e.origin === win.location.origin && (e.data as { type?: string } | null)?.type === 'offline-ready') cb()
+    if (e.origin !== win.location.origin || (e.data as { type?: string } | null)?.type !== 'offline-ready') return
+    markOfflineReady(win)
+    cb()
   }
   sw.addEventListener('message', onMessage)
   return () => sw.removeEventListener('message', onMessage)

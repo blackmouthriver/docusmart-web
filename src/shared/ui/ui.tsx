@@ -4,8 +4,10 @@ import { formatBytes, kindOf } from '../files/files'
 import { AppContext } from '../../app/state'
 import { useT } from '../i18n/I18n'
 import { tr } from '../i18n/translate'
+import { PrivacySeal } from './PrivacySeal'
 
-export function HeroCard({ title, subtitle }: { title: string; subtitle: string }) {
+/** `privacySeal` (por defecto sí): sello "tu archivo no sale de tu dispositivo"; se apaga en el inicio y el menú de herramientas. */
+export function HeroCard({ title, subtitle, privacySeal = true }: { title: string; subtitle: string; privacySeal?: boolean }) {
   const app = useContext(AppContext)
   const { t, lang } = useT()
   return (
@@ -28,6 +30,7 @@ export function HeroCard({ title, subtitle }: { title: string; subtitle: string 
       </div>
       <h1>{title}</h1>
       <p>{subtitle}</p>
+      {privacySeal && <PrivacySeal />}
     </header>
   )
 }

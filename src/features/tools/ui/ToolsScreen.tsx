@@ -23,7 +23,7 @@ export function ToolsScreen({ sub }: { sub?: string }) {
 
   return (
     <>
-      <HeroCard title={t('tools.title')} subtitle={t('tools.subtitle', { n: CATALOG.length })} />
+      <HeroCard title={t('tools.title')} subtitle={t('tools.subtitle', { n: CATALOG.length })} privacySeal={false} />
 
       <label className="tools-search">
         <span className="sr-only">{t('tools.search')}</span>
