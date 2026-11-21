@@ -867,7 +867,7 @@ export default {
       short: 'Documento modificabile (.docx)',
       steps: ['Scegli il PDF.', 'Premi "Converti".', 'Apri il .docx in Word, Google Docs o LibreOffice e controlla il risultato.'],
       faq: [
-        ['È identico al PDF?', 'Molto simile, ma non identico: un PDF non conserva paragrafi né tabelle, solo lettere con la loro posizione, quindi DocuSmart li ricostruisce. Mantiene titoli, grassetto, corsivo, dimensioni, elenchi, tabelle semplici e immagini; impaginazioni complesse (colonne, caselle di testo) possono variare.'],
+        ['È identico al PDF?', 'Molto simile, ma non identico: un PDF non contiene paragrafi né tabelle, solo lettere con la loro posizione, quindi DocuSmart li ricostruisce. Mantiene titoli, grassetto, corsivo, dimensioni, colori, elenchi, tabelle semplici, immagini e impaginazioni a due colonne (come i curriculum), con lo sfondo di ogni colonna e le fasce colorate. Caselle di testo e forme decorative complesse possono variare.'],
         ['Funziona con PDF scansionati?', 'Una scansione è un’immagine senza testo. Passala prima dallo strumento OCR spuntando "PDF ricercabile" e converti quel PDF.'],
         ['Con quali programmi apro il file?', 'Con Microsoft Word, Google Docs, LibreOffice, Pages o WPS: è un .docx standard.'],
         ['I miei file vengono caricati su internet?', 'No. La conversione avviene nel tuo browser.'],

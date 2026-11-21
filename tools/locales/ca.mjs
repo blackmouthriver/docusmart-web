@@ -867,7 +867,7 @@ export default {
       short: 'Document editable (.docx)',
       steps: ['Tria el PDF.', 'Prem "Convertir".', 'Obre el .docx a Word, Google Docs o LibreOffice i revisa el resultat.'],
       faq: [
-        ['Queda idèntic al PDF?', 'Molt semblant, però no idèntic: un PDF no desa paràgrafs ni taules, només lletres amb la seva posició, així que DocuSmart els reconstrueix. Conserva títols, negreta, cursiva, mides, llistes, taules senzilles i imatges; els dissenys complexos (columnes, quadres de text) poden variar.'],
+        ['Queda idèntic al PDF?', 'Molt semblant, però no idèntic: un PDF no desa paràgrafs ni taules, només lletres amb la seva posició, així que DocuSmart els reconstrueix. Conserva títols, negreta, cursiva, mides, colors, llistes, taules senzilles, imatges i els dissenys a dues columnes (com els currículums), amb el fons de cada columna i les franges de color. Els quadres de text i les formes decoratives complexes poden variar.'],
         ['Funciona amb PDF escanejats?', 'Un escaneig és una imatge sense text. Passa’l primer per l’eina d’OCR marcant "PDF cercable" i converteix aquest PDF.'],
         ['Amb quins programes obro el fitxer?', 'Amb Microsoft Word, Google Docs, LibreOffice, Pages o WPS: és un .docx estàndard.'],
         ['Els meus fitxers es pugen a internet?', 'No. La conversió es fa dins del teu navegador.'],

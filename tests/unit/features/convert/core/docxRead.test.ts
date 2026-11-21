@@ -212,6 +212,21 @@ describe('readDocx', () => {
     expect(new TextDecoder('latin1').decode(pdf).match(/\/Subtype\s*\/Image/g)).toHaveLength(2)
   })
 
+  it('franja sombreada y texto con espaciado entre letras (lo que escribe PDF a Word)', async () => {
+    const doc = readDocx(
+      docx(
+        p('', '<w:shd w:val="clear" w:color="auto" w:fill="CA726F"/><w:spacing w:before="0" w:after="0" w:line="400" w:lineRule="exact"/>') +
+          p(r('OPTÓMETRA', '<w:spacing w:val="70"/><w:color w:val="4F6274"/>'), '<w:jc w:val="center"/>'),
+      ),
+    )
+    const [band, title] = paras(doc.blocks)
+    expect(band).toMatchObject({ shade: 'CA726F', line: { exact: 20 } })
+    expect(title.runs[0]).toMatchObject({ text: 'OPTÓMETRA', spacing: 3.5, color: '4F6274' })
+    const pdf = await layoutPdf(doc.blocks, { pageSize: doc.pageSize, margins: doc.margins })
+    // Con el espaciado aplicado, pdf.js lo lee letra por letra (igual que el PDF original).
+    expect((await pdfText(pdf))[0]).toBe('O P T Ó M E T R A')
+  })
+
   it('espaciado contextual entre párrafos seguidos del mismo estilo', () => {
     const doc = readDocx(
       docx(

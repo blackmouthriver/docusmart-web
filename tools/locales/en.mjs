@@ -867,7 +867,7 @@ export default {
       short: 'Editable document (.docx)',
       steps: ['Choose the PDF.', 'Press "Convert".', 'Open the .docx in Word, Google Docs or LibreOffice and check the result.'],
       faq: [
-        ['Is it identical to the PDF?', "Very close, but not identical: a PDF doesn't store paragraphs or tables, only letters and their positions, so DocuSmart rebuilds them. It keeps headings, bold, italics, sizes, lists, simple tables and images; complex layouts (columns, text boxes) may vary."],
+        ['Is it identical to the PDF?', "Very close, but not identical: a PDF doesn't store paragraphs or tables, only letters and their positions, so DocuSmart rebuilds them. It keeps headings, bold, italics, sizes, colors, lists, simple tables, images and two-column layouts (like résumés), with each column's background and color bands. Text boxes and complex decorative shapes may vary."],
         ['Does it work with scanned PDFs?', 'A scan is an image with no text. Run it through the OCR tool first with "Searchable PDF" ticked and convert that PDF.'],
         ['Which programs can open the file?', "Microsoft Word, Google Docs, LibreOffice, Pages or WPS: it's a standard .docx."],
         ['Are my files uploaded to the internet?', 'No. The conversion happens inside your browser.'],

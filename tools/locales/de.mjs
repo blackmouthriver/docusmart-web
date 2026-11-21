@@ -867,7 +867,7 @@ export default {
       short: 'Bearbeitbares Dokument (.docx)',
       steps: ['Wähle das PDF.', 'Tippe auf „Konvertieren“.', 'Öffne das .docx in Word, Google Docs oder LibreOffice und prüfe das Ergebnis.'],
       faq: [
-        ['Ist es identisch mit dem PDF?', 'Sehr ähnlich, aber nicht identisch: Ein PDF speichert keine Absätze oder Tabellen, nur Buchstaben mit ihrer Position, also baut DocuSmart sie neu auf. Überschriften, Fett, Kursiv, Größen, Listen, einfache Tabellen und Bilder bleiben erhalten; komplexe Layouts (Spalten, Textfelder) können abweichen.'],
+        ['Ist es identisch mit dem PDF?', 'Sehr ähnlich, aber nicht identisch: Ein PDF speichert keine Absätze oder Tabellen, nur Buchstaben und ihre Position, deshalb baut DocuSmart sie neu auf. Überschriften, Fett, Kursiv, Größen, Farben, Listen, einfache Tabellen, Bilder und zweispaltige Layouts (wie Lebensläufe) mit dem Hintergrund jeder Spalte und farbigen Streifen bleiben erhalten. Textfelder und komplexe dekorative Formen können abweichen.'],
         ['Funktioniert es mit gescannten PDFs?', 'Ein Scan ist ein Bild ohne Text. Lass ihn zuerst durch das OCR-Werkzeug mit „Durchsuchbares PDF“ laufen und wandle dieses PDF um.'],
         ['Mit welchen Programmen öffne ich die Datei?', 'Mit Microsoft Word, Google Docs, LibreOffice, Pages oder WPS: Es ist ein Standard-.docx.'],
         ['Werden meine Dateien ins Internet hochgeladen?', 'Nein. Die Umwandlung passiert in deinem Browser.'],

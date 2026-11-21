@@ -984,7 +984,7 @@ export const pages = [
       'Abre el .docx en Word, Google Docs o LibreOffice y revisa el resultado.',
     ],
     faq: [
-      ['¿Queda idéntico al PDF?', 'Muy parecido, pero no idéntico: un PDF no guarda párrafos ni tablas, solo letras con su posición, así que DocuSmart los reconstruye. Conserva títulos, negrita, cursiva, tamaños, listas, tablas sencillas e imágenes; diseños complejos (columnas, cuadros de texto) pueden variar.'],
+      ['¿Queda idéntico al PDF?', 'Muy parecido, pero no idéntico: un PDF no guarda párrafos ni tablas, solo letras con su posición, así que DocuSmart los reconstruye. Conserva títulos, negrita, cursiva, tamaños, colores, listas, tablas sencillas, imágenes y los diseños a dos columnas (como las hojas de vida), con el fondo de cada columna y las franjas de color. Los cuadros de texto y las formas decorativas complejas pueden variar.'],
       ['¿Funciona con PDF escaneados?', 'Un escaneo es una imagen sin texto. Pásalo primero por la herramienta OCR marcando "PDF buscable" y convierte ese PDF.'],
       ['¿Con qué programas abro el archivo?', 'Con Microsoft Word, Google Docs, LibreOffice, Pages o WPS: es un .docx estándar.'],
       ['¿Mis archivos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],

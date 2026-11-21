@@ -8,7 +8,7 @@
  * llena el lector de Word (docxRead.ts) para que el PDF se parezca al documento original; los
  * demás generadores no los usan y quedan como antes.
  */
-import { PDFDocument, PDFFont, PDFPage, rgb, type RGB } from 'pdf-lib'
+import { PDFDocument, PDFFont, PDFPage, rgb, setCharacterSpacing, type RGB } from 'pdf-lib'
 import { loadFonts, type FontFamily, type FontSet, type FontStyle } from '../../../shared/pdf/pdfFonts'
 
 export type ORun = {
@@ -26,6 +26,8 @@ export type ORun = {
   family?: FontFamily
   /** Número de página o total de páginas (encabezados y pies). */
   field?: 'page' | 'pages'
+  /** Espacio extra entre letras, en puntos. */
+  spacing?: number
 }
 export type OStyle = 'title' | 'h1' | 'h2' | 'h3' | 'normal'
 /** `marker`: el texto de la viñeta o del número tal como se ve ("a)", "iii.", "•"). */
@@ -49,6 +51,8 @@ export type OPara = {
   pageBreakBefore?: boolean
   /** Imagen dentro de una celda de tabla (en el cuerpo las imágenes van como bloque). */
   image?: OImage
+  /** Fondo del párrafo, "RRGGBB" (de margen a margen). */
+  shade?: string
 }
 /** Formato de una celda: fondo, cuántas columnas ocupa y si continúa la celda de arriba (combinada). */
 export type OCell = { fill?: string; span?: number; merged?: boolean }
@@ -102,6 +106,7 @@ type Token = {
   highlight?: string
   /** Desplazamiento de la línea base (superíndice y subíndice). */
   rise?: number
+  spacing?: number
   field?: 'page' | 'pages'
 }
 type Line = { tokens: Token[]; width: number; height: number }
@@ -128,7 +133,8 @@ export function tokenize(runs: ORun[], fonts: FontSet | Pick, baseSize: number):
     const full = r.size ?? baseSize
     const size = r.script ? full * 0.65 : full
     const rise = r.script === 'sup' ? full * 0.33 : r.script === 'sub' ? -full * 0.14 : undefined
-    const extra = { underline: !!r.underline, color: r.color, strike: r.strike || undefined, highlight: r.highlight, rise }
+    const extra = { underline: !!r.underline, color: r.color, strike: r.strike || undefined, highlight: r.highlight, rise, spacing: r.spacing || undefined }
+    const extraW = (text: string) => (r.spacing ? r.spacing * [...text].length : 0)
     if (r.field) {
       // Se mide con dos cifras y se reemplaza al dibujar.
       const font = set.font(style)
@@ -137,7 +143,7 @@ export function tokenize(runs: ORun[], fonts: FontSet | Pick, baseSize: number):
     }
     r.text.split('\n').forEach((part, i) => {
       if (i > 0) out.push('br')
-      for (const p of set.pieces(part, style)) out.push({ text: p.text, font: p.font, size, width: p.font.widthOfTextAtSize(p.text, size), space: p.space, ...extra })
+      for (const p of set.pieces(part, style)) out.push({ text: p.text, font: p.font, size, width: p.font.widthOfTextAtSize(p.text, size) + extraW(p.text), space: p.space, ...extra })
     })
   }
   return out
@@ -273,7 +279,10 @@ export async function layoutPdf(blocks: OBlock[], opts: LayoutOptions = {}): Pro
       if (t.highlight) page.drawRectangle({ x: cx, y: baseline - t.size * 0.24, width: w, height: t.size * 1.18, color: hexRgb(t.highlight) })
       if (!t.space) {
         const text = t.field ? String(fieldValues[t.field]) : t.text
+        // Espaciado entre letras: el operador Tc del PDF (pdf-lib no lo expone en drawText).
+        if (t.spacing) page.pushOperators(setCharacterSpacing(t.spacing))
         page.drawText(text, { x: cx, y: baseline + (t.rise ?? 0), size: t.size, font: t.font, color })
+        if (t.spacing) page.pushOperators(setCharacterSpacing(0))
       }
       const th = Math.max(0.5, t.size / 18)
       if (t.underline) page.drawLine({ start: { x: cx, y: baseline - t.size * 0.13 }, end: { x: cx + w, y: baseline - t.size * 0.13 }, thickness: th, color })
@@ -319,6 +328,10 @@ export async function layoutPdf(blocks: OBlock[], opts: LayoutOptions = {}): Pro
     const before = p.spaceBefore ?? (heading ? size * 0.6 : 0)
     if (before && !atTop()) y -= before
     lines.forEach((line, i) => {
+      if (p.shade) {
+        ensure(line.height)
+        page.drawRectangle({ x: M.left + indent, y: y - line.height, width: contentW - indent - right, height: line.height, color: hexRgb(p.shade) })
+      }
       // Un título (o un párrafo que va con el siguiente) no queda solo al final de la página.
       ensure(line.height + (i === 0 && (heading || p.keepNext) ? base * 2.6 : 0))
       if (i === 0 && p.list) {

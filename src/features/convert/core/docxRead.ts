@@ -37,6 +37,7 @@ type RProps = {
   caps?: boolean
   script?: 'sup' | 'sub'
   hidden?: boolean
+  spacing?: number
 }
 type PProps = {
   align?: OPara['align']
@@ -51,6 +52,7 @@ type PProps = {
   keepNext?: boolean
   pageBreakBefore?: boolean
   contextual?: boolean
+  shade?: string
 }
 type Style = { type: string; basedOn?: string; p: PProps; r: RProps; name: string; borders?: boolean; cellMar?: XNode }
 type Level = { fmt: string; text: string; start: number; p: PProps; r: RProps }
@@ -99,6 +101,7 @@ function rProps(rPr: XNode | undefined, theme: { minor?: string; major?: string 
     caps: flag(child(rPr, 'w:caps')),
     script: va === 'superscript' ? 'sup' : va === 'subscript' ? 'sub' : undefined,
     hidden: flag(child(rPr, 'w:vanish')),
+    spacing: twip(attr(child(rPr, 'w:spacing'), 'val')),
   }
 }
 
@@ -127,6 +130,7 @@ function pProps(pPr: XNode | undefined): PProps {
     keepNext: flag(child(pPr, 'w:keepNext')),
     pageBreakBefore: flag(child(pPr, 'w:pageBreakBefore')),
     contextual: flag(child(pPr, 'w:contextualSpacing')),
+    shade: ((f) => (f && /^[0-9a-f]{6}$/i.test(f) ? f.toUpperCase() : undefined))(attr(child(pPr, 'w:shd'), 'fill')),
   }
 }
 
@@ -332,6 +336,7 @@ export function readDocx(bytes: Uint8Array): DocxDoc {
         keepNext: props.keepNext,
         pageBreakBefore: first ? props.pageBreakBefore : false,
         list: first && numbered ? numbered.list : undefined,
+        shade: props.shade,
       }
       // Tamaño de un párrafo vacío (ocupa su línea, como en Word).
       if (!runs.length) runs.push({ text: '', size: baseR.size ?? 10 })
@@ -356,7 +361,7 @@ export function readDocx(bytes: Uint8Array): DocxDoc {
         text: r.caps ? text.toUpperCase() : text,
         bold: r.bold, italic: r.italic, underline: r.underline, strike: r.strike,
         color: r.color || undefined, size: r.size ?? 10, highlight: r.highlight || undefined,
-        family: r.family, script: r.script,
+        family: r.family, script: r.script, spacing: r.spacing || undefined,
       }) as ORun)
     }
     const field = (instr: string, r: RProps) => {
