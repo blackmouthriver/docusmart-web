@@ -592,6 +592,23 @@ export default {
         ["Nire bideoak internetera igotzen dira?", "Ez. Konpresioa zure nabigatzailean egiten da, eskuragarri dagoenean zure gailuaren hardware bidezko azelerazioarekin: bideoa ez da inoiz zure gailutik ateratzen."],
       ],
     },
+    'quitar-metadatos': {
+      slug: "metadatuak-kendu",
+      title: "Metadatuak kendu argazki, PDF eta Word-etatik doan (EXIF, GPS) | DocuSmart",
+      description: "Ikusi eta ezabatu zure fitxategietako datu ezkutuak: argazkien GPS kokapena eta kamera, PDF, Word eta Excel-en egilea eta datak. Doan eta igo gabe.",
+      h1: "Metadatuak kendu (EXIF, GPS eta egilea)",
+      howTo: "Nola kendu metadatuak 3 urratsetan",
+      lead: "Argazki batek non bizi zaren esan dezake, eta PDF batek nork idatzi zuen. Ikusi zer datu ezkutu dituzten zure fitxategiek eta ezabatu partekatu aurretik, zure gailutik atera gabe.",
+      short: "Ezabatu datu ezkutuak partekatu aurretik",
+      steps: ["Aukeratu argazki bat edo gehiago (JPG, PNG edo WebP) edo dokumentuak (PDF, Word, Excel edo PowerPoint).", "Berrikusi aurkitu ditugun datu ezkutuak: GPS kokapena, kamera, egilea, programa eta datak.", "Sakatu «Metadatuak kendu» eta deskargatu fitxategi garbiak (bat baino gehiago badira, ZIP batean)."],
+      faq: [
+        ["Zer dira metadatuak?", "Fitxategiaren barruan ikusi gabe gordetzen diren datuak dira: argazki batean, kamera, data eta askotan GPS kokapen zehatza; PDF edo Word batean, egilearen izena, enpresa, programa eta sortze- eta aldatze-datak."],
+        ["Argazkiak kalitatea galtzen du?", "Ez. Datu-blokeak bakarrik kentzen dira; irudia dagoen bezala kopiatzen da, berriro konprimitu gabe. Kolore-profila eta orientazioa gordetzen dira, lehen bezala ikus dadin."],
+        ["Zer kentzen da PDF edo Word batetik?", "PDFan: izenburua, egilea, programa, datak, XMP datuak eta fitxategiaren identifikatzailea. Word, Excel eta PowerPoint-en: egilea, nork aldatu zuen, enpresa, txantiloia, edizio-denbora, datak eta propietate pertsonalizatuak. Edukia ez da ukitzen."],
+        ["WhatsApp edo sare sozialetan ere balio du?", "Aplikazio batzuek datuen zati bat ezabatzen dute bidaltzean, baina ez guztiek eta ez beti (adibidez, dokumentu gisa bidaltzean). Fitxategia aurretik garbitzea da zure kokapena ez daramala jakiteko modu segurua."],
+        ["Nire fitxategiak internetera igotzen dira?", "Ez. Dena zure nabigatzailean egiten da: zure argazkiak eta dokumentuak ez dira inoiz zure gailutik ateratzen."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',

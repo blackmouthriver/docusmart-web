@@ -5,6 +5,7 @@ export type ToolSpec =
   | { kind: 'qr'; id?: undefined }
   | { kind: 'doc'; id: 'cobro' | 'cv' }
   | { kind: 'media'; id: 'audio' | 'convertir' | 'recortar' | 'comprimir' }
+  | { kind: 'meta'; id?: undefined }
   | { kind: 'archive'; id: 'crear' | 'extraer' }
   | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' }
 

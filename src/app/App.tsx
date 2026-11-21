@@ -24,6 +24,7 @@ const PdfTools = lazy(() => import('../features/pdf/ui/PdfTools').then((m) => ({
 const QrScreen = lazy(() => import('../features/qr/ui/Qr').then((m) => ({ default: m.QrScreen })))
 const Study = lazy(() => import('../features/study/ui/Study').then((m) => ({ default: m.Study })))
 const MediaScreen = lazy(() => import('../features/media/ui/Media').then((m) => ({ default: m.MediaScreen })))
+const MetadataScreen = lazy(() => import('../features/metadata/ui/Metadata').then((m) => ({ default: m.MetadataScreen })))
 const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((m) => ({ default: m.ArchiveScreen })))
 const ToolsScreen = lazy(() => import('../features/tools/ui/ToolsScreen').then((m) => ({ default: m.ToolsScreen })))
 const CvScreen = lazy(() => import('../features/cv/ui/Cv').then((m) => ({ default: m.CvScreen })))
@@ -68,6 +69,7 @@ const SCREEN_NAMES: Record<string, string> = {
   estudio: 'Study',
   archivos: 'Archive',
   hash: 'Hash',
+  metadatos: 'Metadata',
   documentos: 'Documents',
   multimedia: 'Media',
   imagen: 'ImageTools',
@@ -228,6 +230,9 @@ export function App() {
       break
     case 'archivos':
       screen = <ArchiveScreen sub={route.sub} />
+      break
+    case 'metadatos':
+      screen = <MetadataScreen />
       break
     case 'hash':
       screen = <HashScreen sub={route.sub} />

@@ -631,6 +631,14 @@ p { margin: 0; }
 .cv-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 10px; min-width: 0; }
 .cv-wide { grid-column: 1 / -1; }
 .cv-entry-actions { display: flex; flex-direction: column; gap: 2px; }
+.meta-item { padding-top: 10px; border-top: 1px solid var(--line); gap: 8px; }
+.meta-title { font-size: 14px; }
+.meta-list { display: grid; gap: 4px; margin: 0; }
+.meta-list > div { display: grid; grid-template-columns: minmax(110px, 38%) 1fr; gap: 10px; font-size: 14px; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+.meta-list dt { color: var(--ink-soft); display: flex; gap: 4px; align-items: center; }
+.meta-list dd { margin: 0; overflow-wrap: anywhere; }
+.meta-gps dt, .meta-gps dd { color: var(--danger); font-weight: 600; }
+.meta-gps svg { width: 16px; height: 16px; }
 .media-player { width: 100%; max-height: 360px; border-radius: 12px; background: #000; }
 audio.media-player { background: transparent; max-height: none; }
 .media-trim { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 10px; align-items: end; }

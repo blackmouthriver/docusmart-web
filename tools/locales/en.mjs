@@ -587,6 +587,23 @@ export default {
         ["Are my videos uploaded?", "No. Compression happens in your browser, using your device's hardware acceleration when available: the video never leaves your device."],
       ],
     },
+    'quitar-metadatos': {
+      slug: "remove-metadata",
+      title: "Remove metadata from photos, PDF and Word free (EXIF, GPS) | DocuSmart",
+      description: "See and erase your files' hidden data: GPS location and camera in photos, author and dates in PDF, Word and Excel. Free and without uploading.",
+      h1: "Remove metadata (EXIF, GPS and author)",
+      howTo: "How to remove metadata in 3 steps",
+      lead: "A photo can reveal where you live and a PDF who wrote it. See what hidden data your files carry and erase it before sharing, without them leaving your device.",
+      short: "Erase hidden data before sharing",
+      steps: ["Choose one or more photos (JPG, PNG or WebP) or documents (PDF, Word, Excel or PowerPoint).", "Review the hidden data we found: GPS location, camera, author, software and dates.", "Press \"Remove metadata\" and download the clean files (several come in a ZIP)."],
+      faq: [
+        ["What is metadata?", "It's data stored inside a file that you don't see: in a photo, the camera, the date and often the exact GPS location; in a PDF or Word file, the author's name, the company, the software and the creation and modification dates."],
+        ["Does the photo lose quality?", "No. Only the data blocks are removed; the image is copied as is, without recompressing it. The color profile and orientation are kept, so it looks exactly the same."],
+        ["What is removed from a PDF or Word file?", "In PDF: title, author, software, dates, XMP data and the file identifier. In Word, Excel and PowerPoint: author, who modified it, company, template, editing time, dates and custom properties. The content isn't touched."],
+        ["Does it matter for WhatsApp or social media?", "Some apps strip part of the data when sending, but not all of them and not always (for example, when sent as a document). Cleaning the file first is the safe way to know it doesn't carry your location."],
+        ["Are my files uploaded?", "No. Everything happens in your browser: your photos and documents never leave your device."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

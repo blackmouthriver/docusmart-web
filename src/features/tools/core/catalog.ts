@@ -70,6 +70,7 @@ export const CATALOG: readonly CatalogTool[] = [
   pdf('reparar', 'seguridad', 'wrench'),
   { key: 'documentos/cv', category: 'documentos', icon: 'user', name: 'tools.cv', desc: 'tools.cv.desc', section: 'documentos', sub: 'cv' },
   { key: 'documentos/cobro', category: 'documentos', icon: 'file', name: 'tools.billing', desc: 'tools.billing.desc', section: 'documentos', sub: 'cobro' },
+  { key: 'metadatos/quitar', category: 'seguridad', icon: 'eraser', name: 'tools.meta', desc: 'tools.meta.desc', section: 'metadatos', sub: 'quitar' },
   { key: 'hash/calcular', category: 'seguridad', icon: 'fingerprint', name: 'tools.hash', desc: 'tools.hash.desc', section: 'hash', sub: 'calcular' },
   pdf('comprimir', 'optimizar', 'compress'),
   pdf('pdfa', 'optimizar', 'archive'),
