@@ -472,6 +472,23 @@ export default {
         ["Le mie foto vengono caricate su internet?", "No. La filigrana viene applicata nel tuo browser: le tue foto e il tuo logo non lasciano mai il tuo dispositivo."],
       ],
     },
+    'ajustar-imagen': {
+      slug: "regolare-immagine",
+      title: "Regolare luminosità, contrasto e colore di una foto gratis | DocuSmart",
+      description: "Migliora le tue foto nel browser: luminosità, contrasto, saturazione, bianco e nero e raddrizzare, con anteprima e su molte insieme. Gratis e senza caricarle.",
+      h1: "Regola immagine",
+      howTo: "Come regolare luminosità e colore di una foto in 3 passaggi",
+      lead: "Schiarisci una foto scura, ravviva i colori, trasformala in bianco e nero o raddrizza l'orizzonte. Vedi subito il risultato e applicalo a tutte le foto in una volta.",
+      short: "Luminosità, contrasto, colore e raddrizzare",
+      steps: ["Scegli una o più immagini (JPG, PNG, WebP o HEIC).", "Regola luminosità, contrasto, saturazione o angolo, oppure seleziona \"Bianco e nero\", guardando l'anteprima.", "Premi \"Applica regolazioni\" e scarica il risultato; con più immagini, tutte insieme in uno ZIP."],
+      faq: [
+        ["Come schiarisco una foto scura?", "Alza la luminosità e, se sembra spenta, un po' il contrasto. Con \"Confronta con l'originale\" vedi il prima e il dopo nella stessa anteprima."],
+        ["A cosa serve raddrizzare?", "A correggere foto storte, come un orizzonte inclinato o un documento fotografato di sbieco. La foto ruota fino a 15° e viene ritagliata un po' per non lasciare angoli vuoti."],
+        ["Posso trasformare più foto in bianco e nero?", "Sì. Scegli tutte, seleziona \"Bianco e nero\" e vengono convertite con le stesse regolazioni; si scaricano insieme in uno ZIP."],
+        ["La foto perde qualità?", "Mantiene dimensioni e formato (JPG, PNG o WebP; le HEIC dell'iPhone vengono salvate in JPG). Solo raddrizzando si ritagliano un po' i bordi. Inoltre vengono rimossi i dati nascosti della foto (EXIF), come la posizione GPS."],
+        ["Le mie foto vengono caricate su internet?", "No. Le regolazioni avvengono nel tuo browser: le tue foto non lasciano mai il tuo dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',

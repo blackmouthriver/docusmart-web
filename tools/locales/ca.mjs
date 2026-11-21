@@ -472,6 +472,23 @@ export default {
         ["Les meves fotos es pugen a internet?", "No. La marca d'aigua es posa dins del teu navegador: les teves fotos i el teu logo no surten mai del teu dispositiu."],
       ],
     },
+    'ajustar-imagen': {
+      slug: "ajustar-imatge",
+      title: "Ajustar la brillantor, el contrast i el color d'una foto | DocuSmart",
+      description: "Millora les teves fotos al navegador: brillantor, contrast, saturació, blanc i negre i redreçar, amb previsualització i a moltes alhora. Gratis i sense pujar-les.",
+      h1: "Ajustar imatge",
+      howTo: "Com ajustar la brillantor i el color d'una foto en 3 passos",
+      lead: "Aclareix una foto fosca, dona més vida als colors, passa-la a blanc i negre o redreça l'horitzó. Veus el resultat a l'instant i l'apliques a totes les fotos alhora.",
+      short: "Brillantor, contrast, color i redreçar",
+      steps: ["Tria una o diverses imatges (JPG, PNG, WebP o HEIC).", "Mou la brillantor, el contrast, la saturació o l'angle, o marca \"Blanc i negre\", mirant la previsualització.", "Prem \"Aplica els ajustos\" i baixa el resultat; amb diverses imatges, totes juntes en un ZIP."],
+      faq: [
+        ["Com aclareixo una foto fosca?", "Puja la brillantor i, si es veu apagada, una mica el contrast. Amb \"Comparar amb l'original\" veus l'abans i el després a la mateixa previsualització."],
+        ["Per a què serveix redreçar?", "Per corregir fotos tortes, com un horitzó inclinat o un document fotografiat de costat. La foto gira fins a 15° i es retalla una mica perquè no quedin cantonades buides."],
+        ["Puc passar diverses fotos a blanc i negre?", "Sí. Tria-les totes, marca \"Blanc i negre\" i es converteixen amb els mateixos ajustos; es baixen juntes en un ZIP."],
+        ["La foto perd qualitat?", "Conserva la mida i el format (JPG, PNG o WebP; les HEIC de l'iPhone es desen en JPG). Només en redreçar es retallen una mica les vores. A més, s'eliminen les dades ocultes de la foto (EXIF), com la ubicació GPS."],
+        ["Les meves fotos es pugen a internet?", "No. Els ajustos es fan dins del teu navegador: les teves fotos no surten mai del teu dispositiu."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',

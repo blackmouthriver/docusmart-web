@@ -472,6 +472,23 @@ export default {
         ["Minhas fotos são enviadas para a internet?", "Não. A marca d’água é aplicada dentro do seu navegador: suas fotos e seu logo nunca saem do seu dispositivo."],
       ],
     },
+    'ajustar-imagen': {
+      slug: "ajustar-imagem",
+      title: "Ajustar brilho, contraste e cor de uma foto grátis | DocuSmart",
+      description: "Melhore suas fotos no navegador: brilho, contraste, saturação, preto e branco e endireitar, com pré-visualização e em várias de uma vez. Grátis, sem enviar.",
+      h1: "Ajustar imagem",
+      howTo: "Como ajustar o brilho e a cor de uma foto em 3 passos",
+      lead: "Clareie uma foto escura, dê mais vida às cores, deixe em preto e branco ou endireite o horizonte. Veja o resultado na hora e aplique a todas as fotos de uma vez.",
+      short: "Brilho, contraste, cor e endireitar",
+      steps: ["Escolha uma ou várias imagens (JPG, PNG, WebP ou HEIC).", "Mova o brilho, o contraste, a saturação ou o ângulo, ou marque \"Preto e branco\", olhando a pré-visualização.", "Toque em \"Aplicar ajustes\" e baixe o resultado; com várias imagens, todas juntas em um ZIP."],
+      faq: [
+        ["Como clareio uma foto escura?", "Aumente o brilho e, se ficar apagada, um pouco o contraste. Com \"Comparar com a original\" você vê o antes e o depois na mesma pré-visualização."],
+        ["Para que serve endireitar?", "Para corrigir fotos tortas, como um horizonte inclinado ou um documento fotografado de lado. A foto gira até 15° e é cortada um pouco para não ficarem cantos vazios."],
+        ["Posso deixar várias fotos em preto e branco?", "Sim. Escolha todas, marque \"Preto e branco\" e elas são convertidas com os mesmos ajustes; são baixadas juntas em um ZIP."],
+        ["A foto perde qualidade?", "Mantém o tamanho e o formato (JPG, PNG ou WebP; as HEIC do iPhone são salvas em JPG). Só ao endireitar as bordas são cortadas um pouco. Além disso, os dados ocultos da foto (EXIF), como a localização GPS, são removidos."],
+        ["Minhas fotos são enviadas para a internet?", "Não. Os ajustes são feitos dentro do seu navegador: suas fotos nunca saem do seu dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',

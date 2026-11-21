@@ -81,18 +81,6 @@ export async function applyWatermark(file: Blob, mark: Mark, mime: OutputMime): 
   }
 }
 
-/** Copia reducida (hasta `maxSide`) de la imagen, para redibujar la vista previa al instante. */
-export async function previewBitmap(file: Blob, maxSide = 900): Promise<ImageBitmap> {
-  const img = await loadImage(file)
-  const k = Math.min(1, maxSide / Math.max(img.width, img.height))
-  if (k === 1) return img.bmp
-  try {
-    return await createImageBitmap(img.bmp, { resizeWidth: Math.max(1, Math.round(img.width * k)), resizeHeight: Math.max(1, Math.round(img.height * k)), resizeQuality: 'high' })
-  } finally {
-    img.bmp.close()
-  }
-}
-
 /** Vista previa: la copia reducida con la marca, en un canvas de la página. */
 export function drawPreview(target: HTMLCanvasElement, bmp: ImageBitmap, mark: Mark | null) {
   target.width = bmp.width

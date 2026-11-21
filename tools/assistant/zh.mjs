@@ -63,6 +63,7 @@ export default {
     { id: 'foto-tamano-documento', q: ['证件照', '护照照片', '签证照片', '白底照片', '一寸照片', '二寸照片', '身份证照片', 'passport photo'], a: '请使用“证件照”：选择尺寸（护照和签证 35 × 45 mm，美国 2 × 2 in，30 × 40 mm 或其他），对准人脸，AI 会换成白色背景。可下载 300 dpi 的 JPG，或排有多张的 10 × 15 cm 排版用于打印。一切都在浏览器中完成。', actions: [['tool', 'foto-tamano-documento']], related: ['quitar-fondo'] },
     { id: 'heic-a-jpg', q: ['heic 转 jpg', '转换 heic', '打开 heic 文件', 'iphone 照片 windows', 'iphone 照片转 jpg', 'heif 文件', '打不开 iphone 照片', 'heic to jpg'], a: '请使用“HEIC 转 JPG”：它能把 iPhone 的 HEIC 照片转换为 JPG（或 PNG），可一次转换多张，质量由你选择。转换在浏览器中完成，不会上传照片。', actions: [['tool', 'heic-a-jpg']] },
     { id: 'marca-de-agua-imagen', q: ["照片加水印", "给照片加标志", "图片水印", "保护我的照片", "在照片上加名字", "批量加水印", "watermark"], a: "使用“图片”中的“水印”：在照片上添加文字或标志，选择位置（或平铺）、大小和不透明度，一次应用到多张图片。PDF 请使用“PDF”中的“水印”。", actions: [['tool', 'marca-de-agua-imagen'], ['tool', 'marca-de-agua-pdf']] },
+    { id: 'ajustar-imagen', q: ["调整照片亮度", "让暗照片变亮", "提高对比度", "照片转黑白", "拉直歪斜的照片", "图片饱和度", "美化照片"], a: "使用“调整图片”：可以改变亮度、对比度和饱和度，转成黑白或拉直，立即预览，并一次应用到多张照片。全部在你的浏览器中完成。", actions: [['tool', 'ajustar-imagen']] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

@@ -311,6 +311,19 @@
     "ko": "add-watermark-to-image",
     "zh": "add-watermark-to-image"
   },
+  "ajustar-imagen": {
+    "en": "adjust-image",
+    "pt": "ajustar-imagem",
+    "fr": "ajuster-image",
+    "it": "regolare-immagine",
+    "de": "bild-anpassen",
+    "ca": "ajustar-imatge",
+    "eu": "irudia-doitu",
+    "ru": "adjust-image",
+    "ja": "adjust-image",
+    "ko": "adjust-image",
+    "zh": "adjust-image"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

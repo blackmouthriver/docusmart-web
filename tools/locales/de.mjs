@@ -472,6 +472,23 @@ export default {
         ["Werden meine Fotos ins Internet hochgeladen?", "Nein. Das Wasserzeichen wird in deinem Browser gesetzt: Deine Fotos und dein Logo verlassen nie dein Gerät."],
       ],
     },
+    'ajustar-imagen': {
+      slug: "bild-anpassen",
+      title: "Helligkeit, Kontrast und Farbe eines Fotos anpassen | DocuSmart",
+      description: "Verbessere deine Fotos im Browser: Helligkeit, Kontrast, Sättigung, Schwarzweiß und Ausrichten, mit Vorschau und für viele auf einmal. Gratis, ohne Upload.",
+      h1: "Bild anpassen",
+      howTo: "So passt du Helligkeit und Farbe eines Fotos in 3 Schritten an",
+      lead: "Hellere ein dunkles Foto auf, lass die Farben leuchten, mach es schwarzweiß oder richte den Horizont gerade aus. Du siehst das Ergebnis sofort und wendest es auf alle Fotos auf einmal an.",
+      short: "Helligkeit, Kontrast, Farbe und Ausrichten",
+      steps: ["Wähle ein oder mehrere Bilder (JPG, PNG, WebP oder HEIC).", "Stelle Helligkeit, Kontrast, Sättigung oder Winkel ein oder aktiviere „Schwarzweiß“ und achte dabei auf die Vorschau.", "Tippe auf „Anpassungen anwenden“ und lade das Ergebnis herunter; bei mehreren Bildern alle zusammen in einer ZIP-Datei."],
+      faq: [
+        ["Wie helle ich ein dunkles Foto auf?", "Erhöhe die Helligkeit und, wenn es flau wirkt, etwas den Kontrast. Mit „Mit dem Original vergleichen“ siehst du vorher und nachher in derselben Vorschau."],
+        ["Wozu dient das Ausrichten?", "Um schiefe Fotos zu korrigieren, etwa einen geneigten Horizont oder ein schräg fotografiertes Dokument. Das Foto wird bis zu 15° gedreht und etwas beschnitten, damit keine leeren Ecken bleiben."],
+        ["Kann ich mehrere Fotos in Schwarzweiß umwandeln?", "Ja. Wähle alle aus, aktiviere „Schwarzweiß“, und sie werden mit denselben Einstellungen umgewandelt; sie werden zusammen als ZIP heruntergeladen."],
+        ["Verliert das Foto an Qualität?", "Es behält Größe und Format (JPG, PNG oder WebP; HEIC-Fotos vom iPhone werden als JPG gespeichert). Nur beim Ausrichten werden die Ränder etwas beschnitten. Außerdem werden versteckte Fotodaten (EXIF) wie der GPS-Standort entfernt."],
+        ["Werden meine Fotos ins Internet hochgeladen?", "Nein. Die Anpassungen passieren in deinem Browser: Deine Fotos verlassen nie dein Gerät."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',

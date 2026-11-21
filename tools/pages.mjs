@@ -9,7 +9,7 @@
 //       { kind: 'hash' }
 //
 // alsoIn: otras categorías donde también se lista (W-119), sin duplicar la página.
-//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo'|'documento'|'marca' }
+//       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo'|'documento'|'marca'|'ajustar' }
 
 export const SITE = 'https://docusmart.online'
 /** Redes sociales de DocuSmart (pie de página y datos estructurados). */
@@ -574,6 +574,30 @@ export const pages = [
       ['¿Se aplica igual a muchas fotos?', 'Sí. La marca se calcula según el ancho de cada imagen, así que se ve igual en fotos grandes y pequeñas, verticales u horizontales. Se descargan todas juntas en un ZIP.'],
       ['¿Pierde calidad la foto?', 'No se reduce: la imagen conserva su tamaño y su formato (JPG, PNG o WebP; las HEIC del iPhone se guardan en JPG). Además se quitan los datos ocultos de la foto (EXIF), como la ubicación GPS.'],
       ['¿Mis fotos se suben a internet?', 'No. La marca de agua se pone dentro de tu navegador: tus fotos y tu logo nunca salen de tu equipo.'],
+    ],
+  },
+  {
+    slug: 'ajustar-imagen',
+    category: 'imagen',
+    tool: { kind: 'img', id: 'ajustar' },
+    title: "Ajustar brillo, contraste y color de una foto gratis | DocuSmart",
+    description:
+      "Mejora tus fotos en el navegador: brillo, contraste, saturación, blanco y negro y enderezar, con vista previa y en muchas a la vez. Gratis y sin subirlas.",
+    h1: "Ajustar imagen",
+    howTo: "Cómo ajustar el brillo y el color de una foto en 3 pasos",
+    lead: "Aclara una foto oscura, dale más vida a los colores, pásala a blanco y negro o endereza el horizonte. Ves el resultado al instante y lo aplicas a todas tus fotos de una vez.",
+    short: "Brillo, contraste, color y enderezar",
+    steps: [
+      "Elige una o varias imágenes (JPG, PNG, WebP o HEIC).",
+      "Mueve el brillo, el contraste, la saturación o el ángulo, o marca \"Blanco y negro\", mirando la vista previa.",
+      "Pulsa \"Aplicar ajustes\" y descarga el resultado; con varias imágenes, todas juntas en un ZIP.",
+    ],
+    faq: [
+      ["¿Cómo aclaro una foto oscura?", "Sube el brillo y, si se ve apagada, un poco el contraste. Con \"Comparar con la original\" ves el antes y el después en la misma vista previa."],
+      ["¿Para qué sirve enderezar?", "Para corregir fotos torcidas, como un horizonte inclinado o un documento fotografiado de lado. La foto se gira hasta 15° y se recorta un poco para que no queden esquinas vacías."],
+      ["¿Puedo pasar varias fotos a blanco y negro?", "Sí. Elige todas, marca \"Blanco y negro\" y se convierten con los mismos ajustes; se descargan juntas en un ZIP."],
+      ["¿Pierde calidad la foto?", "Conserva su tamaño y su formato (JPG, PNG o WebP; las HEIC del iPhone se guardan en JPG). Solo al enderezar se recortan un poco los bordes. Además se quitan los datos ocultos de la foto (EXIF), como la ubicación GPS."],
+      ["¿Mis fotos se suben a internet?", "No. Los ajustes se hacen dentro de tu navegador: tus fotos nunca salen de tu equipo."],
     ],
   },
   {
