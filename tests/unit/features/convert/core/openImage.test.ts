@@ -31,6 +31,13 @@ const heicToCanvas = vi.fn(async () => {
   return heicPhoto
 })
 vi.mock('../../../../../src/features/convert/infra/heicDecoder', () => ({ heicToCanvas }))
+// Los codificadores de GIF, AVIF e ICO usan canvas y wasm: aquí solo se comprueba que convertImage los elija.
+const encoded = (type: string) => vi.fn(async () => new Blob(['x'], { type }))
+const encoders = { encodeGif: encoded('image/gif'), encodeAvif: encoded('image/avif'), encodeIco: encoded('image/x-icon') }
+vi.mock('../../../../../src/features/convert/infra/formatCodecs', async (importOriginal) => ({
+  ...(await importOriginal<object>()),
+  ...encoders,
+}))
 
 const { convertImage, openImage } = await import('../../../../../src/features/convert/core/convert')
 
@@ -90,5 +97,16 @@ describe('openImage (abre también fotos HEIC)', () => {
     expect(jpg.type).toBe('image/jpeg')
     expect(heicPhoto.ctx.calls).toEqual(['fill #ffffff destination-over'])
     expect(heicToCanvas).toHaveBeenCalledTimes(2)
+  })
+
+  it('convertImage elige el codificador de GIF, AVIF o ICO y conserva la transparencia', async () => {
+    for (const [target, fn, type] of [['gif', encoders.encodeGif, 'image/gif'], ['avif', encoders.encodeAvif, 'image/avif'], ['ico', encoders.encodeIco, 'image/x-icon']] as const) {
+      const out = await convertImage(new File([JPEG], 'logo.jpg', { type: 'image/jpeg' }), target)
+      expect(out.type).toBe(type)
+      expect(fn).toHaveBeenCalledTimes(1)
+      // Sin fondo blanco: estos formatos admiten transparencia.
+      const canvas = (fn.mock.calls[0] as unknown[])[0] as ReturnType<typeof fakeCanvas>
+      expect(canvas.ctx.calls).toEqual(['draw'])
+    }
   })
 })

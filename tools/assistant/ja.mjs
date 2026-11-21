@@ -64,6 +64,11 @@ export default {
     { id: 'heic-a-jpg', q: ['heic jpg 変換', 'heic 変換', 'heic ファイルを開く', 'iphone 写真 windows', 'iphone 写真 jpg に変換', 'heif ファイル', 'iphoneの写真が開けない', 'heic to jpg'], a: '「HEIC を JPG に」を使ってください。iPhone の HEIC 写真を JPG（または PNG）に変換します。複数まとめて、好きな画質で変換できます。変換はブラウザ内で行われ、写真はアップロードされません。', actions: [['tool', 'heic-a-jpg']] },
     { id: 'marca-de-agua-imagen', q: ["写真に透かし", "写真にロゴを入れる", "画像 透かし", "写真を保護したい", "写真に名前を入れる", "複数の写真に透かし", "watermark"], a: "「画像」の「透かし」を使ってください。写真にテキストやロゴを入れ、位置（またはタイル状）、サイズ、不透明度を選んで、複数の画像にまとめて適用できます。PDFには「PDF」の「透かし」があります。", actions: [['tool', 'marca-de-agua-imagen'], ['tool', 'marca-de-agua-pdf']] },
     { id: 'ajustar-imagen', q: ["写真の明るさを調整", "暗い写真を明るく", "コントラストを上げる", "写真を白黒に", "傾いた写真をまっすぐ", "画像の彩度", "写真をきれいに"], a: "「画像を調整」を使ってください。明るさ、コントラスト、彩度を変えたり、白黒にしたり、傾きを補正したりでき、すぐにプレビューでき、複数の写真にまとめて適用できます。すべてブラウザ内で行います。", actions: [['tool', 'ajustar-imagen']] },
+    { id: 'imagen-a-gif', q: ["gifに変換", "pngをgifに", "jpgをgifに", "画像をgifに", "写真をgifに"], a: "「画像をGIFに」を使ってください。JPG、PNG、WebPを透明度を保ったままGIFに変換し、まとめて処理できます。ブラウザ内で行います。", actions: [['tool', 'imagen-a-gif']] },
+    { id: 'imagen-a-avif', q: ["avifに変換", "jpgをavifに", "pngをavifに", "画像をavifに", "avif形式"], a: "「画像をAVIFに」を使ってください。Web向けで最も軽量な形式で、透明度にも対応しています。初回はエンコーダー（3.5 MB）をダウンロードし、ブラウザ内で処理します。", actions: [['tool', 'imagen-a-avif']] },
+    { id: 'png-a-ico', q: ["ファビコンを作る", "pngをicoに", "icoに変換", "サイトのアイコン", "favicon.ico"], a: "「画像をICOに」を使ってください。PNG、JPG、SVGから、16〜256 pxのサイズを1つの.icoにまとめたファビコンを作ります。", actions: [['tool', 'png-a-ico']] },
+    { id: 'svg-a-png', q: ["svgをpngに", "svgを変換", "svgファイルを開く", "svgを画像に", "svgロゴをpngに"], a: "「SVGをPNGに」を使ってください。SVGのロゴやイラストを、背景が透明な高解像度PNGにブラウザ内で変換します。", actions: [['tool', 'svg-a-png']] },
+    { id: 'tiff-a-jpg', q: ["tiffをjpgに", "tifをjpgに", "tiffを変換", "tifファイルを開く", "tiffのスキャン"], a: "「TIFFをJPGに」を使ってください。TIFFのスキャンや写真を、軽くてどこでも使えるJPGにまとめてブラウザ内で変換します。", actions: [['tool', 'tiff-a-jpg']] },
     { id: 'contacto', q: ['お問い合わせ', 'サポート', '人と話したい', '問題があります', 'バグを報告'], a: 'supportdocusmart@docusmart.online へのメール、または Facebook か Instagram でご連絡ください。お返事します。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

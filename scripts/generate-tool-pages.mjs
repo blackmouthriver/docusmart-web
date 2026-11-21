@@ -55,7 +55,7 @@ function svg(name, cls) {
 /** Ícono de cada herramienta, el mismo que usa en la app web (PdfTools, ImageTools, Converter…). */
 const PDF_ICONS = { unir: 'merge', reordenar: 'reorder', numerar: 'hash', marca: 'stamp', dividir: 'split', rotar: 'rotate', escanear: 'camera', formulario: 'form', editar: 'edit', imagenes: 'images', comparar: 'compare', censurar: 'redact', firmar: 'pen', recortar: 'crop', comprimir: 'compress', proteger: 'lock', desbloquear: 'unlock', reparar: 'wrench', ocr: 'text', pdfa: 'archive' }
 const IMG_ICONS = { comprimir: 'compress', redimensionar: 'resize', recortar: 'crop', rotar: 'rotate', fondo: 'eraser', documento: 'user', marca: 'stamp', ajustar: 'settings' }
-const CONV_ICONS = { 'img-pdf': 'image', 'img-png': 'image', 'img-jpg': 'image', 'img-webp': 'image', 'heic-jpg': 'image', 'pdf-img': 'images', 'pdf-txt': 'text' }
+const CONV_ICONS = { 'img-pdf': 'image', 'img-png': 'image', 'img-jpg': 'image', 'img-webp': 'image', 'heic-jpg': 'image', 'img-gif': 'image', 'img-avif': 'image', 'img-ico': 'image', 'svg-png': 'image', 'tiff-jpg': 'image', 'pdf-img': 'images', 'pdf-txt': 'text' }
 function toolIcon({ kind, id }) {
   if (kind === 'pdf') return PDF_ICONS[id] ?? 'pdf'
   if (kind === 'img') return IMG_ICONS[id] ?? 'image'

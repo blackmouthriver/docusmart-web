@@ -23,11 +23,13 @@
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@fontsource-variable/dancing-script": "^5.3.0",
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
+    "@jsquash/avif": "^2.1.1",
     "@neslinesli93/qpdf-wasm": "^0.3.1",
     "@tesseract.js-data/eng": "^1.0.0",
     "@tesseract.js-data/spa": "^1.0.0",
     "7z-wasm": "^1.2.0",
     "fflate": "^0.8.3",
+    "gifenc": "^1.0.3",
     "jsqr": "^1.4.0",
     "libheif-js": "^1.23.5",
     "mammoth": "^1.13.0",
@@ -38,7 +40,8 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "read-excel-file": "^9.3.17",
-    "tesseract.js": "^7.0.0"
+    "tesseract.js": "^7.0.0",
+    "utif2": "^4.1.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

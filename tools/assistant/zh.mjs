@@ -64,6 +64,11 @@ export default {
     { id: 'heic-a-jpg', q: ['heic 转 jpg', '转换 heic', '打开 heic 文件', 'iphone 照片 windows', 'iphone 照片转 jpg', 'heif 文件', '打不开 iphone 照片', 'heic to jpg'], a: '请使用“HEIC 转 JPG”：它能把 iPhone 的 HEIC 照片转换为 JPG（或 PNG），可一次转换多张，质量由你选择。转换在浏览器中完成，不会上传照片。', actions: [['tool', 'heic-a-jpg']] },
     { id: 'marca-de-agua-imagen', q: ["照片加水印", "给照片加标志", "图片水印", "保护我的照片", "在照片上加名字", "批量加水印", "watermark"], a: "使用“图片”中的“水印”：在照片上添加文字或标志，选择位置（或平铺）、大小和不透明度，一次应用到多张图片。PDF 请使用“PDF”中的“水印”。", actions: [['tool', 'marca-de-agua-imagen'], ['tool', 'marca-de-agua-pdf']] },
     { id: 'ajustar-imagen', q: ["调整照片亮度", "让暗照片变亮", "提高对比度", "照片转黑白", "拉直歪斜的照片", "图片饱和度", "美化照片"], a: "使用“调整图片”：可以改变亮度、对比度和饱和度，转成黑白或拉直，立即预览，并一次应用到多张照片。全部在你的浏览器中完成。", actions: [['tool', 'ajustar-imagen']] },
+    { id: 'imagen-a-gif', q: ["转换为gif", "png转gif", "jpg转gif", "图片转gif", "照片转gif"], a: "使用“图片转 GIF”：把 JPG、PNG 或 WebP 转换为 GIF，可一次处理多张并保留透明度。全部在你的浏览器中完成。", actions: [['tool', 'imagen-a-gif']] },
+    { id: 'imagen-a-avif', q: ["转换为avif", "jpg转avif", "png转avif", "图片转avif", "avif格式"], a: "使用“图片转 AVIF”：最适合网页的轻量格式，支持透明度。首次会下载编码器（3.5 MB），在你的浏览器中完成。", actions: [['tool', 'imagen-a-avif']] },
+    { id: 'png-a-ico', q: ["制作favicon", "png转ico", "转换为ico", "网站图标", "favicon.ico"], a: "使用“图片转 ICO”：用 PNG、JPG 或 SVG 制作网站图标，16 到 256 px 尺寸都在一个 .ico 中。", actions: [['tool', 'png-a-ico']] },
+    { id: 'svg-a-png', q: ["svg转png", "转换svg", "打开svg文件", "svg转图片", "svg标志转png"], a: "使用“SVG 转 PNG”：在浏览器中把 SVG 标志和插画转换为透明背景的高分辨率 PNG。", actions: [['tool', 'svg-a-png']] },
+    { id: 'tiff-a-jpg', q: ["tiff转jpg", "tif转jpg", "转换tiff", "打开tif文件", "tiff扫描件"], a: "使用“TIFF 转 JPG”：把 TIFF 扫描件和照片转换为轻巧、处处兼容的 JPG，可一次处理多个，在你的浏览器中完成。", actions: [['tool', 'tiff-a-jpg']] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

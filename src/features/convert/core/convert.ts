@@ -1,15 +1,18 @@
 /** Conversiones de imagen y PDF en el navegador (subconjunto de las 17 de la app). */
 import { PDFDocument } from 'pdf-lib'
 import { canvasToBlob, closePdf, extractText, openPdf, renderPage } from '../../../shared/pdf/pdf'
-import { isHeic } from './heic'
+import { specialImage } from './formats'
 
-export type ImageTarget = 'jpg' | 'png' | 'webp' | 'bmp'
+export type ImageTarget = 'jpg' | 'png' | 'webp' | 'bmp' | 'gif' | 'avif' | 'ico'
 
 export const IMAGE_MIME: Record<ImageTarget, string> = {
   jpg: 'image/jpeg',
   png: 'image/png',
   webp: 'image/webp',
   bmp: 'image/bmp',
+  gif: 'image/gif',
+  avif: 'image/avif',
+  ico: 'image/x-icon',
 }
 
 export async function fileToCanvas(file: Blob, background?: string): Promise<HTMLCanvasElement> {
@@ -64,16 +67,17 @@ export function canvasToBmp(canvas: HTMLCanvasElement): Blob {
 }
 
 /**
- * Como fileToCanvas, pero también abre fotos HEIC del iPhone (que solo abre Safari) con el
- * decodificador de HEIC a JPG (W-107), que se carga solo cuando hace falta.
+ * Como fileToCanvas, pero también abre lo que el navegador no abre solo: fotos HEIC del iPhone
+ * (W-107), dibujos SVG y escaneos TIFF (W-124), con decodificadores que se cargan solo si hacen falta.
  */
 export async function openImage(file: Blob, background?: string): Promise<HTMLCanvasElement> {
   try {
     return await fileToCanvas(file, background)
   } catch (e) {
-    if (!isHeic(new Uint8Array(await file.slice(0, 64).arrayBuffer()))) throw e
-    const { heicToCanvas } = await import('../infra/heicDecoder')
-    const photo = await heicToCanvas(file)
+    if (!specialImage(new Uint8Array(await file.slice(0, 2048).arrayBuffer()))) throw e
+    const { specialToCanvas } = await import('../infra/formatCodecs')
+    const photo = await specialToCanvas(file)
+    if (!photo) throw e
     if (!background) return photo
     const ctx = photo.getContext('2d')
     if (!ctx) throw new Error('Canvas no disponible')
@@ -88,6 +92,12 @@ export async function convertImage(file: File, target: ImageTarget, quality = 0.
   // JPG y BMP no tienen transparencia: fondo blanco, como en la app.
   const canvas = await openImage(file, target === 'jpg' || target === 'bmp' ? '#ffffff' : undefined)
   if (target === 'bmp') return canvasToBmp(canvas)
+  if (target === 'gif' || target === 'avif' || target === 'ico') {
+    const codecs = await import('../infra/formatCodecs')
+    if (target === 'gif') return codecs.encodeGif(canvas)
+    if (target === 'avif') return codecs.encodeAvif(canvas)
+    return codecs.encodeIco(canvas)
+  }
   return canvasToBlob(canvas, IMAGE_MIME[target], quality)
 }
 

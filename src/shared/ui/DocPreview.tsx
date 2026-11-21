@@ -28,8 +28,8 @@ export function DocPreview(props: PreviewProps) {
   return <GenericPreview {...props} />
 }
 
-/** Imágenes que el navegador puede mostrar (HEIC solo lo abre Safari: se muestra como archivo). */
-const isViewableImage = (type: string) => type.startsWith('image/') && !/^image\/hei[cf]/i.test(type)
+/** Imágenes que el navegador puede mostrar (HEIC, TIFF y SVG se muestran como archivo). */
+const isViewableImage = (type: string) => type.startsWith('image/') && !/^image\/(hei[cf]|tiff|svg)/i.test(type)
 
 /** PDF por tipo o extensión (un Blob sin tipo ni nombre se trata como PDF). */
 const isPdfLike = (f: Blob & { name?: string }) => f.type === 'application/pdf' || !!f.name?.toLowerCase().endsWith('.pdf') || (!f.type && !f.name)
