@@ -32,7 +32,7 @@ export default {
     footConsent: 'Preferenze di analisi',
     os: 'Qualsiasi (browser web)',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
-    cats: { organizar: "Organizzare PDF", editar: "Modificare e firmare", seguridad: "Sicurezza", optimizar: "Ottimizzare e archiviare", convertir: "Convertire", imagen: "Immagine", escanear: "Scansione e OCR", archivos: "File compressi", qr: "Codici QR" },
+    cats: { organizar: "Organizzare PDF", editar: "Modificare e firmare", documentos: "Creare documenti", seguridad: "Sicurezza", optimizar: "Ottimizzare e archiviare", convertir: "Convertire", imagen: "Immagine", escanear: "Scansione e OCR", archivos: "File compressi", qr: "Codici QR" },
     hubSlug: "strumenti",
     hubTitle: "Tutti gli strumenti gratis: PDF, immagini, QR e altro | DocuSmart",
     hubDescription: "Tutti gli strumenti di DocuSmart per categoria: unire, convertire, firmare e comprimere PDF, modificare immagini, OCR, QR e file ZIP. Gratis e senza caricare i tuoi file.",
@@ -487,6 +487,23 @@ export default {
         ["Posso trasformare più foto in bianco e nero?", "Sì. Scegli tutte, seleziona \"Bianco e nero\" e vengono convertite con le stesse regolazioni; si scaricano insieme in uno ZIP."],
         ["La foto perde qualità?", "Mantiene dimensioni e formato (JPG, PNG o WebP; le HEIC dell'iPhone vengono salvate in JPG). Solo raddrizzando si ritagliano un po' i bordi. Inoltre vengono rimossi i dati nascosti della foto (EXIF), come la posizione GPS."],
         ["Le mie foto vengono caricate su internet?", "No. Le regolazioni avvengono nel tuo browser: le tue foto non lasciano mai il tuo dispositivo."],
+      ],
+    },
+    'cuenta-de-cobro': {
+      slug: "fattura-e-preventivo",
+      title: "Preventivo, parcella o ricevuta in PDF gratis | DocuSmart",
+      description: "Crea preventivi, parcelle e ricevute in pochi minuti: numerazione, imposte e ritenuta, totali e firma, in PDF. Gratis e senza caricare i tuoi dati.",
+      h1: "Preventivo, parcella e ricevuta",
+      howTo: "Come fare un preventivo in 3 passaggi",
+      lead: "Crea parcelle, preventivi e ricevute curati per i tuoi clienti, con i totali calcolati e la tua firma, pronti da inviare in PDF.",
+      short: "Preventivi e ricevute in PDF",
+      steps: ["Scegli il tipo di documento e inserisci i tuoi dati e quelli del cliente (i tuoi possono essere ricordati).", "Aggiungi le voci con quantità e prezzo; se serve, l'imposta o la ritenuta. I totali si calcolano da soli.", "Aggiungi la tua firma, premi \"Crea PDF\" e scaricalo o condividilo."],
+      faq: [
+        ["Quali documenti posso creare?", "Una parcella (chi deve a chi, quanto e per cosa), un preventivo con data di validità e una ricevuta di pagamento, tutti con numerazione, voci, totali e la tua firma."],
+        ["È una fattura elettronica?", "No. DocuSmart non emette fatture elettroniche. Se sei obbligato alla fatturazione elettronica, usa il sistema del tuo paese; questi documenti servono per farti pagare, fare preventivi o attestare un pagamento."],
+        ["Calcola imposte e ritenuta?", "Sì. Scrivi la percentuale d'imposta (IVA o altra) e, se c'è ritenuta, la sua percentuale: si calcolano sul subtotale e il totale si aggiorna subito."],
+        ["I miei dati e la numerazione vengono salvati?", "Se selezioni l'opzione, i tuoi dati (nome, documento, indirizzo, telefono, e-mail e paese) restano in questo browser; i dati per il pagamento non vengono mai salvati. La numerazione (CC-0001, COT-0001, REC-0001) avanza da sola. Niente viene caricato su internet."],
+        ["I miei dati e quelli dei clienti vengono caricati su internet?", "No. Il PDF viene creato nel tuo browser: i tuoi dati, quelli dei clienti e la tua firma non lasciano mai il dispositivo."],
       ],
     },
     'comprimir-archivos': {

@@ -7,6 +7,7 @@
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
 //       { kind: 'hash' }
+//       { kind: 'doc', id: 'cobro' }
 //
 // alsoIn: otras categorías donde también se lista (W-119), sin duplicar la página.
 //       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo'|'documento'|'marca'|'ajustar' }
@@ -25,6 +26,7 @@ export const PRIVACY_UPDATED = '2026-11-12'
 export const CATEGORIES = [
   { id: 'organizar', icon: 'merge' },
   { id: 'editar', icon: 'pen' },
+  { id: 'documentos', icon: 'file' },
   { id: 'seguridad', icon: 'lock' },
   { id: 'optimizar', icon: 'compress' },
   { id: 'convertir', icon: 'convert' },
@@ -598,6 +600,30 @@ export const pages = [
       ["¿Puedo pasar varias fotos a blanco y negro?", "Sí. Elige todas, marca \"Blanco y negro\" y se convierten con los mismos ajustes; se descargan juntas en un ZIP."],
       ["¿Pierde calidad la foto?", "Conserva su tamaño y su formato (JPG, PNG o WebP; las HEIC del iPhone se guardan en JPG). Solo al enderezar se recortan un poco los bordes. Además se quitan los datos ocultos de la foto (EXIF), como la ubicación GPS."],
       ["¿Mis fotos se suben a internet?", "No. Los ajustes se hacen dentro de tu navegador: tus fotos nunca salen de tu equipo."],
+    ],
+  },
+  {
+    slug: 'cuenta-de-cobro',
+    category: 'documentos',
+    tool: { kind: 'doc', id: 'cobro' },
+    title: "Cuenta de cobro, cotización o recibo en PDF gratis | DocuSmart",
+    description:
+      "Haz tu cuenta de cobro, cotización o recibo en minutos: numeración, IVA y retención, valor en letras y firma, en PDF. Gratis y sin subir tus datos.",
+    h1: "Cuenta de cobro, cotización y recibo",
+    howTo: "Cómo hacer una cuenta de cobro en 3 pasos",
+    lead: "Crea cuentas de cobro, cotizaciones y recibos con buena presentación para tus clientes, con los totales calculados y tu firma, listos para enviar en PDF.",
+    short: "Cuentas de cobro y cotizaciones en PDF",
+    steps: [
+      "Elige el tipo de documento y escribe tus datos y los del cliente (los tuyos se pueden recordar para la próxima vez).",
+      "Agrega los conceptos con su cantidad y valor; si aplica, pon el IVA o la retención. Los totales y el valor en letras se calculan solos.",
+      "Agrega tu firma, pulsa \"Crear PDF\" y descárgalo o compártelo.",
+    ],
+    faq: [
+      ["¿Qué es una cuenta de cobro?", "Es el documento con el que una persona que no factura (por ejemplo, un independiente o contratista) cobra un trabajo o servicio: indica quién debe, a quién, cuánto y por qué concepto, con fecha y firma."],
+      ["¿Es una factura electrónica?", "No. DocuSmart no emite facturas electrónicas ante la DIAN, el SAT ni otras entidades. Si estás obligado a facturar, usa el sistema de facturación de tu país; estos documentos sirven para cobrar, cotizar o dejar constancia de un pago."],
+      ["¿Calcula el IVA y la retención?", "Sí. Escribe el porcentaje de impuesto (IVA u otro) y, si te practican retención, su porcentaje: se calculan sobre el subtotal y el total se actualiza al instante. También escribe el valor en letras."],
+      ["¿Se guardan mis datos y la numeración?", "Si marcas la opción, tus datos (nombre, documento, dirección, teléfono, correo y país) se recuerdan en este navegador para la próxima vez; la cuenta para el pago nunca se guarda. La numeración (CC-0001, COT-0001, REC-0001) avanza sola. Nada se sube a internet."],
+      ["¿Mis datos y los de mis clientes se suben a internet?", "No. El PDF se arma dentro de tu navegador: ni tus datos, ni los de tus clientes, ni tu firma salen de tu equipo."],
     ],
   },
   {

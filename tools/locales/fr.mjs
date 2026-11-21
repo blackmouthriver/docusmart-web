@@ -32,7 +32,7 @@ export default {
     footConsent: "Préférences d'analyse",
     os: 'Tous (navigateur web)',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
-    cats: { organizar: "Organiser les PDF", editar: "Modifier et signer", seguridad: "Sécurité", optimizar: "Optimiser et archiver", convertir: "Convertir", imagen: "Image", escanear: "Numériser et OCR", archivos: "Fichiers compressés", qr: "Codes QR" },
+    cats: { organizar: "Organiser les PDF", editar: "Modifier et signer", documentos: "Créer des documents", seguridad: "Sécurité", optimizar: "Optimiser et archiver", convertir: "Convertir", imagen: "Image", escanear: "Numériser et OCR", archivos: "Fichiers compressés", qr: "Codes QR" },
     hubSlug: "outils",
     hubTitle: "Tous les outils gratuits : PDF, image, QR et plus | DocuSmart",
     hubDescription: "Tous les outils DocuSmart par catégorie : fusionner, convertir, signer et compresser des PDF, retoucher des images, OCR, QR codes et fichiers ZIP. Gratuit et sans envoyer vos fichiers.",
@@ -487,6 +487,23 @@ export default {
         ["Puis-je passer plusieurs photos en noir et blanc ?", "Oui. Choisissez-les toutes, cochez « Noir et blanc » et elles sont converties avec les mêmes réglages ; elles se téléchargent ensemble dans un ZIP."],
         ["La photo perd-elle en qualité ?", "Elle garde sa taille et son format (JPG, PNG ou WebP ; les HEIC de l'iPhone sont enregistrées en JPG). Seul le redressement rogne un peu les bords. Les données cachées de la photo (EXIF), comme la position GPS, sont aussi supprimées."],
         ["Mes photos sont-elles envoyées sur Internet ?", "Non. Les réglages se font dans votre navigateur : vos photos ne quittent jamais votre appareil."],
+      ],
+    },
+    'cuenta-de-cobro': {
+      slug: "facture-et-devis",
+      title: "Facture, devis ou reçu en PDF gratuit | DocuSmart",
+      description: "Créez une note d'honoraires, un devis ou un reçu en quelques minutes : numérotation, taxes et retenue, totaux et signature, en PDF. Gratuit et sans envoi.",
+      h1: "Facture, devis et reçu",
+      howTo: "Comment faire un devis en 3 étapes",
+      lead: "Créez des notes d'honoraires, devis et reçus soignés pour vos clients, avec les totaux calculés et votre signature, prêts à envoyer en PDF.",
+      short: "Factures et devis en PDF",
+      steps: ["Choisissez le type de document et saisissez vos coordonnées et celles du client (les vôtres peuvent être mémorisées).", "Ajoutez les lignes avec quantité et prix ; ajoutez la taxe ou la retenue si besoin. Les totaux se calculent seuls.", "Ajoutez votre signature, appuyez sur « Créer le PDF » et téléchargez-le ou partagez-le."],
+      faq: [
+        ["Quels documents puis-je créer ?", "Une note d'honoraires (qui doit à qui, combien et pour quoi), un devis avec date de validité et un reçu de paiement, tous avec numérotation, lignes, totaux et votre signature."],
+        ["Est-ce une facture électronique ?", "Non. DocuSmart n'émet pas de factures électroniques. Si vous êtes tenu de facturer électroniquement, utilisez le système de votre pays ; ces documents servent à facturer, établir un devis ou attester un paiement."],
+        ["Calcule-t-il les taxes et la retenue ?", "Oui. Saisissez le pourcentage de taxe (TVA ou autre) et, le cas échéant, celui de la retenue : ils sont calculés sur le sous-total et le total se met à jour aussitôt."],
+        ["Mes coordonnées et la numérotation sont-elles enregistrées ?", "Si vous cochez l'option, vos coordonnées (nom, identifiant, adresse, téléphone, e-mail et pays) sont mémorisées dans ce navigateur ; les coordonnées de paiement ne sont jamais enregistrées. La numérotation (CC-0001, COT-0001, REC-0001) avance toute seule. Rien n'est envoyé sur Internet."],
+        ["Mes données et celles de mes clients sont-elles envoyées sur Internet ?", "Non. Le PDF est créé dans votre navigateur : vos données, celles de vos clients et votre signature ne quittent jamais votre appareil."],
       ],
     },
     'comprimir-archivos': {

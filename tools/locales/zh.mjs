@@ -34,7 +34,7 @@ export default {
     footConsent: '分析偏好设置',
     os: '任意（网页浏览器）',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
-    cats: { organizar: "整理 PDF", editar: "编辑与签名", seguridad: "安全", optimizar: "优化与归档", convertir: "转换", imagen: "图片", escanear: "扫描与 OCR", archivos: "压缩文件", qr: "二维码" },
+    cats: { organizar: "整理 PDF", editar: "编辑与签名", documentos: "创建文档", seguridad: "安全", optimizar: "优化与归档", convertir: "转换", imagen: "图片", escanear: "扫描与 OCR", archivos: "压缩文件", qr: "二维码" },
     hubSlug: "tools",
     hubTitle: "全部免费工具：PDF、图片、二维码等 | DocuSmart",
     hubDescription: "按类别浏览 DocuSmart 的全部工具：合并、转换、签署和压缩 PDF，编辑图片，OCR，二维码和 ZIP 文件。免费，且不上传你的文件。",
@@ -454,6 +454,23 @@ export default {
         ["可以一次把多张照片转成黑白吗？", "可以。全部选中并勾选“黑白”，就会用同样的设置转换，并一起打包成 ZIP 下载。"],
         ["照片会降低画质吗？", "会保持原尺寸和格式（JPG、PNG 或 WebP；iPhone 的 HEIC 保存为 JPG）。只有拉直时会稍微裁掉边缘。同时会删除照片的隐藏信息（EXIF），比如 GPS 位置。"],
         ["我的照片会上传到网上吗？", "不会。调整在你的浏览器中完成：照片不会离开你的设备。"],
+      ],
+    },
+    'cuenta-de-cobro': {
+      slug: "invoice-generator",
+      title: "免费制作账单、报价单和收据 PDF | DocuSmart",
+      description: "几分钟就能做好账单、报价单或收据：编号、税和代扣、合计和签名，生成 PDF。免费，无需上传数据。",
+      h1: "账单、报价单和收据",
+      howTo: "3 步制作账单",
+      lead: "为客户制作美观的账单、报价单和收据，自动计算合计并附上你的签名，生成 PDF 即可发送。",
+      short: "账单和报价单 PDF",
+      steps: ["选择文件类型，填写你和客户的信息（你的信息可以保存）。", "按数量和单价添加项目；如有需要，填写税或代扣。合计会自动计算。", "添加签名，点按“生成 PDF”，然后下载或分享。"],
+      faq: [
+        ["可以制作哪些文件？", "账单（谁欠谁多少钱、因何而欠）、带有效期的报价单和付款收据，都带有编号、项目、合计和你的签名。"],
+        ["这是电子发票吗？", "不是。DocuSmart 不开具电子发票。如果你需要开具发票，请使用所在国家的系统；这些文件可用于收款、报价或记录付款。"],
+        ["会计算税和代扣吗？", "会。填写税率，如有代扣再填写代扣比例：按小计计算，合计会立即更新。"],
+        ["我的信息和编号会保存吗？", "勾选该选项后，你的信息（姓名、证件号、地址、电话、邮箱和国家/地区）会保存在此浏览器中；收款信息永远不会保存。编号（CC-0001、COT-0001、REC-0001）会自动递增。不会上传任何内容。"],
+        ["我和客户的信息会上传到网上吗？", "不会。PDF 在你的浏览器中生成：你的信息、客户的信息和签名都不会离开你的设备。"],
       ],
     },
     'comprimir-archivos': {

@@ -32,7 +32,7 @@ export default {
     footConsent: "Preferències d'analítica",
     os: 'Qualsevol (navegador web)',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
-    cats: { organizar: "Organitzar PDF", editar: "Editar i signar", seguridad: "Seguretat", optimizar: "Optimitzar i arxivar", convertir: "Convertir", imagen: "Imatge", escanear: "Escanejar i OCR", archivos: "Fitxers comprimits", qr: "Codis QR" },
+    cats: { organizar: "Organitzar PDF", editar: "Editar i signar", documentos: "Crear documents", seguridad: "Seguretat", optimizar: "Optimitzar i arxivar", convertir: "Convertir", imagen: "Imatge", escanear: "Escanejar i OCR", archivos: "Fitxers comprimits", qr: "Codis QR" },
     hubSlug: "eines",
     hubTitle: "Totes les eines gratuïtes: PDF, imatge, QR i més | DocuSmart",
     hubDescription: "Totes les eines de DocuSmart per categoria: unir, convertir, signar i comprimir PDF, editar imatges, OCR, QR i fitxers ZIP. Gratis i sense pujar els teus fitxers.",
@@ -487,6 +487,23 @@ export default {
         ["Puc passar diverses fotos a blanc i negre?", "Sí. Tria-les totes, marca \"Blanc i negre\" i es converteixen amb els mateixos ajustos; es baixen juntes en un ZIP."],
         ["La foto perd qualitat?", "Conserva la mida i el format (JPG, PNG o WebP; les HEIC de l'iPhone es desen en JPG). Només en redreçar es retallen una mica les vores. A més, s'eliminen les dades ocultes de la foto (EXIF), com la ubicació GPS."],
         ["Les meves fotos es pugen a internet?", "No. Els ajustos es fan dins del teu navegador: les teves fotos no surten mai del teu dispositiu."],
+      ],
+    },
+    'cuenta-de-cobro': {
+      slug: "compte-de-cobrament",
+      title: "Compte de cobrament, pressupost o rebut en PDF gratis | DocuSmart",
+      description: "Fes el teu compte de cobrament, pressupost o rebut en minuts: numeració, IVA i retenció, totals i signatura, en PDF. Gratis i sense pujar les teves dades.",
+      h1: "Compte de cobrament, pressupost i rebut",
+      howTo: "Com fer un pressupost en 3 passos",
+      lead: "Crea comptes de cobrament, pressupostos i rebuts ben presentats per als teus clients, amb els totals calculats i la teva signatura, a punt per enviar en PDF.",
+      short: "Comptes de cobrament i pressupostos en PDF",
+      steps: ["Tria el tipus de document i escriu les teves dades i les del client (les teves es poden recordar).", "Afegeix els conceptes amb quantitat i preu; si cal, l'IVA o la retenció. Els totals es calculen sols.", "Afegeix la teva signatura, prem \"Crea el PDF\" i baixa'l o comparteix-lo."],
+      faq: [
+        ["Quins documents puc fer?", "Un compte de cobrament (qui deu a qui, quant i per què), un pressupost amb data de validesa i un rebut de pagament, tots amb numeració, conceptes, totals i la teva signatura."],
+        ["És una factura electrònica?", "No. DocuSmart no emet factures electròniques. Si estàs obligat a facturar electrònicament, fes servir el sistema del teu país; aquests documents serveixen per cobrar, pressupostar o deixar constància d'un pagament."],
+        ["Calcula l'IVA i la retenció?", "Sí. Escriu el percentatge d'impost i, si et practiquen retenció, el seu percentatge: es calculen sobre el subtotal i el total s'actualitza a l'instant."],
+        ["Es desen les meves dades i la numeració?", "Si marques l'opció, les teves dades (nom, document, adreça, telèfon, correu i país) es recorden en aquest navegador; les dades de pagament no es desen mai. La numeració (CC-0001, COT-0001, REC-0001) avança sola. Res no es puja a internet."],
+        ["Les meves dades i les dels clients es pugen a internet?", "No. El PDF es crea al teu navegador: les teves dades, les dels clients i la teva signatura no surten mai del dispositiu."],
       ],
     },
     'comprimir-archivos': {
