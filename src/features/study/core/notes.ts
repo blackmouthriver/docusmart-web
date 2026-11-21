@@ -1,6 +1,6 @@
 /**
  * Notas del Modo Estudio (W-65), como en la app: título, texto, imágenes adjuntas,
- * edición y exportar una o todas a TXT o PDF. Las notas viven solo en este navegador.
+ * edición y exportar una o todas a TXT, Markdown o PDF. Las notas viven solo en este navegador.
  */
 import type { OBlock, OImage } from '../../convert/core/officePdf'
 
@@ -63,6 +63,20 @@ export function noteToText(n: StudyNote, l: NoteLabels): string {
 export const notesToText = (notes: readonly StudyNote[], l: NoteLabels) => notes.map((n) => noteToText(n, l)).join('\n\n────────────\n\n')
 
 /**
+ * Una nota en Markdown (W-126): el título como encabezado, la fecha en cursiva y el texto tal cual
+ * (así se conservan las listas o el formato que la persona haya escrito). Lo abren Obsidian, Notion,
+ * GitHub o cualquier editor de texto.
+ */
+export function noteToMarkdown(n: StudyNote, l: NoteLabels): string {
+  const title = (n.title.trim() || l.untitled).replace(/\s+/g, ' ')
+  const lines = [`# ${title}`, '', `*${l.date(n.at)}*`, '', n.text.trim()]
+  if (n.images.length) lines.push('', ...n.images.map((_, i) => `> [${l.image} ${i + 1}]`))
+  return lines.join('\n').trimEnd() + '\n'
+}
+
+export const notesToMarkdown = (notes: readonly StudyNote[], l: NoteLabels) => notes.map((n) => noteToMarkdown(n, l)).join('\n---\n\n')
+
+/**
  * Bloques para el generador de PDF (el mismo de Word a PDF): por nota, el título,
  * la fecha, el texto línea por línea y las imágenes en su orden; una nota por página.
  */
@@ -82,7 +96,7 @@ export function notesToBlocks(notes: readonly StudyNote[], images: ReadonlyMap<s
 }
 
 /** Nombre de archivo para exportar: el título de la nota (o "notas" si son todas). */
-export function exportName(notes: readonly StudyNote[], allLabel: string, ext: 'txt' | 'pdf'): string {
+export function exportName(notes: readonly StudyNote[], allLabel: string, ext: 'txt' | 'md' | 'pdf'): string {
   const base = notes.length === 1 ? notes[0].title.trim() || allLabel : allLabel
   return `${base.replace(/[\\/:*?"<>|]+/g, '_').slice(0, 60)}.${ext}`
 }

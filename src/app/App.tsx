@@ -34,6 +34,7 @@ type NavSub = { sub: string; label: MessageKey; icon: IconName }
 const STUDY_SUBS: NavSub[] = [
   { sub: 'lectura', label: 'study.readAloud', icon: 'volume' },
   { sub: 'notas', label: 'study.notes', icon: 'note' },
+  { sub: 'agenda', label: 'study.agenda', icon: 'calendar' },
   { sub: 'pomodoro', label: 'study.pomodoro', icon: 'timer' },
   { sub: 'estadisticas', label: 'study.stats', icon: 'chart' },
 ]
@@ -162,6 +163,38 @@ export function App() {
     setToasts((t) => [...t, { id, msg }])
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3200)
   }, [])
+  // Avisos de la Agenda (W-126): solo si hay eventos con aviso; mientras la página esté abierta.
+  useEffect(() => {
+    let stopReminders: (() => void) | undefined
+    let unsubscribe: (() => void) | undefined
+    let alive = true
+    void import('../features/study/infra/agendaStore').then(({ hasReminders, startReminders, subscribeEvents }) => {
+      const begin = () => {
+        if (!alive || stopReminders || !hasReminders()) return
+        stopReminders = startReminders((event) => {
+          const body = event.time ? t('agenda.reminderStarts', { time: event.time }) : t('agenda.reminderAllDay')
+          const title = t('agenda.reminderTitle', { title: event.title })
+          toast(`${title} · ${body}`)
+          if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+            try {
+              new Notification(title, { body, icon: '/img/icon.svg', tag: `ds-agenda-${event.id}` })
+            } catch {
+              /* en Android el navegador exige un service worker: queda el aviso en pantalla */
+            }
+          }
+        })
+      }
+      if (!alive) return
+      begin()
+      // Si se agrega el primer evento con aviso, empieza a revisar sin recargar.
+      unsubscribe = subscribeEvents(begin)
+    })
+    return () => {
+      alive = false
+      unsubscribe?.()
+      stopReminders?.()
+    }
+  }, [toast, t])
   // App instalada (W-16): avisa cuando ya descargó todas las herramientas para usarlas sin conexión.
   useEffect(() => onOfflineReady(() => toast(t('pwa.offlineReady'))), [toast, t])
   // Versión nueva publicada mientras la app seguía abierta: aviso con "Actualizar" (recarga

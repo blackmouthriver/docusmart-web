@@ -14,7 +14,8 @@ import { summarize } from '../core/summarize'
 import { readerKeyAction, silentWav, type ReaderKeyAction } from '../core/controls'
 import { firstDayOfWeek, hoursMinutes, weekCounts, weekDays } from '../core/stats'
 import { getStats, recordPomodoro, recordReading, subscribeStats } from '../infra/statsStore'
-import { MAX_NOTE_IMAGES, exportName, notesToBlocks, notesToText, orphanImages, parseNotes, upsertNote, type NoteLabels, type StudyNote } from '../core/notes'
+import { MAX_NOTE_IMAGES, exportName, notesToBlocks, notesToMarkdown, notesToText, orphanImages, parseNotes, upsertNote, type NoteLabels, type StudyNote } from '../core/notes'
+import { Agenda } from './Agenda'
 import { deleteNoteImages, loadNoteImage, saveNoteImage, storedNoteImageIds } from '../infra/noteImages'
 import { PageNav, usePdfPreview } from '../../pdf/ui/PdfPreview'
 import { track } from '../../../shared/platform/analytics'
@@ -27,12 +28,13 @@ import { docxToText, isDocx } from '../../convert/infra/officeRender'
 import { guessFeminine, personaAvatar, personasForVoices, voicesForLanguage, type VoicePersona } from '../core/voicePersonas'
 
 // ── Menú del Modo Estudio (W-59): una tarjeta por función, como en la app ──
-type StudyTab = 'lectura' | 'notas' | 'pomodoro' | 'estadisticas'
+type StudyTab = 'lectura' | 'notas' | 'agenda' | 'pomodoro' | 'estadisticas'
 type Report = (status: string) => void
 
 const STUDY_TABS: Array<{ id: StudyTab; icon: IconName; cls: string; title: MessageKey; desc: MessageKey }> = [
   { id: 'lectura', icon: 'volume', cls: 'ico-green', title: 'study.readAloud', desc: 'study.menuReadDesc' },
   { id: 'notas', icon: 'note', cls: 'ico-blue', title: 'study.notes', desc: 'study.menuNotesDesc' },
+  { id: 'agenda', icon: 'calendar', cls: 'ico-cyan', title: 'study.agenda', desc: 'study.menuAgendaDesc' },
   { id: 'pomodoro', icon: 'timer', cls: 'ico-amber', title: 'study.pomodoro', desc: 'study.menuPomodoroDesc' },
   { id: 'estadisticas', icon: 'chart', cls: 'ico-violet', title: 'study.stats', desc: 'study.menuStatsDesc' },
 ]
@@ -48,12 +50,13 @@ export function Study({ sub }: { sub?: string }) {
   }, [tab])
   const reporters = useMemo(() => {
     const make = (id: StudyTab): Report => (s) => setStatus((cur) => (cur[id] === s ? cur : { ...cur, [id]: s }))
-    return { lectura: make('lectura'), notas: make('notas'), pomodoro: make('pomodoro'), estadisticas: make('estadisticas') }
+    return { lectura: make('lectura'), notas: make('notas'), agenda: make('agenda'), pomodoro: make('pomodoro'), estadisticas: make('estadisticas') }
   }, [])
 
   const section = (id: StudyTab) => {
     if (id === 'lectura') return <ReadAloud onStatus={reporters.lectura} visible={tab === 'lectura'} />
     if (id === 'notas') return <Notes />
+    if (id === 'agenda') return <Agenda />
     if (id === 'estadisticas') return <Stats />
     return <Pomodoro onStatus={reporters.pomodoro} />
   }
@@ -1065,12 +1068,14 @@ function Notes() {
     }
   }
 
-  const exportNotes = async (list: StudyNote[], format: 'txt' | 'pdf') => {
+  const exportNotes = async (list: StudyNote[], format: 'txt' | 'md' | 'pdf') => {
     setExporting(true)
     try {
       const name = exportName(list, tr('file.notes'), format)
       if (format === 'txt') {
         setExported(new File([notesToText(list, labels)], name, { type: 'text/plain' }))
+      } else if (format === 'md') {
+        setExported(new File([notesToMarkdown(list, labels)], name, { type: 'text/markdown' }))
       } else {
         const [{ layoutPdf }, { imageSize }] = await Promise.all([import('../../convert/core/officePdf'), import('../../convert/core/officeModels')])
         const images = new Map<string, { data: Uint8Array; type: 'png' | 'jpg'; width: number; height: number }>()
@@ -1192,6 +1197,7 @@ function Notes() {
           <span className="row" style={{ gap: 6 }}>
             <span className="faint">{tr('study.exportAll')}</span>
             <button type="button" className="btn btn-outline btn-sm" disabled={exporting} onClick={() => void exportNotes(notes, 'txt')}>TXT</button>
+            <button type="button" className="btn btn-outline btn-sm" disabled={exporting} title={tr('study.markdown')} onClick={() => void exportNotes(notes, 'md')}>MD</button>
             <button type="button" className="btn btn-outline btn-sm" disabled={exporting} onClick={() => void exportNotes(notes, 'pdf')}>PDF</button>
           </span>
         </div>
@@ -1221,6 +1227,7 @@ function Notes() {
                 <span className="row" style={{ gap: 2 }}>
                   <button type="button" className="icon-btn" aria-label={tr('study.editNote')} title={tr('study.editNote')} onClick={() => edit(n)}><Icon name="edit" /></button>
                   <button type="button" className="btn btn-ghost btn-sm" disabled={exporting} title={tr('study.exportNote')} onClick={() => void exportNotes([n], 'txt')}>TXT</button>
+                  <button type="button" className="btn btn-ghost btn-sm" disabled={exporting} title={tr('study.exportNoteMd')} onClick={() => void exportNotes([n], 'md')}>MD</button>
                   <button type="button" className="btn btn-ghost btn-sm" disabled={exporting} title={tr('study.exportNote')} onClick={() => void exportNotes([n], 'pdf')}>PDF</button>
                   <button type="button" className="icon-btn" aria-label={tr('study.deleteNote')} title={tr('study.deleteNote')} onClick={() => remove(n)}><Icon name="trash" /></button>
                 </span>
