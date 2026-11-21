@@ -177,6 +177,15 @@
     },
     "leer-codigo-qr": {
       "app": "si"
+    },
+    "contador-de-palabras": {
+      "app": "evaluar"
+    },
+    "comparar-textos": {
+      "app": "evaluar"
+    },
+    "generador-de-contrasenas": {
+      "app": "evaluar"
     }
   }
 }

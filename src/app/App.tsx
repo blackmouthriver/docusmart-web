@@ -25,6 +25,7 @@ const QrScreen = lazy(() => import('../features/qr/ui/Qr').then((m) => ({ defaul
 const Study = lazy(() => import('../features/study/ui/Study').then((m) => ({ default: m.Study })))
 const MediaScreen = lazy(() => import('../features/media/ui/Media').then((m) => ({ default: m.MediaScreen })))
 const MetadataScreen = lazy(() => import('../features/metadata/ui/Metadata').then((m) => ({ default: m.MetadataScreen })))
+const TextScreen = lazy(() => import('../features/text/ui/TextTools').then((m) => ({ default: m.TextScreen })))
 const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((m) => ({ default: m.ArchiveScreen })))
 const ToolsScreen = lazy(() => import('../features/tools/ui/ToolsScreen').then((m) => ({ default: m.ToolsScreen })))
 const CvScreen = lazy(() => import('../features/cv/ui/Cv').then((m) => ({ default: m.CvScreen })))
@@ -57,6 +58,7 @@ const NAV: Array<{ section: string; label: MessageKey; short: MessageKey; icon: 
   { section: 'estudio', label: 'nav.study', short: 'nav.short.study', icon: 'study', subs: STUDY_SUBS },
   { section: 'imagen', label: 'nav.image', short: 'nav.image', icon: 'image', mobile: false },
   { section: 'multimedia', label: 'nav.media', short: 'nav.media', icon: 'video', mobile: false },
+  { section: 'texto', label: 'nav.text', short: 'nav.text', icon: 'text', mobile: false },
   { section: 'archivos', label: 'nav.archive', short: 'nav.archive', icon: 'archive', mobile: false },
 ]
 
@@ -70,6 +72,7 @@ const SCREEN_NAMES: Record<string, string> = {
   archivos: 'Archive',
   hash: 'Hash',
   metadatos: 'Metadata',
+  texto: 'Text',
   documentos: 'Documents',
   multimedia: 'Media',
   imagen: 'ImageTools',
@@ -230,6 +233,9 @@ export function App() {
       break
     case 'archivos':
       screen = <ArchiveScreen sub={route.sub} />
+      break
+    case 'texto':
+      screen = <TextScreen sub={route.sub} />
       break
     case 'metadatos':
       screen = <MetadataScreen />

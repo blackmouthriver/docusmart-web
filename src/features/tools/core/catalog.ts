@@ -8,7 +8,7 @@ import type { IconName } from '../../../shared/ui/Icon'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { matchesQuery, sortByName } from '../../../shared/i18n/search'
 
-export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'multimedia' | 'escanear' | 'archivos' | 'qr'
+export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'multimedia' | 'escanear' | 'archivos' | 'qr' | 'texto'
 
 /** En el mismo orden e íconos que CATEGORIES de tools/pages.mjs (una prueba lo verifica). */
 export const CATEGORIES: ReadonlyArray<{ id: CategoryId; icon: IconName }> = [
@@ -23,6 +23,7 @@ export const CATEGORIES: ReadonlyArray<{ id: CategoryId; icon: IconName }> = [
   { id: 'escanear', icon: 'camera' },
   { id: 'archivos', icon: 'archive' },
   { id: 'qr', icon: 'qr' },
+  { id: 'texto', icon: 'text' },
 ]
 
 export type CatalogTool = {
@@ -53,6 +54,10 @@ const img = (id: string, icon: IconName, name: MessageKey): CatalogTool => ({
 
 const media = (id: string, icon: IconName): CatalogTool => ({
   key: `multimedia/${id}`, category: 'multimedia', icon, name: `tools.media.${id}` as MessageKey, desc: `tools.media.${id}.desc` as MessageKey, section: 'multimedia', sub: id,
+})
+
+const text = (id: string, icon: IconName, also?: CategoryId[]): CatalogTool => ({
+  key: `texto/${id}`, category: 'texto', icon, name: `tools.text.${id}` as MessageKey, desc: `tools.text.${id}.desc` as MessageKey, section: 'texto', sub: id, ...(also && { also }),
 })
 
 const ENTRIES: readonly CatalogTool[] = [
@@ -114,6 +119,9 @@ const ENTRIES: readonly CatalogTool[] = [
   { key: 'archivos/extraer', category: 'archivos', icon: 'folder', name: 'tools.arch.extract', desc: 'tools.arch.extract.desc', section: 'archivos', sub: 'extraer' },
   { key: 'archivos/renombrar', category: 'archivos', icon: 'edit', name: 'tools.arch.rename', desc: 'tools.arch.rename.desc', section: 'archivos', sub: 'renombrar' },
   { key: 'qr/crear', category: 'qr', icon: 'qr', name: 'qr.create', desc: 'quick.makeQr.hint', section: 'qr', sub: 'crear' },
+  text('contar', 'text'),
+  text('comparar', 'compare'),
+  text('contrasena', 'lock', ['seguridad']),
   { key: 'qr/leer', category: 'qr', icon: 'camera', name: 'qr.read', desc: 'quick.readQr.hint', section: 'qr', sub: 'leer' },
 ]
 
