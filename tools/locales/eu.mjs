@@ -32,7 +32,7 @@ export default {
     footConsent: 'Analitika-hobespenak',
     os: 'Edozein (web nabigatzailea)',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
-    cats: { organizar: "PDFak antolatu", editar: "Editatu eta sinatu", seguridad: "Segurtasuna", optimizar: "Optimizatu eta artxibatu", convertir: "Bihurtu", imagen: "Irudia", escanear: "Eskaneatu eta OCR", archivos: "Fitxategi konprimituak", qr: "QR kodeak" },
+    cats: { organizar: "PDFak antolatu", editar: "Editatu eta sinatu", documentos: "Dokumentuak sortu", seguridad: "Segurtasuna", optimizar: "Optimizatu eta artxibatu", convertir: "Bihurtu", imagen: "Irudia", escanear: "Eskaneatu eta OCR", archivos: "Fitxategi konprimituak", qr: "QR kodeak" },
     hubSlug: "tresnak",
     hubTitle: "Doako tresna guztiak: PDF, irudia, QR eta gehiago | DocuSmart",
     hubDescription: "DocuSmarten tresna guztiak kategoriaka: PDFak batu, bihurtu, sinatu eta konprimitu, irudiak editatu, OCR, QR kodeak eta ZIP fitxategiak. Doan eta zure fitxategiak igo gabe.",
@@ -492,6 +492,23 @@ export default {
         ["Hainbat argazki zuri-beltzean jar ditzaket?", "Bai. Aukeratu denak, markatu «Zuri-beltza» eta doikuntza berekin bihurtzen dira; denak batera deskargatzen dira ZIP batean."],
         ["Argazkiak kalitatea galtzen du?", "Bere tamaina eta formatua gordetzen ditu (JPG, PNG edo WebP; iPhoneko HEICak JPG gisa gordetzen dira). Zuzentzean bakarrik mozten dira ertzak pixka bat. Gainera, argazkiaren datu ezkutuak (EXIF) kentzen dira, GPS kokapena adibidez."],
         ["Nire argazkiak internetera igotzen dira?", "Ez. Doikuntzak zure nabigatzailean egiten dira: zure argazkiak ez dira inoiz zure gailutik ateratzen."],
+      ],
+    },
+    'cuenta-de-cobro': {
+      slug: "kobrantza-agiria",
+      title: "Kobrantza-agiria, aurrekontua edo ordainagiria PDFn doan | DocuSmart",
+      description: "Egin zure kobrantza-agiria, aurrekontua edo ordainagiria minutu gutxitan: zenbakiak, BEZa eta atxikipena, totalak eta sinadura, PDFn. Doan eta datuak igo gabe.",
+      h1: "Kobrantza-agiria, aurrekontua eta ordainagiria",
+      howTo: "Nola egin aurrekontu bat 3 urratsetan",
+      lead: "Sortu itxura oneko kobrantza-agiriak, aurrekontuak eta ordainagiriak zure bezeroentzat, totalak kalkulatuta eta zure sinadurarekin, PDFn bidaltzeko prest.",
+      short: "Kobrantza-agiriak eta aurrekontuak PDFn",
+      steps: ["Aukeratu dokumentu mota eta idatzi zure datuak eta bezeroarenak (zureak gogora daitezke).", "Gehitu kontzeptuak kopuru eta prezioarekin; behar izanez gero, BEZa edo atxikipena. Totalak berez kalkulatzen dira.", "Gehitu zure sinadura, sakatu «Sortu PDFa» eta deskargatu edo partekatu."],
+      faq: [
+        ["Zein dokumentu egin ditzaket?", "Kobrantza-agiri bat (nork zor dion nori, zenbat eta zergatik), baliozkotasun datadun aurrekontu bat eta ordainagiri bat, denak zenbakiekin, kontzeptuekin, totalekin eta zure sinadurarekin."],
+        ["Faktura elektronikoa da?", "Ez. DocuSmartek ez du faktura elektronikorik egiten. Elektronikoki fakturatu behar baduzu, erabili zure herrialdeko sistema; dokumentu hauek kobratzeko, aurrekontuak egiteko edo ordainketa bat jasotzeko balio dute."],
+        ["BEZa eta atxikipena kalkulatzen ditu?", "Bai. Idatzi zerga-ehunekoa eta, atxikipena badago, haren ehunekoa: azpitotalaren gainean kalkulatzen dira eta totala berehala eguneratzen da."],
+        ["Nire datuak eta zenbakiak gordetzen dira?", "Aukera markatzen baduzu, zure datuak eta ordainketakoak nabigatzaile honetan gogoratzen dira, eta zenbakiak (CC-0001, COT-0001, REC-0001) berez aurrera egiten du. Ez da ezer internetera igotzen."],
+        ["Nire datuak eta bezeroenak internetera igotzen dira?", "Ez. PDFa zure nabigatzailean sortzen da: zure datuak, bezeroenak eta zure sinadura ez dira inoiz gailutik ateratzen."],
       ],
     },
     'comprimir-archivos': {

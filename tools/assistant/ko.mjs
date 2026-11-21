@@ -70,6 +70,7 @@ export default {
     { id: 'svg-a-png', q: ["svg를 png로", "svg 변환", "svg 파일 열기", "svg를 이미지로", "svg 로고를 png로"], a: "\"SVG를 PNG로\"를 사용하세요. SVG 로고와 일러스트를 배경이 투명한 고해상도 PNG로 브라우저에서 변환합니다.", actions: [['tool', 'svg-a-png']] },
     { id: 'tiff-a-jpg', q: ["tiff를 jpg로", "tif를 jpg로", "tiff 변환", "tif 파일 열기", "tiff 스캔"], a: "\"TIFF를 JPG로\"를 사용하세요. TIFF 스캔과 사진을 가볍고 어디서나 쓸 수 있는 JPG로 여러 개 한 번에 브라우저에서 변환합니다.", actions: [['tool', 'tiff-a-jpg']] },
     { id: 'agenda', q: ["일정", "캘린더", "시험 알림", "과제 마감 기록", "이벤트", "outlook으로 내보내기", "ics 파일", "수업 알림"], a: "학습 모드 → 일정에서 시험, 과제 제출, 수업을 날짜, 시간, 반복, 알림과 함께 기록하세요. 브라우저에 저장되며 Outlook, Google 캘린더, iPhone으로 .ics를 내보내거나 캘린더의 .ics를 가져올 수 있습니다. 사이트 알림은 DocuSmart가 열려 있는 동안 옵니다.", actions: [['page', 'study']], related: ['estudio', 'notas'] },
+    { id: 'cuenta-de-cobro', q: ["청구서", "견적서 만들기", "영수증", "대금 청구", "청구서 양식", "견적서 pdf", "프리랜서 청구서"], a: "\"청구서·견적서\"를 사용하세요. 번호, 세금과 원천징수, 합계, 서명이 들어간 청구서·견적서·영수증을 만들어 PDF로 내려받을 수 있습니다. 전자세금계산서는 아니며 데이터는 올라가지 않습니다. (PDF 제목은 영어로 나옵니다. PDF 기본 글꼴이 한글을 지원하지 않기 때문입니다.)", actions: [['tool', 'cuenta-de-cobro']] },
     { id: 'contacto', q: ['연락처', '고객지원', '사람과 이야기하기', '문제가 있어요', '오류 신고'], a: 'supportdocusmart@docusmart.online로 메일을 보내거나 Facebook, Instagram으로 연락 주시면 답변드릴게요.', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

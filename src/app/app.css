@@ -616,6 +616,21 @@ p { margin: 0; }
 .agenda-what { display: grid; gap: 2px; min-width: 0; }
 .agenda-what small { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 520px) { .agenda-item { grid-template-columns: 1fr auto; } .agenda-time { grid-column: 1 / -1; } }
+.bill-meta .field, .bill-taxes .field { flex: 1; min-width: 130px; }
+.bill-parties { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.bill-party { display: grid; gap: 8px; margin: 0; padding: 12px; border: 0; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; min-width: 0; }
+.bill-party legend { padding: 0 4px; font-weight: 700; }
+.bill-two .field { flex: 1; min-width: 140px; }
+.bill-items { display: grid; gap: 8px; }
+.bill-item { display: grid; grid-template-columns: minmax(0, 3fr) minmax(64px, 0.7fr) minmax(100px, 1.3fr) minmax(90px, 1fr) auto; gap: 8px; align-items: end; }
+.bill-line { padding-bottom: 10px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.bill-totals { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; margin: 0; justify-self: end; min-width: min(100%, 280px); font-variant-numeric: tabular-nums; }
+.bill-totals dt { color: var(--ink-soft); }
+.bill-totals dd { margin: 0; text-align: right; }
+.bill-totals .bill-grand { font-size: 18px; font-weight: 800; color: var(--ink); }
+.bill-words { justify-self: end; text-align: right; }
+.bill-sign img { max-height: 56px; max-width: 200px; border-radius: 8px; background: #fff; box-shadow: 0 0 0 1px var(--line); }
+@media (max-width: 600px) { .bill-item { grid-template-columns: 1fr 1fr; } .bill-desc { grid-column: 1 / -1; } .bill-line { grid-column: 1 / 2; text-align: left; } }
 .notes-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
 .note-export { display: grid; gap: 10px; padding: 12px; border-radius: 16px; background: var(--blue-soft); animation: page-in 220ms var(--ease-out); }
 .note-export b { display: inline-flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; }

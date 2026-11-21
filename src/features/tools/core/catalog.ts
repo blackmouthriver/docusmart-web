@@ -8,12 +8,13 @@ import type { IconName } from '../../../shared/ui/Icon'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { matchesQuery, sortByName } from '../../../shared/i18n/search'
 
-export type CategoryId = 'organizar' | 'editar' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'escanear' | 'archivos' | 'qr'
+export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'escanear' | 'archivos' | 'qr'
 
 /** En el mismo orden e íconos que CATEGORIES de tools/pages.mjs (una prueba lo verifica). */
 export const CATEGORIES: ReadonlyArray<{ id: CategoryId; icon: IconName }> = [
   { id: 'organizar', icon: 'merge' },
   { id: 'editar', icon: 'pen' },
+  { id: 'documentos', icon: 'file' },
   { id: 'seguridad', icon: 'lock' },
   { id: 'optimizar', icon: 'compress' },
   { id: 'convertir', icon: 'convert' },
@@ -62,6 +63,7 @@ export const CATALOG: readonly CatalogTool[] = [
   pdf('proteger', 'seguridad', 'lock'),
   pdf('desbloquear', 'seguridad', 'unlock'),
   pdf('reparar', 'seguridad', 'wrench'),
+  { key: 'documentos/cobro', category: 'documentos', icon: 'file', name: 'tools.billing', desc: 'tools.billing.desc', section: 'documentos', sub: 'cobro' },
   { key: 'hash/calcular', category: 'seguridad', icon: 'fingerprint', name: 'tools.hash', desc: 'tools.hash.desc', section: 'hash', sub: 'calcular' },
   pdf('comprimir', 'optimizar', 'compress'),
   pdf('pdfa', 'optimizar', 'archive'),

@@ -32,7 +32,7 @@ export default {
     footConsent: 'Preferências de análise',
     os: 'Qualquer um (navegador web)',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
-    cats: { organizar: "Organizar PDF", editar: "Editar e assinar", seguridad: "Segurança", optimizar: "Otimizar e arquivar", convertir: "Converter", imagen: "Imagem", escanear: "Digitalizar e OCR", archivos: "Arquivos compactados", qr: "Códigos QR" },
+    cats: { organizar: "Organizar PDF", editar: "Editar e assinar", documentos: "Criar documentos", seguridad: "Segurança", optimizar: "Otimizar e arquivar", convertir: "Converter", imagen: "Imagem", escanear: "Digitalizar e OCR", archivos: "Arquivos compactados", qr: "Códigos QR" },
     hubSlug: "ferramentas",
     hubTitle: "Todas as ferramentas grátis: PDF, imagem, QR e mais | DocuSmart",
     hubDescription: "Todas as ferramentas do DocuSmart por categoria: juntar, converter, assinar e comprimir PDF, editar imagens, OCR, QR e arquivos ZIP. Grátis e sem enviar seus arquivos.",
@@ -487,6 +487,23 @@ export default {
         ["Posso deixar várias fotos em preto e branco?", "Sim. Escolha todas, marque \"Preto e branco\" e elas são convertidas com os mesmos ajustes; são baixadas juntas em um ZIP."],
         ["A foto perde qualidade?", "Mantém o tamanho e o formato (JPG, PNG ou WebP; as HEIC do iPhone são salvas em JPG). Só ao endireitar as bordas são cortadas um pouco. Além disso, os dados ocultos da foto (EXIF), como a localização GPS, são removidos."],
         ["Minhas fotos são enviadas para a internet?", "Não. Os ajustes são feitos dentro do seu navegador: suas fotos nunca saem do seu dispositivo."],
+      ],
+    },
+    'cuenta-de-cobro': {
+      slug: "recibo-e-orcamento",
+      title: "Recibo, orçamento ou cobrança em PDF grátis | DocuSmart",
+      description: "Faça seu recibo, orçamento ou cobrança em minutos: numeração, impostos e retenção, totais e assinatura, em PDF. Grátis e sem enviar seus dados.",
+      h1: "Recibo, orçamento e cobrança",
+      howTo: "Como fazer um recibo em 3 passos",
+      lead: "Crie cobranças, orçamentos e recibos com boa apresentação para seus clientes, com os totais calculados e sua assinatura, prontos para enviar em PDF.",
+      short: "Recibos e orçamentos em PDF",
+      steps: ["Escolha o tipo de documento e preencha seus dados e os do cliente (os seus podem ser lembrados para a próxima vez).", "Adicione os itens com quantidade e valor; se for o caso, coloque o imposto ou a retenção. Os totais são calculados sozinhos.", "Adicione sua assinatura, toque em \"Criar PDF\" e baixe ou compartilhe."],
+      faq: [
+        ["Que documentos posso fazer?", "Uma cobrança de serviços (quem deve a quem, quanto e por quê), um orçamento com validade e um recibo de pagamento, todos com numeração, itens, totais e sua assinatura."],
+        ["É uma nota fiscal eletrônica?", "Não. O DocuSmart não emite notas fiscais eletrônicas. Se você é obrigado a emitir nota, use o sistema da prefeitura ou da Receita; estes documentos servem para cobrar, orçar ou registrar um pagamento."],
+        ["Calcula impostos e retenção?", "Sim. Escreva a porcentagem do imposto e, se houver retenção, a porcentagem dela: são calculadas sobre o subtotal e o total se atualiza na hora."],
+        ["Meus dados e a numeração ficam salvos?", "Se você marcar a opção, seus dados e os de pagamento ficam lembrados neste navegador, e a numeração (CC-0001, COT-0001, REC-0001) avança sozinha. Nada é enviado à internet."],
+        ["Meus dados e os dos meus clientes são enviados à internet?", "Não. O PDF é montado no seu navegador: seus dados, os dos seus clientes e sua assinatura não saem do seu dispositivo."],
       ],
     },
     'comprimir-archivos': {

@@ -324,6 +324,19 @@
     "ko": "adjust-image",
     "zh": "adjust-image"
   },
+  "cuenta-de-cobro": {
+    "en": "invoice-generator",
+    "pt": "recibo-e-orcamento",
+    "fr": "facture-et-devis",
+    "it": "fattura-e-preventivo",
+    "de": "rechnung-erstellen",
+    "ca": "compte-de-cobrament",
+    "eu": "kobrantza-agiria",
+    "ru": "invoice-generator",
+    "ja": "invoice-generator",
+    "ko": "invoice-generator",
+    "zh": "invoice-generator"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

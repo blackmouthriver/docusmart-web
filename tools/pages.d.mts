@@ -3,10 +3,11 @@ export type ToolSpec =
   | { kind: 'pdf'; id: 'unir' | 'dividir' | 'rotar' | 'reordenar' | 'numerar' | 'marca' | 'comprimir' | 'proteger' | 'desbloquear' | 'reparar' | 'ocr' | 'recortar' | 'firmar' | 'censurar' | 'comparar' | 'imagenes' | 'editar' | 'formulario' | 'escanear' | 'pdfa' }
   | { kind: 'conv'; id: 'img-pdf' | 'img-jpg' | 'img-png' | 'img-webp' | 'img-bmp' | 'pdf-img' | 'pdf-txt' | 'pdf-word' | 'pdf-excel' | 'word-pdf' | 'excel-pdf' }
   | { kind: 'qr'; id?: undefined }
+  | { kind: 'doc'; id: 'cobro' }
   | { kind: 'archive'; id: 'crear' | 'extraer' }
   | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' }
 
-export type CategoryId = 'organizar' | 'editar' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'escanear' | 'archivos' | 'qr'
+export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'escanear' | 'archivos' | 'qr'
 
 export interface ToolPage {
   slug: string

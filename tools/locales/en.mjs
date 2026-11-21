@@ -32,7 +32,7 @@ export default {
     footConsent: 'Analytics preferences',
     os: 'Any (web browser)',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
-    cats: { organizar: "Organize PDF", editar: "Edit and sign", seguridad: "Security", optimizar: "Optimize and archive", convertir: "Convert", imagen: "Image", escanear: "Scan and OCR", archivos: "Compressed files", qr: "QR codes" },
+    cats: { organizar: "Organize PDF", editar: "Edit and sign", documentos: "Create documents", seguridad: "Security", optimizar: "Optimize and archive", convertir: "Convert", imagen: "Image", escanear: "Scan and OCR", archivos: "Compressed files", qr: "QR codes" },
     hubSlug: "tools",
     hubTitle: "All free tools: PDF, image, QR and more | DocuSmart",
     hubDescription: "Every DocuSmart tool by category: merge, convert, sign and compress PDFs, edit images, OCR, QR codes and ZIP files. Free and without uploading your files.",
@@ -487,6 +487,23 @@ export default {
         ["Can I turn several photos black and white?", "Yes. Choose them all, tick \"Black and white\" and they are converted with the same settings; they download together in a ZIP."],
         ["Does the photo lose quality?", "It keeps its size and format (JPG, PNG or WebP; iPhone HEIC photos are saved as JPG). Only straightening trims the edges a little. Hidden photo data (EXIF), such as the GPS location, is also removed."],
         ["Are my photos uploaded to the internet?", "No. The adjustments happen inside your browser: your photos never leave your device."],
+      ],
+    },
+    'cuenta-de-cobro': {
+      slug: "invoice-generator",
+      title: "Free invoice, quote and receipt maker in PDF | DocuSmart",
+      description: "Make a bill, quote or receipt in minutes: numbering, tax and withholding, totals and signature, as a PDF. Free and without uploading your data.",
+      h1: "Invoice, quote and receipt maker",
+      howTo: "How to make an invoice in 3 steps",
+      lead: "Create professional-looking bills, quotes and receipts for your clients, with totals calculated for you and your signature, ready to send as PDF.",
+      short: "Invoices and quotes in PDF",
+      steps: ["Pick the document type and enter your details and your client's (yours can be remembered for next time).", "Add the items with quantity and price; add tax or withholding if needed. Totals are calculated automatically.", "Add your signature, press \"Create PDF\" and download or share it."],
+      faq: [
+        ["What documents can I make?", "A bill for services (who owes whom, how much and for what), a quote with an expiry date, and a payment receipt, all with numbering, items, totals and your signature."],
+        ["Is it an electronic invoice?", "No. DocuSmart doesn't issue tax-authority electronic invoices. If you're required to invoice electronically, use your country's invoicing system; these documents are for billing, quoting or recording a payment."],
+        ["Does it calculate tax and withholding?", "Yes. Enter the tax percentage (VAT or other) and, if withholding applies, its percentage: they're calculated on the subtotal and the total updates instantly."],
+        ["Are my details and numbering saved?", "If you tick the option, your details and payment info are remembered in this browser, and numbering (CC-0001, COT-0001, REC-0001) advances by itself. Nothing is uploaded."],
+        ["Are my data and my clients' data uploaded?", "No. The PDF is built inside your browser: your data, your clients' data and your signature never leave your device."],
       ],
     },
     'comprimir-archivos': {

@@ -25,6 +25,7 @@ const QrScreen = lazy(() => import('../features/qr/ui/Qr').then((m) => ({ defaul
 const Study = lazy(() => import('../features/study/ui/Study').then((m) => ({ default: m.Study })))
 const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((m) => ({ default: m.ArchiveScreen })))
 const ToolsScreen = lazy(() => import('../features/tools/ui/ToolsScreen').then((m) => ({ default: m.ToolsScreen })))
+const BillingScreen = lazy(() => import('../features/billing/ui/Billing').then((m) => ({ default: m.BillingScreen })))
 const HashScreen = lazy(() => import('../features/integrity/ui/HashTool').then((m) => ({ default: m.HashScreen })))
 const ImageToolsScreen = lazy(() => import('../features/image/ui/ImageTools').then((m) => ({ default: m.ImageToolsScreen })))
 
@@ -64,6 +65,7 @@ const SCREEN_NAMES: Record<string, string> = {
   estudio: 'Study',
   archivos: 'Archive',
   hash: 'Hash',
+  documentos: 'Documents',
   imagen: 'ImageTools',
   herramientas: 'Tools',
 }
@@ -225,6 +227,9 @@ export function App() {
       break
     case 'hash':
       screen = <HashScreen sub={route.sub} />
+      break
+    case 'documentos':
+      screen = <BillingScreen />
       break
     case 'imagen':
       screen = <ImageToolsScreen sub={route.sub} />

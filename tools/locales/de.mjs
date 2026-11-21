@@ -32,7 +32,7 @@ export default {
     footConsent: 'Analyse-Einstellungen',
     os: 'Beliebig (Webbrowser)',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
-    cats: { organizar: "PDF organisieren", editar: "Bearbeiten und unterschreiben", seguridad: "Sicherheit", optimizar: "Optimieren und archivieren", convertir: "Konvertieren", imagen: "Bild", escanear: "Scannen und OCR", archivos: "Komprimierte Dateien", qr: "QR-Codes" },
+    cats: { organizar: "PDF organisieren", editar: "Bearbeiten und unterschreiben", documentos: "Dokumente erstellen", seguridad: "Sicherheit", optimizar: "Optimieren und archivieren", convertir: "Konvertieren", imagen: "Bild", escanear: "Scannen und OCR", archivos: "Komprimierte Dateien", qr: "QR-Codes" },
     hubSlug: "werkzeuge",
     hubTitle: "Alle kostenlosen Tools: PDF, Bild, QR und mehr | DocuSmart",
     hubDescription: "Alle DocuSmart-Tools nach Kategorie: PDFs zusammenfügen, umwandeln, unterschreiben und komprimieren, Bilder bearbeiten, OCR, QR-Codes und ZIP-Dateien. Kostenlos und ohne Hochladen.",
@@ -487,6 +487,23 @@ export default {
         ["Kann ich mehrere Fotos in Schwarzweiß umwandeln?", "Ja. Wähle alle aus, aktiviere „Schwarzweiß“, und sie werden mit denselben Einstellungen umgewandelt; sie werden zusammen als ZIP heruntergeladen."],
         ["Verliert das Foto an Qualität?", "Es behält Größe und Format (JPG, PNG oder WebP; HEIC-Fotos vom iPhone werden als JPG gespeichert). Nur beim Ausrichten werden die Ränder etwas beschnitten. Außerdem werden versteckte Fotodaten (EXIF) wie der GPS-Standort entfernt."],
         ["Werden meine Fotos ins Internet hochgeladen?", "Nein. Die Anpassungen passieren in deinem Browser: Deine Fotos verlassen nie dein Gerät."],
+      ],
+    },
+    'cuenta-de-cobro': {
+      slug: "rechnung-erstellen",
+      title: "Rechnung, Angebot oder Quittung als PDF erstellen | DocuSmart",
+      description: "Erstelle Rechnungen, Angebote und Quittungen in Minuten: Nummerierung, Steuern und Einbehalt, Summen und Unterschrift, als PDF. Gratis und ohne Upload.",
+      h1: "Rechnung, Angebot und Quittung",
+      howTo: "So erstellst du eine Rechnung in 3 Schritten",
+      lead: "Erstelle ansprechende Rechnungen, Angebote und Quittungen für deine Kunden, mit berechneten Summen und deiner Unterschrift, bereit zum Versand als PDF.",
+      short: "Rechnungen und Angebote als PDF",
+      steps: ["Wähle den Dokumenttyp und gib deine Angaben und die des Kunden ein (deine können gespeichert werden).", "Füge die Positionen mit Menge und Preis hinzu; falls nötig Steuer oder Einbehalt. Die Summen werden automatisch berechnet.", "Füge deine Unterschrift hinzu, tippe auf „PDF erstellen“ und lade es herunter oder teile es."],
+      faq: [
+        ["Welche Dokumente kann ich erstellen?", "Eine Rechnung (wer wem wie viel wofür schuldet), ein Angebot mit Gültigkeitsdatum und eine Zahlungsquittung, jeweils mit Nummerierung, Positionen, Summen und deiner Unterschrift."],
+        ["Ist das eine E-Rechnung?", "Nein. DocuSmart stellt keine elektronischen Rechnungen (XRechnung, ZUGFeRD) aus. Wenn du dazu verpflichtet bist, nutze das System deines Landes; diese Dokumente dienen zum Abrechnen, Anbieten oder Bestätigen einer Zahlung."],
+        ["Berechnet es Steuern und Einbehalt?", "Ja. Gib den Steuersatz (MwSt. oder andere) und, falls zutreffend, den Einbehalt in Prozent ein: Sie werden auf die Zwischensumme berechnet und die Gesamtsumme aktualisiert sich sofort."],
+        ["Werden meine Angaben und die Nummerierung gespeichert?", "Wenn du die Option aktivierst, werden deine Angaben und Zahlungsdaten in diesem Browser gespeichert, und die Nummerierung (CC-0001, COT-0001, REC-0001) zählt von selbst weiter. Nichts wird hochgeladen."],
+        ["Werden meine Daten und die meiner Kunden hochgeladen?", "Nein. Das PDF wird in deinem Browser erstellt: Deine Daten, die deiner Kunden und deine Unterschrift verlassen nie dein Gerät."],
       ],
     },
     'comprimir-archivos': {
