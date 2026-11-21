@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { canRegisterServiceWorker, captureInstallPrompt, desktopBrowser, desktopGuideMode, handleLaunches, onOfflineReady, onUpdateReady, promptInstall, registerServiceWorker, shouldOfferInstall, UPDATE_CHECK_MS, urlsToCache, watchForUpdates, watchInstallPrompt } from '../../../../src/shared/platform/pwa'
+import { canRegisterServiceWorker, captureInstallPrompt, connectivityNote, desktopBrowser, desktopGuideMode, handleLaunches, isOfflineReady, onOfflineReady, onUpdateReady, promptInstall, registerServiceWorker, shouldOfferInstall, UPDATE_CHECK_MS, urlsToCache, watchForUpdates, watchInstallPrompt } from '../../../../src/shared/platform/pwa'
 
 const DESKTOP = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36'
 const ANDROID = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Mobile Safari/537.36'
@@ -133,6 +133,42 @@ describe('service worker', () => {
     dispatchSw(new MessageEvent('message', { data: { type: 'offline-ready' }, origin: 'https://docusmart.online' }))
     expect(cb).toHaveBeenCalledTimes(1)
     expect(onOfflineReady(cb, fakeWindow({ sw: false }).win)()).toBeUndefined()
+  })
+
+  it('recuerda que la app instalada ya funciona sin conexión (W-112)', () => {
+    const store = new Map<string, string>()
+    const a = fakeWindow({ standalone: true, controller: true })
+    ;(a.win as unknown as { localStorage: Storage }).localStorage = { getItem: (k: string) => store.get(k) ?? null, setItem: (k: string, v: string) => void store.set(k, v) } as Storage
+    expect(isOfflineReady(a.win)).toBe(false)
+    onOfflineReady(() => undefined, a.win)
+    a.dispatchSw(new MessageEvent('message', { data: { type: 'offline-ready' }, origin: 'https://otro.com' }))
+    expect(isOfflineReady(a.win)).toBe(false)
+    a.dispatchSw(new MessageEvent('message', { data: { type: 'offline-ready' }, origin: 'https://docusmart.online' }))
+    expect(store.get('ds-offline-ready')).toBe('1')
+    expect(isOfflineReady(a.win)).toBe(true)
+  })
+
+  it('solo promete funcionar sin conexión en la app instalada, con el service worker activo y el aviso ya recibido', () => {
+    const flag = { getItem: () => '1', setItem: () => undefined } as unknown as Storage
+    const mk = (opts: Parameters<typeof fakeWindow>[0], storage?: Storage) => {
+      const a = fakeWindow(opts)
+      ;(a.win as unknown as { localStorage?: Storage }).localStorage = storage
+      return a.win
+    }
+    expect(isOfflineReady(mk({ standalone: true, controller: true }, flag))).toBe(true)
+    // pestaña normal: no guarda todas las herramientas, no se promete
+    expect(isOfflineReady(mk({ standalone: false, controller: true }, flag))).toBe(false)
+    // sin service worker activo todavía
+    expect(isOfflineReady(mk({ standalone: true, controller: false }, flag))).toBe(false)
+    // sin almacenamiento (navegación privada): no falla y no promete
+    expect(isOfflineReady(mk({ standalone: true, controller: true }))).toBe(false)
+  })
+
+  it('el sello dice "sin conexión" solo cuando es verdad', () => {
+    expect(connectivityNote(false, false)).toBe('offline')
+    expect(connectivityNote(false, true)).toBe('offline')
+    expect(connectivityNote(true, true)).toBe('ready')
+    expect(connectivityNote(true, false)).toBe('none')
   })
 
   it('solo guarda archivos del propio sitio y de sus carpetas cacheables', () => {
