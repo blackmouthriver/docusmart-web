@@ -753,6 +753,23 @@ export default {
         ["Mes données sont-elles envoyées sur internet ?", "Non. La conversion se fait dans votre navigateur."],
       ],
     },
+    'audio-a-texto': {
+      slug: "audio-en-texte",
+      title: "Audio en texte gratuit : transcrire messages vocaux et vidéos | DocuSmart",
+      description: "Transcrivez messages vocaux, réunions, cours et vidéos en texte, et créez des sous-titres SRT sans envoyer l'audio : tout se fait dans votre navigateur.",
+      h1: "Audio en texte (transcription)",
+      howTo: "Comment convertir un audio en texte en 3 étapes",
+      lead: "Transformez en texte un message vocal WhatsApp, une réunion, une interview ou le son d'une vidéo, directement dans votre navigateur et sans que l'audio quitte votre appareil.",
+      short: "Messages vocaux et vidéos en texte",
+      steps: ["Choisissez l'audio ou la vidéo, ou appuyez sur «Enregistrer avec le micro» pour dicter.", "Choisissez la langue (ou laissez-la se détecter seule) et appuyez sur «Transcrire».", "Relisez le texte et copiez-le ou téléchargez-le en .txt ou Word, ou les sous-titres en .srt et .vtt."],
+      faq: [
+        ["Comment ça marche sans envoyer l'audio ?", "L'outil utilise Whisper, un modèle de reconnaissance vocale open source, qui tourne dans votre navigateur. La première fois, le modèle (environ 77 MB) est téléchargé et enregistré ; ensuite, il fonctionne même hors connexion."],
+        ["Est-ce que ça marche avec les messages vocaux WhatsApp ?", "Oui. Enregistrez le message vocal (OGG ou OPUS) ou partagez-le vers le navigateur, puis choisissez-le ici. Cela fonctionne aussi avec MP3, M4A, WAV et avec le son des vidéos MP4, MOV ou WebM."],
+        ["Quelle est la précision ?", "Avec une voix claire et peu de bruit, très bonne. Avec beaucoup de bruit, plusieurs personnes qui parlent en même temps ou des accents marqués, il fait plus d'erreurs ; c'est pourquoi vous pouvez corriger le texte avant de le télécharger."],
+        ["Combien de temps ça prend ?", "Cela dépend de l'appareil : sur un ordinateur, un audio est généralement transcrit en moins de temps qu'il n'en dure ; sur un téléphone, cela peut être plus long. Vous voyez le texte au fur et à mesure."],
+        ["Puis-je créer des sous-titres pour une vidéo ?", "Oui. Téléchargez le fichier .srt ou .vtt avec le minutage de chaque phrase et importez-le sur YouTube, dans votre logiciel de montage ou dans votre lecteur."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',

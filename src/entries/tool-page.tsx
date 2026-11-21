@@ -51,6 +51,7 @@ const ImageTool = lazy(() =>
   })),
 )
 const MediaTool = lazy(() => import('../features/media/ui/Media').then((m) => ({ default: ({ id }: { id: string }) => <m.MediaTool id={id as 'audio'} /> })))
+const TranscribeTool = lazy(() => import('../features/transcribe/ui/Transcribe').then((m) => ({ default: m.TranscribeTool })))
 const MetadataTool = lazy(() => import('../features/metadata/ui/Metadata').then((m) => ({ default: m.MetadataTool })))
 const TextTool = lazy(() => import('../features/text/ui/TextTools').then((m) => ({ default: ({ id }: { id: string }) => <m.TextTool id={id as 'contar'} /> })))
 const CvTool = lazy(() => import('../features/cv/ui/Cv').then((m) => ({ default: m.CvTool })))
@@ -115,6 +116,7 @@ function toolFor(kind: string | undefined, id: string | undefined): ReactNode {
   if (kind === 'text' && id) return <TextTool id={id} />
   if (kind === 'meta') return <MetadataTool />
   if (kind === 'hash') return <HashTool />
+  if (kind === 'media' && id === 'texto') return <TranscribeTool />
   if (kind === 'media' && id) return <MediaTool id={id} />
   if (kind === 'doc') return id === 'cv' ? <CvTool /> : <BillingTool />
   if (kind === 'img' && id) return <ImageTool id={id} />

@@ -753,6 +753,23 @@ export default {
         ["Werden meine Daten ins Internet hochgeladen?", "Nein. Die Umwandlung erfolgt in deinem Browser."],
       ],
     },
+    'audio-a-texto': {
+      slug: "audio-zu-text",
+      title: "Audio zu Text kostenlos: Sprachnachrichten und Videos transkribieren | DocuSmart",
+      description: "Sprachnachrichten, Meetings, Vorlesungen und Videos in Text umwandeln und SRT-Untertitel erstellen, ohne Upload: Die Spracherkennung läuft im Browser.",
+      h1: "Audio zu Text (Transkription)",
+      howTo: "So wandelst du Audio in 3 Schritten in Text um",
+      lead: "Wandle eine WhatsApp-Sprachnachricht, ein Meeting, ein Interview oder den Ton eines Videos in Text um, direkt in deinem Browser und ohne dass das Audio dein Gerät verlässt.",
+      short: "Sprachnachrichten und Videos zu Text",
+      steps: ["Wähle das Audio oder Video aus oder tippe auf „Mit dem Mikrofon aufnehmen“, um zu diktieren.", "Wähle die Sprache (oder lass sie automatisch erkennen) und tippe auf „Transkribieren“.", "Prüfe den Text und kopiere ihn oder lade ihn als .txt oder Word herunter, oder die Untertitel als .srt und .vtt."],
+      faq: [
+        ["Wie funktioniert das, ohne das Audio hochzuladen?", "Es nutzt Whisper, ein Open-Source-Spracherkennungsmodell, das in deinem Browser läuft. Beim ersten Mal wird das Modell (etwa 77 MB) heruntergeladen und gespeichert; danach funktioniert es sogar offline."],
+        ["Funktioniert es mit WhatsApp-Sprachnachrichten?", "Ja. Speichere die Sprachnachricht (OGG oder OPUS) oder teile sie mit dem Browser und wähle sie hier aus. Es funktioniert auch mit MP3, M4A, WAV und dem Ton von MP4-, MOV- oder WebM-Videos."],
+        ["Wie genau ist es?", "Bei deutlicher Sprache und wenig Hintergrundgeräuschen sehr gut. Bei viel Lärm, mehreren Personen, die gleichzeitig sprechen, oder starken Akzenten macht es mehr Fehler; deshalb kannst du den Text vor dem Herunterladen korrigieren."],
+        ["Wie lange dauert es?", "Das hängt vom Gerät ab: Auf einem Computer wird eine Aufnahme meist schneller transkribiert, als sie lang ist; auf einem Handy kann es länger dauern. Du siehst den Text, während er entsteht."],
+        ["Kann ich Untertitel für ein Video erstellen?", "Ja. Lade die .srt- oder .vtt-Datei mit den Zeitangaben jedes Satzes herunter und lade sie auf YouTube, in dein Videoschnittprogramm oder in deinen Player hoch."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',

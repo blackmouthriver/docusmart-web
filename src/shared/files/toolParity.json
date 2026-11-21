@@ -198,6 +198,9 @@
     },
     "excel-a-csv": {
       "app": "evaluar"
+    },
+    "audio-a-texto": {
+      "app": "evaluar"
     }
   }
 }

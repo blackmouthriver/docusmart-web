@@ -1,0 +1,36 @@
+// Audio a texto (W-133): Whisper en el navegador con el modelo real (descarga, worker, CSP).
+// La voz de prueba (tests/fixtures/audio/voz-es.wav) es sintetizada, sin datos personales.
+import { readFile } from 'node:fs/promises'
+import { expect, test } from './helpers'
+
+test('transcribe una nota de voz en español y entrega texto y subtítulos', async ({ page }) => {
+  test.setTimeout(300_000)
+  await page.goto('/audio-a-texto')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Audio a texto (transcripción)')
+  const tool = page.locator('#tool')
+  await expect(tool.getByRole('button', { name: 'Grabar con el micrófono' })).toBeVisible()
+  // La política del sitio permite el micrófono (para dictar) solo en el propio origen; lo demás sigue bloqueado.
+  expect(await page.evaluate(() => (document as unknown as { featurePolicy?: { allowsFeature(f: string): boolean } }).featurePolicy?.allowsFeature('microphone') ?? true)).toBe(true)
+  expect(await page.evaluate(() => (document as unknown as { featurePolicy?: { allowsFeature(f: string): boolean } }).featurePolicy?.allowsFeature('geolocation') ?? false)).toBe(false)
+  await tool.locator('input[type=file]').first().setInputFiles({ name: 'nota.wav', mimeType: 'audio/wav', buffer: await readFile('tests/fixtures/audio/voz-es.wav') })
+  await tool.getByRole('button', { name: 'Transcribir', exact: true }).click()
+
+  const box = tool.getByLabel('Puedes corregir el texto antes de copiarlo o descargarlo.')
+  await expect(box).toBeVisible({ timeout: 280_000 })
+  await expect(box).toHaveValue(/Buenos días/)
+  await expect(box).toHaveValue(/reunión empieza el lunes/)
+  await expect(tool.getByText('Idioma: Español')).toBeVisible()
+
+  let wait = page.waitForEvent('download')
+  await tool.getByRole('button', { name: '.srt' }).click()
+  let file = await wait
+  expect(file.suggestedFilename()).toBe('nota.srt')
+  const srt = (await readFile((await file.path())!)).toString('utf8')
+  expect(srt).toMatch(/^1\n00:00:00,000 --> 00:00:0\d,\d{3}\n/)
+  expect(srt).toContain('presupuesto')
+
+  wait = page.waitForEvent('download')
+  await tool.getByRole('button', { name: '.vtt' }).click()
+  file = await wait
+  expect((await readFile((await file.path())!)).toString('utf8')).toMatch(/^WEBVTT\n\n00:00:00\.000 --> /)
+})

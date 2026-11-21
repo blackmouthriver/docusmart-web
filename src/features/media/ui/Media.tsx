@@ -1,5 +1,5 @@
 // Audio y video (W-132): video a MP3, convertir, recortar y comprimir, en el navegador.
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { go } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Progress, Segmented } from '../../../shared/ui/ui'
@@ -49,11 +49,23 @@ const FAILURE: Record<MediaFailure, MessageKey> = {
 
 const isMediaTool = (id?: string): id is MediaToolId => !!id && (MEDIA_TOOLS as readonly string[]).includes(id)
 
+// Audio a texto (W-133) vive en su propio módulo: se carga solo al abrirlo.
+const TranscribeTool = lazy(() => import('../../transcribe/ui/Transcribe').then((m) => ({ default: m.TranscribeTool })))
+
 export function MediaScreen({ sub }: { sub?: string }) {
   return (
     <>
       <HeroCard title={tr('nav.media')} subtitle={tr('media.heroSub')} />
-      {isMediaTool(sub) ? (
+      {sub === 'texto' ? (
+        <>
+          <BackButton label={tr('media.back')} onClick={() => go('multimedia')} />
+          <h2 style={{ fontSize: 26, margin: '6px 0 4px' }}>{tr('tools.stt')}</h2>
+          <p className="muted" style={{ marginBottom: 16 }}>{tr('tools.stt.desc')}</p>
+          <Suspense fallback={null}>
+            <TranscribeTool />
+          </Suspense>
+        </>
+      ) : isMediaTool(sub) ? (
         <>
           <BackButton label={tr('media.back')} onClick={() => go('multimedia')} />
           <h2 style={{ fontSize: 26, margin: '6px 0 4px' }}>{tr(TOOL_INFO[sub].name)}</h2>
@@ -73,6 +85,13 @@ export function MediaScreen({ sub }: { sub?: string }) {
                 </span>
               </button>
             ))}
+            <button type="button" className="tool-card" onClick={() => go('multimedia', 'texto')}>
+              <span className="ico ico-green"><Icon name="volume" /></span>
+              <span>
+                <b>{tr('tools.stt')}</b>
+                <small>{tr('tools.stt.desc')}</small>
+              </span>
+            </button>
           </div>
         </>
       )}
