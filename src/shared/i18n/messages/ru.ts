@@ -1360,7 +1360,7 @@ const ru: Messages = {
   'bill.address': "Адрес",
   'bill.phone': "Телефон",
   'bill.email': "Эл. почта",
-  'bill.remember': "Запомнить мои данные и реквизиты в этом браузере",
+  'bill.remember': "Запомнить мои данные в этом браузере (платёжные реквизиты не сохраняются)",
   'bill.items': "Позиции",
   'bill.description': "Описание",
   'bill.qty': "Количество",

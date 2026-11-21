@@ -1360,7 +1360,7 @@ const ko: Messages = {
   'bill.address': "주소",
   'bill.phone': "전화",
   'bill.email': "이메일",
-  'bill.remember': "내 정보와 입금 정보를 이 브라우저에 저장",
+  'bill.remember': "내 정보를 이 브라우저에 저장 (입금 정보는 저장하지 않음)",
   'bill.items': "항목",
   'bill.description': "내용",
   'bill.qty': "수량",

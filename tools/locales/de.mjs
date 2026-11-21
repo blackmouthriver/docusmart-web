@@ -502,7 +502,7 @@ export default {
         ["Welche Dokumente kann ich erstellen?", "Eine Rechnung (wer wem wie viel wofür schuldet), ein Angebot mit Gültigkeitsdatum und eine Zahlungsquittung, jeweils mit Nummerierung, Positionen, Summen und deiner Unterschrift."],
         ["Ist das eine E-Rechnung?", "Nein. DocuSmart stellt keine elektronischen Rechnungen (XRechnung, ZUGFeRD) aus. Wenn du dazu verpflichtet bist, nutze das System deines Landes; diese Dokumente dienen zum Abrechnen, Anbieten oder Bestätigen einer Zahlung."],
         ["Berechnet es Steuern und Einbehalt?", "Ja. Gib den Steuersatz (MwSt. oder andere) und, falls zutreffend, den Einbehalt in Prozent ein: Sie werden auf die Zwischensumme berechnet und die Gesamtsumme aktualisiert sich sofort."],
-        ["Werden meine Angaben und die Nummerierung gespeichert?", "Wenn du die Option aktivierst, werden deine Angaben und Zahlungsdaten in diesem Browser gespeichert, und die Nummerierung (CC-0001, COT-0001, REC-0001) zählt von selbst weiter. Nichts wird hochgeladen."],
+        ["Werden meine Angaben und die Nummerierung gespeichert?", "Wenn du die Option aktivierst, werden deine Angaben (Name, Nummer, Adresse, Telefon, E-Mail und Land) in diesem Browser gespeichert; Zahlungsdaten werden nie gespeichert. Die Nummerierung (CC-0001, COT-0001, REC-0001) zählt von selbst weiter. Nichts wird hochgeladen."],
         ["Werden meine Daten und die meiner Kunden hochgeladen?", "Nein. Das PDF wird in deinem Browser erstellt: Deine Daten, die deiner Kunden und deine Unterschrift verlassen nie dein Gerät."],
       ],
     },

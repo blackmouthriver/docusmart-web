@@ -502,7 +502,7 @@ export default {
         ["Quels documents puis-je créer ?", "Une note d'honoraires (qui doit à qui, combien et pour quoi), un devis avec date de validité et un reçu de paiement, tous avec numérotation, lignes, totaux et votre signature."],
         ["Est-ce une facture électronique ?", "Non. DocuSmart n'émet pas de factures électroniques. Si vous êtes tenu de facturer électroniquement, utilisez le système de votre pays ; ces documents servent à facturer, établir un devis ou attester un paiement."],
         ["Calcule-t-il les taxes et la retenue ?", "Oui. Saisissez le pourcentage de taxe (TVA ou autre) et, le cas échéant, celui de la retenue : ils sont calculés sur le sous-total et le total se met à jour aussitôt."],
-        ["Mes coordonnées et la numérotation sont-elles enregistrées ?", "Si vous cochez l'option, vos coordonnées et vos infos de paiement sont mémorisées dans ce navigateur, et la numérotation (CC-0001, COT-0001, REC-0001) avance toute seule. Rien n'est envoyé sur Internet."],
+        ["Mes coordonnées et la numérotation sont-elles enregistrées ?", "Si vous cochez l'option, vos coordonnées (nom, identifiant, adresse, téléphone, e-mail et pays) sont mémorisées dans ce navigateur ; les coordonnées de paiement ne sont jamais enregistrées. La numérotation (CC-0001, COT-0001, REC-0001) avance toute seule. Rien n'est envoyé sur Internet."],
         ["Mes données et celles de mes clients sont-elles envoyées sur Internet ?", "Non. Le PDF est créé dans votre navigateur : vos données, celles de vos clients et votre signature ne quittent jamais votre appareil."],
       ],
     },

@@ -1360,7 +1360,7 @@ const pt: Messages = {
   'bill.address': "Endereço",
   'bill.phone': "Telefone",
   'bill.email': "E-mail",
-  'bill.remember': "Lembrar meus dados e os de pagamento neste navegador",
+  'bill.remember': "Lembrar meus dados neste navegador (os dados para pagamento não são salvos)",
   'bill.items': "Itens",
   'bill.description': "Descrição",
   'bill.qty': "Quantidade",

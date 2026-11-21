@@ -502,7 +502,7 @@ export default {
         ["What documents can I make?", "A bill for services (who owes whom, how much and for what), a quote with an expiry date, and a payment receipt, all with numbering, items, totals and your signature."],
         ["Is it an electronic invoice?", "No. DocuSmart doesn't issue tax-authority electronic invoices. If you're required to invoice electronically, use your country's invoicing system; these documents are for billing, quoting or recording a payment."],
         ["Does it calculate tax and withholding?", "Yes. Enter the tax percentage (VAT or other) and, if withholding applies, its percentage: they're calculated on the subtotal and the total updates instantly."],
-        ["Are my details and numbering saved?", "If you tick the option, your details and payment info are remembered in this browser, and numbering (CC-0001, COT-0001, REC-0001) advances by itself. Nothing is uploaded."],
+        ["Are my details and numbering saved?", "If you tick the option, your details (name, ID, address, phone, email and country) are remembered in this browser for next time; payment details are never saved. Numbering (CC-0001, COT-0001, REC-0001) advances by itself. Nothing is uploaded."],
         ["Are my data and my clients' data uploaded?", "No. The PDF is built inside your browser: your data, your clients' data and your signature never leave your device."],
       ],
     },

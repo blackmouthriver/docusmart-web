@@ -1360,7 +1360,7 @@ const ja: Messages = {
   'bill.address': "住所",
   'bill.phone': "電話",
   'bill.email': "メール",
-  'bill.remember': "自分の情報と振込先をこのブラウザに保存する",
+  'bill.remember': "自分の情報をこのブラウザに保存する（振込先は保存されません）",
   'bill.items': "明細",
   'bill.description': "内容",
   'bill.qty': "数量",

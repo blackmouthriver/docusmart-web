@@ -502,7 +502,7 @@ export default {
         ["Quins documents puc fer?", "Un compte de cobrament (qui deu a qui, quant i per què), un pressupost amb data de validesa i un rebut de pagament, tots amb numeració, conceptes, totals i la teva signatura."],
         ["És una factura electrònica?", "No. DocuSmart no emet factures electròniques. Si estàs obligat a facturar electrònicament, fes servir el sistema del teu país; aquests documents serveixen per cobrar, pressupostar o deixar constància d'un pagament."],
         ["Calcula l'IVA i la retenció?", "Sí. Escriu el percentatge d'impost i, si et practiquen retenció, el seu percentatge: es calculen sobre el subtotal i el total s'actualitza a l'instant."],
-        ["Es desen les meves dades i la numeració?", "Si marques l'opció, les teves dades i les de pagament es recorden en aquest navegador, i la numeració (CC-0001, COT-0001, REC-0001) avança sola. Res no es puja a internet."],
+        ["Es desen les meves dades i la numeració?", "Si marques l'opció, les teves dades (nom, document, adreça, telèfon, correu i país) es recorden en aquest navegador; les dades de pagament no es desen mai. La numeració (CC-0001, COT-0001, REC-0001) avança sola. Res no es puja a internet."],
         ["Les meves dades i les dels clients es pugen a internet?", "No. El PDF es crea al teu navegador: les teves dades, les dels clients i la teva signatura no surten mai del dispositiu."],
       ],
     },

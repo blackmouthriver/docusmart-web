@@ -1360,7 +1360,7 @@ const ca: Messages = {
   'bill.address': "Adreça",
   'bill.phone': "Telèfon",
   'bill.email': "Correu",
-  'bill.remember': "Recordar les meves dades i les de pagament en aquest navegador",
+  'bill.remember': "Recordar les meves dades en aquest navegador (les dades de pagament no es desen)",
   'bill.items': "Conceptes",
   'bill.description': "Descripció",
   'bill.qty': "Quantitat",

@@ -1360,7 +1360,7 @@ const zh: Messages = {
   'bill.address': "地址",
   'bill.phone': "电话",
   'bill.email': "邮箱",
-  'bill.remember': "在此浏览器中记住我的信息和收款信息",
+  'bill.remember': "在此浏览器中记住我的信息（收款信息不会保存）",
   'bill.items': "项目",
   'bill.description': "说明",
   'bill.qty': "数量",

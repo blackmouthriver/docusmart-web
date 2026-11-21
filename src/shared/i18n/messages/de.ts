@@ -1360,7 +1360,7 @@ const de: Messages = {
   'bill.address': "Adresse",
   'bill.phone': "Telefon",
   'bill.email': "E-Mail",
-  'bill.remember': "Meine Angaben und Zahlungsdaten in diesem Browser merken",
+  'bill.remember': "Meine Angaben in diesem Browser merken (Zahlungsdaten werden nie gespeichert)",
   'bill.items': "Positionen",
   'bill.description': "Beschreibung",
   'bill.qty': "Menge",

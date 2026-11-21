@@ -507,7 +507,7 @@ export default {
         ["Zein dokumentu egin ditzaket?", "Kobrantza-agiri bat (nork zor dion nori, zenbat eta zergatik), baliozkotasun datadun aurrekontu bat eta ordainagiri bat, denak zenbakiekin, kontzeptuekin, totalekin eta zure sinadurarekin."],
         ["Faktura elektronikoa da?", "Ez. DocuSmartek ez du faktura elektronikorik egiten. Elektronikoki fakturatu behar baduzu, erabili zure herrialdeko sistema; dokumentu hauek kobratzeko, aurrekontuak egiteko edo ordainketa bat jasotzeko balio dute."],
         ["BEZa eta atxikipena kalkulatzen ditu?", "Bai. Idatzi zerga-ehunekoa eta, atxikipena badago, haren ehunekoa: azpitotalaren gainean kalkulatzen dira eta totala berehala eguneratzen da."],
-        ["Nire datuak eta zenbakiak gordetzen dira?", "Aukera markatzen baduzu, zure datuak eta ordainketakoak nabigatzaile honetan gogoratzen dira, eta zenbakiak (CC-0001, COT-0001, REC-0001) berez aurrera egiten du. Ez da ezer internetera igotzen."],
+        ["Nire datuak eta zenbakiak gordetzen dira?", "Aukera markatzen baduzu, zure datuak (izena, dokumentua, helbidea, telefonoa, posta eta herrialdea) nabigatzaile honetan gogoratzen dira; ordainketarako datuak ez dira inoiz gordetzen. Zenbakiak (CC-0001, COT-0001, REC-0001) berez aurrera egiten du. Ez da ezer internetera igotzen."],
         ["Nire datuak eta bezeroenak internetera igotzen dira?", "Ez. PDFa zure nabigatzailean sortzen da: zure datuak, bezeroenak eta zure sinadura ez dira inoiz gailutik ateratzen."],
       ],
     },

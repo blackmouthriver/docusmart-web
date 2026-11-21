@@ -1360,7 +1360,7 @@ const eu: Messages = {
   'bill.address': "Helbidea",
   'bill.phone': "Telefonoa",
   'bill.email': "Posta",
-  'bill.remember': "Gogoratu nire datuak eta ordainketakoak nabigatzaile honetan",
+  'bill.remember': "Gogoratu nire datuak nabigatzaile honetan (ordainketarako datuak ez dira gordetzen)",
   'bill.items': "Kontzeptuak",
   'bill.description': "Deskribapena",
   'bill.qty': "Kopurua",

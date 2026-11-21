@@ -502,7 +502,7 @@ export default {
         ["Quali documenti posso creare?", "Una parcella (chi deve a chi, quanto e per cosa), un preventivo con data di validità e una ricevuta di pagamento, tutti con numerazione, voci, totali e la tua firma."],
         ["È una fattura elettronica?", "No. DocuSmart non emette fatture elettroniche. Se sei obbligato alla fatturazione elettronica, usa il sistema del tuo paese; questi documenti servono per farti pagare, fare preventivi o attestare un pagamento."],
         ["Calcola imposte e ritenuta?", "Sì. Scrivi la percentuale d'imposta (IVA o altra) e, se c'è ritenuta, la sua percentuale: si calcolano sul subtotale e il totale si aggiorna subito."],
-        ["I miei dati e la numerazione vengono salvati?", "Se selezioni l'opzione, i tuoi dati e quelli di pagamento restano in questo browser, e la numerazione (CC-0001, COT-0001, REC-0001) avanza da sola. Niente viene caricato su internet."],
+        ["I miei dati e la numerazione vengono salvati?", "Se selezioni l'opzione, i tuoi dati (nome, documento, indirizzo, telefono, e-mail e paese) restano in questo browser; i dati per il pagamento non vengono mai salvati. La numerazione (CC-0001, COT-0001, REC-0001) avanza da sola. Niente viene caricato su internet."],
         ["I miei dati e quelli dei clienti vengono caricati su internet?", "No. Il PDF viene creato nel tuo browser: i tuoi dati, quelli dei clienti e la tua firma non lasciano mai il dispositivo."],
       ],
     },

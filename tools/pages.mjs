@@ -622,7 +622,7 @@ export const pages = [
       ["¿Qué es una cuenta de cobro?", "Es el documento con el que una persona que no factura (por ejemplo, un independiente o contratista) cobra un trabajo o servicio: indica quién debe, a quién, cuánto y por qué concepto, con fecha y firma."],
       ["¿Es una factura electrónica?", "No. DocuSmart no emite facturas electrónicas ante la DIAN, el SAT ni otras entidades. Si estás obligado a facturar, usa el sistema de facturación de tu país; estos documentos sirven para cobrar, cotizar o dejar constancia de un pago."],
       ["¿Calcula el IVA y la retención?", "Sí. Escribe el porcentaje de impuesto (IVA u otro) y, si te practican retención, su porcentaje: se calculan sobre el subtotal y el total se actualiza al instante. También escribe el valor en letras."],
-      ["¿Se guardan mis datos y la numeración?", "Si marcas la opción, tus datos y los de pago se recuerdan en este navegador para la próxima vez, y la numeración (CC-0001, COT-0001, REC-0001) avanza sola. Nada se sube a internet."],
+      ["¿Se guardan mis datos y la numeración?", "Si marcas la opción, tus datos (nombre, documento, dirección, teléfono, correo y país) se recuerdan en este navegador para la próxima vez; la cuenta para el pago nunca se guarda. La numeración (CC-0001, COT-0001, REC-0001) avanza sola. Nada se sube a internet."],
       ["¿Mis datos y los de mis clientes se suben a internet?", "No. El PDF se arma dentro de tu navegador: ni tus datos, ni los de tus clientes, ni tu firma salen de tu equipo."],
     ],
   },

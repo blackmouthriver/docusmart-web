@@ -1364,7 +1364,7 @@ export const es = {
   'bill.address': "Dirección",
   'bill.phone': "Teléfono",
   'bill.email': "Correo",
-  'bill.remember': "Recordar mis datos y los de pago en este navegador",
+  'bill.remember': "Recordar mis datos en este navegador (la cuenta para el pago no se guarda)",
   'bill.items': "Conceptos",
   'bill.description': "Descripción",
   'bill.qty': "Cantidad",

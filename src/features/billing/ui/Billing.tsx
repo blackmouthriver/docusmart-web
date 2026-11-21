@@ -41,7 +41,8 @@ const SignatureEditor = lazy(() => import('../../pdf/ui/SignTool').then((m) => (
 const ISSUER_KEY = 'ds-billing-issuer'
 const COUNTERS_KEY = 'ds-billing-counters'
 
-type Saved = { issuer: Party; payment: string; currency: string; city: string; taxLabel: string; country: string }
+// La cuenta para el pago ("Datos para el pago") nunca se guarda: es un dato financiero y queda solo en pantalla.
+type Saved = { issuer: Party; currency: string; city: string; taxLabel: string; country: string }
 const read = (key: string) => {
   try {
     return localStorage.getItem(key)
@@ -61,7 +62,7 @@ function readSaved(): Saved | null {
   try {
     const s = JSON.parse(read(ISSUER_KEY) ?? 'null') as Partial<Saved> | null
     if (!s || typeof s !== 'object') return null
-    return { issuer: { ...emptyParty(), ...(s.issuer ?? {}) }, payment: String(s.payment ?? ''), currency: String(s.currency ?? 'COP'), city: String(s.city ?? ''), taxLabel: String(s.taxLabel ?? ''), country: String(s.country ?? '') }
+    return { issuer: { ...emptyParty(), ...(s.issuer ?? {}) }, currency: String(s.currency ?? 'COP'), city: String(s.city ?? ''), taxLabel: String(s.taxLabel ?? ''), country: String(s.country ?? '') }
   } catch {
     return null
   }
@@ -107,10 +108,10 @@ export function BillingTool() {
   const [taxLabel, setTaxLabel] = useState(saved?.taxLabel || initialCountry?.tax.label || 'IVA')
   const [taxRate, setTaxRate] = useState('')
   const [withholding, setWithholding] = useState('')
-  const [payment, setPayment] = useState(saved?.payment ?? '')
+  const [payment, setPayment] = useState('')
   const [notes, setNotes] = useState('')
-  // Recordar viene marcado (todo queda en este navegador); se puede desmarcar.
-  const [remember, setRemember] = useState(true)
+  // Recordar es una decisión de la persona: viene desmarcado, salvo que ya lo hubiera activado antes.
+  const [remember, setRemember] = useState(saved !== null)
   const [signature, setSignature] = useState<Signature | null>(null)
   const [signing, setSigning] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -213,7 +214,7 @@ export function BillingTool() {
       const next = advanceCounter(counters, kind, doc.number)
       setCounters(next)
       write(COUNTERS_KEY, JSON.stringify(next))
-      write(ISSUER_KEY, remember ? JSON.stringify({ issuer, payment, currency, city, taxLabel, country: country?.code ?? '' } satisfies Saved) : null)
+      write(ISSUER_KEY, remember ? JSON.stringify({ issuer, currency, city, taxLabel, country: country?.code ?? '' } satisfies Saved) : null)
       track('billing_created', { kind, items: items.length, currency, tax: doc.taxRate > 0, signed: !!signature })
       toast(tr('common.doneReview'))
     } catch (e) {

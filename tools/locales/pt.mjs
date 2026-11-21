@@ -502,7 +502,7 @@ export default {
         ["Que documentos posso fazer?", "Uma cobrança de serviços (quem deve a quem, quanto e por quê), um orçamento com validade e um recibo de pagamento, todos com numeração, itens, totais e sua assinatura."],
         ["É uma nota fiscal eletrônica?", "Não. O DocuSmart não emite notas fiscais eletrônicas. Se você é obrigado a emitir nota, use o sistema da prefeitura ou da Receita; estes documentos servem para cobrar, orçar ou registrar um pagamento."],
         ["Calcula impostos e retenção?", "Sim. Escreva a porcentagem do imposto e, se houver retenção, a porcentagem dela: são calculadas sobre o subtotal e o total se atualiza na hora."],
-        ["Meus dados e a numeração ficam salvos?", "Se você marcar a opção, seus dados e os de pagamento ficam lembrados neste navegador, e a numeração (CC-0001, COT-0001, REC-0001) avança sozinha. Nada é enviado à internet."],
+        ["Meus dados e a numeração ficam salvos?", "Se você marcar a opção, seus dados (nome, documento, endereço, telefone, e-mail e país) ficam lembrados neste navegador; os dados para pagamento nunca são salvos. A numeração (CC-0001, COT-0001, REC-0001) avança sozinha. Nada é enviado à internet."],
         ["Meus dados e os dos meus clientes são enviados à internet?", "Não. O PDF é montado no seu navegador: seus dados, os dos seus clientes e sua assinatura não saem do seu dispositivo."],
       ],
     },
