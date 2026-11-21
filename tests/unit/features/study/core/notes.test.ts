@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { layoutPdf } from '../../../../../src/features/convert/core/officePdf'
-import { MAX_NOTE_IMAGES, exportName, noteToText, notesToBlocks, notesToText, orphanImages, parseNotes, upsertNote, type StudyNote } from '../../../../../src/features/study/core/notes'
+import { MAX_NOTE_IMAGES, exportName, noteToMarkdown, noteToText, notesToBlocks, notesToMarkdown, notesToText, orphanImages, parseNotes, upsertNote, type StudyNote } from '../../../../../src/features/study/core/notes'
 
 const labels = { untitled: 'Nota sin título', date: (ms: number) => `día ${ms}`, image: 'Imagen' }
 const note = (id: string, extra: Partial<StudyNote> = {}): StudyNote => ({ id, title: `Título ${id}`, text: 'Línea 1\nLínea 2', at: 1, updatedAt: 1, images: [], ...extra })
@@ -22,6 +22,15 @@ describe('notas', () => {
     const list = upsertNote([note('a'), note('b')], note('b', { text: 'editada' }))
     expect(list.map((n) => n.id)).toEqual(['b', 'a'])
     expect(list[0].text).toBe('editada')
+  })
+
+  it('exporta a Markdown: título como encabezado, fecha en cursiva y el texto tal cual (W-126)', () => {
+    expect(noteToMarkdown(note('a', { images: ['i'], text: '- uno\n- dos' }), labels)).toBe('# Título a\n\n*día 1*\n\n- uno\n- dos\n\n> [Imagen 1]\n')
+    expect(noteToMarkdown(note('b', { title: '  ', text: '' }), labels)).toBe('# Nota sin título\n\n*día 1*\n')
+    // Un título con saltos de línea queda en una sola línea (si no, rompe el encabezado).
+    expect(noteToMarkdown(note('c', { title: 'Uno\nDos' }), labels).split('\n')[0]).toBe('# Uno Dos')
+    expect(notesToMarkdown([note('a'), note('b')], labels)).toContain('\n---\n\n# Título b')
+    expect(exportName([note('a')], 'notas', 'md')).toBe('Título a.md')
   })
 
   it('encuentra imágenes que ya no usa ninguna nota', () => {

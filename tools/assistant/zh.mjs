@@ -69,6 +69,7 @@ export default {
     { id: 'png-a-ico', q: ["制作favicon", "png转ico", "转换为ico", "网站图标", "favicon.ico"], a: "使用“图片转 ICO”：用 PNG、JPG 或 SVG 制作网站图标，16 到 256 px 尺寸都在一个 .ico 中。", actions: [['tool', 'png-a-ico']] },
     { id: 'svg-a-png', q: ["svg转png", "转换svg", "打开svg文件", "svg转图片", "svg标志转png"], a: "使用“SVG 转 PNG”：在浏览器中把 SVG 标志和插画转换为透明背景的高分辨率 PNG。", actions: [['tool', 'svg-a-png']] },
     { id: 'tiff-a-jpg', q: ["tiff转jpg", "tif转jpg", "转换tiff", "打开tif文件", "tiff扫描件"], a: "使用“TIFF 转 JPG”：把 TIFF 扫描件和照片转换为轻巧、处处兼容的 JPG，可一次处理多个，在你的浏览器中完成。", actions: [['tool', 'tiff-a-jpg']] },
+    { id: 'agenda', q: ["日程", "日历", "考试提醒", "记下作业截止", "活动", "导出到outlook", "ics文件", "提醒我上课"], a: "在“学习模式”→“日程”中记下考试、作业截止和课程，可设置日期、时间、重复和提醒。日程保存在你的浏览器中，可以导出 .ics 到 Outlook、Google 日历或 iPhone，也可以导入日历中的 .ics。网站提醒会在 DocuSmart 打开时送达。", actions: [['page', 'study']], related: ['estudio', 'notas'] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }
