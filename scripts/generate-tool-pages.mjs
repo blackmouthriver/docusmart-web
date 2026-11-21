@@ -65,11 +65,11 @@ function toolIcon({ kind, id }) {
   if (kind === 'hash') return 'fingerprint'
   if (kind === 'media') return { audio: 'music', convertir: 'convert', recortar: 'scissors', comprimir: 'compress' }[id] ?? 'video'
   if (kind === 'doc') return id === 'cv' ? 'user' : 'file'
-  return 'qr'
+  return id === 'leer' ? 'camera' : 'qr'
 }
 /** Los tres pasos: elegir → la herramienta → descargar (escribir en el QR, cámara al escanear). */
 function stepIcons(tool) {
-  const first = tool.kind === 'qr' ? 'type' : tool.id === 'escanear' ? 'camera' : 'upload'
+  const first = tool.kind === 'qr' && tool.id !== 'leer' ? 'type' : tool.id === 'escanear' || tool.id === 'leer' ? 'camera' : 'upload'
   return [first, toolIcon(tool), 'download']
 }
 

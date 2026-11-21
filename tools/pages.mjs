@@ -4,7 +4,7 @@
 //
 // tool: { kind: 'pdf', id: 'unir'|'dividir'|'rotar'|'reordenar'|'numerar'|'marca'|'comprimir'|'proteger'|'desbloquear'|'reparar'|'ocr'|'recortar'|'firmar'|'censurar'|'comparar'|'imagenes'|'editar'|'formulario'|'escanear'|'pdfa' }
 //       { kind: 'conv', id: 'img-pdf'|'img-jpg'|'img-png'|'img-webp'|'img-bmp'|'pdf-img'|'pdf-txt'|'pdf-word'|'pdf-excel'|'word-pdf'|'excel-pdf' }
-//       { kind: 'qr' }
+//       { kind: 'qr', id?: 'leer' }  (sin id: crear y leer; 'leer': solo el lector)
 //       { kind: 'archive', id: 'crear'|'extraer' }
 //       { kind: 'hash' }
 //       { kind: 'doc', id: 'cobro'|'cv' }
@@ -759,6 +759,25 @@ export const pages = [
       ["¿Puedo pasar varias imágenes a la vez?", "Sí. Elige varias imágenes y el texto de todas sale junto, separado por imagen si quieres. Así puedes pasar un documento de varias fotos a un solo Word."],
       ["¿Qué idiomas reconoce?", "Español e inglés, o los dos a la vez si el documento mezcla ambos idiomas. El motor se descarga la primera vez y queda guardado en tu navegador."],
       ["¿Mis imágenes se suben a internet?", "No. El reconocimiento se hace en tu navegador con el procesador de tu equipo: tus fotos nunca salen de tu dispositivo."],
+    ],
+  },
+  {
+    slug: 'leer-codigo-qr',
+    category: 'qr',
+    tool: { kind: 'qr', id: 'leer' },
+    title: "Leer código QR online gratis con la cámara o una imagen | DocuSmart",
+    description: "Escanea un código QR con la cámara o desde una foto o captura: abre enlaces, copia textos, guarda contactos y ve la clave del Wi-Fi. Gratis y sin apps.",
+    h1: "Leer código QR",
+    howTo: "Cómo leer un código QR en 3 pasos",
+    lead: "Lee cualquier código QR desde el navegador, con la cámara del celular o del computador, o desde una foto o una captura de pantalla, sin instalar ninguna aplicación.",
+    short: "Escanea un QR con la cámara o una foto",
+    steps: ["Pulsa \"Abrir cámara\" y apunta al código, o cambia a \"Desde imagen\" para usar una foto o una captura.", "El código se lee solo: verás su contenido y qué tipo de dato es (enlace, texto, Wi-Fi, contacto, correo o teléfono).", "Abre el enlace, copia el texto, guarda el contacto o copia la clave del Wi-Fi."],
+    faq: [
+      ["¿Necesito instalar una aplicación?", "No. Funciona en el navegador del celular o del computador. La primera vez el navegador te pide permiso para usar la cámara."],
+      ["¿Puedo leer un QR que está en una foto o en una captura?", "Sí. Elige \"Desde imagen\" y escoge la foto, o pega la captura con Ctrl+V. Sirve para los QR que te mandan por chat o que aparecen en tu propia pantalla."],
+      ["¿Es seguro abrir el enlace de un QR?", "Antes de abrir un enlace te mostramos a qué sitio lleva, para que revises que sea el que esperas. Un QR puede llevar a cualquier página, así que desconfía de los que te piden datos o pagos."],
+      ["¿Lee los QR protegidos con contraseña?", "Sí. Si el código fue creado con DocuSmart y tiene contraseña, te la pide para mostrar el contenido."],
+      ["¿Se envía la imagen a algún servidor?", "No. El código se lee en tu navegador: ni la imagen de la cámara ni tus fotos salen de tu dispositivo."],
     ],
   },
   {

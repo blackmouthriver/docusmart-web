@@ -428,6 +428,19 @@
     "ko": "image-to-text",
     "zh": "image-to-text"
   },
+  "leer-codigo-qr": {
+    "en": "qr-code-reader",
+    "pt": "ler-codigo-qr",
+    "fr": "lire-code-qr",
+    "it": "leggere-codice-qr",
+    "de": "qr-code-lesen",
+    "ca": "llegir-codi-qr",
+    "eu": "qr-kodea-irakurri",
+    "ru": "qr-code-reader",
+    "ja": "qr-code-reader",
+    "ko": "qr-code-reader",
+    "zh": "qr-code-reader"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

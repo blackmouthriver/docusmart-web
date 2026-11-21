@@ -42,7 +42,7 @@ export default {
     { id: 'voz-no-funciona', q: ['목소리가 안 들려요', '소리 내어 읽지 않아요', '소리가 안 나요'], a: '읽기는 브라우저나 시스템의 목소리를 사용해요. 볼륨을 올리거나 다른 목소리, 다른 브라우저(Chrome과 Edge에 목소리가 더 많아요)를 써 보세요. 일부 "온라인" 목소리는 인터넷이 필요해요.', related: ['lectura', 'navegador'] },
     { id: 'notas', q: ['메모하기', '메모', '노트'], a: '학습 모드 → 메모에서 메모를 쓰고 이미지를 추가하세요. 메모는 브라우저 안에만 저장돼요.', actions: [['page', 'study']], related: ['estudio', 'datos-guardados'] },
     { id: 'pomodoro', q: ['뽀모도로', '타이머', '집중하기'], a: '학습 모드 → 뽀모도로에서 25분 블록과 휴식으로 공부해요. 블록이 끝날 때마다 알려 주고 통계도 볼 수 있어요.', actions: [['page', 'study']], related: ['estudio'] },
-    { id: 'qr-leer', q: ['QR 읽기', 'QR 코드 스캔', 'QR 리더'], a: 'QR 코드 → 읽기에서 카메라를 쓰거나 코드가 있는 이미지를 고르세요. DocuSmart의 보호된 QR이면 비밀번호를 물어봐요.', actions: [['page', 'qr']], related: ['qr-protegido', 'qr-historial'] },
+    { id: 'qr-leer', q: ['QR 읽기', 'QR 코드 스캔', 'QR 리더'], a: 'QR 코드 → 읽기에서 카메라를 쓰거나 코드가 있는 이미지를 고르세요. DocuSmart의 보호된 QR이면 비밀번호를 물어봐요.', actions: [['tool', 'leer-codigo-qr']], related: ['qr-protegido', 'qr-historial'] },
     { id: 'qr-protegido', q: ['비밀번호 QR', '보호된 QR', '비공개 QR'], a: 'QR을 만들 때 "보호"를 고르고 비밀번호를 정하면 내용이 암호화되어, 비밀번호를 아는 사람만 DocuSmart(웹 또는 앱)로 읽을 수 있어요.', actions: [['tool', 'crear-codigo-qr']], related: ['qr-leer'] },
     { id: 'qr-historial', q: ['QR 기록', '내가 만든 QR'], a: 'QR 코드 → 기록에 최근에 만들거나 읽은 QR이 브라우저 안에만 저장돼 있어요.', actions: [['page', 'qr']], related: ['qr-leer'] },
     { id: 'pdf-protegido', q: ['PDF에 비밀번호가 있어요', '잠긴 PDF', 'PDF가 안 열려요'], a: '비밀번호를 알면 "PDF 잠금 해제"로 풀 수 있어요. 비밀번호가 없으면 열 수 없어요. 그게 문서를 보호하는 방식이에요.', actions: [['tool', 'desbloquear-pdf']], related: ['pdf-danado'] },

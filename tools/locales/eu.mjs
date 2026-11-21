@@ -626,6 +626,23 @@ export default {
         ["Nire irudiak internetera igotzen dira?", "Ez. Ezagutza zure nabigatzailean egiten da, zure gailuaren prozesadorearekin: zure argazkiak ez dira inoiz zure gailutik ateratzen."],
       ],
     },
+    'leer-codigo-qr': {
+      slug: "qr-kodea-irakurri",
+      title: "Irakurri QR kodeak doan linean kamerarekin edo irudi batekin | DocuSmart",
+      description: "Eskaneatu QR kode bat kamerarekin edo argazki edo pantaila-argazki batetik: ireki estekak, kopiatu testuak, gorde kontaktuak eta ikusi Wi-Fi gakoa. Doan.",
+      h1: "QR kodea irakurri",
+      howTo: "Nola irakurri QR kode bat 3 urratsetan",
+      lead: "Irakurri edozein QR kode nabigatzailean, mugikorreko edo ordenagailuko kamerarekin, edo argazki edo pantaila-argazki batetik, inolako aplikaziorik instalatu gabe.",
+      short: "Eskaneatu QR bat kamerarekin edo argazki batekin",
+      steps: ["Sakatu «Ireki kamera» eta zuzendu kodera, edo aldatu «Iruditik» aukerara argazki edo pantaila-argazki bat erabiltzeko.", "Kodea bere kabuz irakurtzen da: haren edukia eta zer datu mota den ikusiko duzu (esteka, testua, Wi-Fi, kontaktua, posta edo telefonoa).", "Ireki esteka, kopiatu testua, gorde kontaktua edo kopiatu Wi-Fi gakoa."],
+      faq: [
+        ["Aplikaziorik instalatu behar dut?", "Ez. Mugikorreko edo ordenagailuko nabigatzailean funtzionatzen du. Lehen aldian, nabigatzaileak kamera erabiltzeko baimena eskatuko dizu."],
+        ["Argazki edo pantaila-argazki batean dagoen QR bat irakur dezaket?", "Bai. Aukeratu «Iruditik» eta hautatu argazkia, edo itsatsi pantaila-argazkia Ctrl+V sakatuta. Txat bidez bidaltzen dizkizuten edo zure pantailan agertzen diren QR kodeetarako balio du."],
+        ["Segurua da QR baten esteka irekitzea?", "Esteka bat ireki aurretik, zer gunetara daraman erakusten dizugu, espero duzuna dela egiazta dezazun. QR batek edozein orritara eraman dezake; beraz, ez fidatu datuak edo ordainketak eskatzen dizkizutenez."],
+        ["Pasahitzez babestutako QR kodeak irakurtzen ditu?", "Bai. Kodea DocuSmart-ekin sortu bazen eta pasahitza badu, edukia erakusteko eskatuko dizu."],
+        ["Irudia zerbitzariren batera bidaltzen da?", "Ez. Kodea zure nabigatzailean irakurtzen da: ez kamerako irudia ez zure argazkiak ez dira zure gailutik ateratzen."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',

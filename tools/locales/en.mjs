@@ -621,6 +621,23 @@ export default {
         ["Are my images uploaded?", "No. Recognition happens in your browser on your own device: your photos never leave it."],
       ],
     },
+    'leer-codigo-qr': {
+      slug: "qr-code-reader",
+      title: "Read QR codes online free with your camera or an image | DocuSmart",
+      description: "Scan a QR code with your camera or from a photo or screenshot: open links, copy text, save contacts and see the Wi-Fi password. Free, no app needed.",
+      h1: "QR code reader",
+      howTo: "How to read a QR code in 3 steps",
+      lead: "Read any QR code in your browser, with your phone or computer camera, or from a photo or screenshot, without installing an app.",
+      short: "Scan a QR with your camera or a photo",
+      steps: ["Press \"Open camera\" and point it at the code, or switch to \"From image\" to use a photo or screenshot.", "The code is read automatically: you'll see its content and what kind of data it is (link, text, Wi-Fi, contact, email or phone).", "Open the link, copy the text, save the contact or copy the Wi-Fi password."],
+      faq: [
+        ["Do I need to install an app?", "No. It works in your phone or computer browser. The first time, the browser asks for permission to use the camera."],
+        ["Can I read a QR code in a photo or screenshot?", "Yes. Choose \"From image\" and pick the photo, or paste the screenshot with Ctrl+V. It works for QR codes sent to you in a chat or shown on your own screen."],
+        ["Is it safe to open a QR code's link?", "Before opening a link we show you which site it goes to, so you can check it's the one you expect. A QR code can lead to any page, so be wary of ones that ask for your data or a payment."],
+        ["Does it read password-protected QR codes?", "Yes. If the code was created with DocuSmart and has a password, it asks for it to show the content."],
+        ["Is the image sent to a server?", "No. The code is read in your browser: neither the camera image nor your photos leave your device."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

@@ -621,6 +621,23 @@ export default {
         ["Mes images sont-elles envoyées sur internet ?", "Non. La reconnaissance se fait dans votre navigateur avec le processeur de votre appareil : vos photos ne quittent jamais votre appareil."],
       ],
     },
+    'leer-codigo-qr': {
+      slug: "lire-code-qr",
+      title: "Lire un code QR en ligne gratuitement avec la caméra ou une image | DocuSmart",
+      description: "Scannez un code QR avec la caméra ou une photo : ouvrez les liens, copiez le texte, enregistrez les contacts, voyez le mot de passe Wi-Fi. Gratuit, sans appli.",
+      h1: "Lire un code QR",
+      howTo: "Comment lire un code QR en 3 étapes",
+      lead: "Lisez n'importe quel code QR dans votre navigateur, avec la caméra de votre téléphone ou de votre ordinateur, ou à partir d'une photo ou d'une capture d'écran, sans installer d'application.",
+      short: "Scannez un QR avec la caméra ou une photo",
+      steps: ["Appuyez sur «Ouvrir la caméra» et visez le code, ou passez à «Depuis une image» pour utiliser une photo ou une capture.", "Le code est lu automatiquement : vous voyez son contenu et le type de donnée (lien, texte, Wi-Fi, contact, e-mail ou téléphone).", "Ouvrez le lien, copiez le texte, enregistrez le contact ou copiez le mot de passe du Wi-Fi."],
+      faq: [
+        ["Dois-je installer une application ?", "Non. Cela fonctionne dans le navigateur de votre téléphone ou de votre ordinateur. La première fois, le navigateur vous demande l'autorisation d'utiliser la caméra."],
+        ["Puis-je lire un QR présent sur une photo ou une capture ?", "Oui. Choisissez «Depuis une image» et sélectionnez la photo, ou collez la capture avec Ctrl+V. Pratique pour les QR reçus par messagerie ou affichés sur votre propre écran."],
+        ["Est-il sûr d'ouvrir le lien d'un QR ?", "Avant d'ouvrir un lien, nous vous montrons vers quel site il mène, pour que vous vérifiiez que c'est bien celui attendu. Un QR peut mener à n'importe quelle page : méfiez-vous de ceux qui demandent des données ou un paiement."],
+        ["Lit-il les QR protégés par mot de passe ?", "Oui. Si le code a été créé avec DocuSmart et possède un mot de passe, celui-ci vous est demandé pour afficher le contenu."],
+        ["L'image est-elle envoyée à un serveur ?", "Non. Le code est lu dans votre navigateur : ni l'image de la caméra ni vos photos ne quittent votre appareil."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',

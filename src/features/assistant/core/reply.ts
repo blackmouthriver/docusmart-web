@@ -18,8 +18,11 @@ export function contextForRoute(index: Index, section: string, sub?: string): st
   const tools = index.docs.map((d) => d.entry).filter((e) => e.tool && e.id === `tool:${e.tool}`)
   const exact = tools.find((e) => e.actions?.[0]?.kind === 'tool' && e.actions[0].app === route)
   if (exact) return exact.tool
-  // Códigos QR (crear y leer) y hash (calcular, verificar y comparar) comparten herramienta.
-  return section === 'qr' || section === 'hash' || section === 'documentos' ? tools.find((e) => e.actions?.[0]?.app?.startsWith(`${section}/`))?.tool : undefined
+  // Hash (calcular, verificar y comparar) comparte herramienta; en el menú de QR se sugiere el
+  // generador (el lector tiene su página, W-109); en Crear documentos, la primera.
+  if (section !== 'qr' && section !== 'hash' && section !== 'documentos') return undefined
+  const app = (e: (typeof tools)[number]) => e.actions?.[0]?.app
+  return (tools.find((e) => app(e) === `${section}/crear`) ?? tools.find((e) => app(e)?.startsWith(`${section}/`)))?.tool
 }
 
 export type Reply =

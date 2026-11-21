@@ -48,7 +48,7 @@ export function appRoute(tool) {
   if (tool.kind === 'hash') return 'hash/calcular'
   if (tool.kind === 'media') return `multimedia/${tool.id}`
   if (tool.kind === 'doc') return `documentos/${tool.id}`
-  return 'qr/crear'
+  return `qr/${tool.id ?? 'crear'}`
 }
 
 function resolveAction(action, loc, labels, where) {

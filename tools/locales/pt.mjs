@@ -621,6 +621,23 @@ export default {
         ["Minhas imagens são enviadas para a internet?", "Não. O reconhecimento acontece no seu navegador, com o processador do seu aparelho: suas fotos nunca saem do seu dispositivo."],
       ],
     },
+    'leer-codigo-qr': {
+      slug: "ler-codigo-qr",
+      title: "Ler código QR online grátis com a câmera ou uma imagem | DocuSmart",
+      description: "Escaneie um código QR com a câmera ou de uma foto ou print: abra links, copie textos, salve contatos e veja a senha do Wi-Fi. Grátis e sem apps.",
+      h1: "Ler código QR",
+      howTo: "Como ler um código QR em 3 passos",
+      lead: "Leia qualquer código QR no navegador, com a câmera do celular ou do computador, ou a partir de uma foto ou print de tela, sem instalar nenhum aplicativo.",
+      short: "Escaneie um QR com a câmera ou uma foto",
+      steps: ["Toque em \"Abrir câmera\" e aponte para o código, ou mude para \"De uma imagem\" para usar uma foto ou um print.", "O código é lido automaticamente: você verá o conteúdo e o tipo de dado (link, texto, Wi-Fi, contato, e-mail ou telefone).", "Abra o link, copie o texto, salve o contato ou copie a senha do Wi-Fi."],
+      faq: [
+        ["Preciso instalar um aplicativo?", "Não. Funciona no navegador do celular ou do computador. Na primeira vez, o navegador pede permissão para usar a câmera."],
+        ["Posso ler um QR que está em uma foto ou em um print?", "Sim. Escolha \"De uma imagem\" e selecione a foto, ou cole o print com Ctrl+V. Serve para QR enviados por chat ou que aparecem na sua própria tela."],
+        ["É seguro abrir o link de um QR?", "Antes de abrir um link, mostramos para qual site ele leva, para você conferir se é o esperado. Um QR pode levar a qualquer página, então desconfie dos que pedem dados ou pagamentos."],
+        ["Ele lê QR protegidos por senha?", "Sim. Se o código foi criado com o DocuSmart e tem senha, ela é solicitada para mostrar o conteúdo."],
+        ["A imagem é enviada para algum servidor?", "Não. O código é lido no seu navegador: nem a imagem da câmera nem suas fotos saem do seu dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',
