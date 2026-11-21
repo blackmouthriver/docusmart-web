@@ -604,6 +604,23 @@ export default {
         ["Are my files uploaded?", "No. Everything happens in your browser: your photos and documents never leave your device."],
       ],
     },
+    'imagen-a-texto': {
+      slug: "image-to-text",
+      title: "Image to text online free (OCR): copy text from a photo | DocuSmart",
+      description: "Get the text from photos, screenshots and scanned documents to copy, edit or save as Word or .txt. Free, no sign-up and no image uploads.",
+      h1: "Image to text (OCR)",
+      howTo: "How to turn an image into text in 3 steps",
+      lead: "Copy the text from a photo of a document, a screenshot or a sign in seconds, without typing it by hand and without the image leaving your device.",
+      short: "Copy the text from any photo",
+      steps: ["Choose one or more images (JPG, PNG, WebP or HEIC) or paste a screenshot with Ctrl+V.", "Pick the language of the text and press \"Recognize text\".", "Review and fix the text, then press \"Copy\" or download it as .txt or Word."],
+      faq: [
+        ["How accurate is it?", "With sharp, straight, well-lit photos, recognition is very good. If the photo is blurry or tilted, the tool warns you about the low quality and you can fix the text before copying it."],
+        ["Does it recognize handwriting?", "It works with printed or on-screen text. Handwriting is rarely recognized well."],
+        ["Can I convert several images at once?", "Yes. Choose several images and the text from all of them comes out together, separated by image if you like. That way you can turn a document made of several photos into a single Word file."],
+        ["Which languages does it recognize?", "Spanish and English, or both at once if the document mixes them. The engine is downloaded the first time and stays saved in your browser."],
+        ["Are my images uploaded?", "No. Recognition happens in your browser on your own device: your photos never leave it."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

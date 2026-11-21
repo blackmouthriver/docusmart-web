@@ -1604,6 +1604,21 @@ export const es = {
   'meta.k.docId': "Identificador del archivo",
   'file.noMeta': "sin-metadatos",
   'file.zipNoMeta': "archivos-sin-metadatos",
+  'imgt.toText': "Imagen a texto",
+  'imgt.toText.desc': "Saca el texto de fotos y capturas (OCR) para copiarlo, editarlo o pasarlo a Word",
+  'itt.pick': "Elige imágenes con texto",
+  'itt.pickHint': "JPG, PNG, WebP o HEIC, o arrástralas aquí. También puedes pegar una captura con Ctrl+V.",
+  'itt.notImage': "Algunos archivos no son imágenes y no se agregaron.",
+  'itt.pasted': "Captura pegada",
+  'itt.removeFile': "Quitar de la lista",
+  'itt.go': "Reconocer texto",
+  'itt.goN': "Reconocer texto de {n} imágenes",
+  'itt.imageOf': "Reconociendo imagen {n} de {total}…",
+  'itt.word': "Word (.docx)",
+  'itt.withNames': "Separar el texto por imagen",
+  'itt.editHint': "Puedes corregir el texto aquí antes de copiarlo o descargarlo.",
+  'file.capture': "captura",
+  'file.ocrText': "texto",
 }
 
 export type MessageKey = keyof typeof es

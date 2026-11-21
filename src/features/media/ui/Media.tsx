@@ -220,7 +220,7 @@ export function MediaTool({ id }: { id: MediaToolId }) {
             <ul className="file-list" style={{ marginTop: 0 }}>
               <FileRow
                 file={file}
-                extra={info ? [formatTime(info.duration), info.width ? `${info.width} × ${info.height}` : ''].filter(Boolean).join(' · ') : tr('media.reading')}
+                extra={info ? [formatTime(info.duration), info.width ? `${info.width} × ${info.height}` : ''].filter(Boolean).join(' · ') : reading ? tr('media.reading') : undefined}
                 actions={
                   <button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => { setFile(null); setInfo(null); setResult(null); setError(null) }}>
                     {tr('media.change')}

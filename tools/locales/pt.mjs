@@ -604,6 +604,23 @@ export default {
         ["Meus arquivos são enviados para a internet?", "Não. Tudo é feito no seu navegador: suas fotos e documentos nunca saem do seu dispositivo."],
       ],
     },
+    'imagen-a-texto': {
+      slug: "imagem-para-texto",
+      title: "Imagem para texto online grátis (OCR): copie o texto de uma foto | DocuSmart",
+      description: "Extraia o texto de fotos, capturas e documentos digitalizados para copiar, editar ou salvar em Word ou .txt. Grátis, sem cadastro e sem enviar imagens.",
+      h1: "Imagem para texto (OCR)",
+      howTo: "Como passar uma imagem para texto em 3 passos",
+      lead: "Copie o texto de uma foto de documento, de uma captura de tela ou de uma placa em segundos, sem digitar à mão e sem que a imagem saia do seu aparelho.",
+      short: "Copie o texto de qualquer foto",
+      steps: ["Escolha uma ou várias imagens (JPG, PNG, WebP ou HEIC) ou cole uma captura com Ctrl+V.", "Escolha o idioma do texto e toque em \"Reconhecer texto\".", "Revise e corrija o texto; depois toque em \"Copiar\" ou baixe em .txt ou Word."],
+      faq: [
+        ["Qual é a precisão?", "Com fotos nítidas, retas e bem iluminadas, o reconhecimento é muito bom. Se a foto estiver desfocada ou torta, a ferramenta avisa sobre a baixa qualidade e você pode corrigir o texto antes de copiá-lo."],
+        ["Reconhece letra manuscrita?", "Funciona com texto impresso ou de tela. A letra escrita à mão quase nunca é bem reconhecida."],
+        ["Posso converter várias imagens de uma vez?", "Sim. Escolha várias imagens e o texto de todas sai junto, separado por imagem se você quiser. Assim você pode transformar um documento de várias fotos em um único Word."],
+        ["Quais idiomas reconhece?", "Espanhol e inglês, ou os dois ao mesmo tempo se o documento misturar ambos. O mecanismo é baixado na primeira vez e fica salvo no seu navegador."],
+        ["Minhas imagens são enviadas para a internet?", "Não. O reconhecimento acontece no seu navegador, com o processador do seu aparelho: suas fotos nunca saem do seu dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',

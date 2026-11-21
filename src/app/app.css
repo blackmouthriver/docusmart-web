@@ -631,6 +631,7 @@ p { margin: 0; }
 .cv-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 10px; min-width: 0; }
 .cv-wide { grid-column: 1 / -1; }
 .cv-entry-actions { display: flex; flex-direction: column; gap: 2px; }
+.itt-text { min-height: 260px; font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 14px; line-height: 1.5; }
 .meta-item { padding-top: 10px; border-top: 1px solid var(--line); gap: 8px; }
 .meta-title { font-size: 14px; }
 .meta-list { display: grid; gap: 4px; margin: 0; }

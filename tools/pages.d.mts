@@ -7,7 +7,7 @@ export type ToolSpec =
   | { kind: 'media'; id: 'audio' | 'convertir' | 'recortar' | 'comprimir' }
   | { kind: 'meta'; id?: undefined }
   | { kind: 'archive'; id: 'crear' | 'extraer' }
-  | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' }
+  | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' | 'texto' }
 
 export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'multimedia' | 'escanear' | 'archivos' | 'qr'
 

@@ -171,6 +171,9 @@
     },
     "quitar-metadatos": {
       "app": "evaluar"
+    },
+    "imagen-a-texto": {
+      "app": "evaluar"
     }
   }
 }

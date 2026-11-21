@@ -604,6 +604,23 @@ export default {
         ["Els meus fitxers es pugen a internet?", "No. Tot es fa al teu navegador: les teves fotos i documents no surten mai del teu dispositiu."],
       ],
     },
+    'imagen-a-texto': {
+      slug: "imatge-a-text",
+      title: "Imatge a text en línia gratis (OCR): copia el text d'una foto | DocuSmart",
+      description: "Treu el text de fotos, captures i documents escanejats per copiar-lo, editar-lo o desar-lo en Word o .txt. Gratis, sense registre i sense pujar imatges.",
+      h1: "Imatge a text (OCR)",
+      howTo: "Com passar una imatge a text en 3 passos",
+      lead: "Copia el text d'una foto d'un document, una captura de pantalla o un cartell en segons, sense escriure'l a mà i sense que la imatge surti del teu equip.",
+      short: "Copia el text de qualsevol foto",
+      steps: ["Tria una o diverses imatges (JPG, PNG, WebP o HEIC) o enganxa una captura amb Ctrl+V.", "Tria l'idioma del text i prem \"Reconeix el text\".", "Revisa i corregeix el text; després prem \"Copia\" o baixa'l en .txt o Word."],
+      faq: [
+        ["Fins a quin punt és precís?", "Amb fotos nítides, rectes i ben il·luminades, el reconeixement és molt bo. Si la foto està borrosa o torta, l'eina t'avisa de la baixa qualitat i pots corregir el text abans de copiar-lo."],
+        ["Reconeix la lletra manuscrita?", "Funciona amb text imprès o de pantalla. La lletra feta a mà gairebé mai no es reconeix bé."],
+        ["Puc passar diverses imatges alhora?", "Sí. Tria diverses imatges i el text de totes surt junt, separat per imatge si vols. Així pots passar un document de diverses fotos a un sol Word."],
+        ["Quins idiomes reconeix?", "Castellà i anglès, o tots dos alhora si el document barreja els dos idiomes. El motor es baixa la primera vegada i queda desat al teu navegador."],
+        ["Les meves imatges es pugen a internet?", "No. El reconeixement es fa al teu navegador amb el processador del teu equip: les teves fotos no surten mai del teu dispositiu."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',

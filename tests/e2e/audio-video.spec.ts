@@ -4,8 +4,23 @@ import { readFile } from 'node:fs/promises'
 import type { Page } from '@playwright/test'
 import { expect, test } from './helpers'
 
-/** Graba en el navegador un WebM de prueba (colores que cambian + un tono) de `seconds` segundos. */
+/**
+ * Graba en el navegador un WebM de prueba (colores que cambian + un tono) de `seconds` segundos.
+ * Con varias ventanas en paralelo, una en segundo plano puede grabar vacío: se trae al frente
+ * y se reintenta si sale sin datos.
+ */
 async function makeWebm(page: Page, seconds: number): Promise<Buffer> {
+  for (let attempt = 1; ; attempt++) {
+    await page.bringToFront()
+    const clip = await recordWebm(page, seconds)
+    if (clip.length > 2000 || attempt === 3) {
+      expect(clip.length, 'el video de prueba salió vacío').toBeGreaterThan(2000)
+      return clip
+    }
+  }
+}
+
+async function recordWebm(page: Page, seconds: number): Promise<Buffer> {
   const b64 = await page.evaluate(async (secs) => {
     const c = document.createElement('canvas')
     c.width = 320
@@ -35,6 +50,8 @@ async function makeWebm(page: Page, seconds: number): Promise<Buffer> {
         }
       }, 33)
     })
+    // Pide lo grabado hasta ahora antes de parar (si no, puede perderse el último tramo).
+    rec.requestData()
     rec.stop()
     await new Promise((r) => (rec.onstop = r))
     osc.stop()

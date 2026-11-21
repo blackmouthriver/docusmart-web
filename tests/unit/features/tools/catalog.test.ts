@@ -45,7 +45,7 @@ describe('catálogo de la app', () => {
     expect(n.qr).toBe(2)
     expect(n.documentos).toBe(2)
     expect(n.multimedia).toBe(4)
-    expect(n.imagen).toBe(18)
+    expect(n.imagen).toBe(19)
   })
   it('las conversiones de imagen también están en Imagen, pero al buscar aparecen una vez (W-119)', () => {
     const t = (k: string) => (es as Record<string, string>)[k] ?? k
@@ -66,7 +66,8 @@ describe('groupTools', () => {
   })
   it('filtra por nombre, descripción o categoría y oculta las categorías vacías', () => {
     const word = groupTools(tEs, 'es', 'word')
-    expect(word.map((g) => g.id)).toEqual(['documentos', 'convertir'])
+    expect(word.map((g) => g.id)).toEqual(['documentos', 'convertir', 'escanear'])
+    expect(word[2].tools.map((x) => x.sub)).toEqual(['texto'])
     expect(word[0].tools.map((x) => x.sub)).toEqual(['cv'])
     expect(word[1].tools.map((x) => x.sub).sort()).toEqual(['pdf-word', 'word-pdf'])
     const seguridad = groupTools(tEs, 'es', 'seguridad')

@@ -604,6 +604,23 @@ export default {
         ["Werden meine Dateien ins Internet hochgeladen?", "Nein. Alles passiert in deinem Browser: Deine Fotos und Dokumente verlassen nie dein Gerät."],
       ],
     },
+    'imagen-a-texto': {
+      slug: "bild-zu-text",
+      title: "Bild zu Text online kostenlos (OCR): Text aus einem Foto kopieren | DocuSmart",
+      description: "Hol dir den Text aus Fotos, Screenshots und Scans, um ihn zu kopieren, zu bearbeiten oder als Word oder .txt zu speichern. Kostenlos, ohne Anmeldung.",
+      h1: "Bild zu Text (OCR)",
+      howTo: "So wandelst du ein Bild in 3 Schritten in Text um",
+      lead: "Kopiere den Text aus dem Foto eines Dokuments, einem Screenshot oder einem Schild in Sekunden, ohne ihn abzutippen und ohne dass das Bild dein Gerät verlässt.",
+      short: "Kopiere den Text aus jedem Foto",
+      steps: ["Wähle ein oder mehrere Bilder (JPG, PNG, WebP oder HEIC) aus oder füge einen Screenshot mit Ctrl+V ein.", "Wähle die Sprache des Textes und tippe auf „Text erkennen“.", "Prüfe und korrigiere den Text; tippe dann auf „Kopieren“ oder lade ihn als .txt oder Word herunter."],
+      faq: [
+        ["Wie genau ist die Erkennung?", "Bei scharfen, geraden und gut beleuchteten Fotos ist die Erkennung sehr gut. Ist das Foto unscharf oder schief, weist dich das Tool auf die geringe Qualität hin und du kannst den Text vor dem Kopieren korrigieren."],
+        ["Erkennt es Handschrift?", "Es funktioniert mit gedrucktem Text oder Text vom Bildschirm. Handschrift wird nur selten gut erkannt."],
+        ["Kann ich mehrere Bilder auf einmal umwandeln?", "Ja. Wähle mehrere Bilder aus, und der Text aller Bilder wird zusammen ausgegeben, auf Wunsch nach Bild getrennt. So machst du aus einem Dokument mit mehreren Fotos eine einzige Word-Datei."],
+        ["Welche Sprachen werden erkannt?", "Spanisch und Englisch, oder beide gleichzeitig, wenn das Dokument beide Sprachen mischt. Die Engine wird beim ersten Mal heruntergeladen und bleibt in deinem Browser gespeichert."],
+        ["Werden meine Bilder ins Internet hochgeladen?", "Nein. Die Erkennung läuft in deinem Browser mit dem Prozessor deines Geräts: Deine Fotos verlassen dein Gerät nie."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',
