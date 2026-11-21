@@ -1391,5 +1391,13 @@ const de: Messages = {
   'bill.pdf.no': "Nr.",
   'bill.pdf.owes': "Schuldet",
   'bill.pdf.sumOf': "Den Betrag von",
+  'bill.country': "Land",
+  'bill.countryPh': "Land suchen …",
+  'bill.countryHint': "Währung, Steuerbezeichnung und Ausweisarten wurden eingestellt. Du kannst jeden Wert ändern.",
+  'bill.countryNone': "Wähle dein Land, um Währung, Steuer und Ausweisarten auszufüllen (USt-IdNr., Steuernummer …).",
+  'bill.idType': "Art der Nummer",
+  'bill.idNumber': "Nummer",
+  'bill.idOther': "Andere",
+  'bill.useRate': "Regelsatz {tax} verwenden: {rate} %",
 }
 export default de

@@ -1395,6 +1395,14 @@ export const es = {
   'bill.pdf.no': "N.º",
   'bill.pdf.owes': "Debe a",
   'bill.pdf.sumOf': "La suma de",
+  'bill.country': "País",
+  'bill.countryPh': "Busca tu país…",
+  'bill.countryHint': "Se ajustaron la moneda, el nombre del impuesto y los tipos de documento. Puedes cambiar cualquier valor.",
+  'bill.countryNone': "Elige tu país para llenar la moneda, el impuesto y los tipos de documento (NIT, cédula, RFC, RUC…).",
+  'bill.idType': "Tipo de documento",
+  'bill.idNumber': "Número de documento",
+  'bill.idOther': "Otro",
+  'bill.useRate': "Usar la tarifa general de {tax}: {rate} %",
 }
 
 export type MessageKey = keyof typeof es

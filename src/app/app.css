@@ -617,6 +617,9 @@ p { margin: 0; }
 .agenda-what small { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 520px) { .agenda-item { grid-template-columns: 1fr auto; } .agenda-time { grid-column: 1 / -1; } }
 .bill-meta .field, .bill-taxes .field { flex: 1; min-width: 130px; }
+.bill-country { max-width: 420px; }
+.bill-idtype { flex: 0 1 190px !important; min-width: 150px; }
+.bill-suggest { justify-self: start; }
 .bill-parties { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
 .bill-party { display: grid; gap: 8px; margin: 0; padding: 12px; border: 0; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; min-width: 0; }
 .bill-party legend { padding: 0 4px; font-weight: 700; }

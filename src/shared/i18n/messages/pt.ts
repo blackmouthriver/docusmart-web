@@ -1391,5 +1391,13 @@ const pt: Messages = {
   'bill.pdf.no': "N.º",
   'bill.pdf.owes': "Deve a",
   'bill.pdf.sumOf': "A quantia de",
+  'bill.country': "País",
+  'bill.countryPh': "Busque seu país…",
+  'bill.countryHint': "A moeda, o nome do imposto e os tipos de documento foram ajustados. Você pode mudar qualquer valor.",
+  'bill.countryNone': "Escolha seu país para preencher a moeda, o imposto e os tipos de documento (CPF, CNPJ, NIF…).",
+  'bill.idType': "Tipo de documento",
+  'bill.idNumber': "Número do documento",
+  'bill.idOther': "Outro",
+  'bill.useRate': "Usar a alíquota geral de {tax}: {rate}%",
 }
 export default pt

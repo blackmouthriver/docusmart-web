@@ -1391,5 +1391,13 @@ const zh: Messages = {
   'bill.pdf.no': "No.",
   'bill.pdf.owes': "应付给",
   'bill.pdf.sumOf': "金额",
+  'bill.country': "国家/地区",
+  'bill.countryPh': "搜索你的国家/地区…",
+  'bill.countryHint': "已设置货币、税名和证件类型。你可以修改任何值。",
+  'bill.countryNone': "选择你的国家/地区，自动填写货币、税和证件类型。",
+  'bill.idType': "证件类型",
+  'bill.idNumber': "证件号码",
+  'bill.idOther': "其他",
+  'bill.useRate': "使用 {tax} 标准税率：{rate}%",
 }
 export default zh

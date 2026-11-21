@@ -9,7 +9,8 @@ export type DocKind = 'cobro' | 'cotizacion' | 'recibo'
 export const DOC_KINDS: readonly DocKind[] = ['cobro', 'cotizacion', 'recibo']
 export const PREFIX: Record<DocKind, string> = { cobro: 'CC', cotizacion: 'COT', recibo: 'REC' }
 
-export type Party = { name: string; id: string; address: string; phone: string; email: string }
+/** `idType`: el documento según el país ("NIT", "C.C.", "RFC"…); vacío si no se eligió. */
+export type Party = { name: string; idType: string; id: string; address: string; phone: string; email: string }
 export type Item = { description: string; qty: number; price: number }
 export type BillingDoc = {
   kind: DocKind
@@ -26,14 +27,15 @@ export type BillingDoc = {
   /** Impuesto en % (IVA…) y su nombre. */
   taxRate: number
   taxLabel: string
-  /** Retención en % (se descuenta del total). */
+  /** Retención en % (se descuenta del total) y su nombre según el país ("Retención en la fuente"…). */
   withholdingRate: number
+  withholdingLabel: string
   payment: string
   notes: string
 }
 
-export const emptyParty = (): Party => ({ name: '', id: '', address: '', phone: '', email: '' })
-export const CURRENCIES = ['COP', 'MXN', 'USD', 'EUR', 'ARS', 'CLP', 'PEN', 'BRL', 'GTQ', 'DOP', 'CRC', 'UYU', 'BOB', 'PYG', 'GBP'] as const
+export const emptyParty = (): Party => ({ name: '', idType: '', id: '', address: '', phone: '', email: '' })
+export const CURRENCIES = ['COP', 'MXN', 'USD', 'EUR', 'ARS', 'CLP', 'PEN', 'BRL', 'GTQ', 'DOP', 'CRC', 'UYU', 'BOB', 'PYG', 'VES', 'HNL', 'NIO', 'GBP', 'CAD'] as const
 
 /** Decimales de la moneda (COP y CLP no usan centavos en la práctica; USD sí). */
 export function minorDigits(currency: string): number {
@@ -87,6 +89,7 @@ export function totals(items: readonly Item[], taxRate: number, withholdingRate:
 /** País de cada moneda latinoamericana, para escribir el monto como allá ("$ 1.890.000" y no "1.890.000 COP"). */
 const CURRENCY_REGION: Record<string, string> = {
   COP: 'es-CO', MXN: 'es-MX', ARS: 'es-AR', CLP: 'es-CL', PEN: 'es-PE', GTQ: 'es-GT', DOP: 'es-DO', CRC: 'es-CR', UYU: 'es-UY', BOB: 'es-BO', PYG: 'es-PY', BRL: 'pt-BR',
+  VES: 'es-VE', HNL: 'es-HN', NIO: 'es-NI',
 }
 
 /** Idioma para formatear el dinero: la variante regional de la moneda si es del mismo idioma ("es" + COP → "es-CO"). */
@@ -164,6 +167,7 @@ const CURRENCY_WORDS: Record<string, [string, string]> = {
   COP: ['peso', 'pesos'], MXN: ['peso', 'pesos'], ARS: ['peso', 'pesos'], CLP: ['peso', 'pesos'], UYU: ['peso', 'pesos'], DOP: ['peso', 'pesos'],
   USD: ['dólar', 'dólares'], EUR: ['euro', 'euros'], PEN: ['sol', 'soles'], BRL: ['real', 'reales'], GTQ: ['quetzal', 'quetzales'],
   CRC: ['colón', 'colones'], BOB: ['boliviano', 'bolivianos'], PYG: ['guaraní', 'guaraníes'], GBP: ['libra', 'libras'],
+  VES: ['bolívar', 'bolívares'], HNL: ['lempira', 'lempiras'], NIO: ['córdoba', 'córdobas'], CAD: ['dólar canadiense', 'dólares canadienses'],
 }
 
 /** "Un millón doscientos mil pesos" / "Ciento veinte dólares con 50/100" (como se escribe en una cuenta de cobro). */
@@ -242,7 +246,7 @@ const cell = (text: string, opts: { bold?: boolean; align?: 'left' | 'right' } =
 function partyLines(party: Party, l: BillingLabels): OPara[] {
   const out: OPara[] = []
   if (party.name.trim()) out.push(p([{ text: party.name.trim(), bold: true }]))
-  if (party.id.trim()) out.push(p(`${l.id}: ${party.id.trim()}`))
+  if (party.id.trim()) out.push(p(`${party.idType.trim() || l.id}: ${party.id.trim()}`))
   if (party.address.trim()) out.push(p(party.address.trim()))
   const contact = [party.phone.trim() && `${l.phone}: ${party.phone.trim()}`, party.email.trim() && `${l.email}: ${party.email.trim()}`].filter(Boolean).join(' · ')
   if (contact) out.push(p(contact))
@@ -269,7 +273,7 @@ export function billingBlocks(doc: BillingDoc, l: BillingLabels, fmt: (n: number
   if (doc.kind === 'cobro') {
     // Como se escribe una cuenta de cobro: "CLIENTE debe a: EMISOR la suma de: $ … (… pesos)".
     blocks.push(p([{ text: doc.client.name.trim() || '—', bold: true }]))
-    if (doc.client.id.trim()) blocks.push(p(`${l.id}: ${doc.client.id.trim()}`))
+    if (doc.client.id.trim()) blocks.push(p(`${doc.client.idType.trim() || l.id}: ${doc.client.id.trim()}`))
     blocks.push(p(' '))
     blocks.push(p([{ text: `${l.owes.toUpperCase()}:`, bold: true }]))
     blocks.push(...partyLines(doc.issuer, l))
@@ -297,7 +301,7 @@ export function billingBlocks(doc: BillingDoc, l: BillingLabels, fmt: (n: number
   if (t.tax || t.withholding) blocks.push(totalLine(l.subtotal, fmt(t.subtotal)))
   if (t.tax) blocks.push(totalLine(`${doc.taxLabel.trim() || 'IVA'} (${doc.taxRate} %)`, fmt(t.tax)))
   // Guion común y no "−" (U+2212): las fuentes estándar del PDF no lo tienen y se borraría.
-  if (t.withholding) blocks.push(totalLine(`${l.withholding} (${doc.withholdingRate} %)`, `-${fmt(t.withholding)}`))
+  if (t.withholding) blocks.push(totalLine(`${doc.withholdingLabel.trim() || l.withholding} (${doc.withholdingRate} %)`, `-${fmt(t.withholding)}`))
   blocks.push(totalLine(l.total, fmt(t.total), true))
   if (opts.words && doc.kind !== 'cobro') blocks.push(p([{ text: opts.words, italic: true, size: 9 }], { align: 'right' }))
 
@@ -318,7 +322,7 @@ export function billingBlocks(doc: BillingDoc, l: BillingLabels, fmt: (n: number
   } else blocks.push(p(' '), p(' '))
   blocks.push(p('______________________________'))
   blocks.push(p([{ text: doc.issuer.name.trim() || l.signature, bold: true }]))
-  if (doc.issuer.id.trim()) blocks.push(p(`${l.id}: ${doc.issuer.id.trim()}`))
+  if (doc.issuer.id.trim()) blocks.push(p(`${doc.issuer.idType.trim() || l.id}: ${doc.issuer.id.trim()}`))
   return blocks
 }
 

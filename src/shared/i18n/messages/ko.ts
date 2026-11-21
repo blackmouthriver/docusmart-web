@@ -1391,5 +1391,13 @@ const ko: Messages = {
   'bill.pdf.no': "No.",
   'bill.pdf.owes': "지급 대상",
   'bill.pdf.sumOf': "금액",
+  'bill.country': "국가",
+  'bill.countryPh': "국가 검색…",
+  'bill.countryHint': "통화, 세금 이름, 문서 종류를 맞췄습니다. 어떤 값이든 바꿀 수 있습니다.",
+  'bill.countryNone': "국가를 고르면 통화, 세금, 문서 종류가 채워집니다.",
+  'bill.idType': "문서 종류",
+  'bill.idNumber': "문서 번호",
+  'bill.idOther': "기타",
+  'bill.useRate': "{tax} 기본 세율 사용: {rate}%",
 }
 export default ko

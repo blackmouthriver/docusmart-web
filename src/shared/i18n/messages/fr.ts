@@ -1391,5 +1391,13 @@ const fr: Messages = {
   'bill.pdf.no': "N°",
   'bill.pdf.owes': "Doit à",
   'bill.pdf.sumOf': "La somme de",
+  'bill.country': "Pays",
+  'bill.countryPh': "Cherchez votre pays…",
+  'bill.countryHint': "La devise, le nom de la taxe et les types de pièce ont été réglés. Vous pouvez modifier chaque valeur.",
+  'bill.countryNone': "Choisissez votre pays pour remplir la devise, la taxe et les types d'identifiant (SIRET, N° TVA…).",
+  'bill.idType': "Type d'identifiant",
+  'bill.idNumber': "Numéro",
+  'bill.idOther': "Autre",
+  'bill.useRate': "Utiliser le taux normal de {tax} : {rate} %",
 }
 export default fr

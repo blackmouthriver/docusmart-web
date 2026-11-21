@@ -1391,5 +1391,13 @@ const ja: Messages = {
   'bill.pdf.no': "No.",
   'bill.pdf.owes': "支払先",
   'bill.pdf.sumOf': "金額",
+  'bill.country': "国",
+  'bill.countryPh': "国を検索…",
+  'bill.countryHint': "通貨、税の名称、書類の種類を設定しました。どの値も変更できます。",
+  'bill.countryNone': "国を選ぶと、通貨、税、書類の種類が入力されます。",
+  'bill.idType': "書類の種類",
+  'bill.idNumber': "番号",
+  'bill.idOther': "その他",
+  'bill.useRate': "{tax}の標準税率を使う：{rate}%",
 }
 export default ja

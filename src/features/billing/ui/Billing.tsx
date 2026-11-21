@@ -34,13 +34,14 @@ import {
 } from '../core/billing'
 import { isWinAnsi } from '../../integrity/core/certificate'
 import type { Signature } from '../../pdf/ui/SignTool'
+import { COUNTRIES, countryFromLocale, countryName, defaultIdType, findCountry, idsFor, matchCountry, type Country } from '../core/countries'
 
 const SignatureEditor = lazy(() => import('../../pdf/ui/SignTool').then((m) => ({ default: m.SignatureEditor })))
 
 const ISSUER_KEY = 'ds-billing-issuer'
 const COUNTERS_KEY = 'ds-billing-counters'
 
-type Saved = { issuer: Party; payment: string; currency: string; city: string; taxLabel: string }
+type Saved = { issuer: Party; payment: string; currency: string; city: string; taxLabel: string; country: string }
 const read = (key: string) => {
   try {
     return localStorage.getItem(key)
@@ -60,7 +61,7 @@ function readSaved(): Saved | null {
   try {
     const s = JSON.parse(read(ISSUER_KEY) ?? 'null') as Partial<Saved> | null
     if (!s || typeof s !== 'object') return null
-    return { issuer: { ...emptyParty(), ...(s.issuer ?? {}) }, payment: String(s.payment ?? ''), currency: String(s.currency ?? 'COP'), city: String(s.city ?? ''), taxLabel: String(s.taxLabel ?? '') }
+    return { issuer: { ...emptyParty(), ...(s.issuer ?? {}) }, payment: String(s.payment ?? ''), currency: String(s.currency ?? 'COP'), city: String(s.city ?? ''), taxLabel: String(s.taxLabel ?? ''), country: String(s.country ?? '') }
   } catch {
     return null
   }
@@ -88,17 +89,22 @@ export function BillingTool() {
   const { toast } = useApp()
   const { lang } = useT()
   const saved = useMemo(readSaved, [])
+  // País: el guardado o el del idioma del navegador ("es-CO" → Colombia).
+  const initialCountry = findCountry(saved?.country) ?? findCountry(countryFromLocale(typeof navigator === 'undefined' ? [] : navigator.languages ?? [navigator.language]))
+  const [country, setCountry] = useState<Country | null>(initialCountry)
+  const names = useMemo(() => COUNTRIES.map((c) => ({ code: c.code, name: countryName(c.code, lang) })).sort((a, b) => a.name.localeCompare(b.name, lang)), [lang])
+  const [countryText, setCountryText] = useState(() => (initialCountry ? countryName(initialCountry.code, lang) : ''))
   const [counters, setCounters] = useState(() => parseCounters(read(COUNTERS_KEY)))
   const [kind, setKind] = useState<DocKind>('cobro')
   const [number, setNumber] = useState(() => formatNumber('cobro', counters.cobro + 1))
   const [date, setDate] = useState(today)
   const [city, setCity] = useState(saved?.city ?? '')
   const [validUntil, setValidUntil] = useState('')
-  const [currency, setCurrency] = useState(saved?.currency ?? 'COP')
-  const [issuer, setIssuer] = useState<Party>(saved?.issuer ?? emptyParty())
-  const [client, setClient] = useState<Party>(emptyParty())
+  const [currency, setCurrency] = useState(saved?.currency ?? initialCountry?.currency ?? 'COP')
+  const [issuer, setIssuer] = useState<Party>(saved?.issuer ?? { ...emptyParty(), idType: defaultIdType(initialCountry, 'persona') })
+  const [client, setClient] = useState<Party>(() => ({ ...emptyParty(), idType: defaultIdType(initialCountry, 'empresa') }))
   const [rows, setRows] = useState<Row[]>([emptyRow()])
-  const [taxLabel, setTaxLabel] = useState(saved?.taxLabel || 'IVA')
+  const [taxLabel, setTaxLabel] = useState(saved?.taxLabel || initialCountry?.tax.label || 'IVA')
   const [taxRate, setTaxRate] = useState('')
   const [withholding, setWithholding] = useState('')
   const [payment, setPayment] = useState(saved?.payment ?? '')
@@ -111,12 +117,31 @@ export function BillingTool() {
   const [error, setError] = useState<string | null>(null)
   const [output, setOutput] = useState<File | null>(null)
 
+  /**
+   * Al elegir el país se llenan la moneda, el nombre del impuesto y los tipos de documento. La tarifa
+   * no se pone sola (muchos independientes no cobran impuesto): se ofrece con un botón.
+   */
+  const applyCountry = (c: Country) => {
+    setCountry(c)
+    setCurrency(c.currency)
+    setTaxLabel(c.tax.label)
+    const keep = (party: Party, who: 'persona' | 'empresa') => (c.ids.some((i) => i.code === party.idType) ? party.idType : defaultIdType(c, who))
+    setIssuer((p) => ({ ...p, idType: keep(p, 'persona') }))
+    setClient((p) => ({ ...p, idType: keep(p, 'empresa') }))
+  }
+  const typeCountry = (text: string) => {
+    setCountryText(text)
+    const code = matchCountry(text, names)
+    if (code && code !== country?.code) applyCountry(findCountry(code)!)
+    if (!text.trim()) setCountry(null)
+  }
+
   // Al cambiar de tipo, si el número era el sugerido, se sugiere el del nuevo tipo.
   const pickKind = (k: DocKind) => {
     if (number === formatNumber(kind, counters[kind] + 1)) setNumber(formatNumber(k, counters[k] + 1))
     setKind(k)
   }
-  useEffect(() => setOutput(null), [kind, number, date, city, validUntil, currency, issuer, client, rows, taxLabel, taxRate, withholding, payment, notes, signature])
+  useEffect(() => setOutput(null), [kind, number, date, city, validUntil, currency, issuer, client, rows, taxLabel, taxRate, withholding, payment, notes, signature, country])
 
   const items = toItems(rows)
   const t = totals(items, parseAmount(taxRate) || 0, parseAmount(withholding) || 0, currency)
@@ -142,6 +167,7 @@ export function BillingTool() {
         taxRate: parseAmount(taxRate) || 0,
         taxLabel,
         withholdingRate: parseAmount(withholding) || 0,
+        withholdingLabel: country?.withholding ?? '',
         payment,
         notes,
       }
@@ -187,7 +213,7 @@ export function BillingTool() {
       const next = advanceCounter(counters, kind, doc.number)
       setCounters(next)
       write(COUNTERS_KEY, JSON.stringify(next))
-      write(ISSUER_KEY, remember ? JSON.stringify({ issuer, payment, currency, city, taxLabel } satisfies Saved) : null)
+      write(ISSUER_KEY, remember ? JSON.stringify({ issuer, payment, currency, city, taxLabel, country: country?.code ?? '' } satisfies Saved) : null)
       track('billing_created', { kind, items: items.length, currency, tax: doc.taxRate > 0, signed: !!signature })
       toast(tr('common.doneReview'))
     } catch (e) {
@@ -198,7 +224,7 @@ export function BillingTool() {
   }
 
   const newDocument = () => {
-    setClient(emptyParty())
+    setClient({ ...emptyParty(), idType: defaultIdType(country, 'empresa') })
     setRows([emptyRow()])
     setNotes('')
     setValidUntil('')
@@ -207,11 +233,27 @@ export function BillingTool() {
     setOutput(null)
   }
 
+  /** Documentos del país (los de persona y empresa), el que ya estaba elegido y "Otro". */
+  const idOptions = (current: string) => {
+    const list = country ? [...idsFor(country, 'persona'), ...idsFor(country, 'empresa')].filter((x, i, a) => a.findIndex((y) => y.code === x.code) === i) : []
+    const opts = list.map((i) => ({ code: i.code, label: i.name === i.code ? i.code : `${i.name} (${i.code})` }))
+    if (current && !opts.some((o) => o.code === current)) opts.push({ code: current, label: current })
+    return [...opts, { code: '', label: tr('bill.idOther') }]
+  }
+
   const party = (value: Party, set: (p: Party) => void, title: string, auto: boolean) => (
     <fieldset className="bill-party">
       <legend>{title}</legend>
       <label className="field"><span>{tr('bill.name')}</span><input className="input" value={value.name} maxLength={120} autoComplete={auto ? 'name' : 'off'} onChange={(e) => set({ ...value, name: e.target.value })} /></label>
-      <label className="field"><span>{tr('bill.id')}</span><input className="input" value={value.id} maxLength={60} onChange={(e) => set({ ...value, id: e.target.value })} /></label>
+      <div className="row bill-two">
+        <label className="field bill-idtype">
+          <span>{tr('bill.idType')}</span>
+          <select className="input" value={value.idType} onChange={(e) => set({ ...value, idType: e.target.value })}>
+            {idOptions(value.idType).map((o) => <option key={o.code} value={o.code}>{o.label}</option>)}
+          </select>
+        </label>
+        <label className="field"><span>{tr('bill.idNumber')}</span><input className="input" value={value.id} maxLength={60} onChange={(e) => set({ ...value, id: e.target.value })} /></label>
+      </div>
       <label className="field"><span>{tr('bill.address')}</span><input className="input" value={value.address} maxLength={160} autoComplete={auto ? 'street-address' : 'off'} onChange={(e) => set({ ...value, address: e.target.value })} /></label>
       <div className="row bill-two">
         <label className="field"><span>{tr('bill.phone')}</span><input className="input" type="tel" value={value.phone} maxLength={40} autoComplete={auto ? 'tel' : 'off'} onChange={(e) => set({ ...value, phone: e.target.value })} /></label>
@@ -227,6 +269,14 @@ export function BillingTool() {
           <span>{tr('bill.kind')}</span>
           <Segmented label={tr('bill.kind')} value={kind} onChange={pickKind} options={DOC_KINDS.map((k) => ({ value: k, label: tr(KIND_LABEL[k]) }))} />
           <small className="faint">{tr(`bill.kindHint.${kind}` as MessageKey)}</small>
+        </div>
+        <div className="field bill-country">
+          <label htmlFor="bill-country">{tr('bill.country')}</label>
+          <input id="bill-country" className="input" list="bill-countries" value={countryText} placeholder={tr('bill.countryPh')} autoComplete="off" onChange={(e) => typeCountry(e.target.value)} onBlur={() => country && setCountryText(countryName(country.code, lang))} />
+          <datalist id="bill-countries">
+            {names.map((n) => <option key={n.code} value={n.name} />)}
+          </datalist>
+          <small className="faint">{country ? tr('bill.countryHint') : tr('bill.countryNone')}</small>
         </div>
         <div className="row bill-meta">
           <label className="field"><span>{tr('bill.number')}</span><input className="input" value={number} maxLength={30} onChange={(e) => setNumber(e.target.value)} /></label>
@@ -272,10 +322,15 @@ export function BillingTool() {
           <label className="field"><span>{tr('bill.taxRate')}</span><input className="input" inputMode="decimal" value={taxRate} placeholder="0" onChange={(e) => setTaxRate(e.target.value)} /></label>
           <label className="field"><span>{tr('bill.withholding')}</span><input className="input" inputMode="decimal" value={withholding} placeholder="0" onChange={(e) => setWithholding(e.target.value)} /></label>
         </div>
+        {country?.tax.rate != null && !taxRate && (
+          <button type="button" className="btn btn-ghost btn-sm bill-suggest" onClick={() => setTaxRate(String(country.tax.rate))}>
+            {tr('bill.useRate', { tax: country.tax.label, rate: country.tax.rate })}
+          </button>
+        )}
         <dl className="bill-totals" aria-live="polite">
           {(t.tax > 0 || t.withholding > 0) && <><dt>{tr('bill.subtotal')}</dt><dd>{money(t.subtotal)}</dd></>}
           {t.tax > 0 && <><dt>{taxLabel || 'IVA'}</dt><dd>{money(t.tax)}</dd></>}
-          {t.withholding > 0 && <><dt>{tr('bill.withholdingPdf')}</dt><dd>-{money(t.withholding)}</dd></>}
+          {t.withholding > 0 && <><dt>{country?.withholding || tr('bill.withholdingPdf')}</dt><dd>-{money(t.withholding)}</dd></>}
           <dt className="bill-grand">{tr('bill.total')}</dt><dd className="bill-grand">{money(t.total)}</dd>
         </dl>
         {lang.startsWith('es') && t.total > 0 && <small className="faint bill-words">{amountInWordsEs(t.total, currency)}</small>}

@@ -1391,5 +1391,13 @@ const ca: Messages = {
   'bill.pdf.no': "Núm.",
   'bill.pdf.owes': "Deu a",
   'bill.pdf.sumOf': "La suma de",
+  'bill.country': "País",
+  'bill.countryPh': "Cerca el teu país…",
+  'bill.countryHint': "S'han ajustat la moneda, el nom de l'impost i els tipus de document. Pots canviar qualsevol valor.",
+  'bill.countryNone': "Tria el teu país per omplir la moneda, l'impost i els tipus de document (NIF, DNI…).",
+  'bill.idType': "Tipus de document",
+  'bill.idNumber': "Número de document",
+  'bill.idOther': "Altre",
+  'bill.useRate': "Fes servir el tipus general de {tax}: {rate} %",
 }
 export default ca

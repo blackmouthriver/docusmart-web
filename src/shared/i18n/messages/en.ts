@@ -1391,5 +1391,13 @@ const en: Messages = {
   'bill.pdf.no': "No.",
   'bill.pdf.owes': "Owes",
   'bill.pdf.sumOf': "The sum of",
+  'bill.country': "Country",
+  'bill.countryPh': "Search your country…",
+  'bill.countryHint': "Currency, tax name and ID types were set. You can change any value.",
+  'bill.countryNone': "Pick your country to fill in the currency, tax and ID types (VAT number, EIN, NIT, RFC…).",
+  'bill.idType': "ID type",
+  'bill.idNumber': "ID number",
+  'bill.idOther': "Other",
+  'bill.useRate': "Use the standard {tax} rate: {rate}%",
 }
 export default en

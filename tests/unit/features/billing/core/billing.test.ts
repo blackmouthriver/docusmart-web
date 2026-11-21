@@ -25,12 +25,13 @@ const doc = (over: Partial<BillingDoc> = {}): BillingDoc => ({
   city: 'Bogotá',
   validUntil: '',
   currency: 'COP',
-  issuer: { ...emptyParty(), name: 'Ana Pérez', id: 'C.C. 1.020.304', phone: '300 000 0000' },
-  client: { ...emptyParty(), name: 'Empresa S.A.S.', id: 'NIT 900.123.456-7' },
+  issuer: { ...emptyParty(), name: 'Ana Pérez', idType: 'C.C.', id: '1.020.304', phone: '300 000 0000' },
+  client: { ...emptyParty(), name: 'Empresa S.A.S.', idType: 'NIT', id: '900.123.456-7' },
   items: [{ description: 'Diseño de logo', qty: 1, price: 1_200_000 }],
   taxRate: 0,
   taxLabel: 'IVA',
   withholdingRate: 0,
+  withholdingLabel: '',
   payment: 'Bancolombia ahorros 123-456789-00',
   notes: '',
   ...over,
@@ -158,6 +159,16 @@ describe('documento PDF', () => {
     expect(blocks.some((b) => b.kind === 'image')).toBe(true)
     const pdf = await layoutPdf(blocks, { title: 'Receipt' })
     expect(new TextDecoder().decode(pdf.subarray(0, 5))).toBe('%PDF-')
+  })
+
+  it('imprime el tipo de documento de cada parte y el nombre de la retención del país', () => {
+    const text = JSON.stringify(billingBlocks(doc({ withholdingRate: 11, withholdingLabel: 'Retención en la fuente' }), ENGLISH_BILLING_LABELS, fmt, opts))
+    expect(text).toContain('C.C.: 1.020.304')
+    expect(text).toContain('NIT: 900.123.456-7')
+    expect(text).toContain('Retención en la fuente (11 %)')
+    // Sin tipo elegido usa el nombre genérico.
+    const generic = JSON.stringify(billingBlocks(doc({ client: { ...emptyParty(), name: 'X', id: '123' } }), ENGLISH_BILLING_LABELS, fmt, opts))
+    expect(generic).toContain('ID / Tax ID: 123')
   })
 
   it('nombre del archivo', () => {

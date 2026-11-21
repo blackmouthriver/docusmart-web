@@ -1391,5 +1391,13 @@ const eu: Messages = {
   'bill.pdf.no': "Zk.",
   'bill.pdf.owes': "Zor dio",
   'bill.pdf.sumOf': "Zenbatekoa",
+  'bill.country': "Herrialdea",
+  'bill.countryPh': "Bilatu zure herrialdea…",
+  'bill.countryHint': "Moneta, zergaren izena eta dokumentu motak doitu dira. Edozein balio alda dezakezu.",
+  'bill.countryNone': "Aukeratu zure herrialdea moneta, zerga eta dokumentu motak betetzeko (IFZ, NAN…).",
+  'bill.idType': "Dokumentu mota",
+  'bill.idNumber': "Dokumentu zenbakia",
+  'bill.idOther': "Beste bat",
+  'bill.useRate': "Erabili {tax} tasa orokorra: % {rate}",
 }
 export default eu

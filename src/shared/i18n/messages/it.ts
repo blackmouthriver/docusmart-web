@@ -1391,5 +1391,13 @@ const it: Messages = {
   'bill.pdf.no': "N.",
   'bill.pdf.owes': "Deve a",
   'bill.pdf.sumOf': "La somma di",
+  'bill.country': "Paese",
+  'bill.countryPh': "Cerca il tuo paese…",
+  'bill.countryHint': "Valuta, nome dell'imposta e tipi di documento sono stati impostati. Puoi modificare qualsiasi valore.",
+  'bill.countryNone': "Scegli il tuo paese per compilare valuta, imposta e tipi di documento (P. IVA, codice fiscale…).",
+  'bill.idType': "Tipo di documento",
+  'bill.idNumber': "Numero di documento",
+  'bill.idOther': "Altro",
+  'bill.useRate': "Usa l'aliquota ordinaria {tax}: {rate}%",
 }
 export default it

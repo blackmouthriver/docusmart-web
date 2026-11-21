@@ -1391,5 +1391,13 @@ const ru: Messages = {
   'bill.pdf.no': "№",
   'bill.pdf.owes': "Должен",
   'bill.pdf.sumOf': "Сумма",
+  'bill.country': "Страна",
+  'bill.countryPh': "Найдите свою страну…",
+  'bill.countryHint': "Валюта, название налога и виды документов настроены. Любое значение можно изменить.",
+  'bill.countryNone': "Выберите страну, чтобы заполнить валюту, налог и виды документов (ИНН и другие).",
+  'bill.idType': "Вид документа",
+  'bill.idNumber': "Номер документа",
+  'bill.idOther': "Другой",
+  'bill.useRate': "Применить общую ставку {tax}: {rate} %",
 }
 export default ru
