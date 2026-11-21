@@ -587,6 +587,23 @@ export default {
         ["Werden meine Videos hochgeladen?", "Nein. Die Komprimierung passiert in deinem Browser, mit der Hardwarebeschleunigung deines Geräts, wenn verfügbar: Das Video verlässt dein Gerät nie."],
       ],
     },
+    'quitar-metadatos': {
+      slug: "metadaten-entfernen",
+      title: "Metadaten aus Fotos, PDF und Word kostenlos entfernen (EXIF, GPS) | DocuSmart",
+      description: "Versteckte Daten deiner Dateien sehen und löschen: GPS-Standort und Kamera in Fotos, Autor und Datum in PDF, Word und Excel. Kostenlos, ohne Upload.",
+      h1: "Metadaten entfernen (EXIF, GPS und Autor)",
+      howTo: "So entfernst du Metadaten in 3 Schritten",
+      lead: "Ein Foto kann verraten, wo du wohnst, und ein PDF, wer es geschrieben hat. Sieh dir an, welche versteckten Daten deine Dateien enthalten, und lösche sie vor dem Teilen, ohne dass sie dein Gerät verlassen.",
+      short: "Versteckte Daten vor dem Teilen löschen",
+      steps: ["Wähle ein oder mehrere Fotos (JPG, PNG oder WebP) oder Dokumente (PDF, Word, Excel oder PowerPoint) aus.", "Prüfe die gefundenen versteckten Daten: GPS-Standort, Kamera, Autor, Programm und Datumsangaben.", "Tippe auf „Metadaten entfernen“ und lade die bereinigten Dateien herunter (bei mehreren als ZIP)."],
+      faq: [
+        ["Was sind Metadaten?", "Das sind Daten, die unsichtbar in der Datei gespeichert sind: bei einem Foto die Kamera, das Datum und oft der genaue GPS-Standort; bei einem PDF oder Word-Dokument der Name des Autors, die Firma, das Programm sowie Erstellungs- und Änderungsdatum."],
+        ["Verliert das Foto an Qualität?", "Nein. Es werden nur die Datenblöcke entfernt; das Bild wird unverändert kopiert, ohne erneute Komprimierung. Farbprofil und Ausrichtung bleiben erhalten, damit es genauso aussieht wie vorher."],
+        ["Was wird aus einem PDF oder Word-Dokument entfernt?", "Bei PDF: Titel, Autor, Programm, Datumsangaben, XMP-Daten und die Dateikennung. Bei Word, Excel und PowerPoint: Autor, wer es geändert hat, Firma, Vorlage, Bearbeitungszeit, Datumsangaben und benutzerdefinierte Eigenschaften. Der Inhalt bleibt unberührt."],
+        ["Bringt das etwas bei WhatsApp oder sozialen Netzwerken?", "Manche Apps entfernen beim Senden einen Teil der Daten, aber nicht alle und nicht immer (zum Beispiel beim Senden als Dokument). Die Datei vorher zu bereinigen ist der sichere Weg, damit sie deinen Standort nicht verrät."],
+        ["Werden meine Dateien ins Internet hochgeladen?", "Nein. Alles passiert in deinem Browser: Deine Fotos und Dokumente verlassen nie dein Gerät."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',

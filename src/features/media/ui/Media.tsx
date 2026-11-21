@@ -217,15 +217,17 @@ export function MediaTool({ id }: { id: MediaToolId }) {
           <DropZone accept={acceptFor(id)} onFiles={(fs) => fs[0] && void pick(fs[0])} title={tr(videoOnly ? 'media.pickVideo' : 'media.pickMedia')} hint={tr(videoOnly ? 'media.pickHintVideo' : 'media.pickHint')} />
         ) : (
           <>
-            <FileRow
-              file={file}
-              extra={info ? [formatTime(info.duration), info.width ? `${info.width} × ${info.height}` : ''].filter(Boolean).join(' · ') : tr('media.reading')}
-              actions={
-                <button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => { setFile(null); setInfo(null); setResult(null); setError(null) }}>
-                  {tr('media.change')}
-                </button>
-              }
-            />
+            <ul className="file-list" style={{ marginTop: 0 }}>
+              <FileRow
+                file={file}
+                extra={info ? [formatTime(info.duration), info.width ? `${info.width} × ${info.height}` : ''].filter(Boolean).join(' · ') : tr('media.reading')}
+                actions={
+                  <button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => { setFile(null); setInfo(null); setResult(null); setError(null) }}>
+                    {tr('media.change')}
+                  </button>
+                }
+              />
+            </ul>
             {info && <Player file={file} playerRef={player} label={tr('media.original')} />}
           </>
         )}

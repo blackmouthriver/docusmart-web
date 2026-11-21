@@ -587,6 +587,23 @@ export default {
         ["I miei video vengono caricati online?", "No. La compressione avviene nel tuo browser, con l'accelerazione hardware del tuo dispositivo quando disponibile: il video non lascia mai il tuo dispositivo."],
       ],
     },
+    'quitar-metadatos': {
+      slug: "rimuovere-metadati",
+      title: "Rimuovi metadati da foto, PDF e Word gratis (EXIF e GPS) | DocuSmart",
+      description: "Scopri e cancella i dati nascosti dei tuoi file: posizione GPS e fotocamera delle foto, autore e date di PDF, Word ed Excel. Gratis e senza caricarli.",
+      h1: "Rimuovi metadati (EXIF, GPS e autore)",
+      howTo: "Come rimuovere i metadati in 3 passaggi",
+      lead: "Una foto può rivelare dove abiti e un PDF chi l'ha scritto. Scopri quali dati nascosti contengono i tuoi file e cancellali prima di condividerli, senza che lascino il tuo dispositivo.",
+      short: "Cancella i dati nascosti prima di condividere",
+      steps: ["Scegli una o più foto (JPG, PNG o WebP) o documenti (PDF, Word, Excel o PowerPoint).", "Controlla i dati nascosti che abbiamo trovato: posizione GPS, fotocamera, autore, programma e date.", "Premi \"Rimuovi metadati\" e scarica i file puliti (se sono più di uno, in un file ZIP)."],
+      faq: [
+        ["Cosa sono i metadati?", "Sono dati salvati dentro il file senza che si vedano: in una foto, la fotocamera, la data e spesso la posizione GPS esatta; in un PDF o in un Word, il nome dell'autore, l'azienda, il programma e le date di creazione e modifica."],
+        ["La foto perde qualità?", "No. Vengono rimossi solo i blocchi di dati; l'immagine viene copiata così com'è, senza ricomprimerla. Il profilo colore e l'orientamento vengono mantenuti, così appare identica a prima."],
+        ["Cosa viene rimosso da un PDF o da un Word?", "Nei PDF: titolo, autore, programma, date, dati XMP e identificativo del file. In Word, Excel e PowerPoint: autore, chi l'ha modificato, azienda, modello, tempo di modifica, date e proprietà personalizzate. Il contenuto non viene toccato."],
+        ["Serve anche per WhatsApp o i social?", "Alcune app cancellano parte dei dati durante l'invio, ma non tutte e non sempre (per esempio, quando invii come documento). Pulire il file prima è il modo sicuro per sapere che non contiene la tua posizione."],
+        ["I miei file vengono caricati su internet?", "No. Tutto avviene nel tuo browser: le tue foto e i tuoi documenti non lasciano mai il tuo dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',

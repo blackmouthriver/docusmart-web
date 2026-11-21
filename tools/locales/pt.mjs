@@ -587,6 +587,23 @@ export default {
         ["Meus vídeos são enviados para a internet?", "Não. A compressão acontece no seu navegador, usando a aceleração por hardware do seu aparelho quando disponível: o vídeo nunca sai do seu dispositivo."],
       ],
     },
+    'quitar-metadatos': {
+      slug: "remover-metadados",
+      title: "Remover metadados de fotos, PDF e Word grátis (EXIF e GPS) | DocuSmart",
+      description: "Veja e apague os dados ocultos dos seus arquivos: localização GPS e câmera das fotos, autor e datas de PDF, Word e Excel. Grátis e sem enviar nada.",
+      h1: "Remover metadados (EXIF, GPS e autor)",
+      howTo: "Como remover metadados em 3 passos",
+      lead: "Uma foto pode revelar onde você mora e um PDF, quem o escreveu. Veja quais dados ocultos seus arquivos carregam e apague-os antes de compartilhar, sem que saiam do seu aparelho.",
+      short: "Apague os dados ocultos antes de compartilhar",
+      steps: ["Escolha uma ou várias fotos (JPG, PNG ou WebP) ou documentos (PDF, Word, Excel ou PowerPoint).", "Revise os dados ocultos que encontramos: localização GPS, câmera, autor, programa e datas.", "Toque em \"Remover metadados\" e baixe os arquivos limpos (se forem vários, em um ZIP)."],
+      faq: [
+        ["O que são metadados?", "São dados guardados dentro do arquivo sem que você os veja: numa foto, a câmera, a data e muitas vezes a localização GPS exata; num PDF ou Word, o nome do autor, a empresa, o programa e as datas de criação e modificação."],
+        ["A foto perde qualidade?", "Não. Só os blocos de dados são removidos; a imagem é copiada como está, sem ser comprimida de novo. O perfil de cor e a orientação são mantidos, para que fique igual a antes."],
+        ["O que é removido de um PDF ou Word?", "No PDF: título, autor, programa, datas, os dados XMP e o identificador do arquivo. No Word, Excel e PowerPoint: autor, quem modificou, empresa, modelo, tempo de edição, datas e propriedades personalizadas. O conteúdo não é alterado."],
+        ["Funciona com WhatsApp ou redes sociais?", "Alguns apps apagam parte dos dados ao enviar, mas não todos e nem sempre (por exemplo, ao enviar como documento). Limpar o arquivo antes é a forma segura de saber que ele não leva sua localização."],
+        ["Meus arquivos são enviados para a internet?", "Não. Tudo é feito no seu navegador: suas fotos e documentos nunca saem do seu dispositivo."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',

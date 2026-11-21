@@ -168,6 +168,9 @@
     },
     "comprimir-video": {
       "app": "evaluar"
+    },
+    "quitar-metadatos": {
+      "app": "evaluar"
     }
   }
 }

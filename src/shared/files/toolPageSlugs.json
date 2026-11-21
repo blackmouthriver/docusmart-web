@@ -402,6 +402,19 @@
     "ko": "compress-video",
     "zh": "compress-video"
   },
+  "quitar-metadatos": {
+    "en": "remove-metadata",
+    "pt": "remover-metadados",
+    "fr": "supprimer-metadonnees",
+    "it": "rimuovere-metadati",
+    "de": "metadaten-entfernen",
+    "ca": "treure-metadades",
+    "eu": "metadatuak-kendu",
+    "ru": "remove-metadata",
+    "ja": "remove-metadata",
+    "ko": "remove-metadata",
+    "zh": "remove-metadata"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

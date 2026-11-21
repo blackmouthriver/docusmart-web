@@ -587,6 +587,23 @@ export default {
         ["Els meus vídeos es pugen a internet?", "No. La compressió es fa al navegador, amb l'acceleració per maquinari del teu dispositiu quan està disponible: el vídeo no surt mai del teu dispositiu."],
       ],
     },
+    'quitar-metadatos': {
+      slug: "treure-metadades",
+      title: "Treure metadades de fotos, PDF i Word gratis (EXIF i GPS) | DocuSmart",
+      description: "Mira i esborra les dades ocultes dels teus fitxers: ubicació GPS i càmera de les fotos, autor i dates de PDF, Word i Excel. Gratis i sense pujar-los.",
+      h1: "Treure metadades (EXIF, GPS i autor)",
+      howTo: "Com treure les metadades en 3 passos",
+      lead: "Una foto pot dir on vius i un PDF qui l'ha escrit. Mira quines dades ocultes porten els teus fitxers i esborra-les abans de compartir-los, sense que surtin del teu dispositiu.",
+      short: "Esborra les dades ocultes abans de compartir",
+      steps: ["Tria una o diverses fotos (JPG, PNG o WebP) o documents (PDF, Word, Excel o PowerPoint).", "Revisa les dades ocultes que hem trobat: ubicació GPS, càmera, autor, programa i dates.", "Prem \"Treure metadades\" i descarrega els fitxers nets (si en són diversos, en un ZIP)."],
+      faq: [
+        ["Què són les metadades?", "Són dades que es guarden dins del fitxer sense que es vegin: en una foto, la càmera, la data i sovint la ubicació GPS exacta; en un PDF o un Word, el nom de l'autor, l'empresa, el programa i les dates de creació i modificació."],
+        ["La foto perd qualitat?", "No. Només es treuen els blocs de dades; la imatge es copia tal com és, sense tornar-la a comprimir. Es conserven el perfil de color i l'orientació, perquè es vegi igual que abans."],
+        ["Què es treu d'un PDF o un Word?", "En PDF: títol, autor, programa, dates, les dades XMP i l'identificador del fitxer. A Word, Excel i PowerPoint: autor, qui l'ha modificat, empresa, plantilla, temps d'edició, dates i propietats personalitzades. El contingut no es toca."],
+        ["Funciona amb WhatsApp o les xarxes socials?", "Algunes apps esborren part de les dades en enviar, però no totes i no sempre (per exemple, en enviar com a document). Netejar el fitxer abans és la manera segura de saber que no porta la teva ubicació."],
+        ["Els meus fitxers es pugen a internet?", "No. Tot es fa al teu navegador: les teves fotos i documents no surten mai del teu dispositiu."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',

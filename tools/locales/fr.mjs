@@ -587,6 +587,23 @@ export default {
         ["Mes vidéos sont-elles envoyées sur Internet ?", "Non. La compression se fait dans votre navigateur, avec l'accélération matérielle de votre appareil quand elle est disponible : la vidéo ne quitte jamais votre appareil."],
       ],
     },
+    'quitar-metadatos': {
+      slug: "supprimer-metadonnees",
+      title: "Supprimer les métadonnées de photos, PDF et Word gratuitement (EXIF, GPS) | DocuSmart",
+      description: "Voyez et effacez les données cachées de vos fichiers : position GPS et appareil des photos, auteur et dates des PDF, Word et Excel. Gratuit, sans envoi.",
+      h1: "Supprimer les métadonnées (EXIF, GPS et auteur)",
+      howTo: "Comment supprimer les métadonnées en 3 étapes",
+      lead: "Une photo peut révéler où vous habitez et un PDF qui l'a écrit. Voyez quelles données cachées contiennent vos fichiers et effacez-les avant de les partager, sans qu'ils quittent votre appareil.",
+      short: "Effacez les données cachées avant de partager",
+      steps: ["Choisissez une ou plusieurs photos (JPG, PNG ou WebP) ou documents (PDF, Word, Excel ou PowerPoint).", "Vérifiez les données cachées que nous avons trouvées : position GPS, appareil photo, auteur, logiciel et dates.", "Appuyez sur «Supprimer les métadonnées» et téléchargez les fichiers nettoyés (s'il y en a plusieurs, dans un ZIP)."],
+      faq: [
+        ["Que sont les métadonnées ?", "Ce sont des données enregistrées dans le fichier sans être visibles : dans une photo, l'appareil, la date et souvent la position GPS exacte ; dans un PDF ou un Word, le nom de l'auteur, la société, le logiciel et les dates de création et de modification."],
+        ["La photo perd-elle en qualité ?", "Non. Seuls les blocs de données sont retirés ; l'image est copiée telle quelle, sans être recompressée. Le profil de couleur et l'orientation sont conservés, pour qu'elle reste identique."],
+        ["Qu'est-ce qui est supprimé d'un PDF ou d'un Word ?", "Dans un PDF : titre, auteur, logiciel, dates, données XMP et identifiant du fichier. Dans Word, Excel et PowerPoint : auteur, qui l'a modifié, société, modèle, temps d'édition, dates et propriétés personnalisées. Le contenu n'est pas modifié."],
+        ["Est-ce utile pour WhatsApp ou les réseaux sociaux ?", "Certaines applications effacent une partie des données à l'envoi, mais pas toutes et pas toujours (par exemple, lors d'un envoi en tant que document). Nettoyer le fichier avant est le moyen sûr de savoir qu'il ne contient pas votre position."],
+        ["Mes fichiers sont-ils envoyés sur internet ?", "Non. Tout se fait dans votre navigateur : vos photos et documents ne quittent jamais votre appareil."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',
