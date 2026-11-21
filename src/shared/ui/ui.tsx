@@ -1,9 +1,10 @@
-import { useContext, useRef, useState, type ReactNode } from 'react'
+import { useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Icon, type IconName } from './Icon'
 import { formatBytes, kindOf } from '../files/files'
 import { AppContext } from '../../app/state'
 import { useT } from '../i18n/I18n'
 import { tr } from '../i18n/translate'
+import { takeChainedFiles } from '../files/handoff'
 
 export function HeroCard({ title, subtitle }: { title: string; subtitle: string }) {
   const app = useContext(AppContext)
@@ -47,6 +48,12 @@ export function DropZone({
 }) {
   const input = useRef<HTMLInputElement>(null)
   const [over, setOver] = useState(false)
+  // W-110: si la herramienta anterior dejó un archivo para esta, se recibe como si el usuario lo hubiera elegido.
+  useEffect(() => {
+    const handed = takeChainedFiles(accept, !!multiple)
+    if (handed) onFiles(handed)
+    // solo al abrir la pantalla: el traspaso es de un solo uso
+  }, [])
   const take = (list: FileList | null) => {
     if (!list?.length) return
     const files = Array.from(list)
