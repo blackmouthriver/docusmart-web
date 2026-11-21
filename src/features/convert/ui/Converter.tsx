@@ -76,7 +76,7 @@ function Pair({ conv }: { conv: Conv }) {
 
 export function Converter({ sub }: { sub?: string }) {
   const conv = ALL.find((x) => x.id === sub)
-  if (conv) return <ConvertJob conv={conv} />
+  if (conv) return <ConvertJob key={conv.id} conv={conv} />
 
   return (
     <>

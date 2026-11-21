@@ -20,3 +20,57 @@ export const peekHandOff = (target: string): File | null => (pending?.target ===
 export function clearHandOff(target: string): void {
   if (pending?.target === target) pending = null
 }
+
+/*
+ * Flujos encadenados (W-110): el resultado de una herramienta pasa a la siguiente, sin saber de antemano cuál pantalla
+ * lo va a pedir. A diferencia de `handOff` (que tiene destino fijo), aquí lo recoge la primera zona de carga que
+ * acepte el archivo. Es de un solo uso y caduca, para que no quede colgado si el usuario no llega a otra herramienta.
+ */
+
+/** Cuánto vale un traspaso sin recoger (la otra pantalla se monta al instante; esto es solo un seguro). */
+export const CHAIN_MAX_AGE_MS = 15_000
+
+let chained: { files: File[]; at: number } | null = null
+
+/** ¿El archivo cumple el atributo `accept` de un input de archivos ("application/pdf", "image/*", ".zip,.7z" o cualquiera)? */
+export function matchesAccept(file: Pick<File, 'name' | 'type'>, accept: string): boolean {
+  const tokens = accept
+    .split(',')
+    .map((t) => t.trim().toLowerCase())
+    .filter(Boolean)
+  if (!tokens.length) return true
+  const type = file.type.toLowerCase()
+  const name = file.name.toLowerCase()
+  return tokens.some((t) => {
+    if (t === '*/*') return true
+    if (t.startsWith('.')) return name.endsWith(t)
+    if (t.endsWith('/*')) return type.startsWith(t.slice(0, -1))
+    return type === t
+  })
+}
+
+/** Deja el archivo listo para la próxima zona de carga que lo acepte. */
+export function setChainedFiles(files: File[], now = Date.now()): void {
+  chained = files.length ? { files, at: now } : null
+}
+
+/**
+ * Entrega (una sola vez) los archivos del traspaso que esta zona de carga acepta. Si ninguno encaja o ya caducó
+ * no consume nada: otra zona de la misma pantalla puede aceptarlo.
+ */
+export function takeChainedFiles(accept: string, multiple: boolean, now = Date.now()): File[] | null {
+  if (!chained) return null
+  if (now - chained.at > CHAIN_MAX_AGE_MS) {
+    chained = null
+    return null
+  }
+  const files = chained.files.filter((f) => matchesAccept(f, accept))
+  if (!files.length) return null
+  chained = null
+  return multiple ? files : files.slice(0, 1)
+}
+
+/** Descarta cualquier traspaso encadenado pendiente (para las pruebas). */
+export function clearChainedFiles(): void {
+  chained = null
+}
