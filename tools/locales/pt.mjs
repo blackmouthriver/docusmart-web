@@ -689,6 +689,23 @@ export default {
         ["Posso usar a mesma senha em vários sites?", "Melhor não: se um site sofrer um vazamento, todas as suas contas ficariam expostas. Gere uma diferente para cada site e guarde-as em um gerenciador de senhas."],
       ],
     },
+    'resumir-pdf': {
+      slug: "resumir-pdf",
+      title: "Resumir PDF grátis: ideias principais e palavras-chave | DocuSmart",
+      description: "Resuma um PDF, um Word ou um texto em segundos e obtenha as ideias principais e palavras-chave, em 12 idiomas. Grátis, sem cadastro e sem enviar o arquivo.",
+      h1: "Resumir PDF",
+      howTo: "Como resumir um PDF em 3 passos",
+      lead: "Extraia as ideias principais de um relatório, um contrato, um artigo ou anotações sem lê-los inteiros, com um resumo feito no seu próprio navegador.",
+      short: "Ideias principais de um PDF ou texto",
+      steps: ["Escolha um PDF, um Word (.docx) ou um .txt, ou cole o texto.", "Escolha o tamanho do resumo e toque em \"Resumir\".", "Leia as ideias principais e as palavras-chave e copie o resumo ou baixe-o em .txt ou Word."],
+      faq: [
+        ["Usa inteligência artificial?", "Sim, uma técnica clássica de IA que roda no seu navegador: analisa quais frases repetem as ideias principais do documento e quais se parecem mais com o resto, e escolhe essas. Não usa serviços na nuvem nem inventa texto: cada frase do resumo está no documento."],
+        ["Funciona com PDF digitalizados?", "Uma digitalização é uma imagem sem texto. Passe-a primeiro pelo OCR para reconhecer o texto e depois resuma esse PDF."],
+        ["Em quais idiomas funciona?", "Nos 12 idiomas do DocuSmart: detecta o idioma do documento e descarta as palavras que não acrescentam significado; em chinês e japonês analisa pares de caracteres."],
+        ["Qual o tamanho do resumo?", "Curto (de 3 a 7 frases), médio (de 5 a 15) ou longo (de 8 a 30), conforme o tamanho do documento. Você pode mudar e o resumo se atualiza na hora."],
+        ["Meu documento é enviado para a internet?", "Não. O texto é lido e resumido no seu navegador: o arquivo não sai do seu dispositivo nem é salvo."],
+      ],
+    },
     'powerpoint-a-pdf': {
       slug: "powerpoint-para-pdf",
       title: "PowerPoint para PDF grátis: converter PPTX em PDF online | DocuSmart",

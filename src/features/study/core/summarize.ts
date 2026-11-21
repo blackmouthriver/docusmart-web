@@ -7,6 +7,10 @@
  * Mejora de la web: detecta el idioma del documento y descarta las palabras vacías de
  * los 12 idiomas de la app (la app solo tenía español e inglés). En chino y japonés,
  * que no separan palabras con espacios, se cuentan pares de caracteres.
+ *
+ * Resumir PDF (W-142) suma: centralidad tipo TextRank (las oraciones que más se parecen al
+ * resto son las que mejor representan el documento), un poco de peso a las primeras
+ * oraciones, abreviaturas que no cortan la oración, tres largos y palabras clave.
  */
 
 const TARGET_FRACTION = 0.12
@@ -54,14 +58,21 @@ export function detectLanguage(text: string): string {
 
 const isCjk = (lang: string) => lang === 'zh' || lang === 'ja'
 
+/** Abreviaturas comunes que terminan en punto sin cerrar la oración ("Sr. Pérez", "p. ej. esto"). */
+const ABBREVIATIONS = /(?:^|\s)(?:sr|sra|srta|dr|dra|lic|ing|prof|arq|av|art|núm|nro|pág|págs|cap|vol|ej|aprox|tel|cía|ltda|mr|mrs|ms|st|vs|fig|inc|jr|e\.g|i\.e|p\. ej|z\.b|bzw|usw|ggf|ca|mme|mlle)\.$/i
+
 /** Oraciones del texto: corta tras . ! ? (seguido de mayúscula, cifra o comilla) y tras 。！？ sin espacio. */
 export function splitSentences(text: string, lang = 'es'): string[] {
   const min = isCjk(lang) ? MIN_SENTENCE_LENGTH_CJK : MIN_SENTENCE_LENGTH
-  return text
-    .replace(/\s+/g, ' ')
-    .split(/(?<=[.!?…])\s+(?=["'«“¿¡(\p{Lu}\d])|(?<=[。！？])/u)
-    .map((s) => s.trim())
-    .filter((s) => s.length >= min)
+  const parts = text.replace(/\s+/g, ' ').split(/(?<=[.!?…])\s+(?=["'«“¿¡(\p{Lu}\d])|(?<=[。！？])/u)
+  // Una abreviatura o una inicial ("J. García") no termina la oración: se une con lo que sigue.
+  const joined: string[] = []
+  for (const p of parts) {
+    const last = joined[joined.length - 1]
+    if (last !== undefined && (ABBREVIATIONS.test(last) || /(?:^|\s)\p{Lu}\.$/u.test(last))) joined[joined.length - 1] = last + ' ' + p
+    else joined.push(p)
+  }
+  return joined.map((s) => s.trim()).filter((s) => s.length >= min)
 }
 
 /** Palabras que cuentan para puntuar una oración. */
@@ -80,29 +91,92 @@ export function significantTerms(sentence: string, lang: string): string[] {
   return (lower.match(/\p{L}+/gu) ?? []).filter((w) => w.length >= minLength && !stop.has(w))
 }
 
-export type Summary = { sentences: string[]; total: number; lang: string }
+/** `indices`: posición de cada oración elegida entre todas; `keywords`: términos más representativos. */
+export type Summary = { sentences: string[]; total: number; lang: string; indices: number[]; keywords: string[] }
+
+/** Largo del resumen: fracción de las oraciones y mínimo y máximo de oraciones. */
+export type SummaryLength = 'short' | 'medium' | 'long'
+const LENGTHS: Record<SummaryLength, { fraction: number; min: number; max: number }> = {
+  short: { fraction: 0.06, min: 3, max: 7 },
+  medium: { fraction: TARGET_FRACTION, min: MIN_SENTENCES, max: MAX_SENTENCES },
+  long: { fraction: 0.22, min: 8, max: 30 },
+}
+/** Con más oraciones que esto no se calcula la centralidad (sería lenta) y se usa solo la frecuencia. */
+const MAX_TEXTRANK = 1500
+
+/** Palabras clave: los términos significativos más frecuentes que aparecen en varias oraciones. */
+export function keywords(tokenized: readonly string[][], n = 8): string[] {
+  const freq = new Map<string, number>()
+  const spread = new Map<string, number>()
+  for (const terms of tokenized) {
+    for (const t of terms) freq.set(t, (freq.get(t) ?? 0) + 1)
+    for (const t of new Set(terms)) spread.set(t, (spread.get(t) ?? 0) + 1)
+  }
+  return [...freq.keys()]
+    .filter((t) => (spread.get(t) ?? 0) >= 2)
+    .sort((a, b) => freq.get(b)! * Math.log(1 + spread.get(b)!) - freq.get(a)! * Math.log(1 + spread.get(a)!) || a.localeCompare(b))
+    .slice(0, n)
+}
+
+/** Centralidad de cada oración (TextRank): cuánto se parece al resto, propagado como en PageRank. */
+export function centrality(sets: readonly ReadonlySet<string>[], iterations = 30, damping = 0.85): number[] {
+  const n = sets.length
+  const weights: number[][] = sets.map(() => [])
+  const totals = new Array<number>(n).fill(0)
+  for (let i = 0; i < n; i++)
+    for (let j = i + 1; j < n; j++) {
+      const w = similarity(sets[i], sets[j])
+      if (w > 0 && sets[i].size && sets[j].size) {
+        weights[i][j] = w
+        weights[j][i] = w
+        totals[i] += w
+        totals[j] += w
+      }
+    }
+  let rank = new Array<number>(n).fill(1)
+  for (let k = 0; k < iterations; k++) {
+    const next = new Array<number>(n).fill(1 - damping)
+    for (let i = 0; i < n; i++)
+      for (const j in weights[i]) {
+        const jj = Number(j)
+        if (totals[jj]) next[i] += (damping * weights[i][jj] * rank[jj]) / totals[jj]
+      }
+    rank = next
+  }
+  return rank
+}
 
 /**
- * Resumen del texto: entre 5 y 15 oraciones (12 % del total), en su orden original.
+ * Resumen del texto: por defecto entre 5 y 15 oraciones (12 % del total), en su orden original.
  * Si el documento ya es corto, lo devuelve completo: no tiene sentido resumir 3 oraciones.
  */
-export function summarize(text: string, opts: { lang?: string; maxSentences?: number } = {}): Summary {
+export function summarize(text: string, opts: { lang?: string; maxSentences?: number; length?: SummaryLength } = {}): Summary {
   const lang = opts.lang ?? detectLanguage(text)
   const sentences = splitSentences(text, lang)
-  const upper = Math.min(opts.maxSentences ?? MAX_SENTENCES, sentences.length)
-  const lower = Math.min(MIN_SENTENCES, upper)
-  const target = Math.min(upper, Math.max(lower, Math.floor(sentences.length * TARGET_FRACTION)))
-  if (!sentences.length || sentences.length <= target) return { sentences, total: sentences.length, lang }
-
+  const size = LENGTHS[opts.length ?? 'medium']
+  const upper = Math.min(opts.maxSentences ?? size.max, sentences.length)
+  const lower = Math.min(size.min, upper)
+  const target = Math.min(upper, Math.max(lower, Math.floor(sentences.length * size.fraction)))
   const tokenized = sentences.map((s) => significantTerms(s, lang))
+  const kw = keywords(tokenized)
+  if (!sentences.length || sentences.length <= target) return { sentences, total: sentences.length, lang, indices: sentences.map((_, i) => i), keywords: kw }
+
   const frequency = new Map<string, number>()
   for (const terms of tokenized) for (const t of terms) frequency.set(t, (frequency.get(t) ?? 0) + 1)
-  const score = (i: number) => {
+  const luhn = (i: number) => {
     const terms = tokenized[i]
     return terms.length ? terms.reduce((sum, t) => sum + (frequency.get(t) ?? 0), 0) / terms.length : 0
   }
   // Mejora de la web: una oración casi igual a otra ya elegida (p. ej. un repaso) se salta.
   const sets = tokenized.map((t) => new Set(t))
+  // Puntaje: frecuencia (Luhn) + centralidad (TextRank) + un poco de peso a las primeras oraciones.
+  const lu = sentences.map((_, i) => luhn(i))
+  const ranks = sentences.length <= MAX_TEXTRANK ? centrality(sets) : null
+  const maxLu = Math.max(...lu) || 1
+  const maxRank = ranks ? Math.max(...ranks) || 1 : 1
+  const lead = Math.max(1, Math.ceil(sentences.length * 0.1))
+  const scores = sentences.map((_, i) => (ranks ? 0.55 * (lu[i] / maxLu) + 0.35 * (ranks[i] / maxRank) : 0.9 * (lu[i] / maxLu)) + (i < lead ? 0.1 * (1 - i / lead) : 0))
+  const score = (i: number) => scores[i]
   const ranked = sentences.map((_, i) => i).sort((a, b) => score(b) - score(a) || a - b)
   const chosen: number[] = []
   // Solo entre las oraciones bien puntuadas: saltar repetidas nunca debe colar algo fuera de tema.
@@ -117,7 +191,7 @@ export function summarize(text: string, opts: { lang?: string; maxSentences?: nu
     if (!chosen.includes(i)) chosen.push(i)
   }
   chosen.sort((a, b) => a - b)
-  return { sentences: chosen.map((i) => sentences[i]), total: sentences.length, lang }
+  return { sentences: chosen.map((i) => sentences[i]), total: sentences.length, lang, indices: chosen, keywords: kw }
 }
 
 /** Parecido entre dos oraciones (Jaccard de sus palabras significativas): 1 = mismas palabras. */

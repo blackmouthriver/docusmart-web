@@ -480,6 +480,19 @@
     "ko": "password-generator",
     "zh": "password-generator"
   },
+  "resumir-pdf": {
+    "en": "summarize-pdf",
+    "pt": "resumir-pdf",
+    "fr": "resumer-pdf",
+    "it": "riassumere-pdf",
+    "de": "pdf-zusammenfassen",
+    "ca": "resumir-pdf",
+    "eu": "pdfa-laburtu",
+    "ru": "summarize-pdf",
+    "ja": "summarize-pdf",
+    "ko": "summarize-pdf",
+    "zh": "summarize-pdf"
+  },
   "audio-a-texto": {
     "en": "audio-to-text",
     "pt": "audio-para-texto",

@@ -689,6 +689,23 @@ export default {
         ["Posso usare la stessa password su più siti?", "Meglio di no: se un sito subisce una fuga di dati, tutti i tuoi account sarebbero esposti. Generane una diversa per ogni sito e conservale in un gestore di password."],
       ],
     },
+    'resumir-pdf': {
+      slug: "riassumere-pdf",
+      title: "Riassumere PDF gratis: idee principali e parole chiave | DocuSmart",
+      description: "Riassumi un PDF, un Word o un testo in pochi secondi e ottieni le idee principali e le parole chiave, in 12 lingue. Gratis, senza registrazione e senza caricare il file.",
+      h1: "Riassumere PDF",
+      howTo: "Come riassumere un PDF in 3 passaggi",
+      lead: "Ricava le idee principali di un report, un contratto, un articolo o degli appunti senza leggerli tutti, con un riassunto creato nel tuo browser.",
+      short: "Idee principali di un PDF o di un testo",
+      steps: ["Scegli un PDF, un Word (.docx) o un .txt, oppure incolla il testo.", "Scegli la lunghezza del riassunto e premi \"Riassumi\".", "Leggi le idee principali e le parole chiave, poi copia il riassunto o scaricalo in .txt o Word."],
+      faq: [
+        ["Usa l'intelligenza artificiale?", "Sì, una tecnica di IA classica che funziona nel tuo browser: analizza quali frasi riprendono le idee principali del documento e quali somigliano di più al resto, e sceglie quelle. Non usa servizi cloud e non inventa testo: ogni frase del riassunto è nel documento."],
+        ["Funziona con i PDF scansionati?", "Una scansione è un'immagine senza testo. Passala prima dall'OCR per riconoscere il testo e poi riassumi quel PDF."],
+        ["In quali lingue funziona?", "Nelle 12 lingue di DocuSmart: rileva la lingua del documento e scarta le parole che non aggiungono significato; in cinese e giapponese analizza coppie di caratteri."],
+        ["Quanto è lungo il riassunto?", "Breve (da 3 a 7 frasi), medio (da 5 a 15) o lungo (da 8 a 30), in base alla dimensione del documento. Puoi cambiarla e il riassunto si aggiorna subito."],
+        ["Il mio documento viene caricato su internet?", "No. Il testo viene letto e riassunto nel tuo browser: il file non lascia il tuo dispositivo e non viene salvato."],
+      ],
+    },
     'powerpoint-a-pdf': {
       slug: "powerpoint-in-pdf",
       title: "PowerPoint in PDF gratis: convertire PPTX in PDF online | DocuSmart",

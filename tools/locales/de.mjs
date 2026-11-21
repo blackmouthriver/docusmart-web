@@ -689,6 +689,23 @@ export default {
         ["Kann ich dasselbe Passwort auf mehreren Websites nutzen?", "Besser nicht: Wird eine Website gehackt, wären alle deine Konten gefährdet. Erzeuge für jede Website ein eigenes und bewahre sie in einem Passwort-Manager auf."],
       ],
     },
+    'resumir-pdf': {
+      slug: "pdf-zusammenfassen",
+      title: "PDF zusammenfassen kostenlos: Kernaussagen und Schlüsselwörter | DocuSmart",
+      description: "Fasse ein PDF, ein Word-Dokument oder einen Text in Sekunden zusammen und erhalte die Kernaussagen und Schlüsselwörter, in 12 Sprachen. Kostenlos, ohne Anmeldung und ohne Upload.",
+      h1: "PDF zusammenfassen",
+      howTo: "So fasst du ein PDF in 3 Schritten zusammen",
+      lead: "Erfasse die Kernaussagen eines Berichts, Vertrags, Artikels oder deiner Notizen, ohne alles zu lesen – mit einer Zusammenfassung, die in deinem eigenen Browser entsteht.",
+      short: "Kernaussagen eines PDFs oder Textes",
+      steps: ["Wähle ein PDF, ein Word-Dokument (.docx) oder eine .txt-Datei, oder füge den Text ein.", "Wähle die Länge der Zusammenfassung und tippe auf „Zusammenfassen“.", "Lies die Kernaussagen und Schlüsselwörter und kopiere die Zusammenfassung oder lade sie als .txt oder Word herunter."],
+      faq: [
+        ["Nutzt es künstliche Intelligenz?", "Ja, eine klassische KI-Technik, die in deinem Browser läuft: Sie analysiert, welche Sätze die Kernaussagen des Dokuments wiederholen und welche dem Rest am ähnlichsten sind, und wählt diese aus. Sie nutzt keine Cloud-Dienste und erfindet keinen Text: Jeder Satz der Zusammenfassung steht im Dokument."],
+        ["Funktioniert es mit gescannten PDFs?", "Ein Scan ist ein Bild ohne Text. Lass ihn zuerst durch die Texterkennung (OCR) laufen und fasse dann dieses PDF zusammen."],
+        ["In welchen Sprachen funktioniert es?", "In den 12 Sprachen von DocuSmart: Es erkennt die Sprache des Dokuments und lässt Wörter ohne Bedeutungsgehalt weg; im Chinesischen und Japanischen analysiert es Zeichenpaare."],
+        ["Wie lang ist die Zusammenfassung?", "Kurz (3 bis 7 Sätze), mittel (5 bis 15) oder lang (8 bis 30), je nach Umfang des Dokuments. Du kannst sie ändern und die Zusammenfassung aktualisiert sich sofort."],
+        ["Wird mein Dokument ins Internet hochgeladen?", "Nein. Der Text wird in deinem Browser gelesen und zusammengefasst: Die Datei verlässt dein Gerät nicht und wird nicht gespeichert."],
+      ],
+    },
     'powerpoint-a-pdf': {
       slug: "powerpoint-in-pdf",
       title: "PowerPoint in PDF kostenlos: PPTX online in PDF umwandeln | DocuSmart",

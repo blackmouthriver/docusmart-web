@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { MAX_SENTENCES, detectLanguage, significantTerms, similarity, splitSentences, summarize } from '../../../../../src/features/study/core/summarize'
+import { MAX_SENTENCES, detectLanguage, significantTerms, similarity, splitSentences, summarize, centrality, keywords } from '../../../../../src/features/study/core/summarize'
 
 const filler = (n: number, word: string) => Array.from({ length: n }, (_, i) => `La oración de relleno número ${i + 1} habla de ${word} sin decir mucho.`).join(' ')
 
@@ -94,6 +94,51 @@ describe('summarize', () => {
   })
 
   it('sin texto devuelve un resumen vacío', () => {
-    expect(summarize('   ')).toEqual({ sentences: [], total: 0, lang: 'en' })
+    expect(summarize('   ')).toEqual({ sentences: [], total: 0, lang: 'en', indices: [], keywords: [] })
+  })
+})
+
+describe('Resumir PDF (W-142)', () => {
+  const doc = [
+    'La energía solar es una fuente renovable que aprovecha la radiación del sol para producir electricidad.',
+    'Los paneles solares convierten la radiación en electricidad mediante celdas fotovoltaicas de silicio.',
+    'El costo de los paneles solares bajó mucho en la última década y la energía solar ya compite con el carbón.',
+    'Mi primo tiene un perro que se llama Max y le gusta correr en el parque los domingos.',
+    'La energía solar necesita baterías para guardar la electricidad que se produce durante el día.',
+    'Las baterías de litio permiten usar la energía solar de noche y en días nublados.',
+    'El Dr. Pérez, experto en energía solar, explicó que la eficiencia de los paneles sigue mejorando.',
+    'Ayer llovió mucho en la ciudad y el tráfico estuvo lento por varias horas.',
+    'Muchos países instalan parques de energía solar para reducir las emisiones de carbono.',
+    'La electricidad solar en los techos de las casas reduce la factura de energía de las familias.',
+    'La radiación del sol varía según la estación, por eso los paneles se inclinan hacia el sol.',
+    'En resumen, la energía solar y las baterías son clave para la transición energética.',
+  ].join(' ')
+
+  it('no corta la oración en abreviaturas ni en iniciales', () => {
+    expect(splitSentences('El Dr. Pérez llegó temprano a la reunión. La Sra. J. García lo saludó con alegría.')).toEqual([
+      'El Dr. Pérez llegó temprano a la reunión.',
+      'La Sra. J. García lo saludó con alegría.',
+    ])
+    // Pero "no." al final sí cierra la oración.
+    expect(splitSentences('Le pregunté si venía y dijo que no. Después se fue a su casa.')).toHaveLength(2)
+  })
+
+  it('los tres largos, en orden, sin las oraciones fuera de tema y con palabras clave', () => {
+    const short = summarize(doc, { length: 'short' })
+    const long = summarize(doc, { length: 'long' })
+    expect(short.sentences.length).toBe(3)
+    expect(long.sentences.length).toBeGreaterThan(short.sentences.length)
+    expect(short.indices).toEqual([...short.indices].sort((a, b) => a - b))
+    for (const s of short.sentences) expect(s).not.toMatch(/perro|llovió/)
+    expect(short.keywords.slice(0, 3)).toEqual(expect.arrayContaining(['energía', 'solar']))
+    expect(short.keywords).not.toContain('perro')
+  })
+
+  it('centralidad: la oración que más se parece al resto queda primera', () => {
+    const sets = [new Set(['a', 'b', 'c']), new Set(['a', 'b']), new Set(['b', 'c']), new Set(['x', 'y'])]
+    const r = centrality(sets)
+    expect(r.indexOf(Math.max(...r))).toBe(0)
+    expect(r[3]).toBeLessThan(r[0])
+    expect(keywords([['a', 'b'], ['a'], ['c']])).toEqual(['a'])
   })
 })
