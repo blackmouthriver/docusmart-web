@@ -3,9 +3,9 @@
  * nuevas (el contenido original no se toca). Las posiciones son fracciones
  * (0 a 1) de la página tal como se ve, igual que en Firmar y Censurar.
  */
-import { PDFDocument, StandardFonts, degrees, rgb, type PDFFont, type PDFImage } from 'pdf-lib'
+import { PDFDocument, degrees, rgb, type PDFImage } from 'pdf-lib'
+import { drawPieces, fontsForText, type FontFamily, type FontSet } from '../../../shared/pdf/pdfFonts'
 import { viewToPdf } from './pdfSign'
-import { sanitizeWinAnsi } from './pdfTools'
 
 export type FontName = 'helvetica' | 'times' | 'courier'
 export type TextItem = { kind: 'text'; page: number; x: number; y: number; text: string; size: number; color: string; font: FontName; bold: boolean }
@@ -18,11 +18,8 @@ export type EditItem = TextItem | BoxItem | ImageItem
 export const BASELINE: Record<FontName, number> = { helvetica: 1.005, times: 0.991, courier: 0.933 }
 export const LINE_HEIGHT = 1.2
 
-const FONTS: Record<FontName, [StandardFonts, StandardFonts]> = {
-  helvetica: [StandardFonts.Helvetica, StandardFonts.HelveticaBold],
-  times: [StandardFonts.TimesRoman, StandardFonts.TimesRomanBold],
-  courier: [StandardFonts.Courier, StandardFonts.CourierBold],
-}
+/** Con texto latino, la fuente estándar del PDF; con otros alfabetos, la libre de la misma familia. */
+const FAMILY: Record<FontName, FontFamily> = { helvetica: 'sans', times: 'serif', courier: 'mono' }
 
 /** "#RRGGBB" (o "#RGB") a color de pdf-lib; cualquier otra cosa, negro. */
 export function hexToRgb(hex: string) {
@@ -33,8 +30,8 @@ export function hexToRgb(hex: string) {
   return rgb(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255)
 }
 
-/** Las fuentes estándar de PDF solo dibujan latín (WinAnsi): se limpia cada línea. */
-export const printableLines = (text: string) => text.split(/\r?\n/).map((l) => sanitizeWinAnsi(l.replace(/\t/g, '    ')))
+/** Las líneas del texto, con los tabuladores como cuatro espacios y sin espacios al final. */
+export const textLines = (text: string) => text.split(/\r?\n/).map((l) => l.replace(/\t/g, '    ').trimEnd())
 
 type Box = { x: number; y: number; width: number; height: number }
 const quarterTurns = (rotation: number) => ((Math.round(rotation / 90) % 4) + 4) % 4
@@ -49,11 +46,13 @@ export function viewRectToPdf(x: number, y: number, w: number, h: number, box: B
 export async function applyEdits(bytes: ArrayBuffer | Uint8Array, items: EditItem[]): Promise<Uint8Array> {
   if (!items.length) throw new Error('Agrega al menos un texto, una imagen o una forma.')
   const doc = await PDFDocument.load(bytes)
-  const fonts = new Map<string, PDFFont>()
-  const font = async (name: FontName, bold: boolean) => {
-    const key = name + bold
-    if (!fonts.has(key)) fonts.set(key, await doc.embedFont(FONTS[name][bold ? 1 : 0]))
-    return fonts.get(key)!
+  // Una carga de fuentes por familia, con todo el texto que se va a escribir en ella.
+  const texts = items.filter((i): i is TextItem => i.kind === 'text')
+  const fonts = new Map<FontName, FontSet>()
+  for (const name of new Set(texts.map((t) => t.font))) {
+    const mine = texts.filter((t) => t.font === name)
+    const styles = mine.some((t) => t.bold) ? (['bold'] as const) : []
+    fonts.set(name, await fontsForText(doc, FAMILY[name], styles, mine.map((t) => t.text).join('\n')))
   }
   const images = new Map<Uint8Array, PDFImage>()
 
@@ -66,12 +65,13 @@ export async function applyEdits(bytes: ArrayBuffer | Uint8Array, items: EditIte
     const viewH = turns % 2 ? box.width : box.height
 
     if (item.kind === 'text') {
-      const f = await font(item.font, item.bold)
-      printableLines(item.text).forEach((line, i) => {
-        if (!line) return
+      const set = fonts.get(item.font)!
+      textLines(item.text).forEach((line, i) => {
+        const pieces = set.pieces(line, item.bold ? 'bold' : 'regular')
+        if (!pieces.some((p) => !p.space)) return
         const v = item.y + (BASELINE[item.font] * item.size + i * LINE_HEIGHT * item.size) / viewH
         const at = viewToPdf(item.x, v, box, rotation)
-        page.drawText(line, { x: at.x, y: at.y, size: item.size, font: f, color: hexToRgb(item.color), rotate: degrees(turns * 90) })
+        drawPieces(page, pieces, { x: at.x, y: at.y, size: item.size, color: hexToRgb(item.color), rotateDeg: turns * 90, degrees })
       })
     } else if (item.kind === 'image') {
       let img = images.get(item.data)

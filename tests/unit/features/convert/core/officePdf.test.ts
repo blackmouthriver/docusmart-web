@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { PDFDocument, StandardFonts } from 'pdf-lib'
+import { PDFDocument } from 'pdf-lib'
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs'
-import { layoutPdf, tokenize, winAnsi, wrap, type OBlock, type OPara } from '../../../../../src/features/convert/core/officePdf'
+import { layoutPdf, tokenize, wrap, type OBlock, type OPara } from '../../../../../src/features/convert/core/officePdf'
+import { FONT_STYLES, loadFonts } from '../../../../../src/shared/pdf/pdfFonts'
 import { encodePng } from '../../../../../src/features/pdf/core/pdfImages'
 
 const p = (text: string, o: Partial<OPara> = {}): OPara => ({ kind: 'para', runs: [{ text }], ...o })
@@ -17,15 +18,13 @@ async function pagesText(bytes: Uint8Array): Promise<string[]> {
   return out
 }
 
-async function fonts() {
-  const d = await PDFDocument.create()
-  const regular = await d.embedFont(StandardFonts.Helvetica)
-  return { regular, bold: await d.embedFont(StandardFonts.HelveticaBold), italic: await d.embedFont(StandardFonts.HelveticaOblique), boldItalic: regular }
-}
+const fonts = async () => loadFonts(await PDFDocument.create(), 'sans', FONT_STYLES, '')
 
 describe('texto', () => {
-  it('quita lo que las fuentes estándar no pueden dibujar', () => {
-    expect(winAnsi('Año €5 – “ok” ✓ 🎉\tfin')).toBe('Año €5 – “ok”      fin')
+  it('omite lo que ninguna fuente dibuja (emojis) y cambia el tabulador por espacios', async () => {
+    const f = await fonts()
+    const tokens = tokenize([{ text: 'Año €5 – “ok” 🎉\tfin' }], f, 10)
+    expect(tokens.map((t) => (t === 'br' ? '⏎' : t.text)).join('')).toBe('Año €5 – “ok” fin')
   })
 
   it('separa palabras y espacios, con saltos de línea', async () => {
@@ -94,6 +93,20 @@ describe('layoutPdf', () => {
     const out = await layoutPdf([{ kind: 'table', rows: [[cell(long), cell(''), cell('')], [cell('Pago'), cell('4.200.000'), cell('6.550.000,25')]] }])
     const [text] = await pagesText(out)
     expect(text).toContain('4.200.000 6.550.000,25')
+  })
+
+  it('escribe ruso, griego, chino, japonés y coreano con las fuentes incrustadas', async () => {
+    const out = await layoutPdf([
+      p('Договор услуг', { style: 'h1' }),
+      p('Ελληνικά και Ελλάδα'),
+      p('中文合同'),
+      p('日本語の契約'),
+      p('한국어 계약서'),
+    ])
+    const [text] = await pagesText(out)
+    for (const s of ['Договор', 'услуг', 'Ελληνικά', '한국어', '계약서']) expect(text).toContain(s)
+    // El chino y el japonés van carácter por carácter (ahí se puede cortar la línea).
+    expect(text.replace(/ /g, '')).toContain('中文合同日本語の契約')
   })
 
   it('un salto de página al inicio no deja una página en blanco', async () => {

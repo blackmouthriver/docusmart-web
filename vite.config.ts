@@ -169,6 +169,7 @@ export default defineConfig({
     root: ROOT,
     environment: 'node',
     include: ['tests/**/*.test.ts'],
+    setupFiles: ['tests/shared/pdfFontsSetup.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text-summary', 'lcov'],

@@ -159,7 +159,7 @@ export default {
       faq: [
         ['Kann ich vorhandenen Text im PDF ändern?', 'Du kannst ihn mit „Abdecken“ (ein weißes Rechteck) überdecken und mit „Text“ den neuen Text darüberschreiben. Das Ergebnis sieht korrigiert aus.'],
         ['Löscht „Abdecken“, was darunter liegt?', 'Nein: Es verdeckt es nur, der Originaltext bleibt in der Datei. Um sensible Daten wirklich zu entfernen, nutze „PDF schwärzen“.'],
-        ['Welche Schriften kann ich nutzen?', 'Drei Standardfamilien von PDF (Sans, Serif und Monospace), normal oder fett, mit Umlauten. Emojis und andere Schriftsysteme lassen sich mit diesen Schriften nicht speichern.'],
+        ['Welche Schriften kann ich nutzen?', 'Drei Familien (Sans, Serif und Monospace), normal oder fett, mit Umlauten und Akzenten und auch anderen Schriften: Kyrillisch, Griechisch, Chinesisch, Japanisch und Koreanisch. Emojis werden nicht gespeichert.'],
         ['Werden meine Dateien ins Internet hochgeladen?', 'Nein. Alles passiert in deinem Browser, ohne Anmeldung.'],
       ],
     },
@@ -700,7 +700,7 @@ export default {
       steps: ["Wähle die PowerPoint-Präsentation (.pptx).", "Tippe auf „Konvertieren“.", "Jede Folie wird zu einer PDF-Seite im gleichen Format wie die Präsentation."],
       faq: [
         ["Was bleibt von der Präsentation erhalten?", "Der Text mit Schriftgrößen, Fettdruck und Farben, Aufzählungszeichen, Bilder, Formen, Tabellen und der Hintergrund jeder Folie. Animationen, Videos und Diagramme aus PowerPoint werden nicht übernommen."],
-        ["Sieht es genauso aus wie in PowerPoint?", "Sehr ähnlich: Jedes Element bleibt an seinem Platz. Der Text verwendet eine Standard-PDF-Schrift, daher können sich die Schriftarten leicht ändern."],
+        ["Sieht es genauso aus wie in PowerPoint?", "Sehr ähnlich: Jedes Element bleibt an seinem Platz. Der Text verwendet Carlito, eine freie Schrift mit denselben Maßen wie Calibri (der Schrift von PowerPoint), und Kyrillisch, Griechisch, Chinesisch, Japanisch und Koreanisch werden korrekt angezeigt."],
         ["Funktioniert es mit alten .ppt-Dateien?", "Nein. Öffne sie in PowerPoint und speichere sie als .pptx; dieses Format lässt sich problemlos umwandeln."],
         ["Werden meine Präsentationen ins Internet hochgeladen?", "Nein. Die Umwandlung erfolgt in deinem Browser: Die Datei verlässt dein Gerät nie."],
       ],
@@ -904,7 +904,7 @@ export default {
       short: '.docx-Dokument in PDF',
       steps: ['Wähle das Word-Dokument (.docx).', 'Tippe auf „Konvertieren“.', 'Fertig: Das PDF wird mit Überschriften, Listen, Tabellen und Bildern heruntergeladen.'],
       faq: [
-        ['Sieht es aus wie in Word?', 'Inhalt und Struktur bleiben erhalten: Überschriften, Fett, Kursiv, Unterstrichen, Listen, Tabellen, Bilder und Seitenumbrüche. Schrift und einige Layoutdetails können abweichen, weil Standard-PDF-Schriften genutzt werden.'],
+        ['Sieht es aus wie in Word?', 'Inhalt und Struktur bleiben erhalten: Überschriften, Fett, Kursiv, Unterstreichung, Listen, Tabellen, Bilder und Seitenumbrüche. Der Text verwendet Carlito, eine freie Schrift mit denselben Maßen wie Calibri, und Kyrillisch, Griechisch, Chinesisch, Japanisch und Koreanisch werden korrekt angezeigt. Einige Layoutdetails können abweichen.'],
         ['Funktioniert es mit alten .doc-Dateien?', 'Nein: nur .docx (ab Word 2007). Öffne die .doc in Word und speichere sie als .docx.'],
         ['Werden meine Dokumente ins Internet hochgeladen?', 'Nein. Die Umwandlung passiert in deinem Browser.'],
       ],
@@ -1013,7 +1013,7 @@ export default {
       ],
       faq: [
         ["Wie sieht das Wasserzeichen aus?", "Als großer, diagonaler Text in halbtransparentem Blau in der Mitte jeder Seite. Der Inhalt bleibt darunter lesbar."],
-        ["Kann ich Umlaute verwenden?", "Ja. Das Wasserzeichen unterstützt Buchstaben des lateinischen Alphabets mit Akzenten und Umlauten wie ä, ö, ü und ß. Andere Schriften (Kyrillisch, Chinesisch, Japanisch, Koreanisch) noch nicht."],
+        ["Kann ich Umlaute verwenden?", "Ja. Das Wasserzeichen unterstützt Umlaute und Akzente wie ä, é oder ñ und auch andere Schriften: Kyrillisch, Griechisch, Chinesisch, Japanisch und Koreanisch."],
         ["Kann man es später entfernen?", "Das Wasserzeichen ist fest in die Seiten des neuen PDFs eingebettet. Bewahre dein Original auf, falls du später eine Version ohne brauchst."],
         ["Wird mein PDF auf einen Server hochgeladen?", "Nein. Das Wasserzeichen wird in deinem Browser eingefügt; das Dokument verlässt dein Gerät nicht."],
       ],

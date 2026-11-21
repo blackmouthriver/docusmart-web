@@ -159,7 +159,7 @@ export default {
       faq: [
         ['Posso cambiare il testo già presente nel PDF?', 'Puoi coprirlo con lo strumento "Copri" (un riquadro bianco) e scriverci sopra il nuovo testo con "Testo". Il risultato sembra corretto.'],
         ['"Copri" cancella ciò che c’è sotto?', 'No: lo copre, ma il testo originale resta nel file. Se devi eliminare davvero dati sensibili, usa "Oscurare PDF".'],
-        ['Quali caratteri posso usare?', 'Tre famiglie standard dei PDF (sans, serif e monospazio), normale o grassetto, con accenti. Emoji e altri alfabeti non si possono salvare con questi caratteri.'],
+        ['Quali caratteri posso usare?', 'Tre famiglie (sans, serif e monospazio), normale o grassetto, con gli accenti e anche altri alfabeti: cirillico, greco, cinese, giapponese e coreano. Le emoji non vengono salvate.'],
         ['I miei file vengono caricati su internet?', 'No. Tutto avviene nel tuo browser, senza registrazione.'],
       ],
     },
@@ -700,7 +700,7 @@ export default {
       steps: ["Scegli la presentazione PowerPoint (.pptx).", "Premi \"Converti\".", "Ogni diapositiva diventa una pagina del PDF, delle stesse dimensioni della presentazione."],
       faq: [
         ["Cosa viene mantenuto della presentazione?", "Il testo con dimensioni, grassetto e colori, gli elenchi puntati, le immagini, le forme, le tabelle e lo sfondo di ogni diapositiva. Animazioni, video e grafici di PowerPoint non vengono inclusi."],
-        ["Appare uguale a PowerPoint?", "Molto simile: ogni elemento resta al suo posto. Il testo usa un carattere PDF standard, quindi i font possono cambiare leggermente."],
+        ["Appare uguale a PowerPoint?", "Molto simile: ogni elemento resta al suo posto. Il testo usa Carlito, un font libero con le stesse misure di Calibri (quello di PowerPoint), e cirillico, greco, cinese, giapponese e coreano si vedono correttamente."],
         ["Funziona con i vecchi file .ppt?", "No. Aprili in PowerPoint e salvali come .pptx; quel formato si converte senza problemi."],
         ["Le mie presentazioni vengono caricate su internet?", "No. La conversione avviene nel tuo browser: il file non lascia mai il tuo dispositivo."],
       ],
@@ -904,7 +904,7 @@ export default {
       short: 'Documento .docx in PDF',
       steps: ['Scegli il documento Word (.docx).', 'Premi "Converti".', 'Fatto: il PDF viene scaricato con titoli, elenchi, tabelle e immagini.'],
       faq: [
-        ['Viene uguale a Word?', 'Mantiene contenuto e struttura: titoli, grassetto, corsivo, sottolineato, elenchi, tabelle, immagini e interruzioni di pagina. Il carattere e alcuni dettagli di impaginazione possono variare, perché si usano caratteri standard dei PDF.'],
+        ['Viene uguale a Word?', 'Mantiene contenuto e struttura: titoli, grassetto, corsivo, sottolineato, elenchi, tabelle, immagini e interruzioni di pagina. Il testo usa Carlito, un font libero con le stesse misure di Calibri, e cirillico, greco, cinese, giapponese e coreano si vedono correttamente. Alcuni dettagli di impaginazione possono variare.'],
         ['Funziona con i vecchi file .doc?', 'No: solo .docx (Word 2007 e successivi). Apri il .doc in Word e salvalo come .docx.'],
         ['I miei documenti vengono caricati su internet?', 'No. La conversione avviene nel tuo browser.'],
       ],
@@ -1013,7 +1013,7 @@ export default {
       ],
       faq: [
         ["Come appare la filigrana?", "Come un grande testo in diagonale, blu e semitrasparente, al centro di ogni pagina. Il contenuto resta leggibile sotto."],
-        ["Posso usare gli accenti?", "Sì. La filigrana accetta le lettere dell’alfabeto latino con accenti, come è, à o ñ. Altri alfabeti (cirillico, cinese, giapponese, coreano) per ora no."],
+        ["Posso usare gli accenti?", "Sì. La filigrana accetta accenti, ç e ñ, e anche altri alfabeti: cirillico, greco, cinese, giapponese e coreano."],
         ["Si può togliere dopo?", "La filigrana resta integrata nelle pagine del nuovo PDF. Conserva l’originale nel caso ti serva una versione senza."],
         ["Il mio PDF viene caricato su un server?", "No. La filigrana viene aggiunta nel tuo browser; il documento non lascia il tuo dispositivo."],
       ],

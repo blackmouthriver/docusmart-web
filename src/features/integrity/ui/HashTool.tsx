@@ -125,7 +125,7 @@ function CalculateHash() {
 
   const certificate = async () => {
     if (!results) return
-    const { integrityCertificate, printableLabels } = await import('../core/certificate')
+    const { integrityCertificate } = await import('../core/certificate')
     const labels = {
       title: tr('hash.cert.title'),
       intro: tr('hash.cert.intro'),
@@ -135,9 +135,8 @@ function CalculateHash() {
       size: tr('hash.cert.size'),
       footer: tr('hash.cert.footer'),
     }
-    // Si los textos del idioma no caben en la fuente del PDF, todo va en inglés (también la fecha).
-    const dateLang = printableLabels(labels) === labels ? lang : 'en'
-    const dateText = new Intl.DateTimeFormat(dateLang, { dateStyle: 'long', timeStyle: 'short' }).format(new Date())
+    // Las fuentes incrustadas muestran cualquier idioma: textos y fecha en el idioma del usuario.
+    const dateText = new Intl.DateTimeFormat(lang, { dateStyle: 'long', timeStyle: 'short' }).format(new Date())
     const pdf = await integrityCertificate({ labels, results, algorithm, dateText, formatSize: formatBytes })
     download(pdf, `${tr('hash.cert.fileName')}.pdf`, 'application/pdf')
     track('hash_certificate', { algorithm, files: results.length })

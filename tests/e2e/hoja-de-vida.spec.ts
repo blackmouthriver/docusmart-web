@@ -3,6 +3,7 @@ import { Buffer } from 'node:buffer'
 import { readFile } from 'node:fs/promises'
 import type { Page } from '@playwright/test'
 import { unzipSync, strFromU8 } from 'fflate'
+import { PDFDocument, PDFName } from 'pdf-lib'
 import { expect, test } from './helpers'
 
 // Retrato de 300 × 400 para la plantilla con foto.
@@ -120,4 +121,26 @@ test('plantilla con foto: la foto va en el PDF', async ({ page }) => {
   await tool.getByRole('button', { name: 'Descargar', exact: true }).click()
   const pdf = await readFile((await (await wait).path())!)
   expect(pdf.toString('latin1')).toMatch(/\/Subtype\s*\/Image/)
+})
+
+test('con otros alfabetos el PDF lleva las fuentes incrustadas (cirílico, chino y coreano)', async ({ page }) => {
+  await page.goto('/hoja-de-vida')
+  const tool = page.locator('#tool')
+  const personal = tool.getByRole('region', { name: 'Datos personales' })
+  await personal.getByLabel('Nombre completo').fill('Анна Петрова 李娜 김민지')
+  await personal.getByLabel('Cargo o profesión').fill('Бухгалтер')
+  const fonts = page.waitForResponse((r) => r.url().includes('/pdf-fonts/Carlito-'))
+  await tool.getByRole('button', { name: 'Crear PDF' }).click()
+  expect((await fonts).status()).toBe(200)
+  await expect(tool.getByRole('heading', { name: 'Así quedó tu hoja de vida' })).toBeVisible({ timeout: 30_000 })
+  const wait = page.waitForEvent('download')
+  await tool.getByRole('button', { name: 'Descargar', exact: true }).click()
+  const doc = await PDFDocument.load(await readFile((await (await wait).path())!))
+  const baseFonts = doc.context
+    .enumerateIndirectObjects()
+    .map(([, o]) => String((o as { get?: (k: unknown) => unknown }).get?.(PDFName.of('BaseFont')) ?? ''))
+    .filter(Boolean)
+  expect(baseFonts.some((f) => f.includes('Carlito'))).toBe(true)
+  expect(baseFonts.some((f) => f.includes('DroidSansFallback'))).toBe(true)
+  expect(baseFonts.some((f) => f.includes('NanumGothic'))).toBe(true)
 })

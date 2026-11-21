@@ -159,7 +159,7 @@ export default {
       faq: [
         ['Can I change the text already in the PDF?', 'You can cover it with the "Cover" tool (a white box) and write the new text on top with "Text". The result looks as if you had corrected it.'],
         ['Does "Cover" delete what\'s underneath?', 'No: it covers it, but the original text is still inside the file. If you need to truly remove sensitive data, use "Redact PDF".'],
-        ['Which fonts can I use?', 'Three standard PDF families (sans, serif and monospace), in regular or bold, with accented letters. Emojis and other alphabets cannot be saved with those fonts.'],
+        ['Which fonts can I use?', 'Three families (sans, serif and monospace), in regular or bold, with accented letters and other alphabets too: Cyrillic, Greek, Chinese, Japanese and Korean. Emojis aren\'t saved.'],
         ['Are my files uploaded to the internet?', 'No. Everything happens inside your browser, without signing up.'],
       ],
     },
@@ -700,7 +700,7 @@ export default {
       steps: ["Choose the PowerPoint presentation (.pptx).", "Press \"Convert\".", "Each slide becomes a PDF page, the same size as the presentation."],
       faq: [
         ["What is kept from the presentation?", "The text with its sizes, bold and colors, bullets, images, shapes, tables and each slide's background. PowerPoint animations, videos and charts aren't included."],
-        ["Does it look the same as in PowerPoint?", "Very close: every element stays in place. The text uses a standard PDF font, so typefaces may change slightly."],
+        ["Does it look the same as in PowerPoint?", "Very close: every element stays in place. The text uses Carlito, a free font with the same metrics as Calibri (PowerPoint's font), and Cyrillic, Greek, Chinese, Japanese and Korean display correctly."],
         ["Does it work with old .ppt files?", "No. Open them in PowerPoint and save them as .pptx; that format converts fine."],
         ["Are my presentations uploaded?", "No. The conversion happens in your browser: the file never leaves your device."],
       ],
@@ -904,7 +904,7 @@ export default {
       short: '.docx document to PDF',
       steps: ['Choose the Word document (.docx).', 'Press "Convert".', 'Done: the PDF is downloaded with headings, lists, tables and images.'],
       faq: [
-        ['Does it look the same as in Word?', 'It keeps the content and structure: headings, bold, italics, underline, lists, tables, images and page breaks. The font and some layout details may vary, because standard PDF fonts are used.'],
+        ['Does it look the same as in Word?', 'It keeps the content and structure: headings, bold, italics, underline, lists, tables, images and page breaks. The text uses Carlito, a free font with the same metrics as Calibri, and Cyrillic, Greek, Chinese, Japanese and Korean display correctly. Some layout details may vary.'],
         ['Does it work with old .doc files?', 'No: only .docx (Word 2007 and later). Open the .doc in Word and save it as .docx.'],
         ['Are my documents uploaded to the internet?', 'No. The conversion happens inside your browser.'],
       ],
@@ -1013,7 +1013,7 @@ export default {
       ],
       faq: [
         ["What does the watermark look like?", "Large diagonal text in semi-transparent blue, in the center of each page. The content can still be read underneath."],
-        ["Can I use accents?", "Yes. The watermark supports Latin-alphabet letters with accents, such as é, ñ or ü. Other alphabets (Cyrillic, Chinese, Japanese, Korean) are not supported yet."],
+        ["Can I use accents?", "Yes. The watermark supports accented letters such as é, ñ or ü, and other alphabets too: Cyrillic, Greek, Chinese, Japanese and Korean."],
         ["Can it be removed later?", "The watermark is built into the pages of the new PDF. Keep your original in case you need a version without it later."],
         ["Is my PDF uploaded to a server?", "No. The watermark is added inside your browser; the document never leaves your device."],
       ],

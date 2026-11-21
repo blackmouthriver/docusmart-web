@@ -4,7 +4,8 @@
  * página, imágenes y saltos de página. Recibe un modelo simple, independiente
  * de cómo se leyó el archivo.
  */
-import { PDFDocument, PDFFont, PDFPage, StandardFonts, rgb } from 'pdf-lib'
+import { PDFDocument, PDFFont, PDFPage, rgb } from 'pdf-lib'
+import { loadFonts, type FontSet, type FontStyle } from '../../../shared/pdf/pdfFonts'
 
 export type ORun = { text: string; bold?: boolean; italic?: boolean; underline?: boolean; size?: number }
 export type OStyle = 'title' | 'h1' | 'h2' | 'h3' | 'normal'
@@ -18,33 +19,52 @@ export type LayoutOptions = { pageSize?: [number, number]; margin?: number; fami
 const STYLE_SIZE: Record<OStyle, number> = { title: 2.2, h1: 1.65, h2: 1.3, h3: 1.12, normal: 1 }
 const A4: [number, number] = [595.28, 841.89]
 
-/** Las fuentes estándar de PDF solo codifican WinAnsi (latín): lo demás se quita. */
-export const winAnsi = (s: string) =>
-  s.replace(/\t/g, '    ').replace(/[^\x20-\x7E\xA0-\xFF€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ]/g, '')
-
-type Fonts = { regular: PDFFont; bold: PDFFont; italic: PDFFont; boldItalic: PDFFont }
 type Token = { text: string; font: PDFFont; size: number; underline: boolean; width: number; space: boolean }
 type Line = { tokens: Token[]; width: number; height: number }
 
-const fontOf = (f: Fonts, r: ORun) => (r.bold && r.italic ? f.boldItalic : r.bold ? f.bold : r.italic ? f.italic : f.regular)
+export const styleOf = (r: { bold?: boolean; italic?: boolean }): FontStyle => (r.bold && r.italic ? 'boldItalic' : r.bold ? 'bold' : r.italic ? 'italic' : 'regular')
 
-/** Divide el texto en palabras y espacios con su fuente y ancho; "\n" fuerza un salto. */
-export function tokenize(runs: ORun[], fonts: Fonts, baseSize: number): Array<Token | 'br'> {
+/**
+ * Divide el texto en palabras y espacios con su fuente y ancho; "\n" fuerza un salto. El chino y
+ * el japonés van carácter por carácter (ahí se puede cortar la línea) con su propia fuente.
+ */
+export function tokenize(runs: ORun[], fonts: FontSet, baseSize: number): Array<Token | 'br'> {
   const out: Array<Token | 'br'> = []
   for (const r of runs) {
-    const font = fontOf(fonts, r)
+    const style = styleOf(r)
     const size = r.size ?? baseSize
     r.text.split('\n').forEach((part, i) => {
       if (i > 0) out.push('br')
-      for (const piece of winAnsi(part).split(/(\s+)/)) {
-        if (!piece) continue
-        const space = /^\s+$/.test(piece)
-        const text = space ? ' ' : piece
-        out.push({ text, font, size, underline: !!r.underline, width: font.widthOfTextAtSize(text, size), space })
-      }
+      for (const p of fonts.pieces(part, style)) out.push({ text: p.text, font: p.font, size, underline: !!r.underline, width: p.font.widthOfTextAtSize(p.text, size), space: p.space })
     })
   }
   return out
+}
+
+/** Todo el texto y los estilos de un documento, para cargar solo las fuentes que hacen falta. */
+export function textAndStyles(blocks: OBlock[]): { text: string; styles: Set<FontStyle> } {
+  const styles = new Set<FontStyle>(['regular'])
+  const parts: string[] = []
+  const para = (p: OPara) => {
+    // Los títulos y las tablas con encabezado se dibujan en negrita.
+    if ((p.style && p.style !== 'normal') || p.list?.ordered) styles.add('bold')
+    for (const r of p.runs) {
+      styles.add(styleOf(r))
+      if (p.style && p.style !== 'normal') styles.add(styleOf({ ...r, bold: true }))
+      parts.push(r.text)
+    }
+  }
+  for (const b of blocks) {
+    if (b.kind === 'para') para(b)
+    else if (b.kind === 'table') {
+      if (b.title) {
+        styles.add('bold')
+        parts.push(b.title)
+      }
+      b.rows.forEach((row) => row.forEach((cell) => cell.forEach(para)))
+    }
+  }
+  return { text: parts.join('\n'), styles }
 }
 
 /** Corta en líneas que caben en `width`; una palabra más larga que la línea se parte por letras. */
@@ -97,13 +117,8 @@ export function wrap(tokens: Array<Token | 'br'>, width: number, lineHeight: num
 export async function layoutPdf(blocks: OBlock[], opts: LayoutOptions = {}): Promise<Uint8Array> {
   const doc = await PDFDocument.create()
   if (opts.title) doc.setTitle(opts.title)
-  const serif = opts.family === 'serif'
-  const fonts: Fonts = {
-    regular: await doc.embedFont(serif ? StandardFonts.TimesRoman : StandardFonts.Helvetica),
-    bold: await doc.embedFont(serif ? StandardFonts.TimesRomanBold : StandardFonts.HelveticaBold),
-    italic: await doc.embedFont(serif ? StandardFonts.TimesRomanItalic : StandardFonts.HelveticaOblique),
-    boldItalic: await doc.embedFont(serif ? StandardFonts.TimesRomanBoldItalic : StandardFonts.HelveticaBoldOblique),
-  }
+  const { text, styles } = textAndStyles(blocks)
+  const fonts = await loadFonts(doc, opts.family === 'serif' ? 'serif' : 'sans', styles, text)
   const [W, H] = opts.pageSize ?? A4
   const margin = opts.margin ?? 56
   const base = opts.baseSize ?? 11
@@ -147,8 +162,8 @@ export async function layoutPdf(blocks: OBlock[], opts: LayoutOptions = {}): Pro
       ensure(line.height + (i === 0 && p.style && p.style !== 'normal' ? base * 2.6 : 0))
       if (i === 0 && p.list) {
         const marker = p.list.ordered ? `${p.list.index}.` : '•'
-        const mx = margin + indent - (p.list.ordered ? fonts.regular.widthOfTextAtSize(marker, base) + 4 : 10)
-        page.drawText(marker, { x: mx, y: y - line.height * 0.78, size: base, font: fonts.regular, color: rgb(0.1, 0.1, 0.1) })
+        const mx = margin + indent - (p.list.ordered ? fonts.font().widthOfTextAtSize(marker, base) + 4 : 10)
+        page.drawText(marker, { x: mx, y: y - line.height * 0.78, size: base, font: fonts.font(), color: rgb(0.1, 0.1, 0.1) })
       }
       drawLine(line, margin + indent, contentW - indent, p.list ? 'left' : p.align)
       y -= line.height

@@ -159,7 +159,7 @@ export default {
       faq: [
         ['Posso mudar o texto que o PDF já tem?', 'Você pode escondê-lo com a ferramenta "Cobrir" (um retângulo branco) e escrever o texto novo por cima com "Texto". O resultado parece corrigido.'],
         ['"Cobrir" apaga o que está embaixo?', 'Não: só cobre, mas o texto original continua dentro do arquivo. Se precisa eliminar dados sensíveis de verdade, use "Ocultar dados do PDF".'],
-        ['Que fontes posso usar?', 'Três famílias padrão de PDF (sans, serif e monoespaçada), normal ou negrito, com acentos. Emojis e outros alfabetos não podem ser salvos com essas fontes.'],
+        ['Que fontes posso usar?', 'Três famílias (sans, serif e monoespaçada), normal ou negrito, com acentos e também outros alfabetos: cirílico, grego, chinês, japonês e coreano. Emojis não são salvos.'],
         ['Meus arquivos são enviados à internet?', 'Não. Tudo é feito dentro do seu navegador, sem cadastro.'],
       ],
     },
@@ -700,7 +700,7 @@ export default {
       steps: ["Escolha a apresentação do PowerPoint (.pptx).", "Toque em \"Converter\".", "Cada slide vira uma página do PDF, do mesmo tamanho da apresentação."],
       faq: [
         ["O que é mantido da apresentação?", "O texto com seus tamanhos, negritos e cores, os marcadores, as imagens, as formas, as tabelas e o fundo de cada slide. As animações, os vídeos e os gráficos do PowerPoint não são incluídos."],
-        ["Fica igual ao PowerPoint?", "Muito parecido: cada elemento fica no seu lugar. O texto usa uma fonte padrão de PDF, então as fontes podem mudar um pouco."],
+        ["Fica igual ao PowerPoint?", "Muito parecido: cada elemento fica no seu lugar. O texto usa Carlito, uma fonte livre com as mesmas medidas da Calibri (a do PowerPoint), e cirílico, grego, chinês, japonês e coreano aparecem corretamente."],
         ["Funciona com arquivos .ppt antigos?", "Não. Abra-os no PowerPoint e salve-os como .pptx; esse formato é convertido sem problemas."],
         ["Minhas apresentações são enviadas para a internet?", "Não. A conversão acontece no seu navegador: o arquivo não sai do seu dispositivo."],
       ],
@@ -904,7 +904,7 @@ export default {
       short: 'Documento .docx para PDF',
       steps: ['Escolha o documento do Word (.docx).', 'Toque em "Converter".', 'Pronto: o PDF é baixado com títulos, listas, tabelas e imagens.'],
       faq: [
-        ['Fica igual ao Word?', 'Mantém o conteúdo e a estrutura: títulos, negrito, itálico, sublinhado, listas, tabelas, imagens e quebras de página. A fonte e alguns detalhes de layout podem variar, porque são usadas fontes padrão de PDF.'],
+        ['Fica igual ao Word?', 'Mantém o conteúdo e a estrutura: títulos, negrito, itálico, sublinhado, listas, tabelas, imagens e quebras de página. O texto usa Carlito, uma fonte livre com as mesmas medidas da Calibri, e cirílico, grego, chinês, japonês e coreano aparecem corretamente. Alguns detalhes de layout podem variar.'],
         ['Funciona com arquivos .doc antigos?', 'Não: só .docx (Word 2007 em diante). Abra o .doc no Word e salve como .docx.'],
         ['Meus documentos são enviados à internet?', 'Não. A conversão é feita dentro do seu navegador.'],
       ],
@@ -1013,7 +1013,7 @@ export default {
       ],
       faq: [
         ["Como fica a marca d’água?", "Como um texto grande na diagonal, azul e semitransparente, no centro de cada página. O conteúdo continua legível embaixo."],
-        ["Posso usar acentos e ç?", "Sim. A marca aceita letras do alfabeto latino com acentos, ç e ñ. Outros alfabetos (cirílico, chinês, japonês, coreano) ainda não."],
+        ["Posso usar acentos e ç?", "Sim. A marca aceita acentos, ç e ñ, e também outros alfabetos: cirílico, grego, chinês, japonês e coreano."],
         ["Dá para remover depois?", "A marca fica incorporada às páginas do novo PDF. Guarde o original caso precise de uma versão sem marca."],
         ["Meu PDF é enviado para algum servidor?", "Não. A marca é adicionada no seu navegador; o documento não sai do seu dispositivo."],
       ],

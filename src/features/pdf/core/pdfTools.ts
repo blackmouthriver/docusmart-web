@@ -1,5 +1,6 @@
 /** Herramientas PDF con pdf-lib: mismas operaciones que la pestaña PDF de la app. */
 import { PDFDocument, StandardFonts, degrees, rgb } from 'pdf-lib'
+import { drawPieces, fontsForText, piecesWidth } from '../../../shared/pdf/pdfFonts'
 
 const load = (bytes: ArrayBuffer | Uint8Array) => PDFDocument.load(bytes, { ignoreEncryption: false })
 
@@ -70,23 +71,30 @@ export async function numberPages(
 // Las fuentes estándar de PDF solo cubren WinAnsi (latín): se descarta lo demás.
 export const sanitizeWinAnsi = (s: string) => s.replace(/[^\x20-\x7E -ÿ]/g, '').trim()
 
+/**
+ * Marca de agua en diagonal. Con texto latino usa la Helvetica del PDF (sin descargar nada);
+ * con otros alfabetos (ruso, griego, japonés…) usa las fuentes incrustadas de DocuSmart.
+ */
 export async function watermark(bytes: ArrayBuffer, text: string, opacity = 0.18): Promise<Uint8Array> {
   const doc = await load(bytes)
-  const font = await doc.embedFont(StandardFonts.HelveticaBold)
-  const clean = sanitizeWinAnsi(text) || 'DocuSmart'
+  const wanted = text.replace(/\s+/g, ' ').trim() || 'DocuSmart'
+  const fonts = await fontsForText(doc, 'sans', ['bold'], wanted)
+  let pieces = fonts.pieces(wanted, 'bold')
+  if (!pieces.some((p) => !p.space)) pieces = fonts.pieces('DocuSmart', 'bold')
+  const chars = [...pieces.map((p) => p.text).join('')].length
   for (const page of doc.getPages()) {
     const { width, height } = page.getSize()
-    const size = Math.min(width, height) / Math.max(6, clean.length * 0.62)
-    const tw = font.widthOfTextAtSize(clean, size)
+    const size = Math.min(width, height) / Math.max(6, chars * 0.62)
+    const tw = piecesWidth(pieces, size)
     const angle = Math.atan2(height, width)
-    page.drawText(clean, {
+    drawPieces(page, pieces, {
       x: width / 2 - (tw / 2) * Math.cos(angle),
       y: height / 2 - (tw / 2) * Math.sin(angle),
       size,
-      font,
       color: rgb(0.15, 0.39, 0.92),
       opacity,
-      rotate: degrees((angle * 180) / Math.PI),
+      rotateDeg: (angle * 180) / Math.PI,
+      degrees,
     })
   }
   return doc.save()

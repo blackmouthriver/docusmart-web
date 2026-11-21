@@ -12,7 +12,6 @@ import type { MessageKey } from '../../../shared/i18n/messages/es'
 import {
   CURRENCIES,
   DOC_KINDS,
-  ENGLISH_BILLING_LABELS,
   advanceCounter,
   amountInWordsEs,
   billingBlocks,
@@ -32,7 +31,6 @@ import {
   type Item,
   type Party,
 } from '../core/billing'
-import { isWinAnsi } from '../../integrity/core/certificate'
 import type { Signature } from '../../pdf/ui/SignTool'
 import { COUNTRIES, countryFromLocale, countryName, defaultIdType, findCountry, idsFor, matchCountry, type Country } from '../core/countries'
 
@@ -197,13 +195,12 @@ export function BillingTool() {
         signature: tr('bill.signature'),
         received: tr('bill.receivedFrom'),
       }
-      // Las fuentes estándar del PDF solo cubren el alfabeto latino: si no, los títulos van en inglés.
-      const latin = isWinAnsi(JSON.stringify(local))
-      const labels = latin ? local : ENGLISH_BILLING_LABELS
-      const dateLocale = latin ? lang : 'en'
+      // Las fuentes incrustadas del PDF muestran cualquier idioma: textos, fechas y montos en el del usuario.
+      const labels = local
+      const dateLocale = lang
       const [{ layoutPdf }, { imageSize }] = await Promise.all([import('../../convert/core/officePdf'), import('../../convert/core/officeModels')])
       const sigSize = signature ? imageSize(signature.png) : null
-      const blocks = billingBlocks(doc, labels, (n) => formatMoney(n, currency, latin ? moneyLocale(lang, currency) : 'en'), {
+      const blocks = billingBlocks(doc, labels, (n) => formatMoney(n, currency, moneyLocale(lang, currency)), {
         dateText: (iso) => (iso ? new Date(`${iso}T12:00`).toLocaleDateString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' }) : ''),
         words: lang.startsWith('es') ? amountInWordsEs(t.total, currency) : undefined,
         signature: signature && sigSize ? { data: signature.png, width: sigSize.width, height: sigSize.height } : undefined,

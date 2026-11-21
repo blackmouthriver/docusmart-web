@@ -168,7 +168,7 @@ export const pages = [
     faq: [
       ['¿Puedo cambiar el texto que ya tiene el PDF?', 'Puedes taparlo con la herramienta "Tapar" (un recuadro blanco) y escribir el texto nuevo encima con "Texto". El resultado se ve como si lo hubieras corregido.'],
       ['¿"Tapar" borra lo que hay debajo?', 'No: lo cubre, pero el texto original sigue dentro del archivo. Si necesitas eliminar datos sensibles de verdad, usa "Censurar PDF".'],
-      ['¿Qué letras puedo usar?', 'Tres familias estándar de PDF (sans, serif y monoespaciada), en normal o negrita, con tildes y ñ. Los emojis y otros alfabetos no se pueden guardar con esas fuentes.'],
+      ['¿Qué letras puedo usar?', 'Tres familias (sans, serif y monoespaciada), en normal o negrita, con tildes y ñ, y también otros alfabetos: cirílico, griego, chino, japonés y coreano. Los emojis no se guardan.'],
       ['¿Mis archivos se suben a internet?', 'No. Todo se hace dentro de tu navegador, sin registro.'],
     ],
   },
@@ -1026,7 +1026,7 @@ export const pages = [
     howTo: 'Cómo convertir Word a PDF en 3 pasos',
     steps: ['Elige el documento de Word (.docx).', 'Pulsa "Convertir".', 'Listo: el PDF se descarga con títulos, listas, tablas e imágenes.'],
     faq: [
-      ['¿Queda igual que en Word?', 'Conserva el contenido y la estructura: títulos, negrita, cursiva, subrayado, listas, tablas, imágenes y saltos de página. La fuente y algunos detalles de diseño pueden variar, porque se usan fuentes estándar de PDF.'],
+      ['¿Queda igual que en Word?', 'Conserva el contenido y la estructura: títulos, negrita, cursiva, subrayado, listas, tablas, imágenes y saltos de página. El texto usa Carlito, una fuente libre con las mismas medidas que Calibri, y se ven bien el cirílico, el griego, el chino, el japonés y el coreano. Algunos detalles de diseño pueden variar.'],
       ['¿Sirve con archivos .doc antiguos?', 'No: solo .docx (Word 2007 en adelante). Abre el .doc en Word y guárdalo como .docx.'],
       ['¿Mis documentos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
     ],
@@ -1062,7 +1062,7 @@ export const pages = [
     steps: ["Elige la presentación de PowerPoint (.pptx).", "Pulsa \"Convertir\".", "Cada diapositiva queda como una página del PDF, del mismo tamaño que la presentación."],
     faq: [
       ["¿Qué se conserva de la presentación?", "El texto con sus tamaños, negritas y colores, las viñetas, las imágenes, las formas, las tablas y el fondo de cada diapositiva. Las animaciones, los videos y los gráficos de PowerPoint no se incluyen."],
-      ["¿Se ve igual que en PowerPoint?", "Muy parecido: cada elemento queda en su lugar. El texto usa una fuente estándar de PDF, así que los tipos de letra pueden cambiar un poco."],
+      ["¿Se ve igual que en PowerPoint?", "Muy parecido: cada elemento queda en su lugar. El texto usa Carlito, una fuente libre con las mismas medidas que Calibri (la de PowerPoint), y se ven bien el cirílico, el griego, el chino, el japonés y el coreano."],
       ["¿Sirve con archivos .ppt antiguos?", "No. Ábrelos en PowerPoint y guárdalos como .pptx; ese formato sí se convierte."],
       ["¿Mis presentaciones se suben a internet?", "No. La conversión se hace dentro de tu navegador: el archivo no sale de tu dispositivo."],
     ],
@@ -1224,7 +1224,7 @@ export const pages = [
     ],
     faq: [
       ["¿Cómo se ve la marca de agua?", "Como un texto grande en diagonal, azul y semitransparente, en el centro de cada página. El contenido se sigue leyendo debajo."],
-      ["¿Puedo usar tildes y la ñ?", "Sí. La marca admite letras del alfabeto latino con tildes, ñ y ç. Otros alfabetos (cirílico, chino, japonés, coreano) por ahora no."],
+      ["¿Puedo usar tildes y la ñ?", "Sí. La marca admite tildes, ñ y ç, y también otros alfabetos: cirílico, griego, chino, japonés y coreano."],
       ["¿Se puede quitar después?", "La marca queda incorporada en las páginas del nuevo PDF. Guarda tu original por si después necesitas una versión sin marca."],
       ["¿Mi PDF se sube a algún servidor?", "No. La marca se agrega dentro de tu navegador; el documento no sale de tu equipo."],
     ],

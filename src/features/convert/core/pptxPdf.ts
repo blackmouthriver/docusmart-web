@@ -1,17 +1,18 @@
 /**
  * PowerPoint a PDF (W-114): dibuja con pdf-lib el modelo de pptxRead.ts, una página por
- * diapositiva del mismo tamaño. Texto con las fuentes estándar de PDF (latín; lo demás se
- * omite, como en Word a PDF), ajustado al ancho de cada cuadro.
+ * diapositiva del mismo tamaño. Texto con Carlito (mismas medidas que Calibri, la fuente por
+ * defecto de PowerPoint) y las fuentes de chino, japonés y coreano cuando hacen falta, ajustado
+ * al ancho de cada cuadro.
  */
-import { PDFDocument, PDFFont, PDFPage, StandardFonts, rgb } from 'pdf-lib'
-import { winAnsi } from './officePdf'
-import type { PDeck, PImage, PItem, PPara, PRun, PTable, PText } from './pptxRead'
+import { PDFDocument, PDFFont, PDFPage, rgb } from 'pdf-lib'
+import { loadFonts, type FontSet, type FontStyle } from '../../../shared/pdf/pdfFonts'
+import { styleOf } from './officePdf'
+import type { PDeck, PImage, PItem, PPara, PTable, PText } from './pptxRead'
 
 const EMU_PER_PT = 12700
 const pt = (emu: number) => emu / EMU_PER_PT
 
-type Fonts = { regular: PDFFont; bold: PDFFont; italic: PDFFont; boldItalic: PDFFont }
-const fontOf = (f: Fonts, r: PRun) => (r.bold && r.italic ? f.boldItalic : r.bold ? f.bold : r.italic ? f.italic : f.regular)
+type Fonts = FontSet
 
 export function hexColor(hex: string) {
   const n = parseInt(/^[0-9a-f]{6}$/i.test(hex) ? hex : '000000', 16)
@@ -53,15 +54,10 @@ export function layoutParagraph(p: PPara, fonts: Fonts, width: number): Line[] {
     cur.size = Math.max(cur.size, w.size)
   }
   for (const r of p.runs) {
-    const font = fontOf(fonts, r)
+    const style = styleOf(r)
     r.text.split('\n').forEach((part, i) => {
       if (i > 0) push()
-      for (const piece of winAnsi(part).split(/(\s+)/)) {
-        if (!piece) continue
-        const space = /^\s+$/.test(piece)
-        const text = space ? ' ' : piece
-        add({ text, font, size: r.size, color: r.color, underline: r.underline, width: font.widthOfTextAtSize(text, r.size), space })
-      }
+      for (const piece of fonts.pieces(part, style)) add({ text: piece.text, font: piece.font, size: r.size, color: r.color, underline: r.underline, width: piece.font.widthOfTextAtSize(piece.text, r.size), space: piece.space })
     })
   }
   if (cur.words.length || !lines.length) push()
@@ -87,8 +83,9 @@ function drawParas(page: PDFPage, fonts: Fonts, paras: PPara[], box: { x: number
       let x = box.x + indent + (p.align === 'ctr' ? (avail - ln.width) / 2 : p.align === 'r' ? avail - ln.width : 0)
       if (li === 0 && p.bullet) {
         const first = ln.words.find((w) => !w.space)
-        const bullet = winAnsi(p.bullet.length === 1 && !/[\x20-\x7E\xA0-\xFF•–—]/.test(p.bullet) ? '•' : p.bullet) || '•'
-        page.drawText(bullet, { x: box.x + p.level * 24, y: pageH - baseline, size: size * 0.9, font: fonts.regular, color: hexColor(first?.color ?? '000000') })
+        // Las viñetas de símbolos (Wingdings y similares) se dibujan como un punto.
+        const bullet = fonts.printable(p.bullet.length === 1 && !/[\x20-\x7E\xA0-\xFF•–—]/.test(p.bullet) ? '•' : p.bullet) || '•'
+        page.drawText(bullet, { x: box.x + p.level * 24, y: pageH - baseline, size: size * 0.9, font: fonts.font(), color: hexColor(first?.color ?? '000000') })
       }
       for (const w of ln.words) {
         if (!w.space) {
@@ -154,12 +151,16 @@ export async function deckToPdf(deck: PDeck, title = 'DocuSmart'): Promise<Uint8
   const doc = await PDFDocument.create()
   doc.setTitle(title)
   doc.setProducer('DocuSmart')
-  const fonts: Fonts = {
-    regular: await doc.embedFont(StandardFonts.Helvetica),
-    bold: await doc.embedFont(StandardFonts.HelveticaBold),
-    italic: await doc.embedFont(StandardFonts.HelveticaOblique),
-    boldItalic: await doc.embedFont(StandardFonts.HelveticaBoldOblique),
-  }
+  // Solo las fuentes que usa la presentación (estilos y escrituras).
+  const styles = new Set<FontStyle>(['regular'])
+  const texts: string[] = []
+  const collect = (paras: PPara[]) => paras.forEach((p) => p.runs.forEach((r) => (styles.add(styleOf(r)), texts.push(r.text))))
+  for (const s of deck.slides)
+    for (const it of s.items) {
+      if (it.kind === 'text') collect(it.paras)
+      else if (it.kind === 'table') it.rows.forEach((r) => r.cells.forEach((c) => collect(c.paras)))
+    }
+  const fonts = await loadFonts(doc, 'sans', styles, texts.join('\n'))
   const W = pt(deck.width)
   const H = pt(deck.height)
   const cache = new Map<Uint8Array, Awaited<ReturnType<PDFDocument['embedPng']>>>()
