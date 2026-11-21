@@ -71,6 +71,7 @@ export function ToolsScreen({ sub }: { sub?: string }) {
                   <span>
                     <b>{t(x.name)}</b>
                     <small>{t(x.desc)}</small>
+                    {x.batch && <em className="batch-chip">{t('batch.badge')}</em>}
                   </span>
                 </button>
               ))}

@@ -22,6 +22,7 @@ import {
   type ArchiveLevel,
 } from '../core/archive'
 import { track } from '../../../shared/platform/analytics'
+import { RenameTool } from './RenameTool'
 import { tr } from '../../../shared/i18n/translate'
 
 // Por encima de esto el navegador puede quedarse sin memoria (todo se procesa en RAM).
@@ -42,7 +43,7 @@ function friendly(e: unknown): string {
 }
 
 export function ArchiveScreen({ sub }: { sub?: string }) {
-  const mode = sub === 'extraer' ? 'extraer' : 'crear'
+  const mode = sub === 'extraer' || sub === 'renombrar' ? sub : 'crear'
   return (
     <>
       <HeroCard title={tr('nav.archive')} subtitle={tr('arch.heroSub')} />
@@ -54,10 +55,11 @@ export function ArchiveScreen({ sub }: { sub?: string }) {
           options={[
             { value: 'crear', label: tr('arch.compress') },
             { value: 'extraer', label: tr('arch.decompress') },
+            { value: 'renombrar', label: tr('arch.rename') },
           ]}
         />
       </div>
-      {mode === 'crear' ? <CreateArchiveTool /> : <ExtractArchiveTool />}
+      {mode === 'crear' ? <CreateArchiveTool /> : mode === 'extraer' ? <ExtractArchiveTool /> : <RenameTool />}
     </>
   )
 }

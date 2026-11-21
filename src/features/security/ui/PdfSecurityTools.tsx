@@ -8,7 +8,7 @@ import { QpdfError, WrongPasswordError, compressLossless, isEncrypted, protect, 
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
-import { resultFile } from '../../../shared/files/share'
+import { bundleFiles, resultFile } from '../../../shared/files/share'
 
 const PDF = 'application/pdf'
 
@@ -56,44 +56,119 @@ function useJob(toolName: string) {
 // ── Comprimir ─────────────────────────────────────────────────────────
 type Level = 'sin-perdida' | 'media' | 'alta'
 
+/** Resultado de un PDF dentro de un lote. */
+type BatchRow = { name: string; before: number; after: number; improved: boolean; error?: string }
+
 export function CompressTool() {
-  const [file, setFile] = useState<File | null>(null)
+  const [files, setFiles] = useState<File[]>([])
   const [level, setLevel] = useState<Level>('sin-perdida')
   const [progress, setProgress] = useState(0)
   const [result, setResult] = useState<CompressResult | null>(null)
   const [output, setOutput] = useState<File | null>(null)
+  const [rows, setRows] = useState<BatchRow[] | null>(null)
+  const [batchOut, setBatchOut] = useState<File[]>([])
+  const [bundle, setBundle] = useState<File | null>(null)
   const { busy, error, run } = useJob('compress')
+  const many = files.length > 1
+  const file = many ? null : (files[0] ?? null)
+
+  const reset = () => {
+    setResult(null)
+    setOutput(null)
+    setRows(null)
+    setBatchOut([])
+    setBundle(null)
+  }
+
+  /** Comprime un PDF según el nivel elegido. */
+  const compressOne = async (f: File, onProgress: (done: number) => void): Promise<CompressResult> => {
+    const bytes = new Uint8Array(await f.arrayBuffer())
+    if (await isEncrypted(bytes)) throw new Error(tr('err.lockedPdf'))
+    if (level === 'sin-perdida') return compressLossless(bytes)
+    const { compressStrong } = await import('../infra/pdfCompress')
+    let r = await compressStrong(bytes, level, (d, t) => onProgress(d / t))
+    // Sobre el resultado fuerte también se aplica la optimización sin pérdida.
+    if (r.improved) {
+      const extra = await compressLossless(r.bytes)
+      if (extra.improved) r = { ...r, bytes: extra.bytes, after: extra.after }
+    }
+    return r
+  }
 
   const go = () =>
     run(async () => {
-      setResult(null)
-      setOutput(null)
+      reset()
       setProgress(0)
-      const bytes = new Uint8Array(await file!.arrayBuffer())
-      if (await isEncrypted(bytes)) throw new Error(tr('err.lockedPdf'))
-      let r: CompressResult
-      if (level === 'sin-perdida') {
-        r = await compressLossless(bytes)
-      } else {
-        const { compressStrong } = await import('../infra/pdfCompress')
-        r = await compressStrong(bytes, level, (d, t) => setProgress(d / t))
-        // Sobre el resultado fuerte también se aplica la optimización sin pérdida.
-        if (r.improved) {
-          const extra = await compressLossless(r.bytes)
-          if (extra.improved) r = { ...r, bytes: extra.bytes, after: extra.after }
-        }
-      }
+      const r = await compressOne(file!, setProgress)
       setResult(r)
       // Ya no se descarga solo: primero se ve el resultado y luego se elige cómo guardarlo.
       if (r.improved) setOutput(resultFile(r.bytes, `${baseName(file!.name)}-${tr('file.compressed')}.pdf`, PDF))
       track('pdf_compress_result', { level, before_kb: Math.round(r.before / 1024), after_kb: Math.round(r.after / 1024) })
     }, tr('common.doneReview'))
 
+  /** Varios PDF (W-111): uno tras otro; si uno falla (p. ej. está protegido) los demás siguen. El ZIP lleva los comprimidos y, de los que ya estaban optimizados, el original. */
+  const goMany = () =>
+    run(async () => {
+      reset()
+      setProgress(0)
+      const done: BatchRow[] = []
+      const outs: File[] = []
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i]
+        try {
+          const r = await compressOne(f, (p) => setProgress((i + p) / files.length))
+          done.push({ name: f.name, before: r.before, after: r.after, improved: r.improved })
+          outs.push(r.improved ? resultFile(r.bytes, `${baseName(f.name)}-${tr('file.compressed')}.pdf`, PDF) : f)
+        } catch (e) {
+          done.push({ name: f.name, before: f.size, after: f.size, improved: false, error: friendly(e) })
+        }
+        setProgress((i + 1) / files.length)
+      }
+      setRows(done)
+      setBatchOut(outs)
+      setBundle(await bundleFiles(outs, `${tr('file.zipCompressedPdfs')}.zip`))
+      track('pdf_compress_batch', { files: files.length, ok: outs.length, level })
+    }, tr('common.doneReview'))
+
   const saved = result && result.before > 0 ? Math.round((1 - result.after / result.before) * 100) : 0
+  const okRows = (rows ?? []).filter((r) => !r.error)
+  const totalBefore = okRows.reduce((n, r) => n + r.before, 0)
+  const totalAfter = okRows.reduce((n, r) => n + r.after, 0)
+  const batchSaved = totalBefore > 0 ? Math.round((1 - totalAfter / totalBefore) * 100) : 0
 
   return (
     <div className="card stack">
-      <PickPdf file={file} onFile={(f) => { setFile(f); setResult(null); setOutput(null) }} />
+      {files.length === 0 ? (
+        <DropZone accept={PDF} multiple title={tr('compress.pickMany')} hint={tr('common.dragHere')} onFiles={(f) => { setFiles(f); reset() }} />
+      ) : (
+        <ul className="file-list" style={{ marginTop: 0 }}>
+          {files.map((f, i) => (
+            <FileRow
+              key={f.name + i}
+              file={f}
+              actions={
+                many ? (
+                  <button type="button" className="icon-btn" aria-label={tr('merge.remove', { name: f.name })} disabled={busy} onClick={() => { setFiles((prev) => prev.filter((_, j) => j !== i)); reset() }}>
+                    <Icon name="close" />
+                  </button>
+                ) : (
+                  <button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => { setFiles([]); reset() }}>
+                    {tr('common.change')}
+                  </button>
+                )
+              }
+            />
+          ))}
+        </ul>
+      )}
+      {files.length > 0 && (
+        <div className="row">
+          <label className="btn btn-soft btn-sm" style={{ cursor: busy ? 'default' : 'pointer' }}>
+            <Icon name="plus" /> {tr('compress.addMore')}
+            <input type="file" accept={PDF} multiple hidden disabled={busy} onChange={(e) => { setFiles((prev) => [...prev, ...Array.from(e.target.files ?? [])]); reset(); e.target.value = '' }} />
+          </label>
+        </div>
+      )}
       {file && (
         <BeforeAfter
           original={file}
@@ -111,12 +186,48 @@ export function CompressTool() {
           }
         />
       )}
+      {many && rows && (
+        <BeforeAfter
+          originals={files}
+          result={null}
+          results={batchOut}
+          saveAs={bundle}
+          toolName="compress"
+          title={tr('compress.title')}
+          previewTitle={tr('common.previewPdf')}
+          summary={
+            okRows.length > 1 ? (
+              <Notice kind="success">
+                {tr('compress.batchSummary', { n: okRows.length, before: formatBytes(totalBefore), after: formatBytes(totalAfter), pct: batchSaved })}
+              </Notice>
+            ) : okRows.length === 1 ? (
+              <Notice kind="success">
+                {formatBytes(totalBefore)} → <b>{formatBytes(totalAfter)}</b> ({tr('common.lessPct', { n: batchSaved })}). {tr('compress.summary')}
+              </Notice>
+            ) : undefined
+          }
+        />
+      )}
+      {many && rows && (
+        <ul className="file-list" style={{ marginTop: 0 }}>
+          {rows.map((r, i) => (
+            <li key={r.name + i} className="file-row img-result">
+              <span className="img-result-info">
+                <b>{r.name}</b>
+                <small className={r.error ? undefined : 'faint'} style={r.error ? { color: 'var(--danger)' } : undefined}>
+                  {r.error ?? (r.improved ? `${formatBytes(r.before)} → ${formatBytes(r.after)}` : tr('compress.alreadyShort'))}
+                </small>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="field">
         <span>{tr('compress.level')}</span>
         <Segmented
           label={tr('compress.level')}
           value={level}
-          onChange={(v) => { setLevel(v); setResult(null); setOutput(null) }}
+          onChange={(v) => { setLevel(v); reset() }}
           options={[
             { value: 'sin-perdida', label: tr('compress.lossless') },
             { value: 'media', label: tr('compress.medium') },
@@ -129,11 +240,11 @@ export function CompressTool() {
             : tr('compress.strongHint')}
         </small>
       </div>
-      {busy && level !== 'sin-perdida' && progress > 0 && <Progress value={progress} />}
+      {busy && (many || level !== 'sin-perdida') && progress > 0 && <Progress value={progress} />}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={!file} onClick={go} icon="compress">
-          {tr('compress.go')}
+        <BusyButton busy={busy} disabled={files.length === 0} onClick={many ? goMany : go} icon="compress">
+          {many ? tr('compress.goMany', { n: files.length }) : tr('compress.go')}
         </BusyButton>
       </div>
       {result && !result.improved && (
