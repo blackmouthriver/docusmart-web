@@ -46,7 +46,7 @@ export function DigitalSignPanel({ file, onChange, disabled }: { file: File; onC
         setPassword('')
       } catch (e) {
         const code = e instanceof CertError ? e.code : 'format'
-        setError(tr(code === 'password' ? 'sign.cert.badPassword' : code === 'nokey' ? 'sign.cert.noKey' : 'sign.cert.badFile'))
+        setError(tr(code === 'password' ? 'sign.cert.wrongSecret' : code === 'nokey' ? 'sign.cert.noKey' : 'sign.cert.badFile'))
       }
     } finally {
       setBusy(false)
@@ -85,7 +85,7 @@ export function DigitalSignPanel({ file, onChange, disabled }: { file: File; onC
               {p12 && (
                 <div className="row">
                   <label className="field" style={{ flex: 1, margin: 0 }}>
-                    <span>{tr('sign.cert.password')}</span>
+                    <span>{tr('sign.cert.secretField')}</span>
                     <input className="input" type="password" autoComplete="off" value={password} disabled={disabled || busy} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && void open()} />
                   </label>
                   <BusyButton busy={busy} disabled={disabled} onClick={open} icon="check">
