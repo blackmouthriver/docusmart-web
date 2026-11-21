@@ -689,6 +689,23 @@ export default {
         ["Puc fer servir la mateixa contrasenya en diversos llocs?", "Millor que no: si un lloc pateix una filtració, tots els teus comptes quedarien exposats. Genera'n una de diferent per a cada lloc i desa-les en un gestor de contrasenyes."],
       ],
     },
+    'resumir-pdf': {
+      slug: "resumir-pdf",
+      title: "Resumir PDF gratis: idees principals i paraules clau | DocuSmart",
+      description: "Resumeix un PDF, un Word o un text en segons i obtén-ne les idees principals i les paraules clau, en 12 idiomes. Gratis, sense registre i sense pujar el fitxer.",
+      h1: "Resumir PDF",
+      howTo: "Com resumir un PDF en 3 passos",
+      lead: "Treu les idees principals d'un informe, un contracte, un article o uns apunts sense llegir-los sencers, amb un resum que es fa al teu propi navegador.",
+      short: "Idees principals d'un PDF o un text",
+      steps: ["Tria un PDF, un Word (.docx) o un .txt, o enganxa el text.", "Tria la llargada del resum i prem \"Resumir\".", "Llegeix les idees principals i les paraules clau, i copia el resum o baixa'l en .txt o Word."],
+      faq: [
+        ["Fa servir intel·ligència artificial?", "Sí, una tècnica d'IA clàssica que funciona al teu navegador: analitza quines frases repeteixen les idees principals del document i quines s'assemblen més a la resta, i tria aquestes. No fa servir serveis al núvol ni inventa text: cada frase del resum és al document."],
+        ["Funciona amb PDF escanejats?", "Un escaneig és una imatge sense text. Passa'l primer per l'OCR per reconèixer el text i després resumeix aquest PDF."],
+        ["En quins idiomes funciona?", "En els 12 idiomes de DocuSmart: detecta l'idioma del document i descarta les paraules que no aporten significat; en xinès i japonès analitza parells de caràcters."],
+        ["Quina llargada té el resum?", "Curt (de 3 a 7 frases), mitjà (de 5 a 15) o llarg (de 8 a 30), segons la mida del document. Pots canviar-la i el resum s'actualitza a l'instant."],
+        ["El meu document es puja a internet?", "No. El text es llegeix i es resumeix al teu navegador: el fitxer no surt del teu equip ni es desa."],
+      ],
+    },
     'powerpoint-a-pdf': {
       slug: "powerpoint-a-pdf",
       title: "PowerPoint a PDF gratis: convertir PPTX a PDF en línia | DocuSmart",

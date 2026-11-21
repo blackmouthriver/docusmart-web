@@ -694,6 +694,23 @@ export default {
         ["Pasahitz bera erabil dezaket hainbat gunetan?", "Hobe ez: gune batek datu-ihes bat jasaten badu, zure kontu guztiak arriskuan geratuko lirateke. Sortu pasahitz desberdin bat gune bakoitzerako eta gorde pasahitz-kudeatzaile batean."],
       ],
     },
+    'resumir-pdf': {
+      slug: "pdfa-laburtu",
+      title: "PDFa laburtu doan: ideia nagusiak eta gako-hitzak | DocuSmart",
+      description: "Laburtu PDF, Word edo testu bat segundotan eta lortu haren ideia nagusiak eta gako-hitzak, 12 hizkuntzatan. Doan, erregistrorik gabe eta fitxategia igo gabe.",
+      h1: "PDFa laburtu",
+      howTo: "Nola laburtu PDF bat 3 urratsetan",
+      lead: "Atera txosten, kontratu, artikulu edo apunte baten ideia nagusiak osorik irakurri gabe, zure nabigatzailean bertan egiten den laburpen batekin.",
+      short: "PDF edo testu baten ideia nagusiak",
+      steps: ["Aukeratu PDF bat, Word bat (.docx) edo .txt bat, edo itsatsi testua.", "Aukeratu laburpenaren luzera eta sakatu \"Laburtu\".", "Irakurri ideia nagusiak eta gako-hitzak, eta kopiatu laburpena edo deskargatu .txt edo Word formatuan."],
+      faq: [
+        ["Adimen artifiziala erabiltzen du?", "Bai, zure nabigatzailean exekutatzen den AA teknika klasiko bat: dokumentuaren ideia nagusiak errepikatzen dituzten eta gainerakoen antz handiena duten esaldiak aztertzen ditu, eta horiek aukeratzen ditu. Ez du hodeiko zerbitzurik erabiltzen eta ez du testurik asmatzen: laburpeneko esaldi guztiak dokumentuan daude."],
+        ["PDF eskaneatuekin funtzionatzen du?", "Eskaneatze bat testurik gabeko irudi bat da. Pasa ezazu lehenik OCRtik testua ezagutzeko, eta laburtu gero PDF hori."],
+        ["Zein hizkuntzatan funtzionatzen du?", "DocuSmart-en 12 hizkuntzetan: dokumentuaren hizkuntza detektatzen du eta esanahirik ematen ez duten hitzak baztertzen ditu; txineraz eta japonieraz karaktere-bikoteak aztertzen ditu."],
+        ["Zenbaterainoko luzera du laburpenak?", "Laburra (3tik 7ra esaldi), ertaina (5etik 15era) edo luzea (8tik 30era), dokumentuaren tamainaren arabera. Alda dezakezu eta laburpena berehala eguneratzen da."],
+        ["Nire dokumentua internetera igotzen da?", "Ez. Testua zure nabigatzailean irakurri eta laburtzen da: fitxategia ez da zure gailutik ateratzen eta ez da gordetzen."],
+      ],
+    },
     'powerpoint-a-pdf': {
       slug: "powerpoint-pdfra",
       title: "PowerPoint PDFra doan: bihurtu PPTX PDFra sarean | DocuSmart",

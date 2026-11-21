@@ -689,6 +689,23 @@ export default {
         ["Can I use the same password on several sites?", "Better not: if one site is breached, all your accounts would be exposed. Generate a different one for each site and keep them in a password manager."],
       ],
     },
+    'resumir-pdf': {
+      slug: "summarize-pdf",
+      title: "Summarize PDF free: main ideas and keywords | DocuSmart",
+      description: "Summarize a PDF, a Word file or a text in seconds and get its main ideas and keywords, in 12 languages. Free, no sign-up and without uploading the file.",
+      h1: "Summarize PDF",
+      howTo: "How to summarize a PDF in 3 steps",
+      lead: "Get the main ideas of a report, a contract, an article or your notes without reading them in full, with a summary made in your own browser.",
+      short: "Main ideas of a PDF or a text",
+      steps: ["Choose a PDF, a Word file (.docx) or a .txt, or paste the text.", "Pick the summary length and press \"Summarize\".", "Read the main ideas and keywords, then copy the summary or download it as .txt or Word."],
+      faq: [
+        ["Does it use artificial intelligence?", "Yes, a classic AI technique that runs in your browser: it analyzes which sentences repeat the document's main ideas and which are most similar to the rest, and picks those. It doesn't use cloud services or make up text: every sentence in the summary is in the document."],
+        ["Does it work with scanned PDFs?", "A scan is an image with no text. Run it through OCR first to recognize the text, then summarize that PDF."],
+        ["Which languages does it work in?", "In DocuSmart's 12 languages: it detects the document's language and ignores words that carry no meaning; in Chinese and Japanese it analyzes pairs of characters."],
+        ["How long is the summary?", "Short (3 to 7 sentences), medium (5 to 15) or long (8 to 30), depending on the document's size. You can change it and the summary updates instantly."],
+        ["Is my document uploaded to the internet?", "No. The text is read and summarized in your browser: the file never leaves your device and isn't saved."],
+      ],
+    },
     'powerpoint-a-pdf': {
       slug: "powerpoint-to-pdf",
       title: "PowerPoint to PDF free: convert PPTX to PDF online | DocuSmart",

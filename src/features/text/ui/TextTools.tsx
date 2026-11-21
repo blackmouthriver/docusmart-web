@@ -1,6 +1,6 @@
-// Herramientas de texto (W-113): contador de palabras, comparar textos y generador de
-// contraseñas. Todo en el navegador; nada se envía ni se guarda.
-import { useEffect, useMemo, useRef, useState } from 'react'
+// Herramientas de texto (W-113): contador de palabras, comparar textos, generador de
+// contraseñas y resumir (W-142). Todo en el navegador; nada se envía ni se guarda.
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
@@ -12,12 +12,15 @@ import { durationParts, minWordLength, textStats, topWords } from '../core/stats
 import { DEFAULT_DIFF, diffReport, diffTexts, type DiffOptions } from '../core/textDiff'
 import { DEFAULT_PASSWORD, MAX_LENGTH, MIN_LENGTH, entropyBits, generatePassword, pools, strength, type PasswordOptions } from '../core/password'
 
-export type TextToolId = 'contar' | 'comparar' | 'contrasena'
-export const TEXT_TOOLS: readonly TextToolId[] = ['contar', 'comparar', 'contrasena']
+export type TextToolId = 'contar' | 'comparar' | 'contrasena' | 'resumir'
+export const TEXT_TOOLS: readonly TextToolId[] = ['contar', 'comparar', 'contrasena', 'resumir']
+// Resumir lee PDF y Word: se carga aparte, solo al abrirla.
+const SummaryTool = lazy(() => import('../../summary/ui/SummaryTool').then((m) => ({ default: m.SummaryTool })))
 const INFO: Record<TextToolId, { icon: IconName; cls: string }> = {
   contar: { icon: 'text', cls: 'ico-blue' },
   comparar: { icon: 'compare', cls: 'ico-violet' },
   contrasena: { icon: 'lock', cls: 'ico-green' },
+  resumir: { icon: 'note', cls: 'ico-amber' },
 }
 const name = (id: TextToolId) => `tools.text.${id}` as MessageKey
 const desc = (id: TextToolId) => `tools.text.${id}.desc` as MessageKey
@@ -57,6 +60,12 @@ export function TextScreen({ sub }: { sub?: string }) {
 export function TextTool({ id }: { id: TextToolId }) {
   if (id === 'comparar') return <CompareTexts />
   if (id === 'contrasena') return <PasswordGenerator />
+  if (id === 'resumir')
+    return (
+      <Suspense fallback={null}>
+        <SummaryTool />
+      </Suspense>
+    )
   return <WordCounter />
 }
 

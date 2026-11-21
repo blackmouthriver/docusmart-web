@@ -127,6 +127,7 @@ const ENTRIES: readonly CatalogTool[] = [
   text('contar', 'text'),
   text('comparar', 'compare'),
   text('contrasena', 'lock', ['seguridad']),
+  text('resumir', 'note', ['documentos']),
   { key: 'qr/leer', category: 'qr', icon: 'camera', name: 'qr.read', desc: 'quick.readQr.hint', section: 'qr', sub: 'leer' },
 ]
 

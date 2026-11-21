@@ -201,6 +201,9 @@
     },
     "audio-a-texto": {
       "app": "evaluar"
+    },
+    "resumir-pdf": {
+      "app": "evaluar"
     }
   }
 }

@@ -689,6 +689,23 @@ export default {
         ["Puis-je utiliser le même mot de passe sur plusieurs sites ?", "Mieux vaut éviter : si un site subit une fuite, tous vos comptes seraient exposés. Générez-en un différent pour chaque site et conservez-les dans un gestionnaire de mots de passe."],
       ],
     },
+    'resumir-pdf': {
+      slug: "resumer-pdf",
+      title: "Résumer un PDF gratuitement : idées principales et mots-clés | DocuSmart",
+      description: "Résumez un PDF, un Word ou un texte en quelques secondes et obtenez ses idées principales et mots-clés, en 12 langues. Gratuit, sans inscription et sans envoyer le fichier.",
+      h1: "Résumer un PDF",
+      howTo: "Comment résumer un PDF en 3 étapes",
+      lead: "Dégagez les idées principales d'un rapport, d'un contrat, d'un article ou de notes sans tout lire, avec un résumé fait dans votre propre navigateur.",
+      short: "Idées principales d'un PDF ou d'un texte",
+      steps: ["Choisissez un PDF, un Word (.docx) ou un .txt, ou collez le texte.", "Choisissez la longueur du résumé et appuyez sur « Résumer ».", "Lisez les idées principales et les mots-clés, puis copiez le résumé ou téléchargez-le en .txt ou Word."],
+      faq: [
+        ["Utilise-t-il l'intelligence artificielle ?", "Oui, une technique d'IA classique qui fonctionne dans votre navigateur : elle analyse quelles phrases reprennent les idées principales du document et lesquelles ressemblent le plus au reste, et choisit celles-là. Elle n'utilise pas de services cloud et n'invente pas de texte : chaque phrase du résumé se trouve dans le document."],
+        ["Fonctionne-t-il avec des PDF numérisés ?", "Un scan est une image sans texte. Passez-le d'abord par l'OCR pour reconnaître le texte, puis résumez ce PDF."],
+        ["Dans quelles langues fonctionne-t-il ?", "Dans les 12 langues de DocuSmart : il détecte la langue du document et écarte les mots qui n'apportent pas de sens ; en chinois et en japonais, il analyse des paires de caractères."],
+        ["Quelle est la longueur du résumé ?", "Court (de 3 à 7 phrases), moyen (de 5 à 15) ou long (de 8 à 30), selon la taille du document. Vous pouvez la changer et le résumé se met à jour aussitôt."],
+        ["Mon document est-il envoyé sur internet ?", "Non. Le texte est lu et résumé dans votre navigateur : le fichier ne quitte pas votre appareil et n'est pas enregistré."],
+      ],
+    },
     'powerpoint-a-pdf': {
       slug: "powerpoint-en-pdf",
       title: "PowerPoint en PDF gratuit : convertir PPTX en PDF en ligne | DocuSmart",

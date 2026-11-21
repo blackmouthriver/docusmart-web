@@ -43,9 +43,9 @@ describe('catálogo de la app', () => {
     expect(Object.values(n).reduce((a, b) => a + b, 0)).toBe(CATALOG.length + extra)
     expect(n.organizar).toBe(5)
     expect(n.qr).toBe(2)
-    expect(n.documentos).toBe(2)
+    expect(n.documentos).toBe(3)
     expect(n.multimedia).toBe(5)
-    expect(n.texto).toBe(4)
+    expect(n.texto).toBe(5)
     expect(n.imagen).toBe(19)
   })
   it('marca las herramientas que procesan varios archivos y existe Renombrar archivos (W-111)', () => {
@@ -75,7 +75,8 @@ describe('groupTools', () => {
   })
   it('filtra por nombre, descripción o categoría y oculta las categorías vacías', () => {
     const word = groupTools(tEs, 'es', 'word')
-    expect(word.map((g) => g.id)).toEqual(['documentos', 'convertir', 'escanear'])
+    // Resumir PDF menciona Word en su descripción: aparece en Texto.
+    expect(word.map((g) => g.id)).toEqual(['documentos', 'convertir', 'escanear', 'texto'])
     expect(word[2].tools.map((x) => x.sub)).toEqual(['texto'])
     expect(word[0].tools.map((x) => x.sub)).toEqual(['cv'])
     expect(word[1].tools.map((x) => x.sub).sort()).toEqual(['pdf-word', 'word-pdf'])

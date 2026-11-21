@@ -111,6 +111,7 @@ export const TOOL_PAGES: Record<string, string> = {
   archive_create: 'comprimir-archivos',
   archive_extract: 'descomprimir-archivos',
   qr: 'crear-codigo-qr',
+  summarize: 'resumir-pdf',
 }
 const SLUGS: Record<string, Partial<Record<Lang, string>>> = TOOL_PAGE_SLUGS
 

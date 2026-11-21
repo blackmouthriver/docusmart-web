@@ -6,7 +6,7 @@ export type ToolSpec =
   | { kind: 'doc'; id: 'cobro' | 'cv' }
   | { kind: 'media'; id: 'audio' | 'convertir' | 'recortar' | 'comprimir' | 'texto' }
   | { kind: 'meta'; id?: undefined }
-  | { kind: 'text'; id: 'contar' | 'comparar' | 'contrasena' }
+  | { kind: 'text'; id: 'contar' | 'comparar' | 'contrasena' | 'resumir' }
   | { kind: 'archive'; id: 'crear' | 'extraer' }
   | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' | 'texto' }
 
