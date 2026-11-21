@@ -1031,6 +1031,7 @@ const en: Messages = {
   'libErr.archNoOutput': "The archive wasn't generated.",
   'libErr.archInvalid': "The file isn't a valid archive or it's damaged.",
   'libErr.archExtract': "Couldn't extract the file: it may be damaged.",
+  'libErr.archTooBig': "The extracted content would be too large ({size}, {n} files) to process in the browser.",
   'libErr.officeDocx': "Only .docx documents can be converted. If you have an old .doc, open it in Word and save it as .docx.",
   'libErr.officeXlsx': "Only .xlsx workbooks can be converted. If you have an old .xls, open it in Excel and save it as .xlsx.",
   'libErr.officeEmptyDoc': "The document has no content to convert.",

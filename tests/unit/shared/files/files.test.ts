@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { baseName, cleanBaseName, download, extensionOf, renamed, formatBytes, isOwnBlobUrl, kindOf, parsePageRanges, safeFilename, safeMimeType } from '../../../../src/shared/files/files'
+import { baseName, cleanBaseName, download, extensionOf, renamed, formatBytes, isOwnBlobUrl, isSvgFile, kindOf, parsePageRanges, safeFilename, safeMimeType, svgDataUrl } from '../../../../src/shared/files/files'
 
 const file = (name: string, type = '') => new File([''], name, { type })
 
@@ -127,5 +127,29 @@ describe('renombrar el resultado', () => {
     expect(r.type).toBe('application/pdf')
     expect(r.lastModified).toBe(5)
     expect(r.size).toBe(f.size)
+  })
+})
+
+describe('SVG del usuario', () => {
+  it('reconoce SVG por tipo o extensión', () => {
+    expect(isSvgFile({ type: 'image/svg+xml', name: 'x' })).toBe(true)
+    expect(isSvgFile({ type: '', name: 'Logo.SVG' })).toBe(true)
+    expect(isSvgFile({ type: '', name: 'dibujo.svgz' })).toBe(true)
+    expect(isSvgFile({ type: 'image/png', name: 'foto.png' })).toBe(false)
+    expect(isSvgFile({ type: 'image/svg', name: 'svg.png' })).toBe(false)
+  })
+
+  it('lo convierte en data: (no en blob: del mismo origen) sin perder el contenido', async () => {
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script><text>ñ €</text></svg>'
+    const url = await svgDataUrl(new Blob([svg], { type: 'image/svg+xml' }))
+    expect(url.startsWith('data:image/svg+xml;base64,')).toBe(true)
+    const bytes = Uint8Array.from(atob(url.split(',')[1]), (c) => c.charCodeAt(0))
+    expect(new TextDecoder().decode(bytes)).toBe(svg)
+  })
+
+  it('aguanta archivos grandes (varios bloques)', async () => {
+    const big = new Uint8Array(200_000).map((_, i) => i % 251)
+    const url = await svgDataUrl(new Blob([big]))
+    expect(atob(url.split(',')[1]).length).toBe(big.length)
   })
 })

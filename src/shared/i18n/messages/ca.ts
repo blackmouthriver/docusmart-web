@@ -1031,6 +1031,7 @@ const ca: Messages = {
   'libErr.archNoOutput': "No s'ha generat el fitxer comprimit.",
   'libErr.archInvalid': "El fitxer no és un comprimit vàlid o està malmès.",
   'libErr.archExtract': "No s'ha pogut extreure el fitxer: pot estar malmès.",
+  'libErr.archTooBig': "El contingut extret seria massa gran ({size}, {n} fitxers) per processar-lo al navegador.",
   'libErr.officeDocx': "Només es poden convertir documents .docx. Si tens un .doc antic, obre'l a Word i desa'l com a .docx.",
   'libErr.officeXlsx': "Només es poden convertir llibres .xlsx. Si tens un .xls antic, obre'l a Excel i desa'l com a .xlsx.",
   'libErr.officeEmptyDoc': "El document no té contingut per convertir.",

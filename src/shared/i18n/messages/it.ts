@@ -1031,6 +1031,7 @@ const it: Messages = {
   'libErr.archNoOutput': "L'archivio non è stato generato.",
   'libErr.archInvalid': "Il file non è un archivio valido o è danneggiato.",
   'libErr.archExtract': "Impossibile estrarre il file: potrebbe essere danneggiato.",
+  'libErr.archTooBig': "Il contenuto estratto sarebbe troppo grande ({size}, {n} file) da elaborare nel browser.",
   'libErr.officeDocx': "Si possono convertire solo documenti .docx. Se hai un vecchio .doc, aprilo in Word e salvalo come .docx.",
   'libErr.officeXlsx': "Si possono convertire solo cartelle di lavoro .xlsx. Se hai un vecchio .xls, aprilo in Excel e salvalo come .xlsx.",
   'libErr.officeEmptyDoc': "Il documento non ha contenuto da convertire.",

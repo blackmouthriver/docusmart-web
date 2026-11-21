@@ -1035,6 +1035,7 @@ export const es = {
   'libErr.archNoOutput': "No se generó el archivo comprimido.",
   'libErr.archInvalid': "El archivo no es un comprimido válido o está dañado.",
   'libErr.archExtract': "No se pudo extraer el archivo: puede estar dañado.",
+  'libErr.archTooBig': "El contenido descomprimido sería demasiado grande ({size}, {n} archivos) para procesarlo en el navegador.",
   'libErr.officeDocx': "Solo se pueden convertir documentos .docx. Si tienes un .doc antiguo, ábrelo en Word y guárdalo como .docx.",
   'libErr.officeXlsx': "Solo se pueden convertir libros .xlsx. Si tienes un .xls antiguo, ábrelo en Excel y guárdalo como .xlsx.",
   'libErr.officeEmptyDoc': "El documento no tiene contenido que convertir.",

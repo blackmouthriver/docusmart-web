@@ -73,6 +73,21 @@ export function safeFilename(name: string): string {
   return (clean || 'archivo').slice(0, 180)
 }
 
+/** Imagen SVG (por tipo o extensión): puede traer scripts si se abre como página. */
+export const isSvgFile = (file: { type: string; name: string }) => /^image\/svg\+xml\b/i.test(file.type) || /\.svgz?$/i.test(file.name)
+
+/**
+ * SVG del usuario como `data:` para un `<img>` (ahí sus scripts no corren). A diferencia de un
+ * `blob:` del mismo origen, el navegador no deja abrir un `data:` como página ("abrir imagen en
+ * pestaña nueva"), así que su código nunca se ejecuta con el origen del sitio.
+ */
+export async function svgDataUrl(file: Blob): Promise<string> {
+  const bytes = new Uint8Array(await file.arrayBuffer())
+  let bin = ''
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
+  return `data:image/svg+xml;base64,${btoa(bin)}`
+}
+
 /** Solo URLs blob: creadas por este mismo sitio. */
 export function isOwnBlobUrl(url: string, origin = location.origin): boolean {
   return url.startsWith(`blob:${origin}/`)

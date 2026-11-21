@@ -10,6 +10,7 @@ import { resultFile } from '../../../shared/files/share'
 import {
   EXTRACT_ACCEPT,
   ArchiveError,
+  ArchiveTooBigError,
   WrongArchivePasswordError,
   createArchive,
   extractArchive,
@@ -35,6 +36,7 @@ function mimeFor(path: string): string {
 
 function friendly(e: unknown): string {
   if (e instanceof WrongArchivePasswordError) return tr('arch.wrongKey')
+  if (e instanceof ArchiveTooBigError) return tr('libErr.archTooBig', { size: formatBytes(e.bytes), n: e.files })
   if (e instanceof ArchiveError) return e.message
   return tr('arch.failed')
 }
