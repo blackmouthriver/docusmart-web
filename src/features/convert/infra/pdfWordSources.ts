@@ -3,7 +3,7 @@
 // las imágenes, así que queda excluido de la cobertura como los demás *Sources.ts.
 import { ImageKind, OPS, Util, type PDFDocumentProxy, type PDFPageProxy } from 'pdfjs-dist'
 import { canvasToBlob, closePdf, openPdf } from '../../../shared/pdf/pdf'
-import { cleanFontName, type Family, type ImageFrag, type PageInfo, type TextFrag } from '../core/pdfWord'
+import { cleanFontName, matchDrawn, untrack, type ColorRun, type Family, type ImageFrag, type PageInfo, type RectFrag, type TextFrag } from '../core/pdfWord'
 
 type Matrix = number[]
 // Con fontExtraProperties, pdf.js copia al objeto de la fuente su nombre real (p. ej. "ABCDEF+Calibri-Bold").
@@ -65,19 +65,89 @@ async function imageToPng(img: { width: number; height: number; bitmap?: ImageBi
   return new Uint8Array(await blob.arrayBuffer())
 }
 
-async function pageImages(page: PDFPageProxy, index: number, viewport: Matrix): Promise<ImageFrag[]> {
+/** Caja (en coordenadas de la página vista) de un rectángulo del espacio de usuario. */
+function box(viewport: Matrix, ctm: Matrix, x0: number, y0: number, x1: number, y1: number) {
+  const m = Util.transform(viewport, ctm)
+  const pts = [[x0, y0], [x1, y0], [x0, y1], [x1, y1]].map(([x, y]) => [m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5]])
+  const xs = pts.map((p) => p[0])
+  const ys = pts.map((p) => p[1])
+  return { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) }
+}
+
+/**
+ * Una pasada por la lista de operadores: imágenes, rectángulos rellenos (fondos, franjas de
+ * color) y el color con que se escribe cada texto (en el orden en que se dibuja).
+ */
+async function pageGraphics(page: PDFPageProxy, index: number, viewport: Matrix, withImages: boolean, pageWidth: number, pageHeight: number): Promise<{ images: ImageFrag[]; rects: RectFrag[]; colors: ColorRun[] }> {
   const ops = await page.getOperatorList()
   const found: Array<{ id: string | null; inline: unknown; ctm: Matrix }> = []
-  let ctm: Matrix = [1, 0, 0, 1, 0, 0]
-  const stack: Matrix[] = []
+  const rects: RectFrag[] = []
+  const colors: ColorRun[] = []
+  type Box = { x: number; y: number; w: number; h: number }
+  // Estado gráfico: matriz, color de relleno, opacidad y recorte (en coordenadas de la página).
+  // `group`: opacidad de los grupos que lo contienen (un grupo al 5 % aclara todo lo de adentro).
+  type State = { ctm: Matrix; fill: string; alpha: number; group: number; clip: Box | null }
+  let st: State = { ctm: [1, 0, 0, 1, 0, 0], fill: '#000000', alpha: 1, group: 1, clip: null }
+  const stack: State[] = []
+  const intersect = (a: Box, b: Box | null): Box => {
+    if (!b) return a
+    const x = Math.max(a.x, b.x)
+    const y = Math.max(a.y, b.y)
+    return { x, y, w: Math.max(0, Math.min(a.x + a.w, b.x + b.w) - x), h: Math.max(0, Math.min(a.y + a.h, b.y + b.h) - y) }
+  }
+  const bboxOf = (mm: unknown) => {
+    const m = mm as ArrayLike<number> | undefined
+    return m && m.length >= 4 && Number.isFinite(m[0]) && Number.isFinite(m[2]) ? box(viewport, st.ctm, m[0], m[1], m[2], m[3]) : null
+  }
+  const FILLS = new Set<number>([OPS.fill, OPS.eoFill, OPS.fillStroke, OPS.eoFillStroke])
+  // Fondo de la página (un relleno que la cubre entera), para mezclar los colores semitransparentes.
+  let base = [255, 255, 255]
   for (let i = 0; i < ops.fnArray.length; i++) {
     const fn = ops.fnArray[i]
     const args = ops.argsArray[i] as unknown[]
-    if (fn === OPS.save) stack.push(ctm)
-    else if (fn === OPS.restore) ctm = stack.pop() ?? ctm
-    else if (fn === OPS.transform) ctm = Util.transform(ctm, args as Matrix)
-    else if (fn === OPS.paintImageXObject) found.push({ id: args[0] as string, inline: null, ctm })
-    else if (fn === OPS.paintInlineImageXObject) found.push({ id: null, inline: args[0], ctm })
+    if (fn === OPS.save) stack.push({ ...st })
+    else if (fn === OPS.restore) st = stack.pop() ?? st
+    else if (fn === OPS.beginGroup) {
+      stack.push({ ...st })
+      st.group *= st.alpha
+      st.alpha = 1
+    } else if (fn === OPS.endGroup) st = stack.pop() ?? st
+    else if (fn === OPS.paintFormXObjectBegin) {
+      // Un formulario (grupo de dibujo) con su propia matriz y su caja de recorte.
+      stack.push({ ...st })
+      st.group *= st.alpha
+      st.alpha = 1
+      if (Array.isArray(args[0]) && args[0].length === 6) st.ctm = Util.transform(st.ctm, args[0] as Matrix)
+      const b = bboxOf(args[1])
+      if (b) st.clip = intersect(b, st.clip)
+    } else if (fn === OPS.paintFormXObjectEnd) st = stack.pop() ?? st
+    else if (fn === OPS.transform) st.ctm = Util.transform(st.ctm, args as Matrix)
+    else if (fn === OPS.setFillRGBColor && typeof args[0] === 'string') st.fill = args[0]
+    else if (fn === OPS.setGState && Array.isArray(args[0])) {
+      for (const [k, v] of args[0] as Array<[string, unknown]>) if (k === 'ca' && typeof v === 'number') st.alpha = v
+    } else if (fn === OPS.showText && Array.isArray(args[0])) {
+      // Un desplazamiento grande dentro del texto (TJ) hace de espacio entre palabras.
+      const text = (args[0] as Array<{ unicode?: string } | number | null>).map((g) => (g && typeof g === 'object' ? (g.unicode ?? '') : typeof g === 'number' && Math.abs(g) > 180 ? ' ' : '')).join('')
+      if (text) colors.push({ color: st.fill.slice(1).toUpperCase(), text })
+    } else if (fn === OPS.constructPath && args[0] === OPS.endPath) {
+      // Trazado de recorte (W n): lo que se dibuje después solo se ve dentro de él.
+      const b = bboxOf(args[2])
+      if (b) st.clip = intersect(b, st.clip)
+    } else if (fn === OPS.constructPath && FILLS.has(args[0] as number)) {
+      // [operación, [trazado], [minX, minY, maxX, maxY]]: basta la caja del trazado, recortada.
+      const raw = bboxOf(args[2])
+      const alpha = st.alpha * st.group
+      if (!raw || alpha < 0.02) continue
+      const b = intersect(raw, st.clip)
+      if (b.w < 2 || b.h < 2) continue
+      // Semitransparente: el color que se ve sobre el fondo de la página.
+      const rgbOf = (h: string) => [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16))
+      const c = rgbOf(st.fill).map((v, k) => Math.round(v * alpha + base[k] * (1 - alpha)))
+      const hex = c.map((v) => v.toString(16).padStart(2, '0')).join('').toUpperCase()
+      if (b.w >= pageWidth * 0.95 && b.h >= pageHeight * 0.95) base = c
+      rects.push({ page: index, ...b, color: hex })
+    } else if (withImages && fn === OPS.paintImageXObject) found.push({ id: args[0] as string, inline: null, ctm: st.ctm })
+    else if (withImages && fn === OPS.paintInlineImageXObject) found.push({ id: null, inline: args[0], ctm: st.ctm })
   }
   const out: ImageFrag[] = []
   for (const f of found.slice(0, 60)) {
@@ -95,7 +165,7 @@ async function pageImages(page: PDFPageProxy, index: number, viewport: Matrix): 
     const png = await imageToPng(data).catch(() => null)
     if (png) out.push({ page: index, x, y, w, h, png })
   }
-  return out
+  return { images: out, rects, colors }
 }
 
 export async function extractForWord(file: File, onProgress?: (done: number, total: number) => void, opts: { images?: boolean } = {}) {
@@ -104,17 +174,19 @@ export async function extractForWord(file: File, onProgress?: (done: number, tot
     const pages: PageInfo[] = []
     const texts: TextFrag[] = []
     const images: ImageFrag[] = []
+    const rects: RectFrag[] = []
     for (let n = 1; n <= doc.numPages; n++) {
       const page = await doc.getPage(n)
       const vp = page.getViewport({ scale: 1 })
       pages.push({ width: vp.width, height: vp.height })
-      // La lista de operadores carga las fuentes (negrita/cursiva) y las imágenes.
-      if (opts.images !== false) images.push(...(await pageImages(page, n - 1, vp.transform)))
-      // Sin imágenes igual hace falta la lista de operadores: carga las fuentes (negrita).
-      else await page.getOperatorList()
+      // La lista de operadores carga las fuentes (negrita/cursiva) y da imágenes, fondos y colores.
+      const g = await pageGraphics(page, n - 1, vp.transform, opts.images !== false, vp.width, vp.height)
+      images.push(...g.images)
+      rects.push(...g.rects)
       const content = await page.getTextContent()
+      const drawn = matchDrawn(content.items.map((it) => ('str' in it ? it.str : '')), g.colors)
       const fonts = new Map<string, FontInfo | null>()
-      for (const item of content.items) {
+      for (const [k, item] of content.items.entries()) {
         if (!('str' in item) || !item.str) continue
         const m = Util.transform(vp.transform, item.transform)
         // Solo texto horizontal; el texto girado o vertical rompería las líneas.
@@ -122,9 +194,10 @@ export async function extractForWord(file: File, onProgress?: (done: number, tot
         if (!fonts.has(item.fontName)) fonts.set(item.fontName, await getObj<FontInfo>(page, item.fontName))
         const font = fonts.get(item.fontName)
         const size = Math.hypot(m[2], m[3])
+        const tracked = untrack(item.str, drawn[k]?.text, item.width, size)
         texts.push({
           page: n - 1,
-          str: item.str,
+          str: tracked?.str ?? item.str,
           x: m[4],
           y: m[5],
           w: item.width,
@@ -133,12 +206,14 @@ export async function extractForWord(file: File, onProgress?: (done: number, tot
           italic: !!(font?.italic || ITALIC.test(font?.name ?? '')),
           family: font?.isMonospace ? 'mono' : font?.isSerifFont ? 'serif' : familyOf(font?.name ?? font?.fallbackName ?? content.styles[item.fontName]?.fontFamily),
           font: cleanFontName(font?.name),
+          color: drawn[k]?.color,
+          spacing: tracked?.spacing || undefined,
         })
       }
       page.cleanup()
       onProgress?.(n, doc.numPages)
     }
-    return { pages, texts, images }
+    return { pages, texts, images, rects }
   } finally {
     await closePdf(doc)
   }

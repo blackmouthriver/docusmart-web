@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { strFromU8, unzipSync } from 'fflate'
-import { buildDocument, buildLines, cleanFontName, dominant, summarize, writeDocx, xmlText, type Para, type Table, type TextFrag } from '../../../../../src/features/convert/core/pdfWord'
+import { assignColors, buildDocument, buildLines, cleanFontName, dominant, findColumns, matchDrawn, summarize, untrack, writeDocx, xmlText, type Columns, type Para, type Table, type TextFrag } from '../../../../../src/features/convert/core/pdfWord'
 import { encodePng } from '../../../../../src/features/pdf/core/pdfImages'
 
 const A4 = { width: 595, height: 842 }
@@ -266,5 +266,81 @@ describe('writeDocx', () => {
 
   it('escapa y limpia el texto', () => {
     expect(xmlText('a\u0001b & "c"')).toBe('ab &amp; &quot;c&quot;')
+  })
+})
+
+describe('colores, texto espaciado, columnas y fondos (PDF con diseño)', () => {
+  it('asigna a cada texto el color con que se dibujó y recupera los espacios reales', () => {
+    const runs = [{ color: '000000', text: 'Hola' }, { color: 'CA726F', text: 'RUTH' }, { color: 'CA726F', text: ' ' }, { color: '4F6274', text: 'ESP.GESTIÓN DE LA' }]
+    expect(assignColors(['Hola', 'RUTH', 'E S P . G E S T I Ó N', 'D E', 'L A', 'nada'], runs)).toEqual([undefined, 'CA726F', '4F6274', '4F6274', '4F6274', undefined])
+    expect(matchDrawn(['E S P . G E S T I Ó N D E L A'], runs)[0]?.text).toBe('ESP.GESTIÓN DE LA')
+  })
+
+  it('untrack: texto letra por letra a palabras con espaciado entre letras', () => {
+    expect(untrack('O P T Ó M E T R A', 'OPTÓMETRA', 88, 9)).toEqual({ str: 'OPTÓMETRA', spacing: expect.any(Number) })
+    expect(untrack('O P T Ó M E T R A', 'OPTÓMETRA', 88, 9)!.spacing).toBeGreaterThan(3)
+    expect(untrack('D E', 'DE', 17, 11)?.str).toBe('DE')
+    // Si lo dibujado no coincide, o el texto no está espaciado, se deja como está.
+    expect(untrack('O P T', 'OTRA', 30, 9)).toBeNull()
+    expect(untrack('Hola mundo', 'Hola mundo', 50, 11)).toBeNull()
+    expect(untrack('A B C', undefined, 30, 11)).toBeNull()
+  })
+
+  it('una línea espaciada queda en una sola corrida, con el mismo espaciado y los espacios entre palabras', () => {
+    const lines = buildLines([
+      t('ESP.GESTIÓN', 80, 100, { w: 99, spacing: 2 }),
+      t('DE', 188, 100, { w: 17, spacing: 2.2 }),
+      t('Y', 214, 100, { w: 6 }),
+      t('SALUD', 230, 100, { w: 46, spacing: 2.1 }),
+    ])
+    expect(lines[0].segments[0].runs.map((r) => [r.text, r.spacing])).toEqual([['ESP.GESTIÓN DE Y SALUD', 2.1]])
+    // Letras sueltas con el mismo hueco (cada una un fragmento): también es texto espaciado.
+    const single = buildLines('OPTÓMETRA'.split('').map((c, i) => t(c, 100 + i * 9, 50, { w: 5.5 })))
+    expect(single[0].segments[0].runs[0]).toMatchObject({ text: 'OPTÓMETRA', spacing: 3.5 })
+  })
+
+  it('findColumns: corte por el texto y por el fondo de la columna lateral', () => {
+    const left = Array.from({ length: 12 }, (_, i) => t(`Dato personal ${i}`, 40, 200 + i * 40, { w: 120 }))
+    const right = Array.from({ length: 12 }, (_, i) => t(`Experiencia profesional larga ${i}`, 260, 200 + i * 40, { w: 280 }))
+    const title = t('NOMBRE COMPLETO DE LA PERSONA', 40, 80, { w: 500, size: 30 })
+    const cols = findColumns(buildLines([title, ...left, ...right]), A4)
+    expect(cols).not.toBeNull()
+    expect(cols!.x).toBeGreaterThan(160)
+    expect(cols!.x).toBeLessThan(260)
+    expect(cols!.top).toBe(80)
+    // Poco texto a la izquierda: sin el fondo no hay columnas; con él, sí (en su borde).
+    const few = buildLines([title, t('IDIOMAS', 40, 200, { w: 60 }), ...right])
+    expect(findColumns(few, A4)).toBeNull()
+    expect(findColumns(few, A4, [{ page: 0, x: 0, y: 150, w: 220, h: 650, color: 'EAEBEC' }])).toEqual({ x: 220, top: 80 })
+    // Un documento normal (líneas de lado a lado) no tiene columnas.
+    expect(findColumns(buildLines(Array.from({ length: 20 }, (_, i) => t('Texto de un párrafo que ocupa todo el ancho de la hoja', 60, 100 + i * 14, { w: 470 }))), A4)).toBeNull()
+  })
+
+  it('buildDocument: franjas, columnas con su fondo y colores en las corridas', () => {
+    const left = Array.from({ length: 10 }, (_, i) => t(`Dato ${i}`, 40, 220 + i * 40, { w: 100, color: '4F6274' }))
+    const right = Array.from({ length: 10 }, (_, i) => t(`Experiencia ${i}`, 260, 220 + i * 40, { w: 200 }))
+    const rects = [
+      { page: 0, x: 0, y: 0, w: 595, h: 842, color: 'F2F2F2' },
+      { page: 0, x: 20, y: 10, w: 555, h: 20, color: 'CA726F' },
+      { page: 0, x: 0, y: 180, w: 220, h: 600, color: 'EAEBEC' },
+    ]
+    const doc = buildDocument([A4], [t('RUTH GÓMEZ', 200, 100, { size: 28, color: 'CA726F' }), ...left, ...right], [], rects)
+    expect(doc.blocks.map((b) => b.kind)).toEqual(['band', 'para', 'columns'])
+    expect(doc.blocks[0]).toEqual({ kind: 'band', color: 'CA726F', height: 20 })
+    expect(doc.margins.top).toBe(10)
+    expect((doc.blocks[1] as Para).runs[0].color).toBe('CA726F')
+    const cols = doc.blocks[2] as Columns
+    expect(cols.fills).toEqual(['EAEBEC', undefined])
+    expect(cols.cells.map((c) => c.length)).toEqual([10, 10])
+    expect(((cols.cells[0][0] as Para).runs[0]).color).toBe('4F6274')
+    expect(summarize(doc).paragraphs).toBe(21)
+
+    // En el .docx: tabla sin bordes, fondo de la columna, franja sombreada, color y espaciado.
+    const xml = strFromU8(unzipSync(writeDocx({ ...doc, blocks: [...doc.blocks, { kind: 'para', runs: [{ text: 'OPTÓMETRA', bold: false, italic: false, size: 9, family: 'sans', spacing: 3.5 }], align: 'center', heading: 0, bullet: false, indent: 0 }] }))['word/document.xml'])
+    expect(xml).toContain('<w:shd w:val="clear" w:color="auto" w:fill="CA726F"/><w:spacing w:before="0" w:after="0" w:line="400" w:lineRule="exact"/>')
+    expect(xml).toContain('<w:insideV w:val="nil"/>')
+    expect(xml).toContain('<w:shd w:val="clear" w:color="auto" w:fill="EAEBEC"/>')
+    expect(xml).toContain('<w:color w:val="CA726F"/>')
+    expect(xml).toContain('<w:spacing w:val="70"/>')
   })
 })

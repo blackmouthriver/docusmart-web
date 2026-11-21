@@ -872,7 +872,7 @@ export default {
       short: 'Dokumentu editagarria (.docx)',
       steps: ['Aukeratu PDFa.', 'Sakatu «Bihurtu».', 'Ireki .docx fitxategia Word, Google Docs edo LibreOffice-n eta berrikusi emaitza.'],
       faq: [
-        ['PDFaren berdin-berdina geratzen da?', 'Oso antzekoa, baina ez berdin-berdina: PDF batek ez ditu paragrafoak eta taulak gordetzen, letrak eta haien kokapena baizik; beraz, DocuSmartek berreraikitzen ditu. Izenburuak, letra lodia, etzana, tamainak, zerrendak, taula sinpleak eta irudiak gordetzen ditu; diseinu konplexuak (zutabeak, testu-koadroak) alda daitezke.'],
+        ['PDFaren berdin-berdina geratzen da?', 'Oso antzekoa, baina ez berdina: PDF batek ez ditu paragrafoak ez taulak gordetzen, letrak eta haien posizioa baizik, beraz DocuSmart-ek berreraikitzen ditu. Izenburuak, letra lodia, etzana, tamainak, koloreak, zerrendak, taula sinpleak, irudiak eta bi zutabeko diseinuak (curriculumak bezala) gordetzen ditu, zutabe bakoitzaren atzeko planoarekin eta kolore-zerrendekin. Testu-koadroak eta forma apaingarri konplexuak alda daitezke.'],
         ['PDF eskaneatuekin dabil?', 'Eskaneatu bat testurik gabeko irudi bat da. Pasa lehenik OCR tresnatik «PDF bilagarria» markatuta eta bihurtu PDF hori.'],
         ['Zein programarekin ireki dezaket fitxategia?', 'Microsoft Word, Google Docs, LibreOffice, Pages edo WPSrekin: .docx estandarra da.'],
         ['Nire fitxategiak internetera igotzen dira?', 'Ez. Bihurketa zure nabigatzailean egiten da.'],

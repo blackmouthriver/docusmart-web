@@ -192,7 +192,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
           track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
           return
         }
-        const doc = buildDocument(ex.pages, ex.texts, ex.images)
+        const doc = buildDocument(ex.pages, ex.texts, ex.images, ex.rects)
         setOut({ result: resultFile(writeDocx(doc), `${baseName(files[0].name)}.docx`, DOCX) })
         setWordInfo(summarize(doc))
       } else if (conv.id === 'pdf-excel') {

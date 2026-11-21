@@ -3,7 +3,7 @@ import { Buffer } from 'node:buffer'
 import { readFile } from 'node:fs/promises'
 import type { Page } from '@playwright/test'
 import { strFromU8, unzipSync } from 'fflate'
-import { PDFDocument, PDFName } from 'pdf-lib'
+import { PDFDocument, PDFName, StandardFonts, rgb } from 'pdf-lib'
 import { expect, makePdf, test } from './helpers'
 import { writeXlsx } from '../../src/features/convert/core/pdfExcel'
 import { writeDocx } from '../../src/features/convert/core/pdfWord'
@@ -17,6 +17,34 @@ async function convert(page: Page, file: { name: string; mimeType: string; buffe
   const d = await wait
   return { name: d.suggestedFilename(), bytes: new Uint8Array(await readFile((await d.path())!)) }
 }
+
+test('PDF a Word: columnas, fondo de la columna, franja y colores (hoja de vida)', async ({ page }) => {
+  await page.goto('/pdf-a-word')
+  const pdf = await PDFDocument.create()
+  const font = await pdf.embedFont(StandardFonts.Helvetica)
+  const bold = await pdf.embedFont(StandardFonts.HelveticaBold)
+  const p = pdf.addPage([595, 842])
+  const top = (y: number) => 842 - y
+  p.drawRectangle({ x: 20, y: top(30), width: 555, height: 20, color: rgb(0.79, 0.45, 0.44) })
+  p.drawRectangle({ x: 0, y: top(800), width: 220, height: 620, color: rgb(0.92, 0.92, 0.93) })
+  p.drawText('ANA MARIA PEREZ', { x: 150, y: top(110), size: 28, font: bold, color: rgb(0.79, 0.45, 0.44) })
+  for (let i = 0; i < 10; i++) p.drawText(`Dato personal numero ${i + 1}`, { x: 30, y: top(220 + i * 40), size: 10, font })
+  for (let i = 0; i < 10; i++) p.drawText(`Experiencia profesional en la empresa ${i + 1}`, { x: 240, y: top(220 + i * 40), size: 10, font })
+  const out = await convert(page, { name: 'hoja.pdf', mimeType: 'application/pdf', buffer: Buffer.from(await pdf.save()) })
+  expect(out.name).toBe('hoja.docx')
+  const xml = strFromU8(unzipSync(out.bytes)['word/document.xml'])
+  // Columnas: tabla sin bordes, con el gris de la columna lateral de fondo.
+  expect(xml).toContain('<w:insideV w:val="nil"/>')
+  expect(xml).toContain('<w:shd w:val="clear" w:color="auto" w:fill="EBEBED"/>')
+  // Franja de color y nombre en el mismo color.
+  expect(xml).toMatch(/<w:shd w:val="clear" w:color="auto" w:fill="C9[0-9A-F]{4}"\/><w:spacing/)
+  expect(xml).toMatch(/<w:color w:val="C9[0-9A-F]{4}"\/>/)
+  // Cada columna en su celda: lo de la izquierda no se mezcla con lo de la derecha.
+  const cells = xml.split('<w:tc>').slice(1)
+  expect(cells[0]).toContain('Dato personal numero 10')
+  expect(cells[0]).not.toContain('Experiencia')
+  expect(cells[1]).toContain('Experiencia profesional en la empresa 10')
+})
 
 test('Word a PDF: tamaño carta, títulos, viñetas, tabla y otros alfabetos (W-137)', async ({ page }) => {
   await page.goto('/word-a-pdf')

@@ -867,7 +867,7 @@ export default {
       short: 'Documento editável (.docx)',
       steps: ['Escolha o PDF.', 'Toque em "Converter".', 'Abra o .docx no Word, Google Docs ou LibreOffice e confira o resultado.'],
       faq: [
-        ['Fica idêntico ao PDF?', 'Muito parecido, mas não idêntico: um PDF não guarda parágrafos nem tabelas, só letras com sua posição, então o DocuSmart os reconstrói. Mantém títulos, negrito, itálico, tamanhos, listas, tabelas simples e imagens; layouts complexos (colunas, caixas de texto) podem variar.'],
+        ['Fica idêntico ao PDF?', 'Muito parecido, mas não idêntico: um PDF não guarda parágrafos nem tabelas, só letras com sua posição, então o DocuSmart os reconstrói. Mantém títulos, negrito, itálico, tamanhos, cores, listas, tabelas simples, imagens e layouts em duas colunas (como currículos), com o fundo de cada coluna e as faixas coloridas. Caixas de texto e formas decorativas complexas podem variar.'],
         ['Funciona com PDF digitalizados?', 'Uma digitalização é uma imagem sem texto. Passe-a primeiro pela ferramenta de OCR marcando "PDF pesquisável" e converta esse PDF.'],
         ['Com que programas abro o arquivo?', 'Com Microsoft Word, Google Docs, LibreOffice, Pages ou WPS: é um .docx padrão.'],
         ['Meus arquivos são enviados à internet?', 'Não. A conversão é feita dentro do seu navegador.'],
