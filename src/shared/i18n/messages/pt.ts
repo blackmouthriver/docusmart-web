@@ -1031,6 +1031,7 @@ const pt: Messages = {
   'libErr.archNoOutput': "O arquivo compactado não foi gerado.",
   'libErr.archInvalid': "O arquivo não é um compactado válido ou está danificado.",
   'libErr.archExtract': "Não foi possível extrair o arquivo: pode estar danificado.",
+  'libErr.archTooBig': "O conteúdo extraído seria grande demais ({size}, {n} arquivos) para processar no navegador.",
   'libErr.officeDocx': "Só é possível converter documentos .docx. Se você tem um .doc antigo, abra-o no Word e salve como .docx.",
   'libErr.officeXlsx': "Só é possível converter pastas de trabalho .xlsx. Se você tem um .xls antigo, abra-o no Excel e salve como .xlsx.",
   'libErr.officeEmptyDoc': "O documento não tem conteúdo para converter.",

@@ -200,14 +200,41 @@ export async function listArchive(name: string, data: Uint8Array, password = '')
     }))
 }
 
-function collect(fs: SevenZipFS, dir: string, prefix = ''): ArchiveInput[] {
+/** Topes de lo que se descomprime en el navegador (todo queda en memoria). */
+export const MAX_EXTRACT_BYTES = 1536 * 1024 * 1024
+export const MAX_EXTRACT_FILES = 20_000
+
+export class ArchiveTooBigError extends ArchiveError {
+  constructor(
+    readonly bytes: number,
+    readonly files: number,
+  ) {
+    super('Archive too big')
+    this.name = 'ArchiveTooBigError'
+  }
+}
+
+/** Falla si lo listado (tamaños declarados) no entra en los topes. */
+export function checkExtractLimits(entries: readonly Pick<ArchiveEntry, 'size' | 'isDir'>[], maxBytes = MAX_EXTRACT_BYTES, maxFiles = MAX_EXTRACT_FILES) {
+  const files = entries.filter((e) => !e.isDir)
+  const bytes = files.reduce((t, e) => t + (Number.isFinite(e.size) && e.size > 0 ? e.size : 0), 0)
+  if (bytes > maxBytes || files.length > maxFiles) throw new ArchiveTooBigError(bytes, files.length)
+}
+
+function collect(fs: SevenZipFS, dir: string, prefix = '', acc = { bytes: 0, files: 0 }): ArchiveInput[] {
   const out: ArchiveInput[] = []
   for (const name of fs.readdir(dir)) {
     if (name === '.' || name === '..') continue
     const full = `${dir}/${name}`
     const rel = prefix ? `${prefix}/${name}` : name
-    if (fs.isDir(fs.stat(full).mode)) out.push(...collect(fs, full, rel))
-    else out.push({ path: rel, data: fs.readFile(full) })
+    if (fs.isDir(fs.stat(full).mode)) out.push(...collect(fs, full, rel, acc))
+    else {
+      const data = fs.readFile(full)
+      acc.bytes += data.length
+      acc.files++
+      if (acc.bytes > MAX_EXTRACT_BYTES || acc.files > MAX_EXTRACT_FILES) throw new ArchiveTooBigError(acc.bytes, acc.files)
+      out.push({ path: rel, data })
+    }
   }
   return out
 }
@@ -216,7 +243,16 @@ function collect(fs: SevenZipFS, dir: string, prefix = ''): ArchiveInput[] {
  * Extrae todo el contenido. Un .tar.gz/.tgz se abre en dos pasos: si el
  * resultado es un único .tar, también se extrae.
  */
-export async function extractArchive(name: string, data: Uint8Array, password = ''): Promise<ArchiveInput[]> {
+export async function extractArchive(name: string, data: Uint8Array, password = '', depth = 0): Promise<ArchiveInput[]> {
+  // Antes de descomprimir: los tamaños declarados no pueden superar lo que cabe en memoria ("bomba ZIP").
+  let listed: ArchiveEntry[] | null = null
+  try {
+    listed = await listArchive(name, data, password)
+  } catch (e) {
+    if (e instanceof WrongArchivePasswordError) throw e
+    /* sin lista (formato que no la da): se controla al recoger los archivos */
+  }
+  if (listed) checkExtractLimits(listed)
   const messages: string[] = []
   const z = await instance(messages)
   const path = writeArchive(z, name, data)
@@ -227,10 +263,12 @@ export async function extractArchive(name: string, data: Uint8Array, password = 
   let files: ArchiveInput[]
   try {
     files = collect(z.FS, '/x')
-  } catch {
+  } catch (e) {
+    if (e instanceof ArchiveTooBigError) throw e
     files = []
   }
-  if (files.length === 1 && /\.tar$/i.test(files[0].path)) return extractArchive(files[0].path, files[0].data)
+  // .tar.gz: un nivel más (con tope, por si un .tar trae otro .tar adentro una y otra vez).
+  if (files.length === 1 && /\.tar$/i.test(files[0].path) && depth < 2) return extractArchive(files[0].path, files[0].data, '', depth + 1)
   if (files.length === 0 && /ERROR/i.test(text)) throw new ArchiveError(tr('libErr.archExtract'))
   return files
 }

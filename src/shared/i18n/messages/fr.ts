@@ -1031,6 +1031,7 @@ const fr: Messages = {
   'libErr.archNoOutput': "L'archive n'a pas été générée.",
   'libErr.archInvalid': "Le fichier n'est pas une archive valide ou il est endommagé.",
   'libErr.archExtract': "Impossible d'extraire le fichier : il est peut-être endommagé.",
+  'libErr.archTooBig': "Le contenu extrait serait trop volumineux ({size}, {n} fichiers) pour être traité dans le navigateur.",
   'libErr.officeDocx': "Seuls les documents .docx peuvent être convertis. Si vous avez un ancien .doc, ouvrez-le dans Word et enregistrez-le en .docx.",
   'libErr.officeXlsx': "Seuls les classeurs .xlsx peuvent être convertis. Si vous avez un ancien .xls, ouvrez-le dans Excel et enregistrez-le en .xlsx.",
   'libErr.officeEmptyDoc': "Le document n'a pas de contenu à convertir.",

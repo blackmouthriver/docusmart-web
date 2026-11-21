@@ -1031,6 +1031,7 @@ const zh: Messages = {
   'libErr.archNoOutput': "未生成压缩文件。",
   'libErr.archInvalid': "该文件不是有效的压缩文件或已损坏。",
   'libErr.archExtract': "无法解压文件：可能已损坏。",
+  'libErr.archTooBig': "解压后的内容过大（{size}，{n} 个文件），无法在浏览器中处理。",
   'libErr.officeDocx': "只能转换 .docx 文档。如果是旧的 .doc，请在 Word 中打开并另存为 .docx。",
   'libErr.officeXlsx': "只能转换 .xlsx 工作簿。如果是旧的 .xls，请在 Excel 中打开并另存为 .xlsx。",
   'libErr.officeEmptyDoc': "文档中没有可转换的内容。",

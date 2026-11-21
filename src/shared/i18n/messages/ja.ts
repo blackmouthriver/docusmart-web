@@ -1031,6 +1031,7 @@ const ja: Messages = {
   'libErr.archNoOutput': "圧縮ファイルが生成されませんでした。",
   'libErr.archInvalid': "有効な圧縮ファイルではないか、破損しています。",
   'libErr.archExtract': "ファイルを展開できませんでした。破損している可能性があります。",
+  'libErr.archTooBig': "展開後のデータが大きすぎるため（{size}、{n} ファイル）、ブラウザーで処理できません。",
   'libErr.officeDocx': "変換できるのは.docx書類だけです。古い.docの場合は、Wordで開いて.docxとして保存してください。",
   'libErr.officeXlsx': "変換できるのは.xlsxブックだけです。古い.xlsの場合は、Excelで開いて.xlsxとして保存してください。",
   'libErr.officeEmptyDoc': "書類に変換する内容がありません。",

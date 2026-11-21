@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { go, useApp } from '../../../app/state'
 import { Icon } from '../../../shared/ui/Icon'
 import { DropZone, Notice, Progress, errorMessage } from '../../../shared/ui/ui'
-import { kindOf } from '../../../shared/files/files'
+import { isSvgFile, kindOf, safeMimeType, svgDataUrl } from '../../../shared/files/files'
 import { closePdf, openPdf, renderPage } from '../../../shared/pdf/pdf'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -114,7 +114,20 @@ function PdfView({ file }: { file: File }) {
 function ImageView({ file }: { file: File }) {
   const [url, setUrl] = useState<string>()
   useEffect(() => {
-    const u = URL.createObjectURL(file)
+    if (isSvgFile(file)) {
+      // SVG: como data: para que sus scripts nunca corran con el origen del sitio.
+      let alive = true
+      setUrl(undefined)
+      svgDataUrl(file).then(
+        (u) => alive && setUrl(u),
+        () => alive && setUrl(undefined),
+      )
+      return () => {
+        alive = false
+      }
+    }
+    // Resto: re-empaquetado con un tipo de imagen conocido (como en DocPreview).
+    const u = URL.createObjectURL(new Blob([file], { type: safeMimeType(file.type).startsWith('image/') ? file.type : 'image/png' }))
     setUrl(u)
     return () => URL.revokeObjectURL(u)
   }, [file])

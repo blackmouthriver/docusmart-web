@@ -307,6 +307,7 @@ Lo que la gente busca y DocuSmart todavía no resuelve. Todo debe seguir siendo 
 | W-132 | **Audio y video:** convertir (MP4↔MP3, extraer audio), recortar y comprimir con ffmpeg.wasm en el navegador. Revisar el peso del wasm (~30 MB, se descarga solo al usarla), la licencia LGPL y la memoria en celulares | 🤖 | Pendiente |
 | W-133 | **Audio a texto y dictado:** transcribir notas de voz y reuniones con Whisper en el navegador (modelo que se descarga una vez y queda en caché, como Quitar fondo); salida TXT, DOCX o subtítulos SRT | 🤖 | Pendiente |
 | W-134 | **Educación:** ampliar Modo Estudio con tarjetas de repaso y cuestionarios a partir de un PDF o de las notas, y formatos de citas (APA, IEEE) | 🤖 | Pendiente |
+| W-135 | **Seguridad: mejoras menores de la prueba de intrusión** (2026-11-20). Visor: los SVG se muestran como `data:` y el resto de imágenes re-empaquetadas con tipo seguro; descompresión con topes (1,5 GB y 20.000 archivos, revisados antes con la lista y al recoger) y máximo 2 niveles de .tar anidados. Sin cambios a propósito: historial de QR (guarda el contenido para volver a dibujarlo, igual que la app; la vista previa ya oculta la clave Wi-Fi) y `allow-duplicates` de la CSP (lo usan GTM/AdSense para la política `goog#html`) | 🤖 | ✅ Hecho (2026-11-20) |
 
 ## Guías con imágenes de cada herramienta (pedido del usuario, 2026-11-20)
 

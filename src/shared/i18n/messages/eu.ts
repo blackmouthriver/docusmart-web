@@ -1031,6 +1031,7 @@ const eu: Messages = {
   'libErr.archNoOutput': "Ez da fitxategi konprimitua sortu.",
   'libErr.archInvalid': "Fitxategia ez da konprimitu baliozkoa edo hondatuta dago.",
   'libErr.archExtract': "Ezin izan da fitxategia atera: hondatuta egon daiteke.",
+  'libErr.archTooBig': "Ateratako edukia handiegia litzateke ({size}, {n} fitxategi) nabigatzailean prozesatzeko.",
   'libErr.officeDocx': ".docx dokumentuak soilik bihur daitezke. .doc zahar bat baduzu, ireki Word-en eta gorde .docx gisa.",
   'libErr.officeXlsx': ".xlsx liburuak soilik bihur daitezke. .xls zahar bat baduzu, ireki Excel-en eta gorde .xlsx gisa.",
   'libErr.officeEmptyDoc': "Dokumentuak ez du bihurtzeko edukirik.",

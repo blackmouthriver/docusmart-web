@@ -1031,6 +1031,7 @@ const de: Messages = {
   'libErr.archNoOutput': "Das Archiv wurde nicht erzeugt.",
   'libErr.archInvalid': "Die Datei ist kein gültiges Archiv oder beschädigt.",
   'libErr.archExtract': "Die Datei konnte nicht entpackt werden: Sie ist möglicherweise beschädigt.",
+  'libErr.archTooBig': "Der entpackte Inhalt wäre zu groß ({size}, {n} Dateien), um ihn im Browser zu verarbeiten.",
   'libErr.officeDocx': "Nur .docx-Dokumente können konvertiert werden. Wenn du eine alte .doc hast, öffne sie in Word und speichere sie als .docx.",
   'libErr.officeXlsx': "Nur .xlsx-Arbeitsmappen können konvertiert werden. Wenn du eine alte .xls hast, öffne sie in Excel und speichere sie als .xlsx.",
   'libErr.officeEmptyDoc': "Das Dokument hat keinen Inhalt zum Konvertieren.",

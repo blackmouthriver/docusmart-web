@@ -1031,6 +1031,7 @@ const ko: Messages = {
   'libErr.archNoOutput': "압축 파일이 생성되지 않았습니다.",
   'libErr.archInvalid': "올바른 압축 파일이 아니거나 손상되었습니다.",
   'libErr.archExtract': "파일을 추출할 수 없습니다. 손상되었을 수 있습니다.",
+  'libErr.archTooBig': "압축을 푼 내용이 너무 커서({size}, 파일 {n}개) 브라우저에서 처리할 수 없습니다.",
   'libErr.officeDocx': ".docx 문서만 변환할 수 있습니다. 오래된 .doc 파일이라면 Word에서 열어 .docx로 저장하세요.",
   'libErr.officeXlsx': ".xlsx 통합 문서만 변환할 수 있습니다. 오래된 .xls 파일이라면 Excel에서 열어 .xlsx로 저장하세요.",
   'libErr.officeEmptyDoc': "문서에 변환할 내용이 없습니다.",
