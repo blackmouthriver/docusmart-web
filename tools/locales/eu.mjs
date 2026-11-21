@@ -758,6 +758,23 @@ export default {
         ["Nire datuak internetera igotzen dira?", "Ez. Bihurketa zure nabigatzailean egiten da."],
       ],
     },
+    'audio-a-texto': {
+      slug: "audioa-testura",
+      title: "Audioa testura doan: transkribatu ahots-oharrak eta bideoak | DocuSmart",
+      description: "Transkribatu ahots-oharrak, bilerak, klaseak eta bideoak testura, eta sortu SRT azpitituluak audioa igo gabe: ahots-ezagutza zure nabigatzailean doa.",
+      h1: "Audioa testura (transkripzioa)",
+      howTo: "Nola bihurtu audio bat testu 3 urratsetan",
+      lead: "Bihurtu testu WhatsAppeko ahots-ohar bat, bilera bat, elkarrizketa bat edo bideo baten audioa, zure nabigatzailean bertan eta audioa zure gailutik atera gabe.",
+      short: "Ahots-oharrak eta bideoak testura",
+      steps: ["Aukeratu audioa edo bideoa, edo sakatu «Mikrofonoarekin grabatu» diktatzeko.", "Aukeratu hizkuntza (edo utzi berez hautematen) eta sakatu «Transkribatu».", "Berrikusi testua eta kopiatu edo deskargatu .txt edo Word formatuan, edo azpitituluak .srt eta .vtt formatuan."],
+      faq: [
+        ["Nola funtzionatzen du audioa igo gabe?", "Whisper erabiltzen du, kode irekiko ahots-ezagutzako eredu bat, zure nabigatzailean exekutatzen dena. Lehen aldian eredua (77 MB inguru) deskargatu eta gordetzen da; ondoren konexiorik gabe ere funtzionatzen du."],
+        ["WhatsAppeko ahots-oharrekin balio du?", "Bai. Gorde ahots-oharra (OGG edo OPUS) edo partekatu nabigatzailearekin eta aukeratu hemen. MP3, M4A, WAV eta MP4, MOV edo WebM bideoen audioarekin ere funtzionatzen du."],
+        ["Zein zehatza da?", "Ahots argiarekin eta zarata gutxirekin, oso ona. Zarata handiarekin, hainbat pertsona aldi berean hitz egiten edo azentu nabarmenekin akats gehiago egiten ditu; horregatik testua zuzen dezakezu deskargatu aurretik."],
+        ["Zenbat denbora behar du?", "Gailuaren araberakoa da: ordenagailu batean audio bat iraupena baino denbora gutxiagoan transkribatu ohi da; mugikor batean gehiago behar dezake. Testua aurrera doan heinean ikus dezakezu."],
+        ["Bideo baterako azpitituluak sor ditzaket?", "Bai. Deskargatu .srt edo .vtt fitxategia esaldi bakoitzaren denborekin eta igo YouTubera, zure bideo-editorera edo zure erreproduzigailura."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',

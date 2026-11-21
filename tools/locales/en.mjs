@@ -753,6 +753,23 @@ export default {
         ["Is my data uploaded?", "No. The conversion happens in your browser."],
       ],
     },
+    'audio-a-texto': {
+      slug: "audio-to-text",
+      title: "Audio to text free: transcribe voice notes and videos | DocuSmart",
+      description: "Transcribe voice notes, meetings, lectures and videos to text, and create SRT subtitles, without uploading the audio: speech recognition runs in your browser.",
+      h1: "Audio to text (transcription)",
+      howTo: "How to turn audio into text in 3 steps",
+      lead: "Turn a WhatsApp voice note, a meeting, an interview or a video's audio into text, right in your browser and without the audio leaving your device.",
+      short: "Voice notes and videos to text",
+      steps: ["Choose the audio or video, or press \"Record with the microphone\" to dictate.", "Pick the language (or let it be detected) and press \"Transcribe\".", "Review the text and copy it or download it as .txt or Word, or the subtitles as .srt and .vtt."],
+      faq: [
+        ["How does it work without uploading the audio?", "It uses Whisper, an open-source speech recognition model, running in your browser. The first time, the model (about 77 MB) is downloaded and saved; after that it even works offline."],
+        ["Does it work with WhatsApp voice notes?", "Yes. Save the voice note (OGG or OPUS) or share it to the browser and choose it here. It also works with MP3, M4A, WAV and the audio of MP4, MOV or WebM videos."],
+        ["How accurate is it?", "With clear speech and little noise, very good. With lots of noise, several people talking at once or strong accents it makes more mistakes, which is why you can fix the text before downloading it."],
+        ["How long does it take?", "It depends on the device: on a computer a recording is usually transcribed in less time than it lasts; on a phone it can take longer. You can watch the text as it goes."],
+        ["Can I create subtitles for a video?", "Yes. Download the .srt or .vtt file with each sentence's timing and upload it to YouTube, your video editor or your player."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

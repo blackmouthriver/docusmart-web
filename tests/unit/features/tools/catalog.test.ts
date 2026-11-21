@@ -44,8 +44,8 @@ describe('catálogo de la app', () => {
     expect(n.organizar).toBe(5)
     expect(n.qr).toBe(2)
     expect(n.documentos).toBe(2)
-    expect(n.multimedia).toBe(4)
-    expect(n.texto).toBe(3)
+    expect(n.multimedia).toBe(5)
+    expect(n.texto).toBe(4)
     expect(n.imagen).toBe(19)
   })
   it('marca las herramientas que procesan varios archivos y existe Renombrar archivos (W-111)', () => {

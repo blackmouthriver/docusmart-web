@@ -753,6 +753,23 @@ export default {
         ["I miei dati vengono caricati su internet?", "No. La conversione avviene nel tuo browser."],
       ],
     },
+    'audio-a-texto': {
+      slug: "audio-in-testo",
+      title: "Audio in testo gratis: trascrivi messaggi vocali e video | DocuSmart",
+      description: "Trascrivi in testo messaggi vocali, riunioni, lezioni e video, e crea sottotitoli SRT senza caricare l'audio: il riconoscimento vocale gira nel browser.",
+      h1: "Audio in testo (trascrizione)",
+      howTo: "Come trasformare un audio in testo in 3 passaggi",
+      lead: "Trasforma in testo un vocale di WhatsApp, una riunione, un'intervista o l'audio di un video, direttamente nel tuo browser e senza che l'audio lasci il tuo dispositivo.",
+      short: "Vocali e video in testo",
+      steps: ["Scegli l'audio o il video, oppure premi \"Registra con il microfono\" per dettare.", "Scegli la lingua (o lascia che venga rilevata da sola) e premi \"Trascrivi\".", "Controlla il testo e copialo o scaricalo in .txt o Word, oppure scarica i sottotitoli in .srt e .vtt."],
+      faq: [
+        ["Come funziona senza caricare l'audio?", "Usa Whisper, un modello di riconoscimento vocale open source, che gira nel tuo browser. La prima volta il modello (circa 77 MB) viene scaricato e salvato; dopo funziona anche offline."],
+        ["Funziona con i vocali di WhatsApp?", "Sì. Salva il vocale (OGG o OPUS) o condividilo con il browser e sceglilo qui. Funziona anche con MP3, M4A, WAV e con l'audio dei video MP4, MOV o WebM."],
+        ["Quanto è preciso?", "Con una voce chiara e poco rumore, molto. Con molto rumore, più persone che parlano insieme o accenti marcati commette più errori; per questo puoi correggere il testo prima di scaricarlo."],
+        ["Quanto tempo ci vuole?", "Dipende dal dispositivo: su un computer un audio di solito viene trascritto in meno tempo di quanto dura; su uno smartphone può volerci di più. Puoi vedere il testo mentre avanza."],
+        ["Posso creare i sottotitoli per un video?", "Sì. Scarica il file .srt o .vtt con i tempi di ogni frase e caricalo su YouTube, nel tuo editor video o nel tuo lettore."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',

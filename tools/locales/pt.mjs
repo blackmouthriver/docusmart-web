@@ -753,6 +753,23 @@ export default {
         ["Meus dados são enviados para a internet?", "Não. A conversão acontece no seu navegador."],
       ],
     },
+    'audio-a-texto': {
+      slug: "audio-para-texto",
+      title: "Áudio para texto grátis: transcrever áudios e vídeos | DocuSmart",
+      description: "Transcreva áudios, reuniões, aulas e vídeos em texto e crie legendas SRT sem enviar o áudio: o reconhecimento de voz roda direto no seu navegador.",
+      h1: "Áudio para texto (transcrição)",
+      howTo: "Como passar um áudio para texto em 3 passos",
+      lead: "Transforme em texto um áudio do WhatsApp, uma reunião, uma entrevista ou o som de um vídeo, no seu próprio navegador e sem que o áudio saia do seu dispositivo.",
+      short: "Áudios e vídeos para texto",
+      steps: ["Escolha o áudio ou o vídeo, ou toque em \"Gravar com o microfone\" para ditar.", "Escolha o idioma (ou deixe que seja detectado sozinho) e toque em \"Transcrever\".", "Revise o texto e copie-o ou baixe-o em .txt ou Word, ou as legendas em .srt e .vtt."],
+      faq: [
+        ["Como funciona sem enviar o áudio?", "Ele usa o Whisper, um modelo de reconhecimento de voz de código aberto, que roda no seu navegador. Na primeira vez, o modelo (cerca de 77 MB) é baixado e fica salvo; depois funciona até sem internet."],
+        ["Funciona com áudios do WhatsApp?", "Sim. Salve o áudio (OGG ou OPUS) ou compartilhe-o com o navegador e escolha-o aqui. Também funciona com MP3, M4A, WAV e com o áudio de vídeos MP4, MOV ou WebM."],
+        ["Qual é a precisão?", "Com voz clara e pouco ruído, muito boa. Com muito ruído, várias pessoas falando ao mesmo tempo ou sotaques fortes, ele erra mais; por isso você pode corrigir o texto antes de baixá-lo."],
+        ["Quanto tempo demora?", "Depende do dispositivo: em um computador, um áudio costuma ser transcrito em menos tempo do que dura; em um celular pode demorar mais. Você pode ver o texto enquanto avança."],
+        ["Posso criar legendas para um vídeo?", "Sim. Baixe o arquivo .srt ou .vtt com os tempos de cada frase e envie-o ao YouTube, ao seu editor de vídeo ou ao seu player."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',

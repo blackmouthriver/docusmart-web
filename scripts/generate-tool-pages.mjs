@@ -64,7 +64,7 @@ function toolIcon({ kind, id }) {
   if (kind === 'text') return { contar: 'text', comparar: 'compare', contrasena: 'lock' }[id] ?? 'text'
   if (kind === 'meta') return 'eraser'
   if (kind === 'hash') return 'fingerprint'
-  if (kind === 'media') return { audio: 'music', convertir: 'convert', recortar: 'scissors', comprimir: 'compress' }[id] ?? 'video'
+  if (kind === 'media') return { audio: 'music', convertir: 'convert', recortar: 'scissors', comprimir: 'compress', texto: 'volume' }[id] ?? 'video'
   if (kind === 'doc') return id === 'cv' ? 'user' : 'file'
   return id === 'leer' ? 'camera' : 'qr'
 }

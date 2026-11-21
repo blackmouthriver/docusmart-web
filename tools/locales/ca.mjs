@@ -753,6 +753,23 @@ export default {
         ["Les meves dades es pugen a internet?", "No. La conversió es fa dins del teu navegador."],
       ],
     },
+    'audio-a-texto': {
+      slug: "audio-a-text",
+      title: "Àudio a text gratis: transcriu notes de veu i vídeos | DocuSmart",
+      description: "Transcriu a text notes de veu, reunions, classes i vídeos, i crea subtítols SRT sense pujar l'àudio: el reconeixement de veu funciona al teu navegador.",
+      h1: "Àudio a text (transcripció)",
+      howTo: "Com passar un àudio a text en 3 passos",
+      lead: "Converteix en text una nota de veu de WhatsApp, una reunió, una entrevista o l'àudio d'un vídeo, al teu propi navegador i sense que l'àudio surti del teu dispositiu.",
+      short: "Notes de veu i vídeos a text",
+      steps: ["Tria l'àudio o el vídeo, o prem \"Enregistra amb el micròfon\" per dictar.", "Tria l'idioma (o deixa que es detecti sol) i prem \"Transcriu\".", "Revisa el text i copia'l o baixa'l en .txt o Word, o els subtítols en .srt i .vtt."],
+      faq: [
+        ["Com funciona sense pujar l'àudio?", "Fa servir Whisper, un model de reconeixement de veu de codi obert, que funciona al teu navegador. La primera vegada es baixa el model (uns 77 MB) i queda desat; després funciona fins i tot sense connexió."],
+        ["Funciona amb notes de veu de WhatsApp?", "Sí. Desa la nota de veu (OGG o OPUS) o comparteix-la amb el navegador i tria-la aquí. També funciona amb MP3, M4A, WAV i amb l'àudio de vídeos MP4, MOV o WebM."],
+        ["Com n'és de precís?", "Amb una veu clara i poc soroll, molt. Amb molt de soroll, diverses persones parlant alhora o accents marcats, s'equivoca més; per això pots corregir el text abans de baixar-lo."],
+        ["Quant triga?", "Depèn del dispositiu: en un ordinador, un àudio sol transcriure's en menys temps del que dura; en un mòbil pot trigar més. Pots veure el text mentre avança."],
+        ["Puc crear subtítols per a un vídeo?", "Sí. Baixa el fitxer .srt o .vtt amb els temps de cada frase i puja'l a YouTube, al teu editor de vídeo o al teu reproductor."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',

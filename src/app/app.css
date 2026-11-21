@@ -639,6 +639,9 @@ p { margin: 0; }
 .cv-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 10px; min-width: 0; }
 .cv-wide { grid-column: 1 / -1; }
 .cv-entry-actions { display: flex; flex-direction: column; gap: 2px; }
+.stt-live { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 6px; max-height: 50vh; overflow: auto; }
+.stt-live li { line-height: 1.5; }
+.stt-live .faint { font-variant-numeric: tabular-nums; margin-right: 6px; }
 .txt-area { min-height: 200px; font-size: 15px; line-height: 1.55; }
 .txt-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin: 0; }
 .txt-stats > div { background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }

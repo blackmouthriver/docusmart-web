@@ -480,6 +480,19 @@
     "ko": "password-generator",
     "zh": "password-generator"
   },
+  "audio-a-texto": {
+    "en": "audio-to-text",
+    "pt": "audio-para-texto",
+    "fr": "audio-en-texte",
+    "it": "audio-in-testo",
+    "de": "audio-zu-text",
+    "ca": "audio-a-text",
+    "eu": "audioa-testura",
+    "ru": "audio-to-text",
+    "ja": "audio-to-text",
+    "ko": "audio-to-text",
+    "zh": "audio-to-text"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

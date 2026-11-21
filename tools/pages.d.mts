@@ -4,7 +4,7 @@ export type ToolSpec =
   | { kind: 'conv'; id: 'img-pdf' | 'img-jpg' | 'img-png' | 'img-webp' | 'img-bmp' | 'pdf-img' | 'pdf-txt' | 'pdf-word' | 'pdf-excel' | 'word-pdf' | 'excel-pdf' | 'ppt-pdf' | 'pdf-ppt' | 'csv-excel' | 'excel-csv' }
   | { kind: 'qr'; id?: 'leer' }
   | { kind: 'doc'; id: 'cobro' | 'cv' }
-  | { kind: 'media'; id: 'audio' | 'convertir' | 'recortar' | 'comprimir' }
+  | { kind: 'media'; id: 'audio' | 'convertir' | 'recortar' | 'comprimir' | 'texto' }
   | { kind: 'meta'; id?: undefined }
   | { kind: 'text'; id: 'contar' | 'comparar' | 'contrasena' }
   | { kind: 'archive'; id: 'crear' | 'extraer' }
