@@ -84,7 +84,7 @@ export function PdfTools({ sub }: { sub?: string }) {
           <BackButton label={tr('pdf.back')} onClick={() => go('pdf')} />
           <h2 style={{ fontSize: 26, margin: '6px 0 4px' }}>{toolName(tool.id)}</h2>
           <p className="muted" style={{ marginBottom: 16 }}>{toolDesc(tool.id)}</p>
-          {Own ? <Own /> : <SingleFileTool toolId={tool.id} />}
+          {Own ? <Own /> : <SingleFileTool key={tool.id} toolId={tool.id} />}
         </>
       ) : (
         <>

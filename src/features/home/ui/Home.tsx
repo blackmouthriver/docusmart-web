@@ -51,7 +51,7 @@ export function Home() {
 
   return (
     <>
-      <HeroCard title={t('home.title')} subtitle={t('home.subtitle')} />
+      <HeroCard title={t('home.title')} subtitle={t('home.subtitle')} privacySeal={false} />
 
       <div className="row" style={{ marginTop: 16 }}>
         <button type="button" className="btn btn-primary" style={{ flex: 1 }} onClick={() => input.current?.click()}>
