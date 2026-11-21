@@ -12,6 +12,7 @@ import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { clampPlacement, defaultPlacement, opaqueBounds, removeLightBackground, signPdf, type Placement } from '../core/pdfSign'
 import { track } from '../../../shared/platform/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
+import { DigitalSignPanel, type DigitalSign } from './DigitalSignPanel'
 
 export type Signature = { url: string; png: Uint8Array; aspect: number }
 type Mode = 'draw' | 'type' | 'image'
@@ -32,6 +33,7 @@ export function SignTool() {
   const [placements, setPlacements] = useState<Placement[]>([])
   const [selected, setSelected] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
+  const [digital, setDigital] = useState<DigitalSign>(null)
 
   useEffect(() => {
     setPlacements([])
@@ -69,8 +71,14 @@ export function SignTool() {
     setBusy(true)
     setError(null)
     try {
-      setOutput(resultFile(await signPdf(await file.arrayBuffer(), signature.png, placements), `${baseName(file.name)}-${tr('file.signed')}.pdf`, 'application/pdf'))
-      track('pdf_tool_used', { tool_name: 'sign' })
+      let pdf = await signPdf(await file.arrayBuffer(), signature.png, placements)
+      // Con certificado: la firma digital va al final, en el lugar de la primera firma visible.
+      if (digital) {
+        const { signWithCertificate } = await import('../core/pdfDigitalSign')
+        pdf = await signWithCertificate(pdf, digital.cert, { reason: digital.reason || undefined, placement: placements[0] })
+      }
+      setOutput(resultFile(pdf, `${baseName(file.name)}-${tr('file.signed')}.pdf`, 'application/pdf'))
+      track('pdf_tool_used', { tool_name: digital ? 'sign_certificate' : 'sign' })
       toast(tr('common.doneReview'))
     } catch (e) {
       setError(errorMessage(e))
@@ -153,7 +161,7 @@ export function SignTool() {
             !error && <p className="faint">{tr('common.preparingPreview')}</p>
           )}
           {error && <Notice kind="error">{error}</Notice>}
-          <Notice kind="plain">{tr('sign.visual')}</Notice>
+          <DigitalSignPanel file={file} onChange={setDigital} disabled={busy} />
           <div className="row row-end">
             <BusyButton busy={busy} disabled={!ready || !placements.length} onClick={save} icon="check">
               {tr('sign.go')}

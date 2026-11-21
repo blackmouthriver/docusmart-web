@@ -258,7 +258,7 @@ export const pages = [
       'Arrástrala a su lugar, ajusta el tamaño (puedes repetirla en todas las páginas) y pulsa "Firmar PDF".',
     ],
     faq: [
-      ['¿Tiene validez legal?', 'Es una firma electrónica simple: la imagen de tu firma sobre el documento, como firmar a mano. Sirve para la mayoría de los trámites cotidianos; cuando se exige una firma digital con certificado, necesitas el servicio de una entidad certificadora.'],
+      ['¿Tiene validez legal?', 'Depende de cómo firmes. La imagen de tu firma es una firma electrónica simple, válida para la mayoría de trámites cotidianos. Si además marcas "Firmar también con mi certificado digital (.p12 o .pfx)", el PDF lleva una firma digital con tu certificado, que Adobe Acrobat y otros lectores verifican; su validez legal depende de la entidad que emitió el certificado.'],
       ['¿Se guarda mi firma en algún lado?', 'No. La firma y el PDF se procesan dentro de tu navegador y no se suben a ningún servidor. Al cerrar la página, la firma se borra.'],
       ['¿Puedo firmar varias páginas?', 'Sí. Agrega la firma en cada página que quieras, o usa "Repetir en todas las páginas" para poner tus iniciales en todo el documento.'],
       ['¿Cómo saco una buena foto de mi firma?', 'Firma con tinta oscura sobre papel blanco y toma la foto con buena luz y sin sombras. DocuSmart quita el fondo blanco automáticamente.'],

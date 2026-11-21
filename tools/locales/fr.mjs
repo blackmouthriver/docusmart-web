@@ -230,7 +230,7 @@ export default {
         'Faites-la glisser à sa place, ajustez la taille (vous pouvez la répéter sur toutes les pages) et appuyez sur « Signer le PDF ».',
       ],
       faq: [
-        ['A-t-elle une valeur légale ?', 'C’est une signature électronique simple : l’image de votre signature sur le document, comme une signature manuscrite. Elle convient à la plupart des démarches courantes ; quand une signature numérique avec certificat est exigée, il faut passer par une autorité de certification.'],
+        ['A-t-elle une valeur légale ?', 'Cela dépend de la façon dont vous signez. L\'image de votre signature est une signature électronique simple, valable pour la plupart des démarches courantes. Si vous cochez aussi « Signer aussi avec mon certificat numérique (.p12 ou .pfx) », le PDF porte une signature numérique avec votre certificat, qu\'Adobe Acrobat et d\'autres lecteurs vérifient ; sa valeur juridique dépend de l\'autorité qui a émis le certificat.'],
         ['Ma signature est-elle enregistrée quelque part ?', 'Non. La signature et le PDF sont traités dans votre navigateur et ne sont envoyés sur aucun serveur. En fermant la page, la signature est effacée.'],
         ['Puis-je signer plusieurs pages ?', 'Oui. Ajoutez la signature sur chaque page voulue, ou utilisez « Répéter sur toutes les pages » pour parapher tout le document.'],
         ['Comment bien photographier ma signature ?', 'Signez à l’encre foncée sur papier blanc et prenez la photo avec une bonne lumière, sans ombre. DocuSmart retire le fond blanc automatiquement.'],

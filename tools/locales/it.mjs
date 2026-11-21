@@ -230,7 +230,7 @@ export default {
         'Trascinala al suo posto, regola la dimensione (puoi ripeterla su tutte le pagine) e premi "Firma PDF".',
       ],
       faq: [
-        ['Ha valore legale?', 'È una firma elettronica semplice: l’immagine della tua firma sul documento, come firmare a mano. Va bene per la maggior parte delle pratiche quotidiane; quando serve una firma digitale con certificato, ti serve il servizio di un ente certificatore.'],
+        ['Ha valore legale?', 'Dipende da come firmi. L\'immagine della tua firma è una firma elettronica semplice, valida per la maggior parte delle pratiche quotidiane. Se selezioni anche "Firma anche con il mio certificato digitale (.p12 o .pfx)", il PDF contiene una firma digitale con il tuo certificato, che Adobe Acrobat e altri lettori verificano; il suo valore legale dipende dall\'ente che ha emesso il certificato.'],
         ['La mia firma viene salvata da qualche parte?', 'No. La firma e il PDF vengono elaborati nel tuo browser e non vengono caricati su nessun server. Chiudendo la pagina, la firma viene cancellata.'],
         ['Posso firmare più pagine?', 'Sì. Aggiungi la firma su ogni pagina che vuoi, oppure usa "Ripeti su tutte le pagine" per siglare tutto il documento.'],
         ['Come faccio una buona foto della mia firma?', 'Firma con inchiostro scuro su carta bianca e scatta la foto con buona luce e senza ombre. DocuSmart toglie lo sfondo bianco da solo.'],

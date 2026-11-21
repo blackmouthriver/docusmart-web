@@ -230,7 +230,7 @@ export default {
         'Arraste-a para o lugar, ajuste o tamanho (você pode repeti-la em todas as páginas) e toque em "Assinar PDF".',
       ],
       faq: [
-        ['Tem validade legal?', 'É uma assinatura eletrônica simples: a imagem da sua assinatura sobre o documento, como assinar à mão. Serve para a maioria dos trâmites do dia a dia; quando se exige uma assinatura digital com certificado, você precisa do serviço de uma autoridade certificadora.'],
+        ['Tem validade legal?', 'Depende de como você assina. A imagem da sua assinatura é uma assinatura eletrônica simples, válida para a maioria dos trâmites do dia a dia. Se você também marcar "Assinar também com meu certificado digital (.p12 ou .pfx)", o PDF leva uma assinatura digital com o seu certificado, que o Adobe Acrobat e outros leitores verificam; sua validade legal depende da entidade que emitiu o certificado.'],
         ['Minha assinatura fica salva em algum lugar?', 'Não. A assinatura e o PDF são processados dentro do seu navegador e não são enviados a nenhum servidor. Ao fechar a página, a assinatura é apagada.'],
         ['Posso assinar várias páginas?', 'Sim. Adicione a assinatura em cada página que quiser, ou use "Repetir em todas as páginas" para colocar suas iniciais no documento inteiro.'],
         ['Como tiro uma boa foto da minha assinatura?', 'Assine com tinta escura em papel branco e tire a foto com boa luz e sem sombras. O DocuSmart remove o fundo branco automaticamente.'],

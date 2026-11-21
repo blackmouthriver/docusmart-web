@@ -230,7 +230,7 @@ export default {
         'Zieh sie an ihren Platz, passe die Größe an (du kannst sie auf allen Seiten wiederholen) und tippe auf „PDF unterschreiben“.',
       ],
       faq: [
-        ['Ist das rechtsgültig?', 'Es ist eine einfache elektronische Signatur: das Bild deiner Unterschrift auf dem Dokument, wie handschriftlich unterschreiben. Für die meisten Alltagsvorgänge reicht das; wird eine qualifizierte Signatur mit Zertifikat verlangt, brauchst du einen Vertrauensdiensteanbieter.'],
+        ['Ist das rechtsgültig?', 'Das hängt davon ab, wie du unterschreibst. Das Bild deiner Unterschrift ist eine einfache elektronische Signatur, die für die meisten alltäglichen Vorgänge reicht. Wenn du zusätzlich „Zusätzlich mit meinem digitalen Zertifikat signieren (.p12 oder .pfx)“ aktivierst, enthält das PDF eine digitale Signatur mit deinem Zertifikat, die Adobe Acrobat und andere Reader prüfen; ihre rechtliche Gültigkeit hängt von der Stelle ab, die das Zertifikat ausgestellt hat.'],
         ['Wird meine Unterschrift irgendwo gespeichert?', 'Nein. Unterschrift und PDF werden in deinem Browser verarbeitet und auf keinen Server hochgeladen. Beim Schließen der Seite wird die Unterschrift gelöscht.'],
         ['Kann ich mehrere Seiten unterschreiben?', 'Ja. Füge die Unterschrift auf jeder gewünschten Seite hinzu oder nutze „Auf allen Seiten wiederholen“, um das ganze Dokument zu paraphieren.'],
         ['Wie mache ich ein gutes Foto meiner Unterschrift?', 'Unterschreibe mit dunkler Tinte auf weißem Papier und fotografiere bei gutem Licht ohne Schatten. DocuSmart entfernt den weißen Hintergrund automatisch.'],
