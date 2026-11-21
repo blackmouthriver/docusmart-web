@@ -156,6 +156,18 @@
     },
     "hoja-de-vida": {
       "app": "evaluar"
+    },
+    "video-a-mp3": {
+      "app": "evaluar"
+    },
+    "convertir-video": {
+      "app": "evaluar"
+    },
+    "recortar-audio-video": {
+      "app": "evaluar"
+    },
+    "comprimir-video": {
+      "app": "evaluar"
     }
   }
 }

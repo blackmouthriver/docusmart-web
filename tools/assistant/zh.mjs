@@ -72,6 +72,10 @@ export default {
     { id: 'agenda', q: ["日程", "日历", "考试提醒", "记下作业截止", "活动", "导出到outlook", "ics文件", "提醒我上课"], a: "在“学习模式”→“日程”中记下考试、作业截止和课程，可设置日期、时间、重复和提醒。日程保存在你的浏览器中，可以导出 .ics 到 Outlook、Google 日历或 iPhone，也可以导入日历中的 .ics。网站提醒会在 DocuSmart 打开时送达。", actions: [['page', 'study']], related: ['estudio', 'notas'] },
     { id: 'cuenta-de-cobro', q: ["账单", "做报价单", "收据", "向客户收款", "账单模板", "报价单pdf", "自由职业者账单"], a: "使用“账单与报价单”：制作带编号、税和代扣、合计和签名的账单、报价单或收据，并下载为 PDF。这不是电子发票，你的数据不会上传。（PDF 中的标题会显示为英文，因为 PDF 标准字体不支持中文。）", actions: [['tool', 'cuenta-de-cobro']] },
     { id: 'hoja-de-vida', q: ["简历", "制作简历", "做简历", "cv", "带照片简历", "简历模板", "简历 word", "resume"], a: "使用“简历”：选择经典（ATS）或带照片模板，填写工作经历、教育、技能和语言，然后下载 PDF 或 Word。还可以保存草稿以后再编辑。不会上传任何内容。", actions: [['tool', 'hoja-de-vida']] },
+    { id: 'video-a-mp3', q: ["视频转mp3", "提取视频音频", "从视频中提取声音", "视频转换mp3", "音频转mp3", "mp4转mp3", "m4a转mp3", "video to mp3"], a: "使用“视频转 MP3”：选择视频或音频、格式（MP3、M4A、WAV 或 OGG）和质量，然后下载。一切都在浏览器中完成，文件不会上传。", actions: [['tool', 'video-a-mp3']] },
+    { id: 'convertir-video', q: ["视频格式转换", "mov转mp4", "webm转mp4", "mkv转mp4", "视频转mp4", "去除视频声音", "convert video"], a: "使用“转换视频”：将视频转换为 MP4 或 WebM，可保留或去除声音。如果编码已兼容，会直接复制，不损失画质。不会上传任何内容。", actions: [['tool', 'convertir-video']] },
+    { id: 'recortar-audio-video', q: ["剪切视频", "视频剪辑", "剪切音频", "剪辑歌曲", "剪切语音消息", "mp3剪切", "trim video"], a: "使用“剪切音频或视频”：输入开始和结束时间（或在播放时标记），以与原文件相同的格式下载需要的部分。不会上传任何内容。", actions: [['tool', 'recortar-audio-video']] },
+    { id: 'comprimir-video', q: ["压缩视频", "减小视频大小", "视频变小", "whatsapp发送视频", "视频压缩在线", "mp4压缩", "compress video"], a: "使用“压缩视频”：选择压缩程度和最大尺寸（1080p、720p 或 480p），下载更小的 MP4。如果没有变小，会保留原文件。不会上传任何内容。", actions: [['tool', 'comprimir-video']] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

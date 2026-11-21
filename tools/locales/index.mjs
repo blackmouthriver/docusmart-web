@@ -48,7 +48,7 @@ export const ES_UI = {
   footConsent: 'Preferencias de analítica',
   os: 'Cualquiera (navegador web)',
   // Categorías y página "Todas las herramientas" (W-76/W-78)
-  cats: { organizar: "Organizar PDF", editar: "Editar y firmar", documentos: "Crear documentos", seguridad: "Seguridad", optimizar: "Optimizar y archivar", convertir: "Convertir", imagen: "Imagen", escanear: "Escanear y OCR", archivos: "Archivos comprimidos", qr: "Códigos QR" },
+  cats: { organizar: "Organizar PDF", editar: "Editar y firmar", documentos: "Crear documentos", seguridad: "Seguridad", optimizar: "Optimizar y archivar", convertir: "Convertir", imagen: "Imagen", multimedia: "Audio y video", escanear: "Escanear y OCR", archivos: "Archivos comprimidos", qr: "Códigos QR" },
   hubSlug: "herramientas",
   hubTitle: "Todas las herramientas gratis: PDF, imagen, QR y más | DocuSmart",
   hubDescription: "Todas las herramientas de DocuSmart por categoría: unir, convertir, firmar y comprimir PDF, editar imágenes, OCR, QR y archivos ZIP. Gratis y sin subir tus archivos.",

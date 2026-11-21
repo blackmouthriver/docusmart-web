@@ -4,10 +4,11 @@ export type ToolSpec =
   | { kind: 'conv'; id: 'img-pdf' | 'img-jpg' | 'img-png' | 'img-webp' | 'img-bmp' | 'pdf-img' | 'pdf-txt' | 'pdf-word' | 'pdf-excel' | 'word-pdf' | 'excel-pdf' }
   | { kind: 'qr'; id?: undefined }
   | { kind: 'doc'; id: 'cobro' | 'cv' }
+  | { kind: 'media'; id: 'audio' | 'convertir' | 'recortar' | 'comprimir' }
   | { kind: 'archive'; id: 'crear' | 'extraer' }
   | { kind: 'img'; id: 'comprimir' | 'redimensionar' | 'recortar' | 'rotar' }
 
-export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'escanear' | 'archivos' | 'qr'
+export type CategoryId = 'organizar' | 'editar' | 'documentos' | 'seguridad' | 'optimizar' | 'convertir' | 'imagen' | 'multimedia' | 'escanear' | 'archivos' | 'qr'
 
 export interface ToolPage {
   slug: string

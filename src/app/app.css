@@ -631,6 +631,9 @@ p { margin: 0; }
 .cv-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 10px; min-width: 0; }
 .cv-wide { grid-column: 1 / -1; }
 .cv-entry-actions { display: flex; flex-direction: column; gap: 2px; }
+.media-player { width: 100%; max-height: 360px; border-radius: 12px; background: #000; }
+audio.media-player { background: transparent; max-height: none; }
+.media-trim { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 10px; align-items: end; }
 .cv-photo img { width: 72px; height: 96px; object-fit: cover; border-radius: 10px; box-shadow: 0 0 0 1px var(--line); }
 @media (max-width: 520px) { .cv-entry { grid-template-columns: 1fr; } .cv-entry-actions { flex-direction: row; justify-content: flex-end; } }
 .bill-meta .field, .bill-taxes .field { flex: 1; min-width: 130px; }
