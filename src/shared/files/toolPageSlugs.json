@@ -337,6 +337,19 @@
     "ko": "invoice-generator",
     "zh": "invoice-generator"
   },
+  "hoja-de-vida": {
+    "en": "resume-builder",
+    "pt": "curriculo",
+    "fr": "creer-cv",
+    "it": "curriculum-vitae",
+    "de": "lebenslauf-erstellen",
+    "ca": "curriculum",
+    "eu": "curriculuma",
+    "ru": "resume-builder",
+    "ja": "resume-builder",
+    "ko": "resume-builder",
+    "zh": "resume-builder"
+  },
   "comprimir-archivos": {
     "en": "zip-files",
     "pt": "compactar-arquivos",

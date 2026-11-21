@@ -153,6 +153,9 @@
     },
     "cuenta-de-cobro": {
       "app": "evaluar"
+    },
+    "hoja-de-vida": {
+      "app": "evaluar"
     }
   }
 }

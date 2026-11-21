@@ -506,6 +506,23 @@ export default {
         ["Mes données et celles de mes clients sont-elles envoyées sur Internet ?", "Non. Le PDF est créé dans votre navigateur : vos données, celles de vos clients et votre signature ne quittent jamais votre appareil."],
       ],
     },
+    'hoja-de-vida': {
+      slug: "creer-cv",
+      title: "Créer un CV gratuit en PDF ou Word, compatible ATS | DocuSmart",
+      description: "Faites votre CV en quelques minutes : modèle classique (ATS) ou avec photo, expérience, formation, compétences et langues, en PDF ou Word. Gratuit, sans inscription.",
+      h1: "Créer un CV en PDF ou Word",
+      howTo: "Comment faire votre CV en 3 étapes",
+      lead: "Créez un CV clair et professionnel, prêt à envoyer aux employeurs ou à déposer sur les sites d'emploi, sans inscription et sans que vos données quittent votre appareil.",
+      short: "Votre CV en PDF ou Word",
+      steps: ["Choisissez le modèle classique (ATS) ou avec photo et saisissez vos informations et votre profil.", "Ajoutez votre expérience, formation, compétences, langues, certifications et références ; réordonnez-les avec les flèches.", "Appuyez sur « Créer le PDF » ou « Créer le Word (.docx) » et téléchargez-le. Enregistrez le brouillon pour le modifier plus tard."],
+      faq: [
+        ["Qu'est-ce qu'un CV compatible ATS ?", "Beaucoup d'entreprises et de sites d'emploi utilisent des logiciels (ATS) qui lisent les CV avant un recruteur. Le modèle classique utilise une colonne, des titres standard et du vrai texte, sans tableaux ni images, pour que ces logiciels le lisent correctement."],
+        ["Faut-il mettre une photo ?", "En France, c'est courant mais facultatif ; sur les sites d'emploi et dans beaucoup de pays, mieux vaut s'en passer. D'où deux modèles : choisissez « Avec photo » seulement si l'employeur la demande."],
+        ["Puis-je le modifier dans Word ?", "Oui. « Créer le Word (.docx) » vous donne un fichier modifiable dans Word, Google Docs ou LibreOffice, avec de vrais titres et des puces."],
+        ["Comment continuer un autre jour ?", "Appuyez sur « Enregistrer le brouillon » : un fichier .json avec votre CV est téléchargé. Plus tard, « Ouvrir un brouillon » le recharge pour continuer."],
+        ["Mes données sont-elles envoyées sur Internet ?", "Non. Tout se fait dans votre navigateur : votre CV, votre photo et vos données ne quittent jamais votre appareil et ne sont stockés sur aucun serveur."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compresser-fichiers',
       title: 'Compresser des fichiers en ZIP ou 7Z en ligne, avec mot de passe | DocuSmart',

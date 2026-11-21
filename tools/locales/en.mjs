@@ -506,6 +506,23 @@ export default {
         ["Are my data and my clients' data uploaded?", "No. The PDF is built inside your browser: your data, your clients' data and your signature never leave your device."],
       ],
     },
+    'hoja-de-vida': {
+      slug: "resume-builder",
+      title: "Free resume builder: PDF or Word, ATS-friendly | DocuSmart",
+      description: "Make your resume in minutes: classic ATS template or with photo, experience, education, skills and languages, as PDF or Word. Free, no sign-up.",
+      h1: "Resume builder (PDF or Word)",
+      howTo: "How to make your resume in 3 steps",
+      lead: "Create a clear, professional resume, ready to send to employers or upload to job sites, without signing up and without your data leaving your device.",
+      short: "Your resume as PDF or Word",
+      steps: ["Pick the classic (ATS) or photo template and enter your personal details and summary.", "Add your experience, education, skills, languages, courses and references; reorder them with the arrows.", "Press \"Create PDF\" or \"Create Word (.docx)\" and download it. Save the draft to edit it later."],
+      faq: [
+        ["What is an ATS-friendly resume?", "Many companies and job sites use software (ATS) that reads resumes before a person does. The classic template uses one column, standard headings and real text, with no tables or images, so that software reads it correctly."],
+        ["Should I add a photo?", "In some countries it's customary; on job sites and in many countries it's better not to. That's why there are two templates: choose \"With photo\" only if the employer asks for one."],
+        ["Can I edit it in Word?", "Yes. \"Create Word (.docx)\" gives you a file you can open and edit in Word, Google Docs or LibreOffice, with real headings and bullets."],
+        ["How do I keep editing another day?", "Press \"Save draft\": a .json file with your resume is downloaded. Another day, \"Open draft\" loads it again so you can keep editing."],
+        ["Is my data uploaded?", "No. Everything happens in your browser: your resume, photo and data never leave your device and aren't stored on any server."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'zip-files',
       title: 'Compress files into ZIP or 7Z online, with a password | DocuSmart',

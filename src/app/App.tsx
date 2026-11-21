@@ -25,6 +25,7 @@ const QrScreen = lazy(() => import('../features/qr/ui/Qr').then((m) => ({ defaul
 const Study = lazy(() => import('../features/study/ui/Study').then((m) => ({ default: m.Study })))
 const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((m) => ({ default: m.ArchiveScreen })))
 const ToolsScreen = lazy(() => import('../features/tools/ui/ToolsScreen').then((m) => ({ default: m.ToolsScreen })))
+const CvScreen = lazy(() => import('../features/cv/ui/Cv').then((m) => ({ default: m.CvScreen })))
 const BillingScreen = lazy(() => import('../features/billing/ui/Billing').then((m) => ({ default: m.BillingScreen })))
 const HashScreen = lazy(() => import('../features/integrity/ui/HashTool').then((m) => ({ default: m.HashScreen })))
 const ImageToolsScreen = lazy(() => import('../features/image/ui/ImageTools').then((m) => ({ default: m.ImageToolsScreen })))
@@ -229,7 +230,7 @@ export function App() {
       screen = <HashScreen sub={route.sub} />
       break
     case 'documentos':
-      screen = <BillingScreen />
+      screen = route.sub === 'cv' ? <CvScreen /> : <BillingScreen />
       break
     case 'imagen':
       screen = <ImageToolsScreen sub={route.sub} />

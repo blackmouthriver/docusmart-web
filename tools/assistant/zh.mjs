@@ -71,6 +71,7 @@ export default {
     { id: 'tiff-a-jpg', q: ["tiff转jpg", "tif转jpg", "转换tiff", "打开tif文件", "tiff扫描件"], a: "使用“TIFF 转 JPG”：把 TIFF 扫描件和照片转换为轻巧、处处兼容的 JPG，可一次处理多个，在你的浏览器中完成。", actions: [['tool', 'tiff-a-jpg']] },
     { id: 'agenda', q: ["日程", "日历", "考试提醒", "记下作业截止", "活动", "导出到outlook", "ics文件", "提醒我上课"], a: "在“学习模式”→“日程”中记下考试、作业截止和课程，可设置日期、时间、重复和提醒。日程保存在你的浏览器中，可以导出 .ics 到 Outlook、Google 日历或 iPhone，也可以导入日历中的 .ics。网站提醒会在 DocuSmart 打开时送达。", actions: [['page', 'study']], related: ['estudio', 'notas'] },
     { id: 'cuenta-de-cobro', q: ["账单", "做报价单", "收据", "向客户收款", "账单模板", "报价单pdf", "自由职业者账单"], a: "使用“账单与报价单”：制作带编号、税和代扣、合计和签名的账单、报价单或收据，并下载为 PDF。这不是电子发票，你的数据不会上传。（PDF 中的标题会显示为英文，因为 PDF 标准字体不支持中文。）", actions: [['tool', 'cuenta-de-cobro']] },
+    { id: 'hoja-de-vida', q: ["简历", "制作简历", "做简历", "cv", "带照片简历", "简历模板", "简历 word", "resume"], a: "使用“简历”：选择经典（ATS）或带照片模板，填写工作经历、教育、技能和语言，然后下载 PDF 或 Word。还可以保存草稿以后再编辑。不会上传任何内容。", actions: [['tool', 'hoja-de-vida']] },
     { id: 'contacto', q: ['联系方式', '客服', '找人工', '我遇到问题', '报告错误'], a: '请发邮件至 supportdocusmart@docusmart.online，或通过 Facebook、Instagram 联系我们，我们会回复你。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }
