@@ -617,7 +617,7 @@ export default {
         ["Fins a quin punt és precís?", "Amb fotos nítides, rectes i ben il·luminades, el reconeixement és molt bo. Si la foto està borrosa o torta, l'eina t'avisa de la baixa qualitat i pots corregir el text abans de copiar-lo."],
         ["Reconeix la lletra manuscrita?", "Funciona amb text imprès o de pantalla. La lletra feta a mà gairebé mai no es reconeix bé."],
         ["Puc passar diverses imatges alhora?", "Sí. Tria diverses imatges i el text de totes surt junt, separat per imatge si vols. Així pots passar un document de diverses fotos a un sol Word."],
-        ["Quins idiomes reconeix?", "Castellà i anglès, o tots dos alhora si el document barreja els dos idiomes. El motor es baixa la primera vegada i queda desat al teu navegador."],
+        ["Quins idiomes reconeix?", "12 idiomes: castellà, anglès, portuguès, francès, italià, alemany, català, basc, rus, japonès, coreà i xinès. Si el document barreja el seu idioma amb l'anglès, marca que també té text en anglès. Cada idioma es baixa la primera vegada que el fas servir i queda desat al teu navegador."],
         ["Les meves imatges es pugen a internet?", "No. El reconeixement es fa al teu navegador amb el processador del teu equip: les teves fotos no surten mai del teu dispositiu."],
       ],
     },
@@ -809,14 +809,14 @@ export default {
     'ocr-pdf': {
       slug: 'ocr-pdf',
       title: 'OCR en línia gratis: text de PDF escanejats i imatges | DocuSmart',
-      description: 'Reconeix el text d’un PDF escanejat o d’una foto i converteix-lo en text editable o en un PDF cercable. En castellà i anglès, gratis i sense pujar el fitxer.',
+      description: 'Reconeix el text d’un PDF escanejat o d’una foto i converteix-lo en text editable o en un PDF cercable. En 12 idiomes, gratis i sense pujar el fitxer.',
       h1: 'OCR: reconèixer text',
       howTo: 'Com reconèixer el text amb OCR en 3 passos',
       lead: 'Converteix un escaneig o una foto d’un document en text que pots copiar, editar o cercar, sense tornar-lo a escriure.',
       short: 'Text d’escaneigs i fotos',
       steps: [
         'Tria un PDF escanejat o una imatge (JPG, PNG o WebP).',
-        'Tria l’idioma del document: castellà, anglès o tots dos.',
+        'Tria l’idioma del document (i marca si també té text en anglès).',
         'Prem "Reconèixer text": copia el resultat o baixa’l com a .txt o com a PDF cercable.',
       ],
       faq: [

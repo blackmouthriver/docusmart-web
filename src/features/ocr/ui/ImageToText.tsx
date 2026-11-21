@@ -4,12 +4,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useApp } from '../../../app/state'
 import { Icon } from '../../../shared/ui/Icon'
-import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../../../shared/ui/ui'
+import { BusyButton, DropZone, FileRow, Notice, Progress } from '../../../shared/ui/ui'
 import { download } from '../../../shared/files/files'
 import { looksSpecial } from '../../convert/core/formats'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { OcrImage, OcrLang, OcrProgress } from '../core/ocr'
+import { OcrLangPicker, useDefaultOcrLang } from './OcrLangPicker'
 import { IMAGE_OCR_ACCEPT, combineTexts, pastedName, textFileBase, type ImageText } from '../core/imageText'
 
 const isImage = (f: File) => f.type.startsWith('image/') || looksSpecial(f.name, f.type)
@@ -17,7 +18,7 @@ const isImage = (f: File) => f.type.startsWith('image/') || looksSpecial(f.name,
 export function ImageToTextTool() {
   const { toast } = useApp()
   const [files, setFiles] = useState<File[]>([])
-  const [lang, setLang] = useState<OcrLang>('spa')
+  const [lang, setLang] = useState<OcrLang>(useDefaultOcrLang())
   const [busy, setBusy] = useState(false)
   const [progress, setProgress] = useState<OcrProgress | null>(null)
   const [items, setItems] = useState<ImageText[] | null>(null)
@@ -106,10 +107,7 @@ export function ImageToTextTool() {
             ))}
           </ul>
         )}
-        <div className="field">
-          <span>{tr('ocr.docLang')}</span>
-          <Segmented label={tr('ocr.lang')} value={lang} onChange={(v: OcrLang) => { setLang(v); setItems(null) }} options={[{ value: 'spa', label: tr('ocr.spanish') }, { value: 'eng', label: tr('ocr.english') }, { value: 'spa+eng', label: tr('ocr.both') }]} />
-        </div>
+        <OcrLangPicker value={lang} onChange={(v) => { setLang(v); setItems(null) }} />
         <small className="faint">{tr('ocr.local')}</small>
         {progress && (
           <>

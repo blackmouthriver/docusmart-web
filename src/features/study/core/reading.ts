@@ -4,6 +4,7 @@
  * las frases largas (~15 s) y así además se puede pausar o cambiar la velocidad
  * sin perder la posición.
  */
+import { ocrBaseFor, ocrLang, type OcrLang } from '../../ocr/core/ocrLangs'
 
 /** `page`: página del PDF (desde 1) de la que sale el párrafo; sin PDF no hay página. */
 export type Paragraph = { text: string; chunks: string[]; page?: number }
@@ -126,5 +127,5 @@ export function needsOcr(pages: readonly string[]): boolean {
   return letters < Math.max(30, pages.length * 20)
 }
 
-/** Idioma del OCR según el de la web: español, inglés o ambos (los modelos que trae la web). */
-export const ocrLangFor = (lang: string): 'spa' | 'eng' | 'spa+eng' => (lang === 'es' ? 'spa' : lang === 'en' ? 'eng' : 'spa+eng')
+/** Idioma del OCR según el de la web; con inglés además (los documentos suelen mezclarlo), salvo en inglés. */
+export const ocrLangFor = (lang: string): OcrLang => ocrLang(ocrBaseFor(lang), lang !== 'en')

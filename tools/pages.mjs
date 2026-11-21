@@ -758,7 +758,7 @@ export const pages = [
       ["¿Qué tan preciso es?", "Con fotos nítidas, derechas y bien iluminadas, el reconocimiento es muy bueno. Si la foto está borrosa o torcida, la herramienta te avisa de la calidad baja y puedes corregir el texto antes de copiarlo."],
       ["¿Reconoce letra a mano?", "Funciona con texto impreso o de pantalla. La letra manuscrita casi nunca se reconoce bien."],
       ["¿Puedo pasar varias imágenes a la vez?", "Sí. Elige varias imágenes y el texto de todas sale junto, separado por imagen si quieres. Así puedes pasar un documento de varias fotos a un solo Word."],
-      ["¿Qué idiomas reconoce?", "Español e inglés, o los dos a la vez si el documento mezcla ambos idiomas. El motor se descarga la primera vez y queda guardado en tu navegador."],
+      ["¿Qué idiomas reconoce?", "12 idiomas: español, inglés, portugués, francés, italiano, alemán, catalán, euskera, ruso, japonés, coreano y chino. Si el documento mezcla su idioma con inglés, marca que también tiene texto en inglés. Cada idioma se descarga la primera vez que lo usas y queda guardado en tu navegador."],
       ["¿Mis imágenes se suben a internet?", "No. El reconocimiento se hace en tu navegador con el procesador de tu equipo: tus fotos nunca salen de tu dispositivo."],
     ],
   },
@@ -907,14 +907,14 @@ export const pages = [
     tool: { kind: 'pdf', id: 'ocr' },
     title: 'OCR online gratis: texto de PDF escaneados e imágenes | DocuSmart',
     description:
-      'Reconoce el texto de un PDF escaneado o una foto y conviértelo en texto editable o en un PDF buscable. En español e inglés, gratis y sin subir el archivo.',
+      'Reconoce el texto de un PDF escaneado o una foto y conviértelo en texto editable o en un PDF buscable. En 12 idiomas, gratis y sin subir el archivo.',
     h1: 'OCR: reconocer texto',
     howTo: 'Cómo reconocer el texto con OCR en 3 pasos',
     lead: 'Convierte un escaneo o una foto de un documento en texto que puedes copiar, editar o buscar, sin volver a escribirlo.',
     short: 'Texto de escaneos y fotos',
     steps: [
       'Elige un PDF escaneado o una imagen (JPG, PNG o WebP).',
-      'Escoge el idioma del documento: español, inglés o ambos.',
+      'Escoge el idioma del documento (y marca si también tiene texto en inglés).',
       'Pulsa "Reconocer texto": copia el resultado o descárgalo como .txt o como PDF buscable.',
     ],
     faq: [

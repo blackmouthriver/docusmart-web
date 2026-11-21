@@ -313,7 +313,7 @@ export default {
         {
           h2: 'Recognizing text in a scan you already have',
           body: [
-            'If you already have a scanned PDF or a photo and need to copy its text, use [OCR](/ocr-pdf): it recognizes printed text in Spanish and English and gives it to you to copy, as a .txt file or as a searchable PDF. It works best with sharp, straight scans; handwriting is usually recognized poorly.',
+            'If you already have a scanned PDF or a photo and need to copy its text, use [OCR](/ocr-pdf): it recognizes printed text in 12 languages (Spanish, English, Portuguese, French, Russian, Japanese, Chinese and more) and gives it to you to copy, as a .txt file or as a searchable PDF. It works best with sharp, straight scans; handwriting is usually recognized poorly.',
           ],
         },
         {

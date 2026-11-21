@@ -9,7 +9,8 @@
  */
 import { merge } from '../../pdf/core/pdfTools'
 
-export type OcrLang = 'spa' | 'eng' | 'spa+eng'
+import type { OcrLang } from './ocrLangs'
+export * from './ocrLangs'
 export type OcrImage = Blob | HTMLCanvasElement
 export type OcrPageResult = { text: string; confidence: number; pdf: Uint8Array | null }
 

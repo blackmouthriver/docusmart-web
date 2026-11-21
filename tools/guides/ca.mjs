@@ -313,7 +313,7 @@ export default {
         {
           h2: "Reconèixer el text d'un escaneig que ja tens",
           body: [
-            "Si ja tens un PDF escanejat o una foto i necessites copiar-ne el text, fes servir [OCR: reconèixer text](/ocr-pdf): reconeix text imprès en castellà i anglès i te'l dona per copiar, com a fitxer .txt o com a PDF cercable. Funciona millor amb escanejos nítids i rectes; la lletra a mà sol reconèixer-se malament.",
+            "Si ja tens un PDF escanejat o una foto i necessites copiar-ne el text, fes servir [OCR: reconèixer text](/ocr-pdf): reconeix text imprès en 12 idiomes (català, castellà, anglès, francès, rus, japonès, xinès i més) i te'l dona per copiar, com a fitxer .txt o com a PDF cercable. Funciona millor amb escanejos nítids i rectes; la lletra a mà sol reconèixer-se malament.",
           ],
         },
         {

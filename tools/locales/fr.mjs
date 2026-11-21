@@ -617,7 +617,7 @@ export default {
         ["Quelle est la précision ?", "Avec des photos nettes, droites et bien éclairées, la reconnaissance est très bonne. Si la photo est floue ou de travers, l'outil vous signale la faible qualité et vous pouvez corriger le texte avant de le copier."],
         ["Reconnaît-il l'écriture manuscrite ?", "Il fonctionne avec du texte imprimé ou affiché à l'écran. L'écriture manuscrite est rarement bien reconnue."],
         ["Puis-je convertir plusieurs images à la fois ?", "Oui. Choisissez plusieurs images et le texte de toutes sort ensemble, séparé par image si vous le souhaitez. Vous pouvez ainsi transformer un document de plusieurs photos en un seul fichier Word."],
-        ["Quelles langues reconnaît-il ?", "L'espagnol et l'anglais, ou les deux à la fois si le document mélange les deux langues. Le moteur est téléchargé la première fois et reste enregistré dans votre navigateur."],
+        ["Quelles langues reconnaît-il ?", "12 langues : espagnol, anglais, portugais, français, italien, allemand, catalan, basque, russe, japonais, coréen et chinois. Si le document mélange sa langue avec l'anglais, cochez qu'il contient aussi du texte en anglais. Chaque langue est téléchargée la première fois que vous l'utilisez et reste enregistrée dans votre navigateur."],
         ["Mes images sont-elles envoyées sur internet ?", "Non. La reconnaissance se fait dans votre navigateur avec le processeur de votre appareil : vos photos ne quittent jamais votre appareil."],
       ],
     },
@@ -809,14 +809,14 @@ export default {
     'ocr-pdf': {
       slug: 'ocr-pdf',
       title: 'OCR en ligne gratuit : texte de PDF numérisés et d’images | DocuSmart',
-      description: 'Reconnaissez le texte d’un PDF numérisé ou d’une photo et transformez-le en texte modifiable ou en PDF consultable. En espagnol et en anglais, gratuit et sans envoyer le fichier.',
+      description: 'Reconnaissez le texte d’un PDF numérisé ou d’une photo et transformez-le en texte modifiable ou en PDF consultable. En 12 langues, gratuit et sans envoyer le fichier.',
       h1: 'OCR : reconnaître le texte',
       howTo: 'Comment reconnaître le texte avec l’OCR en 3 étapes',
       lead: 'Transformez un scan ou une photo de document en texte à copier, modifier ou rechercher, sans le retaper.',
       short: 'Texte des scans et photos',
       steps: [
         'Choisissez un PDF numérisé ou une image (JPG, PNG ou WebP).',
-        'Choisissez la langue du document : espagnol, anglais ou les deux.',
+        'Choisissez la langue du document (et cochez s\'il contient aussi du texte en anglais).',
         'Appuyez sur « Reconnaître le texte » : copiez le résultat ou téléchargez-le en .txt ou en PDF consultable.',
       ],
       faq: [

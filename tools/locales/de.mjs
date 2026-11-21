@@ -617,7 +617,7 @@ export default {
         ["Wie genau ist die Erkennung?", "Bei scharfen, geraden und gut beleuchteten Fotos ist die Erkennung sehr gut. Ist das Foto unscharf oder schief, weist dich das Tool auf die geringe Qualität hin und du kannst den Text vor dem Kopieren korrigieren."],
         ["Erkennt es Handschrift?", "Es funktioniert mit gedrucktem Text oder Text vom Bildschirm. Handschrift wird nur selten gut erkannt."],
         ["Kann ich mehrere Bilder auf einmal umwandeln?", "Ja. Wähle mehrere Bilder aus, und der Text aller Bilder wird zusammen ausgegeben, auf Wunsch nach Bild getrennt. So machst du aus einem Dokument mit mehreren Fotos eine einzige Word-Datei."],
-        ["Welche Sprachen werden erkannt?", "Spanisch und Englisch, oder beide gleichzeitig, wenn das Dokument beide Sprachen mischt. Die Engine wird beim ersten Mal heruntergeladen und bleibt in deinem Browser gespeichert."],
+        ["Welche Sprachen werden erkannt?", "12 Sprachen: Spanisch, Englisch, Portugiesisch, Französisch, Italienisch, Deutsch, Katalanisch, Baskisch, Russisch, Japanisch, Koreanisch und Chinesisch. Wenn das Dokument seine Sprache mit Englisch mischt, markiere, dass es auch englischen Text enthält. Jede Sprache wird beim ersten Mal heruntergeladen und bleibt in deinem Browser gespeichert."],
         ["Werden meine Bilder ins Internet hochgeladen?", "Nein. Die Erkennung läuft in deinem Browser mit dem Prozessor deines Geräts: Deine Fotos verlassen dein Gerät nie."],
       ],
     },
@@ -809,14 +809,14 @@ export default {
     'ocr-pdf': {
       slug: 'ocr-pdf',
       title: 'Kostenlose Online-OCR: Text aus gescannten PDFs und Bildern | DocuSmart',
-      description: 'Erkenne den Text eines gescannten PDFs oder Fotos und mach daraus bearbeitbaren Text oder ein durchsuchbares PDF. Auf Spanisch und Englisch, kostenlos und ohne Upload.',
+      description: 'Erkenne den Text eines gescannten PDFs oder Fotos und mach daraus bearbeitbaren Text oder ein durchsuchbares PDF. In 12 Sprachen, kostenlos und ohne Upload.',
       h1: 'OCR: Text erkennen',
       howTo: 'Text in 3 Schritten mit OCR erkennen',
       lead: 'Mach aus einem Scan oder Foto eines Dokuments Text, den du kopieren, bearbeiten oder durchsuchen kannst, ohne ihn abzutippen.',
       short: 'Text aus Scans und Fotos',
       steps: [
         'Wähle ein gescanntes PDF oder ein Bild (JPG, PNG oder WebP).',
-        'Wähle die Sprache des Dokuments: Spanisch, Englisch oder beide.',
+        'Wähle die Sprache des Dokuments (und markiere, ob es auch englischen Text enthält).',
         'Tippe auf „Text erkennen“: Kopiere das Ergebnis oder lade es als .txt oder durchsuchbares PDF herunter.',
       ],
       faq: [

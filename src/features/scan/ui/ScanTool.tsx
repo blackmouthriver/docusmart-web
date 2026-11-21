@@ -6,6 +6,8 @@ import { BusyButton, Notice, Progress, Segmented, errorMessage } from '../../../
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { bundleFiles, resultFile } from '../../../shared/files/share'
 import { tr } from '../../../shared/i18n/translate'
+import { useT } from '../../../shared/i18n/I18n'
+import { ocrLangFor } from '../../study/core/reading'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 import type { Quad, ScanFilter } from '../core/scan'
 import type { Photo } from '../infra/scanCanvas'
@@ -32,6 +34,7 @@ const today = () => new Date().toISOString().slice(0, 10)
 
 export function ScanTool() {
   const { toast } = useApp()
+  const { lang: uiLang } = useT()
   const [pages, setPages] = useState<Page[]>([])
   const [editing, setEditing] = useState<number | null>(null)
   const [loading, setLoading] = useState(0)
@@ -130,7 +133,7 @@ export function ScanTool() {
         setOcrProgress(0)
         const r = await runOcr(
           ready.map((p) => async () => p.result!.blob),
-          { lang: 'spa', wantPdf: true, onProgress: (pr) => setOcrProgress((pr.page - 1 + pr.fraction) / pr.pages) },
+          { lang: ocrLangFor(uiLang), wantPdf: true, onProgress: (pr) => setOcrProgress((pr.page - 1 + pr.fraction) / pr.pages) },
         )
         pdf = r.pdf!
       } else {

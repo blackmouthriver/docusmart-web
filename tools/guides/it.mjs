@@ -313,7 +313,7 @@ export default {
         {
           h2: 'Riconoscere il testo di una scansione che hai già',
           body: [
-            "Se hai già un PDF scansionato o una foto e devi copiarne il testo, usa [OCR](/ocr-pdf): riconosce il testo stampato in spagnolo e in inglese e te lo dà da copiare, come file .txt o come PDF ricercabile. Funziona meglio con scansioni nitide e dritte; la scrittura a mano di solito viene riconosciuta male.",
+            "Se hai già un PDF scansionato o una foto e devi copiarne il testo, usa [OCR](/ocr-pdf): riconosce il testo stampato in 12 lingue (italiano, spagnolo, inglese, francese, russo, giapponese, cinese e altre) e te lo dà da copiare, come file .txt o come PDF ricercabile. Funziona meglio con scansioni nitide e dritte; la scrittura a mano di solito viene riconosciuta male.",
           ],
         },
         {

@@ -617,7 +617,7 @@ export default {
         ["How accurate is it?", "With sharp, straight, well-lit photos, recognition is very good. If the photo is blurry or tilted, the tool warns you about the low quality and you can fix the text before copying it."],
         ["Does it recognize handwriting?", "It works with printed or on-screen text. Handwriting is rarely recognized well."],
         ["Can I convert several images at once?", "Yes. Choose several images and the text from all of them comes out together, separated by image if you like. That way you can turn a document made of several photos into a single Word file."],
-        ["Which languages does it recognize?", "Spanish and English, or both at once if the document mixes them. The engine is downloaded the first time and stays saved in your browser."],
+        ["Which languages does it recognize?", "12 languages: Spanish, English, Portuguese, French, Italian, German, Catalan, Basque, Russian, Japanese, Korean and Chinese. If the document mixes its language with English, tick that it also has English text. Each language is downloaded the first time you use it and stays saved in your browser."],
         ["Are my images uploaded?", "No. Recognition happens in your browser on your own device: your photos never leave it."],
       ],
     },
@@ -809,14 +809,14 @@ export default {
     'ocr-pdf': {
       slug: 'ocr-pdf',
       title: 'Free online OCR: text from scanned PDFs and images | DocuSmart',
-      description: 'Recognise the text in a scanned PDF or a photo and turn it into editable text or a searchable PDF. In Spanish and English, free and without uploading the file.',
+      description: 'Recognise the text in a scanned PDF or a photo and turn it into editable text or a searchable PDF. In 12 languages, free and without uploading the file.',
       h1: 'OCR: recognise text',
       howTo: 'How to recognise text with OCR in 3 steps',
       lead: 'Turn a scan or a photo of a document into text you can copy, edit or search, without retyping it.',
       short: 'Text from scans and photos',
       steps: [
         'Choose a scanned PDF or an image (JPG, PNG or WebP).',
-        "Pick the document's language: Spanish, English or both.",
+        "Pick the document's language (and tick whether it also has English text).",
         'Press "Recognise text": copy the result or download it as .txt or as a searchable PDF.',
       ],
       faq: [

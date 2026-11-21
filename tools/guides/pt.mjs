@@ -313,7 +313,7 @@ export default {
         {
           h2: 'Reconhecer o texto de uma digitalização que você já tem',
           body: [
-            'Se você já tem um PDF digitalizado ou uma foto e precisa copiar o texto, use o [OCR](/ocr-pdf): ele reconhece texto impresso em espanhol e inglês e entrega o resultado para você copiar, como arquivo .txt ou como PDF pesquisável. Funciona melhor com digitalizações nítidas e retas; letra de mão costuma ser mal reconhecida.',
+            'Se você já tem um PDF digitalizado ou uma foto e precisa copiar o texto, use o [OCR](/ocr-pdf): ele reconhece texto impresso em 12 idiomas (português, espanhol, inglês, francês, russo, japonês, chinês e mais) e entrega o resultado para você copiar, como arquivo .txt ou como PDF pesquisável. Funciona melhor com digitalizações nítidas e retas; letra de mão costuma ser mal reconhecida.',
           ],
         },
         {

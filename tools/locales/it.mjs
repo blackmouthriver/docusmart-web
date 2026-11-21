@@ -617,7 +617,7 @@ export default {
         ["Quanto è preciso?", "Con foto nitide, dritte e ben illuminate, il riconoscimento è molto buono. Se la foto è sfocata o storta, lo strumento ti avvisa della bassa qualità e puoi correggere il testo prima di copiarlo."],
         ["Riconosce la scrittura a mano?", "Funziona con testo stampato o sullo schermo. La scrittura a mano viene riconosciuta bene molto raramente."],
         ["Posso convertire più immagini alla volta?", "Sì. Scegli più immagini e il testo di tutte esce insieme, separato per immagine se vuoi. Così puoi trasformare un documento di più foto in un unico file Word."],
-        ["Quali lingue riconosce?", "Spagnolo e inglese, o entrambe insieme se il documento le mescola. Il motore viene scaricato la prima volta e resta salvato nel tuo browser."],
+        ["Quali lingue riconosce?", "12 lingue: spagnolo, inglese, portoghese, francese, italiano, tedesco, catalano, basco, russo, giapponese, coreano e cinese. Se il documento mescola la sua lingua con l'inglese, segna che contiene anche testo in inglese. Ogni lingua viene scaricata la prima volta che la usi e resta salvata nel tuo browser."],
         ["Le mie immagini vengono caricate su internet?", "No. Il riconoscimento avviene nel tuo browser con il processore del tuo dispositivo: le tue foto non lasciano mai il tuo dispositivo."],
       ],
     },
@@ -809,14 +809,14 @@ export default {
     'ocr-pdf': {
       slug: 'ocr-pdf',
       title: 'OCR online gratis: testo da PDF scansionati e immagini | DocuSmart',
-      description: 'Riconosci il testo di un PDF scansionato o di una foto e trasformalo in testo modificabile o in un PDF ricercabile. In spagnolo e inglese, gratis e senza caricare il file.',
+      description: 'Riconosci il testo di un PDF scansionato o di una foto e trasformalo in testo modificabile o in un PDF ricercabile. In 12 lingue, gratis e senza caricare il file.',
       h1: 'OCR: riconoscere il testo',
       howTo: 'Come riconoscere il testo con l’OCR in 3 passi',
       lead: 'Trasforma una scansione o una foto di un documento in testo da copiare, modificare o cercare, senza riscriverlo.',
       short: 'Testo da scansioni e foto',
       steps: [
         'Scegli un PDF scansionato o un’immagine (JPG, PNG o WebP).',
-        'Scegli la lingua del documento: spagnolo, inglese o entrambe.',
+        'Scegli la lingua del documento (e segna se contiene anche testo in inglese).',
         'Premi "Riconosci testo": copia il risultato o scaricalo come .txt o come PDF ricercabile.',
       ],
       faq: [

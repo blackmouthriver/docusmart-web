@@ -57,7 +57,8 @@ for (const f of ['tesseract-core-lstm.wasm.js', 'tesseract-core-simd-lstm.wasm.j
 }
 cpSync(join(modules, 'tesseract.js-core', 'LICENSE'), join(ocrOut, 'LICENSE-tesseract-core.txt'))
 mkdirSync(join(ocrOut, 'lang'))
-for (const lang of ['spa', 'eng']) {
+// Un modelo por cada idioma del sitio (deben coincidir con OCR_LANGS en src/features/ocr/core/ocrLangs.ts).
+for (const lang of ['spa', 'eng', 'por', 'fra', 'ita', 'deu', 'cat', 'eus', 'rus', 'jpn', 'kor', 'chi_sim']) {
   cpSync(join(modules, '@tesseract.js-data', lang, '4.0.0_best_int', `${lang}.traineddata.gz`), join(ocrOut, 'lang', `${lang}.traineddata.gz`))
 }
 

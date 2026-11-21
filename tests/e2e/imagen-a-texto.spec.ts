@@ -69,3 +69,22 @@ test('reconoce el texto de dos imágenes, se edita y se descarga en .txt y Word'
   const xml = strFromU8(unzipSync(new Uint8Array(await readFile((await file.path())!)))['word/document.xml'])
   expect(xml).toContain('Texto corregido en dos líneas')
 })
+
+test('reconoce texto en ruso eligiendo el idioma del documento (W-139)', async ({ page }) => {
+  test.setTimeout(150_000)
+  await page.goto('/imagen-a-texto')
+  const tool = page.locator('#tool')
+  await tool.locator('input[type=file]').first().setInputFiles([{ name: 'ruso.png', mimeType: 'image/png', buffer: await textImage(page, ['ПРИВЕТ МИР', 'ДОКУМЕНТ']) }])
+  const select = tool.getByLabel('Idioma', { exact: true })
+  // El idioma de la página primero; se elige ruso y se puede sumar inglés.
+  await expect(select).toHaveValue('spa')
+  await select.selectOption('rus')
+  await expect(tool.getByLabel('El documento también tiene texto en inglés')).not.toBeChecked()
+  const model = page.waitForResponse((r) => r.url().includes('/ocr/lang/rus.traineddata'))
+  await tool.getByRole('button', { name: /Reconocer texto/ }).click()
+  expect((await model).status()).toBe(200)
+  const box = tool.getByLabel('Puedes corregir el texto aquí antes de copiarlo o descargarlo.')
+  await expect(box).toBeVisible({ timeout: 120_000 })
+  await expect(box).toHaveValue(/ПРИВЕТ МИР/)
+  await expect(box).toHaveValue(/ДОКУМЕНТ/)
+})
