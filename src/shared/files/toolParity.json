@@ -186,6 +186,18 @@
     },
     "generador-de-contrasenas": {
       "app": "evaluar"
+    },
+    "powerpoint-a-pdf": {
+      "app": "si"
+    },
+    "pdf-a-powerpoint": {
+      "app": "evaluar"
+    },
+    "csv-a-excel": {
+      "app": "evaluar"
+    },
+    "excel-a-csv": {
+      "app": "evaluar"
     }
   }
 }

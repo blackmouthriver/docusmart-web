@@ -1,7 +1,7 @@
 // Tipos de tools/pages.mjs (lo importan vite.config.ts y el generador de páginas).
 export type ToolSpec =
   | { kind: 'pdf'; id: 'unir' | 'dividir' | 'rotar' | 'reordenar' | 'numerar' | 'marca' | 'comprimir' | 'proteger' | 'desbloquear' | 'reparar' | 'ocr' | 'recortar' | 'firmar' | 'censurar' | 'comparar' | 'imagenes' | 'editar' | 'formulario' | 'escanear' | 'pdfa' }
-  | { kind: 'conv'; id: 'img-pdf' | 'img-jpg' | 'img-png' | 'img-webp' | 'img-bmp' | 'pdf-img' | 'pdf-txt' | 'pdf-word' | 'pdf-excel' | 'word-pdf' | 'excel-pdf' }
+  | { kind: 'conv'; id: 'img-pdf' | 'img-jpg' | 'img-png' | 'img-webp' | 'img-bmp' | 'pdf-img' | 'pdf-txt' | 'pdf-word' | 'pdf-excel' | 'word-pdf' | 'excel-pdf' | 'ppt-pdf' | 'pdf-ppt' | 'csv-excel' | 'excel-csv' }
   | { kind: 'qr'; id?: 'leer' }
   | { kind: 'doc'; id: 'cobro' | 'cv' }
   | { kind: 'media'; id: 'audio' | 'convertir' | 'recortar' | 'comprimir' }

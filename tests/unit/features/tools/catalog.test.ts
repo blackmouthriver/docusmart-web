@@ -71,7 +71,7 @@ describe('groupTools', () => {
     expect(groups.map((g) => g.id)).toEqual(CATEGORIES.map((c) => c.id))
     expect(groups[0].tools.map((x) => es[x.name])).toEqual(['Dividir PDF', 'Numerar páginas', 'Reordenar páginas', 'Rotar páginas', 'Unir PDFs'])
     const convertEn = groupTools(tEn, 'en').find((g) => g.id === 'convertir')!
-    expect(convertEn.tools.map((x) => en[x.name])[0]).toBe('Excel to PDF')
+    expect(convertEn.tools.map((x) => en[x.name]).slice(0, 3)).toEqual(['CSV to Excel', 'Excel to CSV', 'Excel to PDF'])
   })
   it('filtra por nombre, descripción o categoría y oculta las categorías vacías', () => {
     const word = groupTools(tEs, 'es', 'word')

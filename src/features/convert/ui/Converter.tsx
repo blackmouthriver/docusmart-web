@@ -5,7 +5,9 @@ import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Progress, 
 import { baseName } from '../../../shared/files/files'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { bundleFiles, resultFile } from '../../../shared/files/share'
-import { OfficeFormatError, docxToPdf, xlsxToPdf } from '../infra/officeRender'
+import { OfficeFormatError, docxToPdf, pptxToPdf, xlsxToCsv, xlsxToPdf } from '../infra/officeRender'
+import { DELIMITERS, defaultCsvOptions, type Delimiter } from '../core/csv'
+import { useT } from '../../../shared/i18n/I18n'
 import { convertImage, imagesToPdf, pdfToImages, pdfToText, type ImageTarget } from '../core/convert'
 import { heicOutputName, jpegQuality, type HeicTarget } from '../core/heic'
 import { canvasToBlob } from '../../../shared/pdf/pdf'
@@ -51,13 +53,14 @@ const PDF_CONVS = [
   c('pdf-txt', 'PDF_TO_TXT', 'PDF', 'TXT', 'conv.desc.pdfTxt'),
   c('pdf-word', 'PDF_TO_WORD', 'PDF', 'WORD', 'conv.desc.pdfWord'),
   c('pdf-excel', 'PDF_TO_EXCEL', 'PDF', 'EXCEL', 'conv.desc.pdfExcel'),
+  c('pdf-ppt', 'PDF_TO_PPT', 'PDF', 'PPT', 'conv.desc.pdfPpt'),
 ]
 const OFFICE_CONVS = [
   c('word-pdf', 'WORD_TO_PDF', 'WORD', 'PDF', 'conv.desc.wordPdf'),
   c('excel-pdf', 'EXCEL_TO_PDF', 'EXCEL', 'PDF', 'conv.desc.excelPdf'),
-]
-const APP_ONLY = [
-  c('', 'PPT_TO_PDF', 'PPT', 'PDF', 'conv.desc.pptPdf'),
+  c('ppt-pdf', 'PPT_TO_PDF', 'PPT', 'PDF', 'conv.desc.pptToPdf'),
+  c('csv-excel', 'CSV_TO_EXCEL', 'CSV', 'EXCEL', 'conv.desc.csvExcel'),
+  c('excel-csv', 'EXCEL_TO_CSV', 'EXCEL', 'CSV', 'conv.desc.excelCsv'),
 ]
 const ALL = [...IMAGE_CONVS, ...PDF_CONVS, ...OFFICE_CONVS]
 
@@ -85,7 +88,7 @@ export function Converter({ sub }: { sub?: string }) {
       {[
         { title: tr('conv.image'), cls: 'ico-violet', icon: 'image' as const, list: IMAGE_CONVS },
         { title: 'PDF', cls: 'ico-red', icon: 'pdf' as const, list: PDF_CONVS },
-        { title: tr('conv.wordExcel'), cls: 'ico-blue', icon: 'file' as const, list: OFFICE_CONVS },
+        { title: tr('conv.office'), cls: 'ico-blue', icon: 'file' as const, list: OFFICE_CONVS },
       ].map((g) => (
         <section className="conv-group" key={g.title}>
           <h3>
@@ -105,20 +108,6 @@ export function Converter({ sub }: { sub?: string }) {
           </div>
         </section>
       ))}
-      <section className="conv-group">
-        <h3>
-          <span className="ico ico-blue"><Icon name="phone" /></span>
-          {tr('conv.inApp')}
-        </h3>
-        <div className="card">
-          <div className="row" style={{ gap: 14 }}>
-            {APP_ONLY.map((x) => <Pair key={x.type} conv={x} />)}
-          </div>
-          <p className="muted" style={{ marginTop: 12 }}>
-            {tr('conv.inAppText')}
-          </p>
-        </div>
-      </section>
     </>
   )
 }
@@ -143,11 +132,14 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   const [wordInfo, setWordInfo] = useState<{ paragraphs: number; tables: number; images: number; headings: number } | null>(null)
   const [excelInfo, setExcelInfo] = useState<{ sheets: number; rows: number; numbers: number } | null>(null)
   const [officeInfo, setOfficeInfo] = useState<{ skippedImages: number } | null>(null)
-  const isOffice = conv.id === 'word-pdf' || conv.id === 'excel-pdf'
+  const isOffice = conv.id === 'word-pdf' || conv.id === 'excel-pdf' || conv.id === 'ppt-pdf'
+  const { lang } = useT()
+  const [delimiter, setDelimiter] = useState<Delimiter>(() => defaultCsvOptions(lang).delimiter)
+  const [pptSkipped, setPptSkipped] = useState(0)
   const [sheetMode, setSheetMode] = useState<'pages' | 'single'>('pages')
   /** El resultado, para verlo y guardarlo (ya no se descarga solo). */
   const [out, setOut] = useState<{ result: File | null; results?: File[]; saveAs?: File | null } | null>(null)
-  useEffect(() => setOut(null), [files, pdfImgFormat, sheetMode, heicFormat, heicQuality])
+  useEffect(() => setOut(null), [files, pdfImgFormat, sheetMode, heicFormat, heicQuality, delimiter])
 
   const run = async () => {
     setBusy(true)
@@ -156,6 +148,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
     setWordInfo(null)
     setExcelInfo(null)
     setOfficeInfo(null)
+    setPptSkipped(0)
     setOut(null)
     track('conversion_started', { conversion_type: conv.type })
     const totalKb = Math.round(files.reduce((s, f) => s + f.size, 0) / 1024)
@@ -223,6 +216,36 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         if (!files[0].name.toLowerCase().endsWith('.xlsx')) throw new OfficeFormatError('Excel')
         setOut({ result: resultFile(await xlsxToPdf(files[0], baseName(files[0].name)), `${baseName(files[0].name)}.pdf`, PDF) })
         setOfficeInfo({ skippedImages: 0 })
+      } else if (conv.id === 'ppt-pdf') {
+        if (!files[0].name.toLowerCase().endsWith('.pptx')) throw new OfficeFormatError('PowerPoint')
+        const { pdf, skipped } = await pptxToPdf(files[0], baseName(files[0].name))
+        setOut({ result: resultFile(pdf, `${baseName(files[0].name)}.pdf`, PDF) })
+        setOfficeInfo({ skippedImages: 0 })
+        setPptSkipped(skipped)
+      } else if (conv.id === 'pdf-ppt') {
+        const [{ buildPptx }, { imageSize }] = await Promise.all([import('../core/pptxWrite'), import('../core/officeModels')])
+        const blobs = await pdfToImages(await files[0].arrayBuffer(), 'jpg', 1920, (d, t) => setProgress(d / t))
+        const slides = await Promise.all(
+          blobs.map(async (b) => {
+            const data = new Uint8Array(await b.arrayBuffer())
+            const size = imageSize(data) ?? { width: 1920, height: 1080, type: 'jpg' as const }
+            return { data, type: size.type, width: size.width, height: size.height }
+          }),
+        )
+        setOut({ result: resultFile(buildPptx(slides, baseName(files[0].name)), `${baseName(files[0].name)}.pptx`, PPTX) })
+      } else if (conv.id === 'csv-excel') {
+        const [{ parseCsv, csvToSheet }, { writeXlsx, summarizeSheets }] = await Promise.all([import('../core/csv'), import('../core/pdfExcel')])
+        const rows = parseCsv(await files[0].text())
+        if (!rows.length) throw new Error(tr('conv.csvEmpty'))
+        const sheets = [csvToSheet(rows, baseName(files[0].name))]
+        setOut({ result: resultFile(writeXlsx(sheets), `${baseName(files[0].name)}.xlsx`, XLSX) })
+        setExcelInfo(summarizeSheets(sheets))
+      } else if (conv.id === 'excel-csv') {
+        if (!files[0].name.toLowerCase().endsWith('.xlsx')) throw new OfficeFormatError('Excel')
+        const csvs = await xlsxToCsv(files[0], { delimiter, decimalComma: delimiter === ';' })
+        const name = baseName(files[0].name)
+        const made = csvs.map((c) => resultFile(new Blob([c.text], { type: 'text/csv;charset=utf-8' }), csvs.length === 1 ? `${name}.csv` : `${name}-${c.sheet}.csv`, 'text/csv;charset=utf-8'))
+        setOut(made.length === 1 ? { result: made[0] } : { result: null, results: made, saveAs: await bundleFiles(made, `${name}-csv.zip`) })
       } else if (conv.id === 'pdf-txt') {
         const t = await pdfToText(await files[0].arrayBuffer())
         setText(t)
@@ -259,9 +282,9 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         </div>
         <p className="muted">{tr(conv.desc)}</p>
         <DropZone
-          accept={isImageInput ? IMAGE_ACCEPT : isHeic ? HEIC_ACCEPT : conv.from === 'SVG' ? SVG_ACCEPT : conv.from === 'TIFF' ? TIFF_ACCEPT : conv.id === 'word-pdf' ? '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document' : conv.id === 'excel-pdf' ? '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf'}
+          accept={isImageInput ? IMAGE_ACCEPT : isHeic ? HEIC_ACCEPT : conv.from === 'SVG' ? SVG_ACCEPT : conv.from === 'TIFF' ? TIFF_ACCEPT : conv.id === 'word-pdf' ? '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document' : conv.id === 'excel-pdf' || conv.id === 'excel-csv' ? '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : conv.id === 'ppt-pdf' ? '.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation' : conv.id === 'csv-excel' ? '.csv,text/csv,.tsv,.txt,text/plain' : 'application/pdf'}
           multiple={multiple}
-          title={isImageInput ? tr('conv.pickImages') : isHeic ? tr('conv.pickHeic') : conv.from === 'SVG' ? tr('conv.pickSvg') : conv.from === 'TIFF' ? tr('conv.pickTiff') : conv.id === 'word-pdf' ? tr('conv.pickWord') : conv.id === 'excel-pdf' ? tr('conv.pickExcel') : tr('common.pickPdf')}
+          title={isImageInput ? tr('conv.pickImages') : isHeic ? tr('conv.pickHeic') : conv.from === 'SVG' ? tr('conv.pickSvg') : conv.from === 'TIFF' ? tr('conv.pickTiff') : conv.id === 'word-pdf' ? tr('conv.pickWord') : conv.id === 'excel-pdf' || conv.id === 'excel-csv' ? tr('conv.pickExcel') : conv.id === 'ppt-pdf' ? tr('conv.pickPpt') : conv.id === 'csv-excel' ? tr('conv.pickCsv') : tr('common.pickPdf')}
           hint={tr('conv.dragFiles')}
           onFiles={(f) => {
             setFiles((prev) => (multiple ? [...prev, ...f] : f))
@@ -332,7 +355,17 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
             {!excelInfo && !error && <small className="faint">{tr('conv.excelNote')}</small>}
           </div>
         )}
-        {isOffice && !officeInfo && !error && (
+        {conv.id === 'excel-csv' && (
+          <div className="field">
+            <span>{tr('conv.separator')}</span>
+            <Segmented label={tr('conv.separator')} value={delimiter} onChange={setDelimiter} options={DELIMITERS.filter((d) => d !== '|').map((d) => ({ value: d, label: tr(d === ',' ? 'conv.sepComma' : d === ';' ? 'conv.sepSemicolon' : 'conv.sepTab') }))} />
+            <small className="faint">{tr('conv.csvOutNote')}</small>
+          </div>
+        )}
+        {conv.id === 'csv-excel' && !excelInfo && !error && <small className="faint">{tr('conv.csvNote')}</small>}
+        {conv.id === 'pdf-ppt' && !out && !error && <small className="faint">{tr('conv.pdfPptNote')}</small>}
+        {conv.id === 'ppt-pdf' && !officeInfo && !error && <small className="faint">{tr('conv.pptNote')}</small>}
+        {isOffice && conv.id !== 'ppt-pdf' && !officeInfo && !error && (
           <small className="faint">{tr('conv.officeNote')}</small>
         )}
         <div className="row row-end">
@@ -352,7 +385,9 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
             previewTitle={files.length > 1 ? tr('conv.yourFiles') : tr('conv.previewFile')}
             placeholder={busy ? tr('conv.converting') : tr('conv.resultIn', { fmt: conv.to === 'IMG' ? tr('conv.imageLower') : conv.to })}
             summary={
-              officeInfo ? (
+              pptSkipped ? (
+                <Notice kind="info">{tr('conv.pptSkipped', { n: pptSkipped })}</Notice>
+              ) : officeInfo ? (
                 officeInfo.skippedImages ? (
                   <Notice kind="info">{officeInfo.skippedImages === 1 ? tr('conv.skippedOne') : tr('conv.skippedMany', { n: officeInfo.skippedImages })}</Notice>
                 ) : undefined
@@ -398,6 +433,7 @@ const TIFF_ACCEPT = '.tif,.tiff,image/tiff'
 const IMAGE_ACCEPT = `image/*,${HEIC_ACCEPT},${SVG_ACCEPT},${TIFF_ACCEPT}`
 const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 const XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+const PPTX = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
 
 /** Título del resultado según el formato de destino. */
 function resultTitle(to: string): string {
@@ -405,6 +441,8 @@ function resultTitle(to: string): string {
   if (to === 'WORD') return tr('conv.result.word')
   if (to === 'EXCEL') return tr('conv.result.excel')
   if (to === 'TXT') return tr('conv.result.txt')
+  if (to === 'PPT') return tr('conv.result.ppt')
+  if (to === 'CSV') return tr('conv.result.csv')
   return tr('conv.result.images')
 }
 
