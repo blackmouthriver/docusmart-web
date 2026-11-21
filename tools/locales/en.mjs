@@ -904,7 +904,7 @@ export default {
       short: '.docx document to PDF',
       steps: ['Choose the Word document (.docx).', 'Press "Convert".', 'Done: the PDF is downloaded with headings, lists, tables and images.'],
       faq: [
-        ['Does it look the same as in Word?', 'It keeps the content and structure: headings, bold, italics, underline, lists, tables, images and page breaks. The text uses Carlito, a free font with the same metrics as Calibri, and Cyrillic, Greek, Chinese, Japanese and Korean display correctly. Some layout details may vary.'],
+        ['Does it look the same as in Word?', 'Very close: it keeps the page size, margins, header and footer with page numbers, headings, colors and highlighting, bullets and numbering, indents and line spacing, tables (widths, merged cells and shading) and images at their size. The text uses free fonts with the same metrics as Calibri and Times New Roman, and Cyrillic, Greek, Chinese, Japanese and Korean display correctly. Charts, SmartArt and images that float around the text may look different.'],
         ['Does it work with old .doc files?', 'No: only .docx (Word 2007 and later). Open the .doc in Word and save it as .docx.'],
         ['Are my documents uploaded to the internet?', 'No. The conversion happens inside your browser.'],
       ],

@@ -1026,7 +1026,7 @@ export const pages = [
     howTo: 'Cómo convertir Word a PDF en 3 pasos',
     steps: ['Elige el documento de Word (.docx).', 'Pulsa "Convertir".', 'Listo: el PDF se descarga con títulos, listas, tablas e imágenes.'],
     faq: [
-      ['¿Queda igual que en Word?', 'Conserva el contenido y la estructura: títulos, negrita, cursiva, subrayado, listas, tablas, imágenes y saltos de página. El texto usa Carlito, una fuente libre con las mismas medidas que Calibri, y se ven bien el cirílico, el griego, el chino, el japonés y el coreano. Algunos detalles de diseño pueden variar.'],
+      ['¿Queda igual que en Word?', 'Muy parecido: conserva el tamaño de página, los márgenes, el encabezado y el pie con el número de página, los títulos, los colores y el resaltado, las viñetas y la numeración, las sangrías y el interlineado, las tablas (anchos, celdas combinadas y fondos) y las imágenes con su tamaño. El texto usa fuentes libres con las mismas medidas que Calibri y Times New Roman, y se ven bien el cirílico, el griego, el chino, el japonés y el coreano. Los gráficos, el SmartArt y las imágenes que flotan alrededor del texto pueden quedar distintos.'],
       ['¿Sirve con archivos .doc antiguos?', 'No: solo .docx (Word 2007 en adelante). Abre el .doc en Word y guárdalo como .docx.'],
       ['¿Mis documentos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
     ],

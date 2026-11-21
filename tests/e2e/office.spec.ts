@@ -3,9 +3,10 @@ import { Buffer } from 'node:buffer'
 import { readFile } from 'node:fs/promises'
 import type { Page } from '@playwright/test'
 import { strFromU8, unzipSync } from 'fflate'
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument, PDFName } from 'pdf-lib'
 import { expect, makePdf, test } from './helpers'
 import { writeXlsx } from '../../src/features/convert/core/pdfExcel'
+import { writeDocx } from '../../src/features/convert/core/pdfWord'
 
 async function convert(page: Page, file: { name: string; mimeType: string; buffer: Buffer }) {
   const tool = page.locator('#tool')
@@ -16,6 +17,39 @@ async function convert(page: Page, file: { name: string; mimeType: string; buffe
   const d = await wait
   return { name: d.suggestedFilename(), bytes: new Uint8Array(await readFile((await d.path())!)) }
 }
+
+test('Word a PDF: tamaño carta, títulos, viñetas, tabla y otros alfabetos (W-137)', async ({ page }) => {
+  await page.goto('/word-a-pdf')
+  const run = (text: string, o = {}) => ({ text, bold: false, italic: false, size: 11, family: 'serif' as const, ...o })
+  const docx = writeDocx({
+    page: { width: 612, height: 792 },
+    margins: { top: 72, right: 72, bottom: 72, left: 72 },
+    bodySize: 11,
+    bodyFamily: 'serif',
+    bodyFont: 'Times New Roman',
+    blocks: [
+      { kind: 'para', runs: [run('Informe trimestral', { size: 18, bold: true })], align: 'center', heading: 1, bullet: false, indent: 0 },
+      { kind: 'para', runs: [run('Resumen en español y Русский текст.')], align: 'left', heading: 0, bullet: false, indent: 0 },
+      { kind: 'para', runs: [run('Primer punto')], align: 'left', heading: 0, bullet: true, indent: 0 },
+      { kind: 'table', rows: [[[run('Mes', { bold: true })], [run('Total', { bold: true })]], [[run('Enero')], [run('1.200')]]], widths: [200, 100] },
+    ],
+  })
+  const out = await convert(page, { name: 'informe.docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', buffer: Buffer.from(docx) })
+  expect(out.name).toBe('informe.pdf')
+  const pdf = await PDFDocument.load(out.bytes)
+  expect(pdf.getPage(0).getSize()).toEqual({ width: 612, height: 792 })
+  // Times New Roman se dibuja con Tinos (mismas medidas), incrustada, y el ruso con la misma fuente.
+  const fonts = pdf.context.enumerateIndirectObjects().map(([, o]) => String((o as { get?: (k: unknown) => unknown }).get?.(PDFName.of('BaseFont')) ?? '')).filter(Boolean)
+  expect(fonts.some((f) => f.includes('Tinos'))).toBe(true)
+})
+
+test('Word a PDF: un .doc antiguo da un mensaje claro', async ({ page }) => {
+  await page.goto('/word-a-pdf')
+  const tool = page.locator('#tool')
+  await tool.locator('input[type=file]').first().setInputFiles({ name: 'viejo.docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', buffer: Buffer.from('no es un zip') })
+  await tool.getByRole('button', { name: 'Convertir', exact: true }).click()
+  await expect(tool.getByText(/Solo se pueden convertir documentos .docx/)).toBeVisible()
+})
 
 test('PowerPoint a PDF: una página por diapositiva', async ({ page }) => {
   await page.goto('/powerpoint-a-pdf')

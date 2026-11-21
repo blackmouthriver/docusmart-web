@@ -1,30 +1,8 @@
 /**
- * Word y Excel al modelo de officePdf.ts.
- * - Word: mammoth lee el .docx; se usa su árbol de documento (transformDocument),
- *   no su HTML, así no hace falta interpretar HTML (y Trusted Types no interviene).
- * - Excel: read-excel-file entrega las filas de cada hoja.
+ * Excel al modelo de officePdf.ts (read-excel-file entrega las filas de cada hoja) y lectura del
+ * tamaño de imágenes PNG/JPEG (también para Word, en docxRead.ts).
  */
-import type { OBlock, OImage, OPara, ORun, OStyle, OTable } from './officePdf'
-
-/* ───────────── Word (árbol de mammoth) ───────────── */
-
-/** Nodo del árbol de mammoth (solo lo que se usa). */
-export type MNode = {
-  type: string
-  children?: MNode[]
-  value?: string
-  styleId?: string
-  styleName?: string
-  alignment?: string
-  numbering?: { isOrdered: boolean; level: string | number } | null
-  isBold?: boolean
-  isItalic?: boolean
-  isUnderline?: boolean
-  fontSize?: number
-  breakType?: string
-  contentType?: string
-  read?: (encoding?: string) => Promise<Uint8Array | ArrayBuffer | string>
-}
+import type { OBlock } from './officePdf'
 
 /** Ancho y alto en pixeles de un PNG o JPEG (lee el encabezado). */
 export function imageSize(b: Uint8Array): { width: number; height: number; type: 'png' | 'jpg' } | null {
@@ -46,98 +24,6 @@ export function imageSize(b: Uint8Array): { width: number; height: number; type:
     }
   }
   return null
-}
-
-function styleOf(n: MNode): OStyle {
-  const id = `${n.styleId ?? ''} ${n.styleName ?? ''}`.toLowerCase().replace(/\s+/g, '')
-  if (/title|título/.test(id) && !/subtitle/.test(id)) return 'title'
-  const m = /heading(\d)|título(\d)/.exec(id)
-  const level = m ? Number(m[1] ?? m[2]) : 0
-  return level === 1 ? 'h1' : level === 2 ? 'h2' : level >= 3 ? 'h3' : 'normal'
-}
-
-const alignOf = (a?: string): OPara['align'] => (a === 'center' ? 'center' : a === 'right' || a === 'end' ? 'right' : 'left')
-
-/** Árbol de mammoth → bloques. `counters` numera las listas ordenadas por nivel. */
-export async function fromMammoth(doc: MNode): Promise<{ blocks: OBlock[]; skippedImages: number }> {
-  const blocks: OBlock[] = []
-  let skippedImages = 0
-  let counters: number[] = []
-
-  const readImage = async (n: MNode, align: OPara['align']): Promise<OImage | null> => {
-    try {
-      // En base64: sin codificación, mammoth usa Buffer, que en el navegador no existe.
-      const b64 = String(await n.read!('base64'))
-      const data = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0))
-      const size = imageSize(data)
-      if (!size) return null
-      return { kind: 'image', data, type: size.type, width: size.width, height: size.height, align: align === 'center' ? 'center' : 'left' }
-    } catch {
-      return null
-    }
-  }
-
-  /** Corridas de un párrafo; las imágenes y los saltos de página salen como bloques aparte. */
-  const paragraph = async (n: MNode): Promise<OBlock[]> => {
-    const out: OBlock[] = []
-    const runs: ORun[] = []
-    const align = alignOf(n.alignment)
-    const style = styleOf(n)
-    let list: OPara['list']
-    if (n.numbering) {
-      const level = Number(n.numbering.level) || 0
-      counters = counters.slice(0, level + 1)
-      counters[level] = (counters[level] ?? 0) + 1
-      list = { ordered: n.numbering.isOrdered, level, index: counters[level] }
-    } else counters = []
-    const flush = () => {
-      if (runs.some((r) => r.text.trim())) out.push({ kind: 'para', runs: runs.splice(0), style, align, list })
-      else runs.length = 0
-    }
-    const walk = async (node: MNode, fmt: Omit<ORun, 'text'>) => {
-      if (node.type === 'run') {
-        const f = { bold: node.isBold || fmt.bold, italic: node.isItalic || fmt.italic, underline: node.isUnderline || fmt.underline, size: node.fontSize ?? fmt.size }
-        for (const c of node.children ?? []) await walk(c, f)
-      } else if (node.type === 'text') runs.push({ text: node.value ?? '', ...fmt })
-      else if (node.type === 'tab') runs.push({ text: '\t', ...fmt })
-      else if (node.type === 'break') {
-        if (node.breakType === 'page') {
-          flush()
-          out.push({ kind: 'pagebreak' })
-        } else runs.push({ text: '\n', ...fmt })
-      } else if (node.type === 'image') {
-        flush()
-        const img = await readImage(node, align)
-        if (img) out.push(img)
-        else skippedImages++
-      } else for (const c of node.children ?? []) await walk(c, fmt)
-    }
-    for (const c of n.children ?? []) await walk(c, {})
-    flush()
-    return out
-  }
-
-  const table = async (n: MNode): Promise<OTable> => {
-    const rows: OPara[][][] = []
-    for (const row of (n.children ?? []).filter((c) => c.type === 'tableRow')) {
-      const cells: OPara[][] = []
-      for (const cell of (row.children ?? []).filter((c) => c.type === 'tableCell')) {
-        const paras: OPara[] = []
-        for (const c of cell.children ?? []) if (c.type === 'paragraph') paras.push(...(await paragraph(c)).filter((b): b is OPara => b.kind === 'para'))
-        cells.push(paras)
-      }
-      rows.push(cells)
-    }
-    const first = rows[0] ?? []
-    const header = first.length > 0 && first.every((c) => c.every((p) => p.runs.every((r) => r.bold || !r.text.trim())))
-    return { kind: 'table', rows, header }
-  }
-
-  for (const n of doc.children ?? []) {
-    if (n.type === 'paragraph') blocks.push(...(await paragraph(n)))
-    else if (n.type === 'table') blocks.push(await table(n))
-  }
-  return { blocks, skippedImages }
 }
 
 /* ───────────── Excel ───────────── */

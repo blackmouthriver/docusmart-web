@@ -904,7 +904,7 @@ export default {
       short: 'Documento .docx para PDF',
       steps: ['Escolha o documento do Word (.docx).', 'Toque em "Converter".', 'Pronto: o PDF é baixado com títulos, listas, tabelas e imagens.'],
       faq: [
-        ['Fica igual ao Word?', 'Mantém o conteúdo e a estrutura: títulos, negrito, itálico, sublinhado, listas, tabelas, imagens e quebras de página. O texto usa Carlito, uma fonte livre com as mesmas medidas da Calibri, e cirílico, grego, chinês, japonês e coreano aparecem corretamente. Alguns detalhes de layout podem variar.'],
+        ['Fica igual ao Word?', 'Muito parecido: mantém o tamanho da página, as margens, o cabeçalho e o rodapé com o número da página, os títulos, as cores e o realce, os marcadores e a numeração, os recuos e o espaçamento entre linhas, as tabelas (larguras, células mescladas e sombreamento) e as imagens no seu tamanho. O texto usa fontes livres com as mesmas medidas da Calibri e da Times New Roman, e cirílico, grego, chinês, japonês e coreano aparecem corretamente. Gráficos, SmartArt e imagens que flutuam ao redor do texto podem ficar diferentes.'],
         ['Funciona com arquivos .doc antigos?', 'Não: só .docx (Word 2007 em diante). Abra o .doc no Word e salve como .docx.'],
         ['Meus documentos são enviados à internet?', 'Não. A conversão é feita dentro do seu navegador.'],
       ],

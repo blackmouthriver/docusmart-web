@@ -34,7 +34,6 @@
     "gifenc": "^1.0.3",
     "jsqr": "^1.4.0",
     "libheif-js": "^1.23.5",
-    "mammoth": "^1.13.0",
     "mediabunny": "^1.65.2",
     "onnxruntime-web": "^1.23.2",
     "pdf-lib": "^1.17.1",
