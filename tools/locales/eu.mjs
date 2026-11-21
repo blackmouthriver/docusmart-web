@@ -909,7 +909,7 @@ export default {
       short: '.docx dokumentua PDFra',
       steps: ['Aukeratu Word dokumentua (.docx).', 'Sakatu «Bihurtu».', 'Eginda: PDFa izenburu, zerrenda, taula eta irudiekin deskargatzen da.'],
       faq: [
-        ['Word-en bezala geratzen da?', 'Edukia eta egitura gordetzen ditu: izenburuak, letra lodia, etzana, azpimarra, zerrendak, taulak, irudiak eta orrialde-jauziak. Testuak Carlito erabiltzen du, Calibriren neurri berdinak dituen letra-tipo librea, eta zirilikoa, grekoa, txinera, japoniera eta koreera ondo ikusten dira. Diseinuaren xehetasun batzuk alda daitezke.'],
+        ['Word-en bezala geratzen da?', 'Oso antzekoa: orrialdearen tamaina, marjinak, goiburua eta orri-oina orrialde-zenbakiarekin, izenburuak, koloreak eta nabarmentzeak, buletak eta zenbakiak, koskak eta lerroartea, taulak (zabalerak, gelaxka konbinatuak eta atzeko planoak) eta irudiak beren tamainan gordetzen ditu. Testuak Calibri eta Times New Romanen neurri berdinak dituzten letra-tipo libreak erabiltzen ditu, eta zirilikoa, grekoa, txinera, japoniera eta koreera ondo ikusten dira. Grafikoak, SmartArt-a eta testuaren inguruan flotatzen duten irudiak desberdinak izan daitezke.'],
         ['.doc fitxategi zaharrekin balio du?', 'Ez: .docx soilik (Word 2007tik aurrera). Ireki .doc fitxategia Word-en eta gorde .docx gisa.'],
         ['Nire dokumentuak internetera igotzen dira?', 'Ez. Bihurketa zure nabigatzailean egiten da.'],
       ],

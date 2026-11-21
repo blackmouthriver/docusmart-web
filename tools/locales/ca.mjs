@@ -904,7 +904,7 @@ export default {
       short: 'Document .docx a PDF',
       steps: ['Tria el document de Word (.docx).', 'Prem "Convertir".', 'Fet: el PDF es baixa amb títols, llistes, taules i imatges.'],
       faq: [
-        ['Queda igual que a Word?', 'Conserva el contingut i l\'estructura: títols, negreta, cursiva, subratllat, llistes, taules, imatges i salts de pàgina. El text fa servir Carlito, una font lliure amb les mateixes mides que Calibri, i el ciríl·lic, el grec, el xinès, el japonès i el coreà es veuen bé. Alguns detalls de disseny poden variar.'],
+        ['Queda igual que a Word?', 'Molt semblant: conserva la mida de la pàgina, els marges, la capçalera i el peu amb el número de pàgina, els títols, els colors i el ressaltat, les vinyetes i la numeració, els sagnats i l\'interlineat, les taules (amplades, cel·les combinades i fons) i les imatges amb la seva mida. El text fa servir fonts lliures amb les mateixes mides que Calibri i Times New Roman, i el ciríl·lic, el grec, el xinès, el japonès i el coreà es veuen bé. Els gràfics, l\'SmartArt i les imatges que floten al voltant del text poden quedar diferents.'],
         ['Serveix amb fitxers .doc antics?', 'No: només .docx (Word 2007 en endavant). Obre el .doc a Word i desa’l com a .docx.'],
         ['Els meus documents es pugen a internet?', 'No. La conversió es fa dins del teu navegador.'],
       ],

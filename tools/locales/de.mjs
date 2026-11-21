@@ -904,7 +904,7 @@ export default {
       short: '.docx-Dokument in PDF',
       steps: ['Wähle das Word-Dokument (.docx).', 'Tippe auf „Konvertieren“.', 'Fertig: Das PDF wird mit Überschriften, Listen, Tabellen und Bildern heruntergeladen.'],
       faq: [
-        ['Sieht es aus wie in Word?', 'Inhalt und Struktur bleiben erhalten: Überschriften, Fett, Kursiv, Unterstreichung, Listen, Tabellen, Bilder und Seitenumbrüche. Der Text verwendet Carlito, eine freie Schrift mit denselben Maßen wie Calibri, und Kyrillisch, Griechisch, Chinesisch, Japanisch und Koreanisch werden korrekt angezeigt. Einige Layoutdetails können abweichen.'],
+        ['Sieht es aus wie in Word?', 'Sehr ähnlich: Seitengröße, Ränder, Kopf- und Fußzeile mit Seitenzahl, Überschriften, Farben und Hervorhebungen, Aufzählungen und Nummerierungen, Einzüge und Zeilenabstand, Tabellen (Breiten, verbundene Zellen und Schattierung) und Bilder in ihrer Größe bleiben erhalten. Der Text verwendet freie Schriften mit denselben Maßen wie Calibri und Times New Roman, und Kyrillisch, Griechisch, Chinesisch, Japanisch und Koreanisch werden korrekt angezeigt. Diagramme, SmartArt und Bilder, die frei um den Text fließen, können abweichen.'],
         ['Funktioniert es mit alten .doc-Dateien?', 'Nein: nur .docx (ab Word 2007). Öffne die .doc in Word und speichere sie als .docx.'],
         ['Werden meine Dokumente ins Internet hochgeladen?', 'Nein. Die Umwandlung passiert in deinem Browser.'],
       ],

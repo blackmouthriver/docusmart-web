@@ -1,8 +1,8 @@
-// Word y Excel a PDF en el navegador (mammoth / read-excel-file + officePdf.ts).
+// Word y Excel a PDF en el navegador (docxRead / read-excel-file + officePdf.ts).
 // Lo usan el Convertidor y la vista previa de documentos de Office. Excluido de la
-// cobertura: necesita las versiones de navegador de mammoth y read-excel-file
-// (las piezas que transforman los datos se prueban en officeModels/officePdf).
-import type { MNode, SheetData } from '../core/officeModels'
+// cobertura: necesita la versión de navegador de read-excel-file
+// (las piezas que transforman los datos se prueban en docxRead/officeModels/officePdf).
+import type { SheetData } from '../core/officeModels'
 import type { CsvOptions } from '../core/csv'
 import { tr } from '../../../shared/i18n/translate'
 
@@ -27,21 +27,37 @@ function emptyError(message: string): Error {
   return e
 }
 
+/** Word (.docx) leído con docxRead.ts y diagramado con officePdf.ts: página, márgenes, encabezado y pie del documento. */
+async function readWord(file: Blob) {
+  const { readDocx, DocxError } = await import('../core/docxRead')
+  try {
+    return readDocx(new Uint8Array(await file.arrayBuffer()))
+  } catch (e) {
+    if (e instanceof DocxError) throw new OfficeFormatError('Word')
+    throw e
+  }
+}
+
 export async function docxToPdf(file: Blob, title: string): Promise<{ pdf: Uint8Array; skippedImages: number }> {
-  const [{ default: mammoth }, { fromMammoth }, { layoutPdf }] = await Promise.all([import('mammoth'), import('../core/officeModels'), import('../core/officePdf')])
-  // Se usa el árbol del documento que arma mammoth, no su HTML.
-  let tree: MNode = { type: 'document' }
-  await mammoth.convertToHtml({ arrayBuffer: await file.arrayBuffer() }, { transformDocument: (d: MNode) => (tree = d) } as never)
-  const { blocks, skippedImages } = await fromMammoth(tree)
-  if (!blocks.length) throw emptyError(tr('libErr.officeEmptyDoc'))
-  return { pdf: await layoutPdf(blocks, { title }), skippedImages }
+  const [doc, { layoutPdf }] = await Promise.all([readWord(file), import('../core/officePdf')])
+  if (!doc.blocks.some((b) => b.kind !== 'para' || b.runs.some((r) => r.text.trim()))) throw emptyError(tr('libErr.officeEmptyDoc'))
+  const pdf = await layoutPdf(doc.blocks, {
+    title,
+    pageSize: doc.pageSize,
+    margins: doc.margins,
+    header: doc.header,
+    footer: doc.footer,
+    headerDistance: doc.headerDistance,
+    footerDistance: doc.footerDistance,
+    baseSize: 10,
+  })
+  return { pdf, skippedImages: doc.skippedImages }
 }
 
 /** Texto de un Word (.docx), con una línea en blanco entre párrafos. Para leerlo en voz alta. */
 export async function docxToText(file: Blob): Promise<string> {
-  const { default: mammoth } = await import('mammoth')
-  const { value } = await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() })
-  return value
+  const [doc, { docxText }] = await Promise.all([readWord(file), import('../core/docxRead')])
+  return docxText(doc)
 }
 
 /** PowerPoint (.pptx) a PDF: una página por diapositiva (pptxRead + pptxPdf). */
