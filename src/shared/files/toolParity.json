@@ -150,6 +150,9 @@
     },
     "imagen-a-webp": {
       "app": "si"
+    },
+    "cuenta-de-cobro": {
+      "app": "evaluar"
     }
   }
 }
