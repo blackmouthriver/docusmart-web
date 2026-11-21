@@ -159,7 +159,7 @@ export default {
       faq: [
         ['Puis-je changer le texte déjà présent ?', 'Vous pouvez le couvrir avec l’outil « Masquer » (un rectangle blanc) et écrire le nouveau texte par-dessus avec « Texte ». Le résultat semble corrigé.'],
         ['« Masquer » efface-t-il ce qu’il y a dessous ?', 'Non : il le couvre, mais le texte d’origine reste dans le fichier. Pour supprimer vraiment des données sensibles, utilisez « Caviarder un PDF ».'],
-        ['Quelles polices puis-je utiliser ?', 'Trois familles standard du PDF (sans, serif et monospace), en normal ou gras, avec les accents. Les emojis et autres alphabets ne peuvent pas être enregistrés avec ces polices.'],
+        ['Quelles polices puis-je utiliser ?', 'Trois familles (sans, serif et monospace), en normal ou en gras, avec les accents et aussi d\'autres alphabets : cyrillique, grec, chinois, japonais et coréen. Les emojis ne sont pas enregistrés.'],
         ['Mes fichiers sont-ils envoyés sur Internet ?', 'Non. Tout se fait dans votre navigateur, sans inscription.'],
       ],
     },
@@ -700,7 +700,7 @@ export default {
       steps: ["Choisissez la présentation PowerPoint (.pptx).", "Appuyez sur «Convertir».", "Chaque diapositive devient une page du PDF, au même format que la présentation."],
       faq: [
         ["Qu'est-ce qui est conservé de la présentation ?", "Le texte avec ses tailles, le gras et les couleurs, les puces, les images, les formes, les tableaux et l'arrière-plan de chaque diapositive. Les animations, les vidéos et les graphiques de PowerPoint ne sont pas inclus."],
-        ["Le rendu est-il identique à PowerPoint ?", "Très proche : chaque élément reste à sa place. Le texte utilise une police PDF standard, les polices peuvent donc légèrement changer."],
+        ["Le rendu est-il identique à PowerPoint ?", "Très proche : chaque élément reste à sa place. Le texte utilise Carlito, une police libre aux mêmes dimensions que Calibri (celle de PowerPoint), et le cyrillique, le grec, le chinois, le japonais et le coréen s'affichent correctement."],
         ["Est-ce que ça marche avec les anciens fichiers .ppt ?", "Non. Ouvrez-les dans PowerPoint et enregistrez-les au format .pptx ; ce format se convertit sans problème."],
         ["Mes présentations sont-elles envoyées sur internet ?", "Non. La conversion se fait dans votre navigateur : le fichier ne quitte jamais votre appareil."],
       ],
@@ -904,7 +904,7 @@ export default {
       short: 'Document .docx en PDF',
       steps: ['Choisissez le document Word (.docx).', 'Appuyez sur « Convertir ».', 'C’est prêt : le PDF se télécharge avec titres, listes, tableaux et images.'],
       faq: [
-        ['Est-ce identique à Word ?', 'Le contenu et la structure sont conservés : titres, gras, italique, souligné, listes, tableaux, images et sauts de page. La police et certains détails de mise en page peuvent varier, car des polices PDF standard sont utilisées.'],
+        ['Est-ce identique à Word ?', 'Le contenu et la structure sont conservés : titres, gras, italique, souligné, listes, tableaux, images et sauts de page. Le texte utilise Carlito, une police libre aux mêmes dimensions que Calibri, et le cyrillique, le grec, le chinois, le japonais et le coréen s\'affichent correctement. Certains détails de mise en page peuvent varier.'],
         ['Ça marche avec les anciens fichiers .doc ?', 'Non : seulement .docx (Word 2007 et plus récent). Ouvrez le .doc dans Word et enregistrez-le en .docx.'],
         ['Mes documents sont-ils envoyés sur Internet ?', 'Non. La conversion se fait dans votre navigateur.'],
       ],
@@ -1013,7 +1013,7 @@ export default {
       ],
       faq: [
         ["À quoi ressemble le filigrane ?", "À un grand texte en diagonale, bleu et semi-transparent, au centre de chaque page. Le contenu reste lisible en dessous."],
-        ["Puis-je utiliser des accents ?", "Oui. Le filigrane accepte les lettres de l’alphabet latin avec accents, comme é, ç ou ñ. Les autres alphabets (cyrillique, chinois, japonais, coréen) ne sont pas encore pris en charge."],
+        ["Puis-je utiliser des accents ?", "Oui. Le filigrane accepte les accents, le ç et le ñ, ainsi que d'autres alphabets : cyrillique, grec, chinois, japonais et coréen."],
         ["Peut-on l’enlever ensuite ?", "Le filigrane est intégré aux pages du nouveau PDF. Gardez votre original au cas où vous auriez besoin d’une version sans filigrane."],
         ["Mon PDF est-il envoyé sur un serveur ?", "Non. Le filigrane est ajouté dans votre navigateur ; le document ne quitte pas votre appareil."],
       ],

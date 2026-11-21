@@ -110,7 +110,7 @@ export type CvLabels = {
   present: string
 }
 
-/** Fallback cuando los títulos del idioma no caben en las fuentes estándar del PDF (cirílico, CJK…). */
+/** Títulos en inglés (referencia para pruebas). */
 export const ENGLISH_CV_LABELS: CvLabels = { profile: 'Profile', experience: 'Experience', education: 'Education', skills: 'Skills', languages: 'Languages', courses: 'Courses and certifications', references: 'References', present: 'Present' }
 
 /** "2021 – 2023", "2021 – Actualidad", "2021" o "". */

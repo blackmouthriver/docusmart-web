@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { PDFDocument, degrees } from 'pdf-lib'
+import { PDFDocument, PDFName, degrees } from 'pdf-lib'
 import { inflateSync } from 'fflate'
-import { BASELINE, applyEdits, hexToRgb, printableLines, viewRectToPdf, type EditItem } from '../../../../../src/features/pdf/core/pdfEdit'
+import { BASELINE, applyEdits, hexToRgb, textLines, viewRectToPdf, type EditItem } from '../../../../../src/features/pdf/core/pdfEdit'
 import { encodePng } from '../../../../../src/features/pdf/core/pdfImages'
 
 async function makePdf(rotate = 0) {
@@ -32,8 +32,8 @@ describe('utilidades', () => {
     expect(hexToRgb('rojo')).toEqual({ type: 'RGB', red: 0, green: 0, blue: 0 })
   })
 
-  it('deja solo lo que las fuentes estándar pueden dibujar', () => {
-    expect(printableLines('Año ✓\r\n\tfin 🎉')).toEqual(['Año', 'fin'])
+  it('separa las líneas y cambia los tabuladores por espacios', () => {
+    expect(textLines('Año ✓ \r\n\tfin 🎉')).toEqual(['Año ✓', '    fin 🎉'])
   })
 
   it('traduce rectángulos de la página vista, también rotada', () => {
@@ -57,6 +57,23 @@ describe('applyEdits', () => {
     expect(ops).toMatch(/1 0 0 1 20 292\.18 Tm/)
     expect(ops).toMatch(/\/Times-Bold-\d+ 20 Tf/)
     expect(BASELINE.times).toBe(0.991)
+  })
+
+  it('con otros alfabetos usa la fuente libre de la misma familia', async () => {
+    const items: EditItem[] = [
+      { kind: 'text', page: 0, x: 0.1, y: 0.1, text: 'Привет 世界 한국', size: 14, color: '#000', font: 'times', bold: false },
+      { kind: 'text', page: 0, x: 0.1, y: 0.3, text: 'Latin', size: 14, color: '#000', font: 'courier', bold: false },
+    ]
+    const out = await applyEdits(await makePdf(), items)
+    const fonts = (await PDFDocument.load(out)).context
+      .enumerateIndirectObjects()
+      .map(([, o]) => String((o as { get?: (k: unknown) => unknown }).get?.(PDFName.of('BaseFont')) ?? ''))
+      .filter(Boolean)
+    expect(fonts.some((f) => f.includes('Tinos'))).toBe(true)
+    expect(fonts.some((f) => f.includes('DroidSansFallback'))).toBe(true)
+    expect(fonts.some((f) => f.includes('NanumGothic'))).toBe(true)
+    // El texto latino sigue con la fuente estándar (no se descarga nada).
+    expect(fonts).toContain('/Courier')
   })
 
   it('gira el texto y las imágenes en páginas rotadas', async () => {

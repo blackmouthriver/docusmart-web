@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { PDFDocument, StandardFonts } from 'pdf-lib'
+import { PDFDocument, PDFName, StandardFonts } from 'pdf-lib'
 import { extractPages, merge, numberPages, pageCount, rotate, sanitizeWinAnsi, splitEach, watermark } from '../../../../../src/features/pdf/core/pdfTools'
 
 async function makePdf(pages: number): Promise<ArrayBuffer> {
@@ -39,6 +39,19 @@ describe('pdfTools', () => {
     const src = await makePdf(2)
     expect(await pageCount(buf(await numberPages(src, { position: 'bottom-right', format: 'n-of-total' })))).toBe(2)
     expect(await pageCount(buf(await watermark(src, 'Confidencial ✓ ñ')))).toBe(2)
+  })
+
+  it('la marca de agua usa la Helvetica con latín y la fuente incrustada con otros alfabetos', async () => {
+    const src = await makePdf(1)
+    const baseFonts = async (bytes: Uint8Array) =>
+      (await PDFDocument.load(bytes)).context
+        .enumerateIndirectObjects()
+        .map(([, o]) => String((o as { get?: (k: unknown) => unknown }).get?.(PDFName.of('BaseFont')) ?? ''))
+        .filter(Boolean)
+    expect(await baseFonts(await watermark(src, 'Borrador'))).toContain('/Helvetica-Bold')
+    const ru = await baseFonts(await watermark(src, 'Конфиденциально 机密'))
+    expect(ru.some((f) => f.includes('Carlito-Bold'))).toBe(true)
+    expect(ru.some((f) => f.includes('DroidSansFallback'))).toBe(true)
   })
 
   it('rechaza archivos que no son PDF', async () => {

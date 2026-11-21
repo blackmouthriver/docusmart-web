@@ -9,9 +9,7 @@ import { download } from '../../../shared/files/files'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
-import { isWinAnsi } from '../../integrity/core/certificate'
 import {
-  ENGLISH_CV_LABELS,
   cvFileBase,
   cvPdfBlocks,
   cvWordDoc,
@@ -137,10 +135,9 @@ export function CvTool() {
     }
   }
 
-  const labels = (): { l: CvLabels; latin: boolean } => {
+  const labels = (): { l: CvLabels } => {
     const local: CvLabels = { profile: tr('cv.profile'), experience: tr('cv.experience'), education: tr('cv.education'), skills: tr('cv.skills'), languages: tr('cv.languages'), courses: tr('cv.courses'), references: tr('cv.references'), present: tr('cv.present') }
-    const latin = isWinAnsi(JSON.stringify(local))
-    return { l: local, latin }
+    return { l: local }
   }
 
   const create = async (format: 'pdf' | 'docx') => {
@@ -148,12 +145,11 @@ export function CvTool() {
     setError(null)
     try {
       const base = cvFileBase(cv.name, tr('file.cv'))
-      const { l, latin } = labels()
+      const { l } = labels()
       const pic = cv.template === 'foto' && photo ? photo : undefined
       if (format === 'pdf') {
         const { layoutPdf } = await import('../../convert/core/officePdf')
-        // Las fuentes estándar del PDF solo cubren el alfabeto latino: si no, los títulos van en inglés.
-        const pdf = await layoutPdf(cvPdfBlocks(cv, latin ? l : ENGLISH_CV_LABELS, pic), { title: cv.name.trim() || tr('tools.cv') })
+        const pdf = await layoutPdf(cvPdfBlocks(cv, l, pic), { title: cv.name.trim() || tr('tools.cv') })
         setOutput(new File([pdf as BlobPart], `${base}.pdf`, { type: 'application/pdf' }))
       } else {
         const { writeDocx } = await import('../../convert/core/pdfWord')

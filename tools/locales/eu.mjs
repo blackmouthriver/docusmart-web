@@ -159,7 +159,7 @@ export default {
       faq: [
         ['PDFak duen testua alda dezaket?', '«Estali» tresnarekin estal dezakezu (lauki zuri bat) eta testu berria gainean idatzi «Testua» tresnarekin. Emaitzak zuzendu izan bazenu bezalako itxura du.'],
         ['«Estali»k azpian dagoena ezabatzen du?', 'Ez: estali egiten du, baina jatorrizko testua fitxategian dago oraindik. Datu sentikorrak benetan ezabatu behar badituzu, erabili «Ezabatu PDFko datuak».'],
-        ['Zein letra-tipo erabil ditzaket?', 'PDFen hiru familia estandar (sans, serif eta tarte bakarrekoa), normal edo lodi, azentuekin. Emojiak eta beste alfabeto batzuk ezin dira letra-tipo horiekin gorde.'],
+        ['Zein letra-tipo erabil ditzaket?', 'Hiru familia (sans, serif eta monoespaziatua), normalean edo lodian, azentuekin eta beste alfabeto batzuekin ere: zirilikoa, grekoa, txinera, japoniera eta koreera. Emojiak ez dira gordetzen.'],
         ['Nire fitxategiak internetera igotzen dira?', 'Ez. Dena zure nabigatzailean egiten da, erregistratu gabe.'],
       ],
     },
@@ -705,7 +705,7 @@ export default {
       steps: ["Aukeratu PowerPoint aurkezpena (.pptx).", "Sakatu «Bihurtu».", "Diapositiba bakoitza PDFaren orrialde bat bihurtzen da, aurkezpenaren tamaina berean."],
       faq: [
         ["Zer gordetzen da aurkezpenetik?", "Testua bere tamaina, lodiera eta koloreekin, buletak, irudiak, formak, taulak eta diapositiba bakoitzaren hondoa. PowerPoint-en animazioak, bideoak eta grafikoak ez dira sartzen."],
-        ["PowerPoint-en bezala ikusten da?", "Oso antzera: elementu bakoitza bere lekuan geratzen da. Testuak PDFko letra-tipo estandarra erabiltzen du, beraz letra-tipoak apur bat alda daitezke."],
+        ["PowerPoint-en bezala ikusten da?", "Oso antzekoa: elementu bakoitza bere lekuan geratzen da. Testuak Carlito erabiltzen du, Calibriren (PowerPointen letra-tipoaren) neurri berdinak dituen letra-tipo librea, eta zirilikoa, grekoa, txinera, japoniera eta koreera ondo ikusten dira."],
         [".ppt fitxategi zaharrekin balio du?", "Ez. Ireki PowerPoint-en eta gorde .pptx gisa; formatu hori ondo bihurtzen da."],
         ["Nire aurkezpenak internetera igotzen dira?", "Ez. Bihurketa zure nabigatzailean egiten da: fitxategia ez da zure gailutik ateratzen."],
       ],
@@ -909,7 +909,7 @@ export default {
       short: '.docx dokumentua PDFra',
       steps: ['Aukeratu Word dokumentua (.docx).', 'Sakatu «Bihurtu».', 'Eginda: PDFa izenburu, zerrenda, taula eta irudiekin deskargatzen da.'],
       faq: [
-        ['Word-en bezala geratzen da?', 'Edukia eta egitura gordetzen ditu: izenburuak, letra lodia, etzana, azpimarratua, zerrendak, taulak, irudiak eta orri-jauziak. Letra-tipoa eta diseinuaren xehetasun batzuk alda daitezke, PDFen letra-tipo estandarrak erabiltzen direlako.'],
+        ['Word-en bezala geratzen da?', 'Edukia eta egitura gordetzen ditu: izenburuak, letra lodia, etzana, azpimarra, zerrendak, taulak, irudiak eta orrialde-jauziak. Testuak Carlito erabiltzen du, Calibriren neurri berdinak dituen letra-tipo librea, eta zirilikoa, grekoa, txinera, japoniera eta koreera ondo ikusten dira. Diseinuaren xehetasun batzuk alda daitezke.'],
         ['.doc fitxategi zaharrekin balio du?', 'Ez: .docx soilik (Word 2007tik aurrera). Ireki .doc fitxategia Word-en eta gorde .docx gisa.'],
         ['Nire dokumentuak internetera igotzen dira?', 'Ez. Bihurketa zure nabigatzailean egiten da.'],
       ],
@@ -1018,7 +1018,7 @@ export default {
       ],
       faq: [
         ["Nolakoa da ur-marka?", "Testu handi bat da, diagonalean, urdina eta erdi gardena, orri bakoitzaren erdian. Edukia azpian irakurtzen jarraitzen da."],
-        ["Azentuak eta ñ erabil ditzaket?", "Bai. Markak alfabeto latinoko letrak onartzen ditu, azentu, ñ eta çrekin. Beste alfabetoak (zirilikoa, txinera, japoniera, koreera) oraingoz ez."],
+        ["Azentuak eta ñ erabil ditzaket?", "Bai. Markak azentuak, ñ eta ç onartzen ditu, baita beste alfabeto batzuk ere: zirilikoa, grekoa, txinera, japoniera eta koreera."],
         ["Gero ken daiteke?", "Marka PDF berriaren orrietan txertatuta geratzen da. Gorde jatorrizkoa, geroago markarik gabeko bertsio bat behar baduzu ere."],
         ["Nire PDFa zerbitzariren batera igotzen da?", "Ez. Marka zure nabigatzailean gehitzen da; dokumentua ez da zure gailutik ateratzen."],
       ],

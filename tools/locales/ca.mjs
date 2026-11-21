@@ -159,7 +159,7 @@ export default {
       faq: [
         ['Puc canviar el text que ja té el PDF?', 'El pots tapar amb l’eina "Tapar" (un requadre blanc) i escriure-hi el text nou a sobre amb "Text". El resultat es veu com si l’haguessis corregit.'],
         ['"Tapar" esborra el que hi ha a sota?', 'No: ho cobreix, però el text original continua dins del fitxer. Si has d’eliminar dades sensibles de debò, fes servir "Tatxar PDF".'],
-        ['Quines lletres puc fer servir?', 'Tres famílies estàndard de PDF (sans, serif i monoespaiada), normal o negreta, amb accents. Els emojis i altres alfabets no es poden desar amb aquestes lletres.'],
+        ['Quines lletres puc fer servir?', 'Tres famílies (sans, serif i monoespaiada), en normal o negreta, amb accents, ç i l·l, i també altres alfabets: ciríl·lic, grec, xinès, japonès i coreà. Els emojis no es desen.'],
         ['Els meus fitxers es pugen a internet?', 'No. Tot es fa dins del teu navegador, sense registre.'],
       ],
     },
@@ -700,7 +700,7 @@ export default {
       steps: ["Tria la presentació de PowerPoint (.pptx).", "Prem \"Convertir\".", "Cada diapositiva queda com una pàgina del PDF, de la mateixa mida que la presentació."],
       faq: [
         ["Què es conserva de la presentació?", "El text amb les seves mides, negretes i colors, les vinyetes, les imatges, les formes, les taules i el fons de cada diapositiva. Les animacions, els vídeos i els gràfics de PowerPoint no s'hi inclouen."],
-        ["Es veu igual que al PowerPoint?", "Molt semblant: cada element queda al seu lloc. El text fa servir una font estàndard de PDF, així que els tipus de lletra poden canviar una mica."],
+        ["Es veu igual que al PowerPoint?", "Molt semblant: cada element queda al seu lloc. El text fa servir Carlito, una font lliure amb les mateixes mides que Calibri (la del PowerPoint), i el ciríl·lic, el grec, el xinès, el japonès i el coreà es veuen bé."],
         ["Funciona amb fitxers .ppt antics?", "No. Obre'ls al PowerPoint i desa'ls com a .pptx; aquest format sí que es converteix."],
         ["Les meves presentacions es pugen a internet?", "No. La conversió es fa dins del teu navegador: el fitxer no surt del teu dispositiu."],
       ],
@@ -904,7 +904,7 @@ export default {
       short: 'Document .docx a PDF',
       steps: ['Tria el document de Word (.docx).', 'Prem "Convertir".', 'Fet: el PDF es baixa amb títols, llistes, taules i imatges.'],
       faq: [
-        ['Queda igual que a Word?', 'Conserva el contingut i l’estructura: títols, negreta, cursiva, subratllat, llistes, taules, imatges i salts de pàgina. La lletra i alguns detalls de disseny poden variar, perquè es fan servir lletres estàndard de PDF.'],
+        ['Queda igual que a Word?', 'Conserva el contingut i l\'estructura: títols, negreta, cursiva, subratllat, llistes, taules, imatges i salts de pàgina. El text fa servir Carlito, una font lliure amb les mateixes mides que Calibri, i el ciríl·lic, el grec, el xinès, el japonès i el coreà es veuen bé. Alguns detalls de disseny poden variar.'],
         ['Serveix amb fitxers .doc antics?', 'No: només .docx (Word 2007 en endavant). Obre el .doc a Word i desa’l com a .docx.'],
         ['Els meus documents es pugen a internet?', 'No. La conversió es fa dins del teu navegador.'],
       ],
@@ -1013,7 +1013,7 @@ export default {
       ],
       faq: [
         ["Com es veu la marca d’aigua?", "Com un text gran en diagonal, blau i semitransparent, al centre de cada pàgina. El contingut es continua llegint a sota."],
-        ["Puc fer servir accents i la ç?", "Sí. La marca admet lletres de l’alfabet llatí amb accents, ç i ñ. Altres alfabets (ciríl·lic, xinès, japonès, coreà) de moment no."],
+        ["Puc fer servir accents i la ç?", "Sí. La marca admet accents, ç, l·l i ñ, i també altres alfabets: ciríl·lic, grec, xinès, japonès i coreà."],
         ["Es pot treure després?", "La marca queda incorporada a les pàgines del nou PDF. Guarda l’original per si després necessites una versió sense marca."],
         ["El meu PDF es puja a algun servidor?", "No. La marca s’afegeix dins del teu navegador; el document no surt del teu dispositiu."],
       ],

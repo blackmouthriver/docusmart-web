@@ -6,7 +6,7 @@ import { child, decodeXml, find, parseXml, path } from '../../../../../src/featu
 import { PptxError, colorOf, readPptx, resolvePath, tint } from '../../../../../src/features/convert/core/pptxRead'
 import { deckToPdf, hexColor, layoutParagraph } from '../../../../../src/features/convert/core/pptxPdf'
 import { buildPptx, fitImage, slideSize } from '../../../../../src/features/convert/core/pptxWrite'
-import { StandardFonts } from 'pdf-lib'
+import { loadFonts } from '../../../../../src/shared/pdf/pdfFonts'
 
 // Presentación hecha con PowerPoint (portada, lista con viñetas, forma, tabla e imagen), sin metadatos.
 const REAL = new Uint8Array(readFileSync('tests/fixtures/office/presentacion.pptx'))
@@ -175,8 +175,7 @@ describe('readPptx con casos especiales', () => {
 describe('layoutParagraph', () => {
   it('corta por palabras y parte las muy largas', async () => {
     const doc = await PDFDocument.create()
-    const f = await doc.embedFont(StandardFonts.Helvetica)
-    const fonts = { regular: f, bold: f, italic: f, boldItalic: f }
+    const fonts = await loadFonts(doc, 'sans', [], '')
     const run = (text: string) => ({ text, size: 12, bold: false, italic: false, underline: false, color: '000000' })
     const lines = layoutParagraph({ runs: [run('uno dos tres cuatro cinco seis siete')], align: 'l', bullet: null, level: 0 }, fonts, 60)
     expect(lines.length).toBeGreaterThan(2)

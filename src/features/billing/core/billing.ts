@@ -213,7 +213,7 @@ export type BillingLabels = {
   received: string
 }
 
-/** Fallback cuando los textos del idioma no caben en las fuentes estándar del PDF (cirílico, CJK…). */
+/** Etiquetas en inglés (referencia para pruebas). */
 export const ENGLISH_BILLING_LABELS: BillingLabels = {
   title: { cobro: 'Bill for services', cotizacion: 'Quote', recibo: 'Receipt' },
   number: 'No.',
