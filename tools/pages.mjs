@@ -7,7 +7,7 @@
 //       { kind: 'qr' }
 //       { kind: 'archive', id: 'crear'|'extraer' }
 //       { kind: 'hash' }
-//       { kind: 'doc', id: 'cobro' }
+//       { kind: 'doc', id: 'cobro'|'cv' }
 //
 // alsoIn: otras categorías donde también se lista (W-119), sin duplicar la página.
 //       { kind: 'img', id: 'comprimir'|'redimensionar'|'recortar'|'rotar'|'fondo'|'documento'|'marca'|'ajustar' }
@@ -624,6 +624,30 @@ export const pages = [
       ["¿Calcula el IVA y la retención?", "Sí. Escribe el porcentaje de impuesto (IVA u otro) y, si te practican retención, su porcentaje: se calculan sobre el subtotal y el total se actualiza al instante. También escribe el valor en letras."],
       ["¿Se guardan mis datos y la numeración?", "Si marcas la opción, tus datos (nombre, documento, dirección, teléfono, correo y país) se recuerdan en este navegador para la próxima vez; la cuenta para el pago nunca se guarda. La numeración (CC-0001, COT-0001, REC-0001) avanza sola. Nada se sube a internet."],
       ["¿Mis datos y los de mis clientes se suben a internet?", "No. El PDF se arma dentro de tu navegador: ni tus datos, ni los de tus clientes, ni tu firma salen de tu equipo."],
+    ],
+  },
+  {
+    slug: 'hoja-de-vida',
+    category: 'documentos',
+    tool: { kind: 'doc', id: 'cv' },
+    title: "Hoja de vida gratis en PDF o Word, compatible con ATS | DocuSmart",
+    description:
+      "Haz tu hoja de vida en minutos: plantilla clásica (ATS) o con foto, experiencia, estudios, habilidades e idiomas, en PDF o Word. Gratis y sin registro.",
+    h1: "Hoja de vida en PDF o Word",
+    howTo: "Cómo hacer tu hoja de vida en 3 pasos",
+    lead: "Crea una hoja de vida clara y profesional, lista para enviar a empresas o subir a portales de empleo, sin registrarte y sin que tus datos salgan de tu equipo.",
+    short: "Tu hoja de vida en PDF o Word",
+    steps: [
+      "Elige la plantilla clásica (ATS) o con foto y escribe tus datos personales y tu perfil.",
+      "Agrega tu experiencia, estudios, habilidades, idiomas, cursos y referencias; ordénalos con las flechas.",
+      "Pulsa \"Crear PDF\" o \"Crear Word (.docx)\" y descárgala. Guarda el borrador para editarla después.",
+    ],
+    faq: [
+      ["¿Qué es una hoja de vida compatible con ATS?", "Muchas empresas y portales de empleo usan programas (ATS) que leen las hojas de vida antes que una persona. La plantilla clásica usa una sola columna, títulos estándar y texto real, sin tablas ni imágenes, para que esos programas la lean bien."],
+      ["¿Pongo foto en mi hoja de vida?", "En muchos países de Latinoamérica se acostumbra; en portales de empleo y en otros países se recomienda no ponerla. Por eso hay dos plantillas: elige \"Con foto\" solo si la empresa la pide."],
+      ["¿Puedo editarla en Word?", "Sí. Con \"Crear Word (.docx)\" obtienes un archivo que se abre y se edita en Word, Google Docs o LibreOffice, con títulos y viñetas reales."],
+      ["¿Cómo sigo editándola otro día?", "Pulsa \"Guardar borrador\": se descarga un archivo .json con tu hoja de vida. Otro día, \"Abrir borrador\" la carga de nuevo para seguir editando."],
+      ["¿Mis datos se suben a internet?", "No. Todo se hace en tu navegador: tu hoja de vida, tu foto y tus datos nunca salen de tu equipo, y no se guardan en ningún servidor."],
     ],
   },
   {

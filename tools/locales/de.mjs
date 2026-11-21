@@ -506,6 +506,23 @@ export default {
         ["Werden meine Daten und die meiner Kunden hochgeladen?", "Nein. Das PDF wird in deinem Browser erstellt: Deine Daten, die deiner Kunden und deine Unterschrift verlassen nie dein Gerät."],
       ],
     },
+    'hoja-de-vida': {
+      slug: "lebenslauf-erstellen",
+      title: "Lebenslauf kostenlos erstellen: PDF oder Word, ATS-tauglich | DocuSmart",
+      description: "Erstelle deinen Lebenslauf in Minuten: klassische ATS-Vorlage oder mit Foto, Erfahrung, Ausbildung, Kenntnisse und Sprachen, als PDF oder Word. Gratis, ohne Anmeldung.",
+      h1: "Lebenslauf als PDF oder Word",
+      howTo: "So erstellst du deinen Lebenslauf in 3 Schritten",
+      lead: "Erstelle einen klaren, professionellen Lebenslauf, bereit für Bewerbungen oder Jobportale, ohne Anmeldung und ohne dass deine Daten dein Gerät verlassen.",
+      short: "Dein Lebenslauf als PDF oder Word",
+      steps: ["Wähle die klassische Vorlage (ATS) oder die mit Foto und gib deine Angaben und dein Kurzprofil ein.", "Füge Erfahrung, Ausbildung, Kenntnisse, Sprachen, Kurse und Referenzen hinzu; ordne sie mit den Pfeilen.", "Tippe auf „PDF erstellen“ oder „Word erstellen (.docx)“ und lade ihn herunter. Speichere den Entwurf, um später weiterzumachen."],
+      faq: [
+        ["Was ist ein ATS-tauglicher Lebenslauf?", "Viele Unternehmen und Jobportale nutzen Programme (ATS), die Lebensläufe vor einem Menschen lesen. Die klassische Vorlage nutzt eine Spalte, Standardüberschriften und echten Text, ohne Tabellen oder Bilder, damit diese Programme ihn richtig lesen."],
+        ["Gehört ein Foto in den Lebenslauf?", "In Deutschland ist es üblich, aber freiwillig; auf Jobportalen und in vielen Ländern lässt man es besser weg. Deshalb gibt es zwei Vorlagen: Wähle „Mit Foto“ nur, wenn es gewünscht ist."],
+        ["Kann ich ihn in Word bearbeiten?", "Ja. „Word erstellen (.docx)“ liefert eine Datei, die du in Word, Google Docs oder LibreOffice bearbeiten kannst, mit echten Überschriften und Aufzählungen."],
+        ["Wie arbeite ich an einem anderen Tag weiter?", "Tippe auf „Entwurf speichern“: Eine .json-Datei mit deinem Lebenslauf wird heruntergeladen. Später lädt „Entwurf öffnen“ sie wieder."],
+        ["Werden meine Daten hochgeladen?", "Nein. Alles passiert in deinem Browser: Lebenslauf, Foto und Daten verlassen nie dein Gerät und werden auf keinem Server gespeichert."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'dateien-komprimieren',
       title: 'Dateien online als ZIP oder 7Z packen, mit Passwort | DocuSmart',

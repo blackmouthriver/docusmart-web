@@ -626,6 +626,13 @@ p { margin: 0; }
 .agenda-what { display: grid; gap: 2px; min-width: 0; }
 .agenda-what small { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 520px) { .agenda-item { grid-template-columns: 1fr auto; } .agenda-time { grid-column: 1 / -1; } }
+.cv-list { display: grid; gap: 10px; }
+.cv-entry { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 12px; border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line) inset; }
+.cv-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 10px; min-width: 0; }
+.cv-wide { grid-column: 1 / -1; }
+.cv-entry-actions { display: flex; flex-direction: column; gap: 2px; }
+.cv-photo img { width: 72px; height: 96px; object-fit: cover; border-radius: 10px; box-shadow: 0 0 0 1px var(--line); }
+@media (max-width: 520px) { .cv-entry { grid-template-columns: 1fr; } .cv-entry-actions { flex-direction: row; justify-content: flex-end; } }
 .bill-meta .field, .bill-taxes .field { flex: 1; min-width: 130px; }
 .bill-country { max-width: 420px; }
 .bill-idtype { flex: 0 1 190px !important; min-width: 150px; }

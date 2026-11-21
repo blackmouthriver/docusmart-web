@@ -511,6 +511,23 @@ export default {
         ["Nire datuak eta bezeroenak internetera igotzen dira?", "Ez. PDFa zure nabigatzailean sortzen da: zure datuak, bezeroenak eta zure sinadura ez dira inoiz gailutik ateratzen."],
       ],
     },
+    'hoja-de-vida': {
+      slug: "curriculuma",
+      title: "Curriculuma doan PDFn edo Worden, ATSrekin bateragarria | DocuSmart",
+      description: "Egin zure curriculuma minutu gutxitan: txantiloi klasikoa (ATS) edo argazkiarekin, esperientzia, prestakuntza, trebetasunak eta hizkuntzak, PDFn edo Worden. Doan.",
+      h1: "Curriculuma PDFn edo Worden",
+      howTo: "Nola egin zure curriculuma 3 urratsetan",
+      lead: "Sortu curriculum argi eta profesional bat, enpresetara bidaltzeko edo lan-atarietara igotzeko prest, erregistratu gabe eta zure datuak gailutik atera gabe.",
+      short: "Zure curriculuma PDFn edo Worden",
+      steps: ["Aukeratu txantiloi klasikoa (ATS) edo argazkiarekin eta idatzi zure datu pertsonalak eta profila.", "Gehitu esperientzia, prestakuntza, trebetasunak, hizkuntzak, ikastaroak eta erreferentziak; ordenatu geziekin.", "Sakatu «Sortu PDFa» edo «Sortu Worda (.docx)» eta deskargatu. Gorde zirriborroa geroago editatzeko."],
+      faq: [
+        ["Zer da ATSrekin bateragarria den curriculum bat?", "Enpresa eta lan-ataria askok programak (ATS) erabiltzen dituzte curriculumak pertsona batek baino lehen irakurtzeko. Txantiloi klasikoak zutabe bat, izenburu estandarrak eta benetako testua erabiltzen ditu, taularik eta irudirik gabe, programa horiek ondo irakur dezaten."],
+        ["Argazkia jarri behar dut?", "Ohikoa da baina hautazkoa; lan-atarietan eta herrialde askotan hobe da ez jartzea. Horregatik daude bi txantiloi: aukeratu «Argazkiarekin» enpresak eskatzen badu bakarrik."],
+        ["Worden edita dezaket?", "Bai. «Sortu Worda (.docx)» aukerarekin Worden, Google Docsen edo LibreOfficen ireki eta edita daitekeen fitxategi bat lortzen duzu, benetako izenburu eta buletekin."],
+        ["Nola jarraitu beste egun batean?", "Sakatu «Gorde zirriborroa»: zure curriculuma duen .json fitxategi bat deskargatzen da. Beste egun batean, «Ireki zirriborroa» aukerak berriro kargatzen du."],
+        ["Nire datuak internetera igotzen dira?", "Ez. Dena zure nabigatzailean egiten da: curriculuma, argazkia eta datuak ez dira inoiz gailutik ateratzen ezta zerbitzarietan gordetzen."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'fitxategiak-konprimitu',
       title: 'Konprimitu fitxategiak ZIP edo 7Z formatuan linean, pasahitzarekin | DocuSmart',

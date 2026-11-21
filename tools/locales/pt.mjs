@@ -506,6 +506,23 @@ export default {
         ["Meus dados e os dos meus clientes são enviados à internet?", "Não. O PDF é montado no seu navegador: seus dados, os dos seus clientes e sua assinatura não saem do seu dispositivo."],
       ],
     },
+    'hoja-de-vida': {
+      slug: "curriculo",
+      title: "Currículo grátis em PDF ou Word, compatível com ATS | DocuSmart",
+      description: "Faça seu currículo em minutos: modelo clássico (ATS) ou com foto, experiência, formação, habilidades e idiomas, em PDF ou Word. Grátis e sem cadastro.",
+      h1: "Currículo em PDF ou Word",
+      howTo: "Como fazer seu currículo em 3 passos",
+      lead: "Crie um currículo claro e profissional, pronto para enviar a empresas ou cadastrar em sites de emprego, sem cadastro e sem seus dados saírem do seu dispositivo.",
+      short: "Seu currículo em PDF ou Word",
+      steps: ["Escolha o modelo clássico (ATS) ou com foto e preencha seus dados pessoais e seu resumo.", "Adicione sua experiência, formação, habilidades, idiomas, cursos e referências; ordene com as setas.", "Toque em \"Criar PDF\" ou \"Criar Word (.docx)\" e baixe. Salve o rascunho para editar depois."],
+      faq: [
+        ["O que é um currículo compatível com ATS?", "Muitas empresas e sites de emprego usam programas (ATS) que leem os currículos antes de uma pessoa. O modelo clássico usa uma coluna, títulos padrão e texto real, sem tabelas nem imagens, para que esses programas o leiam bem."],
+        ["Coloco foto no currículo?", "No Brasil, em geral, não é necessário, e em sites de emprego é melhor não colocar. Por isso há dois modelos: escolha \"Com foto\" só se a empresa pedir."],
+        ["Posso editar no Word?", "Sim. Com \"Criar Word (.docx)\" você recebe um arquivo que abre e edita no Word, Google Docs ou LibreOffice, com títulos e marcadores reais."],
+        ["Como continuo editando outro dia?", "Toque em \"Salvar rascunho\": um arquivo .json com seu currículo é baixado. Outro dia, \"Abrir rascunho\" o carrega de novo para continuar editando."],
+        ["Meus dados são enviados para a internet?", "Não. Tudo acontece no seu navegador: seu currículo, sua foto e seus dados nunca saem do seu dispositivo nem ficam em servidores."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'compactar-arquivos',
       title: 'Compactar arquivos em ZIP ou 7Z online, com senha | DocuSmart',

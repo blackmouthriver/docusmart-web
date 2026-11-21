@@ -71,6 +71,7 @@ export default {
     { id: 'tiff-a-jpg', q: ["tiffをjpgに", "tifをjpgに", "tiffを変換", "tifファイルを開く", "tiffのスキャン"], a: "「TIFFをJPGに」を使ってください。TIFFのスキャンや写真を、軽くてどこでも使えるJPGにまとめてブラウザ内で変換します。", actions: [['tool', 'tiff-a-jpg']] },
     { id: 'agenda', q: ["予定表", "カレンダー", "試験のリマインダー", "提出日をメモ", "予定", "outlookに書き出す", "icsファイル", "授業を通知"], a: "「学習モード」→「予定表」で、試験、提出、授業を日付、時刻、繰り返し、通知付きで登録できます。ブラウザに保存され、Outlook、Googleカレンダー、iPhoneへ.icsで書き出したり、カレンダーの.icsを読み込んだりできます。サイトの通知はDocuSmartを開いている間に届きます。", actions: [['page', 'study']], related: ['estudio', 'notas'] },
     { id: 'cuenta-de-cobro', q: ["請求書", "見積書を作る", "領収書", "代金を請求", "請求書テンプレート", "見積書pdf", "フリーランスの請求書"], a: "「請求書・見積書」を使ってください。番号、税と源泉徴収、合計、署名入りの請求書・見積書・領収書を作り、PDFでダウンロードできます。電子インボイスではなく、データはアップロードされません。（PDFの見出しは英語になります。PDFの標準フォントが日本語に対応していないためです。）", actions: [['tool', 'cuenta-de-cobro']] },
+    { id: 'hoja-de-vida', q: ["履歴書", "職務経歴書", "履歴書を作る", "cv", "写真付き履歴書", "履歴書テンプレート", "履歴書 word", "resume"], a: "「履歴書・職務経歴書」を使ってください。クラシック（ATS）か写真付きを選び、職歴、学歴、スキル、語学を入力して、PDFかWordでダウンロードできます。下書きを保存して後で編集することもできます。何もアップロードされません。", actions: [['tool', 'hoja-de-vida']] },
     { id: 'contacto', q: ['お問い合わせ', 'サポート', '人と話したい', '問題があります', 'バグを報告'], a: 'supportdocusmart@docusmart.online へのメール、または Facebook か Instagram でご連絡ください。お返事します。', actions: [['mail'], ['page', 'facebook'], ['page', 'instagram']] },
   ],
 }

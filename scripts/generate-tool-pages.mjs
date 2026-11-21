@@ -62,7 +62,7 @@ function toolIcon({ kind, id }) {
   if (kind === 'conv') return CONV_ICONS[id] ?? 'convert'
   if (kind === 'archive') return id === 'extraer' ? 'folder' : 'archive'
   if (kind === 'hash') return 'fingerprint'
-  if (kind === 'doc') return 'file'
+  if (kind === 'doc') return id === 'cv' ? 'user' : 'file'
   return 'qr'
 }
 /** Los tres pasos: elegir → la herramienta → descargar (escribir en el QR, cámara al escanear). */

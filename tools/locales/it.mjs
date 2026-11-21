@@ -506,6 +506,23 @@ export default {
         ["I miei dati e quelli dei clienti vengono caricati su internet?", "No. Il PDF viene creato nel tuo browser: i tuoi dati, quelli dei clienti e la tua firma non lasciano mai il dispositivo."],
       ],
     },
+    'hoja-de-vida': {
+      slug: "curriculum-vitae",
+      title: "Curriculum vitae gratis in PDF o Word, compatibile ATS | DocuSmart",
+      description: "Crea il tuo CV in pochi minuti: modello classico (ATS) o con foto, esperienza, istruzione, competenze e lingue, in PDF o Word. Gratis e senza registrazione.",
+      h1: "Curriculum vitae in PDF o Word",
+      howTo: "Come fare il tuo CV in 3 passaggi",
+      lead: "Crea un CV chiaro e professionale, pronto da inviare alle aziende o da caricare sui siti di lavoro, senza registrarti e senza che i tuoi dati lascino il dispositivo.",
+      short: "Il tuo CV in PDF o Word",
+      steps: ["Scegli il modello classico (ATS) o con foto e inserisci i dati personali e il profilo.", "Aggiungi esperienza, istruzione, competenze, lingue, corsi e referenze; riordinali con le frecce.", "Premi \"Crea PDF\" o \"Crea Word (.docx)\" e scaricalo. Salva la bozza per modificarlo più tardi."],
+      faq: [
+        ["Cos'è un CV compatibile con gli ATS?", "Molte aziende e siti di lavoro usano programmi (ATS) che leggono i CV prima di una persona. Il modello classico usa una colonna, titoli standard e testo vero, senza tabelle né immagini, così quei programmi lo leggono bene."],
+        ["Metto la foto nel CV?", "In Italia è comune ma facoltativa; sui siti di lavoro e in molti paesi è meglio evitarla. Per questo ci sono due modelli: scegli \"Con foto\" solo se l'azienda la chiede."],
+        ["Posso modificarlo in Word?", "Sì. Con \"Crea Word (.docx)\" ottieni un file modificabile in Word, Google Docs o LibreOffice, con titoli ed elenchi puntati veri."],
+        ["Come continuo un altro giorno?", "Premi \"Salva bozza\": viene scaricato un file .json con il tuo CV. Un altro giorno, \"Apri bozza\" lo ricarica per continuare."],
+        ["I miei dati vengono caricati su internet?", "No. Tutto avviene nel tuo browser: CV, foto e dati non lasciano mai il dispositivo e non restano su nessun server."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimere-file',
       title: 'Comprimere file in ZIP o 7Z online, con password | DocuSmart',

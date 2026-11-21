@@ -506,6 +506,23 @@ export default {
         ["Les meves dades i les dels clients es pugen a internet?", "No. El PDF es crea al teu navegador: les teves dades, les dels clients i la teva signatura no surten mai del dispositiu."],
       ],
     },
+    'hoja-de-vida': {
+      slug: "curriculum",
+      title: "Currículum gratis en PDF o Word, compatible amb ATS | DocuSmart",
+      description: "Fes el teu currículum en minuts: plantilla clàssica (ATS) o amb foto, experiència, formació, habilitats i idiomes, en PDF o Word. Gratis i sense registre.",
+      h1: "Currículum en PDF o Word",
+      howTo: "Com fer el teu currículum en 3 passos",
+      lead: "Crea un currículum clar i professional, a punt per enviar a empreses o pujar a portals de feina, sense registrar-te i sense que les teves dades surtin del dispositiu.",
+      short: "El teu currículum en PDF o Word",
+      steps: ["Tria la plantilla clàssica (ATS) o amb foto i escriu les teves dades personals i el teu perfil.", "Afegeix experiència, formació, habilitats, idiomes, cursos i referències; ordena'ls amb les fletxes.", "Prem \"Crea el PDF\" o \"Crea el Word (.docx)\" i baixa'l. Desa l'esborrany per editar-lo després."],
+      faq: [
+        ["Què és un currículum compatible amb ATS?", "Moltes empreses i portals de feina fan servir programes (ATS) que llegeixen els currículums abans que una persona. La plantilla clàssica fa servir una columna, títols estàndard i text real, sense taules ni imatges, perquè aquests programes el llegeixin bé."],
+        ["Hi poso foto?", "És habitual però opcional; als portals de feina i en molts països és millor no posar-n'hi. Per això hi ha dues plantilles: tria \"Amb foto\" només si l'empresa la demana."],
+        ["El puc editar al Word?", "Sí. Amb \"Crea el Word (.docx)\" obtens un fitxer que s'obre i s'edita al Word, Google Docs o LibreOffice, amb títols i vinyetes reals."],
+        ["Com continuo un altre dia?", "Prem \"Desa l'esborrany\": es baixa un fitxer .json amb el teu currículum. Un altre dia, \"Obre l'esborrany\" el torna a carregar per continuar."],
+        ["Les meves dades es pugen a internet?", "No. Tot es fa al teu navegador: el currículum, la foto i les dades no surten mai del dispositiu ni es desen en cap servidor."],
+      ],
+    },
     'comprimir-archivos': {
       slug: 'comprimir-fitxers',
       title: 'Comprimir fitxers en ZIP o 7Z en línia, amb contrasenya | DocuSmart',
