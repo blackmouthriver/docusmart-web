@@ -94,7 +94,7 @@ export default {
       howTo: 'Nola biratu PDF bat 3 urratsetan',
       lead: 'Zuzendu alboz edo buruz behera geratu diren orriak, banan-banan edo denak batera.',
       short: 'Zuzendu biratutako orriak',
-      steps: ['Aukeratu PDFa.', 'Ukitu orri bakoitza 90° biratzeko, edo erabili «Biratu denak».', 'Sakatu «Biratu PDFa» eta deskargatu zuzendutako dokumentua.'],
+      steps: ['Aukeratu PDFa.', 'Ukitu orri bakoitza 90° biratzeko, edo erabili «Guztiak eskuinera».', 'Sakatu «Biratu PDFa» eta deskargatu zuzendutako dokumentua.'],
       faq: [
         ['Orri bakar bat biratu dezaket?', 'Bai. Ukitu bakoitzak orri hori 90° biratzen du; besteak zeuden bezala geratzen dira.'],
         ['Biraketa iraunkorra da?', 'Bai, PDF berrian gordetzen da eta edozein irakurgailutan berdin ikusiko da.'],

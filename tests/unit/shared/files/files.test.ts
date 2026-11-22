@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { baseName, cleanBaseName, download, extensionOf, renamed, formatBytes, isOwnBlobUrl, isSvgFile, kindOf, parsePageRanges, safeFilename, safeMimeType, svgDataUrl } from '../../../../src/shared/files/files'
+import { baseName, moveItem, cleanBaseName, download, extensionOf, renamed, formatBytes, isOwnBlobUrl, isSvgFile, kindOf, parsePageRanges, safeFilename, safeMimeType, svgDataUrl } from '../../../../src/shared/files/files'
 
 const file = (name: string, type = '') => new File([''], name, { type })
 
@@ -151,5 +151,21 @@ describe('SVG del usuario', () => {
     const big = new Uint8Array(200_000).map((_, i) => i % 251)
     const url = await svgDataUrl(new Blob([big]))
     expect(atob(url.split(',')[1]).length).toBe(big.length)
+  })
+})
+
+describe('mover elementos (arrastrar y soltar, W-146.1)', () => {
+  it('mueve hacia adelante y hacia atrás sin tocar la lista original', () => {
+    const list = ['a', 'b', 'c', 'd']
+    expect(moveItem(list, 3, 0)).toEqual(['d', 'a', 'b', 'c'])
+    expect(moveItem(list, 0, 2)).toEqual(['b', 'c', 'a', 'd'])
+    expect(moveItem(list, 1, 1)).toEqual(list)
+    expect(list).toEqual(['a', 'b', 'c', 'd'])
+  })
+
+  it('posiciones fuera de la lista: no mueve nada o lleva al extremo', () => {
+    expect(moveItem(['a', 'b'], 5, 0)).toEqual(['a', 'b'])
+    expect(moveItem(['a', 'b', 'c'], 0, 99)).toEqual(['b', 'c', 'a'])
+    expect(moveItem(['a', 'b', 'c'], 2, -4)).toEqual(['c', 'a', 'b'])
   })
 })

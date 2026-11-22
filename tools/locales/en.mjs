@@ -94,7 +94,7 @@ export default {
       howTo: 'How to rotate a PDF in 3 steps',
       lead: 'Straighten pages that ended up sideways or upside down, one by one or all at once.',
       short: 'Straighten rotated pages',
-      steps: ['Choose the PDF.', 'Tap each page to turn it 90°, or use "Rotate all".', 'Press "Rotate PDF" and download the corrected document.'],
+      steps: ['Choose the PDF.', 'Tap each page to turn it 90°, or use "All to the right".', 'Press "Rotate PDF" and download the corrected document.'],
       faq: [
         ['Can I rotate just one page?', 'Yes. Each tap turns that page 90°; the others stay as they were.'],
         ['Is the rotation permanent?', "Yes, it's saved in the new PDF and will look the same in any reader."],

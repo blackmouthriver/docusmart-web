@@ -94,7 +94,7 @@ export default {
       howTo: 'Ein PDF in 3 Schritten drehen',
       lead: 'Richte Seiten aus, die quer oder auf dem Kopf stehen, einzeln oder alle auf einmal.',
       short: 'Gedrehte Seiten ausrichten',
-      steps: ['Wähle das PDF.', 'Tippe auf jede Seite, um sie um 90° zu drehen, oder nutze „Alle drehen“.', 'Tippe auf „PDF drehen“ und lade das korrigierte Dokument herunter.'],
+      steps: ['Wähle das PDF.', 'Tippe auf jede Seite, um sie um 90° zu drehen, oder nutze „Alle nach rechts“.', 'Tippe auf „PDF drehen“ und lade das korrigierte Dokument herunter.'],
       faq: [
         ['Kann ich nur eine Seite drehen?', 'Ja. Jedes Antippen dreht diese Seite um 90°; die anderen bleiben, wie sie waren.'],
         ['Ist die Drehung dauerhaft?', 'Ja, sie wird im neuen PDF gespeichert und sieht in jedem Reader gleich aus.'],

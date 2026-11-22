@@ -94,7 +94,7 @@ export default {
       howTo: 'Como girar um PDF em 3 passos',
       lead: 'Endireite as páginas que ficaram de lado ou de cabeça para baixo, uma por uma ou todas de uma vez.',
       short: 'Endireite páginas giradas',
-      steps: ['Escolha o PDF.', 'Toque em cada página para girá-la 90°, ou use "Girar todas".', 'Toque em "Girar PDF" e baixe o documento corrigido.'],
+      steps: ['Escolha o PDF.', 'Toque em cada página para girá-la 90°, ou use "Todas para a direita".', 'Toque em "Girar PDF" e baixe o documento corrigido.'],
       faq: [
         ['Posso girar só uma página?', 'Sim. Cada toque gira essa página 90°; as outras ficam como estavam.'],
         ['A rotação é permanente?', 'Sim, fica salva no PDF novo e aparecerá igual em qualquer leitor.'],

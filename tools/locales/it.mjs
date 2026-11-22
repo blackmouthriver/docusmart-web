@@ -94,7 +94,7 @@ export default {
       howTo: 'Come ruotare un PDF in 3 passi',
       lead: 'Raddrizza le pagine rimaste di lato o capovolte, una per una o tutte insieme.',
       short: 'Raddrizza le pagine ruotate',
-      steps: ['Scegli il PDF.', 'Tocca ogni pagina per ruotarla di 90°, oppure usa "Ruota tutte".', 'Premi "Ruota PDF" e scarica il documento corretto.'],
+      steps: ['Scegli il PDF.', 'Tocca ogni pagina per ruotarla di 90°, oppure usa "Tutte a destra".', 'Premi "Ruota PDF" e scarica il documento corretto.'],
       faq: [
         ['Posso ruotare una sola pagina?', 'Sì. Ogni tocco ruota quella pagina di 90°; le altre restano com’erano.'],
         ['La rotazione è permanente?', 'Sì, resta salvata nel nuovo PDF e si vedrà uguale in qualsiasi lettore.'],

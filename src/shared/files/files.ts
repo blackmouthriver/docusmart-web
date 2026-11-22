@@ -119,6 +119,30 @@ export async function downloadMany(files: Array<{ name: string; data: Blob | Uin
   download(zipSync(entries, { level: 0 }), zipName, 'application/zip')
 }
 
+/**
+ * "1-3, 4-8, 10" → un grupo por cada parte separada por comas (índices base 0), en el orden
+ * escrito: Dividir hace un PDF por grupo. "8-" llega hasta el final y "-3" empieza en la 1.
+ * null si alguna parte no es válida.
+ */
+export function parseRangeGroups(input: string, pageCount: number): number[][] | null {
+  const groups: number[][] = []
+  for (const raw of input.split(',')) {
+    if (!raw.trim()) continue
+    const pages = parsePageRanges(raw, pageCount)
+    if (!pages) return null
+    groups.push(pages)
+  }
+  return groups.length ? groups : null
+}
+
+/** Grupos de `size` páginas seguidas (la última puede quedar más corta). */
+export function chunkPages(pageCount: number, size: number): number[][] {
+  const n = Math.max(1, Math.floor(size))
+  const groups: number[][] = []
+  for (let i = 0; i < pageCount; i += n) groups.push(Array.from({ length: Math.min(n, pageCount - i) }, (_, k) => i + k))
+  return groups
+}
+
 export function parsePageRanges(input: string, pageCount: number): number[] | null {
   // "1-3, 5, 8-" → índices base 0. null si el texto no es válido.
   const out = new Set<number>()
@@ -138,4 +162,13 @@ export function parsePageRanges(input: string, pageCount: number): number[] | nu
     for (let p = start; p <= end; p++) out.add(p - 1)
   }
   return out.size ? [...out].sort((a, b) => a - b) : null
+}
+
+/** Copia de la lista con el elemento `from` movido a la posición `to` (arrastrar y soltar). */
+export function moveItem<T>(list: readonly T[], from: number, to: number): T[] {
+  const copy = list.slice()
+  if (from < 0 || from >= copy.length) return copy
+  const [item] = copy.splice(from, 1)
+  copy.splice(Math.max(0, Math.min(copy.length, to)), 0, item)
+  return copy
 }
