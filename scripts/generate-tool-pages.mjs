@@ -77,6 +77,11 @@ function stepIcons(tool) {
 /** Primera letra en minúscula para "Cómo unir PDF…", salvo siglas como OCR. */
 const lowerFirst = (s) => (/^\p{Lu}{2}/u.test(s) ? s : s.charAt(0).toLowerCase() + s.slice(1))
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+/**
+ * Título para <title>: Google corta los resultados en unos 60 caracteres, así que a los largos
+ * se les quita el sufijo " | DocuSmart" (la marca sigue en og:title y en los datos estructurados).
+ */
+export const searchTitle = (t) => ([...t].length > 60 ? t.replace(/\s*\|\s*DocuSmart$/, '') : t)
 // JSON-LD dentro de <script>: evita que un "</" del texto cierre la etiqueta.
 const jsonLd = (obj) => JSON.stringify(obj, null, 2).replace(/</g, '\\u003c')
 
@@ -175,7 +180,7 @@ function render(page, loc) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${esc(p.title)}</title>
+<title>${esc(searchTitle(p.title))}</title>
 <meta name="description" content="${esc(p.description)}">
 <meta name="theme-color" content="#0B1020">
 <link rel="canonical" href="${url}">
@@ -341,7 +346,7 @@ ${items.map((t) => `        <li data-tool${t.page.category === c.id ? '' : ' dat
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${esc(ui.hubTitle)}</title>
+<title>${esc(searchTitle(ui.hubTitle))}</title>
 <meta name="description" content="${esc(ui.hubDescription)}">
 <meta name="theme-color" content="#0B1020">
 <link rel="canonical" href="${url}">
@@ -515,7 +520,7 @@ function guideHead({ lang, title, description, url, pathFor, structured }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${esc(title)}</title>
+<title>${esc(searchTitle(title))}</title>
 <meta name="description" content="${esc(description)}">
 <meta name="theme-color" content="#0B1020">
 <link rel="canonical" href="${url}">

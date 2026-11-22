@@ -1,24 +1,27 @@
-// Traducción sin dependencias: diccionario del idioma con el español de respaldo
-// y variables {así}. Los diccionarios que no son español se descargan bajo demanda.
-import { es, type MessageKey, type Messages } from './messages/es'
+// Traducción sin dependencias: diccionario del idioma y variables {así}. Todos los
+// diccionarios (también el español) se descargan bajo demanda: cada página carga solo el
+// de su idioma (antes el español iba siempre incluido, unos 90 KB de más fuera de español).
+// Las pruebas exigen que cada idioma tenga todas las claves, así que no hace falta respaldo.
+import type { MessageKey, Messages } from './messages/es'
 import type { Lang } from './languages'
 
 export type Dict = Partial<Messages>
 export type Vars = Record<string, string | number>
 
 /** Diccionario del idioma actual, para funciones que no son componentes (mensajes de error, resúmenes). */
-let current: Dict = es
+let current: Dict = {}
 export const setCurrentDict = (d: Dict) => {
   current = d
 }
 export const tr = (key: MessageKey, vars?: Vars) => translate(current, key, vars)
 
 export function translate(dict: Dict, key: MessageKey, vars?: Vars): string {
-  const text = dict[key] ?? es[key] ?? key
+  const text = dict[key] ?? key
   return vars ? text.replace(/\{(\w+)\}/g, (m, name: string) => (name in vars ? String(vars[name]) : m)) : text
 }
 
-const LOADERS: Record<Exclude<Lang, 'es'>, () => Promise<{ default: Dict }>> = {
+const LOADERS: Record<Lang, () => Promise<{ default: Dict }>> = {
+  es: () => import('./messages/es').then((m) => ({ default: m.es })),
   en: () => import('./messages/en'),
   pt: () => import('./messages/pt'),
   de: () => import('./messages/de'),
@@ -32,12 +35,11 @@ const LOADERS: Record<Exclude<Lang, 'es'>, () => Promise<{ default: Dict }>> = {
   eu: () => import('./messages/eu'),
 }
 
-/** Diccionario del idioma (el español ya viene incluido). */
+/** Diccionario del idioma. Sin conexión al cambiar de idioma, se sigue con el actual. */
 export async function loadMessages(lang: Lang): Promise<Dict> {
-  if (lang === 'es') return es
   try {
     return (await LOADERS[lang]()).default
   } catch {
-    return es // sin conexión al cambiar de idioma: se sigue en español
+    return current
   }
 }

@@ -59,9 +59,9 @@ describe('idioma inicial y proveedor', () => {
     expect(initialLanguage()).toBe('de')
   })
 
-  it('el proveedor traduce con el diccionario dado y sin él cae al español', () => {
+  it('el proveedor traduce con el diccionario dado (sin proveedor, la clave)', () => {
     const Probe = () => createElement('span', null, useT().t('nav.home'))
     expect(renderToString(createElement(I18nProvider, { initialLang: 'en', initialDict: { 'nav.home': 'Home' }, children: createElement(Probe) }))).toContain('Home')
-    expect(renderToString(createElement(Probe))).toContain('Inicio')
+    expect(renderToString(createElement(Probe))).toContain('nav.home')
   })
 })
