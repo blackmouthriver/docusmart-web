@@ -10,7 +10,7 @@ import { strFromU8, unzipSync } from 'fflate'
 import type { FontFamily } from '../../../shared/pdf/pdfFonts'
 import { child, children, find, parseXml, path, type XNode } from './xml'
 import { imageSize } from './officeModels'
-import type { OBlock, OCell, OImage, OLineSpacing, OMargins, OPara, ORun, OTable } from './officePdf'
+import type { OBlock, OCell, OImage, OLineSpacing, OMargins, OPageSetup, OPara, ORun, OTable } from './officePdf'
 
 export class DocxError extends Error {}
 
@@ -284,6 +284,14 @@ export function readDocx(bytes: Uint8Array): DocxDoc {
   // Espaciado contextual: entre párrafos seguidos del mismo estilo no va el espacio antes ni después.
   let previous: { para: OPara; styleId?: string; contextual?: boolean } | null = null
   const docRels = rels('word/document.xml')
+  // Saltos de sección dentro del documento (cada uno cierra una sección, W-146.7).
+  const sections: Array<{ sect: XNode; brk: { kind: 'pagebreak'; setup?: OPageSetup }; continuous: boolean }> = []
+  // Notas al pie y al final: se numeran en orden y se escriben al final del documento.
+  const notes: Array<{ n: number; kind: 'footnote' | 'endnote'; id: string }> = []
+  let noteMark: number | undefined
+  /** Las notas de footnotes.xml o endnotes.xml, por id. */
+  const noteParts = (kind: 'footnote' | 'endnote') =>
+    new Map(children(child(xml(`word/${kind}s.xml`), `w:${kind}s`), `w:${kind}`).filter((n) => !n.attrs['w:type'] || n.attrs['w:type'] === 'normal').map((n) => [n.attrs['w:id'] ?? '', n]))
 
   const image = (drawing: XNode, relMap: Map<string, string>, align: OPara['align']): OImage | null => {
     const blip = find(drawing, 'a:blip')
@@ -436,6 +444,18 @@ export function readDocx(bytes: Uint8Array): DocxDoc {
           case 'w:instrText':
             if (fields.length) fields[fields.length - 1].instr += c.text
             break
+          case 'w:footnoteReference':
+          case 'w:endnoteReference': {
+            const n = notes.length + 1
+            notes.push({ n, kind: c.name === 'w:footnoteReference' ? 'footnote' : 'endnote', id: attr(c, 'id') ?? '' })
+            emit(String(n), { ...props, script: 'sup' })
+            break
+          }
+          case 'w:footnoteRef':
+          case 'w:endnoteRef':
+            // El número dentro de la propia nota.
+            if (noteMark !== undefined) emit(String(noteMark), { ...props, script: 'sup' })
+            break
           case 'w:drawing':
             drawing(c)
             break
@@ -490,9 +510,14 @@ export function readDocx(bytes: Uint8Array): DocxDoc {
       const lastPara = [...out].reverse().find((b): b is OPara => b.kind === 'para')
       if (lastPara) lastPara.spaceAfter = props.spaceAfter ?? 0
     }
-    // Un salto de sección "página siguiente" dentro del párrafo.
+    // Un salto de sección dentro del párrafo. Uno "continuo" solo pasa de hoja si la sección que
+    // sigue tiene otro tamaño de página (como en Word); si no, se quita al final.
     const sect = child(pPr, 'w:sectPr')
-    if (sect && (attr(child(sect, 'w:type'), 'val') ?? 'nextPage') !== 'continuous') after.push({ kind: 'pagebreak' })
+    if (sect && !inHeader) {
+      const brk = { kind: 'pagebreak' as const }
+      sections.push({ sect, brk, continuous: attr(child(sect, 'w:type'), 'val') === 'continuous' })
+      after.push(brk)
+    }
     return [...out, ...after]
   }
 
@@ -557,41 +582,68 @@ export function readDocx(bytes: Uint8Array): DocxDoc {
   }
 
   const blocks = blocksOf(body, docRels)
+
+  // Notas al pie y al final, después del texto, separadas por una línea corta (W-146.7).
+  if (notes.length) {
+    const noteRoots = { footnote: noteParts('footnote'), endnote: noteParts('endnote') }
+    blocks.push({ kind: 'para', runs: [{ text: '────────────', size: 9, color: '808080' }], exact: true, spaceBefore: 12, spaceAfter: 2 })
+    for (const note of notes) {
+      const node = noteRoots[note.kind].get(note.id)
+      if (!node) continue
+      noteMark = note.n
+      const before = blocks.length
+      blocks.push(...blocksOf(node, rels(`word/${note.kind}s.xml`)).filter((b) => b.kind !== 'pagebreak'))
+      // Si la nota no traía su número (w:footnoteRef), se le pone delante.
+      const first = blocks.slice(before).find((b): b is OPara => b.kind === 'para')
+      if (first && !first.runs.some((r) => r.script === 'sup' && r.text === String(note.n))) first.runs.unshift({ text: String(note.n), script: 'sup', size: first.runs[0]?.size ?? 10 })
+      noteMark = undefined
+    }
+  }
   // Un salto de sección justo al final no deja una hoja en blanco.
   while (blocks.length && blocks[blocks.length - 1].kind === 'pagebreak') blocks.pop()
 
-  // Página, márgenes, encabezado y pie: los de la última sección.
-  const sect = child(body, 'w:sectPr')
-  const pgSz = child(sect, 'w:pgSz')
-  const pgMar = child(sect, 'w:pgMar')
-  const pageSize: [number, number] = [twip(attr(pgSz, 'w')) ?? 595.28, twip(attr(pgSz, 'h')) ?? 841.89]
-  const margins: OMargins = {
-    top: Math.abs(twip(attr(pgMar, 'top')) ?? 72),
-    right: twip(attr(pgMar, 'right') ?? attr(pgMar, 'end')) ?? 72,
-    bottom: Math.abs(twip(attr(pgMar, 'bottom')) ?? 72),
-    left: twip(attr(pgMar, 'left') ?? attr(pgMar, 'start')) ?? 72,
-  }
-  const part = (kind: 'header' | 'footer'): OBlock[] => {
-    const refs = children(sect, `w:${kind}Reference`)
-    const ref = refs.find((r) => attr(r, 'type') === 'default') ?? refs[0]
-    const target = ref && docRels.get(ref.attrs['r:id'] ?? '')
+  // Página, márgenes, encabezado y pie de cada sección. Una sección sin encabezado o pie propio
+  // usa el de la anterior, como en Word (W-146.7).
+  const part = (sect: XNode, kind: 'header' | 'footer'): OBlock[] | undefined => {
+    const ref = children(sect, `w:${kind}Reference`).find((r) => attr(r, 'type') === 'default')
+    if (!ref) return undefined
+    const target = docRels.get(ref.attrs['r:id'] ?? '')
     const root = target ? child(xml(target), kind === 'header' ? 'w:hdr' : 'w:ftr') : undefined
     if (!root) return []
-    const blocks = blocksOf(root, rels(target!), true).filter((b) => b.kind !== 'pagebreak')
+    const list = blocksOf(root, rels(target!), true).filter((b) => b.kind !== 'pagebreak')
     // Sin nada que mostrar (solo párrafos vacíos), no se dibuja.
     const shows = (b: OBlock): boolean => b.kind === 'image' || (b.kind === 'para' && (!!b.image || b.runs.some((r) => !!r.text.trim() || !!r.field))) || (b.kind === 'table' && b.rows.some((row) => row.some((cell) => cell.some(shows))))
-    return blocks.some(shows) ? blocks : []
+    return list.some(shows) ? list : []
   }
-  return {
-    blocks,
-    pageSize,
-    margins,
-    header: part('header'),
-    footer: part('footer'),
-    headerDistance: twip(attr(pgMar, 'header')) ?? 36,
-    footerDistance: twip(attr(pgMar, 'footer')) ?? 36,
-    skippedImages,
+  const setupOf = (sect: XNode | undefined, prev?: OPageSetup): OPageSetup => {
+    const pgSz = child(sect, 'w:pgSz')
+    const pgMar = child(sect, 'w:pgMar')
+    const margins: OMargins = {
+      top: Math.abs(twip(attr(pgMar, 'top')) ?? 72),
+      right: twip(attr(pgMar, 'right') ?? attr(pgMar, 'end')) ?? 72,
+      bottom: Math.abs(twip(attr(pgMar, 'bottom')) ?? 72),
+      left: twip(attr(pgMar, 'left') ?? attr(pgMar, 'start')) ?? 72,
+    }
+    return {
+      pageSize: [twip(attr(pgSz, 'w')) ?? 595.28, twip(attr(pgSz, 'h')) ?? 841.89],
+      margins,
+      header: (sect && part(sect, 'header')) ?? prev?.header ?? [],
+      footer: (sect && part(sect, 'footer')) ?? prev?.footer ?? [],
+      headerDistance: twip(attr(pgMar, 'header')) ?? 36,
+      footerDistance: twip(attr(pgMar, 'footer')) ?? 36,
+    }
   }
+  const setups: OPageSetup[] = []
+  for (const sect of [...sections.map((s) => s.sect), child(body, 'w:sectPr')]) setups.push(setupOf(sect, setups[setups.length - 1]))
+  // Cada salto de sección pasa a la página de la sección siguiente; uno continuo con el mismo
+  // tamaño de página no hace nada.
+  const noop = new Set<OBlock>()
+  sections.forEach((s, i) => {
+    const [a, b] = [setups[i].pageSize, setups[i + 1].pageSize]
+    if (s.continuous && a[0] === b[0] && a[1] === b[1]) noop.add(s.brk)
+    else s.brk.setup = setups[i + 1]
+  })
+  return { blocks: noop.size ? blocks.filter((b) => !noop.has(b)) : blocks, ...setups[0], skippedImages }
 }
 
 /** Texto del documento, con una línea en blanco entre párrafos (para leerlo en voz alta). */

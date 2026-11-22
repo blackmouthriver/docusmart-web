@@ -39,6 +39,30 @@ export function specialImage(head: Uint8Array): SpecialImage | null {
 export const looksSpecial = (name: string, type: string) =>
   /\.(heic|heif|tiff?|svg)$/i.test(name) || /^image\/(hei[cf](-sequence)?|tiff|svg\+xml)$/i.test(type)
 
+/** Un enlace a internet (o "//sitio"): el navegador no lo carga dentro de un SVG abierto como imagen. */
+const EXTERNAL_REF = /^\s*(https?:)?\/\//i
+
+/**
+ * Prepara un SVG para dibujarlo como imagen (W-146.7): le agrega el `xmlns` que falta (los SVG
+ * copiados de una página web no lo traen y el navegador no los abre) y quita las imágenes con
+ * enlaces externos, que no se pueden cargar y salían como el ícono de "imagen rota".
+ */
+export function prepareSvg(svgText: string): string {
+  const usesXlink = /\sxlink:/i.test(svgText)
+  let text = svgText.replace(/<svg\b([^>]*)>/i, (_tag, attrs: string) => {
+    let a = attrs
+    if (!/\sxmlns\s*=/i.test(a)) a = ` xmlns="http://www.w3.org/2000/svg"${a}`
+    if (usesXlink && !/\sxmlns:xlink\s*=/i.test(a)) a = ` xmlns:xlink="http://www.w3.org/1999/xlink"${a}`
+    return `<svg${a}>`
+  })
+  const external = (attrs: string) => {
+    const href = /\s(?:xlink:)?href\s*=\s*["']([^"']*)["']/i.exec(attrs)?.[1]
+    return href !== undefined && EXTERNAL_REF.test(href)
+  }
+  text = text.replace(/<(image|feImage)\b([^>]*?)(\/>|>[\s\S]*?<\/\1\s*>)/gi, (whole: string, _tag: string, attrs: string) => (external(attrs) ? '' : whole))
+  return text
+}
+
 /** Lado de dibujo de un SVG: si es pequeño se agranda (es vectorial, no pierde nitidez); nunca pasa de 4096. */
 export const SVG_MIN_SIDE = 1024
 export const SVG_MAX_SIDE = 4096

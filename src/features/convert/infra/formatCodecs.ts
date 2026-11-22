@@ -2,7 +2,7 @@
 // cargan solo al usarlas. Excluido de la cobertura como los demás adaptadores con canvas y wasm.
 import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { svgDataUrl } from '../../../shared/files/files'
-import { ICO_SIZES, containSquare, icoFromPngs, specialImage, svgRenderSize } from '../core/formats'
+import { ICO_SIZES, containSquare, icoFromPngs, prepareSvg, specialImage, svgRenderSize } from '../core/formats'
 
 function newCanvas(width: number, height: number) {
   const canvas = document.createElement('canvas')
@@ -18,29 +18,45 @@ function newCanvas(width: number, height: number) {
  * con un tamaño cómodo si el dibujo es pequeño (es vectorial: se agranda sin perder nitidez).
  */
 export async function svgToCanvas(file: Blob): Promise<HTMLCanvasElement> {
-  const size = svgRenderSize(await file.text())
+  const text = prepareSvg(await file.text())
+  const size = svgRenderSize(text)
   const img = new Image()
   img.decoding = 'async'
   // Como `data:` y no `blob:` (W-135): el navegador no deja abrirlo como página, así que su código
   // nunca corre con el origen del sitio.
-  img.src = await svgDataUrl(new Blob([file], { type: 'image/svg+xml' }))
+  img.src = await svgDataUrl(new Blob([text], { type: 'image/svg+xml' }))
   await img.decode()
   const { canvas, ctx } = newCanvas(size.width, size.height)
   ctx.drawImage(img, 0, 0, size.width, size.height)
   return canvas
 }
 
-/** La primera página de un TIFF en un canvas (UTIF, MIT: sin compresión, LZW, Deflate, PackBits y JPEG). */
-export async function tiffToCanvas(file: Blob): Promise<HTMLCanvasElement> {
+/**
+ * Todas las páginas de un TIFF, cada una en un canvas (UTIF, MIT: sin compresión, LZW, Deflate,
+ * PackBits y JPEG). Los escaneos y faxes suelen traer varias páginas en un solo archivo (W-146.7).
+ */
+export async function tiffToCanvases(file: Blob, max = 200): Promise<HTMLCanvasElement[]> {
   const UTIF = (await import('utif2')).default
   const buffer = await file.arrayBuffer()
-  const [page] = UTIF.decode(buffer)
-  if (!page) throw new Error('TIFF sin imágenes')
-  UTIF.decodeImage(buffer, page)
-  const rgba = UTIF.toRGBA8(page)
-  const { canvas, ctx } = newCanvas(page.width, page.height)
-  ctx.putImageData(new ImageData(new Uint8ClampedArray(rgba.subarray(0, page.width * page.height * 4)), page.width, page.height), 0, 0)
-  return canvas
+  const pages = UTIF.decode(buffer).slice(0, max)
+  const out: HTMLCanvasElement[] = []
+  for (const page of pages) {
+    UTIF.decodeImage(buffer, page)
+    if (!page.width || !page.height) continue
+    const rgba = UTIF.toRGBA8(page)
+    const { canvas, ctx } = newCanvas(page.width, page.height)
+    ctx.putImageData(new ImageData(new Uint8ClampedArray(rgba.subarray(0, page.width * page.height * 4)), page.width, page.height), 0, 0)
+    out.push(canvas)
+  }
+  if (!out.length) throw new Error('TIFF sin imágenes')
+  return out
+}
+
+/** La primera página de un TIFF en un canvas. */
+export async function tiffToCanvas(file: Blob): Promise<HTMLCanvasElement> {
+  const [first, ...rest] = await tiffToCanvases(file, 1)
+  rest.forEach((c) => (c.width = c.height = 0))
+  return first
 }
 
 /** Abre un HEIC, SVG o TIFF (o null si no es ninguno de ellos). */
