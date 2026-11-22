@@ -65,6 +65,28 @@ export type RenderOptions = {
   quality?: number
 }
 
+/**
+ * Comprimir (W-146.8): la imagen a `width` × `height` en el formato del plan. Un PNG se pasa a
+ * paleta si se parece lo suficiente (como TinyPNG); si no, se guarda sin perder nada.
+ */
+export async function encodeCompressed(img: LoadedImage, width: number, height: number, plan: { mime: OutputMime; minPsnr: number }, quality: number): Promise<Blob> {
+  if (plan.mime !== 'image/png') return renderImage(img, { width, height, mime: plan.mime, quality })
+  const { palettePng } = await import('../core/imageCompress')
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })!
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
+  ctx.drawImage(img.bmp, 0, 0, width, height)
+  try {
+    const pal = palettePng(ctx.getImageData(0, 0, width, height).data, width, height, plan.minPsnr)
+    return pal ? new Blob([pal.png as Uint8Array<ArrayBuffer>], { type: 'image/png' }) : await canvasToBlob(canvas, 'image/png')
+  } finally {
+    canvas.width = canvas.height = 0
+  }
+}
+
 /** Recorta, escala, gira o voltea y codifica. Sin metadatos: el EXIF (y la ubicación GPS) no se copia. */
 export async function renderImage(img: LoadedImage, o: RenderOptions): Promise<Blob> {
   const src = o.crop ?? { x: 0, y: 0, width: img.width, height: img.height }

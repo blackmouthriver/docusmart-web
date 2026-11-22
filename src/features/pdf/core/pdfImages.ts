@@ -259,7 +259,8 @@ function crc32(bytes: Uint8Array): number {
   return (c ^ 0xffffffff) >>> 0
 }
 
-function chunk(type: string, data: Uint8Array): Uint8Array {
+/** Un bloque de PNG (largo, tipo, datos y CRC). */
+export function pngChunk(type: string, data: Uint8Array): Uint8Array {
   const out = new Uint8Array(12 + data.length)
   const view = new DataView(out.buffer)
   view.setUint32(0, data.length)
@@ -290,7 +291,7 @@ export function encodePng(rgba: Uint8Array, w: number, h: number): Uint8Array {
   v.setUint32(0, w)
   v.setUint32(4, h)
   ihdr.set([8, opaque ? 2 : 6, 0, 0, 0], 8)
-  const parts = [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', ihdr), chunk('IDAT', zlibSync(raw, { level: 6 })), chunk('IEND', new Uint8Array())]
+  const parts = [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]), pngChunk('IHDR', ihdr), pngChunk('IDAT', zlibSync(raw, { level: 6 })), pngChunk('IEND', new Uint8Array())]
   const out = new Uint8Array(parts.reduce((s, p) => s + p.length, 0))
   let off = 0
   for (const p of parts) {
