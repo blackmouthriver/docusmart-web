@@ -1,7 +1,7 @@
-// Word y Excel a PDF en el navegador (docxRead / read-excel-file + officePdf.ts).
+// Word y Excel a PDF en el navegador (docxRead / xlsxRead + officePdf.ts).
 // Lo usan el Convertidor y la vista previa de documentos de Office. Excluido de la
-// cobertura: necesita la versión de navegador de read-excel-file
-// (las piezas que transforman los datos se prueban en docxRead/officeModels/officePdf).
+// cobertura como los demás adaptadores (las piezas que transforman los datos se prueban en
+// docxRead/xlsxRead/officeModels/officePdf).
 import type { SheetData } from '../core/officeModels'
 import type { CsvOptions } from '../core/csv'
 import { tr } from '../../../shared/i18n/translate'
@@ -72,20 +72,34 @@ export async function pptxToPdf(file: Blob, title: string): Promise<{ pdf: Uint8
   }
 }
 
-/** Cada hoja con datos de un libro de Excel, como texto CSV. */
+/** Las hojas de un libro de Excel, con su formato de número y si están ocultas (xlsxRead.ts). */
+async function readBook(file: Blob): Promise<SheetData[]> {
+  const { readXlsx, XlsxError } = await import('../core/xlsxRead')
+  try {
+    return readXlsx(new Uint8Array(await file.arrayBuffer()))
+  } catch (e) {
+    if (e instanceof XlsxError) throw new OfficeFormatError('Excel')
+    throw e
+  }
+}
+
+/** Cada hoja visible y con datos de un libro de Excel, como texto CSV (las ocultas no se exportan). */
 export async function xlsxToCsv(file: Blob, o: CsvOptions): Promise<Array<{ sheet: string; text: string }>> {
-  const [{ default: readXlsxFile }, { toCsv }] = await Promise.all([import('read-excel-file/browser'), import('../core/csv')])
-  const sheets = ((await readXlsxFile(file)) as unknown as SheetData[]).filter((s) => s.data.some((r) => r.some((c) => c !== null && c !== '')))
+  const [book, { toCsv }] = await Promise.all([readBook(file), import('../core/csv')])
+  const sheets = book.filter((s) => !s.hidden && s.data.some((r) => r.some((c) => c !== null && c !== '')))
   if (!sheets.length) throw emptyError(tr('libErr.officeEmptyBook'))
   return sheets.map((s) => ({ sheet: s.sheet.replace(/[^\p{L}\p{N} _-]+/gu, '-'), text: toCsv(s.data, o) }))
 }
 
 export async function xlsxToPdf(file: Blob, title: string): Promise<Uint8Array> {
-  const [{ default: readXlsxFile }, { fromSheets }, { layoutPdf }] = await Promise.all([import('read-excel-file/browser'), import('../core/officeModels'), import('../core/officePdf')])
-  const sheets = (await readXlsxFile(file)) as unknown as SheetData[]
-  const { blocks, maxColumns } = fromSheets(sheets)
-  if (!blocks.length) throw emptyError(tr('libErr.officeEmptyBook'))
+  const [sheets, { fromSheets }, { layoutPdf }] = await Promise.all([readBook(file), import('../core/officeModels'), import('../core/officePdf')])
+  const { maxColumns } = fromSheets(sheets)
   // Muchas columnas: página horizontal y letra más chica.
   const wide = maxColumns > 6
-  return layoutPdf(blocks, { title, pageSize: wide ? [841.89, 595.28] : undefined, baseSize: maxColumns > 10 ? 7.5 : wide ? 9 : 10, margin: 40 })
+  const baseSize = maxColumns > 10 ? 7.5 : wide ? 9 : 10
+  const pageWidth = wide ? 841.89 : 595.28
+  // Caracteres que caben a lo ancho (unos 0,6 em por letra, con la negrita del encabezado).
+  const { blocks } = fromSheets(sheets, Math.floor((pageWidth - 80) / (baseSize * 0.6)))
+  if (!blocks.length) throw emptyError(tr('libErr.officeEmptyBook'))
+  return layoutPdf(blocks, { title, pageSize: wide ? [841.89, 595.28] : undefined, baseSize, margin: 40 })
 }

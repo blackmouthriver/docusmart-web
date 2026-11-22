@@ -8,7 +8,9 @@ import { bundleFiles, resultFile } from '../../../shared/files/share'
 import { OfficeFormatError, docxToPdf, pptxToPdf, xlsxToCsv, xlsxToPdf } from '../infra/officeRender'
 import { DELIMITERS, defaultCsvOptions, type Delimiter } from '../core/csv'
 import { useT } from '../../../shared/i18n/I18n'
-import { convertImage, imagesToPdf, pdfToImages, pdfToText, type ImageTarget } from '../core/convert'
+import { convertImagePages, imagesToPdf, pdfToImages, pdfToText, type ImageTarget } from '../core/convert'
+import type { ImagePdfOptions, PdfMargin, PdfOrientation, PdfPaper } from '../core/imagePdf'
+import { defaultPaper } from '../../cv/core/cv'
 import { heicOutputName, jpegQuality, type HeicTarget } from '../core/heic'
 import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { track } from '../../../shared/platform/analytics'
@@ -137,9 +139,15 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   const [delimiter, setDelimiter] = useState<Delimiter>(() => defaultCsvOptions(lang).delimiter)
   const [pptSkipped, setPptSkipped] = useState(0)
   const [sheetMode, setSheetMode] = useState<'pages' | 'single'>('pages')
+  /** Imagen a PDF: tamaño de página (A4 o Carta según el país), orientación y márgenes (W-146.7). */
+  const [pdfLayout, setPdfLayout] = useState<ImagePdfOptions>(() => ({
+    paper: defaultPaper(typeof navigator === 'undefined' ? [] : (navigator.languages ?? [navigator.language])),
+    orientation: 'auto',
+    margin: 'none',
+  }))
   /** El resultado, para verlo y guardarlo (ya no se descarga solo). */
   const [out, setOut] = useState<{ result: File | null; results?: File[]; saveAs?: File | null } | null>(null)
-  useEffect(() => setOut(null), [files, pdfImgFormat, sheetMode, heicFormat, heicQuality, delimiter])
+  useEffect(() => setOut(null), [files, pdfImgFormat, sheetMode, heicFormat, heicQuality, delimiter, pdfLayout])
 
   const run = async () => {
     setBusy(true)
@@ -154,7 +162,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
     const totalKb = Math.round(files.reduce((s, f) => s + f.size, 0) / 1024)
     try {
       if (conv.id === 'img-pdf') {
-        setOut({ result: resultFile(await imagesToPdf(files), `${baseName(files[0].name)}.pdf`, PDF) })
+        setOut({ result: resultFile(await imagesToPdf(files, pdfLayout), `${baseName(files[0].name)}.pdf`, PDF) })
       } else if (isHeic) {
         const { heicToCanvas } = await import('../infra/heicDecoder')
         const mime = heicFormat === 'jpg' ? 'image/jpeg' : 'image/png'
@@ -173,8 +181,9 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         const target = conv.to.toLowerCase() as ImageTarget
         const converted: File[] = []
         for (let i = 0; i < files.length; i++) {
-          const data = await convertImage(files[i], target)
-          converted.push(resultFile(data, `${baseName(files[i].name)}.${target}`, data.type))
+          // Un TIFF de varias páginas da una imagen por página.
+          const pages = await convertImagePages(files[i], target)
+          pages.forEach((data, p) => converted.push(resultFile(data, pages.length > 1 ? `${baseName(files[i].name)}-${tr('file.page')}-${p + 1}.${target}` : `${baseName(files[i].name)}.${target}`, data.type)))
           setProgress((i + 1) / files.length)
         }
         // Una sola imagen se ve en grande; varias, como miniaturas y en un ZIP.
@@ -234,8 +243,8 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         )
         setOut({ result: resultFile(buildPptx(slides, baseName(files[0].name)), `${baseName(files[0].name)}.pptx`, PPTX) })
       } else if (conv.id === 'csv-excel') {
-        const [{ parseCsv, csvToSheet }, { writeXlsx, summarizeSheets }] = await Promise.all([import('../core/csv'), import('../core/pdfExcel')])
-        const rows = parseCsv(await files[0].text())
+        const [{ parseCsv, csvToSheet, decodeText }, { writeXlsx, summarizeSheets }] = await Promise.all([import('../core/csv'), import('../core/pdfExcel')])
+        const rows = parseCsv(decodeText(new Uint8Array(await files[0].arrayBuffer())))
         if (!rows.length) throw new Error(tr('conv.csvEmpty'))
         const sheets = [csvToSheet(rows, baseName(files[0].name))]
         setOut({ result: resultFile(writeXlsx(sheets), `${baseName(files[0].name)}.xlsx`, XLSX) })
@@ -318,6 +327,51 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
               />
             ))}
           </ul>
+        )}
+        {conv.id === 'img-pdf' && (
+          <>
+            <div className="field">
+              <span aria-hidden="true">{tr('scan.paper')}</span>
+              <Segmented
+                label={tr('scan.paper')}
+                value={pdfLayout.paper}
+                onChange={(paper: PdfPaper) => setPdfLayout((l) => ({ ...l, paper }))}
+                options={[
+                  { value: 'a4', label: 'A4' },
+                  { value: 'letter', label: tr('cv.paper.letter') },
+                  { value: 'fit', label: tr('scan.paper.fit') },
+                ]}
+              />
+            </div>
+            {pdfLayout.paper !== 'fit' && (
+              <div className="field">
+                <span aria-hidden="true">{tr('conv.orientation')}</span>
+                <Segmented
+                  label={tr('conv.orientation')}
+                  value={pdfLayout.orientation}
+                  onChange={(orientation: PdfOrientation) => setPdfLayout((l) => ({ ...l, orientation }))}
+                  options={[
+                    { value: 'auto', label: tr('conv.orient.auto') },
+                    { value: 'portrait', label: tr('conv.orient.portrait') },
+                    { value: 'landscape', label: tr('conv.orient.landscape') },
+                  ]}
+                />
+              </div>
+            )}
+            <div className="field">
+              <span aria-hidden="true">{tr('conv.margin')}</span>
+              <Segmented
+                label={tr('conv.margin')}
+                value={pdfLayout.margin}
+                onChange={(margin: PdfMargin) => setPdfLayout((l) => ({ ...l, margin }))}
+                options={[
+                  { value: 'none', label: tr('conv.margin.none') },
+                  { value: 'small', label: tr('conv.margin.small') },
+                  { value: 'big', label: tr('conv.margin.big') },
+                ]}
+              />
+            </div>
+          </>
         )}
         {conv.id === 'pdf-img' && (
           <div className="row">

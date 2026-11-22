@@ -2,6 +2,7 @@
 import { PDFDocument } from 'pdf-lib'
 import { canvasToBlob, closePdf, extractText, openPdf, renderPage } from '../../../shared/pdf/pdf'
 import { specialImage } from './formats'
+import { DEFAULT_IMAGE_PDF, imagePageLayout, jpegInfo, type ImagePdfOptions } from './imagePdf'
 
 export type ImageTarget = 'jpg' | 'png' | 'webp' | 'bmp' | 'gif' | 'avif' | 'ico'
 
@@ -88,9 +89,10 @@ export async function openImage(file: Blob, background?: string): Promise<HTMLCa
   }
 }
 
-export async function convertImage(file: File, target: ImageTarget, quality = 0.92): Promise<Blob> {
-  // JPG y BMP no tienen transparencia: fondo blanco, como en la app.
-  const canvas = await openImage(file, target === 'jpg' || target === 'bmp' ? '#ffffff' : undefined)
+/** JPG y BMP no tienen transparencia: fondo blanco, como en la app. */
+const needsBackground = (target: ImageTarget) => target === 'jpg' || target === 'bmp'
+
+async function encodeCanvas(canvas: HTMLCanvasElement, target: ImageTarget, quality: number): Promise<Blob> {
   if (target === 'bmp') return canvasToBmp(canvas)
   if (target === 'gif' || target === 'avif' || target === 'ico') {
     const codecs = await import('../infra/formatCodecs')
@@ -101,21 +103,61 @@ export async function convertImage(file: File, target: ImageTarget, quality = 0.
   return canvasToBlob(canvas, IMAGE_MIME[target], quality)
 }
 
-/** Varias imágenes en un solo PDF, una por página, del tamaño de cada imagen. */
-export async function imagesToPdf(files: File[]): Promise<Uint8Array> {
+export async function convertImage(file: File, target: ImageTarget, quality = 0.92): Promise<Blob> {
+  return encodeCanvas(await openImage(file, needsBackground(target) ? '#ffffff' : undefined), target, quality)
+}
+
+const isTiffFile = async (file: Blob) => specialImage(new Uint8Array(await file.slice(0, 2048).arrayBuffer())) === 'tiff'
+
+/** Pone un fondo detrás de lo transparente del canvas. */
+function flatten(canvas: HTMLCanvasElement, background: string) {
+  const ctx = canvas.getContext('2d')
+  if (!ctx) throw new Error('Canvas no disponible')
+  ctx.globalCompositeOperation = 'destination-over'
+  ctx.fillStyle = background
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+}
+
+/** Como convertImage, pero un TIFF de varias páginas da una imagen por página (W-146.7). */
+export async function convertImagePages(file: File, target: ImageTarget, quality = 0.92): Promise<Blob[]> {
+  if (!(await isTiffFile(file))) return [await convertImage(file, target, quality)]
+  const { tiffToCanvases } = await import('../infra/formatCodecs')
+  const out: Blob[] = []
+  for (const canvas of await tiffToCanvases(file)) {
+    if (needsBackground(target)) flatten(canvas, '#ffffff')
+    out.push(await encodeCanvas(canvas, target, quality))
+    canvas.width = canvas.height = 0
+  }
+  return out
+}
+
+/**
+ * Varias imágenes en un solo PDF, una por página, del tamaño, orientación y márgenes elegidos
+ * (W-146.7). Los JPEG derechos y en RGB entran tal cual (sin perder calidad); los girados por EXIF
+ * y los CMYK pasan por un canvas para que salgan derechos y con los colores correctos.
+ */
+export async function imagesToPdf(files: File[], opts: ImagePdfOptions = DEFAULT_IMAGE_PDF): Promise<Uint8Array> {
   const doc = await PDFDocument.create()
+  const embedCanvas = async (canvas: HTMLCanvasElement) => {
+    flatten(canvas, '#ffffff')
+    const image = await doc.embedJpg(await (await canvasToBlob(canvas, 'image/jpeg', 0.92)).arrayBuffer())
+    canvas.width = canvas.height = 0
+    return image
+  }
   for (const file of files) {
-    const type = file.type || ''
-    let image
-    if (type === 'image/jpeg') image = await doc.embedJpg(await file.arrayBuffer())
-    else if (type === 'image/png') image = await doc.embedPng(await file.arrayBuffer())
-    else {
-      const canvas = await openImage(file, '#ffffff')
-      const blob = await canvasToBlob(canvas, 'image/jpeg', 0.92)
-      image = await doc.embedJpg(await blob.arrayBuffer())
+    const bytes = new Uint8Array(await file.arrayBuffer())
+    const jpeg = jpegInfo(bytes)
+    const images = []
+    if (jpeg && jpeg.orientation === 1 && jpeg.components !== 4) images.push(await doc.embedJpg(bytes))
+    else if (!jpeg && file.type === 'image/png') images.push(await doc.embedPng(bytes))
+    else if (await isTiffFile(file)) {
+      const { tiffToCanvases } = await import('../infra/formatCodecs')
+      for (const canvas of await tiffToCanvases(file)) images.push(await embedCanvas(canvas))
+    } else images.push(await embedCanvas(await openImage(file, '#ffffff')))
+    for (const image of images) {
+      const { size, ...box } = imagePageLayout(image.width, image.height, opts)
+      doc.addPage(size).drawImage(image, box)
     }
-    const page = doc.addPage([image.width, image.height])
-    page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height })
   }
   return doc.save()
 }

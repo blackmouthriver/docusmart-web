@@ -10,6 +10,20 @@ export const DELIMITERS: readonly Delimiter[] = [',', ';', '\t', '|']
 
 const stripBom = (s: string) => (s.charCodeAt(0) === 0xfeff ? s.slice(1) : s)
 
+/**
+ * El texto de un CSV en la codificación correcta (W-146.7): UTF-8 (con o sin BOM), UTF-16 con BOM
+ * o, si no es UTF-8 válido, Windows-1252, que es como guarda Excel en español el "CSV delimitado".
+ */
+export function decodeText(bytes: Uint8Array): string {
+  if (bytes[0] === 0xff && bytes[1] === 0xfe) return new TextDecoder('utf-16le').decode(bytes.subarray(2))
+  if (bytes[0] === 0xfe && bytes[1] === 0xff) return new TextDecoder('utf-16be').decode(bytes.subarray(2))
+  try {
+    return stripBom(new TextDecoder('utf-8', { fatal: true }).decode(bytes))
+  } catch {
+    return new TextDecoder('windows-1252').decode(bytes)
+  }
+}
+
 /** Separador más probable: el que aparece el mismo número de veces (y más) en las primeras líneas, fuera de comillas. */
 export function detectDelimiter(text: string): Delimiter {
   const lines: string[] = []

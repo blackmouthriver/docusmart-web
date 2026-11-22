@@ -5,7 +5,7 @@
  * decimales) para poder sumarlos. El .xlsx se escribe a mano con fflate.
  */
 import { strToU8, zipSync } from 'fflate'
-import { buildLines, columnAnchors, xmlText, type Line, type PageInfo, type TextFrag } from './pdfWord'
+import { bandOf, buildLines, tableColumns, xmlText, type Line, type PageInfo, type TextFrag } from './pdfWord'
 import { tr } from '../../../shared/i18n/translate'
 
 export type NumFmt = 'integer' | 'decimal' | 'currency' | 'currency2' | 'percent'
@@ -73,8 +73,10 @@ function toCell(text: string, bold: boolean): Cell {
 export function pageRows(lines: Line[]): Cell[][] {
   const multi = lines.filter((l) => l.segments.length >= 2)
   const size = lines[0]?.size ?? 10
-  const anchors = multi.length >= 2 ? columnAnchors(multi, 1.5 * size) : []
-  const colOf = (x: number) => anchors.reduce((col, a, i) => (x >= a - 1.5 * size ? i : col), 0)
+  // Columnas por el espacio que ocupa el texto: los montos alineados a la derecha y su encabezado
+  // quedan en la misma columna (W-146.7).
+  const anchors = multi.length >= 2 ? tableColumns(multi, size) : []
+  const colOf = (s: { x0: number; x1: number }) => bandOf(anchors, s)
   // Espaciado típico entre líneas de la página (las tablas de Word tienen filas más altas que el texto).
   const gaps = lines.slice(1).map((l, k) => l.y - lines[k].y).sort((a, b) => a - b)
   const typical = gaps.length ? gaps[Math.floor(gaps.length / 2)] : size
@@ -83,8 +85,8 @@ export function pageRows(lines: Line[]): Cell[][] {
     const prev = lines[k - 1]
     const gap = prev ? l.y - prev.y : 0
     // Texto que sigue en la línea de abajo dentro de una celda ("Transferencia / recibida").
-    if (prev && prev.segments.length >= 2 && l.segments.length === 1 && anchors.length >= 2 && gap <= 1.6 * l.size && colOf(l.segments[0].x0) > 0) {
-      const cell = rows[rows.length - 1][colOf(l.segments[0].x0)]
+    if (prev && prev.segments.length >= 2 && l.segments.length === 1 && anchors.length >= 2 && gap <= 1.6 * l.size && colOf(l.segments[0]) > 0) {
+      const cell = rows[rows.length - 1][colOf(l.segments[0])]
       if (cell && typeof cell.v === 'string' && cell.v !== '') {
         cell.v += ' ' + segText(l, 0)
         return
@@ -98,7 +100,7 @@ export function pageRows(lines: Line[]): Cell[][] {
     }
     const row: Cell[] = []
     l.segments.forEach((s, i) => {
-      const col = colOf(s.x0)
+      const col = colOf(s)
       while (row.length < col) row.push({ v: '' })
       const prev = row[col]
       const text = segText(l, i)

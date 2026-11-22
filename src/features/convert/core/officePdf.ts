@@ -72,8 +72,11 @@ export type OTable = {
   rowHeights?: Array<number | undefined>
 }
 export type OImage = { kind: 'image'; data: Uint8Array; type: 'png' | 'jpg'; width: number; height: number; align?: 'left' | 'center' | 'right' }
-export type OBlock = OPara | OTable | OImage | { kind: 'pagebreak' }
 export type OMargins = { top: number; right: number; bottom: number; left: number }
+/** Página de una sección de Word: tamaño, márgenes, encabezado y pie (W-146.7). */
+export type OPageSetup = { pageSize: [number, number]; margins: OMargins; header: OBlock[]; footer: OBlock[]; headerDistance: number; footerDistance: number }
+/** `setup`: un salto de sección; las páginas que siguen usan esa página. */
+export type OBlock = OPara | OTable | OImage | { kind: 'pagebreak'; setup?: OPageSetup }
 export type LayoutOptions = {
   pageSize?: [number, number]
   margin?: number
@@ -235,17 +238,19 @@ export async function layoutPdf(blocks: OBlock[], opts: LayoutOptions = {}): Pro
   const doc = await PDFDocument.create()
   if (opts.title) doc.setTitle(opts.title)
   const family: FontFamily = opts.family ?? 'sans'
-  const needs = fontNeeds([...allParas(blocks), ...allParas(opts.header ?? []), ...allParas(opts.footer ?? [])], family)
+  const setups = blocks.flatMap((b) => (b.kind === 'pagebreak' && b.setup ? [b.setup] : []))
+  const needs = fontNeeds([...allParas(blocks), ...allParas(opts.header ?? []), ...allParas(opts.footer ?? []), ...setups.flatMap((st) => [...allParas(st.header), ...allParas(st.footer)])], family)
   const sets = new Map<FontFamily, FontSet>()
   for (const [f, n] of needs) sets.set(f, await loadFonts(doc, f, n.styles, n.text.join('\n')))
   const pick: Pick = (f) => sets.get(f ?? family) ?? sets.get(family)!
   const main = pick()
 
-  const [W, H] = opts.pageSize ?? A4
+  // Página de la sección actual (cambia en cada salto de sección de Word, W-146.7).
+  let [W, H] = opts.pageSize ?? A4
   const m = opts.margin ?? 56
-  const M: OMargins = opts.margins ?? { top: m, right: m, bottom: m, left: m }
+  let M: OMargins = opts.margins ?? { top: m, right: m, bottom: m, left: m }
   const base = opts.baseSize ?? 11
-  const contentW = W - M.left - M.right
+  let contentW = W - M.left - M.right
   let page!: PDFPage
   let y = 0
   // Arriba y abajo del cuerpo (el encabezado o el pie pueden empujarlos, como en Word).
@@ -253,9 +258,14 @@ export async function layoutPdf(blocks: OBlock[], opts: LayoutOptions = {}): Pro
   let bottom = M.bottom
   // Encabezado y pie: se dibujan en su lugar, sin saltos de página.
   let fixed = false
+  type Decor = { header: OBlock[]; footer: OBlock[]; headerTop: number; footerBase: number; headerH: number; footerH: number }
+  let decor: Decor = { header: [], footer: [], headerTop: 0, footerBase: 0, headerH: 0, footerH: 0 }
+  /** El encabezado y el pie de cada página (de su sección). */
+  const pageDecor: Decor[] = []
   const atTop = () => y >= top
   const newPage = () => {
     page = doc.addPage([W, H])
+    pageDecor.push(decor)
     y = top
   }
   const ensure = (h: number) => {
@@ -502,7 +512,16 @@ export async function layoutPdf(blocks: OBlock[], opts: LayoutOptions = {}): Pro
       if (b.kind === 'para') drawPara(b)
       else if (b.kind === 'table') await drawTable(b)
       else if (b.kind === 'image') await drawImage(b)
-      else if (!fixed && !atTop()) newPage()
+      else if (fixed) continue
+      else if (b.setup) {
+        // Salto de sección: la hoja vacía que quedó se reemplaza por una con la nueva página.
+        if (atTop()) {
+          doc.removePage(doc.getPageCount() - 1)
+          pageDecor.pop()
+        }
+        await applySetup(b.setup)
+        newPage()
+      } else if (!atTop()) newPage()
     }
   }
   /** Alto que ocupan unos bloques (se dibujan en una hoja de prueba que luego se quita). */
@@ -516,28 +535,38 @@ export async function layoutPdf(blocks: OBlock[], opts: LayoutOptions = {}): Pro
     fixed = false
     return H - y
   }
-  const headerTop = H - (opts.headerDistance ?? 36)
-  const footerBase = opts.footerDistance ?? 36
-  const headerH = await measure(opts.header)
-  const footerH = await measure(opts.footer)
-  if (headerH) top = Math.min(top, headerTop - headerH)
-  if (footerH) bottom = Math.max(bottom, footerBase + footerH)
+  /** Pasa a la página de una sección: tamaño, márgenes, y el alto que ocupan su encabezado y su pie. */
+  async function applySetup(st: Partial<OPageSetup>) {
+    ;[W, H] = st.pageSize ?? A4
+    M = st.margins ?? { top: m, right: m, bottom: m, left: m }
+    contentW = W - M.left - M.right
+    top = H - M.top
+    bottom = M.bottom
+    const headerTop = H - (st.headerDistance ?? 36)
+    const footerBase = st.footerDistance ?? 36
+    const headerH = await measure(st.header)
+    const footerH = await measure(st.footer)
+    if (headerH) top = Math.min(top, headerTop - headerH)
+    if (footerH) bottom = Math.max(bottom, footerBase + footerH)
+    decor = { header: st.header ?? [], footer: st.footer ?? [], headerTop, footerBase, headerH, footerH }
+  }
 
+  await applySetup({ ...opts, margins: M })
   newPage()
   await drawBlocks(blocks)
 
-  // Encabezado y pie en cada página, con el número de página.
-  if (headerH || footerH) {
-    const pages = doc.getPages()
-    fixed = true
-    for (const [i, pg] of pages.entries()) {
-      page = pg
-      fieldValues = { page: i + 1, pages: pages.length }
-      y = headerTop
-      await drawBlocks(opts.header ?? [])
-      y = footerBase + footerH
-      await drawBlocks(opts.footer ?? [])
-    }
+  // Encabezado y pie en cada página (los de su sección), con el número de página.
+  const pages = doc.getPages()
+  fixed = true
+  for (const [i, pg] of pages.entries()) {
+    const d = pageDecor[i]
+    if (!d || (!d.headerH && !d.footerH)) continue
+    page = pg
+    fieldValues = { page: i + 1, pages: pages.length }
+    y = d.headerTop
+    await drawBlocks(d.header)
+    y = d.footerBase + d.footerH
+    await drawBlocks(d.footer)
   }
   return doc.save()
 }

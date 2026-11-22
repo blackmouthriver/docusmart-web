@@ -28,12 +28,78 @@ export function imageSize(b: Uint8Array): { width: number; height: number; type:
 
 /* ───────────── Excel ───────────── */
 
-export type SheetData = { sheet: string; data: unknown[][] }
+/**
+ * Una hoja: sus valores y, si se conocen (xlsxRead.ts), el formato de número de cada celda y si
+ * está oculta.
+ */
+export type SheetData = { sheet: string; data: unknown[][]; formats?: (string | undefined)[][]; hidden?: boolean }
 
-/** Valor de celda como texto: números con separadores colombianos, fechas dd/mm/aaaa. */
-export function cellText(v: unknown): string {
+/**
+ * Las partes de un formato de número de Excel, en una sola pasada: lo de afuera (`bare`), los
+ * textos entre comillas o escapados con "\" (`quoted`) y lo que va entre corchetes (`brackets`).
+ */
+export function formatParts(code: string): { bare: string; quoted: string[]; brackets: string[] } {
+  let bare = ''
+  const quoted: string[] = []
+  const brackets: string[] = []
+  let i = 0
+  while (i < code.length) {
+    const ch = code[i]
+    if (ch === '\\' && i + 1 < code.length) {
+      quoted.push(code[i + 1])
+      i += 2
+    } else if (ch === '"' || ch === '[') {
+      const close = code.indexOf(ch === '"' ? '"' : ']', i + 1)
+      const end = close < 0 ? code.length : close
+      ;(ch === '"' ? quoted : brackets).push(code.slice(i + 1, end))
+      i = end + 1
+    } else {
+      bare += ch
+      i++
+    }
+  }
+  return { bare, quoted, brackets }
+}
+
+/** Decimales fijos de un formato de número ("0.00" → 2, "#,##0" → 0), o null si no los fija. */
+function fixedDecimals(fmt: string): number | null {
+  const section = formatParts(fmt.split(';')[0]).bare
+  if (!/[0#]/.test(section)) return null
+  const m = /\.([0#]+)/.exec(section)
+  return m ? m[1].length : 0
+}
+
+/** Símbolo de moneda de un formato ("$", "€", "[$US$-409]"…) y si va antes del número. */
+function currencyOf(fmt: string): { symbol: string; before: boolean } | null {
+  const section = fmt.split(';')[0]
+  const parts = formatParts(section)
+  // "[$US$-409]": el símbolo va antes del guion.
+  const bracket = parts.brackets.find((b) => b.startsWith('$'))
+  const symbol = bracket?.slice(1).split('-')[0] || parts.quoted.find((q) => /[$€£¥]/.test(q))?.trim() || /[$€£¥]/.exec(parts.bare)?.[0]
+  if (!symbol) return null
+  const at = section.indexOf(bracket !== undefined ? `[${bracket}]` : symbol)
+  const digit = section.search(/[0#]/)
+  return { symbol, before: digit < 0 || at < digit }
+}
+
+/**
+ * Valor de celda como texto: números con separadores colombianos, fechas dd/mm/aaaa y, si se
+ * conoce el formato de Excel, porcentaje, moneda y decimales fijos (W-146.7).
+ */
+export function cellText(v: unknown, fmt?: string): string {
   if (v === null || v === undefined) return ''
-  if (typeof v === 'number') return v.toLocaleString('es-CO', { maximumFractionDigits: 2 })
+  if (typeof v === 'number') {
+    if (!fmt) return v.toLocaleString('es-CO', { maximumFractionDigits: 2 })
+    const dec = fixedDecimals(fmt)
+    const opts = dec === null ? { maximumFractionDigits: 2 } : { minimumFractionDigits: dec, maximumFractionDigits: dec }
+    const section = formatParts(fmt.split(';')[0]).bare
+    if (section.includes('%')) return `${(v * 100).toLocaleString('es-CO', opts)} %`
+    const money = currencyOf(fmt)
+    const n = Math.abs(v).toLocaleString('es-CO', opts)
+    const sign = v < 0 ? '-' : ''
+    if (money) return money.before ? `${sign}${money.symbol} ${n}` : `${sign}${n} ${money.symbol}`
+    return sign + n
+  }
   if (typeof v === 'boolean') return v ? 'Sí' : 'No'
   if (v instanceof Date) {
     const d = (n: number) => String(n).padStart(2, '0')
@@ -42,25 +108,66 @@ export function cellText(v: unknown): string {
   return String(v)
 }
 
-/** Una tabla por hoja (sin filas y columnas vacías al final), con un salto de página entre hojas. */
-export function fromSheets(sheets: SheetData[]): { blocks: OBlock[]; maxColumns: number } {
+/** Letra de una columna de Excel: 0 → A, 26 → AA. */
+export function columnLetter(n: number): string {
+  let s = ''
+  for (let i = n + 1; i > 0; i = Math.floor((i - 1) / 26)) s = String.fromCharCode(65 + ((i - 1) % 26)) + s
+  return s
+}
+
+/**
+ * Agrupa las columnas para que cada grupo quepa a lo ancho (`maxChars`, en caracteres): cada
+ * columna ocupa su palabra más larga más 2 de margen. Así no se parten palabras: lo que no cabe
+ * sigue en otra página, como al imprimir en Excel.
+ */
+export function columnGroups(rows: string[][], cols: number, maxChars: number): Array<[number, number]> {
+  const need = Array.from({ length: cols }, (_, c) => Math.max(3, ...rows.map((r) => Math.max(0, ...(r[c] ?? '').split(/\s+/).map((w) => w.length)))) + 2)
+  const groups: Array<[number, number]> = []
+  let start = 0
+  let used = 0
+  need.forEach((w, c) => {
+    if (c > start && used + w > maxChars) {
+      groups.push([start, c])
+      start = c
+      used = 0
+    }
+    used += w
+  })
+  groups.push([start, cols])
+  return groups
+}
+
+/**
+ * Una tabla por hoja (sin filas y columnas vacías al final), con un salto de página entre hojas.
+ * Las hojas ocultas no se imprimen, como en Excel, y una hoja muy ancha sigue en otra página con
+ * las columnas que no caben (W-146.7).
+ */
+export function fromSheets(all: SheetData[], maxChars = Infinity): { blocks: OBlock[]; maxColumns: number } {
   const blocks: OBlock[] = []
   let maxColumns = 0
-  sheets.forEach((s, i) => {
-    const rows = s.data.map((r) => r.map(cellText))
+  const sheets = all.filter((s) => !s.hidden)
+  sheets.forEach((s) => {
+    const rows = s.data.map((r, ri) => r.map((v, ci) => cellText(v, s.formats?.[ri]?.[ci])))
     while (rows.length && rows[rows.length - 1].every((c) => !c)) rows.pop()
     const cols = Math.max(0, ...rows.map((r) => r.reduce((last, c, j) => (c ? j + 1 : last), 0)))
     if (!rows.length || !cols) return
     maxColumns = Math.max(maxColumns, cols)
-    if (i > 0 && blocks.length) blocks.push({ kind: 'pagebreak' })
-    blocks.push({
-      kind: 'table',
-      title: sheets.length > 1 ? s.sheet : undefined,
-      header: true,
-      rows: rows.map((r, ri) =>
-        Array.from({ length: cols }, (_, c) => [{ kind: 'para' as const, runs: [{ text: r[c] ?? '', bold: ri === 0 }], align: typeof s.data[ri]?.[c] === 'number' ? ('right' as const) : ('left' as const) }]),
-      ),
-    })
+    const groups = columnGroups(rows, cols, maxChars)
+    for (const [from, to] of groups) {
+      if (blocks.length) blocks.push({ kind: 'pagebreak' })
+      const range = groups.length > 1 ? `${columnLetter(from)}–${columnLetter(to - 1)}` : ''
+      blocks.push({
+        kind: 'table',
+        title: [sheets.length > 1 ? s.sheet : '', range].filter(Boolean).join(' · ') || undefined,
+        header: true,
+        rows: rows.map((r, ri) =>
+          Array.from({ length: to - from }, (_, k) => {
+            const c = from + k
+            return [{ kind: 'para' as const, runs: [{ text: r[c] ?? '', bold: ri === 0 }], align: typeof s.data[ri]?.[c] === 'number' ? ('right' as const) : ('left' as const) }]
+          }),
+        ),
+      })
+    }
   })
   return { blocks, maxColumns }
 }

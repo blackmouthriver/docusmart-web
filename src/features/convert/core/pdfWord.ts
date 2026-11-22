@@ -194,23 +194,69 @@ export function columnAnchors(lines: Line[], tol: number): number[] {
   return clusters.filter((c) => c.length >= 2).map((c) => Math.min(...c))
 }
 
+export type Band = { x0: number; x1: number }
+
+/**
+ * Columnas de una tabla según el espacio que ocupa el texto (W-146.7): una columna es una franja
+ * con texto en casi todas las filas, y el hueco entre columnas, una franja casi vacía. A diferencia
+ * de alinear por el borde izquierdo, así una columna de montos alineados a la derecha queda en una
+ * sola columna, y su encabezado (alineado a la izquierda) se asigna a la columna más cercana.
+ */
+export function tableColumns(lines: Line[], size: number): Band[] {
+  const body = lines
+  const segs = body.flatMap((l) => l.segments)
+  if (!segs.length) return []
+  const left = Math.floor(Math.min(...segs.map((s) => s.x0)))
+  const right = Math.ceil(Math.max(...segs.map((s) => s.x1)))
+  const cover = new Array<number>(right - left + 1).fill(0)
+  for (const l of body) {
+    const hit = new Uint8Array(cover.length)
+    for (const s of l.segments) for (let x = Math.floor(s.x0) - left; x <= Math.ceil(s.x1) - left; x++) hit[x] = 1
+    hit.forEach((h, x) => (cover[x] += h))
+  }
+  // Una columna tiene texto en al menos 2 filas: una celda que cruza el hueco no lo tapa, y una
+  // palabra suelta no arma una columna nueva (se une a la columna más cercana).
+  const need = Math.min(body.length, 2)
+  const bands: Band[] = []
+  cover.forEach((n, x) => {
+    if (n < need) return
+    const last = bands[bands.length - 1]
+    if (last && x + left - last.x1 <= 0.5 * size) last.x1 = x + left
+    else bands.push({ x0: x + left, x1: x + left })
+  })
+  return bands
+}
+
+/**
+ * La columna de un segmento: la que más se le superpone o, si no toca ninguna, la más cercana. Una
+ * columna a su derecha cuenta como el doble de cerca: el encabezado de una columna de montos
+ * alineados a la derecha suele quedar a la izquierda de los montos.
+ */
+export function bandOf(bands: Band[], s: { x0: number; x1: number }): number {
+  let best = 0
+  let score = -Infinity
+  bands.forEach((b, i) => {
+    const overlap = Math.min(b.x1, s.x1) - Math.max(b.x0, s.x0)
+    const v = overlap > 0 ? overlap : b.x0 >= s.x1 ? -(b.x0 - s.x1) / 2 : -(s.x0 - b.x1)
+    if (v > score) [best, score] = [i, v]
+  })
+  return best
+}
+
 function toTable(lines: Line[], size: number): Table | null {
-  const anchors = columnAnchors(lines, 1.5 * size)
-  if (anchors.length < 2) return null
+  const bands = tableColumns(lines, size)
+  if (bands.length < 2) return null
   const rows = lines.map((l) => {
-    const cells: Run[][] = anchors.map(() => [])
+    const cells: Run[][] = bands.map(() => [])
     for (const s of l.segments) {
-      let col = 0
-      for (let i = 0; i < anchors.length; i++) if (s.x0 >= anchors[i] - 1.5 * size) col = i
+      const col = bandOf(bands, s)
       if (cells[col].length) pushRun(cells[col], { ...s.runs[0], text: ' ' })
       for (const r of s.runs) pushRun(cells[col], r)
     }
     return cells
   })
   // Anchos de columna según la posición de cada una (la última, hasta donde llega su texto).
-  const lastAnchor = anchors[anchors.length - 1]
-  const lastEnd = Math.max(...lines.flatMap((l) => l.segments.filter((s) => s.x0 >= lastAnchor - 1.5 * size).map((s) => s.x1)))
-  const widths = anchors.map((a, i) => (i < anchors.length - 1 ? anchors[i + 1] - a : Math.max(lastEnd - a + 2 * size, 4 * size)))
+  const widths = bands.map((b, i) => (i < bands.length - 1 ? bands[i + 1].x0 - b.x0 : Math.max(b.x1 - b.x0 + 2 * size, 4 * size)))
   return { kind: 'table', rows, widths }
 }
 
@@ -237,6 +283,10 @@ export function findColumns(lines: Line[], page: PageInfo, rects: RectFrag[] = [
     return { x, top }
   }
   if (segs.length < 8) return null
+  // Una tabla (un extracto, una factura) tampoco tiene texto que cruce entre sus columnas, pero no
+  // es una página a dos columnas: la mayoría de sus líneas tiene tres bloques o más (W-146.7).
+  if (lines.filter((l) => l.segments.length >= 3).length >= 0.5 * lines.length) return null
+  const median = (a: number[]) => a.sort((p, q) => p - q)[Math.floor(a.length / 2)] ?? 0
   let best: { x: number; top: number; count: number } | null = null
   for (let x = page.width * 0.2; x <= page.width * 0.8; x += 2) {
     const crossing = segs.filter((s) => s.x0 < x - 1 && s.x1 > x + 1)
@@ -249,6 +299,8 @@ export function findColumns(lines: Line[], page: PageInfo, rects: RectFrag[] = [
     const overlap = Math.min(Math.max(...ys(left)), Math.max(...ys(right))) - Math.max(Math.min(...ys(left)), Math.min(...ys(right)))
     if (overlap < page.height * 0.2) continue
     if (Math.min(...right.map((s) => s.x0)) - Math.max(...left.map((s) => s.x1)) < 8) continue
+    // Bloques angostos a los dos lados: dos columnas de una tabla, no de texto.
+    if (median(left.map((s) => s.x1 - s.x0)) < 0.18 * page.width && median(right.map((s) => s.x1 - s.x0)) < 0.18 * page.width) continue
     const count = left.length + right.length
     if (!best || count > best.count) best = { x, top, count }
   }
