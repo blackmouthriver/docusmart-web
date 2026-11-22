@@ -159,7 +159,7 @@ function resolveDest(src: PDFDocument, item: PDFDict): PDFRef | undefined {
 
 /** Busca un destino con nombre en /Dests (PDF 1.1) o en el árbol /Names /Dests. */
 function namedDest(src: PDFDocument, name: PDFName | PDFString | PDFHexString): PDFObject | undefined {
-  const key = name instanceof PDFName ? name.decodeText() : name.decodeText()
+  const key = name.decodeText()
   const old = src.catalog.lookupMaybe(PDFName.of('Dests'), PDFDict)
   if (old) {
     const hit = old.get(PDFName.of(key))
