@@ -118,6 +118,8 @@ export type Hunk = {
   before: string[]
   segments: Segment[]
   after: string[]
+  /** El mismo texto aparece quitado en un lugar y agregado en otro: se movió (W-146.5). */
+  moved?: 'from' | 'to'
 }
 export type Comparison = {
   identical: boolean
@@ -126,7 +128,24 @@ export type Comparison = {
   removed: number
   /** Demasiados cambios para compararlos en detalle. */
   tooDifferent: boolean
+  /** Bloques que solo cambiaron de lugar. */
+  moved?: number
 }
+
+/** Qué diferencias no cuentan como cambio. */
+export type CompareOptions = { ignoreCase?: boolean; ignorePunctuation?: boolean }
+
+/** La forma de comparar un texto según las opciones (el texto que se muestra no cambia). */
+export function compareKey(s: string, o: CompareOptions = {}): string {
+  let k = s
+  // Sin dejar espacio: así "1.500.000" y "1500000" cuentan igual.
+  if (o.ignorePunctuation) k = k.replace(/[\p{P}\p{S}]+/gu, '')
+  if (o.ignoreCase) k = k.toLocaleLowerCase()
+  return k.replace(/\s+/g, ' ').trim()
+}
+
+/** Para marcar como movido, el bloque debe tener al menos estas palabras (evita coincidencias casuales). */
+const MIN_MOVED_WORDS = 4
 
 /**
  * Límites de cambios antes de rendirse. La traza de Myers ocupa ~d² enteros:
@@ -140,21 +159,24 @@ export const normalizeLine = (s: string) => s.replace(/\s+/g, ' ').trim()
 const words = (lines: Line[]) => lines.flatMap((l) => l.text.split(' ')).filter(Boolean)
 
 /** Diferencia palabra por palabra entre dos bloques de líneas. */
-function wordSegments(del: Line[], ins: Line[]): Segment[] {
+function wordSegments(del: Line[], ins: Line[], o: CompareOptions = {}): Segment[] {
   const a = words(del)
   const b = words(ins)
-  const ops = myersDiff(a, b, undefined, MAX_WORD_EDITS) ?? [
+  const eq = o.ignoreCase || o.ignorePunctuation ? (x: string, y: string) => compareKey(x, o) === compareKey(y, o) : undefined
+  const ops = myersDiff(a, b, eq, MAX_WORD_EDITS) ?? [
     { type: 'del' as const, items: a },
     { type: 'ins' as const, items: b },
   ]
   return ops.filter((o) => o.items.length).map((o) => ({ type: o.type, text: o.items.join(' ') }))
 }
 
-export function compareTexts(linesA: Line[], linesB: Line[], context = 2): Comparison {
+export function compareTexts(linesA: Line[], linesB: Line[], context = 2, o: CompareOptions = {}): Comparison {
   const clean = (ls: Line[]) => ls.map((l) => ({ ...l, text: normalizeLine(l.text) })).filter((l) => l.text)
   const A = clean(linesA)
   const B = clean(linesB)
-  const ops = myersDiff(A, B, (x, y) => x.text === y.text, MAX_LINE_EDITS)
+  const keyA = new Map(A.map((l) => [l, compareKey(l.text, o)]))
+  const keyB = new Map(B.map((l) => [l, compareKey(l.text, o)]))
+  const ops = myersDiff(A, B, (x, y) => keyA.get(x) === keyB.get(y), MAX_LINE_EDITS)
   if (!ops) return { identical: false, hunks: [], added: words(B).length, removed: words(A).length, tooDifferent: true }
 
   const hunks: Hunk[] = []
@@ -174,7 +196,7 @@ export function compareTexts(linesA: Line[], linesB: Line[], context = 2): Compa
     const ins: Line[] = []
     let j = i
     for (; j < ops.length && ops[j].type !== 'same'; j++) (ops[j].type === 'del' ? del : ins).push(...ops[j].items)
-    const segments = wordSegments(del, ins)
+    const segments = wordSegments(del, ins, o)
     const startA = posA
     const startB = posB
     posA += del.length
@@ -195,7 +217,22 @@ export function compareTexts(linesA: Line[], linesB: Line[], context = 2): Compa
       after: A.slice(posA, posA + context).map((l) => l.text),
     })
   }
-  return { identical: hunks.length === 0, hunks, added, removed, tooDifferent: false }
+  // Bloques movidos: uno que solo quita y otro que solo agrega exactamente el mismo texto.
+  const onlyText = (h: Hunk, type: DiffType) => (h.segments.every((s) => s.type === type) ? compareKey(h.segments.map((s) => s.text).join(' '), o) : null)
+  let moved = 0
+  for (const from of hunks) {
+    const text = onlyText(from, 'del')
+    if (!text || from.moved || text.split(' ').length < MIN_MOVED_WORDS) continue
+    const to = hunks.find((h) => !h.moved && h !== from && onlyText(h, 'ins') === text)
+    if (!to) continue
+    from.moved = 'from'
+    to.moved = 'to'
+    const n = text.split(' ').length
+    removed -= n
+    added -= n
+    moved++
+  }
+  return { identical: hunks.length === 0, hunks, added, removed, tooDifferent: false, moved }
 }
 
 /** Informe en texto plano: "-" lo que se quitó y "+" lo que se agregó. */
@@ -206,8 +243,8 @@ export function reportText(c: Comparison, nameA: string, nameB: string): string 
   else {
     out.push(tr(c.hunks.length === 1 ? 'out.cmp.summaryOne' : 'out.cmp.summaryMany', { n: c.hunks.length, added: c.added, removed: c.removed }))
     c.hunks.forEach((h, i) => {
-      out.push('', tr('out.cmp.change', { n: i + 1, a: h.pageA, b: h.pageB }))
-      for (const s of h.segments) if (s.type !== 'same') out.push(`${s.type === 'del' ? '-' : '+'} ${s.text}`)
+      out.push('', tr('out.cmp.change', { n: i + 1, a: h.pageA, b: h.pageB }) + (h.moved ? ` (${tr(h.moved === 'from' ? 'compare.movedFrom' : 'compare.movedTo')})` : ''))
+      for (const s of h.segments) if (s.type !== 'same') out.push(`${h.moved ? '~' : s.type === 'del' ? '-' : '+'} ${s.text}`)
     })
   }
   return out.join('\n') + '\n'

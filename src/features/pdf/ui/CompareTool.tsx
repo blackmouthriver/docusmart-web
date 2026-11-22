@@ -6,10 +6,12 @@ import { baseName } from '../../../shared/files/files'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { tr } from '../../../shared/i18n/translate'
-import { compareTexts, reportText, type Comparison } from '../core/pdfCompare'
+import { compareTexts, reportText, type Comparison, type CompareOptions, type Line } from '../core/pdfCompare'
 import { track } from '../../../shared/platform/analytics'
 
 type Result = Comparison & { nameA: string; nameB: string; pagesA: number; pagesB: number }
+/** El texto leído de los dos PDF: se vuelve a comparar al cambiar las opciones, sin leerlos otra vez. */
+type Sources = { a: Line[]; b: Line[]; nameA: string; nameB: string; pagesA: number; pagesB: number }
 
 /** Cuántos cambios se muestran de entrada; el resto, con "Ver más". */
 const PAGE_SIZE = 30
@@ -19,7 +21,10 @@ export function CompareTool() {
   const [fileB, setFileB] = useState<File | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [result, setResult] = useState<Result | null>(null)
+  const [sources, setSources] = useState<Sources | null>(null)
+  const [options, setOptions] = useState<CompareOptions>({ ignoreCase: false, ignorePunctuation: false })
+  const result = useMemo<Result | null>(() => (sources ? { ...compareTexts(sources.a, sources.b, 2, options), ...sources } : null), [sources, options])
+  const setResult = (r: null) => setSources(r)
   const [shown, setShown] = useState(PAGE_SIZE)
   /** Lo que se guarda: el informe de cambios (si hay cambios). */
   const report = useMemo(
@@ -45,8 +50,7 @@ export function CompareTool() {
         setError(!a.lines.length && !b.lines.length ? tr('compare.bothNoText') : tr('compare.oneNoText', { name: (!a.lines.length ? fileA : fileB).name }))
         return
       }
-      const c = compareTexts(a.lines, b.lines)
-      setResult({ ...c, nameA: fileA.name, nameB: fileB.name, pagesA: a.pages, pagesB: b.pages })
+      setSources({ a: a.lines, b: b.lines, nameA: fileA.name, nameB: fileB.name, pagesA: a.pages, pagesB: b.pages })
       setShown(PAGE_SIZE)
       track('pdf_tool_used', { tool_name: 'compare' })
     } catch (e) {
@@ -78,6 +82,17 @@ export function CompareTool() {
           {slot(tr('compare.newVersion'), fileB, pick(setFileB))}
         </div>
         <small className="faint">{tr('compare.help')}</small>
+        <fieldset className="row" style={{ border: 0, padding: 0, margin: 0, gap: 16 }}>
+          <legend className="sr-only">{tr('compare.options')}</legend>
+          <label className="check">
+            <input type="checkbox" checked={!!options.ignoreCase} onChange={(e) => setOptions((o) => ({ ...o, ignoreCase: e.target.checked }))} />
+            <span>{tr('compare.ignoreCase')}</span>
+          </label>
+          <label className="check">
+            <input type="checkbox" checked={!!options.ignorePunctuation} onChange={(e) => setOptions((o) => ({ ...o, ignorePunctuation: e.target.checked }))} />
+            <span>{tr('compare.ignorePunctuation')}</span>
+          </label>
+        </fieldset>
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
           {fileA && fileB && (
@@ -121,17 +136,20 @@ export function CompareTool() {
               <div className="row compare-legend">
                 <span><ins className="diff-ins">+{result.added}</ins> {tr('compare.added')}</span>
                 <span><del className="diff-del">−{result.removed}</del> {tr('compare.removed')}</span>
+                {!!result.moved && <span><span className="diff-moved">↕ {result.moved}</span> {tr('compare.movedBlocks')}</span>}
               </div>
               <ol className="compare-hunks">
                 {result.hunks.slice(0, shown).map((h, i) => (
-                  <li key={i} className="compare-hunk">
+                  <li key={i} className={'compare-hunk' + (h.moved ? ' is-moved' : '')}>
                     <div className="compare-hunk-head">
                       {tr('compare.changeN', { n: i + 1 })} · {h.pageA === h.pageB ? tr('compare.page', { n: h.pageA }) : tr('compare.pages', { a: h.pageA, b: h.pageB })}
+                      {h.moved && <> · <span className="diff-moved">{tr(h.moved === 'from' ? 'compare.movedFrom' : 'compare.movedTo')}</span></>}
                     </div>
                     {h.before.map((t, j) => <p key={'b' + j} className="compare-ctx">{t}</p>)}
                     <p className="compare-change">
                       {h.segments.map((s, j) => {
                         const sep = j ? ' ' : ''
+                        if (h.moved) return <span key={j} className="diff-moved-text">{sep + s.text}</span>
                         if (s.type === 'del') return <span key={j}>{sep}<del className="diff-del">{s.text}</del></span>
                         if (s.type === 'ins') return <span key={j}>{sep}<ins className="diff-ins">{s.text}</ins></span>
                         return <span key={j}>{sep + s.text}</span>

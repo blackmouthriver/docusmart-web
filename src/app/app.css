@@ -1314,3 +1314,8 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .bill-history { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .bill-history li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-radius: 12px; background: var(--paper); }
 .bill-history li > div:first-child { display: grid; gap: 2px; min-width: 0; }
+/* ── Comparar: bloques movidos (W-146.5) ── */
+.diff-moved { color: #6D28D9; font-weight: 700; }
+.compare-hunk.is-moved { border-left: 3px solid #A78BFA; }
+.diff-moved-text { background: rgba(167, 139, 250, .16); border-radius: 3px; }
+:root[data-theme="dark"] .diff-moved { color: #C4B5FD; }
