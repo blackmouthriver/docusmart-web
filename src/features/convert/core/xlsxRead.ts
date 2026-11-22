@@ -5,7 +5,7 @@
  */
 import { strFromU8, unzipSync } from 'fflate'
 import { child, children, parseXml, type XNode } from './xml'
-import type { SheetData } from './officeModels'
+import { formatParts, type SheetData } from './officeModels'
 
 /** Formatos de número que Excel trae incorporados y que importan para mostrar el valor. */
 const BUILTIN: Record<number, string> = {
@@ -16,7 +16,7 @@ const BUILTIN: Record<number, string> = {
 
 /** ¿El formato es de fecha u hora? (letras d, m, y, h o s fuera de comillas y corchetes de color). */
 export function isDateFormat(code: string): boolean {
-  const bare = code.replace(/"[^"]*"/g, '').replace(/\[[^\]]*\]/g, '').replace(/\\./g, '')
+  const { bare } = formatParts(code)
   return /[dmyhs]/i.test(bare) && !/[0#]/.test(bare.split(';')[0])
 }
 

@@ -8,7 +8,7 @@ import { decodeText, parseCsv } from '../../../../../src/features/convert/core/c
 import { prepareSvg, svgRenderSize } from '../../../../../src/features/convert/core/formats'
 import { imagePageLayout, jpegInfo } from '../../../../../src/features/convert/core/imagePdf'
 import { XlsxError, columnIndex, excelDate, isDateFormat, readXlsx } from '../../../../../src/features/convert/core/xlsxRead'
-import { cellText, columnGroups, columnLetter, fromSheets } from '../../../../../src/features/convert/core/officeModels'
+import { cellText, columnGroups, columnLetter, formatParts, fromSheets } from '../../../../../src/features/convert/core/officeModels'
 import { bandOf, buildDocument, buildLines, findColumns, tableColumns, type Table, type TextFrag } from '../../../../../src/features/convert/core/pdfWord'
 import { pageRows } from '../../../../../src/features/convert/core/pdfExcel'
 import { readDocx } from '../../../../../src/features/convert/core/docxRead'
@@ -178,6 +178,12 @@ describe('Excel: lector propio (W-146.7)', () => {
     expect(['dd/mm/yyyy', 'h:mm', 'yyyy-mm-dd;@', '[$-409]mmmm d', '"Día" d'].every(isDateFormat)).toBe(true)
     expect(['0.00', '#,##0', '0%', '"$" #,##0', '[Red]0.0', 'General'].some(isDateFormat)).toBe(false)
     expect([0, 25, 26, 27, 701, 702].map(columnLetter)).toEqual(['A', 'Z', 'AA', 'AB', 'ZZ', 'AAA'])
+  })
+
+  it('formatParts: comillas, escapes y corchetes en una sola pasada (también sin cerrar)', () => {
+    expect(formatParts('[Red]"$" #,##0\\ "u"')).toEqual({ bare: ' #,##0', quoted: ['$', ' ', 'u'], brackets: ['Red'] })
+    expect(formatParts('0.00"abc')).toEqual({ bare: '0.00', quoted: ['abc'], brackets: [] })
+    expect(formatParts('[h:mm')).toEqual({ bare: '', quoted: [], brackets: ['h:mm'] })
   })
 
   it('cellText con formato: porcentaje, moneda antes o después, decimales fijos', () => {

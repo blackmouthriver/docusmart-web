@@ -34,9 +34,30 @@ export function imageSize(b: Uint8Array): { width: number; height: number; type:
  */
 export type SheetData = { sheet: string; data: unknown[][]; formats?: (string | undefined)[][]; hidden?: boolean }
 
+/**
+ * Las partes de un formato de número de Excel, en una sola pasada: lo de afuera (`bare`), los
+ * textos entre comillas o escapados con "\" (`quoted`) y lo que va entre corchetes (`brackets`).
+ */
+export function formatParts(code: string): { bare: string; quoted: string[]; brackets: string[] } {
+  let bare = ''
+  const quoted: string[] = []
+  const brackets: string[] = []
+  for (let i = 0; i < code.length; i++) {
+    const ch = code[i]
+    if (ch === '\\' && i + 1 < code.length) quoted.push(code[++i])
+    else if (ch === '"' || ch === '[') {
+      const close = code.indexOf(ch === '"' ? '"' : ']', i + 1)
+      const end = close < 0 ? code.length : close
+      ;(ch === '"' ? quoted : brackets).push(code.slice(i + 1, end))
+      i = end
+    } else bare += ch
+  }
+  return { bare, quoted, brackets }
+}
+
 /** Decimales fijos de un formato de número ("0.00" → 2, "#,##0" → 0), o null si no los fija. */
 function fixedDecimals(fmt: string): number | null {
-  const section = fmt.split(';')[0].replace(/"[^"]*"/g, '').replace(/\[[^\]]*\]/g, '')
+  const section = formatParts(fmt.split(';')[0]).bare
   if (!/[0#]/.test(section)) return null
   const m = /\.([0#]+)/.exec(section)
   return m ? m[1].length : 0
@@ -45,10 +66,12 @@ function fixedDecimals(fmt: string): number | null {
 /** Símbolo de moneda de un formato ("$", "€", "[$US$-409]"…) y si va antes del número. */
 function currencyOf(fmt: string): { symbol: string; before: boolean } | null {
   const section = fmt.split(';')[0]
-  const bracket = /\[\$([^\]-]*)(-[^\]]*)?\]/.exec(section)
-  const symbol = bracket?.[1] || /"([^"]*[$€£¥][^"]*)"/.exec(section)?.[1]?.trim() || /[$€£¥]/.exec(section.replace(/\[[^\]]*\]/g, ''))?.[0]
+  const parts = formatParts(section)
+  // "[$US$-409]": el símbolo va antes del guion.
+  const bracket = parts.brackets.find((b) => b.startsWith('$'))
+  const symbol = bracket?.slice(1).split('-')[0] || parts.quoted.find((q) => /[$€£¥]/.test(q))?.trim() || /[$€£¥]/.exec(parts.bare)?.[0]
   if (!symbol) return null
-  const at = section.indexOf(bracket?.[0] ?? symbol)
+  const at = section.indexOf(bracket !== undefined ? `[${bracket}]` : symbol)
   const digit = section.search(/[0#]/)
   return { symbol, before: digit < 0 || at < digit }
 }
@@ -63,7 +86,7 @@ export function cellText(v: unknown, fmt?: string): string {
     if (!fmt) return v.toLocaleString('es-CO', { maximumFractionDigits: 2 })
     const dec = fixedDecimals(fmt)
     const opts = dec === null ? { maximumFractionDigits: 2 } : { minimumFractionDigits: dec, maximumFractionDigits: dec }
-    const section = fmt.split(';')[0].replace(/"[^"]*"/g, '')
+    const section = formatParts(fmt.split(';')[0]).bare
     if (section.includes('%')) return `${(v * 100).toLocaleString('es-CO', opts)} %`
     const money = currencyOf(fmt)
     const n = Math.abs(v).toLocaleString('es-CO', opts)
