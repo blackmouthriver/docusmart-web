@@ -6,10 +6,19 @@
  * Las posiciones se expresan como fracción (0 a 1) de la página tal como se ve,
  * con el origen arriba a la izquierda y su rotación aplicada.
  */
-import { PDFDocument, degrees } from 'pdf-lib'
+import { LineCapStyle, PDFDocument, degrees } from 'pdf-lib'
+import { drawPieces, fontsForText, piecesWidth } from '../../../shared/pdf/pdfFonts'
 import type { Pixels } from './pdfCrop'
+import { hexToRgb } from './pdfEdit'
 
-export type Placement = { page: number; x: number; y: number; w: number; h: number }
+/**
+ * Qué va en cada recuadro (W-146.2): la firma, las iniciales (imágenes), la fecha o un texto
+ * (texto real del PDF) o una marca ✓. Sin `kind`, es la firma.
+ */
+export type StampKind = 'signature' | 'initials' | 'date' | 'text' | 'check'
+export type Placement = { page: number; x: number; y: number; w: number; h: number; kind?: StampKind; text?: string }
+export type SignImages = { signature?: Uint8Array; initials?: Uint8Array }
+export const isImageStamp = (p: Placement) => !p.kind || p.kind === 'signature' || p.kind === 'initials'
 type Box = { x: number; y: number; width: number; height: number }
 
 const quarterTurns = (rotation: number) => ((Math.round(rotation / 90) % 4) + 4) % 4
@@ -53,17 +62,57 @@ export function defaultPlacement(page: number, signatureAspect: number, pageAspe
 export function clampPlacement(p: Placement, min = 0.03): Placement {
   const w = Math.min(1, Math.max(min, p.w))
   const h = Math.min(1, Math.max(min, p.h))
-  return { page: p.page, w, h, x: Math.min(1 - w, Math.max(0, p.x)), y: Math.min(1 - h, Math.max(0, p.y)) }
+  return { ...p, w, h, x: Math.min(1 - w, Math.max(0, p.x)), y: Math.min(1 - h, Math.max(0, p.y)) }
 }
 
-/** Estampa la firma en cada posición (páginas en base 0). */
-export async function signPdf(bytes: ArrayBuffer | Uint8Array, png: Uint8Array, placements: Placement[]): Promise<Uint8Array> {
+/** Puntos de la marca ✓ dentro de su recuadro (fracciones, origen arriba a la izquierda). */
+const CHECK: Array<[number, number]> = [
+  [0.14, 0.55],
+  [0.4, 0.8],
+  [0.86, 0.2],
+]
+
+/**
+ * Estampa la firma y los demás campos en cada posición (páginas en base 0). `images` es el PNG de
+ * la firma o, con iniciales, `{ signature, initials }`. `ink` es el color de la fecha, los textos y ✓.
+ */
+export async function signPdf(bytes: ArrayBuffer | Uint8Array, images: Uint8Array | SignImages, placements: Placement[], ink = '#1C1B1A'): Promise<Uint8Array> {
   if (!placements.length) throw new Error('Coloca la firma en al menos una página.')
   const doc = await PDFDocument.load(bytes)
-  const image = await doc.embedPng(png)
+  const pngs: SignImages = images instanceof Uint8Array ? { signature: images } : images
+  const embedded = new Map<StampKind, Awaited<ReturnType<PDFDocument['embedPng']>>>()
+  for (const kind of ['signature', 'initials'] as const) {
+    const png = pngs[kind]
+    if (png && placements.some((p) => (p.kind ?? 'signature') === kind)) embedded.set(kind, await doc.embedPng(png))
+  }
+  const texts = placements.filter((p) => (p.kind === 'date' || p.kind === 'text') && p.text?.trim())
+  const fonts = texts.length ? await fontsForText(doc, 'sans', ['regular'], texts.map((p) => p.text).join('\n')) : null
+  const color = hexToRgb(ink)
+
   for (const p of placements) {
     const page = doc.getPage(p.page)
-    page.drawImage(image, placementToPdf(p, page.getCropBox(), page.getRotation().angle))
+    const box = page.getCropBox()
+    const rotation = page.getRotation().angle
+    const kind = p.kind ?? 'signature'
+    const turns = quarterTurns(rotation)
+    const viewW = turns % 2 ? box.height : box.width
+    const viewH = turns % 2 ? box.width : box.height
+    if (kind === 'signature' || kind === 'initials') {
+      const image = embedded.get(kind)
+      if (image) page.drawImage(image, placementToPdf(p, box, rotation))
+    } else if (kind === 'check') {
+      const pts = CHECK.map(([cu, cv]) => viewToPdf(p.x + cu * p.w, p.y + cv * p.h, box, rotation))
+      const thickness = Math.max(1, Math.min(p.w * viewW, p.h * viewH) * 0.12)
+      for (let i = 0; i + 1 < pts.length; i++) page.drawLine({ start: pts[i], end: pts[i + 1], thickness, color, lineCap: LineCapStyle.Round })
+    } else if (fonts && p.text?.trim()) {
+      // El texto ocupa el recuadro: tan alto como entre, sin pasarse del ancho.
+      const pieces = fonts.pieces(p.text.trim())
+      const boxW = p.w * viewW
+      const boxH = p.h * viewH
+      const size = Math.max(4, Math.min(boxH / 1.15, boxW / (piecesWidth(pieces, 1) || 1)))
+      const at = viewToPdf(p.x, p.y + (boxH / 2 + size * 0.36) / viewH, box, rotation)
+      drawPieces(page, pieces, { x: at.x, y: at.y, size, color, rotateDeg: turns * 90, degrees })
+    }
   }
   return doc.save()
 }

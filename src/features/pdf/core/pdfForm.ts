@@ -18,7 +18,7 @@ import {
   PDFTextField,
   type PDFField,
 } from 'pdf-lib'
-import { sanitizeWinAnsi } from './pdfTools'
+import { fontsForText, isWinAnsi } from '../../../shared/pdf/pdfFonts'
 
 export type FieldKind = 'text' | 'checkbox' | 'radio' | 'dropdown' | 'list'
 export type FieldRect = { page: number; x: number; y: number; w: number; h: number }
@@ -171,18 +171,21 @@ function fixAutoSize(f: PDFTextField) {
 export async function fillForm(bytes: ArrayBuffer | Uint8Array, values: FormValues, opts: { flatten?: boolean } = {}): Promise<Uint8Array> {
   const doc = await PDFDocument.load(bytes)
   const form = doc.getForm()
+  // Campos cuyo texto no entra en las fuentes estándar (ruso, japonés, coreano…): se dibujan
+  // con las fuentes de DocuSmart en vez de perder el texto.
+  const custom: Array<{ field: PDFTextField | PDFDropdown | PDFOptionList; text: string }> = []
   for (const [name, value] of Object.entries(values)) {
     const f = form.getFieldMaybe(name)
     if (!f || f.isReadOnly()) continue
     if (f instanceof PDFTextField) {
-      // Las fuentes estándar solo dibujan latín: se limpia línea por línea.
-      let text = String(value ?? '').split('\n').map(sanitizeWinAnsi).join('\n')
+      let text = String(value ?? '')
       const max = f.getMaxLength()
-      if (max !== undefined) text = text.slice(0, max)
+      if (max !== undefined) text = Array.from(text).slice(0, max).join('')
       // Tamaño automático en un campo de varias líneas: pdf-lib lo agranda hasta que
       // entra la primera palabra. Se fija un tamaño de lectura normal.
       if (f.isMultiline()) fixAutoSize(f)
       f.setText(text || undefined)
+      if (!isWinAnsi(text)) custom.push({ field: f, text })
     } else if (f instanceof PDFCheckBox) {
       if (value === true) f.check()
       else f.uncheck()
@@ -192,11 +195,27 @@ export async function fillForm(bytes: ArrayBuffer | Uint8Array, values: FormValu
     } else if (f instanceof PDFDropdown) {
       const v = String(value ?? '')
       if (!v) f.clear()
-      else if (f.getOptions().includes(v) || f.isEditable()) f.select(v)
+      else if (f.getOptions().includes(v) || f.isEditable()) {
+        f.select(v)
+        if (!isWinAnsi(v)) custom.push({ field: f, text: v })
+      }
     } else if (f instanceof PDFOptionList) {
       const vs = (Array.isArray(value) ? value : [String(value)]).filter((v) => f.getOptions().includes(v))
       if (vs.length) f.select(vs)
       else f.clear()
+      // La lista dibuja todas sus opciones.
+      const shown = f.getOptions().join('\n')
+      if (!isWinAnsi(shown)) custom.push({ field: f, text: shown })
+    }
+  }
+  if (custom.length) {
+    const fonts = await fontsForText(doc, 'sans', ['regular'], custom.map((c) => c.text).join('\n'))
+    for (const { field, text } of custom) {
+      // Una sola fuente por campo: la de chino, japonés o coreano si el texto los tiene (también trae
+      // latín); si no, la normal. Lo que ninguna dibuja (emojis) se quita del campo.
+      const font = fonts.pieces(text).find((p) => !p.space && p.font !== fonts.font())?.font ?? fonts.font()
+      if (field instanceof PDFTextField) field.setText(text.split('\n').map((line) => fonts.printable(line).trimEnd()).join('\n') || undefined)
+      field.updateAppearances(font)
     }
   }
   if (opts.flatten) form.flatten()

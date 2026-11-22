@@ -1286,3 +1286,21 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .pos-grid .pos-cell[aria-checked="true"] { background: var(--blue-soft); box-shadow: 0 0 0 2px var(--blue) inset; }
 .pos-grid .pos-cell[aria-checked="true"] span { background: var(--blue); }
 :root[data-theme="dark"] .pos-grid { background: var(--paper); }
+
+/* ── Editar y firmar (W-146.2) ── */
+.pos-grid.pos-grid-9 { grid-template-rows: 34px 34px 34px; }
+.pos-grid .pos9-top-left span, .pos-grid .pos9-middle-left span, .pos-grid .pos9-bottom-left span { justify-self: start; }
+.pos-grid .pos9-top-center span, .pos-grid .pos9-center span, .pos-grid .pos9-bottom-center span { justify-self: center; }
+.pos-grid .pos9-top-right span, .pos-grid .pos9-middle-right span, .pos-grid .pos9-bottom-right span { justify-self: end; }
+.pos-grid .pos9-top-left span, .pos-grid .pos9-top-center span, .pos-grid .pos9-top-right span { align-self: start; }
+.pos-grid .pos9-middle-left span, .pos-grid .pos9-center span, .pos-grid .pos9-middle-right span { align-self: center; }
+.pos-grid .pos9-bottom-left span, .pos-grid .pos9-bottom-center span, .pos-grid .pos9-bottom-right span { align-self: end; }
+.wm-mosaic[aria-pressed="true"] { background: var(--blue-soft); color: var(--blue); box-shadow: 0 0 0 1.5px var(--blue) inset; }
+.field input[type="range"] { width: 100%; accent-color: var(--blue); }
+.edit-toolbar-sep { width: 1px; align-self: stretch; margin: 4px 2px; background: var(--line); }
+.edit-tool:disabled { opacity: .4; cursor: default; }
+.sign-box svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.sign-box .sign-text text { font-family: Helvetica, Arial, sans-serif; }
+.sign-fields { flex-wrap: wrap; gap: 8px; }
+/* La columna de opciones baja debajo de la cuadrícula si no le queda ancho (celular). */
+.number-options > .stack { min-width: min(100%, 280px); }

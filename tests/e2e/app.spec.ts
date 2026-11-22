@@ -11,7 +11,7 @@ test('la app carga y la barra lateral lleva a Todas las herramientas, con carrus
   // La de PDF y la de imágenes (W-123), una vez cada una.
   const found = page.locator('.tools-grid .quick')
   await expect(found).toHaveCount(2)
-  await expect(found.filter({ hasText: 'Un texto en diagonal sobre cada página' })).toHaveCount(1)
+  await expect(found.filter({ hasText: 'Texto o logo sobre las páginas del PDF' })).toHaveCount(1)
   await expect(found.filter({ hasText: 'Texto o logo sobre tus fotos, por lotes' })).toHaveCount(1)
 })
 

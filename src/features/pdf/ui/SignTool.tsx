@@ -9,7 +9,7 @@ import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { tr } from '../../../shared/i18n/translate'
 import { canvasToBlob } from '../../../shared/pdf/pdf'
-import { clampPlacement, defaultPlacement, opaqueBounds, removeLightBackground, signPdf, type Placement } from '../core/pdfSign'
+import { clampPlacement, defaultPlacement, isImageStamp, opaqueBounds, removeLightBackground, signPdf, type Placement, type StampKind } from '../core/pdfSign'
 import { track } from '../../../shared/platform/analytics'
 import { PageNav, usePdfPreview } from './PdfPreview'
 import { DigitalSignPanel, type DigitalSign } from './DigitalSignPanel'
@@ -20,6 +20,45 @@ type Mode = 'draw' | 'type' | 'image'
 const INK = { negro: '#1C1B1A', azul: '#1D3FA8' } as const
 type InkName = keyof typeof INK
 const SCRIPT_FONT = '"Dancing Script Variable", cursive'
+/** Color de la fecha, los textos y la marca ✓ (el mismo negro de la tinta). */
+const STAMP_INK = INK.negro
+/** La firma recordada en este equipo (W-146.2): solo en el navegador, nunca sale del dispositivo. */
+const SAVED_KEY = 'ds-signature-v1'
+
+/** Proporción (ancho / alto) de un texto en la letra de los campos, para su recuadro. */
+const textAspect = (text: string) => Math.max(1.2, Array.from(text).length * 0.58 + 0.4)
+
+function loadSaved(): Signature | null {
+  try {
+    const raw = localStorage.getItem(SAVED_KEY)
+    if (!raw) return null
+    const { url, aspect } = JSON.parse(raw) as { url: string; aspect: number }
+    if (typeof url !== 'string' || !url.startsWith('data:image/png;base64,') || !(aspect > 0)) return null
+    const png = Uint8Array.from(atob(url.slice(url.indexOf(',') + 1)), (c) => c.charCodeAt(0))
+    return { url, png, aspect }
+  } catch {
+    return null
+  }
+}
+
+function storeSaved(sig: Signature | null) {
+  try {
+    if (sig) localStorage.setItem(SAVED_KEY, JSON.stringify({ url: sig.url, aspect: sig.aspect }))
+    else localStorage.removeItem(SAVED_KEY)
+  } catch {
+    // Navegación privada o almacenamiento lleno: se usa igual, sin recordarla.
+  }
+}
+
+/** Iniciales a partir de un nombre: "Ana María Pérez" → "AMP". */
+export const initialsOf = (name: string) =>
+  name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => Array.from(w)[0]!.toUpperCase())
+    .join('')
+    .slice(0, 4)
 
 export function SignTool() {
   const { toast } = useApp()
@@ -28,16 +67,24 @@ export function SignTool() {
   const [output, setOutput] = useState<File | null>(null)
   useEffect(() => setOutput(null), [file])
   const { pages, ready, pageNo, setPageNo, preview, error, setError } = usePdfPreview(file)
-  const [signature, setSignature] = useState<Signature | null>(null)
-  const [editing, setEditing] = useState(true)
+  const [saved] = useState(loadSaved)
+  const [signature, setSignature] = useState<Signature | null>(saved)
+  const [remember, setRemember] = useState(!!saved)
+  const [editing, setEditing] = useState(!saved)
   const [placements, setPlacements] = useState<Placement[]>([])
   const [selected, setSelected] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
   const [digital, setDigital] = useState<DigitalSign>(null)
+  /** Las iniciales: el texto y su imagen en letra manuscrita. */
+  const [initials, setInitials] = useState<{ text: string; sig: Signature } | null>(null)
+  const [initialsText, setInitialsText] = useState('')
 
   useEffect(() => {
     setPlacements([])
     setSelected(null)
+    // Con la firma recordada, se coloca sola en la primera página.
+    if (file && signature && !editing) setPlacements([defaultPlacement(0, signature.aspect, 0.75)])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
 
   const pageAspect = preview ? preview.widthPt / preview.heightPt : 0.75
@@ -48,12 +95,42 @@ export function SignTool() {
     setPlacements((ps) => [...ps, defaultPlacement(pageNo - 1, sig.aspect, pageAspect)])
   }
 
+  /** Agrega un campo rápido (fecha, texto, iniciales o ✓) en la página actual. */
+  const addStamp = (kind: StampKind, text?: string, aspect = text ? textAspect(text) : 1) => {
+    const w = kind === 'check' ? 0.05 : kind === 'initials' ? 0.12 : Math.min(0.5, 0.035 * aspect)
+    const h = Math.min(0.3, (w * pageAspect) / aspect)
+    // Escalonados para que no queden uno encima de otro.
+    const n = placements.filter((p) => p.page === pageNo - 1).length
+    const offset = (n % 6) * 0.06
+    setSelected(placements.length)
+    setPlacements((ps) => [...ps, clampPlacement({ page: pageNo - 1, x: 0.08 + offset, y: 0.12 + offset, w, h, kind, ...(text !== undefined && { text }) })])
+  }
+
+  const addInitials = async () => {
+    const text = initialsText.trim()
+    if (!text) return
+    const sig = await toSignature(await renderTyped(text, INK.negro))
+    if (!sig) return
+    setInitials({ text, sig })
+    addStamp('initials', undefined, sig.aspect)
+  }
+
+  const updateText = (i: number, text: string) =>
+    setPlacements((ps) => ps.map((p, j) => (j === i ? clampPlacement({ ...p, text, h: (p.w * pageAspect) / textAspect(text || ' ') }) : p)))
+
   const useSignature = (sig: Signature) => {
     setSignature(sig)
     setEditing(false)
+    if (remember) storeSaved(sig)
     // Si cambia la firma, las posiciones se conservan pero con la nueva proporción.
-    if (placements.length) setPlacements((ps) => ps.map((p) => clampPlacement({ ...p, h: (p.w * pageAspect) / sig.aspect })))
+    if (placements.some((p) => (p.kind ?? 'signature') === 'signature'))
+      setPlacements((ps) => ps.map((p) => ((p.kind ?? 'signature') === 'signature' ? clampPlacement({ ...p, h: (p.w * pageAspect) / sig.aspect }) : p)))
     else addHere(sig)
+  }
+
+  const toggleRemember = (on: boolean) => {
+    setRemember(on)
+    storeSaved(on ? signature : null)
   }
 
   const copyToAllPages = () => {
@@ -71,11 +148,12 @@ export function SignTool() {
     setBusy(true)
     setError(null)
     try {
-      let pdf = await signPdf(await file.arrayBuffer(), signature.png, placements)
+      let pdf = await signPdf(await file.arrayBuffer(), { signature: signature.png, initials: initials?.sig.png }, placements, STAMP_INK)
       // Con certificado: la firma digital va al final, en el lugar de la primera firma visible.
       if (digital) {
         const { signWithCertificate } = await import('../core/pdfDigitalSign')
-        pdf = await signWithCertificate(pdf, digital.cert, { reason: digital.reason || undefined, placement: placements[0] })
+        const first = placements.find((p) => (p.kind ?? 'signature') === 'signature') ?? placements[0]
+        pdf = await signWithCertificate(pdf, digital.cert, { reason: digital.reason || undefined, placement: first })
       }
       setOutput(resultFile(pdf, `${baseName(file.name)}-${tr('file.signed')}.pdf`, 'application/pdf'))
       track('pdf_tool_used', { tool_name: digital ? 'sign_certificate' : 'sign' })
@@ -113,10 +191,19 @@ export function SignTool() {
         {editing || !signature ? (
           <SignatureEditor onDone={useSignature} onCancel={signature ? () => setEditing(false) : undefined} />
         ) : (
-          <div className="sign-current">
-            <img src={signature.url} alt={tr('sign.yours')} />
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditing(true)}><Icon name="note" /> {tr('sign.change')}</button>
-          </div>
+          <>
+            <div className="sign-current">
+              <img src={signature.url} alt={tr('sign.yours')} />
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditing(true)}><Icon name="note" /> {tr('sign.change')}</button>
+            </div>
+            <label className="switch-row">
+              <span>
+                <b>{tr('sign.remember')}</b>
+                <small>{tr('sign.rememberHint')}</small>
+              </span>
+              <input type="checkbox" role="switch" className="switch" checked={remember} onChange={(e) => toggleRemember(e.target.checked)} />
+            </label>
+          </>
         )}
       </div>
 
@@ -132,7 +219,7 @@ export function SignTool() {
                     <PlacedSignature
                       key={i}
                       placement={p}
-                      url={signature.url}
+                      url={p.kind === 'initials' ? (initials?.sig.url ?? '') : signature.url}
                       selected={selected === i}
                       onSelect={() => setSelected(i)}
                       onChange={(np) => setPlacements((ps) => ps.map((x, j) => (j === i ? np : x)))}
@@ -150,11 +237,37 @@ export function SignTool() {
                   {placements.length ? tr('sign.countIn', { signs: placements.length === 1 ? tr('sign.one') : tr('sign.many', { n: placements.length }), pages: pagesSigned === 1 ? tr('common.onePage') : tr('common.pagesCount', { n: pagesSigned }) }) : tr('sign.none')}
                 </span>
               </div>
+              {selected !== null && (placements[selected]?.kind === 'text' || placements[selected]?.kind === 'date') && (
+                <label className="field">
+                  <span>{placements[selected].kind === 'date' ? tr('sign.field.date') : tr('sign.field.text')}</span>
+                  <input className="input" value={placements[selected].text ?? ''} maxLength={80} onChange={(e) => updateText(selected, e.target.value)} />
+                </label>
+              )}
               <div className="row">
                 <button type="button" className="btn btn-soft btn-sm" onClick={() => addHere()}><Icon name="plus" /> {tr('sign.addHere')}</button>
                 {pages > 1 && (
                   <button type="button" className="btn btn-ghost btn-sm" disabled={!onPage.length} onClick={copyToAllPages}><Icon name="copy" /> {tr('sign.repeat')}</button>
                 )}
+              </div>
+              <div className="stack" style={{ gap: 8 }}>
+                <span className="faint">{tr('sign.fields')}</span>
+                <div className="row sign-fields">
+                  <button type="button" className="btn btn-ghost btn-sm" onClick={() => addStamp('date', new Date().toLocaleDateString(document.documentElement.lang || undefined))}>
+                    <Icon name="calendar" /> {tr('sign.field.date')}
+                  </button>
+                  <button type="button" className="btn btn-ghost btn-sm" onClick={() => addStamp('text', tr('sign.field.textDefault'))}>
+                    <Icon name="type" /> {tr('sign.field.text')}
+                  </button>
+                  <button type="button" className="btn btn-ghost btn-sm" onClick={() => addStamp('check')} aria-label={tr('sign.field.checkAria')}>
+                    <Icon name="check" /> {tr('sign.field.check')}
+                  </button>
+                </div>
+                <div className="row sign-fields">
+                  <input className="input" style={{ width: 120 }} value={initialsText} maxLength={4} placeholder={tr('sign.field.initialsPh')} aria-label={tr('sign.field.initialsLabel')} onChange={(e) => setInitialsText(e.target.value)} />
+                  <button type="button" className="btn btn-ghost btn-sm" disabled={!initialsText.trim()} onClick={() => void addInitials()}>
+                    <Icon name="pen" /> {tr('sign.field.initials')}
+                  </button>
+                </div>
               </div>
             </>
           ) : (
@@ -237,7 +350,7 @@ function PlacedSignature({
       style={{ left: `${p.x * 100}%`, top: `${p.y * 100}%`, width: `${p.w * 100}%`, height: `${p.h * 100}%` }}
       role="group"
       tabIndex={0}
-      aria-label={tr('sign.placedAria')}
+      aria-label={isImageStamp(p) && p.kind !== 'initials' ? tr('sign.placedAria') : tr('sign.placedFieldAria')}
       onFocus={onSelect}
       onKeyDown={keys}
       onPointerDown={begin('move')}
@@ -245,7 +358,17 @@ function PlacedSignature({
       onPointerUp={end}
       onPointerCancel={end}
     >
-      <img src={url} alt="" draggable={false} />
+      {p.kind === 'date' || p.kind === 'text' ? (
+        <svg className="sign-text" viewBox={`0 0 ${textAspect(p.text || ' ') * 100} 100`} preserveAspectRatio="xMinYMid meet" aria-hidden="true">
+          <text x="0" y="80" fontSize="88" fill={STAMP_INK}>{p.text}</text>
+        </svg>
+      ) : p.kind === 'check' ? (
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <polyline points="14,55 40,80 86,20" fill="none" stroke={STAMP_INK} strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ) : (
+        <img src={url} alt="" draggable={false} />
+      )}
       <button type="button" className="sign-del" aria-label={tr('sign.remove')} onPointerDown={(e) => e.stopPropagation()} onClick={onRemove}>
         <Icon name="close" />
       </button>
