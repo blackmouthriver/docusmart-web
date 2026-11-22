@@ -7,6 +7,7 @@ import { baseName, formatBytes } from '../../../shared/files/files'
 import { MAX_PASSWORD_BYTES, QpdfError, WrongPasswordError, changeProtection, compressLossless, isEncrypted, passwordTooLong, protect, repair, unlock, type CompressResult } from '../core/pdfSecurity'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
+import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { bundleFiles, resultFile } from '../../../shared/files/share'
 
@@ -54,14 +55,22 @@ function useJob(toolName: string) {
 }
 
 // ── Comprimir ─────────────────────────────────────────────────────────
-type Level = 'sin-perdida' | 'media' | 'alta'
+type Level = 'sin-perdida' | 'recomendada' | 'media' | 'alta'
+/** Nombre de cada nivel (también el "fuerte" de solo fotos, que se usa al comprimir a un tamaño). */
+const LEVEL_LABEL: Record<Level | 'fuerte', MessageKey> = { 'sin-perdida': 'compress.lossless', recomendada: 'compress.recommended', fuerte: 'compress.strongImages', media: 'compress.medium', alta: 'compress.high' }
 
 /** Resultado de un PDF dentro de un lote. */
 type BatchRow = { name: string; before: number; after: number; improved: boolean; error?: string }
 
 export function CompressTool() {
   const [files, setFiles] = useState<File[]>([])
-  const [level, setLevel] = useState<Level>('sin-perdida')
+  // "Recomendada" conserva el texto y comprime las fotos: el punto de partida, como en iLovePDF (W-146.5).
+  const [level, setLevel] = useState<Level>('recomendada')
+  /** Tamaño máximo en MB ("" = sin límite): se prueban los niveles hasta que entre. */
+  const [maxMb, setMaxMb] = useState('')
+  const [gray, setGray] = useState(false)
+  /** Con tamaño máximo: el nivel con el que entró (o el más liviano si no entró). */
+  const [reached, setReached] = useState<{ level: Level | 'fuerte'; ok: boolean } | null>(null)
   const [progress, setProgress] = useState(0)
   const [result, setResult] = useState<CompressResult | null>(null)
   const [output, setOutput] = useState<File | null>(null)
@@ -78,21 +87,37 @@ export function CompressTool() {
     setRows(null)
     setBatchOut([])
     setBundle(null)
+    setReached(null)
   }
 
-  /** Comprime un PDF según el nivel elegido. */
+  /** Un nivel: sin pérdida, solo las fotos (recomendada o fuerte) o cada página como imagen (media, alta). */
+  const runLevel = async (bytes: Uint8Array, lv: Level | 'fuerte', onProgress: (done: number) => void): Promise<CompressResult> => {
+    if (lv === 'sin-perdida') return compressLossless(bytes)
+    let r: CompressResult
+    if (lv === 'recomendada' || lv === 'fuerte') {
+      const [{ compressImages, IMAGE_LEVELS }, { encodeImage }] = await Promise.all([import('../core/pdfImageCompress'), import('../infra/imageEncode')])
+      r = await compressImages(bytes, { ...IMAGE_LEVELS[lv], gray }, encodeImage, (d, t) => onProgress(t ? d / t : 1))
+    } else {
+      const { compressStrong } = await import('../infra/pdfCompress')
+      r = await compressStrong(bytes, lv, (d, t) => onProgress(d / t), gray)
+    }
+    // Encima también se aplica la optimización sin pérdida.
+    const extra = await compressLossless(r.bytes)
+    if (extra.improved) r = { ...r, bytes: extra.bytes, after: extra.after, improved: extra.after < r.before }
+    return r
+  }
+
+  /** Comprime un PDF según el nivel elegido o, con tamaño máximo, con el primer nivel que entre. */
   const compressOne = async (f: File, onProgress: (done: number) => void): Promise<CompressResult> => {
     const bytes = new Uint8Array(await f.arrayBuffer())
     if (await isEncrypted(bytes)) throw new Error(tr('err.lockedPdf'))
-    if (level === 'sin-perdida') return compressLossless(bytes)
-    const { compressStrong } = await import('../infra/pdfCompress')
-    let r = await compressStrong(bytes, level, (d, t) => onProgress(d / t))
-    // Sobre el resultado fuerte también se aplica la optimización sin pérdida.
-    if (r.improved) {
-      const extra = await compressLossless(r.bytes)
-      if (extra.improved) r = { ...r, bytes: extra.bytes, after: extra.after }
-    }
-    return r
+    const max = Number(maxMb)
+    if (!max) return runLevel(bytes, level, onProgress)
+    const { compressToSize, megabytes } = await import('../core/pdfImageCompress')
+    const ladder: Array<Level | 'fuerte'> = ['sin-perdida', 'recomendada', 'fuerte', 'media', 'alta']
+    const r = await compressToSize(ladder.map((lv) => ({ level: lv, run: () => runLevel(bytes, lv, onProgress) })), megabytes(max))
+    setReached({ level: r.level, ok: r.reached })
+    return r.result
   }
 
   const go = () =>
@@ -179,8 +204,9 @@ export function CompressTool() {
           placeholder={busy ? tr('compress.busy') : tr('compress.placeholder')}
           summary={
             result && (
-              <Notice kind="success">
-                {formatBytes(result.before)} → <b>{formatBytes(result.after)}</b> ({tr('common.lessPct', { n: saved })}). {tr('compress.summary')}
+              <Notice kind={reached && !reached.ok ? 'error' : 'success'}>
+                {formatBytes(result.before)} → <b>{formatBytes(result.after)}</b> ({tr('common.lessPct', { n: saved })}).{' '}
+                {reached ? tr(reached.ok ? 'compress.targetOk' : 'compress.targetMiss', { mb: maxMb, level: tr(LEVEL_LABEL[reached.level]) }) : tr('compress.summary')}
               </Notice>
             )
           }
@@ -222,25 +248,38 @@ export function CompressTool() {
           ))}
         </ul>
       )}
-      <div className="field">
-        <span>{tr('compress.level')}</span>
-        <Segmented
-          label={tr('compress.level')}
-          value={level}
-          onChange={(v) => { setLevel(v); reset() }}
-          options={[
-            { value: 'sin-perdida', label: tr('compress.lossless') },
-            { value: 'media', label: tr('compress.medium') },
-            { value: 'alta', label: tr('compress.high') },
-          ]}
-        />
-        <small className="faint">
-          {level === 'sin-perdida'
-            ? tr('compress.losslessHint')
-            : tr('compress.strongHint')}
-        </small>
-      </div>
-      {busy && (many || level !== 'sin-perdida') && progress > 0 && <Progress value={progress} />}
+      <label className="field" style={{ maxWidth: 280 }}>
+        <span>{tr('compress.maxSize')}</span>
+        <select className="input" value={maxMb} onChange={(e) => { setMaxMb(e.target.value); reset() }}>
+          <option value="">{tr('compress.noLimit')}</option>
+          {['0.5', '1', '2', '5', '10'].map((mb) => <option key={mb} value={mb}>{tr('compress.underMb', { mb: mb.replace('.', ',') })}</option>)}
+        </select>
+        <small className="faint">{tr('compress.maxSizeHint')}</small>
+      </label>
+      {!maxMb && (
+        <div className="field">
+          <span>{tr('compress.level')}</span>
+          <Segmented
+            label={tr('compress.level')}
+            value={level}
+            onChange={(v) => { setLevel(v); reset() }}
+            options={[
+              { value: 'sin-perdida', label: tr('compress.lossless') },
+              { value: 'recomendada', label: tr('compress.recommended') },
+              { value: 'media', label: tr('compress.medium') },
+              { value: 'alta', label: tr('compress.high') },
+            ]}
+          />
+          <small className="faint">
+            {level === 'sin-perdida' ? tr('compress.losslessHint') : level === 'recomendada' ? tr('compress.recommendedHint') : tr('compress.strongHint')}
+          </small>
+        </div>
+      )}
+      <label className="check">
+        <input type="checkbox" checked={gray} onChange={(e) => { setGray(e.target.checked); reset() }} disabled={!maxMb && level === 'sin-perdida'} />
+        <span>{tr('compress.gray')}</span>
+      </label>
+      {busy && (many || maxMb || level !== 'sin-perdida') && progress > 0 && <Progress value={progress} />}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
         <BusyButton busy={busy} disabled={files.length === 0} onClick={many ? goMany : go} icon="compress">

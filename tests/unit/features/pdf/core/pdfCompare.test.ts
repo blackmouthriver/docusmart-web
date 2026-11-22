@@ -55,7 +55,7 @@ describe('compareTexts', () => {
 
   it('documentos iguales (aunque cambien espacios y líneas vacías)', () => {
     const c = compareTexts(base, [...base.map((l) => ({ ...l, text: `  ${l.text.replace(/ /g, '   ')} ` })), { text: '   ', page: 2 }])
-    expect(c).toEqual({ identical: true, hunks: [], added: 0, removed: 0, tooDifferent: false })
+    expect(c).toEqual({ identical: true, hunks: [], added: 0, removed: 0, tooDifferent: false, moved: 0 })
   })
 
   it('marca la palabra cambiada, con contexto y páginas', () => {
