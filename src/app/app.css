@@ -1260,3 +1260,29 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .nav-collapse-inner { min-height: 0; overflow: hidden; }
 .nav-collapse .nav-subs { animation: none; }
 @media (prefers-reduced-motion: reduce) { .nav-collapse { transition: none; } }
+
+/* ── Organizar PDF (W-146.1): arrastrar y soltar, girar a la izquierda, posiciones del número ── */
+.flip-x svg, svg.flip-x { transform: scaleX(-1); }
+.drag-handle { cursor: grab; touch-action: none; }
+.drag-handle:active { cursor: grabbing; }
+.sortable [data-dragging] { opacity: .45; }
+.sortable [data-drop-target] { box-shadow: 0 0 0 2px var(--blue) inset; background: var(--blue-soft); }
+.sortable.is-sorting { user-select: none; -webkit-user-select: none; }
+.thumb-hit, .thumb-drag { display: block; width: 100%; padding: 0; border: 0; background: none; border-radius: 6px; position: relative; }
+.thumb-hit { cursor: pointer; }
+.thumb-drag img { pointer-events: none; }
+.thumb-grip { position: absolute; top: 4px; right: 4px; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; background: rgba(255,255,255,.92); color: var(--ink-soft); box-shadow: 0 1px 3px rgba(28,27,26,.2); }
+.thumb-grip svg { width: 16px; height: 16px; }
+.thumb-blank { display: block; aspect-ratio: 210 / 297; border-radius: 6px; background: #fff; box-shadow: 0 1px 3px rgba(28,27,26,.18); }
+.number-options { display: flex; gap: 18px; flex-wrap: wrap; align-items: flex-start; }
+.pos-grid { display: grid; grid-template-columns: repeat(3, 34px); grid-template-rows: 34px 34px; gap: 6px 6px; padding: 10px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px var(--line) inset; width: max-content; }
+.pos-grid .pos-cell { width: 34px; height: 34px; border: 0; border-radius: 9px; background: var(--paper-2); cursor: pointer; display: grid; padding: 6px; }
+.pos-grid .pos-cell span { width: 12px; height: 4px; border-radius: 2px; background: var(--ink-faint); }
+.pos-grid .pos-top-left span, .pos-grid .pos-bottom-left span { justify-self: start; }
+.pos-grid .pos-top-center span, .pos-grid .pos-bottom-center span { justify-self: center; }
+.pos-grid .pos-top-right span, .pos-grid .pos-bottom-right span { justify-self: end; }
+.pos-grid .pos-top-left span, .pos-grid .pos-top-center span, .pos-grid .pos-top-right span { align-self: start; }
+.pos-grid .pos-bottom-left span, .pos-grid .pos-bottom-center span, .pos-grid .pos-bottom-right span { align-self: end; }
+.pos-grid .pos-cell[aria-checked="true"] { background: var(--blue-soft); box-shadow: 0 0 0 2px var(--blue) inset; }
+.pos-grid .pos-cell[aria-checked="true"] span { background: var(--blue); }
+:root[data-theme="dark"] .pos-grid { background: var(--paper); }

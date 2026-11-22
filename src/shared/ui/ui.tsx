@@ -110,10 +110,11 @@ const kindIcon: Record<string, { icon: IconName; cls: string }> = {
   other: { icon: 'pdf', cls: 'ico-blue' },
 }
 
-export function FileRow({ file, extra, actions }: { file: File; extra?: string; actions?: ReactNode }) {
+export function FileRow({ file, extra, actions, lead, rowProps }: { file: File; extra?: string; actions?: ReactNode; lead?: ReactNode; rowProps?: Record<string, unknown> }) {
   const k = kindIcon[kindOf(file)]
   return (
-    <li className="file-item">
+    <li className="file-item" {...rowProps}>
+      {lead}
       <span className={'ico ' + k.cls}>
         <Icon name={k.icon} />
       </span>

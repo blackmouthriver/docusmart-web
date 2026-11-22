@@ -94,7 +94,7 @@ export const pages = [
     short: 'Endereza páginas giradas',
     steps: [
       'Elige el PDF.',
-      'Toca cada página para girarla 90°, o usa "Rotar todas".',
+      'Toca cada página para girarla 90°, o usa "Todas a la derecha".',
       'Pulsa "Rotar PDF" y descarga el documento corregido.',
     ],
     faq: [

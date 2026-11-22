@@ -94,7 +94,7 @@ export default {
       howTo: 'Com girar un PDF en 3 passos',
       lead: 'Endreça les pàgines que han quedat de costat o del revés, una per una o totes alhora.',
       short: 'Endreça pàgines girades',
-      steps: ['Tria el PDF.', 'Toca cada pàgina per girar-la 90°, o fes servir "Gira-les totes".', 'Prem "Gira el PDF" i baixa el document corregit.'],
+      steps: ['Tria el PDF.', 'Toca cada pàgina per girar-la 90°, o fes servir "Totes a la dreta".', 'Prem "Gira el PDF" i baixa el document corregit.'],
       faq: [
         ['Puc girar només una pàgina?', 'Sí. Cada toc gira aquesta pàgina 90°; les altres es queden com eren.'],
         ['El gir és permanent?', 'Sí, queda desat al PDF nou i es veurà igual en qualsevol lector.'],

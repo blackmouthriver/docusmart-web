@@ -37,7 +37,7 @@ describe('pdfTools', () => {
 
   it('numera y aplica marca de agua sin cambiar la cantidad de páginas', async () => {
     const src = await makePdf(2)
-    expect(await pageCount(buf(await numberPages(src, { position: 'bottom-right', format: 'n-of-total' })))).toBe(2)
+    expect(await pageCount(buf(await numberPages(src, { position: 'bottom-right', template: '{n} / {total}' })))).toBe(2)
     expect(await pageCount(buf(await watermark(src, 'Confidencial ✓ ñ')))).toBe(2)
   })
 

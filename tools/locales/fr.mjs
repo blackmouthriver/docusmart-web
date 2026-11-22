@@ -94,7 +94,7 @@ export default {
       howTo: 'Comment faire pivoter un PDF en 3 étapes',
       lead: 'Redressez les pages de travers ou à l’envers, une par une ou toutes à la fois.',
       short: 'Redresse les pages tournées',
-      steps: ['Choisissez le PDF.', 'Touchez chaque page pour la tourner de 90°, ou utilisez « Tout faire pivoter ».', 'Appuyez sur « Faire pivoter le PDF » et téléchargez le document corrigé.'],
+      steps: ['Choisissez le PDF.', 'Touchez chaque page pour la tourner de 90°, ou utilisez « Toutes vers la droite ».', 'Appuyez sur « Faire pivoter le PDF » et téléchargez le document corrigé.'],
       faq: [
         ['Puis-je faire pivoter une seule page ?', 'Oui. Chaque toucher tourne cette page de 90° ; les autres restent comme avant.'],
         ['La rotation est-elle permanente ?', "Oui, elle est enregistrée dans le nouveau PDF et s'affichera pareil dans n'importe quel lecteur."],
