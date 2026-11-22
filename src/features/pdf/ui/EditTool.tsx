@@ -48,6 +48,11 @@ const HINT: Record<Tool, MessageKey> = {
 }
 
 let nextId = 1
+/** Una foto del estado para deshacer: los elementos y las líneas del PDF ya reemplazadas. */
+type Snapshot = { items: Item[]; replaced: ReadonlySet<string> }
+/** Cambios más seguidos que esto (arrastrar, escribir) cuentan como un solo paso al deshacer. */
+const GROUP_MS = 700
+const MAX_UNDO = 100
 
 export function EditTool() {
   const { toast } = useApp()
@@ -140,15 +145,69 @@ export function EditTool() {
     setTimeout(() => textArea.current?.select(), 0)
   }
 
+  // Deshacer y rehacer (W-146.2): fotos del estado antes de cada cambio. Los cambios seguidos
+  // (arrastrar, escribir) se agrupan en un solo paso.
+  const history = useRef<{ past: Snapshot[]; future: Snapshot[]; last: number }>({ past: [], future: [], last: 0 })
+  const [, setHistoryTick] = useState(0)
+  const remember = () => {
+    const h = history.current
+    const now = Date.now()
+    if (now - h.last > GROUP_MS) {
+      h.past.push({ items, replaced })
+      if (h.past.length > MAX_UNDO) h.past.shift()
+    }
+    h.last = now
+    h.future = []
+    setHistoryTick((n) => n + 1)
+  }
+  const travel = (from: 'past' | 'future') => {
+    const h = history.current
+    const snap = h[from].pop()
+    if (!snap) return
+    h[from === 'past' ? 'future' : 'past'].push({ items, replaced })
+    h.last = 0
+    setItems(snap.items)
+    setReplaced(snap.replaced)
+    setSelected(null)
+    setHistoryTick((n) => n + 1)
+  }
+  const undo = () => travel('past')
+  const redo = () => travel('future')
+  useEffect(() => {
+    history.current = { past: [], future: [], last: 0 }
+    setHistoryTick((n) => n + 1)
+  }, [file])
+  useEffect(() => {
+    // Ctrl+Z / Ctrl+Y (Cmd en Mac), salvo mientras se escribe en un campo: ahí deshace el navegador.
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey) || e.altKey) return
+      const t = e.target as HTMLElement | null
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      const key = e.key.toLowerCase()
+      if (key === 'z' && !e.shiftKey) undo()
+      else if (key === 'y' || (key === 'z' && e.shiftKey)) redo()
+      else return
+      e.preventDefault()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
+
   const current = items.find((i) => i.id === selected) ?? null
-  const update = (id: number, patch: Partial<EditItem>) => setItems((list) => list.map((i) => (i.id === id ? ({ ...i, ...patch } as Item) : i)))
+  const update = (id: number, patch: Partial<EditItem>) => {
+    remember()
+    setItems((list) => list.map((i) => (i.id === id ? ({ ...i, ...patch } as Item) : i)))
+  }
   const add = (item: EditItem) => {
+    remember()
     const it = { ...item, id: nextId++ } as Item
     setItems((list) => [...list, it])
     setSelected(it.id)
     return it
   }
   const remove = (id: number) => {
+    history.current.last = 0
+    remember()
     setItems((list) => list.filter((i) => i.id !== id))
     setSelected(null)
   }
@@ -234,6 +293,15 @@ export function EditTool() {
           <button type="button" className="edit-tool" onClick={() => imageInput.current?.click()}>
             <Icon name="image" />
             <span>{tr('edit.image')}</span>
+          </button>
+          <span className="edit-toolbar-sep" aria-hidden="true" />
+          <button type="button" className="edit-tool" disabled={!history.current.past.length} onClick={undo} aria-keyshortcuts="Control+Z" title={tr('edit.undo') + ' (Ctrl+Z)'}>
+            <Icon name="undo" />
+            <span>{tr('edit.undo')}</span>
+          </button>
+          <button type="button" className="edit-tool" disabled={!history.current.future.length} onClick={redo} aria-keyshortcuts="Control+Y" title={tr('edit.redo') + ' (Ctrl+Y)'}>
+            <Icon name="redo" />
+            <span>{tr('edit.redo')}</span>
           </button>
           <input
             ref={imageInput}

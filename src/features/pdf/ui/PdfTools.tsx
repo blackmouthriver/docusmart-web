@@ -4,8 +4,9 @@ import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Segmented, errorMessage } from '../../../shared/ui/ui'
 import { baseName, chunkPages, moveItem, parsePageRanges, parseRangeGroups } from '../../../shared/files/files'
 import { closePdf, openPdf, renderPage } from '../../../shared/pdf/pdf'
-import { composePages, extractPages, mergePdfs, numberPages, rotate, splitEach, splitGroups, watermark, NUMBER_POSITIONS, DEFAULT_NUMBER_OPTIONS, type NumberPosition, type Sheet } from '../core/pdfTools'
+import { composePages, extractPages, mergePdfs, numberPages, rotate, splitEach, splitGroups, watermarkPdf, NUMBER_POSITIONS, DEFAULT_NUMBER_OPTIONS, type NumberPosition, type Sheet } from '../core/pdfTools'
 import { useSortable } from '../../../shared/ui/useSortable'
+import { WatermarkOptionsPanel, toWatermarkOptions, watermarkReady, watermarkUiDefault, type WatermarkUi } from './WatermarkOptions'
 import { track } from '../../../shared/platform/analytics'
 import { CompressTool, ProtectTool, RepairTool, UnlockTool } from '../../security/ui/PdfSecurityTools'
 import { OcrTool } from '../../ocr/ui/OcrTool'
@@ -272,7 +273,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   const [start, setStart] = useState(1)
   const [skip, setSkip] = useState(0)
   const [size, setSize] = useState<'9' | '11' | '14'>('11')
-  const [mark, setMark] = useState(() => tr('out.watermarkDefault'))
+  const [wm, setWm] = useState<WatermarkUi>(() => watermarkUiDefault(tr('out.watermarkDefault')))
   /** Resultado listo para ver y guardar (ya no se descarga solo). */
   const [output, setOutput] = useState<File | null>(null)
   /** Dividir en varios archivos: los PDF de cada parte y el ZIP para guardarlos. */
@@ -289,7 +290,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   useEffect(() => {
     setOutput(null)
     setParts(null)
-  }, [file, splitMode, range, groupsText, every, selected, rotations, order, position, template, start, skip, size, mark])
+  }, [file, splitMode, range, groupsText, every, selected, rotations, order, position, template, start, skip, size, wm])
   useEffect(() => {
     setRotations(Array(count).fill(0))
     setOrder(sheetsOf(count))
@@ -302,6 +303,9 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   const ranges = range.trim() ? parsePageRanges(range, count) : null
   const pagesFromSelection = [...selected].sort((a, b) => a - b)
   const groups = splitMode === 'groups' ? (groupsText.trim() ? parseRangeGroups(groupsText, count) : null) : splitMode === 'every' ? chunkPages(count, every) : null
+
+  const wmPages = wm.pages.trim() ? parsePageRanges(wm.pages, count) : undefined
+  const wmPagesInvalid = wmPages === null
 
   const splitInto = async (list: number[][]) => {
     const files = (await splitGroups(await bytes(), list)).map((d, i) => resultFile(d, partName(name, list[i]), PDF_TYPE))
@@ -362,8 +366,8 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
   } else if (toolId === 'marca') {
     action = {
       label: tr('single.watermark'),
-      disabled: !count || !mark.trim(),
-      go: async () => setOutput(resultFile(await watermark(await bytes(), mark), `${name}-${tr('file.watermark')}.pdf`, PDF_TYPE)),
+      disabled: !count || !watermarkReady(wm) || wmPagesInvalid,
+      go: async () => setOutput(resultFile(await watermarkPdf(await bytes(), await toWatermarkOptions(wm, wmPages ?? undefined)), `${name}-${tr('file.watermark')}.pdf`, PDF_TYPE)),
     }
   }
 
@@ -461,7 +465,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
                 ))}
               </div>
             </div>
-            <div className="stack" style={{ gap: 10, flex: 1, minWidth: 0 }}>
+            <div className="stack" style={{ gap: 10, flex: 1 }}>
               <Segmented label={tr('single.format')} value={template} onChange={setTemplate} options={templates.map((v) => ({ value: v, label: v.replace('{n}', '1').replace('{total}', '10') }))} />
               <label className="field">
                 <span>{tr('number.text')}</span>
@@ -488,12 +492,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
         </div>
       )}
 
-      {toolId === 'marca' && (
-        <label className="field">
-          <span>{tr('single.markText')}</span>
-          <input className="input" value={mark} maxLength={40} onChange={(e) => setMark(e.target.value)} />
-        </label>
-      )}
+      {toolId === 'marca' && <WatermarkOptionsPanel value={wm} onChange={setWm} pagesInvalid={wmPagesInvalid} />}
 
       {loadError && <Notice kind="error">{loadError}</Notice>}
 
