@@ -22,7 +22,8 @@ const pages: Page[] = walk(SITE_DIR)
   })
   .filter((p) => !/<meta name="robots" content="[^"]*noindex/.test(p.head))
 const byUrl = new Map(pages.map((p) => [SITE + p.url, p]))
-const decode = (s: string) => s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'")
+// &amp; va al final: así "&amp;quot;" queda como "&quot;" y no se desescapa dos veces.
+const decode = (s: string) => s.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
 const alternates = (p: Page) => [...p.head.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((m) => ({ lang: m[1], href: m[2] }))
 
 describe('SEO técnico del sitio', () => {
