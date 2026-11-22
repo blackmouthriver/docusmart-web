@@ -42,15 +42,21 @@ export function formatParts(code: string): { bare: string; quoted: string[]; bra
   let bare = ''
   const quoted: string[] = []
   const brackets: string[] = []
-  for (let i = 0; i < code.length; i++) {
+  let i = 0
+  while (i < code.length) {
     const ch = code[i]
-    if (ch === '\\' && i + 1 < code.length) quoted.push(code[++i])
-    else if (ch === '"' || ch === '[') {
+    if (ch === '\\' && i + 1 < code.length) {
+      quoted.push(code[i + 1])
+      i += 2
+    } else if (ch === '"' || ch === '[') {
       const close = code.indexOf(ch === '"' ? '"' : ']', i + 1)
       const end = close < 0 ? code.length : close
       ;(ch === '"' ? quoted : brackets).push(code.slice(i + 1, end))
-      i = end
-    } else bare += ch
+      i = end + 1
+    } else {
+      bare += ch
+      i++
+    }
   }
   return { bare, quoted, brackets }
 }
