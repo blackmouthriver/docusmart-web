@@ -31,6 +31,17 @@ export type MetaKey =
   | 'iptc'
   | 'custom'
   | 'docId'
+  // W-146.3: lo que no es metadato "clásico" pero revela datos personales.
+  /** Fotos dentro del PDF que traen EXIF (cámara, GPS…). */
+  | 'photos'
+  /** Comentarios y notas del PDF. */
+  | 'comments'
+  /** Quién escribió comentarios o hizo cambios (PDF y Office). */
+  | 'commentAuthors'
+  /** Archivos adjuntos dentro del PDF. */
+  | 'attachments'
+  /** JavaScript o acciones automáticas del PDF. */
+  | 'javascript'
 
 export type MetaField = { key: MetaKey; value: string }
 

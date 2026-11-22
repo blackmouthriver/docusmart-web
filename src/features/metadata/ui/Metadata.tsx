@@ -8,10 +8,10 @@ import { bundleFiles, resultFile } from '../../../shared/files/share'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
-import { META_ACCEPT, MetaError, cleanFileName, isKept, leftovers, readMetadata, stripMetadata, type MetaField } from '../core/metadata'
+import { HIDDEN_KEYS, META_ACCEPT, MetaError, cleanFileName, isKept, leftovers, readMetadata, stripMetadata, type MetaField } from '../core/metadata'
 
 type Item = { file: File; fields?: MetaField[]; error?: string }
-type Done = { file: File; before: MetaField[]; after: MetaField[] }
+type Done = { file: File; before: MetaField[]; after: MetaField[]; hidden: boolean }
 
 const errorText = (e: unknown) => tr(e instanceof MetaError ? (`meta.err.${e.reason}` as MessageKey) : 'meta.err.damaged')
 const bytesOf = async (f: File) => new Uint8Array(await f.arrayBuffer())
@@ -49,6 +49,8 @@ export function MetadataTool() {
   const [done, setDone] = useState<Done[] | null>(null)
   const [output, setOutput] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
+  /** Quitar también comentarios, adjuntos y JavaScript de los PDF (W-146.3). */
+  const [hidden, setHidden] = useState(true)
 
   const pick = async (files: File[]) => {
     setDone(null)
@@ -67,6 +69,7 @@ export function MetadataTool() {
   }
 
   const usable = items.filter((i) => i.fields)
+  const hasHidden = usable.some((i) => i.fields!.some((f) => HIDDEN_KEYS.has(f.key)))
 
   const run = async () => {
     setBusy(true)
@@ -74,8 +77,8 @@ export function MetadataTool() {
     try {
       const results: Done[] = []
       for (const it of usable) {
-        const r = await stripMetadata(it.file.name, await bytesOf(it.file))
-        results.push({ file: resultFile(r.bytes, cleanFileName(it.file.name, tr('file.noMeta')), it.file.type || 'application/octet-stream'), before: r.before, after: r.after })
+        const r = await stripMetadata(it.file.name, await bytesOf(it.file), { hidden })
+        results.push({ file: resultFile(r.bytes, cleanFileName(it.file.name, tr('file.noMeta')), it.file.type || 'application/octet-stream'), before: r.before, after: r.after, hidden })
       }
       setDone(results)
       setOutput(await bundleFiles(results.map((r) => r.file), `${tr('file.zipNoMeta')}.zip`))
@@ -115,6 +118,15 @@ export function MetadataTool() {
             {it.fields?.some((f) => f.key === 'gps') && <Notice kind="info">{tr('meta.gpsWarn')}</Notice>}
           </div>
         ))}
+        {hasHidden && (
+          <label className="switch-row" aria-label={tr('meta.hidden')}>
+            <span>
+              <b>{tr('meta.hidden')}</b>
+              <small>{tr('meta.hiddenHint')}</small>
+            </span>
+            <input type="checkbox" role="switch" className="switch" checked={hidden} onChange={(e) => setHidden(e.target.checked)} />
+          </label>
+        )}
         <small className="faint">{tr('meta.note')}</small>
         <small className="faint">{tr('meta.privacy')}</small>
         {error && <Notice kind="error">{error}</Notice>}
@@ -129,7 +141,7 @@ export function MetadataTool() {
         <div className="card stack" aria-live="polite">
           <h3>{done.length > 1 ? tr('meta.doneMany', { n: done.length }) : tr('meta.doneOne')}</h3>
           {done.map((d, i) => {
-            const left = leftovers(d.after)
+            const left = leftovers(d.after, { hidden: d.hidden })
             return (
               <div key={i} className="meta-item stack">
                 <b>{d.file.name}</b>

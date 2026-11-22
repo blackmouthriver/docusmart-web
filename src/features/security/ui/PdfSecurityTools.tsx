@@ -4,7 +4,7 @@ import { useApp } from '../../../app/state'
 import { Icon } from '../../../shared/ui/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../../../shared/ui/ui'
 import { baseName, formatBytes } from '../../../shared/files/files'
-import { QpdfError, WrongPasswordError, compressLossless, isEncrypted, protect, repair, unlock, type CompressResult } from '../core/pdfSecurity'
+import { MAX_PASSWORD_BYTES, QpdfError, WrongPasswordError, changeProtection, compressLossless, isEncrypted, passwordTooLong, protect, repair, unlock, type CompressResult } from '../core/pdfSecurity'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
@@ -274,29 +274,68 @@ function PasswordInput({ label, value, onChange, autoComplete }: { label: string
 
 export function ProtectTool() {
   const [file, setFile] = useState<File | null>(null)
+  /** El PDF elegido ya tiene contraseña: se pide la actual para cambiarla (W-146.3). */
+  const [encrypted, setEncrypted] = useState(false)
+  const [current, setCurrent] = useState('')
+  /** 'open': contraseña para abrir; 'restrict': abre sin contraseña, solo con restricciones. */
+  const [mode, setMode] = useState<'open' | 'restrict'>('open')
   const [pw, setPw] = useState('')
   const [pw2, setPw2] = useState('')
   const [allowPrint, setAllowPrint] = useState(true)
   const [allowCopy, setAllowCopy] = useState(true)
   const [allowModify, setAllowModify] = useState(true)
-  const { busy, error, run } = useJob('protect')
+  const { busy, error, setError, run } = useJob('protect')
   const [output, setOutput] = useState<{ file: File; password: string } | null>(null)
   const mismatch = pw2.length > 0 && pw !== pw2
   const tooShort = pw.length > 0 && pw.length < 4
+  const tooLong = passwordTooLong(pw)
+  const restricted = !allowPrint || !allowCopy || !allowModify
+  const ready =
+    !!file && (!encrypted || current.length > 0) && (mode === 'restrict' ? restricted : pw.length >= 4 && pw === pw2 && !tooLong)
+
+  const pick = async (f: File | null) => {
+    setFile(f)
+    setOutput(null)
+    setEncrypted(false)
+    setCurrent('')
+    setError(null)
+    if (!f) return
+    try {
+      setEncrypted(await isEncrypted(new Uint8Array(await f.arrayBuffer())))
+    } catch {
+      setError(tr('err.invalidPdf'))
+    }
+  }
 
   const go = () =>
     run(async () => {
       const bytes = new Uint8Array(await file!.arrayBuffer())
-      if (await isEncrypted(bytes)) throw new Error(tr('sec.alreadyProtected'))
-      const out = await protect(bytes, { userPassword: pw, allowPrint, allowCopy, allowModify })
-      setOutput({ file: resultFile(out, `${baseName(file!.name)}-${tr('file.protected')}.pdf`, PDF), password: pw })
+      const opts = { userPassword: mode === 'open' ? pw : '', allowPrint, allowCopy, allowModify }
+      const out = encrypted ? await changeProtection(bytes, current, opts) : await protect(bytes, opts)
+      setOutput({ file: resultFile(out, `${baseName(file!.name)}-${tr('file.protected')}.pdf`, PDF), password: opts.userPassword })
       setPw('')
       setPw2('')
+      setCurrent('')
     }, tr('common.doneReview'))
 
   return (
     <div className="card stack">
-      <PickPdf file={file} onFile={(f) => { setFile(f); setOutput(null) }} />
+      <PickPdf file={file} onFile={(f) => void pick(f)} />
+      {encrypted && (
+        <>
+          <Notice kind="info">{tr('protect.change')}</Notice>
+          <PasswordInput label={tr('protect.current')} value={current} onChange={setCurrent} autoComplete="current-password" />
+        </>
+      )}
+      <Segmented
+        label={tr('protect.mode')}
+        value={mode}
+        onChange={setMode}
+        options={[
+          { value: 'open', label: tr('protect.mode.open') },
+          { value: 'restrict', label: tr('protect.mode.restrict') },
+        ]}
+      />
       {file && (
         <BeforeAfter
           original={file}
@@ -309,10 +348,17 @@ export function ProtectTool() {
           summary={<Notice kind="success">{tr('protect.summary')}</Notice>}
         />
       )}
-      <PasswordInput label={tr('protect.pw')} value={pw} onChange={setPw} autoComplete="new-password" />
-      <PasswordInput label={tr('protect.pw2')} value={pw2} onChange={setPw2} autoComplete="new-password" />
-      {tooShort && <small style={{ color: 'var(--danger)' }}>{tr('protect.tooShort')}</small>}
-      {mismatch && <small style={{ color: 'var(--danger)' }}>{tr('protect.mismatch')}</small>}
+      {mode === 'open' ? (
+        <>
+          <PasswordInput label={tr('protect.pw')} value={pw} onChange={setPw} autoComplete="new-password" />
+          <PasswordInput label={tr('protect.pw2')} value={pw2} onChange={setPw2} autoComplete="new-password" />
+          {tooShort && <small style={{ color: 'var(--danger)' }}>{tr('protect.tooShort')}</small>}
+          {tooLong && <small style={{ color: 'var(--danger)' }}>{tr('protect.tooLong', { n: MAX_PASSWORD_BYTES })}</small>}
+          {mismatch && <small style={{ color: 'var(--danger)' }}>{tr('protect.mismatch')}</small>}
+        </>
+      ) : (
+        <Notice kind="info">{restricted ? tr('protect.restrictHint') : tr('protect.restrictPick')}</Notice>
+      )}
       <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0, gap: 8 }}>
         <legend className="faint" style={{ marginBottom: 6 }}>{tr('protect.perms')}</legend>
         {[
@@ -326,11 +372,11 @@ export function ProtectTool() {
           </label>
         ))}
       </fieldset>
-      <Notice kind="info">{tr('protect.aes')}</Notice>
+      {mode === 'open' && <Notice kind="info">{tr('protect.aes')}</Notice>}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={!file || pw.length < 4 || pw !== pw2} onClick={go} icon="lock">
-          {tr('protect.go')}
+        <BusyButton busy={busy} disabled={!ready} onClick={go} icon="lock">
+          {encrypted ? tr('protect.goChange') : tr('protect.go')}
         </BusyButton>
       </div>
     </div>

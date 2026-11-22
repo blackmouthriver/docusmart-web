@@ -56,6 +56,47 @@ function unzip(bytes: Uint8Array): Record<string, Uint8Array> {
 
 const isoDate = (s: string) => (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(s) ? s.slice(0, 16).replace('T', ' ') : s)
 
+/* ───────────── Autores de comentarios y cambios (W-146.3) ───────────── */
+
+/** Nombre que reemplaza a las personas en comentarios y control de cambios. */
+export const ANONYMOUS = 'Autor'
+/** Partes con nombres de personas (Word, Excel y PowerPoint). */
+const PEOPLE_PARTS = /^(word\/people\.xml|xl\/persons\/person\d*\.xml)$/
+/** Partes de contenido donde viven comentarios y revisiones. */
+const isContentXml = (name: string) => /^(word|xl|ppt)\/.+\.xml$/.test(name) && !name.includes('/media/')
+
+/** Los nombres de las personas que comentaron o hicieron cambios. */
+export function commentAuthors(files: Record<string, Uint8Array>): string[] {
+  const names = new Set<string>()
+  for (const [name, data] of Object.entries(files)) {
+    if (!isContentXml(name)) continue
+    const xml = strFromU8(data)
+    // Word (w:author), PowerPoint (name en p:cmAuthor), Excel moderno (displayName en person; en
+    // otras partes de Excel displayName es el nombre de una tabla y no se toca).
+    for (const m of xml.matchAll(/\b(?:w:author|w15:author)="([^"]*)"/g)) names.add(unescape(m[1]).trim())
+    if (PEOPLE_PARTS.test(name)) for (const m of xml.matchAll(/\bdisplayName="([^"]*)"/g)) names.add(unescape(m[1]).trim())
+    if (name === 'ppt/commentAuthors.xml') for (const m of xml.matchAll(/<p:cmAuthor\b[^>]*\bname="([^"]*)"/g)) names.add(unescape(m[1]).trim())
+    // Excel clásico: <authors><author>Nombre</author></authors>
+    if (/^xl\/comments\d*\.xml$/.test(name)) for (const m of xml.matchAll(/<author>([^<]*)<\/author>/g)) names.add(unescape(m[1]).trim())
+  }
+  names.delete('')
+  names.delete(ANONYMOUS)
+  return [...names]
+}
+
+/** Reemplaza los nombres, iniciales y cuentas de las personas en una parte del documento. */
+function anonymize(name: string, xml: string): string {
+  let out = xml.replace(/\b(w:author|w15:author)="[^"]*"/g, `$1="${ANONYMOUS}"`).replace(/\b(w:initials)="[^"]*"/g, '$1="A"')
+  if (PEOPLE_PARTS.test(name))
+    out = out
+      .replace(/\b(displayName)="[^"]*"/g, `$1="${ANONYMOUS}"`)
+      .replace(/\b(userId)="[^"]*"/g, '$1=""')
+      .replace(/\b(providerId)="[^"]*"/g, '$1="None"')
+  if (name === 'ppt/commentAuthors.xml') out = out.replace(/(<p:cmAuthor\b[^>]*\bname=")[^"]*"/g, `$1${ANONYMOUS}"`).replace(/(<p:cmAuthor\b[^>]*\binitials=")[^"]*"/g, '$1A"')
+  if (/^xl\/comments\d*\.xml$/.test(name)) out = out.replace(/<author>[^<]*<\/author>/g, `<author>${ANONYMOUS}</author>`)
+  return out
+}
+
 export function readOffice(bytes: Uint8Array): MetaField[] {
   const files = unzip(bytes)
   const out: MetaField[] = []
@@ -77,21 +118,38 @@ export function readOffice(bytes: Uint8Array): MetaField[] {
   if (files[CUSTOM]) {
     for (const m of strFromU8(files[CUSTOM]).matchAll(/<property\b[^>]*\bname="([^"]*)"[^>]*>\s*<vt:\w+>([^<]*)</g)) out.push({ key: 'custom', value: `${unescape(m[1])}: ${unescape(m[2])}` })
   }
+  const authors = commentAuthors(files)
+  if (authors.length) out.push({ key: 'commentAuthors', value: authors.join(', ') })
   return out
 }
 
 export function stripOffice(bytes: Uint8Array): Uint8Array {
   const files = unzip(bytes)
   const out: Zippable = {}
+  // Word guarda las cuentas de quienes comentaron en people.xml: se quita la parte y sus referencias.
+  const dropPeople = 'word/people.xml' in files
   for (const [name, data] of Object.entries(files)) {
     if (name === CUSTOM) continue
+    if (name === 'word/people.xml') continue
+    if (PEOPLE_PARTS.test(name) || (isContentXml(name) && !name.endsWith('.rels'))) {
+      out[name] = strToU8(anonymize(name, strFromU8(data)))
+      continue
+    }
+    if (dropPeople && name === 'word/_rels/document.xml.rels') {
+      out[name] = strToU8(strFromU8(data).replace(/<Relationship\b[^>]*Target="people\.xml"[^>]*\/>/g, ''))
+      continue
+    }
     if (name === CORE) out[name] = strToU8(EMPTY_CORE)
     else if (name === APP) {
       let xml = strFromU8(data)
       for (const tag of APP_DROP) xml = xml.replace(new RegExp(`<${tag}>[^<]*</${tag}>|<${tag}\\s*/>`, 'g'), '')
       out[name] = strToU8(xml)
-    } else if (name === '[Content_Types].xml' && files[CUSTOM]) {
-      out[name] = strToU8(strFromU8(data).replace(/<Override\b[^>]*PartName="\/docProps\/custom\.xml"[^>]*\/>/g, ''))
+    } else if (name === '[Content_Types].xml' && (files[CUSTOM] || dropPeople)) {
+      out[name] = strToU8(
+        strFromU8(data)
+          .replace(/<Override\b[^>]*PartName="\/docProps\/custom\.xml"[^>]*\/>/g, '')
+          .replace(/<Override\b[^>]*PartName="\/word\/people\.xml"[^>]*\/>/g, ''),
+      )
     } else if (name === '_rels/.rels' && files[CUSTOM]) {
       out[name] = strToU8(strFromU8(data).replace(/<Relationship\b[^>]*Target="\/?docProps\/custom\.xml"[^>]*\/>/g, ''))
     } else out[name] = data
