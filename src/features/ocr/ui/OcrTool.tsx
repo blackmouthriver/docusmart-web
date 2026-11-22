@@ -16,6 +16,8 @@ export function OcrTool() {
   const [file, setFile] = useState<File | null>(null)
   const [lang, setLang] = useState<OcrLang>(useDefaultOcrLang())
   const [wantPdf, setWantPdf] = useState(true)
+  /** Reconocer también las páginas que ya tienen texto (por defecto se respetan, W-146.6). */
+  const [force, setForce] = useState(false)
   const [progress, setProgress] = useState<OcrProgress | null>(null)
   const [result, setResult] = useState<OcrResult | null>(null)
   const [busy, setBusy] = useState(false)
@@ -28,11 +30,11 @@ export function OcrTool() {
     setError(null)
     setResult(null)
     setProgress({ page: 1, pages: 1, fraction: 0, stage: 'preparando' })
-    const [{ runOcr }, { sourceFromFile }] = await Promise.all([import('../core/ocr'), import('../infra/ocrSources')])
+    const [{ runOcr }, { sourceFromFile, rotateImage }] = await Promise.all([import('../core/ocr'), import('../infra/ocrSources')])
     let source: Awaited<ReturnType<typeof sourceFromFile>> | null = null
     try {
-      source = await sourceFromFile(file)
-      const r = await runOcr(source.pages, { lang, wantPdf, onProgress: setProgress })
+      source = await sourceFromFile(file, { force })
+      const r = await runOcr(source.pages, { lang, wantPdf, onProgress: setProgress, original: source.original, rotate: rotateImage })
       setResult(r)
       track('ocr_done', { lang, pages: r.pages, pdf: wantPdf, confidence: r.confidence })
       if (!r.text.trim()) setError(tr('ocr.noText'))
@@ -46,6 +48,14 @@ export function OcrTool() {
       setBusy(false)
       setProgress(null)
     }
+  }
+
+  /** El texto reconocido como documento de Word (un párrafo por bloque, como en Imagen a texto). */
+  const saveWord = async () => {
+    if (!result || !file) return
+    const [{ textWordDoc }, { writeDocx }] = await Promise.all([import('../core/imageText'), import('../../convert/core/pdfWord')])
+    download(new Blob([writeDocx(textWordDoc(result.text)) as BlobPart], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }), `${baseName(file.name)}-ocr.docx`)
+    track('ocr_word', {})
   }
 
   const status = progress
@@ -70,6 +80,10 @@ export function OcrTool() {
         <label className="check">
           <input type="checkbox" checked={wantPdf} onChange={(e) => setWantPdf(e.target.checked)} />
           <span>{tr('ocr.wantPdf')}</span>
+        </label>
+        <label className="check">
+          <input type="checkbox" checked={force} onChange={(e) => setForce(e.target.checked)} />
+          <span>{tr('ocr.force')}</span>
         </label>
         <small className="faint">{tr('ocr.local')}</small>
         {progress && (
@@ -110,8 +124,16 @@ export function OcrTool() {
               <button type="button" className="btn btn-soft btn-sm" onClick={() => download(new Blob([result.text], { type: 'text/plain;charset=utf-8' }), `${baseName(file!.name)}-ocr.txt`)}>
                 <Icon name="download" /> .txt
               </button>
+              <button type="button" className="btn btn-soft btn-sm" onClick={() => void saveWord()}>
+                <Icon name="file" /> Word
+              </button>
             </div>
           </div>
+          {(result.kept > 0 || result.rotated > 0) && (
+            <Notice kind="info">
+              {[result.kept > 0 && tr(result.kept === 1 ? 'ocr.keptOne' : 'ocr.keptMany', { n: result.kept }), result.rotated > 0 && tr(result.rotated === 1 ? 'ocr.rotatedOne' : 'ocr.rotatedMany', { n: result.rotated })].filter(Boolean).join(' ')}
+            </Notice>
+          )}
           {result.confidence < 60 && (
             <Notice kind="info">{tr('ocr.lowQuality', { n: result.confidence })}</Notice>
           )}
