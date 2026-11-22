@@ -32,7 +32,7 @@ test('cuenta de cobro con firma, en PDF, y la numeración y los datos se recuerd
   await expect(tool.locator('.bill-totals .bill-grand').last()).toHaveText(/1\.428\.000/)
 
   // Recordar viene desmarcado: se marca a mano. La cuenta para el pago nunca se guarda.
-  const remember = tool.getByLabel(/^Recordar mis datos en este navegador/)
+  const remember = tool.getByLabel(/^Recordar en este navegador mis datos/)
   await expect(remember).not.toBeChecked()
   await remember.check()
   await tool.getByLabel('Datos para el pago').fill('Bancolombia ahorros 123-456789-00')
@@ -65,7 +65,7 @@ test('cuenta de cobro con firma, en PDF, y la numeración y los datos se recuerd
   // El país también se recuerda; la cuenta para el pago, no.
   await expect(tool.getByLabel('País')).toHaveValue('Colombia')
   await expect(tool.getByLabel('Datos para el pago')).toHaveValue('')
-  await expect(tool.getByLabel(/^Recordar mis datos en este navegador/)).toBeChecked()
+  await expect(tool.getByLabel(/^Recordar en este navegador mis datos/)).toBeChecked()
   expect(await page.evaluate(() => localStorage.getItem('ds-billing-issuer'))).not.toContain('Bancolombia')
 })
 

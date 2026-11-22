@@ -1304,3 +1304,13 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .sign-fields { flex-wrap: wrap; gap: 8px; }
 /* La columna de opciones baja debajo de la cuadrícula si no le queda ancho (celular). */
 .number-options > .stack { min-width: min(100%, 280px); }
+
+/* ── Hoja de vida: orden de las secciones (W-146.4) ── */
+.cv-order { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: cvo; }
+.cv-order li { display: flex; align-items: center; gap: 6px; padding: 6px 8px 6px 12px; border-radius: 12px; background: var(--paper); counter-increment: cvo; }
+.cv-order li::before { content: counter(cvo) "."; color: var(--ink-faint); font-weight: 600; width: 22px; }
+.cv-order li span { flex: 1; font-weight: 600; }
+/* ── Cuenta de cobro: historial (W-146.4) ── */
+.bill-history { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.bill-history li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-radius: 12px; background: var(--paper); }
+.bill-history li > div:first-child { display: grid; gap: 2px; min-width: 0; }

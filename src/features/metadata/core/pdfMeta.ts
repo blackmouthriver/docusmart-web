@@ -94,12 +94,13 @@ function annotations(doc: PDFDocument): Array<{ list: PDFArray; index: number; d
 }
 
 /** Entradas con nombre de un árbol de nombres (/Names → EmbeddedFiles o JavaScript). */
-function nameTreeSize(tree: PDFDict | undefined, budget = { n: 2000 }): number {
-  if (!tree || budget.n-- <= 0) return 0
+function nameTreeSize(tree: PDFDict | undefined, budget?: { n: number }): number {
+  const left = budget ?? { n: 2000 }
+  if (!tree || left.n-- <= 0) return 0
   const pairs = tree.lookupMaybe(PDFName.of('Names'), PDFArray)
   let count = pairs ? Math.floor(pairs.size() / 2) : 0
   const kids = tree.lookupMaybe(PDFName.of('Kids'), PDFArray)
-  if (kids) for (let i = 0; i < kids.size(); i++) count += nameTreeSize(kids.lookupMaybe(i, PDFDict), budget)
+  if (kids) for (let i = 0; i < kids.size(); i++) count += nameTreeSize(kids.lookupMaybe(i, PDFDict), left)
   return count
 }
 

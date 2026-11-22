@@ -10,25 +10,68 @@ import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 import {
+  CV_ACCENTS,
   cvFileBase,
+  cvLayoutOptions,
   cvPdfBlocks,
   cvWordDoc,
+  defaultPaper,
   draftJson,
   emptyCourse,
+  emptyCustom,
   emptyCv,
   emptyJob,
   emptyLang,
   emptyReference,
   emptyStudy,
   hasContent,
+  normalizeOrder,
   parseDraft,
   type CvData,
+  type CvFont,
   type CvLabels,
+  type CvPaper,
   type CvPhoto,
   type CvTemplate,
+  type SectionId,
 } from '../core/cv'
 
 const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+
+/* Guardado automático en este navegador (W-146.4): la foto no se guarda (se vuelve a elegir). */
+const AUTOSAVE_SLOT = 'ds-cv-autosave-v1'
+const AUTOSAVE_OFF = 'ds-cv-autosave-off'
+const storage = {
+  get: (k: string) => {
+    try {
+      return localStorage.getItem(k)
+    } catch {
+      return null
+    }
+  },
+  set: (k: string, v: string | null) => {
+    try {
+      if (v === null) localStorage.removeItem(k)
+      else localStorage.setItem(k, v)
+    } catch {
+      // Navegación privada o almacenamiento lleno: se sigue sin guardar.
+    }
+  },
+}
+const browserPaper = () => defaultPaper(typeof navigator === 'undefined' ? [] : (navigator.languages ?? [navigator.language]))
+const startCv = (): CvData => (storage.get(AUTOSAVE_OFF) ? null : parseDraft(storage.get(AUTOSAVE_SLOT) ?? '')) ?? emptyCv(browserPaper())
+
+/** Nombre de cada sección en la lista para ordenarlas. */
+const SECTION_LABEL: Record<SectionId, MessageKey> = {
+  profile: 'cv.profile',
+  experience: 'cv.experience',
+  education: 'cv.education',
+  skills: 'cv.skills',
+  languages: 'cv.languages',
+  courses: 'cv.courses',
+  references: 'cv.references',
+  custom: 'cv.customSections',
+}
 
 export function CvScreen() {
   return (
@@ -100,7 +143,8 @@ function Section({ title, children }: { title: MessageKey; children: ReactNode }
 
 export function CvTool() {
   const { toast } = useApp()
-  const [cv, setCv] = useState<CvData>(emptyCv)
+  const [cv, setCv] = useState<CvData>(startCv)
+  const [autosave, setAutosave] = useState(() => !storage.get(AUTOSAVE_OFF))
   const [photo, setPhoto] = useState<(CvPhoto & { url: string }) | null>(null)
   const [busy, setBusy] = useState<'pdf' | 'docx' | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -115,13 +159,32 @@ export function CvTool() {
     setDirty(true)
     setOutput(null)
   }
-  // Aviso del navegador si se va con cambios sin guardar.
+  // Guardado automático: medio segundo después del último cambio.
   useEffect(() => {
-    if (!dirty || !hasContent(cv)) return
+    if (!autosave) return
+    const t = setTimeout(() => storage.set(AUTOSAVE_SLOT, hasContent(cv) ? draftJson(cv) : null), 500)
+    return () => clearTimeout(t)
+  }, [cv, autosave])
+  const toggleAutosave = (on: boolean) => {
+    setAutosave(on)
+    storage.set(AUTOSAVE_OFF, on ? null : '1')
+    storage.set(AUTOSAVE_SLOT, on && hasContent(cv) ? draftJson(cv) : null)
+  }
+  const startOver = () => {
+    if (hasContent(cv) && !window.confirm(tr('cv.startOverConfirm'))) return
+    setCv(emptyCv(cv.paper))
+    setPhoto(null)
+    setOutput(null)
+    setDirty(false)
+    storage.set(AUTOSAVE_SLOT, null)
+  }
+  // Aviso del navegador si se va con cambios sin guardar (sin guardado automático).
+  useEffect(() => {
+    if (autosave || !dirty || !hasContent(cv)) return
     const warn = (e: BeforeUnloadEvent) => e.preventDefault()
     window.addEventListener('beforeunload', warn)
     return () => window.removeEventListener('beforeunload', warn)
-  }, [dirty, cv])
+  }, [dirty, cv, autosave])
   useEffect(() => () => { if (photo) URL.revokeObjectURL(photo.url) }, [photo])
 
   const pickPhoto = async (file: File | undefined) => {
@@ -149,7 +212,7 @@ export function CvTool() {
       const pic = cv.template === 'foto' && photo ? photo : undefined
       if (format === 'pdf') {
         const { layoutPdf } = await import('../../convert/core/officePdf')
-        const pdf = await layoutPdf(cvPdfBlocks(cv, l, pic), { title: cv.name.trim() || tr('tools.cv') })
+        const pdf = await layoutPdf(cvPdfBlocks(cv, l, pic), { title: cv.name.trim() || tr('tools.cv'), ...cvLayoutOptions(cv) })
         setOutput(new File([pdf as BlobPart], `${base}.pdf`, { type: 'application/pdf' }))
       } else {
         const { writeDocx } = await import('../../convert/core/pdfWord')
@@ -196,13 +259,50 @@ export function CvTool() {
       <div className="card stack">
         <div className="field">
           <span>{tr('cv.template')}</span>
-          <Segmented label={tr('cv.template')} value={cv.template} onChange={(t: CvTemplate) => update({ template: t })} options={[{ value: 'ats', label: tr('cv.template.ats') }, { value: 'foto', label: tr('cv.template.foto') }]} />
-          <small className="faint">{tr(cv.template === 'ats' ? 'cv.templateHint.ats' : 'cv.templateHint.foto')}</small>
+          <Segmented
+            label={tr('cv.template')}
+            value={cv.template}
+            onChange={(t: CvTemplate) => update({ template: t })}
+            options={[
+              { value: 'ats', label: tr('cv.template.ats') },
+              { value: 'compacta', label: tr('cv.template.compacta') },
+              { value: 'foto', label: tr('cv.template.foto') },
+            ]}
+          />
+          <small className="faint">{tr(`cv.templateHint.${cv.template}` as MessageKey)}</small>
         </div>
+        <div className="row" style={{ alignItems: 'flex-start', gap: 18 }}>
+          <div className="field">
+            <span aria-hidden="true">{tr('cv.paper')}</span>
+            <Segmented label={tr('cv.paper')} value={cv.paper} onChange={(paper: CvPaper) => update({ paper })} options={[{ value: 'letter', label: tr('cv.paper.letter') }, { value: 'a4', label: 'A4' }]} />
+          </div>
+          <div className="field">
+            <span aria-hidden="true">{tr('cv.font')}</span>
+            <Segmented label={tr('cv.font')} value={cv.font} onChange={(font: CvFont) => update({ font })} options={[{ value: 'sans', label: tr('cv.font.sans') }, { value: 'serif', label: tr('cv.font.serif') }]} />
+          </div>
+          <div className="field">
+            <span id="cv-accent-label">{tr('cv.accent')}</span>
+            <div className="accent-row" role="radiogroup" aria-labelledby="cv-accent-label">
+              {CV_ACCENTS.map((c, i) => (
+                <button key={c} type="button" role="radio" aria-checked={cv.accent === c} aria-label={tr('cv.accentN', { n: i + 1 })} title={tr('cv.accentN', { n: i + 1 })} className="accent-swatch" style={{ background: `#${c}` }} onClick={() => update({ accent: c })}>
+                  {cv.accent === c && <Icon name="check" />}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <label className="switch-row" aria-label={tr('cv.autosave')}>
+          <span>
+            <b>{tr('cv.autosave')}</b>
+            <small>{tr('cv.autosaveHint')}</small>
+          </span>
+          <input type="checkbox" role="switch" className="switch" checked={autosave} onChange={(e) => toggleAutosave(e.target.checked)} />
+        </label>
         <div className="row" style={{ gap: 8 }}>
           <button type="button" className="btn btn-outline btn-sm" onClick={() => draftInput.current?.click()}><Icon name="upload" /> {tr('cv.openDraft')}</button>
           <input ref={draftInput} type="file" accept=".json,application/json" hidden aria-label={tr('cv.openDraft')} onChange={(e) => { void openDraft(e.target.files?.[0]); e.target.value = '' }} />
           <button type="button" className="btn btn-outline btn-sm" disabled={!hasContent(cv)} onClick={saveDraft}><Icon name="download" /> {tr('cv.saveDraft')}</button>
+          <button type="button" className="btn btn-ghost btn-sm" disabled={!hasContent(cv)} onClick={startOver}><Icon name="reset" /> {tr('cv.startOver')}</button>
         </div>
         <small className="faint">{tr('cv.draftHint')}</small>
       </div>
@@ -288,6 +388,33 @@ export function CvTool() {
         <ListEditor items={cv.references} onChange={(references) => update({ references })} make={emptyReference} addLabel="cv.addReference" fields={[{ key: 'name', label: 'cv.refName' }, { key: 'relation', label: 'cv.relation', placeholder: 'cv.relationPh' }, { key: 'contact', label: 'cv.contact' }]} />
       </Section>
 
+      <Section title="cv.customSections">
+        <small className="faint">{tr('cv.customHint')}</small>
+        <ListEditor
+          items={cv.custom}
+          onChange={(custom) => update({ custom })}
+          make={emptyCustom}
+          addLabel="cv.addCustom"
+          fields={[
+            { key: 'title', label: 'cv.customTitle', placeholder: 'cv.customTitlePh', wide: true },
+            { key: 'body', label: 'cv.customBody', kind: 'textarea', placeholder: 'cv.customBodyPh' },
+          ]}
+        />
+      </Section>
+
+      <Section title="cv.order">
+        <small className="faint">{tr('cv.orderHint')}</small>
+        <ol className="cv-order">
+          {normalizeOrder(cv.order).map((id, i, all) => (
+            <li key={id}>
+              <span>{tr(SECTION_LABEL[id])}</span>
+              <button type="button" className="icon-btn" aria-label={tr('cv.orderUp', { name: tr(SECTION_LABEL[id]) })} disabled={i === 0} onClick={() => update({ order: swapAt(all, i, i - 1) })}><Icon name="up" /></button>
+              <button type="button" className="icon-btn" aria-label={tr('cv.orderDown', { name: tr(SECTION_LABEL[id]) })} disabled={i === all.length - 1} onClick={() => update({ order: swapAt(all, i, i + 1) })}><Icon name="downArrow" /></button>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
       <div className="card stack">
         <small className="faint">{tr('cv.privacy')}</small>
         {!cv.name.trim() && <small className="faint">{tr('cv.needName')}</small>}
@@ -307,4 +434,10 @@ export function CvTool() {
       )}
     </div>
   )
+}
+
+function swapAt<T>(list: readonly T[], a: number, b: number): T[] {
+  const c = list.slice()
+  ;[c[a], c[b]] = [c[b], c[a]]
+  return c
 }

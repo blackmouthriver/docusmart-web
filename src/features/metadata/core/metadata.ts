@@ -66,4 +66,7 @@ export function cleanFileName(name: string, suffix: string): string {
 export const isKept = (f: MetaField) => f.key === 'orientation'
 
 /** Lo que quedó y no debería (para avisar si algo no se pudo quitar). Sin `hidden`, los comentarios, adjuntos y JavaScript se conservan a propósito. */
-export const leftovers = (after: MetaField[], opts: StripOptions = { hidden: true }) => after.filter((f) => !isKept(f) && (opts.hidden || !HIDDEN_KEYS.has(f.key)))
+export const leftovers = (after: MetaField[], opts?: StripOptions) => {
+  const hidden = opts?.hidden ?? true
+  return after.filter((f) => !isKept(f) && (hidden || !HIDDEN_KEYS.has(f.key)))
+}

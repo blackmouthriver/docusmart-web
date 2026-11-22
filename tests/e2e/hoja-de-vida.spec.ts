@@ -90,8 +90,10 @@ test('hoja de vida clásica en PDF y Word, y el borrador se guarda y se vuelve a
   expect(file.suggestedFilename()).toBe('hoja-de-vida-ana-maria-perez.json')
   const draft = await readFile((await file.path())!)
   expect(JSON.parse(draft.toString('utf8')).app).toBe('docusmart-cv')
-  // Nada queda guardado en el navegador.
-  expect(await page.evaluate(() => Object.keys(localStorage).filter((k) => k.includes('cv')))).toEqual([])
+  // Con el guardado automático (W-146.4) queda solo en este navegador; al apagarlo se borra.
+  await expect.poll(() => page.evaluate(() => Object.keys(localStorage).filter((k) => k.includes('cv')))).toEqual(['ds-cv-autosave-v1'])
+  await tool.getByRole('switch', { name: 'Guardar automáticamente en este navegador' }).uncheck()
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((k) => k.includes('cv') && k !== 'ds-cv-autosave-off'))).toEqual([])
 
   await page.reload()
   await expect(tool.getByRole('region', { name: 'Datos personales' }).getByLabel('Nombre completo')).toHaveValue('')
