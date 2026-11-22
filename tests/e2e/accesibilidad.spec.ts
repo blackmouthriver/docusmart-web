@@ -65,7 +65,7 @@ test.describe('aviso de privacidad y cookies', () => {
 })
 
 test('sin problemas de accesibilidad en la barra lateral clara y de color de acento, con cada acento (W-145)', async ({ page }) => {
-  test.setTimeout(120_000)
+  test.setTimeout(240_000) // 40 combinaciones: holgado para equipos lentos
   await page.setViewportSize({ width: 1280, height: 800 })
   const accents = ['blue', 'purple', 'green', 'orange', 'pink', 'teal', 'indigo', 'red', 'amber', 'cyan']
   for (const theme of ['light', 'dark']) {

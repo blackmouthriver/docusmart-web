@@ -4,7 +4,7 @@
  */
 import { readJpeg, readPng, readWebp, stripJpeg, stripPng, stripWebp } from './images'
 import { readOffice, stripOffice } from './officeMeta'
-import { readPdf, stripPdf } from './pdfMeta'
+import { readPdf, stripPdf, type StripPdfOptions } from './pdfMeta'
 import { MetaError, type MetaField, type MetaKind, type StripResult } from './types'
 
 export { MetaError }
@@ -43,12 +43,17 @@ export async function readMetadata(name: string, bytes: Uint8Array): Promise<Met
   return readOffice(bytes)
 }
 
-export async function stripMetadata(name: string, bytes: Uint8Array): Promise<StripResult> {
+export type StripOptions = StripPdfOptions
+
+export async function stripMetadata(name: string, bytes: Uint8Array, opts: StripOptions = {}): Promise<StripResult> {
   const kind = kindOf(name, bytes)
   const before = await readMetadata(name, bytes)
-  const out = kind === 'jpeg' ? stripJpeg(bytes) : kind === 'png' ? stripPng(bytes) : kind === 'webp' ? stripWebp(bytes) : kind === 'pdf' ? await stripPdf(bytes) : stripOffice(bytes)
+  const out = kind === 'jpeg' ? stripJpeg(bytes) : kind === 'png' ? stripPng(bytes) : kind === 'webp' ? stripWebp(bytes) : kind === 'pdf' ? await stripPdf(bytes, opts) : stripOffice(bytes)
   return { bytes: out, before, after: await readMetadata(name, out) }
 }
+
+/** Contenido del PDF que se quita solo si el usuario lo pide (no es un metadato, es parte del documento). */
+export const HIDDEN_KEYS: ReadonlySet<MetaField['key']> = new Set(['comments', 'attachments', 'javascript'])
 
 /** "foto.JPG" + "sin-metadatos" → "foto-sin-metadatos.JPG" (misma extensión). */
 export function cleanFileName(name: string, suffix: string): string {
@@ -60,5 +65,5 @@ export function cleanFileName(name: string, suffix: string): string {
 /** Datos que se conservan a propósito (la orientación, para que la foto no aparezca girada). */
 export const isKept = (f: MetaField) => f.key === 'orientation'
 
-/** Lo que quedó y no debería (para avisar si algo no se pudo quitar). */
-export const leftovers = (after: MetaField[]) => after.filter((f) => !isKept(f))
+/** Lo que quedó y no debería (para avisar si algo no se pudo quitar). Sin `hidden`, los comentarios, adjuntos y JavaScript se conservan a propósito. */
+export const leftovers = (after: MetaField[], opts: StripOptions = { hidden: true }) => after.filter((f) => !isKept(f) && (opts.hidden || !HIDDEN_KEYS.has(f.key)))

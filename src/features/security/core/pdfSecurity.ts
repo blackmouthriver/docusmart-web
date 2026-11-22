@@ -47,7 +47,7 @@ export async function compressLossless(bytes: ArrayBuffer | Uint8Array): Promise
 }
 
 export type ProtectOptions = {
-  /** Contraseña para abrir el PDF. */
+  /** Contraseña para abrir el PDF. Vacía: el PDF abre sin contraseña y solo valen las restricciones. */
   userPassword: string
   /** Contraseña de propietario; si falta se genera una aleatoria para que las restricciones valgan. */
   ownerPassword?: string
@@ -61,9 +61,20 @@ function randomPassword() {
   return Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('')
 }
 
+/**
+ * AES-256 usa solo los primeros 127 bytes de la contraseña (en UTF-8) y qpdf no los recorta igual
+ * al cifrar y al abrir: con una más larga el PDF quedaría sin poder abrirse (W-146.3).
+ */
+export const MAX_PASSWORD_BYTES = 127
+export const passwordBytes = (s: string) => new TextEncoder().encode(s).length
+export const passwordTooLong = (s: string) => passwordBytes(s) > MAX_PASSWORD_BYTES
+
 /** Cifra con AES-256 (lo que leen Adobe, Chrome, Edge y la app de DocuSmart). */
 export async function protect(bytes: ArrayBuffer | Uint8Array, opts: ProtectOptions): Promise<Uint8Array> {
-  if (!opts.userPassword) throw new QpdfError(tr('libErr.qpdfNoKey'))
+  // Sin contraseña para abrir solo tiene sentido si se restringe algo (como en Adobe o PDF24).
+  const restricted = opts.allowPrint === false || opts.allowCopy === false || opts.allowModify === false
+  if (!opts.userPassword && !restricted) throw new QpdfError(tr('libErr.qpdfNoKey'))
+  if (passwordTooLong(opts.userPassword) || passwordTooLong(opts.ownerPassword ?? '')) throw new QpdfError(tr('libErr.qpdfLongKey', { n: MAX_PASSWORD_BYTES }))
   const owner = opts.ownerPassword || randomPassword()
   const perms = [
     `--print=${opts.allowPrint === false ? 'none' : 'full'}`,
@@ -90,6 +101,11 @@ export async function unlock(bytes: ArrayBuffer | Uint8Array, password: string):
   }
   if (!r.output) throw new QpdfError(tr('libErr.qpdfUnlock'))
   return r.output
+}
+
+/** Cambia la contraseña o los permisos de un PDF ya protegido, con la contraseña actual. */
+export async function changeProtection(bytes: ArrayBuffer | Uint8Array, current: string, opts: ProtectOptions): Promise<Uint8Array> {
+  return protect(await unlock(bytes, current), opts)
 }
 
 export type RepairResult = { bytes: Uint8Array; hadProblems: boolean }
