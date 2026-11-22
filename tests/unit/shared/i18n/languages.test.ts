@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { LANGS, detectLanguage, isLang, langFromTimeZone } from '../../../../src/shared/i18n/languages'
-import { ACCENTS, DEFAULT_APPEARANCE, accentVars, applyAppearance, applyTheme, parseAppearance, resolveTheme } from '../../../../src/app/appearance'
+import { ACCENTS, DEFAULT_APPEARANCE, accentVars, applyAppearance, applyTheme, parseAppearance, resolveSidebar, resolveTheme } from '../../../../src/app/appearance'
 
 describe('idiomas', () => {
   it('los 12 de la app', () => {
@@ -40,8 +40,8 @@ describe('apariencia', () => {
 
   it('lee lo guardado sin aceptar valores raros', () => {
     expect(parseAppearance(null)).toEqual(DEFAULT_APPEARANCE)
-    // Guardado antes de W-89 (sin animatedBg): el fondo animado queda activado, como en la app.
-    expect(parseAppearance('{"theme":"dark","accent":"pink","font":"large"}')).toEqual({ theme: 'dark', accent: 'pink', font: 'large', animatedBg: true })
+    // Guardado antes de W-89 (sin animatedBg ni sidebar): fondo animado activado y barra oscura, como antes.
+    expect(parseAppearance('{"theme":"dark","accent":"pink","font":"large"}')).toEqual({ theme: 'dark', accent: 'pink', font: 'large', animatedBg: true, sidebar: 'dark' })
     expect(parseAppearance('{"animatedBg":false}').animatedBg).toBe(false)
     expect(parseAppearance('{"animatedBg":"no"}').animatedBg).toBe(true)
     expect(parseAppearance('{"theme":"neon","accent":"gold","font":9}')).toEqual(DEFAULT_APPEARANCE)
@@ -60,18 +60,27 @@ describe('apariencia', () => {
   it('se aplica al documento', () => {
     const vars: Record<string, string> = {}
     const root = { dataset: {} as Record<string, string>, style: { colorScheme: '', setProperty: (k: string, v: string) => (vars[k] = v) } }
-    applyAppearance({ theme: 'dark', accent: 'red', font: 'xlarge', animatedBg: false }, root as unknown as HTMLElement)
+    applyAppearance({ theme: 'dark', accent: 'red', font: 'xlarge', animatedBg: false, sidebar: 'auto' }, root as unknown as HTMLElement)
     expect(root.dataset.theme).toBe('dark')
     expect(root.style.colorScheme).toBe('dark')
     expect(vars['--blue']).toBe('#FCA5A5')
     expect(vars['--font-scale']).toBe('1.3')
     expect(root.dataset.animBg).toBe('off')
+    // Barra lateral según el tema: oscura con el tema oscuro.
+    expect(root.dataset.sidebar).toBe('dark')
+  })
+
+  it('estilo de la barra lateral (W-145): guardado válido y según el tema', () => {
+    expect(parseAppearance(JSON.stringify({ sidebar: 'light' })).sidebar).toBe('light')
+    expect(parseAppearance(JSON.stringify({ sidebar: 'rosa' })).sidebar).toBe('dark')
+    expect(resolveSidebar('auto', 'light')).toBe('light')
+    expect(resolveSidebar('accent', 'dark')).toBe('accent')
   })
 
   it('solo el tema, sin tocar acento ni letra (portada)', () => {
     const setProperty = vi.fn()
     const root = { dataset: {} as Record<string, string>, style: { colorScheme: '', setProperty } }
-    expect(applyTheme({ theme: 'dark', accent: 'red', font: 'xlarge', animatedBg: true }, root as unknown as HTMLElement)).toBe('dark')
+    expect(applyTheme({ theme: 'dark', accent: 'red', font: 'xlarge', animatedBg: true, sidebar: 'dark' }, root as unknown as HTMLElement)).toBe('dark')
     expect(root.dataset.theme).toBe('dark')
     expect(root.style.colorScheme).toBe('dark')
     expect(setProperty).not.toHaveBeenCalled()

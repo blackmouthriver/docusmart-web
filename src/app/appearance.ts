@@ -5,6 +5,9 @@
  */
 
 export type ThemeMode = 'system' | 'light' | 'dark'
+/** Estilo de la barra lateral (W-145): según el tema, oscura (la de siempre), clara o del color de acento. */
+export type SidebarStyle = 'auto' | 'dark' | 'light' | 'accent'
+export const SIDEBAR_STYLES: readonly SidebarStyle[] = ['auto', 'dark', 'light', 'accent']
 export type FontScale = 'normal' | 'large' | 'xlarge'
 type Tone = { primary: string; deep: string; soft: string; light: string }
 
@@ -26,8 +29,8 @@ export type Accent = keyof typeof ACCENTS
 export const FONT_SCALES: Record<FontScale, number> = { normal: 1, large: 1.15, xlarge: 1.3 }
 
 /** animatedBg: fondo animado detrás del contenido (W-89), activado por defecto como en la app. */
-export type Appearance = { theme: ThemeMode; accent: Accent; font: FontScale; animatedBg: boolean }
-export const DEFAULT_APPEARANCE: Appearance = { theme: 'system', accent: 'blue', font: 'normal', animatedBg: true }
+export type Appearance = { theme: ThemeMode; accent: Accent; font: FontScale; animatedBg: boolean; sidebar: SidebarStyle }
+export const DEFAULT_APPEARANCE: Appearance = { theme: 'system', accent: 'blue', font: 'normal', animatedBg: true, sidebar: 'dark' }
 const STORAGE_KEY = 'ds-appearance'
 
 /** Lee lo guardado, descartando valores que no existen (versiones viejas, datos raros). */
@@ -39,6 +42,7 @@ export function parseAppearance(raw: string | null): Appearance {
       accent: typeof v.accent === 'string' && v.accent in ACCENTS ? (v.accent as Accent) : DEFAULT_APPEARANCE.accent,
       font: typeof v.font === 'string' && v.font in FONT_SCALES ? (v.font as FontScale) : DEFAULT_APPEARANCE.font,
       animatedBg: typeof v.animatedBg === 'boolean' ? v.animatedBg : DEFAULT_APPEARANCE.animatedBg,
+      sidebar: typeof v.sidebar === 'string' && (SIDEBAR_STYLES as readonly string[]).includes(v.sidebar) ? (v.sidebar as SidebarStyle) : DEFAULT_APPEARANCE.sidebar,
     }
   } catch {
     return { ...DEFAULT_APPEARANCE }
@@ -46,6 +50,9 @@ export function parseAppearance(raw: string | null): Appearance {
 }
 
 export const resolveTheme = (mode: ThemeMode, systemDark: boolean): 'light' | 'dark' => (mode === 'system' ? (systemDark ? 'dark' : 'light') : mode)
+
+/** La barra "según el tema" es clara con el tema claro y oscura con el oscuro. */
+export const resolveSidebar = (style: SidebarStyle, theme: 'light' | 'dark'): Exclude<SidebarStyle, 'auto'> => (style === 'auto' ? theme : style)
 
 /** Variables CSS del color de acento para el tema dado. */
 export function accentVars(accent: Accent, theme: 'light' | 'dark'): Record<string, string> {
@@ -57,7 +64,7 @@ export function accentVars(accent: Accent, theme: 'light' | 'dark'): Record<stri
 
 /* ───────────── Navegador ───────────── */
 
-const systemDark = () => typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches
+export const systemDark = () => typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches
 
 export function loadAppearance(): Appearance {
   try {
@@ -89,6 +96,7 @@ export function applyAppearance(a: Appearance, root: HTMLElement = document.docu
   for (const [k, v] of Object.entries(accentVars(a.accent, theme))) root.style.setProperty(k, v)
   root.style.setProperty('--font-scale', String(FONT_SCALES[a.font]))
   root.dataset.animBg = a.animatedBg ? 'on' : 'off'
+  root.dataset.sidebar = resolveSidebar(a.sidebar, theme)
 }
 
 /** Con el tema "Sistema", sigue los cambios del sistema operativo. */
