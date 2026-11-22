@@ -9,7 +9,8 @@ import { tr } from '../../../shared/i18n/translate'
 import { useT } from '../../../shared/i18n/I18n'
 import { ocrLangFor } from '../../study/core/reading'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
-import type { Quad, ScanFilter } from '../core/scan'
+import type { Quad, ScanFilter, ScanPaper } from '../core/scan'
+import { defaultPaper } from '../../cv/core/cv'
 import type { Photo } from '../infra/scanCanvas'
 import { track } from '../../../shared/platform/analytics'
 
@@ -41,6 +42,8 @@ export function ScanTool() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [searchable, setSearchable] = useState(false)
+  /** Tamaño de las páginas: A4 o Carta según el país, o como la foto (W-146.6). */
+  const [paper, setPaper] = useState<ScanPaper>(() => defaultPaper(typeof navigator === 'undefined' ? [] : (navigator.languages ?? [navigator.language])))
   const [ocrProgress, setOcrProgress] = useState<number | null>(null)
   const camera = useRef<HTMLInputElement>(null)
   const gallery = useRef<HTMLInputElement>(null)
@@ -128,17 +131,17 @@ export function ScanTool() {
     try {
       const items = await Promise.all(ready.map(async (p) => ({ jpg: new Uint8Array(await p.result!.blob.arrayBuffer()), width: p.result!.width, height: p.result!.height })))
       let pdf: Uint8Array
+      const { scansToPdf, scanPageSize } = await import('../core/scan')
       if (searchable) {
-        const { runOcr } = await import('../../ocr/core/ocr')
+        const [{ runOcr }, { rotateImage }] = await Promise.all([import('../../ocr/core/ocr'), import('../../ocr/infra/ocrSources')])
         setOcrProgress(0)
         const r = await runOcr(
-          ready.map((p) => async () => p.result!.blob),
-          { lang: ocrLangFor(uiLang), wantPdf: true, onProgress: (pr) => setOcrProgress((pr.page - 1 + pr.fraction) / pr.pages) },
+          ready.map((p) => ({ image: async () => p.result!.blob, size: scanPageSize(paper, p.result!.width, p.result!.height) })),
+          { lang: ocrLangFor(uiLang), wantPdf: true, rotate: rotateImage, onProgress: (pr) => setOcrProgress((pr.page - 1 + pr.fraction) / pr.pages) },
         )
         pdf = r.pdf!
       } else {
-        const { scansToPdf } = await import('../core/scan')
-        pdf = await scansToPdf(items)
+        pdf = await scansToPdf(items, paper)
       }
       setOutput({ result: resultFile(pdf, `${tr('file.scan')}-${today()}.pdf`, 'application/pdf') })
       track('scan_saved', { pages: ready.length, format: 'pdf', searchable })
@@ -246,6 +249,19 @@ export function ScanTool() {
           </div>
           {loading > 0 && <p className="faint">{loading === 1 ? tr('scan.processingOne') : tr('scan.processingMany', { n: loading })}</p>}
           {pending > 0 && <Notice kind="plain">{pending === 1 ? tr('scan.pendingOne') : tr('scan.pendingMany', { n: pending })}</Notice>}
+          <div className="field">
+            <span aria-hidden="true">{tr('scan.paper')}</span>
+            <Segmented
+              label={tr('scan.paper')}
+              value={paper}
+              onChange={(v: ScanPaper) => { setPaper(v); setOutput(null) }}
+              options={[
+                { value: 'a4', label: 'A4' },
+                { value: 'letter', label: tr('cv.paper.letter') },
+                { value: 'fit', label: tr('scan.paper.fit') },
+              ]}
+            />
+          </div>
           <label className="check">
             <input type="checkbox" checked={searchable} onChange={(e) => setSearchable(e.target.checked)} />
             <span>{tr('scan.searchable')}</span>

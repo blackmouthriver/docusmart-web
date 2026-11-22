@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { PDFDocument } from 'pdf-lib'
-import { applyFilter, boxBlur, detectDocument, homography, insetQuad, otsu, outputSize, rotate90, scansToPdf, toGray, warpPerspective, type Pixels, type Quad } from '../../../../../src/features/scan/core/scan'
+import { applyFilter, boxBlur, detectDocument, homography, insetQuad, otsu, outputSize, rotate90, scanPageSize, scansToPdf, toGray, warpPerspective, type Pixels, type Quad } from '../../../../../src/features/scan/core/scan'
 
 /** Imagen de w×h con fondo oscuro y un cuadrilátero claro (prueba de punto en polígono convexo). */
 function photo(w: number, h: number, quad: Quad, bg = 40, paper = 230): Pixels {
@@ -176,5 +176,20 @@ describe('scansToPdf', () => {
 
   it('exige al menos una página', async () => {
     await expect(scansToPdf([])).rejects.toThrow('al menos una página')
+  })
+
+  it('A4 o Carta: todas las páginas iguales, horizontales si la foto lo es (W-146.6)', async () => {
+    const pages = [{ jpg: JPG, width: 1000, height: 1414 }, { jpg: JPG, width: 1600, height: 1000 }]
+    const a4 = await PDFDocument.load(await scansToPdf(pages, 'a4'))
+    expect(a4.getPages().map((p) => [Math.round(p.getWidth()), Math.round(p.getHeight())])).toEqual([[595, 842], [842, 595]])
+    const letter = await PDFDocument.load(await scansToPdf(pages, 'letter'))
+    expect(letter.getPages().map((p) => [p.getWidth(), p.getHeight()])).toEqual([[612, 792], [792, 612]])
+  })
+
+  it('scanPageSize: como la foto conserva la proporción con ancho A4', () => {
+    expect(scanPageSize('fit', 1000, 2000)).toEqual([595, 1190])
+    expect(scanPageSize('fit', 0, 10)).toEqual([595, 5950])
+    expect(scanPageSize('letter', 800, 600)).toEqual([792, 612])
+    expect(scanPageSize('a4', 600, 600)).toEqual([595.28, 841.89])
   })
 })

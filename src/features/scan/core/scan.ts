@@ -277,17 +277,29 @@ export function applyFilter(p: Pixels, filter: ScanFilter): Pixels {
 /* ───────────── PDF ───────────── */
 
 export type ScannedPage = { jpg: Uint8Array; width: number; height: number }
+/** Tamaño de las páginas del PDF (W-146.6): A4, Carta o como la foto (ancho A4 y alto en proporción). */
+export type ScanPaper = 'a4' | 'letter' | 'fit'
+const PAPER: Record<Exclude<ScanPaper, 'fit'>, [number, number]> = { a4: [595.28, 841.89], letter: [612, 792] }
 
-/** Un PDF con una página por documento, de ancho A4 (595 pt) y alto proporcional. */
-export async function scansToPdf(pages: ScannedPage[]): Promise<Uint8Array> {
+/** El tamaño de la página para una foto de `width` × `height`: horizontal si la foto es horizontal. */
+export function scanPageSize(paper: ScanPaper, width: number, height: number): [number, number] {
+  if (paper === 'fit') return [595, Math.round((595 * height) / Math.max(1, width))]
+  const [w, h] = PAPER[paper]
+  return width > height ? [h, w] : [w, h]
+}
+
+/** Un PDF con una página por documento, del tamaño elegido; la foto ocupa la página sin deformarse. */
+export async function scansToPdf(pages: ScannedPage[], paper: ScanPaper = 'fit'): Promise<Uint8Array> {
   if (!pages.length) throw new Error(tr('libErr.scanAddPage'))
   const doc = await PDFDocument.create()
   doc.setTitle(tr('out.scanTitle'))
   for (const p of pages) {
     const img = await doc.embedJpg(p.jpg)
-    const width = 595
-    const height = Math.round((595 * p.height) / p.width)
-    doc.addPage([width, height]).drawImage(img, { x: 0, y: 0, width, height })
+    const [W, H] = scanPageSize(paper, p.width, p.height)
+    const k = Math.min(W / p.width, H / p.height)
+    const width = p.width * k
+    const height = p.height * k
+    doc.addPage([W, H]).drawImage(img, { x: (W - width) / 2, y: (H - height) / 2, width, height })
   }
   return doc.save()
 }
