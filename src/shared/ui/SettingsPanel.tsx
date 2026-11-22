@@ -5,7 +5,7 @@ import { Segmented } from './ui'
 import { useDialog } from './useDialog'
 import { LANGS } from '../i18n/languages'
 import { useT } from '../i18n/I18n'
-import { ACCENTS, applyAppearance, loadAppearance, saveAppearance, type Accent, type Appearance, type FontScale, type ThemeMode } from '../../app/appearance'
+import { ACCENTS, SIDEBAR_STYLES, applyAppearance, systemDark, loadAppearance, saveAppearance, type Accent, type Appearance, type FontScale, type SidebarStyle, type ThemeMode } from '../../app/appearance'
 import { track } from '../platform/analytics'
 
 export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
@@ -74,6 +74,12 @@ export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
               { value: 'dark', label: t('settings.theme.dark') },
             ]}
           />
+          {/* "Sistema" copia el modo del sistema operativo: decir cuál es evita que parezca igual a Claro u Oscuro sin razón. */}
+          {look.theme === 'system' && (
+            <small className="faint" style={{ display: 'block', marginTop: 8 }} data-testid="theme-system-hint">
+              {t(systemDark() ? 'settings.theme.systemDark' : 'settings.theme.systemLight')}
+            </small>
+          )}
         </section>
 
         <section>
@@ -95,6 +101,16 @@ export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
               </button>
             ))}
           </div>
+        </section>
+
+        <section>
+          <h3>{t('settings.sidebar')}</h3>
+          <Segmented<SidebarStyle>
+            label={t('settings.sidebar')}
+            value={look.sidebar}
+            onChange={(sidebar) => update({ sidebar })}
+            options={SIDEBAR_STYLES.map((value) => ({ value, label: t(`settings.sidebar.${value}`) }))}
+          />
         </section>
 
         <section>

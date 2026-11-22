@@ -1,4 +1,4 @@
-import { Fragment, Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
 import { withViewTransition } from '../shared/platform/motion'
 import { ScreenSkeleton } from '../shared/ui/ui'
@@ -17,6 +17,7 @@ import { isStandalone, onOfflineReady, onUpdateReady, promptInstall, watchInstal
 import { AnimatedBackground } from '../shared/ui/AnimatedBackground'
 import { mountAssistantLauncher } from '../features/assistant/ui/launcher'
 import { Home } from '../features/home/ui/Home'
+import { SideNav } from './SideNav'
 // Cada pantalla se descarga al entrar: pdf.js y las librerías de QR no frenan el Inicio.
 const Viewer = lazy(() => import('../features/viewer/ui/Viewer').then((m) => ({ default: m.Viewer })))
 const Converter = lazy(() => import('../features/convert/ui/Converter').then((m) => ({ default: m.Converter })))
@@ -277,27 +278,7 @@ export function App() {
           </button>
           {/* Navegación y pie se desplazan cuando la ventana es baja: nada queda cortado. */}
           <div className="side-scroll">
-          <nav className="side-nav" aria-label={t('nav.sections')}>
-            {NAV.map((n) => (
-              <Fragment key={n.section}>
-                <a className="nav-item" href={'#/' + n.section} data-tip={t(n.label)} aria-label={collapsed ? t(n.label) : undefined} aria-current={active === n.section && !(n.subs && route.sub) ? 'page' : undefined} aria-expanded={n.subs ? active === n.section : undefined}>
-                  <Icon name={n.icon} />
-                  <span className="nav-label">{t(n.label)}</span>
-                  {n.subs && <span className="nav-caret" aria-hidden="true"><Icon name="back" /></span>}
-                </a>
-                {n.subs && active === n.section && !collapsed && (
-                  <div className="nav-subs">
-                    {n.subs.map((s) => (
-                      <a key={s.sub} className="nav-item nav-sub" href={`#/${n.section}/${s.sub}`} aria-current={route.sub === s.sub ? 'page' : undefined}>
-                        <Icon name={s.icon} />
-                        {t(s.label)}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </Fragment>
-            ))}
-          </nav>
+          <SideNav route={route} collapsed={collapsed} onExpand={() => collapsed && toggleSidebar()} />
           <div className="side-foot">
             <button type="button" className="side-settings" data-tip={t('settings.open')} aria-label={collapsed ? t('settings.open') : undefined} onClick={openSettings}>
               <Icon name="settings" />

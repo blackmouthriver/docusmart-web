@@ -63,3 +63,22 @@ test.describe('aviso de privacidad y cookies', () => {
     expect(await audit(page)).toEqual([])
   })
 })
+
+test('sin problemas de accesibilidad en la barra lateral clara y de color de acento, con cada acento (W-145)', async ({ page }) => {
+  test.setTimeout(120_000)
+  await page.setViewportSize({ width: 1280, height: 800 })
+  const accents = ['blue', 'purple', 'green', 'orange', 'pink', 'teal', 'indigo', 'red', 'amber', 'cyan']
+  for (const theme of ['light', 'dark']) {
+    for (const sidebar of ['light', 'accent']) {
+      for (const accent of accents) {
+        await page.evaluate((look) => localStorage.setItem('ds-appearance', JSON.stringify(look)), { theme, accent, sidebar, font: 'normal', animatedBg: false }).catch(() => {})
+        await page.goto('/app/#/pdf/unir')
+        await page.evaluate((look) => localStorage.setItem('ds-appearance', JSON.stringify(look)), { theme, accent, sidebar, font: 'normal', animatedBg: false })
+        await page.reload()
+        await expect(page.locator('html')).toHaveAttribute('data-sidebar', sidebar)
+        const { violations } = await new AxeBuilder({ page }).include('.sidebar').withTags(TAGS).analyze()
+        expect(violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).slice(0, 3).join(' | ')}`), `${theme}/${sidebar}/${accent}`).toEqual([])
+      }
+    }
+  }
+})
