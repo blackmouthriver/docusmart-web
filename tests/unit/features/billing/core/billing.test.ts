@@ -61,8 +61,8 @@ describe('cantidades', () => {
 
   it('totales con impuesto y retención, redondeados a la moneda', () => {
     const items = [{ description: 'a', qty: 3, price: 33_333.33 }, { description: 'b', qty: 1, price: 0.4 }]
-    expect(totals(items, 19, 11, 'COP')).toEqual({ subtotal: 100_000, tax: 19_000, withholding: 11_000, total: 108_000 })
-    expect(totals([{ description: 'x', qty: 2, price: 10.005 }], 10, 0, 'USD')).toEqual({ subtotal: 20.01, tax: 2, withholding: 0, total: 22.01 })
+    expect(totals(items, 19, 11, 'COP')).toEqual({ subtotal: 100_000, discount: 0, tax: 19_000, withholding: 11_000, total: 108_000 })
+    expect(totals([{ description: 'x', qty: 2, price: 10.005 }], 10, 0, 'USD')).toEqual({ subtotal: 20.01, discount: 0, tax: 2, withholding: 0, total: 22.01 })
     expect(totals([{ description: 'x', qty: Number.NaN, price: 5 }], Number.NaN, 0, 'USD').total).toBe(0)
   })
 

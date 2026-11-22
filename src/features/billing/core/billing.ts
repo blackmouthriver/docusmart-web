@@ -32,6 +32,10 @@ export type BillingDoc = {
   withholdingLabel: string
   payment: string
   notes: string
+  /** Descuento en % sobre el subtotal (W-146.4). */
+  discountRate?: number
+  /** Fecha límite de pago ("AAAA-MM-DD" o ""), para cuentas de cobro. */
+  dueDate?: string
 }
 
 export const emptyParty = (): Party => ({ name: '', idType: '', id: '', address: '', phone: '', email: '' })
@@ -75,15 +79,22 @@ export function parseAmount(text: string): number {
   return Number.isFinite(n) ? n : Number.NaN
 }
 
-export type Totals = { subtotal: number; tax: number; withholding: number; total: number }
+export type Totals = { subtotal: number; discount: number; tax: number; withholding: number; total: number }
 
-/** Subtotal, impuesto y retención (sobre el subtotal) y total a pagar, redondeados a la moneda. */
-export function totals(items: readonly Item[], taxRate: number, withholdingRate: number, currency: string): Totals {
+const pct = (n: number) => (Number.isFinite(n) ? Math.min(100, Math.max(0, n)) : 0)
+
+/**
+ * Subtotal, descuento (sobre el subtotal), impuesto y retención (sobre el subtotal ya con el
+ * descuento) y total a pagar, redondeados a la moneda.
+ */
+export function totals(items: readonly Item[], taxRate: number, withholdingRate: number, currency: string, discountRate = 0): Totals {
   const d = minorDigits(currency)
   const subtotal = roundTo(items.reduce((s, i) => s + (Number.isFinite(i.qty) ? i.qty : 0) * (Number.isFinite(i.price) ? i.price : 0), 0), d)
-  const tax = roundTo((subtotal * (Number.isFinite(taxRate) ? taxRate : 0)) / 100, d)
-  const withholding = roundTo((subtotal * (Number.isFinite(withholdingRate) ? withholdingRate : 0)) / 100, d)
-  return { subtotal, tax, withholding, total: roundTo(subtotal + tax - withholding, d) }
+  const discount = roundTo((subtotal * pct(discountRate)) / 100, d)
+  const base = subtotal - discount
+  const tax = roundTo((base * (Number.isFinite(taxRate) ? taxRate : 0)) / 100, d)
+  const withholding = roundTo((base * (Number.isFinite(withholdingRate) ? withholdingRate : 0)) / 100, d)
+  return { subtotal, discount, tax, withholding, total: roundTo(base + tax - withholding, d) }
 }
 
 /** País de cada moneda latinoamericana, para escribir el monto como allá ("$ 1.890.000" y no "1.890.000 COP"). */
@@ -211,6 +222,8 @@ export type BillingLabels = {
   notes: string
   signature: string
   received: string
+  discount?: string
+  dueDate?: string
 }
 
 /** Etiquetas en inglés (referencia para pruebas). */
@@ -238,6 +251,8 @@ export const ENGLISH_BILLING_LABELS: BillingLabels = {
   notes: 'Notes',
   signature: 'Signature',
   received: 'Received from',
+  discount: 'Discount',
+  dueDate: 'Due date',
 }
 
 const p = (runs: ORun[] | string, extra: Partial<OPara> = {}): OPara => ({ kind: 'para', runs: typeof runs === 'string' ? [{ text: runs }] : runs, ...extra })
@@ -254,19 +269,27 @@ function partyLines(party: Party, l: BillingLabels): OPara[] {
 }
 
 export type PdfSignature = { data: Uint8Array; width: number; height: number }
+/** Logo de quien cobra (PNG o JPG). */
+export type PdfLogo = { data: Uint8Array; type: 'png' | 'jpg'; width: number; height: number }
 
 /**
  * Bloques del documento para el generador de PDF: título y número, emisor y cliente, la frase
  * de la cuenta de cobro (con el valor en letras si hay), la tabla de conceptos, los totales,
  * los datos de pago, las notas y la firma.
  */
-export function billingBlocks(doc: BillingDoc, l: BillingLabels, fmt: (n: number) => string, opts: { dateText: (iso: string) => string; words?: string; signature?: PdfSignature }): OBlock[] {
-  const t = totals(doc.items, doc.taxRate, doc.withholdingRate, doc.currency)
+export function billingBlocks(doc: BillingDoc, l: BillingLabels, fmt: (n: number) => string, opts: { dateText: (iso: string) => string; words?: string; signature?: PdfSignature; logo?: PdfLogo }): OBlock[] {
+  const t = totals(doc.items, doc.taxRate, doc.withholdingRate, doc.currency, doc.discountRate ?? 0)
   const blocks: OBlock[] = []
+  if (opts.logo) {
+    // El logo arriba a la izquierda, sin pasar de 4,5 cm de ancho ni 2 cm de alto.
+    const k = Math.min(1, 128 / opts.logo.width, 57 / opts.logo.height)
+    blocks.push({ kind: 'image', type: opts.logo.type, data: opts.logo.data, width: Math.round(opts.logo.width * k), height: Math.round(opts.logo.height * k), align: 'left' })
+  }
   blocks.push(p([{ text: l.title[doc.kind], bold: true, size: 20 }], { style: 'title' }))
   const meta = [`${l.number} ${doc.number}`, `${l.date}: ${opts.dateText(doc.date)}`]
   if (doc.city.trim()) meta.push(`${l.city}: ${doc.city.trim()}`)
   if (doc.kind === 'cotizacion' && doc.validUntil) meta.push(`${l.validUntil}: ${opts.dateText(doc.validUntil)}`)
+  if (doc.kind === 'cobro' && doc.dueDate) meta.push(`${l.dueDate ?? 'Due date'}: ${opts.dateText(doc.dueDate)}`)
   blocks.push(p(meta.join('   ·   ')))
   blocks.push(p(' '))
 
@@ -298,7 +321,8 @@ export function billingBlocks(doc: BillingDoc, l: BillingLabels, fmt: (n: number
     ],
   })
   const totalLine = (label: string, value: string, bold = false) => p([{ text: `${label}: `, bold }, { text: value, bold }], { align: 'right' })
-  if (t.tax || t.withholding) blocks.push(totalLine(l.subtotal, fmt(t.subtotal)))
+  if (t.tax || t.withholding || t.discount) blocks.push(totalLine(l.subtotal, fmt(t.subtotal)))
+  if (t.discount) blocks.push(totalLine(`${l.discount ?? 'Discount'} (${doc.discountRate} %)`, `-${fmt(t.discount)}`))
   if (t.tax) blocks.push(totalLine(`${doc.taxLabel.trim() || 'IVA'} (${doc.taxRate} %)`, fmt(t.tax)))
   // Guion común y no "−" (U+2212): las fuentes estándar del PDF no lo tienen y se borraría.
   if (t.withholding) blocks.push(totalLine(`${doc.withholdingLabel.trim() || l.withholding} (${doc.withholdingRate} %)`, `-${fmt(t.withholding)}`))
@@ -337,3 +361,80 @@ export function billingFileName(doc: BillingDoc, kindLabel: string): string {
   const num = doc.number.trim().replace(/[\\/:*?"<>|\s]+/g, '_')
   return `${[slug || 'documento', num].filter(Boolean).join('-')}.pdf`
 }
+
+/* ───────────── Historial, clientes y conceptos guardados (W-146.4) ───────────── */
+
+/**
+ * Un documento emitido, para verlo de nuevo o convertirlo (una cotización en cuenta de cobro o
+ * recibo). Los datos para el pago no se guardan nunca: son un dato financiero.
+ */
+export type HistoryEntry = { id: string; savedAt: string; doc: Omit<BillingDoc, 'payment'>; total: number }
+export type SavedItem = { description: string; price: number }
+
+const MAX_HISTORY = 50
+const MAX_CLIENTS = 30
+const MAX_ITEMS = 60
+
+const isObj = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object'
+const text = (v: unknown, max = 400) => (typeof v === 'string' ? v.slice(0, max) : '')
+const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
+const party = (v: unknown): Party => {
+  const o = isObj(v) ? v : {}
+  return { name: text(o.name, 120), idType: text(o.idType, 30), id: text(o.id, 60), address: text(o.address, 160), phone: text(o.phone, 40), email: text(o.email, 120) }
+}
+const parseList = (json: string | null): unknown[] => {
+  try {
+    const v = JSON.parse(json ?? '[]') as unknown
+    return Array.isArray(v) ? v : []
+  } catch {
+    return []
+  }
+}
+
+/** Lee el historial guardado (lo dañado o desconocido se descarta). */
+export function parseHistory(json: string | null): HistoryEntry[] {
+  return parseList(json)
+    .filter(isObj)
+    .flatMap((e): HistoryEntry[] => {
+      const d = isObj(e.doc) ? e.doc : null
+      if (!d || !DOC_KINDS.includes(d.kind as DocKind)) return []
+      const items = (Array.isArray(d.items) ? d.items : []).filter(isObj).slice(0, 200).map((i) => ({ description: text(i.description, 200), qty: num(i.qty), price: num(i.price) }))
+      const doc: Omit<BillingDoc, 'payment'> = {
+        kind: d.kind as DocKind, number: text(d.number, 30), date: text(d.date, 10), city: text(d.city, 60), validUntil: text(d.validUntil, 10), currency: text(d.currency, 3) || 'COP',
+        issuer: party(d.issuer), client: party(d.client), items, taxRate: num(d.taxRate), taxLabel: text(d.taxLabel, 20), withholdingRate: num(d.withholdingRate), withholdingLabel: text(d.withholdingLabel, 60),
+        notes: text(d.notes, 2000), discountRate: num(d.discountRate), dueDate: text(d.dueDate, 10),
+      }
+      return [{ id: text(e.id, 40) || `${doc.kind}-${doc.number}`, savedAt: text(e.savedAt, 30), doc, total: num(e.total) }]
+    })
+    .slice(0, MAX_HISTORY)
+}
+
+/** Agrega (o reemplaza, si es el mismo tipo y número) un documento al principio del historial. */
+export function addToHistory(list: readonly HistoryEntry[], doc: BillingDoc, savedAt: string): HistoryEntry[] {
+  const { payment: _payment, ...rest } = doc
+  const t = totals(doc.items, doc.taxRate, doc.withholdingRate, doc.currency, doc.discountRate ?? 0)
+  const id = `${doc.kind}-${doc.number}`
+  return [{ id, savedAt, doc: rest, total: t.total }, ...list.filter((e) => e.id !== id)].slice(0, MAX_HISTORY)
+}
+
+/** Una cotización (u otro documento) convertida en otro tipo: mismo cliente y conceptos, número y fecha nuevos. */
+export function convertDoc(entry: HistoryEntry, kind: DocKind, number: string, date: string): BillingDoc {
+  return { ...entry.doc, kind, number, date, validUntil: '', dueDate: '', payment: '' }
+}
+
+/** Clientes recordados: el más reciente primero, sin repetir (mismo nombre y documento). */
+export function rememberClient(list: readonly Party[], client: Party): Party[] {
+  if (!client.name.trim()) return [...list]
+  const key = (p: Party) => `${p.name.trim().toLowerCase()}|${p.id.trim()}`
+  return [client, ...list.filter((p) => key(p) !== key(client))].slice(0, MAX_CLIENTS)
+}
+export const parseClients = (json: string | null): Party[] => parseList(json).filter(isObj).map(party).filter((p) => p.name.trim()).slice(0, MAX_CLIENTS)
+
+/** Conceptos recordados con su último precio, para escribirlos más rápido. */
+export function rememberItems(list: readonly SavedItem[], items: readonly Item[]): SavedItem[] {
+  const fresh = items.filter((i) => i.description.trim()).map((i) => ({ description: i.description.trim(), price: i.price }))
+  const seen = new Set(fresh.map((i) => i.description.toLowerCase()))
+  return [...fresh, ...list.filter((i) => !seen.has(i.description.toLowerCase()))].slice(0, MAX_ITEMS)
+}
+export const parseItems = (json: string | null): SavedItem[] =>
+  parseList(json).filter(isObj).map((i) => ({ description: text(i.description, 200), price: num(i.price) })).filter((i) => i.description.trim()).slice(0, MAX_ITEMS)

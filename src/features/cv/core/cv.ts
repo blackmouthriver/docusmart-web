@@ -11,10 +11,27 @@ export type Study = { degree: string; school: string; place: string; start: stri
 export type Lang = { name: string; level: string }
 export type Course = { name: string; org: string; year: string }
 export type Reference = { name: string; relation: string; contact: string }
-export type CvTemplate = 'ats' | 'foto'
+/** `compacta`: letra y espacios más chicos, para que quepa más en una página (W-146.4). */
+export type CvTemplate = 'ats' | 'foto' | 'compacta'
+export type CvPaper = 'letter' | 'a4'
+export type CvFont = 'sans' | 'serif'
+/** Una sección propia (Proyectos, Voluntariado, Logros…): título y una línea por punto. */
+export type CustomSection = { title: string; body: string }
+/** Las secciones que se pueden ordenar; `custom` son todas las secciones propias, juntas. */
+export type SectionId = 'profile' | 'experience' | 'education' | 'skills' | 'languages' | 'courses' | 'references' | 'custom'
+export const DEFAULT_ORDER: readonly SectionId[] = ['profile', 'experience', 'education', 'skills', 'languages', 'courses', 'custom', 'references']
+/** Colores de acento (títulos de sección): sobrios y legibles impresos en blanco y negro. */
+export const CV_ACCENTS = ['1C1B1A', '1D4ED8', '0F766E', '9F1239', '6D28D9', 'B45309'] as const
 
 export type CvData = {
   template: CvTemplate
+  /** Tamaño de la hoja, igual en PDF y en Word. */
+  paper: CvPaper
+  /** Color de los títulos, "RRGGBB". */
+  accent: string
+  font: CvFont
+  order: SectionId[]
+  custom: CustomSection[]
   name: string
   headline: string
   city: string
@@ -36,8 +53,30 @@ export const emptyLang = (): Lang => ({ name: '', level: '' })
 export const emptyCourse = (): Course => ({ name: '', org: '', year: '' })
 export const emptyReference = (): Reference => ({ name: '', relation: '', contact: '' })
 
-export const emptyCv = (): CvData => ({
+/** Países que usan la hoja Carta (el resto del mundo usa A4). */
+const LETTER_REGIONS = new Set(['US', 'CA', 'MX', 'CO', 'VE', 'CL', 'PH', 'GT', 'CR', 'PA', 'DO', 'PR', 'SV', 'HN', 'NI'])
+
+/** Carta o A4 según el país del navegador ("es-CO" → Carta, "es-ES" → A4). */
+export function defaultPaper(locales: readonly string[]): CvPaper {
+  for (const l of locales) {
+    const region = l.split('-')[1]?.toUpperCase()
+    if (region) return LETTER_REGIONS.has(region) ? 'letter' : 'a4'
+  }
+  return 'a4'
+}
+
+/** Tamaño en puntos. */
+export const paperSize = (paper: CvPaper): [number, number] => (paper === 'letter' ? [612, 792] : [595.28, 841.89])
+
+export const emptyCustom = (): CustomSection => ({ title: '', body: '' })
+
+export const emptyCv = (paper: CvPaper = 'a4'): CvData => ({
   template: 'ats',
+  paper,
+  accent: CV_ACCENTS[0],
+  font: 'sans',
+  order: [...DEFAULT_ORDER],
+  custom: [],
   name: '',
   headline: '',
   city: '',
@@ -58,7 +97,16 @@ const filled = (o: object) => Object.values(o).some((v) => typeof v === 'string'
 /** ¿Tiene algo escrito? (para avisar antes de salir y para habilitar los botones). */
 export const hasContent = (d: CvData) =>
   [d.name, d.headline, d.city, d.phone, d.email, d.links, d.summary, d.skills].some((v) => v.trim()) ||
-  [...d.experience, ...d.education, ...d.languages, ...d.courses, ...d.references].some(filled)
+  [...d.experience, ...d.education, ...d.languages, ...d.courses, ...d.references, ...d.custom].some(filled)
+
+/** El orden guardado, completado con las secciones que falten y sin repetidas ni desconocidas. */
+export function normalizeOrder(order: unknown): SectionId[] {
+  const known = new Set<string>(DEFAULT_ORDER)
+  const out = (Array.isArray(order) ? order : []).filter((s): s is SectionId => typeof s === 'string' && known.has(s))
+  const unique = [...new Set(out)]
+  for (const s of DEFAULT_ORDER) if (!unique.includes(s)) unique.push(s)
+  return unique
+}
 
 /* ───────────── Borrador (.json) ───────────── */
 
@@ -79,8 +127,14 @@ export function parseDraft(text: string): CvData | null {
   const r = raw as { app?: unknown; cv?: unknown }
   if (!r || r.app !== 'docusmart-cv' || !r.cv || typeof r.cv !== 'object') return null
   const c = r.cv as Record<string, unknown>
+  const accent = str(c.accent, 6).toUpperCase()
   return {
-    template: c.template === 'foto' ? 'foto' : 'ats',
+    template: c.template === 'foto' || c.template === 'compacta' ? c.template : 'ats',
+    paper: c.paper === 'letter' ? 'letter' : 'a4',
+    accent: /^[0-9A-F]{6}$/.test(accent) ? accent : CV_ACCENTS[0],
+    font: c.font === 'serif' ? 'serif' : 'sans',
+    order: normalizeOrder(c.order),
+    custom: list(c.custom, (x) => ({ title: str(x.title, 80), body: str(x.body) }), 10),
     name: str(c.name, 120),
     headline: str(c.headline, 160),
     city: str(c.city, 120),
@@ -147,54 +201,85 @@ export function cvPieces(d: CvData, l: CvLabels): Piece[] {
   const contact = contactLine(d)
   if (contact) out.push({ kind: 'contact', text: contact })
 
-  if (d.summary.trim()) {
-    out.push({ kind: 'section', text: l.profile })
-    for (const p of d.summary.trim().split(/\n+/)) out.push({ kind: 'text', text: p.trim() })
+  // Cada sección, en el orden que eligió la persona (W-146.4).
+  const sections: Record<SectionId, () => void> = {
+    profile: () => {
+      if (!d.summary.trim()) return
+      out.push({ kind: 'section', text: l.profile })
+      for (const p of d.summary.trim().split(/\n+/)) out.push({ kind: 'text', text: p.trim() })
+    },
+    experience: () => {
+      const jobs = d.experience.filter(filled)
+      if (!jobs.length) return
+      out.push({ kind: 'section', text: l.experience })
+      for (const j of jobs) {
+        out.push({ kind: 'entry', title: j.role.trim(), subtitle: [j.company, j.place].map((s) => s.trim()).filter(Boolean).join(', '), when: period(j.start, j.end, j.current, l.present) })
+        for (const line of detailLines(j.details)) out.push({ kind: 'bullet', text: line })
+      }
+    },
+    education: () => {
+      const studies = d.education.filter(filled)
+      if (!studies.length) return
+      out.push({ kind: 'section', text: l.education })
+      for (const s of studies) out.push({ kind: 'entry', title: s.degree.trim(), subtitle: [s.school, s.place].map((x) => x.trim()).filter(Boolean).join(', '), when: period(s.start, s.end, false, l.present) })
+    },
+    skills: () => {
+      const skills = skillList(d.skills)
+      if (!skills.length) return
+      out.push({ kind: 'section', text: l.skills })
+      out.push({ kind: 'text', text: skills.join(' · ') })
+    },
+    languages: () => {
+      const langs = d.languages.filter(filled)
+      if (!langs.length) return
+      out.push({ kind: 'section', text: l.languages })
+      for (const x of langs) out.push({ kind: 'bullet', text: [x.name.trim(), x.level.trim()].filter(Boolean).join(': ') })
+    },
+    courses: () => {
+      const courses = d.courses.filter(filled)
+      if (!courses.length) return
+      out.push({ kind: 'section', text: l.courses })
+      for (const c of courses) out.push({ kind: 'bullet', text: [c.name.trim(), c.org.trim(), c.year.trim()].filter(Boolean).join(' — ') })
+    },
+    references: () => {
+      const refs = d.references.filter(filled)
+      if (!refs.length) return
+      out.push({ kind: 'section', text: l.references })
+      for (const r of refs) out.push({ kind: 'bullet', text: [r.name.trim(), r.relation.trim(), r.contact.trim()].filter(Boolean).join(' — ') })
+    },
+    custom: () => {
+      for (const c of d.custom) {
+        const lines = detailLines(c.body)
+        if (!c.title.trim() && !lines.length) continue
+        out.push({ kind: 'section', text: c.title.trim() || '—' })
+        for (const line of lines) out.push({ kind: 'bullet', text: line })
+      }
+    },
   }
-  const jobs = d.experience.filter(filled)
-  if (jobs.length) {
-    out.push({ kind: 'section', text: l.experience })
-    for (const j of jobs) {
-      out.push({ kind: 'entry', title: j.role.trim(), subtitle: [j.company, j.place].map((s) => s.trim()).filter(Boolean).join(', '), when: period(j.start, j.end, j.current, l.present) })
-      for (const line of detailLines(j.details)) out.push({ kind: 'bullet', text: line })
-    }
-  }
-  const studies = d.education.filter(filled)
-  if (studies.length) {
-    out.push({ kind: 'section', text: l.education })
-    for (const s of studies) out.push({ kind: 'entry', title: s.degree.trim(), subtitle: [s.school, s.place].map((x) => x.trim()).filter(Boolean).join(', '), when: period(s.start, s.end, false, l.present) })
-  }
-  const skills = skillList(d.skills)
-  if (skills.length) {
-    out.push({ kind: 'section', text: l.skills })
-    out.push({ kind: 'text', text: skills.join(' · ') })
-  }
-  const langs = d.languages.filter(filled)
-  if (langs.length) {
-    out.push({ kind: 'section', text: l.languages })
-    for (const x of langs) out.push({ kind: 'bullet', text: [x.name.trim(), x.level.trim()].filter(Boolean).join(': ') })
-  }
-  const courses = d.courses.filter(filled)
-  if (courses.length) {
-    out.push({ kind: 'section', text: l.courses })
-    for (const c of courses) out.push({ kind: 'bullet', text: [c.name.trim(), c.org.trim(), c.year.trim()].filter(Boolean).join(' — ') })
-  }
-  const refs = d.references.filter(filled)
-  if (refs.length) {
-    out.push({ kind: 'section', text: l.references })
-    for (const r of refs) out.push({ kind: 'bullet', text: [r.name.trim(), r.relation.trim(), r.contact.trim()].filter(Boolean).join(' — ') })
-  }
+  for (const id of normalizeOrder(d.order)) sections[id]()
   return out
 }
 
 export type CvPhoto = { data: Uint8Array; width: number; height: number }
 
-const ACCENT_SIZE = { name: 22, headline: 12, section: 12.5, body: 10.5 }
+/** Tamaños de letra de cada plantilla: la compacta es más chica para que quepa más. */
+export function cvSizes(template: CvTemplate) {
+  return template === 'compacta' ? { name: 18, headline: 11, section: 11, body: 9.5, small: 8.5 } : { name: 22, headline: 12, section: 12.5, body: 10.5, small: 9.5 }
+}
+
+/** Márgenes: 2 cm (1,5 cm en la compacta). */
+export const cvMargin = (template: CvTemplate) => (template === 'compacta' ? 43 : 57)
+
+/** Opciones del generador de PDF para la hoja de vida: tamaño de hoja, márgenes, letra y tamaño base. */
+export const cvLayoutOptions = (d: CvData) => ({ pageSize: paperSize(d.paper), margin: cvMargin(d.template), family: d.font, baseSize: cvSizes(d.template).body })
 
 /** Bloques para el generador de PDF (una sola columna; con foto, arriba y centrada). */
 export function cvPdfBlocks(d: CvData, l: CvLabels, photo?: CvPhoto): OBlock[] {
   const p = (runs: ORun[], extra: Partial<OPara> = {}): OPara => ({ kind: 'para', runs, ...extra })
   const blocks: OBlock[] = []
+  const ACCENT_SIZE = cvSizes(d.template)
+  const accent = d.accent || CV_ACCENTS[0]
+  const tight = d.template === 'compacta'
   if (photo && d.template === 'foto') {
     // Foto tipo documento: unos 3 × 4 cm.
     const k = Math.min(85 / photo.width, 113 / photo.height)
@@ -202,12 +287,14 @@ export function cvPdfBlocks(d: CvData, l: CvLabels, photo?: CvPhoto): OBlock[] {
   }
   const center = photo && d.template === 'foto' ? { align: 'center' as const } : {}
   for (const piece of cvPieces(d, l)) {
-    if (piece.kind === 'name') blocks.push(p([{ text: piece.text, bold: true, size: ACCENT_SIZE.name }], { style: 'title', ...center }))
+    if (piece.kind === 'name') blocks.push(p([{ text: piece.text, bold: true, size: ACCENT_SIZE.name, color: accent }], { style: 'title', ...center }))
     else if (piece.kind === 'headline') blocks.push(p([{ text: piece.text, size: ACCENT_SIZE.headline }], center))
-    else if (piece.kind === 'contact') blocks.push(p([{ text: piece.text, size: 9.5 }], center))
-    else if (piece.kind === 'section') blocks.push(p([{ text: ' ' }]), p([{ text: piece.text.toUpperCase(), bold: true, size: ACCENT_SIZE.section }], { style: 'h2' }))
-    else if (piece.kind === 'entry') {
-      blocks.push(p([{ text: piece.title || piece.subtitle, bold: true }, ...(piece.when ? [{ text: `   ${piece.when}`, size: 9.5 }] : [])]))
+    else if (piece.kind === 'contact') blocks.push(p([{ text: piece.text, size: ACCENT_SIZE.small }], center))
+    else if (piece.kind === 'section') {
+      if (!tight) blocks.push(p([{ text: ' ' }]))
+      blocks.push(p([{ text: piece.text.toUpperCase(), bold: true, size: ACCENT_SIZE.section, color: accent }], { style: 'h2', keepNext: true, ...(tight && { spaceBefore: 8 }) }))
+    } else if (piece.kind === 'entry') {
+      blocks.push(p([{ text: piece.title || piece.subtitle, bold: true }, ...(piece.when ? [{ text: `   ${piece.when}`, size: ACCENT_SIZE.small }] : [])], { keepNext: true }))
       if (piece.title && piece.subtitle) blocks.push(p([{ text: piece.subtitle, italic: true }]))
     } else if (piece.kind === 'text') blocks.push(p([{ text: piece.text }]))
     else if (piece.kind === 'bullet') blocks.push(p([{ text: piece.text }], { list: { ordered: false, level: 0, index: 0 } }))
@@ -217,7 +304,10 @@ export function cvPdfBlocks(d: CvData, l: CvLabels, photo?: CvPhoto): OBlock[] {
 
 /** El mismo contenido como documento de Word (títulos con estilo, viñetas reales y la foto en PNG). */
 export function cvWordDoc(d: CvData, l: CvLabels, photo?: CvPhoto): WordDoc {
-  const run = (text: string, extra: Partial<WRun> = {}): WRun => ({ text, bold: false, italic: false, size: ACCENT_SIZE.body, family: 'sans', ...extra })
+  const ACCENT_SIZE = cvSizes(d.template)
+  const accent = d.accent || CV_ACCENTS[0]
+  const family = d.font
+  const run = (text: string, extra: Partial<WRun> = {}): WRun => ({ text, bold: false, italic: false, size: ACCENT_SIZE.body, family, ...extra })
   const para = (runs: WRun[], extra: Partial<Extract<WBlock, { kind: 'para' }>> = {}): WBlock => ({ kind: 'para', runs, align: 'left', heading: 0, bullet: false, indent: 0, ...extra })
   const blocks: WBlock[] = []
   const withPhoto = !!photo && d.template === 'foto'
@@ -227,18 +317,20 @@ export function cvWordDoc(d: CvData, l: CvLabels, photo?: CvPhoto): WordDoc {
   }
   const align = withPhoto ? 'center' : 'left'
   for (const piece of cvPieces(d, l)) {
-    if (piece.kind === 'name') blocks.push(para([run(piece.text, { bold: true, size: ACCENT_SIZE.name })], { heading: 1, align }))
+    if (piece.kind === 'name') blocks.push(para([run(piece.text, { bold: true, size: ACCENT_SIZE.name, color: accent })], { heading: 1, align }))
     else if (piece.kind === 'headline') blocks.push(para([run(piece.text, { size: ACCENT_SIZE.headline })], { align }))
-    else if (piece.kind === 'contact') blocks.push(para([run(piece.text, { size: 9.5 })], { align }))
-    else if (piece.kind === 'section') blocks.push(para([run(piece.text.toUpperCase(), { bold: true, size: ACCENT_SIZE.section })], { heading: 2 }))
+    else if (piece.kind === 'contact') blocks.push(para([run(piece.text, { size: ACCENT_SIZE.small })], { align }))
+    else if (piece.kind === 'section') blocks.push(para([run(piece.text.toUpperCase(), { bold: true, size: ACCENT_SIZE.section, color: accent })], { heading: 2 }))
     else if (piece.kind === 'entry') {
-      blocks.push(para([run(piece.title || piece.subtitle, { bold: true }), ...(piece.when ? [run(`   ${piece.when}`, { size: 9.5 })] : [])]))
+      blocks.push(para([run(piece.title || piece.subtitle, { bold: true }), ...(piece.when ? [run(`   ${piece.when}`, { size: ACCENT_SIZE.small })] : [])]))
       if (piece.title && piece.subtitle) blocks.push(para([run(piece.subtitle, { italic: true })]))
     } else if (piece.kind === 'text') blocks.push(para([run(piece.text)]))
     else if (piece.kind === 'bullet') blocks.push(para([run(piece.text)], { bullet: true }))
   }
-  // Carta (Letter) en América; márgenes de 2 cm.
-  return { blocks, page: { width: 612, height: 792 }, margins: { top: 57, right: 57, bottom: 57, left: 57 }, bodySize: ACCENT_SIZE.body, bodyFamily: 'sans', bodyFont: 'Calibri' }
+  // Mismo tamaño de hoja y márgenes que el PDF.
+  const [width, height] = paperSize(d.paper)
+  const m = cvMargin(d.template)
+  return { blocks, page: { width, height }, margins: { top: m, right: m, bottom: m, left: m }, bodySize: ACCENT_SIZE.body, bodyFamily: family, bodyFont: family === 'serif' ? 'Georgia' : 'Calibri' }
 }
 
 /** "hoja-de-vida-ana-maria-perez" (sin tildes ni símbolos). */
