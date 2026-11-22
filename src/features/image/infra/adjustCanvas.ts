@@ -1,7 +1,7 @@
 // Dibujo de "Ajustar imagen" (W-125): enderezar con recorte y ajustes de color. Excluido de la
 // cobertura como los demás archivos que usan canvas; los cálculos están en core/adjust.ts.
 import { canvasToBlob } from '../../../shared/pdf/pdf'
-import { NEUTRAL, applyAdjustments, straightenSize, type Adjustments } from '../core/adjust'
+import { NEUTRAL, applyAdjustments, applyLevels, autoLevels, changesPixels, sharpen, straightenSize, type Adjustments } from '../core/adjust'
 import type { OutputMime } from '../core/imageTools'
 import { loadImage } from './imageCanvas'
 
@@ -22,9 +22,11 @@ function paint(canvas: HTMLCanvasElement, bmp: ImageBitmap, a: Adjustments, back
   ctx.rotate((a.angle * Math.PI) / 180)
   ctx.drawImage(bmp, -bmp.width / 2, -bmp.height / 2)
   ctx.restore()
-  if (a.brightness || a.contrast || a.saturation || a.grayscale) {
+  if (changesPixels(a)) {
     const px = ctx.getImageData(0, 0, size.width, size.height)
+    if (a.auto) applyLevels(px.data, autoLevels(px.data))
     applyAdjustments(px.data, a)
+    if (a.sharpen) sharpen(px.data, size.width, size.height, a.sharpen)
     ctx.putImageData(px, 0, 0)
   }
   return size

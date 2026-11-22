@@ -10,7 +10,6 @@ import {
   marginsToRect,
   outputMime,
   outputName,
-  planCompression,
   rectToMargins,
   rotateBy,
   rotatedSize,
@@ -62,12 +61,6 @@ describe('fitSize', () => {
 })
 
 describe('comprimir', () => {
-  it('elige formato según la transparencia y calidad según el nivel', () => {
-    expect(planCompression('baja', false)).toEqual({ mime: 'image/jpeg', quality: 0.86, maxSide: MAX_SIDE })
-    expect(planCompression('media', true)).toEqual({ mime: 'image/webp', quality: 0.74, maxSide: 2560 })
-    expect(planCompression('alta', false)).toMatchObject({ quality: 0.6, maxSide: 1600 })
-  })
-
   it('limita el lado sin agrandar', () => {
     expect(capSize(4000, 3000, 1600)).toEqual({ width: 1600, height: 1200 })
     expect(capSize(800, 600, 1600)).toEqual({ width: 800, height: 600 })

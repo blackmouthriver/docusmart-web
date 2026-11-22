@@ -18,16 +18,16 @@ import {
   marginsToRect,
   outputMime,
   outputName,
-  planCompression,
   rectToMargins,
   rotateBy,
   rotatedSize,
   savedPercent,
   type AspectName,
-  type CompressLevel,
   type ResizeSpec,
   type Transform,
 } from '../core/imageTools'
+import type { CompressFormat, CompressMode } from '../core/imageCompress'
+import { RESIZE_PRESETS as RESIZE_PRESET_LIST, type ResizePresetId } from '../core/imageMeta'
 import { MODEL as BG_MODEL, backgroundOutputName, parseBackground } from '../core/background'
 import { looksSpecial } from '../../convert/core/formats'
 import { WATERMARK_POSITIONS, clampPercent, type WatermarkPosition } from '../core/watermark'
@@ -290,35 +290,87 @@ function Panel({ children }: { children: ReactNode }) {
 
 function CompressImageTool() {
   const b = useBatch('compress')
-  const [level, setLevel] = useState<CompressLevel>('media')
-  const run = () =>
-    b.run(async (file) => {
-      const { loadImage, hasAlpha, renderImage } = await import('../infra/imageCanvas')
-      const img = await loadImage(file)
-      try {
-        const plan = planCompression(level, hasAlpha(img.bmp))
-        const size = capSize(img.width, img.height, plan.maxSide)
-        const blob = await renderImage(img, { ...size, mime: plan.mime, quality: plan.quality })
-        // Si no se gana nada, se devuelve la original.
-        // Un HEIC, SVG o TIFF siempre se convierte: devolverlo tal cual no le sirve a quien no puede abrirlo.
-        if (blob.size >= file.size && !looksSpecial(file.name, file.type)) return { name: outputName(file.name, tr('file.imgOptimized'), outputMime(file.type)), blob: file, width: img.width, height: img.height }
-        return { name: outputName(file.name, tr('file.imgCompressed'), plan.mime), blob, ...size }
-      } finally {
-        img.bmp.close()
-      }
-    })
+  const [level, setLevel] = useState<CompressMode>('media')
+  const [quality, setQuality] = useState(80)
+  const [format, setFormat] = useState<CompressFormat>('same')
+  /** Tamaño máximo en KB: '' sin límite, 'other' escrito a mano (W-146.8). */
+  const [limit, setLimit] = useState<string>('')
+  const [otherKb, setOtherKb] = useState('300')
+  const [missed, setMissed] = useState<string[]>([])
+  const targetKb = limit === 'other' ? Math.max(5, Number(otherKb) || 0) : Number(limit) || 0
+  const reset = <T,>(set: (v: T) => void) => (v: T) => {
+    set(v)
+    b.setResults(null)
+  }
+  const run = () => {
+    const notFit: string[] = []
+    void b
+      .run(async (file) => {
+        const [{ loadImage, hasAlpha, encodeCompressed }, { compressPlan, fitToSize }] = await Promise.all([import('../infra/imageCanvas'), import('../core/imageCompress')])
+        const img = await loadImage(file)
+        try {
+          const plan = compressPlan(level, format, file.type, hasAlpha(img.bmp), quality / 100)
+          const base = capSize(img.width, img.height, plan.maxSide)
+          const sized = (scale: number) => ({ width: Math.max(1, Math.round(base.width * scale)), height: Math.max(1, Math.round(base.height * scale)) })
+          const sameFormat = plan.mime === outputMime(file.type, file.name) && !looksSpecial(file.name, file.type)
+          // Ya entra en el tamaño pedido y no cambia de formato: la original tal cual.
+          if (targetKb && sameFormat && file.size <= targetKb * 1024) return { name: outputName(file.name, tr('file.imgOptimized'), plan.mime), blob: file, width: img.width, height: img.height }
+          let blob: Blob
+          let size = base
+          if (targetKb) {
+            const r = await fitToSize((q, scale) => encodeCompressed(img, sized(scale).width, sized(scale).height, plan, q), targetKb * 1024, { lossy: plan.mime !== 'image/png', maxQuality: plan.quality })
+            blob = r.blob
+            size = sized(r.scale)
+            if (!r.fits) notFit.push(file.name)
+          } else blob = await encodeCompressed(img, base.width, base.height, plan, plan.quality)
+          // Si no se gana nada, se devuelve la original (un HEIC, SVG o TIFF siempre se convierte:
+          // devolverlo tal cual no le sirve a quien no puede abrirlo).
+          if (!targetKb && sameFormat && blob.size >= file.size) return { name: outputName(file.name, tr('file.imgOptimized'), plan.mime), blob: file, width: img.width, height: img.height }
+          return { name: outputName(file.name, tr('file.imgCompressed'), plan.mime), blob, ...size }
+        } finally {
+          img.bmp.close()
+        }
+      })
+      .then(() => setMissed(notFit))
+  }
   return (
     <div className="stack">
       <Panel>
         {b.picker()}
         <div className="field">
           <span>{tr('imgt.level')}</span>
-          <Segmented label={tr('imgt.levelShort')} value={level} onChange={(v) => { setLevel(v); b.setResults(null) }} options={[{ value: 'baja', label: tr('imgt.low') }, { value: 'media', label: tr('imgt.recommended') }, { value: 'alta', label: tr('imgt.max') }]} />
-          <small className="faint">
-            {level === 'baja' ? tr('imgt.lowHint') : level === 'media' ? tr('imgt.midHint') : tr('imgt.maxHint')}
-          </small>
+          <Segmented label={tr('imgt.levelShort')} value={level} onChange={reset(setLevel)} options={[{ value: 'baja', label: tr('imgt.low') }, { value: 'media', label: tr('imgt.recommended') }, { value: 'alta', label: tr('imgt.max') }, { value: 'custom', label: tr('imgt.custom') }]} />
+          {level === 'custom' ? (
+            <label className="field">
+              <span>{tr('imgt.quality', { n: quality })}</span>
+              <input type="range" min={10} max={100} step={5} value={quality} onChange={(e) => reset(setQuality)(Number(e.target.value))} />
+            </label>
+          ) : (
+            <small className="faint">{level === 'baja' ? tr('imgt.lowHint') : level === 'media' ? tr('imgt.midHint') : tr('imgt.maxHint')}</small>
+          )}
         </div>
-        <small className="faint">{tr('imgt.compressNote')} {tr('imgt.privacy')}</small>
+        <div className="field">
+          <span aria-hidden="true">{tr('imgt.format')}</span>
+          <Segmented label={tr('imgt.format')} value={format} onChange={reset(setFormat)} options={[{ value: 'same', label: tr('imgt.formatSame') }, { value: 'jpg', label: 'JPG' }, { value: 'webp', label: 'WebP' }]} />
+        </div>
+        <div className="field">
+          <span aria-hidden="true">{tr('imgt.maxSize')}</span>
+          <Segmented
+            label={tr('imgt.maxSize')}
+            value={limit}
+            onChange={reset(setLimit)}
+            options={[{ value: '', label: tr('imgt.noLimit') }, ...['50', '100', '200', '500', '1000'].map((kb) => ({ value: kb, label: kb === '1000' ? '1 MB' : `${kb} KB` })), { value: 'other', label: tr('imgt.otherSize') }]}
+          />
+          {limit === 'other' && (
+            <label className="field">
+              <span>{tr('imgt.sizeKb')}</span>
+              <input className="input" type="number" min={5} max={50000} inputMode="numeric" value={otherKb} onChange={(e) => reset(setOtherKb)(e.target.value)} />
+            </label>
+          )}
+          {targetKb > 0 && <small className="faint">{tr('imgt.maxSizeHint')}</small>}
+        </div>
+        <small className="faint">{tr('imgt.compressNote2')} {tr('imgt.privacy')}</small>
+        {missed.length > 0 && b.results && <Notice kind="info">{tr('imgt.notFit', { size: targetKb >= 1000 ? `${targetKb / 1000} MB` : `${targetKb} KB`, names: missed.join(', ') })}</Notice>}
         {b.busy && <Progress value={b.progress} />}
         <div className="row row-end">
           <BusyButton busy={b.busy} disabled={!b.files.length} onClick={run} icon="compress">
@@ -335,21 +387,42 @@ function CompressImageTool() {
 
 function ResizeImageTool() {
   const b = useBatch('resize')
-  const [mode, setMode] = useState<'percent' | 'pixels'>('percent')
+  /** Por porcentaje, pixeles, medidas listas de redes o centímetros a una resolución (W-146.8). */
+  const [mode, setMode] = useState<'percent' | 'pixels' | 'preset' | 'cm'>('percent')
   const [percent, setPercent] = useState(50)
   const [width, setWidth] = useState('')
   const [height, setHeight] = useState('')
   const [keepRatio, setKeepRatio] = useState(true)
-  const spec: ResizeSpec = mode === 'percent' ? { mode, percent } : { mode, width: Number(width) || null, height: Number(height) || null, keepRatio }
-  const valid = mode === 'percent' || !!(Number(width) || Number(height))
+  const [preset, setPreset] = useState<ResizePresetId>('igSquare')
+  const [dpi, setDpi] = useState(300)
+  const num = (v: string) => Number(v.replace(',', '.')) || 0
+  const valid = mode === 'percent' || mode === 'preset' || !!(num(width) || num(height))
   const run = () =>
     b.run(async (file) => {
-      const { loadImage, renderImage } = await import('../infra/imageCanvas')
+      const [{ loadImage, renderImage }, meta] = await Promise.all([import('../infra/imageCanvas'), import('../core/imageMeta')])
       const img = await loadImage(file)
       try {
-        const size = fitSize(img.width, img.height, spec)
         const mime = outputMime(file.type, file.name)
-        return { name: outputName(file.name, `${size.width}x${size.height}`, mime), blob: await renderImage(img, { ...size, mime, quality: 0.92 }), ...size }
+        let crop: { x: number; y: number; width: number; height: number } | undefined
+        let size: { width: number; height: number }
+        if (mode === 'preset') {
+          const p = meta.RESIZE_PRESETS.find((x) => x.id === preset)!
+          crop = meta.coverCrop(img.width, img.height, p.w, p.h)
+          size = { width: p.w, height: p.h }
+        } else {
+          const spec: ResizeSpec =
+            mode === 'percent'
+              ? { mode, percent }
+              : mode === 'cm'
+                ? { mode: 'pixels', width: num(width) ? meta.cmToPx(num(width), dpi) : null, height: num(height) ? meta.cmToPx(num(height), dpi) : null, keepRatio }
+                : { mode, width: num(width) || null, height: num(height) || null, keepRatio }
+          size = fitSize(img.width, img.height, spec)
+        }
+        let blob = await renderImage(img, { crop, ...size, mime, quality: 0.92 })
+        // La resolución: la elegida en centímetros; si no, la que traía la imagen (para imprimirla igual).
+        const source = mode === 'cm' ? dpi : meta.readDpi(new Uint8Array(await file.slice(0, 65536).arrayBuffer()))
+        if (source) blob = new Blob([meta.writeDpi(new Uint8Array(await blob.arrayBuffer()), source) as Uint8Array<ArrayBuffer>], { type: mime })
+        return { name: outputName(file.name, `${size.width}x${size.height}`, mime), blob, ...size }
       } finally {
         img.bmp.close()
       }
@@ -358,24 +431,47 @@ function ResizeImageTool() {
     <div className="stack">
       <Panel>
         {b.picker()}
-        <Segmented label={tr('imgt.howResize')} value={mode} onChange={(v) => { setMode(v); b.setResults(null) }} options={[{ value: 'percent', label: tr('imgt.byPercent') }, { value: 'pixels', label: tr('imgt.byPixels') }]} />
-        {mode === 'percent' ? (
+        <Segmented
+          label={tr('imgt.howResize')}
+          value={mode}
+          onChange={(v) => { setMode(v); b.setResults(null) }}
+          options={[{ value: 'percent', label: tr('imgt.byPercent') }, { value: 'pixels', label: tr('imgt.byPixels') }, { value: 'preset', label: tr('imgt.byPreset') }, { value: 'cm', label: tr('imgt.byCm') }]}
+        />
+        {mode === 'percent' && (
           <label className="field">
             <span>{tr('imgt.sizePct', { n: percent })}</span>
             <input type="range" min={5} max={200} step={5} value={percent} onChange={(e) => setPercent(Number(e.target.value))} />
           </label>
-        ) : (
+        )}
+        {mode === 'preset' && (
+          <label className="field">
+            <span>{tr('imgt.preset')}</span>
+            <select className="input" value={preset} onChange={(e) => { setPreset(e.target.value as ResizePresetId); b.setResults(null) }}>
+              {RESIZE_PRESET_LIST.map((p) => (
+                <option key={p.id} value={p.id}>{`${tr(`imgt.preset.${p.id}` as MessageKey)} · ${p.w} × ${p.h}`}</option>
+              ))}
+            </select>
+            <small className="faint">{tr('imgt.presetHint')}</small>
+          </label>
+        )}
+        {(mode === 'pixels' || mode === 'cm') && (
           <>
             <div className="row">
               <label className="field" style={{ flex: 1, minWidth: 120 }}>
-                <span>{tr('imgt.width')}</span>
-                <input className="input" type="number" min={1} max={16384} inputMode="numeric" value={width} placeholder={tr('imgt.eg')} onChange={(e) => setWidth(e.target.value)} />
+                <span>{mode === 'cm' ? tr('imgt.widthCm') : tr('imgt.width')}</span>
+                <input className="input" type="number" min={mode === 'cm' ? 0.5 : 1} max={16384} step={mode === 'cm' ? 0.1 : 1} inputMode="decimal" value={width} placeholder={tr('imgt.eg')} onChange={(e) => setWidth(e.target.value)} />
               </label>
               <label className="field" style={{ flex: 1, minWidth: 120 }}>
-                <span>{tr('imgt.height')}</span>
-                <input className="input" type="number" min={1} max={16384} inputMode="numeric" value={height} placeholder={keepRatio ? tr('imgt.auto') : tr('imgt.eg')} onChange={(e) => setHeight(e.target.value)} />
+                <span>{mode === 'cm' ? tr('imgt.heightCm') : tr('imgt.height')}</span>
+                <input className="input" type="number" min={mode === 'cm' ? 0.5 : 1} max={16384} step={mode === 'cm' ? 0.1 : 1} inputMode="decimal" value={height} placeholder={keepRatio ? tr('imgt.auto') : tr('imgt.eg')} onChange={(e) => setHeight(e.target.value)} />
               </label>
             </div>
+            {mode === 'cm' && (
+              <div className="field">
+                <span aria-hidden="true">{tr('imgt.dpi')}</span>
+                <Segmented label={tr('imgt.dpi')} value={String(dpi)} onChange={(v: string) => { setDpi(Number(v)); b.setResults(null) }} options={[{ value: '150', label: '150 ppp' }, { value: '300', label: '300 ppp' }, { value: '600', label: '600 ppp' }]} />
+              </div>
+            )}
             <label className="check">
               <input type="checkbox" checked={keepRatio} onChange={(e) => setKeepRatio(e.target.checked)} />
               <span>{tr('imgt.keepRatio')}</span>
@@ -406,13 +502,26 @@ function RotateImageTool() {
     setT(fn)
     b.setResults(null)
   }
+  /** Girar un JPG sin volver a comprimirlo: solo cambia la orientación guardada (W-146.8). */
+  const [lossless, setLossless] = useState(false)
+  const anyJpeg = b.files.some((f) => f.type === 'image/jpeg' || /\.jpe?g$/i.test(f.name))
   const run = () =>
     b.run(async (file) => {
       const { loadImage, renderImage } = await import('../infra/imageCanvas')
       const img = await loadImage(file)
       try {
         const mime = outputMime(file.type, file.name)
-        return { name: outputName(file.name, tr('file.imgRotated'), mime), blob: await renderImage(img, { transform: t, mime, quality: 0.92 }), ...rotatedSize(img.width, img.height, t) }
+        const size = rotatedSize(img.width, img.height, t)
+        if (lossless && mime === 'image/jpeg') {
+          const [{ jpegInfo }, { composeOrientation, jpegWithOrientation }] = await Promise.all([import('../../convert/core/imagePdf'), import('../core/imageMeta')])
+          const bytes = new Uint8Array(await file.arrayBuffer())
+          const info = jpegInfo(bytes)
+          if (info) {
+            const out = jpegWithOrientation(bytes, composeOrientation(info.orientation, t))
+            return { name: outputName(file.name, tr('file.imgRotated'), mime), blob: new Blob([out as Uint8Array<ArrayBuffer>], { type: mime }), ...size }
+          }
+        }
+        return { name: outputName(file.name, tr('file.imgRotated'), mime), blob: await renderImage(img, { transform: t, mime, quality: 0.92 }), ...size }
       } finally {
         img.bmp.close()
       }
@@ -434,6 +543,13 @@ function RotateImageTool() {
           <button type="button" className="btn btn-soft btn-sm" aria-pressed={t.flipV} onClick={() => change((p) => ({ ...p, flipV: !p.flipV }))}><span className="icon-turn"><Icon name="flip" /></span> {tr('imgt.vertical')}</button>
         </div>
         {b.files.length > 1 && <small className="faint" style={{ textAlign: 'center' }}>{tr('imgt.sameTurn', { n: b.files.length })}</small>}
+        {anyJpeg && (
+          <label className="check">
+            <input type="checkbox" checked={lossless} onChange={(e) => { setLossless(e.target.checked); b.setResults(null) }} />
+            <span>{tr('imgt.lossless')}</span>
+          </label>
+        )}
+        {anyJpeg && lossless && <small className="faint">{tr('imgt.losslessHint')}</small>}
         <small className="faint">{tr('imgt.privacy')}</small>
         {b.busy && <Progress value={b.progress} />}
         <div className="row row-end">
@@ -1018,7 +1134,17 @@ function AdjustImageTool() {
             <input type="range" min={-MAX_ANGLE} max={MAX_ANGLE} step={0.5} value={adj.angle} onChange={(e) => set({ angle: clampAdjust(Number(e.target.value), MAX_ANGLE) })} />
           </label>
         </div>
+        <div className="row">
+          <label className="field" style={{ flex: 1, minWidth: 160 }}>
+            <span>{tr('adj.sharpen', { n: adj.sharpen })}</span>
+            <input type="range" min={0} max={100} step={5} value={adj.sharpen} onChange={(e) => set({ sharpen: Math.min(100, Math.max(0, Number(e.target.value) || 0)) })} />
+          </label>
+        </div>
         <div className="row" style={{ justifyContent: 'space-between' }}>
+          <label className="check">
+            <input type="checkbox" checked={adj.auto} onChange={(e) => set({ auto: e.target.checked })} />
+            <span>{tr('adj.auto')}</span>
+          </label>
           <label className="check">
             <input type="checkbox" checked={adj.grayscale} onChange={(e) => set({ grayscale: e.target.checked })} />
             <span>{tr('adj.grayscale')}</span>

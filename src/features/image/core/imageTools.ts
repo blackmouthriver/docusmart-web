@@ -59,19 +59,6 @@ export function fitSize(w: number, h: number, spec: ResizeSpec): { width: number
 /* ───────────── Comprimir ───────────── */
 
 export type CompressLevel = 'baja' | 'media' | 'alta'
-export type CompressPlan = { mime: OutputMime; quality: number; maxSide: number }
-
-/**
- * Cómo comprimir según el nivel: JPEG para fotos opacas y WebP para las que
- * tienen transparencia (JPEG no la admite y PNG casi no comprime fotos).
- */
-export function planCompression(level: CompressLevel, hasAlpha: boolean): CompressPlan {
-  const mime: OutputMime = hasAlpha ? 'image/webp' : 'image/jpeg'
-  if (level === 'baja') return { mime, quality: 0.86, maxSide: MAX_SIDE }
-  if (level === 'media') return { mime, quality: 0.74, maxSide: 2560 }
-  return { mime, quality: 0.6, maxSide: 1600 }
-}
-
 /** Tamaño para no pasar del lado máximo del plan (sin agrandar nunca). */
 export function capSize(w: number, h: number, maxSide: number) {
   const k = Math.min(1, maxSide / Math.max(w, h))
