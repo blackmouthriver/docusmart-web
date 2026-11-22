@@ -79,13 +79,14 @@ describe('apariencia', () => {
 })
 
 describe('traducción', () => {
-  it('usa el idioma, cae al español y reemplaza variables', async () => {
+  it('usa el idioma (sin la clave, la clave misma) y reemplaza variables', async () => {
     const { translate, loadMessages } = await import('../../../../src/shared/i18n/translate')
     const { es } = await import('../../../../src/shared/i18n/messages/es')
-    expect(translate({}, 'nav.home')).toBe('Inicio')
+    // Sin respaldo en español: cada página carga su diccionario y todos traen todas las claves.
+    expect(translate({}, 'nav.home')).toBe('nav.home')
     expect(translate({ 'nav.home': 'Home' }, 'nav.home')).toBe('Home')
     expect(translate({ 'nav.home': 'Hola {nombre}, {n} y {otra}' }, 'nav.home', { nombre: 'Ana', n: 3 })).toBe('Hola Ana, 3 y {otra}')
-    expect(await loadMessages('es')).toBe(es)
+    expect(await loadMessages('es')).toEqual(es)
     // Los 11 diccionarios cargan y traen todas las claves
     for (const l of LANGS.filter((x) => x.code !== 'es')) {
       const dict = await loadMessages(l.code)
