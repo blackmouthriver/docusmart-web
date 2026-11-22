@@ -23,14 +23,14 @@ const SCRIPT_FONT = '"Dancing Script Variable", cursive'
 /** Color de la fecha, los textos y la marca ✓ (el mismo negro de la tinta). */
 const STAMP_INK = INK.negro
 /** La firma recordada en este equipo (W-146.2): solo en el navegador, nunca sale del dispositivo. */
-const SAVED_KEY = 'ds-signature-v1'
+const SAVED_SLOT = 'ds-signature-v1'
 
 /** Proporción (ancho / alto) de un texto en la letra de los campos, para su recuadro. */
 const textAspect = (text: string) => Math.max(1.2, Array.from(text).length * 0.58 + 0.4)
 
 function loadSaved(): Signature | null {
   try {
-    const raw = localStorage.getItem(SAVED_KEY)
+    const raw = localStorage.getItem(SAVED_SLOT)
     if (!raw) return null
     const { url, aspect } = JSON.parse(raw) as { url: string; aspect: number }
     if (typeof url !== 'string' || !url.startsWith('data:image/png;base64,') || !(aspect > 0)) return null
@@ -43,8 +43,8 @@ function loadSaved(): Signature | null {
 
 function storeSaved(sig: Signature | null) {
   try {
-    if (sig) localStorage.setItem(SAVED_KEY, JSON.stringify({ url: sig.url, aspect: sig.aspect }))
-    else localStorage.removeItem(SAVED_KEY)
+    if (sig) localStorage.setItem(SAVED_SLOT, JSON.stringify({ url: sig.url, aspect: sig.aspect }))
+    else localStorage.removeItem(SAVED_SLOT)
   } catch {
     // Navegación privada o almacenamiento lleno: se usa igual, sin recordarla.
   }
@@ -196,7 +196,7 @@ export function SignTool() {
               <img src={signature.url} alt={tr('sign.yours')} />
               <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditing(true)}><Icon name="note" /> {tr('sign.change')}</button>
             </div>
-            <label className="switch-row">
+            <label className="switch-row" aria-label={tr('sign.remember')}>
               <span>
                 <b>{tr('sign.remember')}</b>
                 <small>{tr('sign.rememberHint')}</small>
