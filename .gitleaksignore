@@ -1,0 +1,7 @@
+# Falsos positivos revisados a mano (gitleaks). Cada línea es la huella exacta de un hallazgo:
+# commit:archivo:regla:línea. No agregar secretos reales aquí: se quitan del código y se rotan.
+
+# W-146.2: nombre del espacio de localStorage donde se recuerda la firma ('ds-signature-v1').
+# La constante se llamaba SAVED_KEY y la regla genérica la tomó por una clave de API; se renombró
+# a SAVED_SLOT en el commit siguiente.
+c279010db3f5d1eb9710f4a23ed3f95ecb3b5ccc:src/features/pdf/ui/SignTool.tsx:generic-api-key:26
