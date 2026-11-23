@@ -9,12 +9,23 @@
  *
  * Uso: node scripts/indexnow.mjs --new dist/sitemap.xml [--old sitemap-anterior.xml] [--dry-run]
  */
-import { existsSync, readFileSync } from 'node:fs'
-import { pathToFileURL } from 'node:url'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 export const HOST = 'docusmart.online'
-/** Clave pública de IndexNow: no es secreta, se publica en /<clave>.txt para probar que el sitio es nuestro. */
-export const INDEXNOW_KEY = 'bdb87f2903b3f95cc8b65ab8ae63933a'
+
+/**
+ * Clave pública de IndexNow: no es secreta, se publica en /<clave>.txt para probar que el sitio es nuestro.
+ * Se toma del nombre de ese archivo en public/ (32 caracteres hexadecimales), así vive en un solo lugar.
+ */
+export function findKey(names) {
+  const keys = names.map((n) => n.match(/^([a-f0-9]{32})\.txt$/)?.[1]).filter(Boolean)
+  if (keys.length !== 1) throw new Error(`Se esperaba un único archivo de clave de IndexNow en public/ y hay ${keys.length}`)
+  return keys[0]
+}
+
+const publicDir = fileURLToPath(new URL('../public/', import.meta.url))
+export const INDEXNOW_KEY = findKey(readdirSync(publicDir))
 export const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`
 export const ENDPOINT = 'https://api.indexnow.org/indexnow'
 /** Máximo de URL por envío que admite IndexNow. */

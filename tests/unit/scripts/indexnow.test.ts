@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { HOST, INDEXNOW_KEY, KEY_LOCATION, MAX_URLS, buildPayloads, changedUrls, isAccepted, parseSitemap } from '../../../scripts/indexnow.mjs'
+import { HOST, INDEXNOW_KEY, KEY_LOCATION, MAX_URLS, buildPayloads, changedUrls, findKey, isAccepted, parseSitemap } from '../../../scripts/indexnow.mjs'
 
 const root = resolve(__dirname, '../../..')
 const sitemap = (urls: [string, string?][]) =>
@@ -12,6 +12,13 @@ describe('IndexNow (W-152)', () => {
     expect(INDEXNOW_KEY).toMatch(/^[a-f0-9]{32}$/)
     expect(readFileSync(resolve(root, `public/${INDEXNOW_KEY}.txt`), 'utf-8').trim()).toBe(INDEXNOW_KEY)
     expect(KEY_LOCATION).toBe(`https://${HOST}/${INDEXNOW_KEY}.txt`)
+  })
+
+  it('toma la clave del único archivo <32 hex>.txt; falla si no hay o si hay varios', () => {
+    const k = 'a'.repeat(32)
+    expect(findKey(['robots.txt', `${k}.txt`, 'sitemap.xml'])).toBe(k)
+    expect(() => findKey(['robots.txt'])).toThrow()
+    expect(() => findKey([`${k}.txt`, `${'b'.repeat(32)}.txt`])).toThrow()
   })
 
   it('lee cada <loc> con su <lastmod>', () => {

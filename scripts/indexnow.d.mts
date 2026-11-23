@@ -1,4 +1,5 @@
 export const HOST: string
+export function findKey(names: string[]): string
 export const INDEXNOW_KEY: string
 export const KEY_LOCATION: string
 export const ENDPOINT: string
