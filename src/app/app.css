@@ -1401,3 +1401,28 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .compare-hunk.is-moved { border-left: 3px solid #A78BFA; }
 .diff-moved-text { background: rgba(167, 139, 250, .16); border-radius: 3px; }
 :root[data-theme="dark"] .diff-moved { color: #C4B5FD; }
+
+/* Escáner con la cámara en vivo (W-147.1): pantalla completa oscura, la hoja detectada encima del video. */
+.live-scan { position: fixed; inset: 0; z-index: 1000; display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; gap: 8px; padding: max(12px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); background: #05070D; color: #F4F6FB; }
+.live-scan-top { display: flex; align-items: center; gap: 8px; }
+.live-scan-system { margin-left: auto; color: #F4F6FB; }
+.live-scan-icon { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.12); color: #F4F6FB; cursor: pointer; }
+.live-scan-icon.is-on { background: #FBBF24; color: #1C1B1A; }
+.live-scan-icon svg { width: 22px; height: 22px; }
+.live-scan-view { display: grid; place-items: center; min-height: 0; container-type: size; }
+.live-scan-stage { position: relative; width: 100%; aspect-ratio: 3 / 4; max-height: 100%; overflow: hidden; border-radius: 14px; background: #000; }
+.live-scan-stage video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.live-scan-quad { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.live-scan-quad polygon { fill: rgba(96, 165, 250, 0.18); stroke: #60A5FA; stroke-width: 3; stroke-linejoin: round; transition: fill 0.2s, stroke 0.2s; }
+.live-scan-quad polygon.is-steady { fill: rgba(52, 211, 153, 0.22); stroke: #34D399; }
+.live-scan-flash { position: absolute; inset: 0; background: #fff; opacity: 0; animation: live-flash 0.35s ease-out; pointer-events: none; }
+@keyframes live-flash { from { opacity: 0.85; } to { opacity: 0; } }
+.live-scan-error { max-width: 360px; text-align: center; justify-items: center; }
+.live-scan-hint { margin: 0; min-height: 1.4em; text-align: center; font-weight: 600; }
+.live-scan-bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
+.live-scan-auto { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.live-scan-done { justify-self: end; }
+.live-scan-shutter { width: 72px; height: 72px; border-radius: 50%; border: 4px solid #F4F6FB; background: conic-gradient(#34D399 calc(var(--p, 0) * 360deg), rgba(255, 255, 255, 0.85) 0); box-shadow: inset 0 0 0 4px #05070D; cursor: pointer; }
+.live-scan-shutter:disabled { opacity: 0.4; cursor: default; }
+.live-scan-shutter:focus-visible { outline: 3px solid #60A5FA; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .live-scan-flash { animation: none; } .live-scan-quad polygon { transition: none; } }

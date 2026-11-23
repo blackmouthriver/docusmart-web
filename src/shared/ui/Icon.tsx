@@ -35,6 +35,7 @@ const paths = {
   play: 'M7 4v16l13-8z',
   pause: 'M7 4h4v16H7zM13 4h4v16h-4z',
   stop: 'M6 6h12v12H6z',
+  flash: 'M13 2 4 14h7l-1 8 9-12h-7z',
   reset: 'M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5',
   trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',
   close: 'M6 6l12 12M18 6 6 18',
