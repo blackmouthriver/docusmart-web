@@ -192,7 +192,7 @@ export async function createArchiveParts(
   const text = run(z, [...args, out, ...top], messages)
   try {
     if (!volume) return [{ name: `salida.${opts.format}`, data: z.FS.readFile(out) }]
-    const names = z.FS.readdir('/').filter((n) => n.startsWith(`salida.${opts.format}.`)).sort()
+    const names = z.FS.readdir('/').filter((n) => n.startsWith(`salida.${opts.format}.`)).sort((a, b) => a.localeCompare(b))
     // Si todo entra en una parte, se entrega como archivo común (sin ".001").
     if (names.length === 1) return [{ name: `salida.${opts.format}`, data: z.FS.readFile('/' + names[0]) }]
     if (!names.length) throw new Error('sin partes')
