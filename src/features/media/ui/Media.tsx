@@ -4,7 +4,8 @@ import { go } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Progress, Segmented } from '../../../shared/ui/ui'
 import { SaveOptions } from '../../../shared/ui/DocPreview'
-import { formatBytes, isOwnBlobUrl } from '../../../shared/files/files'
+import { download, formatBytes, isOwnBlobUrl } from '../../../shared/files/files'
+import { bundleFiles } from '../../../shared/files/share'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
@@ -13,7 +14,10 @@ import {
   GIF_FPS,
   GIF_MAX_SECONDS,
   GIF_WIDTHS,
+  MAX_BATCH,
+  MAX_MERGE,
   SIZE_TARGETS,
+  isBatchTool,
   isVideoOnly,
   rotateVideo,
   type SizeTargetId,
@@ -45,7 +49,11 @@ const TOOL_INFO: Record<MediaToolId, { name: MessageKey; desc: MessageKey; icon:
   comprimir: { name: 'tools.media.comprimir', desc: 'tools.media.comprimir.desc', icon: 'compress', cls: 'ico-red' },
   girar: { name: 'tools.media.girar', desc: 'tools.media.girar.desc', icon: 'rotate', cls: 'ico-green' },
   gif: { name: 'tools.media.gif', desc: 'tools.media.gif.desc', icon: 'image', cls: 'ico-violet' },
+  unir: { name: 'tools.media.unir', desc: 'tools.media.unir.desc', icon: 'merge', cls: 'ico-blue' },
 }
+
+/** Resultado de un archivo de un lote: el nuevo o el motivo por el que no se pudo. */
+type BatchResult = { source: File; file?: File; error?: string }
 
 const FAILURE: Record<MediaFailure, MessageKey> = {
   'unsupported-browser': 'media.err.browser',
@@ -146,6 +154,11 @@ export function MediaTool({ id }: { id: MediaToolId }) {
   const [result, setResult] = useState<{ file: File; before: number; original: boolean; missed?: boolean } | null>(null)
   const abort = useRef<AbortController | null>(null)
   const player = useRef<HTMLMediaElement | null>(null)
+  // Varios archivos (W-147.4): en lote (audio, convertir, comprimir) o para unir videos.
+  const [queue, setQueue] = useState<File[]>([])
+  const [batch, setBatch] = useState<{ results: BatchResult[]; zip: File | null } | null>(null)
+  const [current, setCurrent] = useState(0)
+  const multi = id === 'unir' || queue.length > 1
 
   const [audioFormat, setAudioFormat] = useState<AudioFormat>('mp3')
   const [quality, setQuality] = useState<'medium' | 'high'>('medium')
@@ -170,7 +183,30 @@ export function MediaTool({ id }: { id: MediaToolId }) {
     return () => abort.current?.abort()
   }, [])
 
-  const reset = () => setResult(null)
+  const reset = () => {
+    setResult(null)
+    setBatch(null)
+  }
+
+  /** Varios archivos: los que no sirven se avisan y no entran; hasta el máximo de la herramienta. */
+  const pickMany = (fs: File[]) => {
+    const max = id === 'unir' ? MAX_MERGE : MAX_BATCH
+    const ok = fs.filter((f) => accepts(id, f.name, f.type))
+    const all = [...queue, ...ok].slice(0, max)
+    setError(ok.length < fs.length ? tr('media.someSkipped', { n: fs.length - ok.length }) : all.length < queue.length + ok.length ? tr('media.tooMany', { n: max }) : null)
+    setQueue(all)
+    setFile(null)
+    setInfo(null)
+    reset()
+  }
+  const moveQueued = (i: number, d: -1 | 1) => {
+    setQueue((q) => {
+      const c = q.slice()
+      ;[c[i], c[i + d]] = [c[i + d], c[i]]
+      return c
+    })
+    reset()
+  }
 
   const pick = async (f: File) => {
     abort.current?.abort()
@@ -200,7 +236,8 @@ export function MediaTool({ id }: { id: MediaToolId }) {
   const trim = info && (id === 'recortar' || id === 'gif') ? checkTrim(start, end, info.duration) : null
   const trimError = trim && !trim.ok ? (trim.reason === 'format' ? tr('media.badTime') : trim.reason === 'order' ? tr('media.badOrder') : tr('media.beyond', { time: formatTime(info!.duration) })) : null
 
-  const job = (): MediaJob | null => {
+  const job = (): MediaJob | null => jobFor(file)
+  const jobFor = (file: File | null | undefined): MediaJob | null => {
     if (!file) return null
     if (id === 'audio') return { tool: 'audio', format: audioFormat, quality }
     if (id === 'convertir') return { tool: 'convertir', format: videoFormat, mute }
@@ -210,7 +247,69 @@ export function MediaTool({ id }: { id: MediaToolId }) {
     return null
   }
 
+  /** Lote: uno tras otro con las mismas opciones; los que fallan no detienen a los demás. */
+  const runBatch = async () => {
+    const j = jobFor(queue[0])
+    if (!j) return
+    setError(null)
+    setBatch(null)
+    setBusy(true)
+    setProgress(0)
+    const ctrl = new AbortController()
+    abort.current = ctrl
+    const results: BatchResult[] = []
+    try {
+      const m = await import('../infra/mediaRun')
+      const names = { audio: tr('file.audio'), convertir: tr('file.converted'), recortar: tr('file.trimmed'), comprimir: tr('file.compressedVideo'), girar: tr('file.rotatedVideo') }
+      for (const [i, f] of queue.entries()) {
+        if (ctrl.signal.aborted) break
+        setCurrent(i + 1)
+        try {
+          const out = await m.runMedia(f, j, names, (p) => setProgress((i + p) / queue.length), ctrl.signal)
+          results.push({ source: f, file: id === 'comprimir' && !keepSmaller(f.size, out.size) ? f : out })
+        } catch (e) {
+          const reason = e instanceof Error && 'reason' in e ? (e as { reason: MediaFailure }).reason : 'failed'
+          if (reason === 'canceled') break
+          results.push({ source: f, error: tr(FAILURE[reason]) })
+        }
+      }
+      const done = results.flatMap((r) => (r.file ? [r.file] : []))
+      setBatch({ results, zip: done.length > 1 ? await bundleFiles(done, `docusmart-${id}.zip`) : null })
+      track('media_done', { tool: id, files: queue.length, failed: results.filter((r) => r.error).length })
+    } finally {
+      setBusy(false)
+      setCurrent(0)
+      abort.current = null
+    }
+  }
+
+  /** Unir videos: uno solo al final, en el orden de la lista. */
+  const runJoin = async () => {
+    if (queue.length < 2) return
+    setError(null)
+    setResult(null)
+    setBusy(true)
+    setProgress(0)
+    const ctrl = new AbortController()
+    abort.current = ctrl
+    try {
+      const m = await import('../infra/mediaRun')
+      const out = await m.runMerge(queue, tr('file.merged'), setProgress, ctrl.signal)
+      setResult({ file: out, before: queue.reduce((n, f) => n + f.size, 0), original: false })
+      track('media_done', { tool: 'unir', files: queue.length })
+    } catch (e) {
+      const reason = e instanceof Error && 'reason' in e ? (e as { reason: MediaFailure }).reason : 'failed'
+      if (reason !== 'canceled') setError(tr(FAILURE[reason]))
+      track('media_failed', { tool: 'unir', reason })
+    } finally {
+      setBusy(false)
+      abort.current = null
+    }
+  }
+
   const run = async () => {
+    if (id === 'unir') return runJoin()
+    if (multi) return runBatch()
     const j = job()
     if (!file || (!j && id !== 'gif') || (id === 'gif' && !trim?.ok)) return
     setError(null)
@@ -251,14 +350,41 @@ export function MediaTool({ id }: { id: MediaToolId }) {
   if (!supported) return <Notice kind="error">{tr('media.err.browser')}</Notice>
 
   const videoOnly = isVideoOnly(id)
-  const ready = !!file && !!info && !reading && (id === 'gif' ? !!trim?.ok : !!job())
+  const ready = id === 'unir' ? queue.length >= 2 : multi ? !!jobFor(queue[0]) : !!file && !!info && !reading && (id === 'gif' ? !!trim?.ok : !!job())
   const turn = `rotate(${rotation}deg) scaleX(${flip ? -1 : 1})`
 
   return (
     <div className="stack">
       <div className="card stack">
-        {!file ? (
-          <DropZone accept={acceptFor(id)} onFiles={(fs) => fs[0] && void pick(fs[0])} title={tr(videoOnly ? 'media.pickVideo' : 'media.pickMedia')} hint={tr(videoOnly ? 'media.pickHintVideo' : 'media.pickHint')} />
+        {multi && (
+          <>
+            <ul className="file-list" style={{ marginTop: 0 }}>
+              {queue.map((f, i) => (
+                <FileRow
+                  key={f.name + i}
+                  file={f}
+                  extra={busy && current === i + 1 ? tr('media.working', { pct: Math.round(((progress * queue.length) % 1) * 100) }) : undefined}
+                  actions={
+                    <>
+                      {id === 'unir' && (
+                        <>
+                          <button type="button" className="icon-btn" aria-label={tr('conv.moveUp')} disabled={busy || i === 0} onClick={() => moveQueued(i, -1)}><Icon name="up" /></button>
+                          <button type="button" className="icon-btn" aria-label={tr('conv.moveDown')} disabled={busy || i === queue.length - 1} onClick={() => moveQueued(i, 1)}><Icon name="downArrow" /></button>
+                        </>
+                      )}
+                      <button type="button" className="icon-btn" aria-label={tr('merge.remove', { name: f.name })} disabled={busy} onClick={() => { setQueue((q) => q.filter((_, k) => k !== i)); reset() }}><Icon name="close" /></button>
+                    </>
+                  }
+                />
+              ))}
+            </ul>
+            {id === 'unir' && queue.length === 1 && <small className="faint">{tr('media.joinNeedTwo')}</small>}
+          </>
+        )}
+        {multi ? (
+          !busy && <DropZone accept={acceptFor(id)} multiple onFiles={pickMany} title={tr(queue.length ? 'media.addMore' : 'media.pickVideos')} hint={tr(id === 'unir' ? 'media.joinHint' : 'media.batchHint')} />
+        ) : !file ? (
+          <DropZone accept={acceptFor(id)} multiple={isBatchTool(id)} onFiles={(fs) => (fs.length > 1 ? pickMany(fs) : fs[0] && void pick(fs[0]))} title={tr(videoOnly ? 'media.pickVideo' : 'media.pickMedia')} hint={tr(isBatchTool(id) ? 'media.batchHint' : videoOnly ? 'media.pickHintVideo' : 'media.pickHint')} />
         ) : (
           <>
             <ul className="file-list" style={{ marginTop: 0 }}>
@@ -392,7 +518,7 @@ export function MediaTool({ id }: { id: MediaToolId }) {
         {busy && (
           <div className="stack" style={{ gap: 6 }}>
             <Progress value={progress} />
-            <small className="faint">{tr('media.working', { pct: Math.round(progress * 100) })} {tr('media.workHint')}</small>
+            <small className="faint">{multi && id !== 'unir' && current ? tr('media.fileOf', { n: current, total: queue.length }) + ' · ' : ''}{tr('media.working', { pct: Math.round(progress * 100) })} {tr('media.workHint')}</small>
           </div>
         )}
         <div className="row row-end" style={{ gap: 8 }}>
@@ -402,6 +528,28 @@ export function MediaTool({ id }: { id: MediaToolId }) {
           </BusyButton>
         </div>
       </div>
+
+      {batch && (
+        <div className="card stack" aria-live="polite">
+          <h3>{tr('media.batchReady', { n: batch.results.filter((r) => r.file).length, total: batch.results.length })}</h3>
+          <ul className="media-batch">
+            {batch.results.map((r, i) => (
+              <li key={i} className={r.error ? 'is-failed' : undefined}>
+                <span className="media-batch-name">{r.file?.name ?? r.source.name}</span>
+                {r.file ? (
+                  <>
+                    <small className="faint">{r.file === r.source ? tr('media.notSmallerShort') : id === 'comprimir' ? `${formatBytes(r.source.size)} → ${formatBytes(r.file.size)}` : formatBytes(r.file.size)}</small>
+                    <button type="button" className="btn btn-ghost btn-sm" onClick={() => download(r.file!, r.file!.name)}><Icon name="download" /> {tr('media.download')}</button>
+                  </>
+                ) : (
+                  <small style={{ color: 'var(--danger)' }}>{r.error}</small>
+                )}
+              </li>
+            ))}
+          </ul>
+          {batch.zip && <SaveOptions file={batch.zip} toolName={`media_${id}_batch`} />}
+        </div>
+      )}
 
       {result && (
         <div className="card stack" aria-live="polite">

@@ -121,6 +121,7 @@ const ENTRIES: readonly CatalogTool[] = [
   media('comprimir', 'compress'),
   media('girar', 'rotate'),
   media('gif', 'image'),
+  media('unir', 'merge'),
   { key: 'multimedia/texto', category: 'multimedia', icon: 'volume', name: 'tools.stt', desc: 'tools.stt.desc', section: 'multimedia', sub: 'texto', also: ['texto'] },
   { key: 'archivos/crear', category: 'archivos', icon: 'archive', name: 'tools.arch.create', desc: 'tools.arch.create.desc', section: 'archivos', sub: 'crear' },
   { key: 'archivos/extraer', category: 'archivos', icon: 'folder', name: 'tools.arch.extract', desc: 'tools.arch.extract.desc', section: 'archivos', sub: 'extraer' },
@@ -135,6 +136,10 @@ const ENTRIES: readonly CatalogTool[] = [
 
 /** Herramientas que aceptan varios archivos a la vez y los entregan en un ZIP (W-111). */
 const BATCH_KEYS = new Set([
+  // Varios videos o audios a la vez (W-147.4).
+  'multimedia/audio',
+  'multimedia/convertir',
+  'multimedia/comprimir',
   'pdf/comprimir',
   'imagen/comprimir',
   'imagen/redimensionar',

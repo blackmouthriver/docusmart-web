@@ -4,12 +4,43 @@
  * (WebCodecs del navegador, con aceleración por hardware): aquí solo se decide qué pedir.
  */
 
-/** Las herramientas (id de la página y de la ruta #/multimedia/<id>); girar y GIF desde W-146.9. */
-export type MediaToolId = 'audio' | 'convertir' | 'recortar' | 'comprimir' | 'girar' | 'gif'
-export const MEDIA_TOOLS: readonly MediaToolId[] = ['audio', 'convertir', 'recortar', 'comprimir', 'girar', 'gif']
+/** Las herramientas (id de la página y de la ruta #/multimedia/<id>); girar y GIF desde W-146.9, unir desde W-147.4. */
+export type MediaToolId = 'audio' | 'convertir' | 'recortar' | 'comprimir' | 'girar' | 'gif' | 'unir'
+export const MEDIA_TOOLS: readonly MediaToolId[] = ['audio', 'convertir', 'recortar', 'comprimir', 'girar', 'gif', 'unir']
 /** Las que solo trabajan con video. */
-const VIDEO_ONLY: readonly MediaToolId[] = ['convertir', 'comprimir', 'girar', 'gif']
+const VIDEO_ONLY: readonly MediaToolId[] = ['convertir', 'comprimir', 'girar', 'gif', 'unir']
 export const isVideoOnly = (tool: MediaToolId) => VIDEO_ONLY.includes(tool)
+/** Las que aceptan varios archivos a la vez y los procesan uno tras otro (W-147.4). */
+const BATCH: readonly MediaToolId[] = ['audio', 'convertir', 'comprimir']
+export const isBatchTool = (tool: MediaToolId) => BATCH.includes(tool)
+/** Cuántos archivos a la vez: en lote, y al unir videos. */
+export const MAX_BATCH = 30
+export const MAX_MERGE = 20
+
+/** Dónde empieza cada video al unirlos: la suma de las duraciones anteriores (en segundos). */
+export function mergeOffsets(durations: readonly number[]): number[] {
+  const out: number[] = []
+  let at = 0
+  for (const d of durations) {
+    out.push(at)
+    at += Math.max(0, d)
+  }
+  return out
+}
+
+/**
+ * Tamaño del video unido: el del primero (los demás se ajustan sin deformarse, con bandas negras),
+ * con el alto hasta 1080 y medidas pares, que piden los codificadores.
+ */
+export function mergeSize(width: number, height: number, maxHeight = 1080): { width: number; height: number } {
+  const k = height > maxHeight ? maxHeight / height : 1
+  const even = (n: number) => Math.max(2, Math.round(n * k / 2) * 2)
+  return { width: even(width), height: even(height) }
+}
+
+/** Frecuencia y canales del audio unido: todos los tramos se pasan a esto para poder pegarlos. */
+export const MERGE_SAMPLE_RATE = 48000
+export const MERGE_CHANNELS = 2
 
 export type AudioFormat = 'mp3' | 'm4a' | 'wav' | 'ogg'
 export type VideoFormat = 'mp4' | 'webm'

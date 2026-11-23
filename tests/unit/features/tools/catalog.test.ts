@@ -44,13 +44,13 @@ describe('catálogo de la app', () => {
     expect(n.organizar).toBe(5)
     expect(n.qr).toBe(2)
     expect(n.documentos).toBe(3)
-    expect(n.multimedia).toBe(7)
+    expect(n.multimedia).toBe(8)
     expect(n.texto).toBe(5)
     expect(n.imagen).toBe(19)
   })
   it('marca las herramientas que procesan varios archivos y existe Renombrar archivos (W-111)', () => {
     const batch = CATALOG.filter((x) => x.batch).map((x) => x.key)
-    expect(batch).toEqual(expect.arrayContaining(['pdf/comprimir', 'imagen/comprimir', 'imagen/rotar', 'archivos/renombrar', 'convertir/img-jpg', 'convertir/heic-jpg']))
+    expect(batch).toEqual(expect.arrayContaining(['pdf/comprimir', 'imagen/comprimir', 'imagen/rotar', 'archivos/renombrar', 'convertir/img-jpg', 'convertir/heic-jpg', 'multimedia/audio', 'multimedia/convertir', 'multimedia/comprimir']))
     // las que trabajan con un solo archivo no llevan la marca
     for (const key of ['pdf/unir', 'pdf/firmar', 'pdf/proteger', 'qr/crear', 'hash/calcular']) expect(CATALOG.find((x) => x.key === key)?.batch, key).toBeUndefined()
     const rename = CATALOG.find((x) => x.key === 'archivos/renombrar')!

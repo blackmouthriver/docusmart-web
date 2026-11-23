@@ -79,3 +79,13 @@ Se hicieron las brechas 1 a 4 (2026-11-22). Quedan para más adelante la 5 (vari
 **Límite conocido:** con video de mucho grano y tamaños muy chicos, el codificador del navegador no baja de cierta tasa de bits. En ese caso se entrega lo más liviano que logró y se avisa.
 
 **Queda por debajo:** varios archivos a la vez (#5), unir videos (#6) y distinguir hablantes en Audio a texto (#7).
+
+### Seguimiento W-147.4 (2026-11-23): las brechas 5 y 6
+
+| # | Mejora | Cómo quedó | Prueba |
+|---|---|---|---|
+| 5 | Varios archivos a la vez | **Video a MP3**, **Convertir video** y **Comprimir video** aceptan hasta 30 archivos: se procesan uno tras otro con las mismas opciones ("Archivo 2 de 5"), uno que falla no detiene a los demás, y al final hay una lista con cada resultado (y lo que pesaba antes y después al comprimir), su botón de descarga y **todos en un ZIP**. Los archivos que no son del tipo se avisan y no entran. Con un solo archivo, todo sigue como antes (vista previa incluida) | Unitarias y E2E (dos videos a MP3 y un .txt que no entra; el ZIP trae los dos MP3) |
+| 6 | Unir videos | Herramienta nueva **Unir videos** (hasta 20, con flechas para ordenarlos): cada uno se dibuja al tamaño del primero sin deformarse (bandas negras; alto máximo 1080, medidas pares) y se vuelve a codificar en un MP4 (H.264 y AAC). El audio se pasa a 48 kHz estéreo y cada tramo dura exactamente lo que su video: si a uno le falta sonido, queda en silencio y todo sigue sincronizado | Unitarias (`mergeOffsets`, `mergeSize`) y E2E (2 s de 640 × 360 + 3 s de 480 × 480 → 5 s a 640 × 360 con audio) |
+
+**Queda pendiente (#7, distinguir hablantes en Audio a texto):** necesita un segundo modelo de IA en el navegador (pyannote segmentation, unos 6 MB, con licencia MIT) que hay que descargar de Hugging Face y servir desde el propio sitio, como Whisper. Se deja para cuando el usuario apruebe esa descarga.
+

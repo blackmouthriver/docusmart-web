@@ -7,7 +7,10 @@
  */
 import {
   ALL_FORMATS,
+  AudioBufferSink,
+  AudioBufferSource,
   BlobSource,
+  CanvasSource,
   BufferTarget,
   CanvasSink,
   EncodedPacketSink,
@@ -37,8 +40,12 @@ import {
   type VideoCodec,
 } from 'mediabunny'
 import {
+  MERGE_CHANNELS,
+  MERGE_SAMPLE_RATE,
   bitratePlan,
   compressQuality,
+  mergeOffsets,
+  mergeSize,
   gifFrameTimes,
   gifHeight,
   retryBitrate,
@@ -279,5 +286,135 @@ export async function runGif(file: File, o: { start: number; end: number; width:
     throw e
   } finally {
     input.dispose()
+  }
+}
+
+/* ───────────── Unir videos (W-147.4) ───────────── */
+
+/** Audio de un tramo listo para pegar: a la frecuencia y canales del resultado. */
+async function normalizeAudio(buffer: AudioBuffer): Promise<AudioBuffer> {
+  if (buffer.sampleRate === MERGE_SAMPLE_RATE && buffer.numberOfChannels === MERGE_CHANNELS) return buffer
+  const ctx = new OfflineAudioContext(MERGE_CHANNELS, Math.max(1, Math.ceil(buffer.duration * MERGE_SAMPLE_RATE)), MERGE_SAMPLE_RATE)
+  const src = ctx.createBufferSource()
+  src.buffer = buffer
+  src.connect(ctx.destination)
+  src.start()
+  return ctx.startRendering()
+}
+
+/** Une varios trozos de audio seguidos en uno solo (para remuestrear de a varios segundos). */
+function joinBuffers(parts: AudioBuffer[]): AudioBuffer {
+  const length = parts.reduce((n, b) => n + b.length, 0)
+  const channels = Math.max(...parts.map((b) => b.numberOfChannels))
+  const out = new AudioBuffer({ length: Math.max(1, length), numberOfChannels: channels, sampleRate: parts[0].sampleRate })
+  let at = 0
+  for (const b of parts) {
+    for (let c = 0; c < channels; c++) out.copyToChannel(b.getChannelData(Math.min(c, b.numberOfChannels - 1)), c, at)
+    at += b.length
+  }
+  return out
+}
+
+/** Los primeros `seconds` de un trozo de audio. */
+function cutBuffer(b: AudioBuffer, seconds: number): AudioBuffer {
+  const length = Math.max(1, Math.min(b.length, Math.round(seconds * b.sampleRate)))
+  const out = new AudioBuffer({ length, numberOfChannels: b.numberOfChannels, sampleRate: b.sampleRate })
+  for (let c = 0; c < b.numberOfChannels; c++) out.copyToChannel(b.getChannelData(c).subarray(0, length), c)
+  return out
+}
+
+const silence = (seconds: number) => new AudioBuffer({ length: Math.max(1, Math.round(seconds * MERGE_SAMPLE_RATE)), numberOfChannels: MERGE_CHANNELS, sampleRate: MERGE_SAMPLE_RATE })
+
+/**
+ * Une varios videos en un MP4, en el orden dado. Cada uno se dibuja al tamaño del primero (sin
+ * deformarse, con bandas negras) y se vuelve a codificar; el audio se pasa a 48 kHz estéreo y,
+ * si un video no tiene sonido, ese tramo queda en silencio para que todo siga sincronizado.
+ */
+export async function runMerge(files: File[], name: string, onProgress: (p: number) => void, signal?: AbortSignal): Promise<File> {
+  const inputs = files.map(openInput)
+  let output: Output | null = null
+  try {
+    const tracks = await Promise.all(inputs.map(async (input) => ({ video: await input.getPrimaryVideoTrack(), audio: await input.getPrimaryAudioTrack(), duration: await input.computeDuration() })))
+    if (tracks.some((t) => !t.video)) throw new MediaError('no-video')
+    for (const t of tracks) if (!(await t.video!.canDecode())) throw new MediaError('unsupported-file')
+    const first = tracks[0].video!
+    const size = mergeSize(first.displayWidth, first.displayHeight)
+    const vCodec = await getFirstEncodableVideoCodec(VIDEO_PREF.mp4, size)
+    const aCodec = await getFirstEncodableAudioCodec(AUDIO_PREF.mp4)
+    if (!vCodec) throw new MediaError('no-codec')
+    const withAudio = !!aCodec && tracks.some((t) => t.audio)
+
+    const canvas = document.createElement('canvas')
+    canvas.width = size.width
+    canvas.height = size.height
+    const ctx = canvas.getContext('2d')!
+    const target = new BufferTarget()
+    output = new Output({ format: new Mp4OutputFormat({ fastStart: 'in-memory' }), target })
+    const videoSource = new CanvasSource(canvas, { codec: vCodec, bitrate: QUALITY_HIGH })
+    output.addVideoTrack(videoSource)
+    const audioSource = withAudio ? new AudioBufferSource({ codec: aCodec!, bitrate: QUALITY_MEDIUM }) : null
+    if (audioSource) output.addAudioTrack(audioSource)
+    await output.start()
+
+    const offsets = mergeOffsets(tracks.map((t) => t.duration))
+    const total = offsets[offsets.length - 1] + tracks[tracks.length - 1].duration || 1
+    for (const [i, t] of tracks.entries()) {
+      const at = offsets[i]
+      // Video: cada cuadro ajustado al tamaño del resultado, en su momento dentro del total.
+      const sink = new CanvasSink(t.video!, { width: size.width, height: size.height, fit: 'contain', poolSize: 2 })
+      for await (const frame of sink.canvases()) {
+        if (signal?.aborted) throw new MediaError('canceled')
+        if (frame.timestamp >= t.duration) break
+        ctx.fillStyle = '#000'
+        ctx.fillRect(0, 0, size.width, size.height)
+        ctx.drawImage(frame.canvas, 0, 0)
+        await videoSource.add(at + Math.max(0, frame.timestamp), Math.min(frame.duration, t.duration - frame.timestamp))
+        onProgress(Math.min(0.99, (at + frame.timestamp) / total))
+      }
+      // Audio: exactamente la duración del tramo (se corta lo que sobra y se completa con silencio).
+      if (audioSource) {
+        let placed = 0
+        if (t.audio && (await t.audio.canDecode())) {
+          let group: AudioBuffer[] = []
+          let groupSeconds = 0
+          const flush = async () => {
+            if (!group.length) return
+            let b = await normalizeAudio(joinBuffers(group))
+            if (placed + b.duration > t.duration) b = cutBuffer(b, t.duration - placed)
+            if (b.duration > 0 && placed < t.duration) {
+              await audioSource.add(b)
+              placed += b.duration
+            }
+            group = []
+            groupSeconds = 0
+          }
+          for await (const { buffer } of new AudioBufferSink(t.audio).buffers(0, t.duration)) {
+            if (signal?.aborted) throw new MediaError('canceled')
+            group.push(buffer)
+            groupSeconds += buffer.duration
+            // De a unos 5 segundos: remuestrear trozos muy chicos sería lento.
+            if (groupSeconds >= 5) await flush()
+          }
+          await flush()
+        }
+        if (t.duration - placed > 0.001) await audioSource.add(silence(t.duration - placed))
+      }
+    }
+    videoSource.close()
+    audioSource?.close()
+    await output.finalize()
+    const buffer = target.buffer
+    if (!buffer) throw new MediaError('failed')
+    onProgress(1)
+    const base = files[0].name.replace(/\.[^./\\]+$/, '').trim() || 'video'
+    return new File([buffer], `${base}-${name}.mp4`, { type: 'video/mp4' })
+  } catch (e) {
+    if (output && output.state !== 'finalized') void output.cancel().catch(() => {})
+    if (e instanceof MediaError) throw e
+    if (signal?.aborted) throw new MediaError('canceled')
+    if (e instanceof UnsupportedInputFormatError) throw new MediaError('unsupported-file')
+    throw e
+  } finally {
+    for (const input of inputs) input.dispose()
   }
 }

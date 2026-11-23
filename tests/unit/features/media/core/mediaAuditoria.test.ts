@@ -19,7 +19,7 @@ import {
 
 describe('herramientas nuevas (W-146.9)', () => {
   it('girar y GIF son solo de video', () => {
-    expect(MEDIA_TOOLS).toEqual(['audio', 'convertir', 'recortar', 'comprimir', 'girar', 'gif'])
+    expect(MEDIA_TOOLS).toEqual(['audio', 'convertir', 'recortar', 'comprimir', 'girar', 'gif', 'unir'])
     expect(['girar', 'gif', 'convertir', 'comprimir'].every((t) => isVideoOnly(t as never))).toBe(true)
     expect(isVideoOnly('audio')).toBe(false)
     expect(acceptFor('gif')).toBe(VIDEO_ACCEPT)
@@ -92,5 +92,31 @@ describe('girar y GIF (W-146.9)', () => {
     expect(gifHeight(480, 1280, 720)).toBe(270)
     expect(gifHeight(320, 720, 1280)).toBe(568)
     expect(gifHeight(480, 0, 10)).toBe(4800)
+  })
+})
+
+describe('varios archivos y unir videos (W-147.4)', () => {
+  it('en lote: video a MP3, convertir y comprimir; unir es solo de video', async () => {
+    const { isBatchTool, MAX_BATCH, MAX_MERGE } = await import('../../../../../src/features/media/core/media')
+    expect(['audio', 'convertir', 'comprimir'].every((t) => isBatchTool(t as never))).toBe(true)
+    expect(['recortar', 'girar', 'gif', 'unir'].some((t) => isBatchTool(t as never))).toBe(false)
+    expect(isVideoOnly('unir')).toBe(true)
+    expect(accepts('unir', 'nota.mp3', 'audio/mpeg')).toBe(false)
+    expect([MAX_BATCH, MAX_MERGE]).toEqual([30, 20])
+  })
+
+  it('cada video empieza donde termina el anterior', async () => {
+    const { mergeOffsets } = await import('../../../../../src/features/media/core/media')
+    expect(mergeOffsets([10, 5.5, 3])).toEqual([0, 10, 15.5])
+    expect(mergeOffsets([-1, 4])).toEqual([0, 0])
+    expect(mergeOffsets([])).toEqual([])
+  })
+
+  it('el tamaño del unido es el del primero, hasta 1080 de alto y con medidas pares', async () => {
+    const { mergeSize } = await import('../../../../../src/features/media/core/media')
+    expect(mergeSize(1280, 720)).toEqual({ width: 1280, height: 720 })
+    expect(mergeSize(3840, 2160)).toEqual({ width: 1920, height: 1080 })
+    expect(mergeSize(1081, 1921)).toEqual({ width: 608, height: 1080 })
+    expect(mergeSize(641, 359)).toEqual({ width: 642, height: 360 })
   })
 })
