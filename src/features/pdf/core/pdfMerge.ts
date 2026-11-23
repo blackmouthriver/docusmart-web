@@ -5,6 +5,8 @@
  * - Marcadores (el índice lateral): se conservan apuntando a las páginas nuevas y, si se pide,
  *   cada archivo tiene su propio marcador con los suyos adentro.
  * - Título: el del primer archivo que lo tenga.
+ * - Páginas de cada archivo (W-147.6): se puede elegir cuáles entran y en qué orden; los
+ *   marcadores que apuntan a páginas que quedaron afuera se quitan.
  */
 import {
   PDFArray,
@@ -19,7 +21,12 @@ import {
   type PDFObject,
 } from 'pdf-lib'
 
-export type MergeInput = { bytes: ArrayBuffer | Uint8Array; name?: string }
+export type MergeInput = {
+  bytes: ArrayBuffer | Uint8Array
+  name?: string
+  /** Las páginas que entran (base 0, en este orden). Sin indicar: todas. */
+  pages?: number[]
+}
 export type MergeOptions = {
   /** 'keep': los marcadores de cada archivo; 'perFile': además, uno por archivo con los suyos adentro. */
   bookmarks?: 'keep' | 'perFile'
@@ -41,12 +48,17 @@ export async function mergePdfs(inputs: MergeInput[], opts: MergeOptions = {}): 
   for (const input of inputs) {
     const src = await PDFDocument.load(input.bytes)
     title ??= src.getTitle() || undefined
-    const pages = await out.copyPages(src, src.getPageIndices())
+    const wanted = input.pages ? pickPages(input.pages, src.getPageCount()) : src.getPageIndices()
+    const pages = await out.copyPages(src, wanted)
     pages.forEach((p) => out.addPage(p))
 
-    // Página de origen → página nueva, para que los marcadores apunten bien.
+    // Página de origen → página nueva (la primera copia), para que los marcadores apunten bien.
     const pageMap = new Map<string, PDFRef>()
-    src.getPages().forEach((p, i) => pageMap.set(p.ref.toString(), pages[i].ref))
+    const srcPages = src.getPages()
+    wanted.forEach((idx, i) => {
+      const key = srcPages[idx].ref.toString()
+      if (!pageMap.has(key)) pageMap.set(key, pages[i].ref)
+    })
 
     const before = fieldRefs.length
     fieldRefs.push(...collectFields(out, pages.map((p) => p.node), usedNames))
@@ -54,7 +66,8 @@ export async function mergePdfs(inputs: MergeInput[], opts: MergeOptions = {}): 
     const dr = src.catalog.lookupMaybe(PDFName.of('AcroForm'), PDFDict)?.get(PDFName.of('DR'))
     if (!resources && dr && fieldRefs.length > before) resources = PDFObjectCopier.for(src.context, out.context).copy(dr)
 
-    const own = readOutline(src, pageMap, out)
+    const outline = readOutline(src, pageMap, out)
+    const own = input.pages ? pruneMarks(outline) : outline
     const first = pages[0] ? fitDest(out, pages[0].ref) : null
     if (opts.bookmarks === 'perFile') marks.push({ title: input.name?.replace(/\.pdf$/i, '') || `PDF ${marks.length + 1}`, dest: first, children: own })
     else marks.push(...own)
@@ -68,6 +81,42 @@ export async function mergePdfs(inputs: MergeInput[], opts: MergeOptions = {}): 
   if (marks.length) writeOutline(out, marks)
   if (title) out.setTitle(title)
   return out.save()
+}
+
+/** Las páginas pedidas que existen en el archivo (base 0); si ninguna sirve, es un error. */
+export function pickPages(pages: number[], count: number): number[] {
+  const ok = pages.filter((i) => Number.isInteger(i) && i >= 0 && i < count)
+  if (!ok.length) throw new RangeError('No pages selected')
+  return ok
+}
+
+/** Quita los marcadores que apuntan a páginas que no entraron (salvo que tengan hijos que sí). */
+function pruneMarks(list: Mark[]): Mark[] {
+  return list.flatMap((m) => {
+    const children = pruneMarks(m.children)
+    return m.dest || children.length ? [{ ...m, children }] : []
+  })
+}
+
+/** Los marcadores del primer nivel con la página (base 0) a la que llevan, para dividir por capítulos. */
+export async function topBookmarks(bytes: ArrayBuffer | Uint8Array): Promise<{ count: number; marks: Array<{ title: string; page: number }> }> {
+  const src = await PDFDocument.load(bytes, { ignoreEncryption: true })
+  const index = new Map(src.getPages().map((p, i) => [p.ref.toString(), i]))
+  const marks: Array<{ title: string; page: number }> = []
+  const root = src.catalog.lookupMaybe(PDFName.of('Outlines'), PDFDict)
+  const seen = new Set<PDFDict>()
+  let first = root?.get(PDFName.of('First'))
+  let item = first ? src.context.lookupMaybe(first, PDFDict) : undefined
+  let budget = MAX_MARKS
+  while (item && !seen.has(item) && budget-- > 0) {
+    seen.add(item)
+    const target = resolveDest(src, item)
+    const page = target ? index.get(target.toString()) : undefined
+    if (page !== undefined) marks.push({ title: decodeText(item.get(PDFName.of('Title')))?.trim() ?? '', page })
+    first = item.get(PDFName.of('Next'))
+    item = first ? src.context.lookupMaybe(first, PDFDict) : undefined
+  }
+  return { count: src.getPageCount(), marks }
 }
 
 /** Destino "ir a esta página, ajustada a la ventana". */

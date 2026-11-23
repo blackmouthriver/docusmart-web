@@ -3,10 +3,11 @@
  * rotación de cada página (/Rotate) y su área visible (CropBox), así que en una página girada
  * o recortada sale derecho y dentro de lo visible. Opciones como las de PDF24 o iLovePDF:
  * 6 posiciones, número inicial, saltar las primeras páginas (portada), texto propio con
- * {n} y {total}, y tamaño. Con texto no latino usa las fuentes incrustadas de DocuSmart.
+ * {n} y {total}, tamaño y color (W-147.6). Con texto no latino usa las fuentes incrustadas de DocuSmart.
  */
-import { PDFDocument, degrees, rgb } from 'pdf-lib'
+import { PDFDocument, degrees } from 'pdf-lib'
 import { drawPieces, fontsForText, piecesWidth } from '../../../shared/pdf/pdfFonts'
+import { hexToRgb } from './pdfEdit'
 
 export type NumberPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
 export const NUMBER_POSITIONS: readonly NumberPosition[] = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right']
@@ -21,9 +22,11 @@ export type NumberOptions = {
   skip: number
   /** Tamaño de la letra en puntos. */
   size: number
+  /** Color del número, en hexadecimal (#RRGGBB). */
+  color: string
 }
 
-export const DEFAULT_NUMBER_OPTIONS: NumberOptions = { position: 'bottom-center', template: '{n}', start: 1, skip: 0, size: 10 }
+export const DEFAULT_NUMBER_OPTIONS: NumberOptions = { position: 'bottom-center', template: '{n}', start: 1, skip: 0, size: 10, color: '#555555' }
 
 const EDGE = 24
 const SIDE = 36
@@ -62,6 +65,7 @@ export async function numberPages(bytes: ArrayBuffer | Uint8Array, opts: Partial
   const size = Math.max(6, Math.min(36, o.size))
   const doc = await PDFDocument.load(bytes)
   const labels = pageLabels(doc.getPageCount(), o)
+  const color = hexToRgb(/^#[0-9a-f]{6}$/i.test(o.color) ? o.color : DEFAULT_NUMBER_OPTIONS.color)
   const fonts = await fontsForText(doc, 'sans', ['regular'], labels.filter(Boolean).join(' ') || '0')
   doc.getPages().forEach((page, i) => {
     const label = labels[i]
@@ -78,7 +82,7 @@ export async function numberPages(bytes: ArrayBuffer | Uint8Array, opts: Partial
     const u = horiz === 'left' ? SIDE : horiz === 'right' ? W - tw - SIDE : (W - tw) / 2
     const v = vert === 'bottom' ? EDGE : H - EDGE - size * 0.75
     const { x, y } = toPdfPoint(u, v, box, rotation)
-    drawPieces(page, pieces, { x, y, size, color: rgb(0.33, 0.33, 0.33), rotateDeg: ((rotation % 360) + 360) % 360, degrees })
+    drawPieces(page, pieces, { x, y, size, color, rotateDeg: ((rotation % 360) + 360) % 360, degrees })
   })
   return doc.save()
 }
