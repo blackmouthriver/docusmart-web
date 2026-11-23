@@ -142,6 +142,18 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
           VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
 
+      # IndexNow (W-152): se guarda el sitemap publicado antes de desplegar, para avisar solo lo que cambió.
+      # Si la clave aún no estaba publicada (primer despliegue con IndexNow), no se guarda y se avisan todas.
+      - name: Sitemap publicado antes del despliegue
+        if: env.HAS_FIREBASE_SA == 'true'
+        run: |
+          KEY=$(node -e "import('./scripts/indexnow.mjs').then((m) => console.log(m.INDEXNOW_KEY))")
+          if curl -fsS --max-time 20 "https://docusmart.online/$KEY.txt" > /dev/null; then
+            curl -fsS --max-time 20 https://docusmart.online/sitemap.xml -o "$RUNNER_TEMP/sitemap-anterior.xml" || echo "::warning::No se pudo leer el sitemap publicado; IndexNow avisará todas las URL."
+          else
+            echo "La clave de IndexNow aún no estaba publicada: se avisarán todas las URL."
+          fi
+
       - uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0.11.0
         if: env.HAS_FIREBASE_SA == 'true'
         with:
@@ -149,3 +161,8 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DOCUSMART_8904E }}
           projectId: docusmart-8904e
           channelId: live
+
+      # Bing, Yandex y los demás buscadores de IndexNow se enteran al momento de lo nuevo. Nunca hace fallar el despliegue.
+      - name: Avisar a IndexNow las páginas nuevas o cambiadas
+        if: env.HAS_FIREBASE_SA == 'true'
+        run: node scripts/indexnow.mjs --new dist/sitemap.xml --old "$RUNNER_TEMP/sitemap-anterior.xml"

@@ -5,3 +5,8 @@
 # La constante se llamaba SAVED_KEY y la regla genérica la tomó por una clave de API; se renombró
 # a SAVED_SLOT en el commit siguiente.
 c279010db3f5d1eb9710f4a23ed3f95ecb3b5ccc:src/features/pdf/ui/SignTool.tsx:generic-api-key:26
+
+# W-152: clave de IndexNow, que es pública por diseño (se publica en /<clave>.txt para que Bing la valide).
+# Estaba escrita como constante INDEXNOW_KEY en scripts/indexnow.mjs; en el commit siguiente el script la
+# toma del nombre del archivo en public/ y ya no aparece en el código.
+b91bd51fa1ea6294f1ac3ef8b3b20fc4958f2ce3:scripts/indexnow.mjs:generic-api-key:17
