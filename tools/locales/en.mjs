@@ -139,7 +139,7 @@ export default {
       faq: [
         ['Which forms work?', 'PDFs with fillable fields (AcroForm), which are the vast majority: text boxes, checkboxes, options, drop-down lists and lists. If a PDF has no fields, you can write on top with "Edit PDF".'],
         ['What does flattening mean?', 'It makes the answers a fixed part of the document: they look the same in any reader and nobody can change them without leaving a trace. Without flattening, the form stays editable.'],
-        ['Can I keep filling it in later?', "Yes, if you don't flatten it: open the saved PDF again here or in any reader and your answers will still be in the fields."],
+        ['Can I keep filling it in later?', "Yes, if you don’t flatten it: open the saved PDF here or in any reader and your answers will still be in the fields. You can also save your answers to a file and load them to fill in the same form again."],
         ['Is my data uploaded to the internet?', 'No. The form and your answers are processed inside your browser.'],
       ],
     },
@@ -211,7 +211,7 @@ export default {
       ],
       faq: [
         ["Why isn't a black box enough?", 'Because the text is still underneath: anyone can copy it or remove the box. DocuSmart redraws each redacted page as an image, with the areas in black, so the original text disappears from the file.'],
-        ['What happens to the rest of the document?', "Pages without marked areas stay exactly the same. On redacted pages the text can no longer be selected. Also, the new PDF doesn't keep the original's metadata, such as the author or title."],
+        ['What happens to the rest of the document?', "Pages without marked areas stay exactly the same. On redacted pages what you covered is gone, but the rest of the text can still be searched and copied. The new PDF also drops the original metadata, such as the author or the title."],
         ['Does search work with scanned documents?', 'No: a scan is an image and has no text to search. In that case, mark the areas by dragging on the page.'],
         ['Are my documents uploaded to the internet?', 'No. Everything happens inside your browser; neither the PDF nor what you redact leaves your device.'],
       ],

@@ -139,7 +139,7 @@ export default {
       faq: [
         ['Quins formularis funcionen?', 'Els PDF amb camps emplenables (AcroForm), que són la gran majoria: quadres de text, caselles, opcions, llistes desplegables i llistes. Si un PDF no té camps, hi pots escriure a sobre amb "Editar PDF".'],
         ['Què vol dir aplanar?', 'Converteix les respostes en part fixa del document: es veuen igual en qualsevol lector i ningú les pot canviar sense deixar rastre. Sense aplanar, el formulari continua sent editable.'],
-        ['El puc continuar omplint després?', 'Sí, si no l’aplanes: torna a obrir el PDF desat aquí o en qualsevol lector i les respostes continuaran als camps.'],
+        ['El puc continuar omplint després?', "Sí, si no l’aplanes: obre el PDF desat aquí o en qualsevol lector i les teves respostes continuaran als camps. També pots desar les respostes en un fitxer i carregar-les per omplir el mateix formulari una altra vegada."],
         ['Les meves dades es pugen a internet?', 'No. El formulari i les teves respostes es processen dins del teu navegador.'],
       ],
     },
@@ -211,7 +211,7 @@ export default {
       ],
       faq: [
         ['Per què no n’hi ha prou amb un requadre negre?', 'Perquè el text continua a sota: qualsevol el pot copiar o treure el requadre. DocuSmart torna a dibuixar cada pàgina tatxada com a imatge, amb les zones en negre, i així el text original desapareix del fitxer.'],
-        ['Què passa amb la resta del document?', 'Les pàgines sense zones marcades queden exactament igual. A les pàgines tatxades el text ja no es pot seleccionar. A més, el PDF nou no conserva les metadades de l’original, com l’autor o el títol.'],
+        ['Què passa amb la resta del document?', "Les pàgines sense zones marcades queden exactament igual. A les pàgines censurades el que has tapat desapareix, però la resta del text es pot continuar cercant i copiant. A més, el PDF nou no conserva les metadades de l’original, com l’autor o el títol."],
         ['La cerca funciona amb documents escanejats?', 'No: un escaneig és una imatge i no té text per cercar. En aquest cas, marca les zones arrossegant sobre la pàgina.'],
         ['Els meus documents es pugen a internet?', 'No. Tot es fa dins del teu navegador; ni el PDF ni el que tatxes surt del teu equip.'],
       ],

@@ -139,7 +139,7 @@ export default {
       faq: [
         ['Quels formulaires fonctionnent ?', 'Les PDF avec des champs remplissables (AcroForm), soit la grande majorité : zones de texte, cases à cocher, options, listes déroulantes et listes. Si un PDF n’a pas de champs, vous pouvez écrire dessus avec « Modifier un PDF ».'],
         ['Que veut dire aplatir ?', 'Les réponses deviennent une partie fixe du document : elles s’affichent pareil partout et personne ne peut les changer sans laisser de trace. Sans aplatir, le formulaire reste modifiable.'],
-        ['Puis-je continuer à le remplir plus tard ?', 'Oui, si vous ne l’aplatissez pas : rouvrez le PDF enregistré ici ou dans n’importe quel lecteur et vos réponses seront toujours dans les champs.'],
+        ['Puis-je continuer à le remplir plus tard ?', "Oui, si vous ne l’aplatissez pas : ouvrez le PDF enregistré ici ou dans n’importe quel lecteur et vos réponses seront toujours dans les champs. Vous pouvez aussi enregistrer vos réponses dans un fichier et les charger pour remplir à nouveau le même formulaire."],
         ['Mes données sont-elles envoyées sur Internet ?', 'Non. Le formulaire et vos réponses sont traités dans votre navigateur.'],
       ],
     },
@@ -211,7 +211,7 @@ export default {
       ],
       faq: [
         ['Pourquoi un rectangle noir ne suffit-il pas ?', 'Parce que le texte reste dessous : n’importe qui peut le copier ou retirer le rectangle. DocuSmart redessine chaque page caviardée en image, avec les zones en noir, et le texte d’origine disparaît du fichier.'],
-        ['Et le reste du document ?', 'Les pages sans zone marquée restent identiques. Sur les pages caviardées, le texte ne peut plus être sélectionné. Le nouveau PDF ne garde pas non plus les métadonnées d’origine, comme l’auteur ou le titre.'],
+        ['Et le reste du document ?', "Les pages sans zones marquées restent exactement identiques. Sur les pages caviardées, ce que vous avez masqué disparaît, mais le reste du texte reste consultable et copiable. Le nouveau PDF ne garde pas non plus les métadonnées de l’original, comme l’auteur ou le titre."],
         ['La recherche fonctionne-t-elle sur des documents numérisés ?', 'Non : un scan est une image sans texte à chercher. Dans ce cas, marquez les zones en glissant sur la page.'],
         ['Mes documents sont-ils envoyés sur Internet ?', 'Non. Tout se fait dans votre navigateur ; ni le PDF ni ce que vous caviardez ne quitte votre appareil.'],
       ],

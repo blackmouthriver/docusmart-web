@@ -939,6 +939,16 @@ html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms v
 .edit-highlight { opacity: 0.4; mix-blend-mode: multiply; }
 .edit-whiteout { box-shadow: 0 0 0 1px var(--line) inset; }
 .edit-draft { pointer-events: none; outline: 1.5px dashed var(--blue); }
+/* Dibujo, líneas, flechas y enlaces (W-147.2). Los trazos se ven en una capa SVG con las medidas
+   de la página; encima, una zona transparente para tocarlos, moverlos o borrarlos. */
+.edit-strokes { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.edit-ink, .edit-straight, .edit-arrow { border-radius: 8px; }
+.edit-stage.tool-ink, .edit-stage.tool-line, .edit-stage.tool-arrow, .edit-stage.tool-link { cursor: crosshair; }
+.edit-stage:not(.tool-select) :is(.edit-ink, .edit-straight, .edit-arrow) { pointer-events: none; }
+.edit-link { background: rgba(37, 99, 235, .1); box-shadow: 0 0 0 1.5px rgba(37, 99, 235, .7) inset; border-radius: 4px; overflow: hidden; }
+.edit-draft.edit-link { background: rgba(37, 99, 235, .1); }
+.edit-link-label { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 1px 5px; border-radius: 0 0 4px 0; background: var(--blue); color: #fff; font-size: 11px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.edit-link-label svg { width: 12px; height: 12px; flex: none; }
 .edit-draft.edit-highlight { background: #FDE047; }
 .edit-draft.edit-whiteout { background: #fff; }
 .edit-props { display: grid; gap: 12px; padding: 14px 16px; border-radius: 14px; background: var(--paper); }

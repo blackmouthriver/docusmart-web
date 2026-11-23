@@ -221,3 +221,56 @@ export async function fillForm(bytes: ArrayBuffer | Uint8Array, values: FormValu
   if (opts.flatten) form.flatten()
   return doc.save()
 }
+
+/* ───────────── Guardar y cargar respuestas (W-147.2) ───────────── */
+
+/** Marca del archivo de respuestas: así no se confunde con otro .json cualquiera. */
+export const ANSWERS_FORMAT = 'docusmart-form-answers'
+
+const isEmpty = (v: FormValues[string] | undefined) => v === undefined || v === '' || v === false || (Array.isArray(v) && !v.length)
+
+/**
+ * Las respuestas en un .json para volver a llenar el mismo formulario (o uno parecido) otra vez.
+ * Solo lo que tiene respuesta y no es de solo lectura; se guarda en el equipo del usuario.
+ */
+export function answersToJson(values: FormValues, fields: readonly FormField[], title = ''): string {
+  const out: Record<string, FormValues[string]> = {}
+  for (const f of fields) if (!f.readOnly && !isEmpty(values[f.name])) out[f.name] = values[f.name]
+  return JSON.stringify({ format: ANSWERS_FORMAT, version: 1, title, fields: out }, null, 2)
+}
+
+/**
+ * Lee un .json de respuestas y devuelve los valores para los campos de este formulario: cada
+ * respuesta va al campo con el mismo nombre y del mismo tipo; una opción que el campo no tiene,
+ * o un texto más largo que su máximo, no se usa. null si el archivo no es de respuestas.
+ */
+export function answersFromJson(text: string, fields: readonly FormField[]): { values: FormValues; used: number; skipped: number } | null {
+  let data: unknown
+  try {
+    data = JSON.parse(text)
+  } catch {
+    return null
+  }
+  const saved = (data as { format?: unknown; fields?: unknown })?.fields
+  if ((data as { format?: unknown })?.format !== ANSWERS_FORMAT || !saved || typeof saved !== 'object' || Array.isArray(saved)) return null
+  const values: FormValues = {}
+  let used = 0
+  let skipped = 0
+  for (const [name, v] of Object.entries(saved as Record<string, unknown>)) {
+    const f = fields.find((x) => x.name === name)
+    const ok = f && !f.readOnly && fits(f, v)
+    if (ok) {
+      values[name] = v as FormValues[string]
+      used++
+    } else skipped++
+  }
+  return { values, used, skipped }
+}
+
+function fits(f: FormField, v: unknown): boolean {
+  if (f.kind === 'checkbox') return typeof v === 'boolean'
+  if (f.kind === 'list') return Array.isArray(v) && v.every((x) => typeof x === 'string' && f.options.includes(x))
+  if (typeof v !== 'string') return false
+  if (f.kind === 'radio' || (f.kind === 'dropdown' && f.options.length)) return v === '' || f.options.includes(v)
+  return f.maxLength === null || v.length <= f.maxLength
+}

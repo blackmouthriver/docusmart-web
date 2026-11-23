@@ -87,3 +87,17 @@ Además se corrigió una falla encontrada al hacerlo: al mover o cambiar el tama
 **Nueva comparación (filas que cambiaron):** formulario en cualquier alfabeto ✅ · marca de agua con imagen ✅ · posición, mosaico, rotación, transparencia, tamaño y color ✅ · detrás del contenido y rango de páginas ✅ · iniciales, fecha, texto y casilla al firmar ✅ · recordar la firma ✅ (local, sin cuenta) · deshacer y rehacer ✅.
 
 **Queda por debajo:** dibujo libre, líneas y flechas (#6), dejar buscable el texto de las páginas censuradas (#7), enlaces (#8), guardar respuestas del formulario (#9), crear campos de formulario nuevos y pedir firmas a otros (este último, fuera de alcance por privacidad).
+
+### Seguimiento W-147.2 (2026-11-23): las brechas 6, 7, 8 y 9
+
+| # | Mejora | Cómo quedó | Prueba |
+|---|---|---|---|
+| 6 | Dibujo libre, líneas y flechas | Herramientas **Dibujar** (a mano alzada, con mouse, dedo o lápiz; se puede seguir dibujando sin volver a elegirla), **Línea** y **Flecha**, con color y grosor; se mueven, se estiran, se borran y entran en deshacer/rehacer. En el PDF quedan como trazos vectoriales con puntas redondeadas (los puntos casi en línea recta se simplifican) y la flecha con su punta rellena, también en páginas giradas | Unitarias (caja y puntos, simplificación, extremos, punta) y E2E (2 dibujos, línea y flecha en el PDF) |
+| 7 | Censurar dejando buscable el resto | La página censurada sigue siendo imagen (lo tapado desaparece de verdad), y encima va una **capa de texto invisible** con las palabras que no tocan ninguna zona: basta que una palabra roce una zona para quitarla entera. No hace falta OCR: el texto sale del propio PDF | Unitarias (`keptWords`, capa en el PDF) y E2E (se busca "Contrato" y no aparece la cédula censurada) |
+| 8 | Enlaces | Herramienta **Enlace**: se marca una zona y se elige **sitio web o correo** (acepta "docusmart.online" y "nombre@correo.com"; rechaza javascript:, data: y archivos) o **página del documento**. Queda como anotación de enlace sin borde | Unitarias (direcciones seguras, anotaciones URI y de destino) y E2E |
+| 9 | Guardar y cargar respuestas | En Llenar formulario, **Guardar respuestas** descarga un .json con lo respondido (nada queda en el navegador) y **Cargar respuestas** lo vuelve a poner en otro PDF igual: cada respuesta va al campo con el mismo nombre y tipo; lo que no encaja se ignora y se avisa | Unitarias y E2E (se guarda, se cambia de PDF y se carga) |
+
+También se actualizaron las preguntas frecuentes de Censurar PDF y Llenar formulario en los 12 idiomas.
+
+**Queda por debajo en Editar:** crear campos de formulario nuevos (Adobe y Sejda lo tienen) y pedir firmas a otras personas (fuera de alcance por privacidad).
+
