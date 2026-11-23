@@ -473,6 +473,56 @@ tiene minutos gratis al mes; GitHub Actions cobra los minutos de macOS en repos 
 tienes. **Riesgos:** rechazo por la regla 4.2 (lo mitiga la Fase 2) y memoria en herramientas pesadas (lo mitiga
 W-149.10).
 
+## DocuSmart Desktop en Mac y Linux (W-150, pedido del usuario 2026-11-23)
+
+DocuSmart Desktop **no es un programa solo de Windows**. Es la web instalada como app (PWA, W-16), y la PWA ya se
+puede instalar en Mac y en Linux con el mismo código. Lo que hoy está pensado para Windows es la **ayuda**: los pasos del
+ícono en el escritorio hablan de Edge y del Explorador. Además, no se ha probado en esos sistemas.
+
+Por eso hay dos niveles:
+- **Nivel 1 (PWA, barato):** probar, ajustar la ayuda por sistema y anunciarlo. Con esto, Mac y Linux quedan cubiertos
+  sin otro código ni otra tienda.
+- **Nivel 2 (opcional):** un instalador propio y las tiendas (Mac App Store, Flathub/Snap y, de paso, Microsoft Store),
+  para quien busca DocuSmart en la tienda de su sistema.
+
+**Dónde se puede instalar la PWA hoy:**
+
+| Sistema | Navegadores que la instalan | Cómo |
+|---|---|---|
+| Windows | Edge, Chrome | Botón «Instalar» de la barra de direcciones o el nuestro, «Instalar en este equipo» |
+| macOS | Chrome, Edge; **Safari 17 o posterior** (macOS Sonoma) | En Chrome y Edge, igual que en Windows. En Safari: Archivo › «Agregar al Dock» (no tiene `beforeinstallprompt`) |
+| Linux | Chrome, Chromium, Edge, Brave | Igual que en Windows; queda en el menú de aplicaciones |
+| Cualquiera | Firefox | En escritorio, no instala PWA en Mac ni en Linux: la ayuda debe sugerir otro navegador o usar la web en la pestaña |
+
+### Nivel 1 — PWA en Mac y Linux
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-150.1 | **Detectar el sistema**, además del navegador: `desktopOS()` en `src/shared/platform/pwa.ts` (`windows`, `mac`, `linux`, `chromeos`), con `navigator.userAgentData.platform` cuando exista y el agente de usuario si no. Pruebas unitarias con agentes reales de los tres sistemas | 🤖 | Pendiente |
+| W-150.2 | **Ayuda de instalación por sistema** (`desk.*` en los 12 idiomas): en Mac, «Agregar al Dock» en Safari, y en Chrome/Edge la app queda en Launchpad y en la carpeta Aplicaciones. En Linux, el menú de aplicaciones y «Crear acceso directo» en Chrome. En Firefox, un aviso claro de que no se puede instalar. Atajos de teclado con ⌘ en Mac y Ctrl en los demás | 🤖 | Pendiente |
+| W-150.3 | **Probar en cada sistema**: macOS (Safari, Chrome y Edge) y Linux (Ubuntu con Chrome y Chromium): instalar, abrir sin conexión, actualizar con el aviso, una sola ventana, accesos directos del manifest, guardar archivos y las herramientas pesadas (wasm, OCR, video). Se puede hacer con una Mac prestada o en la nube y con Ubuntu en una máquina virtual o en WSL. Agregar un job de Playwright con **WebKit** en el CI, que se acerca a Safari | 🤖 + 👤 (probar en Mac) | Pendiente |
+| W-150.4 | **Abrir archivos con DocuSmart Desktop**: `file_handlers` en el manifest (PDF, imágenes, Office, ZIP), para que aparezca en «Abrir con» del Explorador, del Finder y del gestor de archivos de Linux (navegadores Chromium), usando la `launchQueue` que ya existe. También `share_target`, para recibir archivos que se comparten desde el sistema | 🤖 | Pendiente |
+| W-150.5 | **Diferencias de Safari en Mac**: Safari no tiene `beforeinstallprompt`, y la voz, el micrófono (Audio a texto) y la cámara (QR) piden permiso de otra forma. Revisar Modo Estudio, Audio a texto y QR en Safari, y que la CSP con Trusted Types funcione. Hay que verificar desde qué versión Safari aplica Trusted Types; donde no la aplique, la página debe funcionar igual | 🤖 | Pendiente |
+| W-150.6 | **Contarlo**: en la portada, en /app/ y en el asistente, decir que DocuSmart Desktop es «para Windows, Mac y Linux», con un ícono por sistema; incluirlo en los datos estructurados (`operatingSystem` del `WebApplication`) y en la página de ayuda de Desktop | 🤖 | Pendiente (depende de W-150.3) |
+
+### Nivel 2 — Instaladores y tiendas (opcional, después del nivel 1)
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-150.7 | **Decidir si vale la pena**: medir en GA4 cuántos visitantes llegan desde Mac y Linux y cuántos instalan la PWA. Si son pocos, el nivel 1 alcanza | 👤 + 🤖 | Pendiente (después de W-150.6) |
+| W-150.8 | **Envoltorio con Tauri 2**: un solo proyecto que genera instaladores para macOS (`.dmg`), Linux (`.AppImage`, `.deb`, `.rpm`) y Windows (`.msi`), con el código web dentro, como en W-149. Pesa unos pocos MB porque usa el visor del sistema, frente a más de 100 MB de Electron. Reutiliza la capa de plataforma de W-149.6 (guardar con el diálogo nativo, sin service worker, CSP en `<meta>`) | 🤖 | Pendiente (después de W-149.6) |
+| W-150.9 | **Riesgos del visor del sistema**: Tauri usa WKWebView en Mac (las mismas limitaciones que en iPhone) y **WebKitGTK en Linux**, que es más limitado: voz, cámara y micrófono pueden fallar, y el wasm pesado rinde menos. Probar las herramientas una por una; si algo no funciona, ocultarlo en esa plataforma o sugerir la PWA en Chrome | 🤖 | Pendiente (depende de W-150.8) |
+| W-150.10 | **Mac**: firmar y **notarizar** el `.dmg` con la misma cuenta de Apple Developer de W-149.1 (sin notarizar, macOS bloquea la app al abrirla). Opcionalmente publicar en la **Mac App Store** (sandbox y revisión de Apple, con las mismas reglas de privacidad y compras de W-149) | 🤖 + 👤 (certificados) | Pendiente |
+| W-150.11 | **Linux**: publicar en **Flathub** (la tienda que usan la mayoría de las distribuciones) y opcionalmente en **Snap Store** (Ubuntu). Ambas son gratis, y Flathub revisa el manifiesto antes de publicar | 🤖 + 👤 (cuentas) | Pendiente |
+| W-150.12 | **Windows en la Microsoft Store**: se puede publicar la PWA tal cual con PWABuilder, sin Tauri, en una cuenta de desarrollador que ahora es gratis para personas. Es la forma más barata de estar en una tienda de escritorio | 🤖 + 👤 (cuenta) | Pendiente |
+| W-150.13 | **Compilación y actualizaciones**: job del CI que compila los tres sistemas (Linux y Windows en sus equipos de GitHub, Mac en el mismo equipo macOS de W-149.19), firma y publica en GitHub Releases. El actualizador de Tauri avisa de cada versión nueva, como hoy el aviso «Actualizar» de la PWA | 🤖 | Pendiente (depende de W-150.8) |
+
+Orden: el nivel 1 primero (W-150.1 → .2 → .3 → .4/.5 → .6); es trabajo de la web y se puede hacer en cuanto la web
+esté estable. El nivel 2 va solo si W-150.7 lo justifica y, para no duplicar trabajo, después de la base de iPhone
+(W-149.6), que comparte la capa de plataforma. W-150.12 (Microsoft Store) es independiente y barato. **Costos:** el
+nivel 1 no cuesta nada. En el nivel 2, la cuenta de Apple ya se paga por W-149; Flathub, Snap y la Microsoft Store son
+gratis para personas.
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |
