@@ -207,6 +207,79 @@ terceros ni IA en la nube.
 | W-70f | (Opcional) Respuestas redactadas con la IA local del navegador (Chrome Prompt API) cuando esté disponible | 🤖 | Hecho (PR #97) |
 | W-70g | **"Enviar esta pregunta"** cuando el asistente no sabe responder: abre un correo a soporte con la pregunta ya escrita; el usuario decide si lo envía (nada se manda solo). Sirve para conocer las preguntas reales y mejorar la base (ver `docs/CHATBOT.md`, sección 8) | 🤖 | Hecho (PR #103) |
 
+### De chatbot a asistente, por capas (W-151, pedido del usuario 2026-11-23)
+
+Hoy el asistente es un **chatbot de preguntas frecuentes**. El motor local (`engine.ts`, tipo BM25) elige una de unas
+410 respuestas por idioma, y la IA del navegador (Gemini Nano, W-70f) solo la reescribe. El objetivo es que además
+**haga cosas por el usuario**:
+- abrir la herramienta con el archivo y las opciones ya puestos;
+- encadenar pasos (escanear → unir → firmar);
+- saber en qué pantalla está el usuario, qué archivo cargó y qué error le salió;
+- proponer el siguiente paso.
+
+**Regla de diseño: cuatro capas, cada una funciona aunque falten las de encima.** La capa 1 responde siempre, en
+todos los navegadores y en los 12 idiomas. Las capas 2 y 3 también funcionan en todos los navegadores. La capa 4 solo
+está en Chrome de computadora con equipo compatible (hoy en `es`, `en` y `ja`), así que **nunca** es requisito. Si una
+capa falla, tarda o duda, responde la de abajo.
+
+**Reglas de seguridad para las acciones:**
+- El asistente solo elige de un **catálogo cerrado de acciones**, definido en el código y validado con un esquema.
+- **Pide confirmación** antes de procesar un archivo («Voy a comprimir *factura.pdf* a menos de 2 MB. ¿Continuar?»).
+- Nunca borra ni envía nada por su cuenta.
+- Todo sigue siendo local: nada de lo que escribe el usuario ni de sus archivos sale del navegador, y no se usa IA en
+  la nube en ningún momento.
+
+#### Capa 1 — Chatbot (lo que hay, mejorado)
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-151.1 | **Medir el chatbot actual**: armar un conjunto de preguntas de prueba por idioma, con las de `tests/unit/features/assistant/questions.ts` más las preguntas reales que llegaron por «Enviar esta pregunta» (W-70g). Medir cuántas veces acierta la primera respuesta y cuántas no encuentra nada. Ese número es la línea base contra la que se comparan las capas nuevas, y el CI falla si baja | 🤖 | Pendiente |
+| W-151.2 | **Llenar los huecos de la base**: agregar respuestas para las preguntas que hoy no encuentra nada, empezando por trámites (DIAN, SECOP, universidades), errores frecuentes («no abre», «pesa mucho», «sale en blanco») y las herramientas nuevas de la auditoría W-146. En los 12 idiomas | 🤖 + 👤 (revisar textos) | Pendiente |
+
+#### Capa 2 — Entender pedidos con reglas (asistente para todos, sin descargas)
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-151.3 | **Catálogo de acciones** (`src/features/assistant/core/actions.ts`): un tipo por acción, con sus parámetros y la validación de cada uno. Ejemplos: `openTool` (herramienta), `setOptions` (tamaño objetivo, páginas, formato, calidad, contraseña: nunca se guarda), `useCurrentFile`, `chain` (lista de pasos), `explain` (respuesta de la base). Cada herramienta declara qué opciones acepta desde el asistente. Es la misma lista que usarán las capas 3 y 4 | 🤖 | Pendiente |
+| W-151.4 | **Analizador de pedidos por reglas**: reconocer verbos y herramientas («comprime», «une», «pasa a Word») y datos («a menos de 2 MB», «páginas 3 a 5», «en blanco y negro», «a 300 ppp»), con tildes, errores de tipeo y números escritos en letras. Los sinónimos salen de la base de cada idioma, nada queda fijo en el código, y el resultado es una acción del catálogo. Pruebas con al menos 50 pedidos por idioma en es y en, y 20 en los demás | 🤖 | Pendiente |
+| W-151.5 | **Confirmar y ejecutar**: en el panel, una tarjeta con lo que se va a hacer y los botones «Hacer» y «Cambiar». «Hacer» abre la herramienta con las opciones ya puestas y el archivo que el usuario tenga abierto. Si falta el archivo, lo pide con el selector. Las herramientas reciben las opciones por una interfaz común, no por la URL, para que nada sensible quede en el historial | 🤖 | Pendiente (depende de W-151.3 y .4) |
+| W-151.6 | **Contexto de la pantalla**: el panel sabe qué herramienta está abierta, qué archivo hay (solo nombre, tipo, tamaño y número de páginas, nunca el contenido) y el último error. Con eso responde «¿por qué no me deja?» con la causa y la solución (contraseña → Desbloquear; archivo dañado → Reparar), y las sugerencias cambian según la pantalla | 🤖 | Pendiente |
+| W-151.7 | **Siguiente paso sugerido**: al terminar una herramienta, el asistente propone lo que suele venir después: unir → comprimir o firmar; escanear → OCR o unir; PDF a Word → abrir el resultado. Se puede desactivar en Ajustes, sin ventanas emergentes, solo una sugerencia discreta | 🤖 | Pendiente |
+| W-151.8 | **Encadenar pasos**: «escanea, une y firma» arma un plan de varios pasos, lo muestra como lista y lo ejecuta uno por uno, pasando el resultado de cada paso al siguiente y pidiendo confirmación al principio. Si un paso falla, se detiene y explica | 🤖 | Pendiente (depende de W-151.5) |
+
+#### Capa 3 — Modelo propio entrenado con Python (entiende frases libres, en todos los navegadores)
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-151.9 | **Datos de entrenamiento** (`ml/assistant/data/`): para cada intención (las respuestas de la base y las acciones del catálogo), las preguntas de la base más variantes escritas a mano («que pese menos», «bajarle los MB», «hacerlo más liviano»), en los 12 idiomas. Las variantes se pueden ampliar con un modelo de lenguaje **local** (p. ej. con Ollama en la computadora del desarrollador), nunca con datos de usuarios. Se separa una parte solo para evaluar | 🤖 + 👤 (revisar variantes) | Pendiente |
+| W-151.10 | **Entrenamiento en Python** (`ml/assistant/train.py`, con `requirements.txt` y versiones fijas). Se prueba primero un clasificador liviano (n-gramas de caracteres + modelo lineal con scikit-learn, pocos MB). Si no alcanza, un modelo de embeddings multilingüe pequeño (p. ej. `multilingual-e5-small`) ajustado con `sentence-transformers` y cuantizado. Se exporta a ONNX (o JSON si es lineal) en `public/assistant/model/` | 🤖 | Pendiente (depende de W-151.9) |
+| W-151.11 | **Evaluación y control en el CI**: un job de Python reentrena y mide el acierto por idioma con la parte de evaluación. El modelo nuevo solo se publica si acierta igual o más que el anterior y que la capa 1 (W-151.1). Se informan las intenciones que más se confunden | 🤖 | Pendiente (depende de W-151.10) |
+| W-151.12 | **Usarlo en el navegador** con `onnxruntime-web`, que ya está en el proyecto para Whisper (W-133). Corre en un worker y se descarga la primera vez que se usa el asistente, no al cargar la página. Funciona sin conexión en Desktop (se guarda en caché) y tiene un tamaño máximo acordado (meta: ≤ 5 MB el lineal, ≤ 40 MB el de embeddings). Si el modelo no está seguro (umbral de confianza), se usa la capa 1 o 2 | 🤖 | Pendiente (depende de W-151.10) |
+| W-151.13 | **Mejora continua**: cada mes, las preguntas que llegan por «Enviar esta pregunta» se revisan a mano, se agregan a los datos (sin el correo de quien la mandó) y se reentrena. Hay un registro de versiones del modelo con su acierto en `docs/CHATBOT.md` | 👤 + 🤖 | Pendiente |
+
+#### Capa 4 — IA del navegador para pedidos complejos (opcional, solo Chrome compatible)
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-151.14 | **Pedidos complejos con salida estructurada**: cuando las capas 2 y 3 no están seguras, se le pide a Gemini Nano (Prompt API) que devuelva **solo JSON** con una acción del catálogo, usando `responseConstraint` con el esquema de W-151.3. Lo que no cumpla el esquema se descarta y se usa la capa de abajo. Mismos límites de tiempo que W-70f | 🤖 | Pendiente (depende de W-151.3) |
+| W-151.15 | **Otros motores del navegador**: revisar la Prompt API de Edge (Phi-4-mini) y la de otros navegadores cuando salgan, con la misma interfaz (`browserAi.ts`). Ampliar `AI_LANGS` cuando Chrome soporte más idiomas | 🤖 | Pendiente |
+| W-151.16 | **Aviso honesto en el panel**: mostrar qué capa respondió («Respuesta de la base», «Entendí tu pedido», «Redactada por la IA de tu navegador») y mantener la nota de privacidad: «todo ocurre en tu navegador» | 🤖 | Pendiente |
+
+#### Transversal
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-151.17 | **Accesibilidad y celular**: las tarjetas de acción y los planes de varios pasos se usan con teclado y lector de pantalla y caben a 375 px. Pruebas de Playwright: «comprime este PDF a 1 MB» termina con el archivo comprimido, en escritorio y celular | 🤖 | Pendiente |
+| W-151.18 | **Analítica con consentimiento (solo IDs)**: qué capa respondió, qué acción se propuso, si se confirmó y si terminó bien. **Nunca** el texto escrito ni nombres de archivo. Con eso se decide qué mejorar | 🤖 | Pendiente |
+| W-151.19 | **Llevarlo a la app Android** cuando llegue la paridad: el catálogo de acciones y el modelo de la capa 3 (ONNX corre también en Android con ONNX Runtime Mobile) se reutilizan, así el asistente entiende lo mismo en la web y en la app | 🤖 | Pendiente (después de la paridad) |
+
+Orden: W-151.1 y .2 → capa 2 (.3 → .4 → .5; luego .6, .7 y .8) → capa 3 (.9 → .10 → .11 → .12; .13 es continuo) →
+capa 4 (.14 a .16). W-151.17 y .18 se hacen junto a cada capa. Con la capa 2 terminada, el chatbot ya es un asistente
+para todos los usuarios, sin descargar nada. **Costos:** ninguno en dinero. Python y sus librerías son gratis y el
+entrenamiento corre en la computadora o en el CI en minutos (el lineal) o en menos de una hora (el de embeddings, sin
+GPU). **Riesgos:** la calidad depende de los datos en 12 idiomas (lo mitigan W-151.9 y .13), y un modelo pesado
+retrasa el panel (lo mitigan la descarga bajo demanda y el tope de tamaño de W-151.12).
+
 ## Diseño visual y animaciones de todo el sitio
 
 Hoy la portada tiene animaciones y el resto se ve plano. Se empieza por la **política de privacidad** y desde ahí se
