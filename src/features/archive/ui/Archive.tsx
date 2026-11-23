@@ -5,18 +5,23 @@ import { go, useApp } from '../../../app/state'
 import { Icon } from '../../../shared/ui/Icon'
 import { BusyButton, DropZone, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
 import { baseName, download, formatBytes } from '../../../shared/files/files'
-import { BeforeAfter } from '../../../shared/ui/DocPreview'
+import { BeforeAfter, DocPreview } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import {
   EXTRACT_ACCEPT,
   ArchiveError,
   ArchiveTooBigError,
   WrongArchivePasswordError,
-  createArchive,
+  VOLUME_SIZES,
+  createArchiveParts,
   extractArchive,
+  isFolderEntry,
   isZipSafePassword,
   listArchive,
+  safeEntryPath,
+  splitVolumes,
   type ArchiveEntry,
+  type ArchivePart,
   type ArchiveFormat,
   type ArchiveInput,
   type ArchiveLevel,
@@ -34,6 +39,12 @@ function mimeFor(path: string): string {
   const map: Record<string, string> = { pdf: 'application/pdf', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif', bmp: 'image/bmp', txt: 'text/plain', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', zip: 'application/zip' }
   return map[e] ?? 'application/octet-stream'
 }
+
+/** Archivos (no carpetas) de la lista. */
+const files0 = (entries: ArchiveEntry[] | null) => entries?.filter((e) => !e.isDir) ?? []
+
+/** Lo que la vista previa sabe mostrar: imágenes, PDF, texto y Office. */
+const canView = (f: File) => /^(image\/(jpeg|png|webp|gif|bmp)|application\/pdf|text\/plain)$/.test(f.type) || /\.(docx|xlsx)$/i.test(f.name)
 
 function friendly(e: unknown): string {
   if (e instanceof WrongArchivePasswordError) return tr('arch.wrongKey')
@@ -80,11 +91,15 @@ export function CreateArchiveTool() {
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState<{ before: number; after: number } | null>(null)
   const [output, setOutput] = useState<File | null>(null)
+  /** Dividido en partes para mandarlo en varios correos (W-146.10): 0 = sin dividir. */
+  const [volumeMb, setVolumeMb] = useState(0)
+  const [parts, setParts] = useState<File[] | null>(null)
   const inputFiles = useMemo(() => items.map((i) => i.file), [items])
   useEffect(() => {
     setOutput(null)
+    setParts(null)
     setDone(null)
-  }, [items, format, level, usePw])
+  }, [items, format, level, usePw, volumeMb])
   const folderInput = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -109,9 +124,19 @@ export function CreateArchiveTool() {
     setDone(null)
     try {
       const inputs: ArchiveInput[] = await Promise.all(items.map(async (i) => ({ path: i.path, data: new Uint8Array(await i.file.arrayBuffer()) })))
-      const out = await createArchive(inputs, { format, level, password: usePw ? pw : undefined })
-      setOutput(resultFile(out, `${(name.trim() || tr('file.files')).replace(/\.(zip|7z)$/i, '')}.${format}`, format === 'zip' ? 'application/zip' : 'application/octet-stream'))
-      setDone({ before: total, after: out.length })
+      const made = await createArchiveParts(inputs, { format, level, password: usePw ? pw : undefined, volumeBytes: volumeMb * 1024 * 1024 })
+      const base = `${(name.trim() || tr('file.files')).replace(/\.(zip|7z)$/i, '')}.${format}`
+      const mime = format === 'zip' ? 'application/zip' : 'application/octet-stream'
+      if (made.length === 1) {
+        setOutput(resultFile(made[0].data, base, mime))
+        setParts(null)
+      } else {
+        // "nombre.zip.001", ".002"…: cada parte por separado (para adjuntarlas en correos distintos).
+        const files = made.map((m) => resultFile(m.data, base + m.name.slice(m.name.lastIndexOf('.')), 'application/octet-stream'))
+        setParts(files)
+        setOutput(null)
+      }
+      setDone({ before: total, after: made.reduce((n, m) => n + m.data.length, 0) })
       track('archive_created', { format, level, files: items.length, encrypted: usePw })
       toast(tr('common.doneReview'))
     } catch (e) {
@@ -179,6 +204,17 @@ export function CreateArchiveTool() {
           : tr('arch.7zNote')}
       </small>
 
+      <div className="field">
+        <span aria-hidden="true">{tr('arch.split')}</span>
+        <Segmented
+          label={tr('arch.split')}
+          value={String(volumeMb)}
+          onChange={(v: string) => setVolumeMb(Number(v))}
+          options={[{ value: '0', label: tr('arch.noSplit') }, ...VOLUME_SIZES.map((mb) => ({ value: String(mb), label: `${mb} MB` }))]}
+        />
+        {volumeMb > 0 && <small className="faint">{tr('arch.splitHint')}</small>}
+      </div>
+
       <label className="field">
         <span>{tr('arch.name')}</span>
         <input className="input" value={name} maxLength={80} onChange={(e) => setName(e.target.value)} />
@@ -210,7 +246,26 @@ export function CreateArchiveTool() {
           {tr('arch.create', { fmt: format.toUpperCase() })}
         </BusyButton>
       </div>
-      {items.length > 0 && (
+      {parts && (
+        <div className="stack">
+          <Notice kind="success">{tr('arch.partsReady', { n: parts.length })}</Notice>
+          <ul className="file-list" style={{ marginTop: 0 }}>
+            {parts.map((f) => (
+              <li key={f.name} className="file-item">
+                <span className="ico ico-violet"><Icon name="archive" /></span>
+                <div className="file-meta">
+                  <b title={f.name}>{f.name}</b>
+                  <small>{formatBytes(f.size)}</small>
+                </div>
+                <button type="button" className="icon-btn" aria-label={tr('img.downloadOne', { name: f.name })} onClick={() => download(f, f.name)}>
+                  <Icon name="download" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {items.length > 0 && !parts && (
         <BeforeAfter
           originals={inputFiles}
           result={output}
@@ -237,24 +292,34 @@ export function CreateArchiveTool() {
 export function ExtractArchiveTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
+  /** Las otras partes de un archivo dividido (W-146.10). */
+  const [parts, setParts] = useState<File[]>([])
   const [entries, setEntries] = useState<ArchiveEntry[] | null>(null)
+  /** Qué archivos extraer (todos al principio) y cuál se está viendo. */
+  const [chosen, setChosen] = useState<Set<string>>(new Set())
+  const [viewing, setViewing] = useState<File | null>(null)
+  const [viewPage, setViewPage] = useState(1)
+  const [viewPages, setViewPages] = useState(1)
   const [needsPw, setNeedsPw] = useState(false)
   const [pw, setPw] = useState('')
   const [extracted, setExtracted] = useState<ArchiveInput[] | null>(null)
   /** Lo extraído como archivos y el ZIP para guardarlo todo junto. */
-  const extractedFiles = useMemo(() => (extracted ?? []).map((f) => resultFile(f.data, f.path.split('/').pop() || 'archivo', mimeFor(f.path))), [extracted])
+  const extractedFiles = useMemo(() => (extracted ?? []).filter((f) => !isFolderEntry(f)).map((f) => resultFile(f.data, f.path.split('/').pop() || 'archivo', mimeFor(f.path))), [extracted])
   const [bundle, setBundle] = useState<File | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const ext = (f: File) => (f.name.match(/\.([^.]+)$/)?.[1] ?? '').toLowerCase()
 
-  const inspect = async (f: File, password = '') => {
+  const partData = async (list: File[]): Promise<ArchivePart[]> => Promise.all(list.map(async (p) => ({ name: p.name, data: new Uint8Array(await p.arrayBuffer()) })))
+
+  const inspect = async (f: File, password = '', others: File[] = parts) => {
     setBusy(true)
     setError(null)
     try {
-      const list = await listArchive(f.name, new Uint8Array(await f.arrayBuffer()), password)
+      const list = await listArchive(f.name, new Uint8Array(await f.arrayBuffer()), password, await partData(others))
       setEntries(list)
+      setChosen(new Set(list.filter((e) => !e.isDir).map((e) => e.path)))
       setNeedsPw(list.some((e) => e.encrypted))
     } catch (e) {
       if (e instanceof WrongArchivePasswordError) {
@@ -267,13 +332,28 @@ export function ExtractArchiveTool() {
     }
   }
 
-  const pick = (f: File) => {
-    setFile(f)
+  const pick = (picked: File[]) => {
+    setError(null)
+    let main = picked[0]
+    let others: File[] = []
+    if (picked.length > 1) {
+      // Varias partes de un mismo archivo: se abre la primera con las demás al lado.
+      const set = splitVolumes(picked.map((p) => p.name))
+      if (!set) {
+        setError(tr('arch.notParts'))
+        return
+      }
+      main = picked.find((p) => p.name === set.main)!
+      others = picked.filter((p) => p !== main)
+    }
+    setFile(main)
+    setParts(others)
     setEntries(null)
     setExtracted(null)
+    setViewing(null)
     setNeedsPw(false)
     setPw('')
-    void inspect(f)
+    void inspect(main, '', others)
   }
 
   const extract = async () => {
@@ -281,8 +361,11 @@ export function ExtractArchiveTool() {
     setBusy(true)
     setError(null)
     try {
-      const files = await extractArchive(file.name, new Uint8Array(await file.arrayBuffer()), pw)
-      if (!entries) setEntries(files.map((f) => ({ path: f.path, size: f.data.length, isDir: false, encrypted: needsPw })))
+      const all = await extractArchive(file.name, new Uint8Array(await file.arrayBuffer()), pw, 0, await partData(parts))
+      if (!entries) setEntries(all.map((f) => ({ path: f.path, size: f.data.length, isDir: isFolderEntry(f), encrypted: needsPw })))
+      // Solo lo elegido (las carpetas vacías se conservan).
+      const wanted = new Set([...chosen].map(safeEntryPath))
+      const files = !entries || chosen.size === files0(entries).length ? all : all.filter((f) => isFolderEntry(f) || wanted.has(f.path))
       setExtracted(files)
       track('archive_extracted', { format: ext(file), files: files.length })
       toast(files.length === 1 ? tr('arch.extractedOne') : tr('arch.extractedMany', { n: files.length }))
@@ -304,12 +387,19 @@ export function ExtractArchiveTool() {
     setBundle(extracted.length === 1 ? extractedFiles[0] : resultFile(zip, `${baseName(file.name).replace(/\.tar$/i, '')}-${tr('file.extracted')}.zip`, 'application/zip'))
   }, [extracted, extractedFiles, file])
 
-  const files = entries?.filter((e) => !e.isDir) ?? []
+  const files = files0(entries)
+  const toggle = (path: string) =>
+    setChosen((prev) => {
+      const next = new Set(prev)
+      if (next.has(path)) next.delete(path)
+      else next.add(path)
+      return next
+    })
 
   return (
     <div className="card stack">
       {!file ? (
-        <DropZone accept={EXTRACT_ACCEPT} title={tr('arch.pickArchive')} hint={tr('arch.archHint')} onFiles={([f]) => pick(f)} />
+        <DropZone accept={EXTRACT_ACCEPT} multiple title={tr('arch.pickArchive')} hint={tr('arch.archHint2')} onFiles={pick} />
       ) : (
         <ul className="file-list" style={{ marginTop: 0 }}>
           <li className="file-item">
@@ -319,9 +409,10 @@ export function ExtractArchiveTool() {
               <small>
                 {formatBytes(file.size)}
                 {entries ? ` · ${files.length === 1 ? tr('dp.file') : tr('dp.files', { n: files.length })}` : ''}
+                {parts.length > 0 ? ` · ${tr('arch.partsN', { n: parts.length + 1 })}` : ''}
               </small>
             </div>
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setFile(null); setEntries(null); setExtracted(null); setError(null) }}>{tr('common.change')}</button>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setFile(null); setParts([]); setEntries(null); setExtracted(null); setViewing(null); setError(null) }}>{tr('common.change')}</button>
           </li>
         </ul>
       )}
@@ -343,33 +434,72 @@ export function ExtractArchiveTool() {
       )}
 
       {files.length > 0 && !extracted && (
-        <ul className="file-list" style={{ maxHeight: 260, overflow: 'auto', marginTop: 0 }}>
-          {files.map((e) => (
-            <li key={e.path} className="file-item">
-              <span className="ico ico-blue"><Icon name={e.encrypted ? 'lock' : 'file'} /></span>
-              <div className="file-meta">
-                <b title={e.path}>{e.path}</b>
-                <small>{formatBytes(e.size)}</small>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <>
+          {files.length > 1 && (
+            <div className="row" style={{ justifyContent: 'space-between' }}>
+              <small className="faint">{tr('arch.chosen', { n: chosen.size, total: files.length })}</small>
+              <span className="row" style={{ gap: 6 }}>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => setChosen(new Set(files.map((e) => e.path)))}>{tr('arch.all')}</button>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => setChosen(new Set())}>{tr('arch.none')}</button>
+              </span>
+            </div>
+          )}
+          <ul className="file-list" style={{ maxHeight: 260, overflow: 'auto', marginTop: 0 }}>
+            {files.map((e) => (
+              <li key={e.path} className="file-item">
+                <input type="checkbox" checked={chosen.has(e.path)} onChange={() => toggle(e.path)} aria-label={tr('arch.choose', { name: e.path })} />
+                <span className="ico ico-blue"><Icon name={e.encrypted ? 'lock' : 'file'} /></span>
+                <div className="file-meta">
+                  <b title={e.path}>{e.path}</b>
+                  <small>{formatBytes(e.size)}</small>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {viewing && (
+        <div className="card stack" style={{ padding: 12 }}>
+          <DocPreview key={viewing.name} source={viewing} page={viewPage} label={viewing.name} onPages={setViewPages} />
+          <div className="row" style={{ justifyContent: 'space-between' }}>
+            {viewPages > 1 ? (
+              <span className="row" style={{ gap: 6 }}>
+                <button type="button" className="btn btn-ghost btn-sm" disabled={viewPage <= 1} onClick={() => setViewPage((n) => n - 1)}>‹</button>
+                <small className="faint">{viewPage} / {viewPages}</small>
+                <button type="button" className="btn btn-ghost btn-sm" disabled={viewPage >= viewPages} onClick={() => setViewPage((n) => n + 1)}>›</button>
+              </span>
+            ) : <span />}
+            <button type="button" className="btn btn-soft btn-sm" onClick={() => setViewing(null)}>{tr('arch.closeView')}</button>
+          </div>
+        </div>
       )}
 
       {extracted && (
         <ul className="file-list" style={{ maxHeight: 300, overflow: 'auto', marginTop: 0 }}>
-          {extracted.map((f) => (
-            <li key={f.path} className="file-item">
-              <span className="ico ico-green"><Icon name="file" /></span>
-              <div className="file-meta">
-                <b title={f.path}>{f.path}</b>
-                <small>{formatBytes(f.data.length)}</small>
-              </div>
-              <button type="button" className="icon-btn" aria-label={tr('img.downloadOne', { name: f.path })} onClick={() => download(f.data, f.path.split('/').pop() || 'archivo')}>
-                <Icon name="download" />
-              </button>
-            </li>
-          ))}
+          {extracted.map((f, i) => {
+            const folder = isFolderEntry(f)
+            const asFile = folder ? null : extractedFiles[extracted.slice(0, i).filter((x) => !isFolderEntry(x)).length]
+            return (
+              <li key={f.path} className="file-item">
+                <span className={'ico ' + (folder ? 'ico-amber' : 'ico-green')}><Icon name={folder ? 'folder' : 'file'} /></span>
+                <div className="file-meta">
+                  <b title={f.path}>{f.path}</b>
+                  <small>{folder ? tr('arch.emptyFolder') : formatBytes(f.data.length)}</small>
+                </div>
+                {asFile && canView(asFile) && (
+                  <button type="button" className="icon-btn" aria-label={tr('arch.view', { name: f.path })} onClick={() => { setViewing(asFile); setViewPage(1); setViewPages(1) }}>
+                    <Icon name="eye" />
+                  </button>
+                )}
+                {!folder && (
+                  <button type="button" className="icon-btn" aria-label={tr('img.downloadOne', { name: f.path })} onClick={() => download(f.data, f.path.split('/').pop() || 'archivo')}>
+                    <Icon name="download" />
+                  </button>
+                )}
+              </li>
+            )
+          })}
         </ul>
       )}
 
@@ -378,8 +508,8 @@ export function ExtractArchiveTool() {
 
       <div className="row row-end">
         {!extracted && (
-          <BusyButton busy={busy} disabled={!file || (needsPw && !pw)} onClick={extract} icon="archive">
-            {tr('arch.extract')}
+          <BusyButton busy={busy} disabled={!file || (needsPw && !pw) || (!!entries && files.length > 0 && chosen.size === 0)} onClick={extract} icon="archive">
+            {entries && files.length > 1 && chosen.size < files.length ? tr('arch.extractN', { n: chosen.size }) : tr('arch.extract')}
           </BusyButton>
         )}
       </div>
