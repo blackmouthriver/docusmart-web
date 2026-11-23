@@ -6,7 +6,8 @@
 
 export type WifiSecurity = 'WPA' | 'WEP' | 'NONE'
 export type WifiContent = { ssid: string; password: string; security: WifiSecurity }
-export type ContactContent = { name: string; phone: string; email: string }
+/** Contacto (vCard): empresa, cargo, dirección y web son opcionales (W-146.11). */
+export type ContactContent = { name: string; phone: string; email: string; company?: string; title?: string; address?: string; website?: string }
 /** Fechas en hora local "flotante" (sin zona), como la app: `YYYY-MM-DDTHH:mm[:ss]`. */
 export type EventContent = { title: string; location: string; start: string; end: string }
 
@@ -37,6 +38,11 @@ export function contactPayload(c: ContactContent): string {
   const lines = ['BEGIN:VCARD', 'VERSION:3.0', `N:${escapeVCardField(name)};;;;`, `FN:${escapeVCardField(name)}`]
   if (c.phone.trim()) lines.push(`TEL:${escapeVCardField(c.phone.trim())}`)
   if (c.email.trim()) lines.push(`EMAIL:${escapeVCardField(c.email.trim())}`)
+  if (c.company?.trim()) lines.push(`ORG:${escapeVCardField(c.company.trim())}`)
+  if (c.title?.trim()) lines.push(`TITLE:${escapeVCardField(c.title.trim())}`)
+  // ADR: apartado;extendida;calle;ciudad;región;código;país — la dirección completa va en "calle".
+  if (c.address?.trim()) lines.push(`ADR:;;${escapeVCardField(c.address.trim())};;;;`)
+  if (c.website?.trim()) lines.push(`URL:${escapeVCardField(c.website.trim())}`)
   lines.push('END:VCARD')
   return lines.join(CRLF)
 }
@@ -64,6 +70,33 @@ export function urlPayload(input: string): string {
 export function emailPayload(input: string): string {
   const t = input.trim().replace(/\s+/g, '%20')
   return `mailto:${t.replace(/^mailto:/i, '')}`
+}
+
+/**
+ * WhatsApp (W-146.11): un enlace wa.me que abre el chat con el número y, si hay, el mensaje ya
+ * escrito. El número va con el indicativo del país; un celular colombiano de 10 dígitos (3xx)
+ * sin indicativo recibe el 57.
+ */
+export function whatsappPayload(phone: string, message: string): string {
+  let digits = phone.replace(/\D/g, '')
+  if (digits.length === 10 && digits.startsWith('3')) digits = '57' + digits
+  return `https://wa.me/${digits}${message.trim() ? `?text=${encodeURIComponent(message.trim())}` : ''}`
+}
+
+/** SMS con el número y el mensaje (el formato SMSTO: que leen las cámaras de Android e iPhone). */
+export function smsPayload(phone: string, message: string): string {
+  const number = phonePayload(phone).slice(4)
+  return `SMSTO:${number}:${message.replace(/\r?\n/g, ' ').trim()}`
+}
+
+/**
+ * Ubicación: un enlace de Google Maps con la dirección o las coordenadas ("4.6097, -74.0817"),
+ * que abre el mapa en cualquier celular (geo: no lo entiende la cámara del iPhone).
+ */
+export function locationPayload(place: string): string {
+  const coords = /^\s*(-?\d{1,2}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?)\s*$/.exec(place)
+  const query = coords ? `${coords[1]},${coords[2]}` : place.trim().replace(/\s+/g, ' ')
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
 }
 
 /** Solo dígitos, `*`, `#` y un `+` inicial (como la app). */
@@ -103,6 +136,7 @@ export function parseContact(payload: string): ContactContent | null {
   let structured = ''
   let phone = ''
   let email = ''
+  const extra: Pick<ContactContent, 'company' | 'title' | 'address' | 'website'> = {}
   for (const line of unfolded(payload)) {
     const i = line.indexOf(':')
     if (i <= 0) continue
@@ -114,9 +148,14 @@ export function parseContact(payload: string): ContactContent | null {
       structured = unescapeReservedField([given.trim(), family.trim()].filter(Boolean).join(' '))
     } else if (key === 'TEL' && !phone) phone = unescapeReservedField(value).replace(/^tel:/i, '').trim()
     else if (key === 'EMAIL' && !email) email = unescapeReservedField(value)
+    // ORG: empresa;área — se separa solo por ";" sin escapar (un "\;" es parte del nombre).
+    else if (key === 'ORG' && !extra.company) extra.company = unescapeReservedField(value.split(/(?<!\\);/)[0])
+    else if (key === 'TITLE' && !extra.title) extra.title = unescapeReservedField(value)
+    else if (key === 'ADR' && !extra.address) extra.address = unescapeReservedField(value.split(/(?<!\\);/).filter((p) => p.trim()).join(', '))
+    else if (key === 'URL' && !extra.website) extra.website = unescapeReservedField(value)
   }
   const finalName = name.trim() || structured
-  return finalName || phone || email ? { name: finalName, phone, email } : null
+  return finalName || phone || email ? { name: finalName, phone, email, ...extra } : null
 }
 
 /** `20261117T093000` (local) o `...Z` (UTC, se pasa a la hora local) → `YYYY-MM-DDTHH:mm:ss`. */
@@ -152,12 +191,14 @@ export function parseEvent(payload: string): EventContent | null {
 
 // ── Validación del formulario (los mismos casos que la app) ────────────
 
-export type QrKind = 'url' | 'text' | 'email' | 'phone' | 'wifi' | 'contact' | 'event'
+export type QrKind = 'url' | 'text' | 'email' | 'phone' | 'whatsapp' | 'sms' | 'location' | 'wifi' | 'contact' | 'event'
 export type QrFormError = 'empty' | 'wifiIncomplete' | 'contactName' | 'eventTitle' | 'eventEndBeforeStart'
 
 export type QrForm = {
   kind: QrKind
   value: string
+  /** Mensaje de WhatsApp o SMS (opcional). */
+  message: string
   wifi: WifiContent
   contact: ContactContent
   event: EventContent
@@ -174,6 +215,13 @@ export function buildPayload(f: QrForm): { payload: string } | { error: QrFormEr
       const payload = f.kind === 'url' ? urlPayload(f.value) : f.kind === 'email' ? emailPayload(f.value) : f.kind === 'phone' ? phonePayload(f.value) : f.value
       return { payload }
     }
+    case 'whatsapp':
+    case 'sms':
+      if (!/\d{3,}/.test(f.value.replace(/\D/g, ''))) return { error: 'empty' }
+      return { payload: f.kind === 'whatsapp' ? whatsappPayload(f.value, f.message) : smsPayload(f.value, f.message) }
+    case 'location':
+      if (!f.value.trim()) return { error: 'empty' }
+      return { payload: locationPayload(f.value) }
     case 'wifi':
       if (!f.wifi.ssid.trim() || (f.wifi.security !== 'NONE' && !f.wifi.password)) return { error: 'wifiIncomplete' }
       return { payload: wifiPayload({ ...f.wifi, ssid: f.wifi.ssid.trim() }) }
@@ -189,7 +237,7 @@ export function buildPayload(f: QrForm): { payload: string } | { error: QrFormEr
 
 // ── Lector inteligente (W-84) ──────────────────────────────────────────
 
-export type ReadType = 'url' | 'email' | 'phone' | 'wifi' | 'contact' | 'event' | 'text'
+export type ReadType = 'url' | 'email' | 'phone' | 'sms' | 'location' | 'wifi' | 'contact' | 'event' | 'text'
 
 /** Tipo de un QR leído (como detectQrContentType de la app; los archivos locales del celular cuentan como texto). */
 export function detectType(value: string): ReadType {
@@ -197,6 +245,8 @@ export function detectType(value: string): ReadType {
   if (/^https?:\/\//i.test(t)) return 'url'
   if (/^mailto:/i.test(t)) return 'email'
   if (/^tel:/i.test(t)) return 'phone'
+  if (/^(smsto|sms):/i.test(t)) return 'sms'
+  if (/^geo:/i.test(t)) return 'location'
   if (/^wifi:/i.test(t)) return 'wifi'
   if (/BEGIN:VCARD/i.test(t)) return 'contact'
   if (/BEGIN:VEVENT/i.test(t)) return 'event'
@@ -233,6 +283,36 @@ export function emailAddress(payload: string): string {
 }
 
 export const phoneNumber = (payload: string) => payload.trim().replace(/^tel:/i, '').trim()
+
+/** Número y mensaje de un SMS leído ("SMSTO:número:mensaje" o "sms:número?body=mensaje"). */
+export function parseSms(payload: string): { phone: string; message: string } | null {
+  const t = payload.trim()
+  if (/^smsto:/i.test(t)) {
+    // Sin expresión regular: "número:mensaje" se separa en el primer ":".
+    const rest = t.slice(6)
+    const i = rest.indexOf(':')
+    return i < 0 ? { phone: rest.trim(), message: '' } : { phone: rest.slice(0, i).trim(), message: rest.slice(i + 1).trim() }
+  }
+  const sms = /^sms:([^?]*)(?:\?body=([\s\S]*))?$/i.exec(t)
+  if (!sms) return null
+  let message = sms[2] ?? ''
+  try {
+    message = decodeURIComponent(message)
+  } catch {
+    /* se deja tal cual */
+  }
+  return { phone: sms[1].trim(), message }
+}
+
+/** Coordenadas de un "geo:lat,lng" leído, y el enlace del mapa para abrirlas. */
+export function parseGeo(payload: string): { lat: number; lng: number; mapUrl: string } | null {
+  const m = /^geo:\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/i.exec(payload.trim())
+  if (!m) return null
+  const lat = Number(m[1])
+  const lng = Number(m[2])
+  if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null
+  return { lat, lng, mapUrl: locationPayload(`${lat}, ${lng}`) }
+}
 
 /** Un `mailto:`/`tel:` solo se usa como enlace si no trae nada raro (sin espacios ni comillas). */
 export const isPlainScheme = (payload: string) => /^(mailto|tel):[^\s"'<>]+$/i.test(payload.trim())

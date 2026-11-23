@@ -85,6 +85,7 @@ describe('buildPayload', () => {
   const base: QrForm = {
     kind: 'text',
     value: '',
+    message: '',
     wifi: { ssid: '', password: '', security: 'WPA' },
     contact: { name: '', phone: '', email: '' },
     event: { title: '', location: '', start: '2026-11-17T09:00', end: '2026-11-17T10:00' },
