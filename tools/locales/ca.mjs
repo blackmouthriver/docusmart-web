@@ -700,7 +700,7 @@ export default {
       steps: ["Tria un PDF, un Word (.docx) o un .txt, o enganxa el text.", "Tria la llargada del resum i prem \"Resumir\".", "Llegeix les idees principals i les paraules clau, i copia el resum o baixa'l en .txt o Word."],
       faq: [
         ["Fa servir intel·ligència artificial?", "Sí, una tècnica d'IA clàssica que funciona al teu navegador: analitza quines frases repeteixen les idees principals del document i quines s'assemblen més a la resta, i tria aquestes. No fa servir serveis al núvol ni inventa text: cada frase del resum és al document."],
-        ["Funciona amb PDF escanejats?", "Un escaneig és una imatge sense text. Passa'l primer per l'OCR per reconèixer el text i després resumeix aquest PDF."],
+        ["Funciona amb PDF escanejats?", "Sí. Si el PDF és escanejat, el botó «Reconèixer i resumir» llegeix el text amb OCR al navegador i el resumeix en el mateix pas."],
         ["En quins idiomes funciona?", "En els 12 idiomes de DocuSmart: detecta l'idioma del document i descarta les paraules que no aporten significat; en xinès i japonès analitza parells de caràcters."],
         ["Quina llargada té el resum?", "Curt (de 3 a 7 frases), mitjà (de 5 a 15) o llarg (de 8 a 30), segons la mida del document. Pots canviar-la i el resum s'actualitza a l'instant."],
         ["El meu document es puja a internet?", "No. El text es llegeix i es resumeix al teu navegador: el fitxer no surt del teu equip ni es desa."],
@@ -885,7 +885,7 @@ export default {
       steps: ['Tria el PDF.', 'Prem "Convertir".', 'Obre el .docx a Word, Google Docs o LibreOffice i revisa el resultat.'],
       faq: [
         ['Queda idèntic al PDF?', 'Molt semblant, però no idèntic: un PDF no desa paràgrafs ni taules, només lletres amb la seva posició, així que DocuSmart els reconstrueix. Conserva títols, negreta, cursiva, mides, colors, llistes, taules senzilles, imatges i els dissenys a dues columnes (com els currículums), amb el fons de cada columna i les franges de color. Els quadres de text i les formes decoratives complexes poden variar.'],
-        ['Funciona amb PDF escanejats?', 'Un escaneig és una imatge sense text. Passa’l primer per l’eina d’OCR marcant "PDF cercable" i converteix aquest PDF.'],
+        ['Funciona amb PDF escanejats?', "Sí. Les pàgines escanejades es reconeixen amb OCR al navegador en el mateix pas i el text queda editable al seu lloc. Pots triar l’idioma del document."],
         ['Amb quins programes obro el fitxer?', 'Amb Microsoft Word, Google Docs, LibreOffice, Pages o WPS: és un .docx estàndard.'],
         ['Els meus fitxers es pugen a internet?', 'No. La conversió es fa dins del teu navegador.'],
       ],
@@ -907,7 +907,7 @@ export default {
       faq: [
         ['Amb quins PDF funciona millor?', 'Amb PDF digitals que tenen taules ben alineades: extractes bancaris, factures, informes o llistats exportats des d’un sistema. DocuSmart munta les columnes segons la posició del text.'],
         ['Els números queden com a números?', 'Sí. Valors com 1.500.000, 2.000 €, 3,5 o 45 % es desen com a números d’Excel amb el seu format, així que els pots sumar o fer servir en fórmules.'],
-        ['Funciona amb PDF escanejats?', 'Un escaneig és una imatge sense text. Passa’l primer per l’eina d’OCR marcant "PDF cercable" i converteix aquest PDF.'],
+        ['Funciona amb PDF escanejats?', "Sí. Les pàgines escanejades es reconeixen amb OCR al navegador en el mateix pas i cada columna de la taula queda a la seva cel·la. Pots triar l’idioma del document."],
         ['Els meus fitxers es pugen a internet?', 'No. La conversió es fa dins del teu navegador.'],
       ],
     },

@@ -8,7 +8,10 @@ import { bundleFiles, resultFile } from '../../../shared/files/share'
 import { OfficeFormatError, docxToPdf, pptxToPdf, xlsxToCsv, xlsxToPdf } from '../infra/officeRender'
 import { DELIMITERS, defaultCsvOptions, type Delimiter } from '../core/csv'
 import { useT } from '../../../shared/i18n/I18n'
-import { convertImagePages, imagesToPdf, pdfToImages, pdfToText, type ImageTarget } from '../core/convert'
+import { PDF_IMAGE_DPIS, convertImagePages, imagesToPdf, pdfToImages, pdfToNumberedImages, pdfToText, type ImageTarget } from '../core/convert'
+import { OcrLangPicker, useDefaultOcrLang } from '../../ocr/ui/OcrLangPicker'
+import type { OcrLang, OcrProgress } from '../../ocr/core/ocr'
+import type { PageInfo, TextFrag } from '../core/pdfWord'
 import type { ImagePdfOptions, PdfMargin, PdfOrientation, PdfPaper } from '../core/imagePdf'
 import { defaultPaper } from '../../cv/core/cv'
 import { heicOutputName, jpegQuality, type HeicTarget } from '../core/heic'
@@ -128,6 +131,16 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [pdfImgFormat, setPdfImgFormat] = useState<'png' | 'jpg'>('png')
+  // PDF a imagen (W-147.3): resolución, calidad del JPG y qué páginas.
+  const [pdfDpi, setPdfDpi] = useState<number>(150)
+  const [jpgQuality, setJpgQuality] = useState(90)
+  const [pdfPages, setPdfPages] = useState('')
+  // PDF escaneado a Word o Excel en un paso (W-147.3): OCR local de las páginas sin texto.
+  const [ocrOn, setOcrOn] = useState(true)
+  const defaultOcrLang = useDefaultOcrLang()
+  const [ocrLang, setOcrLang] = useState<OcrLang>(defaultOcrLang)
+  const [ocrProgress, setOcrProgress] = useState<OcrProgress | null>(null)
+  const [ocrDone, setOcrDone] = useState(0)
   const [heicFormat, setHeicFormat] = useState<HeicTarget>('jpg')
   const [heicQuality, setHeicQuality] = useState(90)
   const [text, setText] = useState<string | null>(null)
@@ -147,7 +160,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   }))
   /** El resultado, para verlo y guardarlo (ya no se descarga solo). */
   const [out, setOut] = useState<{ result: File | null; results?: File[]; saveAs?: File | null } | null>(null)
-  useEffect(() => setOut(null), [files, pdfImgFormat, sheetMode, heicFormat, heicQuality, delimiter, pdfLayout])
+  useEffect(() => setOut(null), [files, pdfImgFormat, sheetMode, heicFormat, heicQuality, delimiter, pdfLayout, pdfDpi, jpgQuality, pdfPages, ocrOn, ocrLang])
 
   const run = async () => {
     setBusy(true)
@@ -157,6 +170,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
     setExcelInfo(null)
     setOfficeInfo(null)
     setPptSkipped(0)
+    setOcrDone(0)
     setOut(null)
     track('conversion_started', { conversion_type: conv.type })
     const totalKb = Math.round(files.reduce((s, f) => s + f.size, 0) / 1024)
@@ -189,15 +203,15 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         // Una sola imagen se ve en grande; varias, como miniaturas y en un ZIP.
         setOut(converted.length === 1 ? { result: converted[0] } : { result: null, results: converted, saveAs: await bundleFiles(converted, `docusmart-${target}.zip`) })
       } else if (conv.id === 'pdf-img') {
-        const blobs = await pdfToImages(await files[0].arrayBuffer(), pdfImgFormat, 1600, (d, t) => setProgress(d / t))
+        const shots = await pdfToNumberedImages(await files[0].arrayBuffer(), pdfImgFormat, 1600, (d, t) => setProgress(d / t), { dpi: pdfDpi, quality: jpgQuality / 100, pages: pdfPages })
         const name = baseName(files[0].name)
-        const images = blobs.map((b, i) => resultFile(b, `${name}-${tr('file.page')}-${i + 1}.${pdfImgFormat}`, pdfImgFormat === 'jpg' ? 'image/jpeg' : 'image/png'))
+        const images = shots.map(({ page, blob }) => resultFile(blob, `${name}-${tr('file.page')}-${page}.${pdfImgFormat}`, pdfImgFormat === 'jpg' ? 'image/jpeg' : 'image/png'))
         setOut({ result: null, results: images, saveAs: await bundleFiles(images, `${name}-${tr('file.images')}.zip`) })
       } else if (conv.id === 'pdf-word') {
         const [{ extractForWord }, { buildDocument, writeDocx, summarize }] = await Promise.all([import('../infra/pdfWordSources'), import('../core/pdfWord')])
-        const ex = await extractForWord(files[0], (d, t) => setProgress(d / t))
+        const ex = await withOcr(await extractForWord(files[0], (d, t) => setProgress(d / t)))
         if (!ex.texts.length) {
-          setError(tr('conv.noText'))
+          setError(tr(ocrOn ? 'conv.noTextOcr' : 'conv.noText'))
           track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
           return
         }
@@ -206,9 +220,9 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
         setWordInfo(summarize(doc))
       } else if (conv.id === 'pdf-excel') {
         const [{ extractForWord }, { buildSheets, writeXlsx, summarizeSheets }] = await Promise.all([import('../infra/pdfWordSources'), import('../core/pdfExcel')])
-        const ex = await extractForWord(files[0], (d, t) => setProgress(d / t), { images: false })
+        const ex = await withOcr(await extractForWord(files[0], (d, t) => setProgress(d / t), { images: false }))
         if (!ex.texts.length) {
-          setError(tr('conv.noText'))
+          setError(tr(ocrOn ? 'conv.noTextOcr' : 'conv.noText'))
           track('conversion_error', { conversion_type: conv.type, error_message: 'empty_text' })
           return
         }
@@ -268,11 +282,34 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
       track('conversion_success', { conversion_type: conv.type, file_size_kb: totalKb })
       toast(tr('common.doneReview'))
     } catch (e) {
+      if (e instanceof Error && e.name === 'PageRangeError') {
+        setError(tr('conv.pagesInvalid'))
+        return
+      }
       setError(e instanceof OfficeFormatError || (e instanceof Error && (e.name === 'OfficeEmptyError' || e.name === 'HeicError')) ? e.message : errorMessage(e))
       track('conversion_error', { conversion_type: conv.type, error_message: e instanceof Error ? e.name : 'error' })
     } finally {
+      setOcrProgress(null)
       setBusy(false)
     }
+  }
+
+  /** Las páginas escaneadas (sin texto) se reconocen con OCR y se suman al resto, en su lugar. */
+  async function withOcr<T extends { pages: PageInfo[]; texts: TextFrag[]; images: import('../core/pdfWord').ImageFrag[] }>(ex: T): Promise<T> {
+    if (!ocrOn) return ex
+    const { pagesWithoutText, dropPageScans } = await import('../core/ocrLayout')
+    const missing = pagesWithoutText(ex.pages.length, ex.texts)
+    if (!missing.length) return ex
+    setOcrProgress({ page: 0, pages: missing.length, fraction: 0, stage: 'preparando' })
+    const { ocrScannedPages } = await import('../infra/ocrPages')
+    const r = await ocrScannedPages(files[0], missing, ocrLang, setOcrProgress)
+    const done = new Set(missing)
+    const pages = ex.pages.map((p, i) => r.sizes.get(i) ?? p)
+    // Sin el texto viejo de esas páginas (unas pocas letras sueltas) y sin la foto del escaneo.
+    const texts = [...ex.texts.filter((t) => !done.has(t.page)), ...r.texts]
+    setOcrDone(missing.length)
+    track('pdf_tool_used', { tool_name: `ocr_${conv.id}` })
+    return { ...ex, pages, texts, images: dropPageScans(ex.images, pages, done) }
   }
 
   const title = `${conv.from === 'IMG' ? tr('conv.image') : conv.from} → ${conv.to === 'IMG' ? tr('conv.image') : conv.to}`
@@ -374,10 +411,41 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
           </>
         )}
         {conv.id === 'pdf-img' && (
-          <div className="row">
-            <span className="faint">{tr('single.format')}</span>
-            <Segmented label={tr('conv.imageFormat')} value={pdfImgFormat} onChange={setPdfImgFormat} options={[{ value: 'png', label: 'PNG' }, { value: 'jpg', label: 'JPG' }]} />
+          <>
+            <div className="row">
+              <span className="faint">{tr('single.format')}</span>
+              <Segmented label={tr('conv.imageFormat')} value={pdfImgFormat} onChange={setPdfImgFormat} options={[{ value: 'png', label: 'PNG' }, { value: 'jpg', label: 'JPG' }]} />
+            </div>
+            <div className="field">
+              <span aria-hidden="true">{tr('conv.dpi')}</span>
+              <Segmented label={tr('conv.dpi')} value={String(pdfDpi)} onChange={(v: string) => setPdfDpi(Number(v))} options={PDF_IMAGE_DPIS.map((d) => ({ value: String(d), label: tr(d === 72 ? 'conv.dpi72' : d === 150 ? 'conv.dpi150' : 'conv.dpi300') }))} />
+            </div>
+            {pdfImgFormat === 'jpg' && (
+              <label className="field">
+                <span>{tr('conv.heicQuality', { n: jpgQuality })}</span>
+                <input type="range" min={50} max={100} step={5} value={jpgQuality} onChange={(e) => setJpgQuality(Number(e.target.value))} />
+              </label>
+            )}
+            <label className="field">
+              <span>{tr('conv.pages')}</span>
+              <input className="input" value={pdfPages} placeholder={tr('conv.pagesPh')} inputMode="numeric" autoComplete="off" onChange={(e) => setPdfPages(e.target.value)} />
+            </label>
+          </>
+        )}
+        {(conv.id === 'pdf-word' || conv.id === 'pdf-excel') && (
+          <div className="stack" style={{ gap: 8 }}>
+            <label className="check">
+              <input type="checkbox" checked={ocrOn} onChange={(e) => setOcrOn(e.target.checked)} disabled={busy} />
+              <span>{tr('conv.ocrScanned')}</span>
+            </label>
+            {ocrOn && <OcrLangPicker value={ocrLang} onChange={setOcrLang} disabled={busy} />}
           </div>
+        )}
+        {ocrProgress && (
+          <>
+            <Progress value={ocrProgress.fraction} />
+            <small className="faint">{ocrProgress.stage === 'preparando' ? tr('ocr.preparing') : tr('ocr.pageOf', { n: Math.max(1, ocrProgress.page), total: ocrProgress.pages })}</small>
+          </>
         )}
         {isHeic && (
           <>
@@ -447,6 +515,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
                 ) : undefined
               ) : excelInfo ? (
                 <Notice kind="success">
+                  {ocrDone > 0 && <>{ocrDone === 1 ? tr('conv.ocrDoneOne') : tr('conv.ocrDoneMany', { n: ocrDone })} </>}
                   {tr('conv.excelSummary', {
                     rows: excelInfo.rows,
                     sheets: excelInfo.sheets === 1 ? tr('conv.sheetOne') : tr('conv.sheetMany', { n: excelInfo.sheets }),
@@ -455,6 +524,7 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
                 </Notice>
               ) : wordInfo ? (
                 <Notice kind="success">
+                  {ocrDone > 0 && <>{ocrDone === 1 ? tr('conv.ocrDoneOne') : tr('conv.ocrDoneMany', { n: ocrDone })} </>}
                   {tr('conv.wordSummary', { parts: wordParts(wordInfo) })}
                 </Notice>
               ) : out?.saveAs && out.results && out.results.length > 1 ? (

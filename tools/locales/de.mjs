@@ -700,7 +700,7 @@ export default {
       steps: ["Wähle ein PDF, ein Word-Dokument (.docx) oder eine .txt-Datei, oder füge den Text ein.", "Wähle die Länge der Zusammenfassung und tippe auf „Zusammenfassen“.", "Lies die Kernaussagen und Schlüsselwörter und kopiere die Zusammenfassung oder lade sie als .txt oder Word herunter."],
       faq: [
         ["Nutzt es künstliche Intelligenz?", "Ja, eine klassische KI-Technik, die in deinem Browser läuft: Sie analysiert, welche Sätze die Kernaussagen des Dokuments wiederholen und welche dem Rest am ähnlichsten sind, und wählt diese aus. Sie nutzt keine Cloud-Dienste und erfindet keinen Text: Jeder Satz der Zusammenfassung steht im Dokument."],
-        ["Funktioniert es mit gescannten PDFs?", "Ein Scan ist ein Bild ohne Text. Lass ihn zuerst durch die Texterkennung (OCR) laufen und fasse dann dieses PDF zusammen."],
+        ["Funktioniert es mit gescannten PDFs?", "Ja. Ist das PDF gescannt, liest die Schaltfläche „Erkennen und zusammenfassen“ den Text per OCR in deinem Browser und fasst ihn in einem Schritt zusammen."],
         ["In welchen Sprachen funktioniert es?", "In den 12 Sprachen von DocuSmart: Es erkennt die Sprache des Dokuments und lässt Wörter ohne Bedeutungsgehalt weg; im Chinesischen und Japanischen analysiert es Zeichenpaare."],
         ["Wie lang ist die Zusammenfassung?", "Kurz (3 bis 7 Sätze), mittel (5 bis 15) oder lang (8 bis 30), je nach Umfang des Dokuments. Du kannst sie ändern und die Zusammenfassung aktualisiert sich sofort."],
         ["Wird mein Dokument ins Internet hochgeladen?", "Nein. Der Text wird in deinem Browser gelesen und zusammengefasst: Die Datei verlässt dein Gerät nicht und wird nicht gespeichert."],
@@ -885,7 +885,7 @@ export default {
       steps: ['Wähle das PDF.', 'Tippe auf „Konvertieren“.', 'Öffne das .docx in Word, Google Docs oder LibreOffice und prüfe das Ergebnis.'],
       faq: [
         ['Ist es identisch mit dem PDF?', 'Sehr ähnlich, aber nicht identisch: Ein PDF speichert keine Absätze oder Tabellen, nur Buchstaben und ihre Position, deshalb baut DocuSmart sie neu auf. Überschriften, Fett, Kursiv, Größen, Farben, Listen, einfache Tabellen, Bilder und zweispaltige Layouts (wie Lebensläufe) mit dem Hintergrund jeder Spalte und farbigen Streifen bleiben erhalten. Textfelder und komplexe dekorative Formen können abweichen.'],
-        ['Funktioniert es mit gescannten PDFs?', 'Ein Scan ist ein Bild ohne Text. Lass ihn zuerst durch das OCR-Werkzeug mit „Durchsuchbares PDF“ laufen und wandle dieses PDF um.'],
+        ['Funktioniert es mit gescannten PDFs?', "Ja. Gescannte Seiten werden im selben Schritt per OCR in deinem Browser erkannt, und der Text bleibt an seiner Stelle bearbeitbar. Du kannst die Sprache des Dokuments wählen."],
         ['Mit welchen Programmen öffne ich die Datei?', 'Mit Microsoft Word, Google Docs, LibreOffice, Pages oder WPS: Es ist ein Standard-.docx.'],
         ['Werden meine Dateien ins Internet hochgeladen?', 'Nein. Die Umwandlung passiert in deinem Browser.'],
       ],
@@ -907,7 +907,7 @@ export default {
       faq: [
         ['Mit welchen PDFs klappt es am besten?', 'Mit digitalen PDFs mit gut ausgerichteten Tabellen: Kontoauszüge, Rechnungen, Berichte oder aus einem System exportierte Listen. DocuSmart bildet die Spalten anhand der Textposition.'],
         ['Bleiben Zahlen Zahlen?', 'Ja. Werte wie 1.500.000, 2.000 €, 3,5 oder 45 % werden als Excel-Zahlen mit ihrem Format gespeichert, sodass du sie summieren oder in Formeln nutzen kannst.'],
-        ['Funktioniert es mit gescannten PDFs?', 'Ein Scan ist ein Bild ohne Text. Lass ihn zuerst durch das OCR-Werkzeug mit „Durchsuchbares PDF“ laufen und wandle dieses PDF um.'],
+        ['Funktioniert es mit gescannten PDFs?', "Ja. Gescannte Seiten werden im selben Schritt per OCR in deinem Browser erkannt, und jede Tabellenspalte landet in ihrer eigenen Zelle. Du kannst die Sprache des Dokuments wählen."],
         ['Werden meine Dateien ins Internet hochgeladen?', 'Nein. Die Umwandlung passiert in deinem Browser.'],
       ],
     },

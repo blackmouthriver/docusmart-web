@@ -851,7 +851,7 @@ export const pages = [
     steps: ["Elige un PDF, un Word (.docx) o un .txt, o pega el texto.", "Elige el largo del resumen y pulsa \"Resumir\".", "Lee las ideas principales y las palabras clave, y copia el resumen o descárgalo en .txt o Word."],
     faq: [
       ["¿Usa inteligencia artificial?", "Sí, una técnica de IA clásica que corre en tu navegador: analiza qué oraciones repiten las ideas principales del documento y cuáles se parecen más al resto, y elige esas. No usa servicios en la nube ni inventa texto: cada frase del resumen está en el documento."],
-      ["¿Funciona con PDF escaneados?", "Un escaneo es una imagen sin texto. Pásalo primero por OCR PDF para reconocer el texto y luego resume ese PDF."],
+      ["¿Funciona con PDF escaneados?", "Sí. Si el PDF está escaneado, el botón «Reconocer y resumir» lee el texto con OCR en tu navegador y lo resume en el mismo paso."],
       ["¿En qué idiomas funciona?", "En los 12 idiomas de DocuSmart: detecta el idioma del documento y descarta las palabras que no aportan significado; en chino y japonés analiza pares de caracteres."],
       ["¿Qué tan largo es el resumen?", "Corto (de 3 a 7 oraciones), medio (de 5 a 15) o largo (de 8 a 30), según el tamaño del documento. Puedes cambiarlo y el resumen se actualiza al instante."],
       ["¿Mi documento se sube a internet?", "No. El texto se lee y se resume en tu navegador: el archivo no sale de tu equipo ni se guarda."],
@@ -1004,7 +1004,7 @@ export const pages = [
     ],
     faq: [
       ['¿Queda idéntico al PDF?', 'Muy parecido, pero no idéntico: un PDF no guarda párrafos ni tablas, solo letras con su posición, así que DocuSmart los reconstruye. Conserva títulos, negrita, cursiva, tamaños, colores, listas, tablas sencillas, imágenes y los diseños a dos columnas (como las hojas de vida), con el fondo de cada columna y las franjas de color. Los cuadros de texto y las formas decorativas complejas pueden variar.'],
-      ['¿Funciona con PDF escaneados?', 'Un escaneo es una imagen sin texto. Pásalo primero por la herramienta OCR marcando "PDF buscable" y convierte ese PDF.'],
+      ['¿Funciona con PDF escaneados?', "Sí. Las páginas escaneadas se reconocen con OCR en tu navegador en el mismo paso y el texto queda editable en su lugar. Puedes elegir el idioma del documento."],
       ['¿Con qué programas abro el archivo?', 'Con Microsoft Word, Google Docs, LibreOffice, Pages o WPS: es un .docx estándar.'],
       ['¿Mis archivos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
     ],
@@ -1028,7 +1028,7 @@ export const pages = [
     faq: [
       ['¿Con qué PDF funciona mejor?', 'Con PDF digitales que tienen tablas bien alineadas: extractos bancarios, facturas, reportes o listados exportados desde un sistema. DocuSmart arma las columnas según la posición del texto.'],
       ['¿Los números quedan como números?', 'Sí. Valores como 1.500.000, $ 2.000, 3,5 o 45 % se guardan como números de Excel con su formato, así que puedes sumarlos o usarlos en fórmulas.'],
-      ['¿Funciona con PDF escaneados?', 'Un escaneo es una imagen sin texto. Pásalo primero por la herramienta OCR marcando "PDF buscable" y convierte ese PDF.'],
+      ['¿Funciona con PDF escaneados?', "Sí. Las páginas escaneadas se reconocen con OCR en tu navegador en el mismo paso y cada columna de la tabla queda en su celda. Puedes elegir el idioma del documento."],
       ['¿Mis archivos se suben a internet?', 'No. La conversión se hace dentro de tu navegador.'],
     ],
   },

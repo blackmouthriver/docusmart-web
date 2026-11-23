@@ -120,6 +120,12 @@ function flatten(canvas: HTMLCanvasElement, background: string) {
 
 /** Como convertImage, pero un TIFF de varias páginas da una imagen por página (W-146.7). */
 export async function convertImagePages(file: File, target: ImageTarget, quality = 0.92): Promise<Blob[]> {
+  // Un GIF, WebP o PNG animado a GIF conserva la animación (W-147.3); si el navegador no puede
+  // leer los cuadros, queda el primero como antes.
+  if (target === 'gif' && /^image\/(gif|webp|png|apng)$/.test(file.type)) {
+    const animated = await (await import('../infra/formatCodecs')).encodeAnimatedGif(file)
+    if (animated) return [animated]
+  }
   if (!(await isTiffFile(file))) return [await convertImage(file, target, quality)]
   const { tiffToCanvases } = await import('../infra/formatCodecs')
   const out: Blob[] = []
@@ -162,17 +168,62 @@ export async function imagesToPdf(files: File[], opts: ImagePdfOptions = DEFAULT
   return doc.save()
 }
 
+/** Lado máximo de la imagen de una página (300 ppp de un A3 entra; un plano A0 se achica). */
+export const MAX_RENDER_SIDE = 7000
+export const PDF_IMAGE_DPIS = [72, 150, 300] as const
+
+/** Ancho en píxeles de una página de `widthPts` puntos a `dpi` ppp, sin pasar del máximo por ningún lado. */
+export function renderWidth(widthPts: number, heightPts: number, dpi: number): number {
+  const k = Math.min(dpi / 72, MAX_RENDER_SIDE / Math.max(1, widthPts, heightPts))
+  return Math.max(1, Math.round(widthPts * k))
+}
+
+/** Las páginas escritas no son válidas ("1-3, 5" con un PDF de 2 páginas, letras…). */
+export class PageRangeError extends Error {
+  constructor() {
+    super('Páginas no válidas')
+    this.name = 'PageRangeError'
+  }
+}
+
+/**
+ * Cada página (o las elegidas) como imagen. Con `dpi` (W-147.3) el tamaño depende de la página
+ * (72 ppp para pantalla, 300 para imprimir); sin él, `width` píxeles de ancho. `quality`: JPG de 0 a 1.
+ * `pages`: "1-3, 5" (vacío = todas). Devuelve también el número de cada página (desde 1).
+ */
 export async function pdfToImages(
   bytes: ArrayBuffer,
   target: 'png' | 'jpg',
   width = 1600,
   onProgress?: (done: number, total: number) => void,
+  opts: { dpi?: number; quality?: number; pages?: string } = {},
 ): Promise<Blob[]> {
+  return (await pdfToNumberedImages(bytes, target, width, onProgress, opts)).map((p) => p.blob)
+}
+
+export async function pdfToNumberedImages(
+  bytes: ArrayBuffer,
+  target: 'png' | 'jpg',
+  width = 1600,
+  onProgress?: (done: number, total: number) => void,
+  opts: { dpi?: number; quality?: number; pages?: string } = {},
+): Promise<Array<{ page: number; blob: Blob }>> {
   const doc = await openPdf(bytes)
-  const out: Blob[] = []
+  const out: Array<{ page: number; blob: Blob }> = []
   try {
-    for (let i = 1; i <= doc.numPages; i++) {
-      const canvas = await renderPage(doc, i, width, 'print')
+    const { parsePageRanges } = await import('../../../shared/files/files')
+    const wanted = opts.pages?.trim() ? parsePageRanges(opts.pages, doc.numPages) : Array.from({ length: doc.numPages }, (_, i) => i)
+    if (!wanted?.length) throw new PageRangeError()
+    for (const [k, index] of wanted.entries()) {
+      const n = index + 1
+      let w = width
+      if (opts.dpi) {
+        const page = await doc.getPage(n)
+        const vp = page.getViewport({ scale: 1 })
+        w = renderWidth(vp.width, vp.height, opts.dpi)
+        page.cleanup()
+      }
+      const canvas = await renderPage(doc, n, w, 'print')
       if (target === 'jpg') {
         const flat = document.createElement('canvas')
         flat.width = canvas.width
@@ -181,11 +232,13 @@ export async function pdfToImages(
         ctx.fillStyle = '#fff'
         ctx.fillRect(0, 0, flat.width, flat.height)
         ctx.drawImage(canvas, 0, 0)
-        out.push(await canvasToBlob(flat, 'image/jpeg', 0.9))
+        out.push({ page: n, blob: await canvasToBlob(flat, 'image/jpeg', opts.quality ?? 0.9) })
+        flat.width = flat.height = 0
       } else {
-        out.push(await canvasToBlob(canvas, 'image/png'))
+        out.push({ page: n, blob: await canvasToBlob(canvas, 'image/png') })
       }
-      onProgress?.(i, doc.numPages)
+      canvas.width = canvas.height = 0
+      onProgress?.(k + 1, wanted.length)
     }
   } finally {
     await closePdf(doc)

@@ -28,7 +28,24 @@ describe('createRecognizer', () => {
     recognize.mockResolvedValueOnce({ data: { text: 'Hola', confidence: 91, pdf: [37, 80, 68, 70] } })
     const r = await createRecognizer('spa')
     expect(await r.recognize(new Blob(['x']), true)).toEqual({ text: 'Hola', confidence: 91, pdf: new Uint8Array([37, 80, 68, 70]) })
-    expect(recognize).toHaveBeenLastCalledWith(expect.any(Blob), { pdfTitle: 'DocuSmart OCR' }, { text: true, pdf: true })
+    expect(recognize).toHaveBeenLastCalledWith(expect.any(Blob), { pdfTitle: 'DocuSmart OCR' }, { text: true, pdf: true, blocks: false })
+  })
+
+  it('con el diseño pedido (W-147.3) entrega cada línea con sus palabras y el tamaño de la imagen', async () => {
+    const bbox = (x0: number, y0: number, x1: number, y1: number) => ({ x0, y0, x1, y1 })
+    recognize.mockResolvedValueOnce({
+      data: {
+        text: 'Hola mundo',
+        confidence: 88,
+        blocks: [{ paragraphs: [{ lines: [{ bbox: bbox(10, 20, 200, 60), baseline: { x0: 10, y0: 52, x1: 200, y1: 54 }, words: [{ text: 'Hola', confidence: 90, bbox: bbox(10, 20, 90, 60) }, { text: 'mundo', confidence: 86, bbox: bbox(110, 20, 200, 60) }] }] }] }],
+      },
+    })
+    const r = await createRecognizer('spa')
+    const canvas = { width: 1000, height: 1400 } as unknown as HTMLCanvasElement
+    const res = await r.recognize(canvas, false, true)
+    expect(recognize).toHaveBeenLastCalledWith(canvas, { pdfTitle: 'DocuSmart OCR' }, { text: true, pdf: false, blocks: true })
+    expect(res.lines).toEqual([{ baseline: 54, height: 40, words: [{ text: 'Hola', x0: 10, y0: 20, x1: 90, y1: 60, confidence: 90 }, { text: 'mundo', x0: 110, y0: 20, x1: 200, y1: 60, confidence: 86 }] }])
+    expect([res.width, res.height]).toEqual([1000, 1400])
   })
 
   it('sin PDF pedido o con datos vacíos no inventa resultados', async () => {

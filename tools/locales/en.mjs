@@ -700,7 +700,7 @@ export default {
       steps: ["Choose a PDF, a Word file (.docx) or a .txt, or paste the text.", "Pick the summary length and press \"Summarize\".", "Read the main ideas and keywords, then copy the summary or download it as .txt or Word."],
       faq: [
         ["Does it use artificial intelligence?", "Yes, a classic AI technique that runs in your browser: it analyzes which sentences repeat the document's main ideas and which are most similar to the rest, and picks those. It doesn't use cloud services or make up text: every sentence in the summary is in the document."],
-        ["Does it work with scanned PDFs?", "A scan is an image with no text. Run it through OCR first to recognize the text, then summarize that PDF."],
+        ["Does it work with scanned PDFs?", "Yes. If the PDF is scanned, the \"Recognize and summarize\" button reads the text with OCR in your browser and summarizes it in one step."],
         ["Which languages does it work in?", "In DocuSmart's 12 languages: it detects the document's language and ignores words that carry no meaning; in Chinese and Japanese it analyzes pairs of characters."],
         ["How long is the summary?", "Short (3 to 7 sentences), medium (5 to 15) or long (8 to 30), depending on the document's size. You can change it and the summary updates instantly."],
         ["Is my document uploaded to the internet?", "No. The text is read and summarized in your browser: the file never leaves your device and isn't saved."],
@@ -885,7 +885,7 @@ export default {
       steps: ['Choose the PDF.', 'Press "Convert".', 'Open the .docx in Word, Google Docs or LibreOffice and check the result.'],
       faq: [
         ['Is it identical to the PDF?', "Very close, but not identical: a PDF doesn't store paragraphs or tables, only letters and their positions, so DocuSmart rebuilds them. It keeps headings, bold, italics, sizes, colors, lists, simple tables, images and two-column layouts (like résumés), with each column's background and color bands. Text boxes and complex decorative shapes may vary."],
-        ['Does it work with scanned PDFs?', 'A scan is an image with no text. Run it through the OCR tool first with "Searchable PDF" ticked and convert that PDF.'],
+        ['Does it work with scanned PDFs?', "Yes. Scanned pages are recognized with OCR in your browser in the same step, and the text stays editable in place. You can pick the document language."],
         ['Which programs can open the file?', "Microsoft Word, Google Docs, LibreOffice, Pages or WPS: it's a standard .docx."],
         ['Are my files uploaded to the internet?', 'No. The conversion happens inside your browser.'],
       ],
@@ -907,7 +907,7 @@ export default {
       faq: [
         ['Which PDFs does it work best with?', 'Digital PDFs with well-aligned tables: bank statements, invoices, reports or lists exported from a system. DocuSmart builds the columns from the position of the text.'],
         ['Do numbers stay as numbers?', 'Yes. Values such as 1,500,000, $2,000, 3.5 or 45% are saved as Excel numbers with their format, so you can add them up or use them in formulas.'],
-        ['Does it work with scanned PDFs?', 'A scan is an image with no text. Run it through the OCR tool first with "Searchable PDF" ticked and convert that PDF.'],
+        ['Does it work with scanned PDFs?', "Yes. Scanned pages are recognized with OCR in your browser in the same step, and each table column lands in its own cell. You can pick the document language."],
         ['Are my files uploaded to the internet?', 'No. The conversion happens inside your browser.'],
       ],
     },
