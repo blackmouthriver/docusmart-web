@@ -59,12 +59,79 @@ export function detectLanguage(text: string): string {
 const isCjk = (lang: string) => lang === 'zh' || lang === 'ja'
 
 /** Abreviaturas comunes que terminan en punto sin cerrar la oración ("Sr. Pérez", "p. ej. esto"). */
-const ABBREVIATIONS = /(?:^|\s)(?:sr|sra|srta|dr|dra|lic|ing|prof|arq|av|art|núm|nro|pág|págs|cap|vol|ej|aprox|tel|cía|ltda|mr|mrs|ms|st|vs|fig|inc|jr|e\.g|i\.e|p\. ej|z\.b|bzw|usw|ggf|ca|mme|mlle)\.$/i
+export const ABBREVIATIONS = /(?:^|\s)(?:sr|sra|srta|dr|dra|lic|ing|prof|arq|av|art|núm|nro|pág|págs|cap|vol|ej|aprox|tel|cía|ltda|mr|mrs|ms|st|vs|fig|inc|jr|e\.g|i\.e|p\. ej|z\.b|bzw|usw|ggf|ca|mme|mlle)\.$/i
+
+/** Viñeta o número al inicio de una línea de lista ("• ", "- ", "1. ", "a) "). */
+const BULLET = /^\s*(?:[-•▪◦·*–—➢►✓✔]|\d{1,3}[.)]|[a-z][)])\s+/u
+/** Separador de párrafo de Unicode: marca un corte de oración seguro entre líneas. */
+export const HARD_BREAK = '\u2029'
+const ENDS_SENTENCE = /[.!?…:;。！？]["'»”)]*$/u
+
+/**
+ * Prepara el texto por líneas antes de cortarlo en oraciones (auditoría W-146.12):
+ * - une las palabras cortadas con guion al final de la línea ("infor-
+mación");
+ * - cada viñeta o línea de lista es su propia oración (antes, 40 viñetas eran una sola);
+ * - un título o línea suelta sin punto, seguida de una línea en blanco, también se cierra.
+ */
+export function prepareLines(text: string): string {
+  const joined = text.replace(/(\p{L})[-‐\u00ad]\s*\r?\n\s*(\p{Ll})/gu, '$1$2')
+  const lines = joined.split(/\r?\n/)
+  return lines
+    .map((line, i) => {
+      const t = line.trim()
+      if (!t) return ''
+      const bullet = BULLET.test(t)
+      const nextBlank = i + 1 >= lines.length || !lines[i + 1].trim() || BULLET.test(lines[i + 1].trim())
+      const body = bullet ? t.replace(BULLET, '') : t
+      if (bullet || nextBlank) return (ENDS_SENTENCE.test(body) ? body : body + '.') + HARD_BREAK
+      return body
+    })
+    .join('\n')
+}
+
+/** Un número de página suelto ("3", "- 3 -", "Página 3 de 10", "Page 3", "3/10"). */
+const PAGE_NUMBER = /^[-–—\s]*(?:(?:p[áa]g(?:ina)?|page|seite|pagina|p\.)\s*)?\d{1,4}(?:\s*(?:de|of|von|di|\/)\s*\d{1,4})?[-–—\s]*$/i
+const EDGE_LINES = 3
+const SHORT_LINE = 50
+
+/**
+ * Une las páginas de un PDF sin lo que se repite en cada una: encabezados, pies y números de
+ * página (en las 3 primeras y 3 últimas líneas de cada página). Una línea se considera repetida
+ * si aparece en la mitad o más de las páginas (mínimo 2); si es corta, con cualquier número.
+ */
+export function joinPages(pages: readonly string[]): string {
+  // Las líneas cortas se comparan sin sus números ("Página 3" = "Página 4"); las largas, enteras,
+  // para no tomar por encabezado un párrafo que solo cambia una cifra.
+  const key = (line: string) => {
+    const k = line.trim().toLowerCase().replace(/\s+/g, ' ')
+    return k.length <= SHORT_LINE ? k.replace(/\d+/g, '#') : k
+  }
+  const split = pages.map((p) => p.split(/\r?\n/))
+  const edges = (lines: string[]) => {
+    const filled = lines.map((l, i) => [l, i] as const).filter(([l]) => l.trim())
+    // En una página corta solo cuentan la primera y la última línea (el cuerpo no es "borde").
+    const n = Math.max(1, Math.min(EDGE_LINES, Math.floor(filled.length / 4)))
+    return new Set([...filled.slice(0, n), ...filled.slice(-n)].map(([, i]) => i))
+  }
+  const counts = new Map<string, number>()
+  for (const lines of split) for (const k of new Set([...edges(lines)].map((i) => key(lines[i])))) counts.set(k, (counts.get(k) ?? 0) + 1)
+  const threshold = Math.max(2, Math.ceil(pages.length / 2))
+  return split
+    .map((lines) => {
+      const edge = edges(lines)
+      return lines.filter((l, i) => !edge.has(i) || (!PAGE_NUMBER.test(l) && (pages.length < 2 || (counts.get(key(l)) ?? 0) < threshold))).join('\n')
+    })
+    .join('\n\n')
+}
 
 /** Oraciones del texto: corta tras . ! ? (seguido de mayúscula, cifra o comilla) y tras 。！？ sin espacio. */
 export function splitSentences(text: string, lang = 'es'): string[] {
   const min = isCjk(lang) ? MIN_SENTENCE_LENGTH_CJK : MIN_SENTENCE_LENGTH
-  const parts = text.replace(/\s+/g, ' ').split(/(?<=[.!?…])\s+(?=["'«“¿¡(\p{Lu}\d])|(?<=[。！？])/u)
+  // Cada viñeta o línea cerrada es un corte seguro (aunque la siguiente empiece en minúscula).
+  const parts = prepareLines(text)
+    .split(HARD_BREAK)
+    .flatMap((chunk) => chunk.replace(/\s+/g, ' ').split(/(?<=[.!?…])\s+(?=["'«“¿¡(\p{Lu}\d])|(?<=[。！？])/u))
   // Una abreviatura o una inicial ("J. García") no termina la oración: se une con lo que sigue.
   const joined: string[] = []
   for (const p of parts) {

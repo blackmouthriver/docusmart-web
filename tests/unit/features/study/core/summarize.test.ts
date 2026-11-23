@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { MAX_SENTENCES, detectLanguage, significantTerms, similarity, splitSentences, summarize, centrality, keywords } from '../../../../../src/features/study/core/summarize'
+import { MAX_SENTENCES, detectLanguage, significantTerms, similarity, splitSentences, summarize, centrality, keywords, joinPages } from '../../../../../src/features/study/core/summarize'
 
 const filler = (n: number, word: string) => Array.from({ length: n }, (_, i) => `La oración de relleno número ${i + 1} habla de ${word} sin decir mucho.`).join(' ')
 
@@ -140,5 +140,49 @@ describe('Resumir PDF (W-142)', () => {
     expect(r.indexOf(Math.max(...r))).toBe(0)
     expect(r[3]).toBeLessThan(r[0])
     expect(keywords([['a', 'b'], ['a'], ['c']])).toEqual(['a'])
+  })
+})
+
+describe('auditoría W-146.12: listas, guiones y encabezados', () => {
+  it('cada viñeta es una oración (antes, 40 viñetas eran una sola)', () => {
+    const bullets = Array.from({ length: 40 }, (_, i) => `• punto número ${i} sobre el presupuesto de la empresa`).join('\n')
+    const s = splitSentences(bullets)
+    expect(s).toHaveLength(40)
+    expect(s[0]).toBe('punto número 0 sobre el presupuesto de la empresa.')
+    expect(splitSentences('Pasos:\n1. Abrir el archivo con cuidado\n2) guardar el documento final\n- revisar las páginas del final')).toEqual([
+      'Abrir el archivo con cuidado.',
+      'guardar el documento final.',
+      'revisar las páginas del final.',
+    ])
+    expect(summarize(bullets, { length: 'short' }).sentences.length).toBeLessThanOrEqual(7)
+  })
+
+  it('une las palabras cortadas con guion al final de la línea', () => {
+    expect(splitSentences('La infor-\nmación del docu-\nmento se procesa en el equipo.')).toEqual(['La información del documento se procesa en el equipo.'])
+    // "post-\nCOVID" (mayúscula) no se une: el guion es parte de la palabra.
+    expect(splitSentences('Es un plan post-\nCOVID para todos los equipos.')[0]).toContain('post- COVID')
+  })
+
+  it('un título sin punto seguido de línea en blanco no se pega al párrafo', () => {
+    expect(splitSentences('Resultados del trimestre anterior\n\nLas ventas subieron mucho este año.')).toEqual([
+      'Resultados del trimestre anterior.',
+      'Las ventas subieron mucho este año.',
+    ])
+  })
+
+  it('quita encabezados, pies y números de página repetidos', () => {
+    const body = (n: number) => Array.from({ length: 8 }, (_, i) => `Párrafo ${i} de la sección ${n}: la empresa aumentó sus ventas.`).join('\n')
+    const page = (n: number) => `INFORME ANUAL 2025\n${body(n)}\nConfidencial — página ${n} de 5\n${n}`
+    const text = joinPages([1, 2, 3, 4, 5].map(page))
+    expect(text).not.toContain('INFORME ANUAL')
+    expect(text).not.toContain('Confidencial')
+    expect(text).not.toMatch(/^\d+$/m)
+    expect(text.match(/aumentó sus ventas/g)).toHaveLength(40)
+    // En páginas cortas, el cuerpo que se parece entre páginas no se toma por encabezado.
+    const short = joinPages([1, 2, 3].map((n) => `TÍTULO\nLa venta del mes ${n} subió.\nOtra línea del mes ${n}.\n${n}`))
+    expect(short.match(/La venta del mes/g)).toHaveLength(3)
+    expect(short).not.toContain('TÍTULO')
+    // Con una sola página no hay nada repetido que quitar (salvo un número suelto).
+    expect(joinPages(['TÍTULO\nTexto del documento.\n7'])).toBe('TÍTULO\nTexto del documento.')
   })
 })

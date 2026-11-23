@@ -666,6 +666,30 @@ p { margin: 0; }
 .pw-strength i { grid-area: 1 / 1; height: 8px; border-radius: 99px; background: var(--danger); transition: width .2s; }
 .pw-fair i { background: var(--c-amber); }
 .pw-strong i, .pw-veryStrong i { background: var(--success); }
+/* Nivel de lectura (auditoría W-146.12): verde fácil, ámbar normal, rojo difícil. */
+.read-veryEasy i, .read-easy i, .read-fairlyEasy i { background: var(--success); }
+.read-standard i, .read-fairlyHard i { background: var(--c-amber); }
+/* Límites de caracteres: nombre, barra y cuenta; en rojo si se pasa. */
+.txt-limits { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.txt-limits li { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto; align-items: center; gap: 4px 10px; font-size: 14px; }
+.txt-limits li small { grid-column: 1 / -1; color: var(--danger); font-weight: 600; }
+.txt-limit-bar { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.txt-limit-bar i { display: block; height: 100%; border-radius: 99px; background: var(--blue); transition: width .2s; }
+.txt-limits .is-over .txt-limit-bar i { background: var(--danger); }
+.txt-limits .is-over b { color: var(--danger); }
+@media (max-width: 520px) { .txt-limits li { grid-template-columns: minmax(0, 1fr) auto; } .txt-limit-bar { grid-column: 1 / -1; grid-row: 2; } }
+/* Comparar lado a lado, como Diffchecker: número de línea y texto de cada lado. */
+.txt-side { display: grid; border: 1px solid var(--line); border-radius: 12px; background: var(--card); max-height: 60vh; overflow: auto; font-size: 14.5px; line-height: 1.6; }
+.txt-side-row { display: grid; grid-template-columns: 2.6em minmax(0, 1fr) 2.6em minmax(0, 1fr); border-bottom: 1px solid var(--line); }
+.txt-side-row:last-child { border-bottom: 0; }
+.txt-side-row.is-changed { background: color-mix(in srgb, var(--c-amber, #F59E0B) 6%, transparent); }
+.txt-side-n { padding: 4px 6px; text-align: right; color: var(--ink-faint); font-variant-numeric: tabular-nums; user-select: none; border-right: 1px solid var(--line); }
+.txt-side-cell { padding: 4px 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.txt-side-cell:nth-child(2) { border-right: 1px solid var(--line); }
+/* Las marcas dentro de una palabra (una letra) no deben separarla: sin relleno lateral. */
+.txt-diff :is(.diff-del, .diff-ins), .txt-side :is(.diff-del, .diff-ins) { padding: 0; border-radius: 3px; }
+.txt-side-cell.is-empty { background: repeating-linear-gradient(135deg, transparent 0 6px, color-mix(in srgb, var(--line) 60%, transparent) 6px 7px); }
+@media (max-width: 640px) { .txt-side { font-size: 13px; } .txt-side-row { grid-template-columns: 2em minmax(0, 1fr) 2em minmax(0, 1fr); } .txt-side-cell { padding: 4px 6px; } }
 .itt-text { min-height: 260px; font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 14px; line-height: 1.5; }
 .meta-item { padding-top: 10px; border-top: 1px solid var(--line); gap: 8px; }
 .meta-title { font-size: 14px; }
