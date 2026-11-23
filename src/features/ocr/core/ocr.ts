@@ -10,12 +10,14 @@
 import { PDFDocument } from 'pdf-lib'
 
 import type { OcrLang } from './ocrLangs'
+import type { OcrLine } from '../../convert/core/ocrLayout'
 export * from './ocrLangs'
 export type OcrImage = Blob | HTMLCanvasElement
-export type OcrPageResult = { text: string; confidence: number; pdf: Uint8Array | null }
+/** `lines`, `width` y `height` (en píxeles de la imagen) solo si se pidió el diseño (W-147.3). */
+export type OcrPageResult = { text: string; confidence: number; pdf: Uint8Array | null; lines?: OcrLine[]; width?: number; height?: number }
 
 export interface Recognizer {
-  recognize(image: OcrImage, wantPdf: boolean): Promise<OcrPageResult>
+  recognize(image: OcrImage, wantPdf: boolean, layout?: boolean): Promise<OcrPageResult>
   terminate(): Promise<void>
 }
 
@@ -33,13 +35,30 @@ export async function createRecognizer(lang: OcrLang, onStatus?: (fraction: numb
     logger: (m) => onStatus?.(m.progress ?? 0, m.status ?? ''),
   })
   return {
-    async recognize(image, wantPdf) {
-      const { data } = await worker.recognize(image, { pdfTitle: 'DocuSmart OCR' }, { text: true, pdf: wantPdf })
-      return {
+    async recognize(image, wantPdf, layout = false) {
+      const { data } = await worker.recognize(image, { pdfTitle: 'DocuSmart OCR' }, { text: true, pdf: wantPdf, blocks: layout })
+      const result: OcrPageResult = {
         text: data.text ?? '',
         confidence: data.confidence ?? 0,
         pdf: wantPdf && data.pdf ? new Uint8Array(data.pdf) : null,
       }
+      if (layout) {
+        // Cada línea con sus palabras y su caja, para armar Word y Excel con el diseño de la página.
+        result.lines = (data.blocks ?? []).flatMap((b) =>
+          b.paragraphs.flatMap((p) =>
+            p.lines.map((l) => ({
+              words: l.words.map((w) => ({ text: w.text, x0: w.bbox.x0, y0: w.bbox.y0, x1: w.bbox.x1, y1: w.bbox.y1, confidence: w.confidence })),
+              baseline: Math.max(l.baseline.y0, l.baseline.y1),
+              height: l.bbox.y1 - l.bbox.y0,
+            })),
+          ),
+        )
+        const size = image instanceof Blob ? await createImageBitmap(image) : image
+        result.width = size.width
+        result.height = size.height
+        if ('close' in size) size.close()
+      }
+      return result
     },
     terminate: async () => {
       await worker.terminate()
@@ -80,13 +99,13 @@ export const ORIENTATION_THRESHOLD = 60
  * Reconoce una página y, si la confianza es baja y se puede girar, la prueba a 90°, 270° y 180°
  * y se queda con la de mayor confianza: así los escaneos de lado o de cabeza se leen bien.
  */
-export async function recognizeOriented(recognizer: Recognizer, image: OcrImage, wantPdf: boolean, rotate?: Rotator): Promise<{ result: OcrPageResult; rotation: Rotation }> {
-  const first = await recognizer.recognize(image, wantPdf)
+export async function recognizeOriented(recognizer: Recognizer, image: OcrImage, wantPdf: boolean, rotate?: Rotator, layout = false): Promise<{ result: OcrPageResult; rotation: Rotation }> {
+  const first = await recognizer.recognize(image, wantPdf, layout)
   // Una página casi vacía tiene poca confianza pero no está girada: no vale la pena insistir.
   if (!rotate || first.confidence >= ORIENTATION_THRESHOLD || first.text.replace(/\s/g, '').length < 5) return { result: first, rotation: 0 }
   let best = { result: first, rotation: 0 as Rotation }
   for (const deg of [90, 270, 180] as const) {
-    const r = await recognizer.recognize(await rotate(image, deg), wantPdf)
+    const r = await recognizer.recognize(await rotate(image, deg), wantPdf, layout)
     if (r.confidence > best.result.confidence) best = { result: r, rotation: deg }
     if (best.result.confidence >= ORIENTATION_THRESHOLD + 15) break
   }

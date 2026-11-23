@@ -700,7 +700,7 @@ export default {
       steps: ["Scegli un PDF, un Word (.docx) o un .txt, oppure incolla il testo.", "Scegli la lunghezza del riassunto e premi \"Riassumi\".", "Leggi le idee principali e le parole chiave, poi copia il riassunto o scaricalo in .txt o Word."],
       faq: [
         ["Usa l'intelligenza artificiale?", "Sì, una tecnica di IA classica che funziona nel tuo browser: analizza quali frasi riprendono le idee principali del documento e quali somigliano di più al resto, e sceglie quelle. Non usa servizi cloud e non inventa testo: ogni frase del riassunto è nel documento."],
-        ["Funziona con i PDF scansionati?", "Una scansione è un'immagine senza testo. Passala prima dall'OCR per riconoscere il testo e poi riassumi quel PDF."],
+        ["Funziona con i PDF scansionati?", "Sì. Se il PDF è scansionato, il pulsante «Riconosci e riassumi» legge il testo con l’OCR nel browser e lo riassume in un solo passaggio."],
         ["In quali lingue funziona?", "Nelle 12 lingue di DocuSmart: rileva la lingua del documento e scarta le parole che non aggiungono significato; in cinese e giapponese analizza coppie di caratteri."],
         ["Quanto è lungo il riassunto?", "Breve (da 3 a 7 frasi), medio (da 5 a 15) o lungo (da 8 a 30), in base alla dimensione del documento. Puoi cambiarla e il riassunto si aggiorna subito."],
         ["Il mio documento viene caricato su internet?", "No. Il testo viene letto e riassunto nel tuo browser: il file non lascia il tuo dispositivo e non viene salvato."],
@@ -885,7 +885,7 @@ export default {
       steps: ['Scegli il PDF.', 'Premi "Converti".', 'Apri il .docx in Word, Google Docs o LibreOffice e controlla il risultato.'],
       faq: [
         ['È identico al PDF?', 'Molto simile, ma non identico: un PDF non contiene paragrafi né tabelle, solo lettere con la loro posizione, quindi DocuSmart li ricostruisce. Mantiene titoli, grassetto, corsivo, dimensioni, colori, elenchi, tabelle semplici, immagini e impaginazioni a due colonne (come i curriculum), con lo sfondo di ogni colonna e le fasce colorate. Caselle di testo e forme decorative complesse possono variare.'],
-        ['Funziona con PDF scansionati?', 'Una scansione è un’immagine senza testo. Passala prima dallo strumento OCR spuntando "PDF ricercabile" e converti quel PDF.'],
+        ['Funziona con PDF scansionati?', "Sì. Le pagine scansionate vengono riconosciute con l’OCR nel browser nello stesso passaggio e il testo resta modificabile al suo posto. Puoi scegliere la lingua del documento."],
         ['Con quali programmi apro il file?', 'Con Microsoft Word, Google Docs, LibreOffice, Pages o WPS: è un .docx standard.'],
         ['I miei file vengono caricati su internet?', 'No. La conversione avviene nel tuo browser.'],
       ],
@@ -907,7 +907,7 @@ export default {
       faq: [
         ['Con quali PDF funziona meglio?', 'Con PDF digitali che hanno tabelle ben allineate: estratti conto, fatture, report o elenchi esportati da un sistema. DocuSmart costruisce le colonne in base alla posizione del testo.'],
         ['I numeri restano numeri?', 'Sì. Valori come 1.500.000, € 2.000, 3,5 o 45% vengono salvati come numeri di Excel con il loro formato, così puoi sommarli o usarli nelle formule.'],
-        ['Funziona con PDF scansionati?', 'Una scansione è un’immagine senza testo. Passala prima dallo strumento OCR spuntando "PDF ricercabile" e converti quel PDF.'],
+        ['Funziona con PDF scansionati?', "Sì. Le pagine scansionate vengono riconosciute con l’OCR nel browser nello stesso passaggio e ogni colonna della tabella finisce nella sua cella. Puoi scegliere la lingua del documento."],
         ['I miei file vengono caricati su internet?', 'No. La conversione avviene nel tuo browser.'],
       ],
     },

@@ -96,3 +96,15 @@ Se hicieron las brechas 1 a 7 (2026-11-22). Quedan para más adelante la 8 (opci
 **Límites conocidos:** las notas al pie van al final del documento y no al pie de cada página. El encabezado distinto en la primera página o en las páginas pares de Word todavía no se respeta: se usa el principal.
 
 **Queda por debajo:** opciones de resolución en PDF a imagen (#8), OCR en un paso en PDF a Word/Excel (#9), animación de GIF y tamaño por página en PDF a PowerPoint (#10).
+
+### Seguimiento W-147.3 (2026-11-23): las brechas 8, 9 y 10
+
+| # | Mejora | Cómo quedó | Prueba |
+|---|---|---|---|
+| 8 | PDF a imagen con opciones | **Resolución** 72 ppp (pantalla), 150 o 300 ppp (imprimir), según el tamaño de cada página y sin pasar de 7000 px por lado; **calidad del JPG** de 50 a 100 %; **páginas** ("2-3, 5", vacío = todas), con aviso si no existen. Los archivos llevan el número real de la página | Unitarias (`renderWidth`) y E2E (solo las páginas 2 y 3, 595 px a 72 ppp, aviso con "7-9") |
+| 9 | PDF escaneado a Word y Excel con OCR en un paso | Casilla **Reconocer el texto de las páginas escaneadas** (encendida) con el idioma del documento: las páginas sin texto se reconocen con el OCR local (corrige la orientación) y cada palabra entra con su posición, así PDF a Word arma párrafos y PDF a Excel separa las columnas. La foto del escaneo no se repite en el Word. Un PDF mixto solo reconoce las páginas escaneadas. Aviso "N páginas escaneadas se reconocieron con OCR" | Unitarias (`ocrLayout`, OCR con diseño) y E2E (factura escaneada → Word con el texto y sin la foto; → Excel con 3 columnas) |
+| 10 | GIF animado y tamaño en PowerPoint | Un **GIF, WebP o PNG animado** a GIF conserva sus cuadros y la duración de cada uno (hasta 300 cuadros, con ImageDecoder del navegador; si no puede, queda el primero). **PDF a PowerPoint** toma el tamaño de la diapositiva de la proporción de página que más se repite (una portada horizontal ya no achica todas las páginas verticales); cada página se ajusta sin deformarse (PowerPoint no admite un tamaño distinto por diapositiva) | E2E (GIF de 3 cuadros sale con 3) y unitarias (`dominantPage`) |
+
+También se actualizaron las preguntas frecuentes de PDF a Word, PDF a Excel y Resumir PDF en los 12 idiomas: ya no hace falta pasar primero por OCR.
+
+**Queda por debajo en Convertir:** nada de lo detectado en la auditoría.

@@ -700,7 +700,7 @@ export default {
       steps: ["Escolha um PDF, um Word (.docx) ou um .txt, ou cole o texto.", "Escolha o tamanho do resumo e toque em \"Resumir\".", "Leia as ideias principais e as palavras-chave e copie o resumo ou baixe-o em .txt ou Word."],
       faq: [
         ["Usa inteligência artificial?", "Sim, uma técnica clássica de IA que roda no seu navegador: analisa quais frases repetem as ideias principais do documento e quais se parecem mais com o resto, e escolhe essas. Não usa serviços na nuvem nem inventa texto: cada frase do resumo está no documento."],
-        ["Funciona com PDF digitalizados?", "Uma digitalização é uma imagem sem texto. Passe-a primeiro pelo OCR para reconhecer o texto e depois resuma esse PDF."],
+        ["Funciona com PDF digitalizados?", "Sim. Se o PDF for digitalizado, o botão «Reconhecer e resumir» lê o texto com OCR no seu navegador e o resume no mesmo passo."],
         ["Em quais idiomas funciona?", "Nos 12 idiomas do DocuSmart: detecta o idioma do documento e descarta as palavras que não acrescentam significado; em chinês e japonês analisa pares de caracteres."],
         ["Qual o tamanho do resumo?", "Curto (de 3 a 7 frases), médio (de 5 a 15) ou longo (de 8 a 30), conforme o tamanho do documento. Você pode mudar e o resumo se atualiza na hora."],
         ["Meu documento é enviado para a internet?", "Não. O texto é lido e resumido no seu navegador: o arquivo não sai do seu dispositivo nem é salvo."],
@@ -885,7 +885,7 @@ export default {
       steps: ['Escolha o PDF.', 'Toque em "Converter".', 'Abra o .docx no Word, Google Docs ou LibreOffice e confira o resultado.'],
       faq: [
         ['Fica idêntico ao PDF?', 'Muito parecido, mas não idêntico: um PDF não guarda parágrafos nem tabelas, só letras com sua posição, então o DocuSmart os reconstrói. Mantém títulos, negrito, itálico, tamanhos, cores, listas, tabelas simples, imagens e layouts em duas colunas (como currículos), com o fundo de cada coluna e as faixas coloridas. Caixas de texto e formas decorativas complexas podem variar.'],
-        ['Funciona com PDF digitalizados?', 'Uma digitalização é uma imagem sem texto. Passe-a primeiro pela ferramenta de OCR marcando "PDF pesquisável" e converta esse PDF.'],
+        ['Funciona com PDF digitalizados?', "Sim. As páginas digitalizadas são reconhecidas com OCR no seu navegador no mesmo passo e o texto fica editável no lugar. Você pode escolher o idioma do documento."],
         ['Com que programas abro o arquivo?', 'Com Microsoft Word, Google Docs, LibreOffice, Pages ou WPS: é um .docx padrão.'],
         ['Meus arquivos são enviados à internet?', 'Não. A conversão é feita dentro do seu navegador.'],
       ],
@@ -907,7 +907,7 @@ export default {
       faq: [
         ['Com que PDF funciona melhor?', 'Com PDFs digitais que têm tabelas bem alinhadas: extratos bancários, faturas, relatórios ou listagens exportadas de um sistema. O DocuSmart monta as colunas pela posição do texto.'],
         ['Os números ficam como números?', 'Sim. Valores como 1.500.000, R$ 2.000, 3,5 ou 45% são salvos como números do Excel com seu formato, então você pode somá-los ou usá-los em fórmulas.'],
-        ['Funciona com PDF digitalizados?', 'Uma digitalização é uma imagem sem texto. Passe-a primeiro pela ferramenta de OCR marcando "PDF pesquisável" e converta esse PDF.'],
+        ['Funciona com PDF digitalizados?', "Sim. As páginas digitalizadas são reconhecidas com OCR no seu navegador no mesmo passo e cada coluna da tabela fica na sua célula. Você pode escolher o idioma do documento."],
         ['Meus arquivos são enviados à internet?', 'Não. A conversão é feita dentro do seu navegador.'],
       ],
     },

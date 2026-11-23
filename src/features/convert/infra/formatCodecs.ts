@@ -83,6 +83,60 @@ export async function encodeGif(canvas: HTMLCanvasElement): Promise<Blob> {
   return new Blob([gif.bytes() as Uint8Array<ArrayBuffer>], { type: 'image/gif' })
 }
 
+/** Cuadros de una imagen animada como los da ImageDecoder (WebCodecs). */
+type DecodedFrame = { image: CanvasImageSource & { displayWidth: number; displayHeight: number; duration: number | null; close(): void } }
+type AnimDecoder = { tracks: { ready: Promise<void>; selectedTrack: { frameCount: number } | null }; decode(o: { frameIndex: number }): Promise<DecodedFrame>; close(): void }
+type AnimDecoderCtor = { new (init: { data: ArrayBuffer; type: string }): AnimDecoder; isTypeSupported(type: string): Promise<boolean> }
+
+/** Hasta cuántos cuadros se copian (un GIF largo pesaría demasiado y tardaría mucho). */
+export const MAX_GIF_FRAMES = 300
+
+/**
+ * GIF animado a partir de un GIF, WebP o PNG animado (W-147.3), con la duración de cada cuadro.
+ * Usa ImageDecoder del navegador; null si no hay animación o el navegador no puede leerla.
+ */
+export async function encodeAnimatedGif(file: Blob): Promise<Blob | null> {
+  const Decoder = (globalThis as { ImageDecoder?: AnimDecoderCtor }).ImageDecoder
+  const type = file.type === 'image/apng' ? 'image/png' : file.type
+  if (!Decoder || !(await Decoder.isTypeSupported(type).catch(() => false))) return null
+  const decoder = new Decoder({ data: await file.arrayBuffer(), type })
+  try {
+    await decoder.tracks.ready
+    const frames = Math.min(MAX_GIF_FRAMES, decoder.tracks.selectedTrack?.frameCount ?? 0)
+    if (frames < 2) return null
+    const { GIFEncoder, quantize, applyPalette } = await import('gifenc')
+    const gif = GIFEncoder()
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })!
+    for (let i = 0; i < frames; i++) {
+      const { image } = await decoder.decode({ frameIndex: i })
+      if (i === 0) {
+        canvas.width = image.displayWidth
+        canvas.height = image.displayHeight
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(image, 0, 0)
+      // Duración en microsegundos; los GIF guardan centésimas (mínimo 20 ms, como los navegadores).
+      const delay = Math.max(20, Math.round((image.duration ?? 100000) / 1000))
+      image.close()
+      const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const palette = quantize(data, 256, { format: 'rgba4444', oneBitAlpha: true })
+      const index = applyPalette(data, palette, 'rgba4444')
+      const transparentIndex = palette.findIndex((c) => c[3] === 0)
+      // dispose 2: cada cuadro borra el anterior (si no, lo transparente dejaría ver el cuadro previo).
+      const frame = { palette, delay, repeat: 0, transparent: transparentIndex >= 0, transparentIndex: Math.max(0, transparentIndex), dispose: 2 }
+      gif.writeFrame(index, canvas.width, canvas.height, frame)
+    }
+    gif.finish()
+    canvas.width = canvas.height = 0
+    return new Blob([gif.bytes() as Uint8Array<ArrayBuffer>], { type: 'image/gif' })
+  } catch {
+    return null
+  } finally {
+    decoder.close()
+  }
+}
+
 type AvifModule = { encode(data: Uint8Array, width: number, height: number, options: Record<string, unknown>): Uint8Array | null }
 let avif: Promise<AvifModule> | null = null
 

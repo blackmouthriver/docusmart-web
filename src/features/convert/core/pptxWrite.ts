@@ -25,6 +25,23 @@ export function slideSize(first: { width: number; height: number }): { cx: numbe
   return { cx: SLIDE_WIDTH, cy: Math.min(Math.max(cy, 914400), 51206400) }
 }
 
+/**
+ * La página que da el tamaño de la presentación (W-147.3): la proporción que más se repite (una
+ * portada horizontal ya no deja todas las páginas verticales chiquitas). En empate, la primera.
+ */
+export function dominantPage<T extends { width: number; height: number }>(images: readonly T[]): T {
+  const counts = new Map<number, { n: number; first: T }>()
+  for (const img of images) {
+    const key = Math.round((img.height / Math.max(1, img.width)) * 20) / 20
+    const c = counts.get(key)
+    if (c) c.n++
+    else counts.set(key, { n: 1, first: img })
+  }
+  let best = { n: 0, first: images[0] }
+  for (const c of counts.values()) if (c.n > best.n) best = c
+  return best.first
+}
+
 /** Posición de la imagen ajustada a la diapositiva, centrada y sin deformar. */
 export function fitImage(img: { width: number; height: number }, size: { cx: number; cy: number }) {
   const k = Math.min(size.cx / img.width, size.cy / img.height)
@@ -72,7 +89,7 @@ function slideXml(img: SlideImage, n: number, size: { cx: number; cy: number }):
 /** El .pptx con una diapositiva por imagen. `title` va a las propiedades del archivo. */
 export function buildPptx(images: SlideImage[], title = 'DocuSmart'): Uint8Array {
   if (!images.length) throw new Error('No hay páginas para la presentación.')
-  const size = slideSize(images[0])
+  const size = slideSize(dominantPage(images))
   const n = images.length
   const ids = Array.from({ length: n }, (_, i) => i + 1)
   const files: Zippable = {

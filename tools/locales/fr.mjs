@@ -700,7 +700,7 @@ export default {
       steps: ["Choisissez un PDF, un Word (.docx) ou un .txt, ou collez le texte.", "Choisissez la longueur du résumé et appuyez sur « Résumer ».", "Lisez les idées principales et les mots-clés, puis copiez le résumé ou téléchargez-le en .txt ou Word."],
       faq: [
         ["Utilise-t-il l'intelligence artificielle ?", "Oui, une technique d'IA classique qui fonctionne dans votre navigateur : elle analyse quelles phrases reprennent les idées principales du document et lesquelles ressemblent le plus au reste, et choisit celles-là. Elle n'utilise pas de services cloud et n'invente pas de texte : chaque phrase du résumé se trouve dans le document."],
-        ["Fonctionne-t-il avec des PDF numérisés ?", "Un scan est une image sans texte. Passez-le d'abord par l'OCR pour reconnaître le texte, puis résumez ce PDF."],
+        ["Fonctionne-t-il avec des PDF numérisés ?", "Oui. Si le PDF est numérisé, le bouton « Reconnaître et résumer » lit le texte par OCR dans votre navigateur et le résume en une seule étape."],
         ["Dans quelles langues fonctionne-t-il ?", "Dans les 12 langues de DocuSmart : il détecte la langue du document et écarte les mots qui n'apportent pas de sens ; en chinois et en japonais, il analyse des paires de caractères."],
         ["Quelle est la longueur du résumé ?", "Court (de 3 à 7 phrases), moyen (de 5 à 15) ou long (de 8 à 30), selon la taille du document. Vous pouvez la changer et le résumé se met à jour aussitôt."],
         ["Mon document est-il envoyé sur internet ?", "Non. Le texte est lu et résumé dans votre navigateur : le fichier ne quitte pas votre appareil et n'est pas enregistré."],
@@ -885,7 +885,7 @@ export default {
       steps: ['Choisissez le PDF.', 'Appuyez sur « Convertir ».', 'Ouvrez le .docx dans Word, Google Docs ou LibreOffice et vérifiez le résultat.'],
       faq: [
         ['Est-ce identique au PDF ?', 'Très proche, mais pas identique : un PDF ne contient ni paragraphes ni tableaux, seulement des lettres et leur position, donc DocuSmart les reconstruit. Il conserve les titres, le gras, l\'italique, les tailles, les couleurs, les listes, les tableaux simples, les images et les mises en page sur deux colonnes (comme les CV), avec le fond de chaque colonne et les bandes de couleur. Les zones de texte et les formes décoratives complexes peuvent varier.'],
-        ['Ça marche avec des PDF numérisés ?', 'Un scan est une image sans texte. Passez-le d’abord par l’outil OCR en cochant « PDF consultable » et convertissez ce PDF.'],
+        ['Ça marche avec des PDF numérisés ?', "Oui. Les pages numérisées sont reconnues par OCR dans votre navigateur au cours de la même étape, et le texte reste modifiable à sa place. Vous pouvez choisir la langue du document."],
         ['Avec quels logiciels ouvrir le fichier ?', 'Microsoft Word, Google Docs, LibreOffice, Pages ou WPS : c’est un .docx standard.'],
         ['Mes fichiers sont-ils envoyés sur Internet ?', 'Non. La conversion se fait dans votre navigateur.'],
       ],
@@ -907,7 +907,7 @@ export default {
       faq: [
         ['Avec quels PDF ça marche le mieux ?', 'Avec des PDF numériques aux tableaux bien alignés : relevés bancaires, factures, rapports ou listes exportées d’un logiciel. DocuSmart construit les colonnes d’après la position du texte.'],
         ['Les nombres restent-ils des nombres ?', 'Oui. Des valeurs comme 1 500 000, 2 000 €, 3,5 ou 45 % sont enregistrées comme nombres Excel avec leur format, pour les additionner ou les utiliser dans des formules.'],
-        ['Ça marche avec des PDF numérisés ?', 'Un scan est une image sans texte. Passez-le d’abord par l’outil OCR en cochant « PDF consultable » et convertissez ce PDF.'],
+        ['Ça marche avec des PDF numérisés ?', "Oui. Les pages numérisées sont reconnues par OCR dans votre navigateur au cours de la même étape, et chaque colonne du tableau va dans sa cellule. Vous pouvez choisir la langue du document."],
         ['Mes fichiers sont-ils envoyés sur Internet ?', 'Non. La conversion se fait dans votre navigateur.'],
       ],
     },

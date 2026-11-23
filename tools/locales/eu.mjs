@@ -705,7 +705,7 @@ export default {
       steps: ["Aukeratu PDF bat, Word bat (.docx) edo .txt bat, edo itsatsi testua.", "Aukeratu laburpenaren luzera eta sakatu \"Laburtu\".", "Irakurri ideia nagusiak eta gako-hitzak, eta kopiatu laburpena edo deskargatu .txt edo Word formatuan."],
       faq: [
         ["Adimen artifiziala erabiltzen du?", "Bai, zure nabigatzailean exekutatzen den AA teknika klasiko bat: dokumentuaren ideia nagusiak errepikatzen dituzten eta gainerakoen antz handiena duten esaldiak aztertzen ditu, eta horiek aukeratzen ditu. Ez du hodeiko zerbitzurik erabiltzen eta ez du testurik asmatzen: laburpeneko esaldi guztiak dokumentuan daude."],
-        ["PDF eskaneatuekin funtzionatzen du?", "Eskaneatze bat testurik gabeko irudi bat da. Pasa ezazu lehenik OCRtik testua ezagutzeko, eta laburtu gero PDF hori."],
+        ["PDF eskaneatuekin funtzionatzen du?", "Bai. PDFa eskaneatua bada, «Ezagutu eta laburtu» botoiak testua OCR bidez irakurtzen du zure nabigatzailean eta urrats berean laburtzen du."],
         ["Zein hizkuntzatan funtzionatzen du?", "DocuSmart-en 12 hizkuntzetan: dokumentuaren hizkuntza detektatzen du eta esanahirik ematen ez duten hitzak baztertzen ditu; txineraz eta japonieraz karaktere-bikoteak aztertzen ditu."],
         ["Zenbaterainoko luzera du laburpenak?", "Laburra (3tik 7ra esaldi), ertaina (5etik 15era) edo luzea (8tik 30era), dokumentuaren tamainaren arabera. Alda dezakezu eta laburpena berehala eguneratzen da."],
         ["Nire dokumentua internetera igotzen da?", "Ez. Testua zure nabigatzailean irakurri eta laburtzen da: fitxategia ez da zure gailutik ateratzen eta ez da gordetzen."],
@@ -890,7 +890,7 @@ export default {
       steps: ['Aukeratu PDFa.', 'Sakatu «Bihurtu».', 'Ireki .docx fitxategia Word, Google Docs edo LibreOffice-n eta berrikusi emaitza.'],
       faq: [
         ['PDFaren berdin-berdina geratzen da?', 'Oso antzekoa, baina ez berdina: PDF batek ez ditu paragrafoak ez taulak gordetzen, letrak eta haien posizioa baizik, beraz DocuSmart-ek berreraikitzen ditu. Izenburuak, letra lodia, etzana, tamainak, koloreak, zerrendak, taula sinpleak, irudiak eta bi zutabeko diseinuak (curriculumak bezala) gordetzen ditu, zutabe bakoitzaren atzeko planoarekin eta kolore-zerrendekin. Testu-koadroak eta forma apaingarri konplexuak alda daitezke.'],
-        ['PDF eskaneatuekin dabil?', 'Eskaneatu bat testurik gabeko irudi bat da. Pasa lehenik OCR tresnatik «PDF bilagarria» markatuta eta bihurtu PDF hori.'],
+        ['PDF eskaneatuekin dabil?', "Bai. Orri eskaneatuak OCR bidez ezagutzen dira zure nabigatzailean urrats berean, eta testua bere lekuan editagarri geratzen da. Dokumentuaren hizkuntza aukera dezakezu."],
         ['Zein programarekin ireki dezaket fitxategia?', 'Microsoft Word, Google Docs, LibreOffice, Pages edo WPSrekin: .docx estandarra da.'],
         ['Nire fitxategiak internetera igotzen dira?', 'Ez. Bihurketa zure nabigatzailean egiten da.'],
       ],
@@ -912,7 +912,7 @@ export default {
       faq: [
         ['Zein PDFrekin dabil hobekien?', 'Ondo lerrokatutako taulak dituzten PDF digitalekin: banku-laburpenak, fakturak, txostenak edo sistema batetik esportatutako zerrendak. DocuSmartek zutabeak testuaren kokapenaren arabera osatzen ditu.'],
         ['Zenbakiak zenbaki gisa geratzen dira?', 'Bai. 1.500.000, 2.000 €, 3,5 edo % 45 bezalako balioak Excel zenbaki gisa gordetzen dira beren formatuarekin, batu edo formuletan erabil ditzazun.'],
-        ['PDF eskaneatuekin dabil?', 'Eskaneatu bat testurik gabeko irudi bat da. Pasa lehenik OCR tresnatik «PDF bilagarria» markatuta eta bihurtu PDF hori.'],
+        ['PDF eskaneatuekin dabil?', "Bai. Orri eskaneatuak OCR bidez ezagutzen dira zure nabigatzailean urrats berean, eta taulako zutabe bakoitza bere gelaxkan geratzen da. Dokumentuaren hizkuntza aukera dezakezu."],
         ['Nire fitxategiak internetera igotzen dira?', 'Ez. Bihurketa zure nabigatzailean egiten da.'],
       ],
     },
