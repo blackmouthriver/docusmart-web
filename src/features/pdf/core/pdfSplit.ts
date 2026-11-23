@@ -34,7 +34,10 @@ export function fileSafe(title: string, max = 60): string {
     .split(/\s+/)
     .filter(Boolean)
     .join(' ')
-  return Array.from(clean).slice(0, max).join('').replace(/[ .]+$/, '')
+  let out = Array.from(clean).slice(0, max).join('')
+  // Sin puntos ni espacios al final (Windows no los acepta).
+  while (out.endsWith('.') || out.endsWith(' ')) out = out.slice(0, -1)
+  return out
 }
 
 export type SizeSplit = {
