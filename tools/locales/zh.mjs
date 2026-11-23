@@ -1197,6 +1197,7 @@ export default {
       'Pantalla de inicio de DocuSmart con accesos rápidos a Escanear, Imagen a PDF, Seguridad, Lectura, Notas, Pomodoro y QR',
       'DocuSmart 主屏幕，提供扫描、图片转 PDF、安全、朗读、笔记、番茄钟和二维码的快捷入口',
     ],
+    ['Pantalla de DocuSmart para unir varios PDF en un solo archivo', 'DocuSmart 将多个 PDF 合并为一个文件的界面'],
     ['<small>Convertido en tu teléfono</small>', '<small>在手机上完成转换</small>'],
     ['Carpeta segura<small>Protegida con PIN</small>', '安全文件夹<small>PIN 码保护</small>'],
     ['aria-label="Formatos compatibles"', 'aria-label="支持的格式"'],

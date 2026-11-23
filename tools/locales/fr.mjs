@@ -1246,6 +1246,7 @@ export default {
       'Pantalla de inicio de DocuSmart con accesos rápidos a Escanear, Imagen a PDF, Seguridad, Lectura, Notas, Pomodoro y QR',
       'Écran d’accueil de DocuSmart avec des raccourcis vers Scanner, Image en PDF, Sécurité, Lecture, Notes, Pomodoro et QR',
     ],
+    ['Pantalla de DocuSmart para unir varios PDF en un solo archivo', 'Écran de DocuSmart pour fusionner plusieurs PDF en un seul fichier'],
     ['<small>Convertido en tu teléfono</small>', '<small>Converti sur votre téléphone</small>'],
     ['Carpeta segura<small>Protegida con PIN</small>', 'Dossier sécurisé<small>Protégé par PIN</small>'],
     ['aria-label="Formatos compatibles"', 'aria-label="Formats compatibles"'],

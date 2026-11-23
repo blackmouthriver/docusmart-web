@@ -1259,6 +1259,7 @@ export default {
       'Pantalla de inicio de DocuSmart con accesos rápidos a Escanear, Imagen a PDF, Seguridad, Lectura, Notas, Pomodoro y QR',
       'Главный экран DocuSmart с быстрым доступом к сканированию, изображению в PDF, безопасности, чтению, заметкам, Pomodoro и QR',
     ],
+    ['Pantalla de DocuSmart para unir varios PDF en un solo archivo', 'Экран DocuSmart для объединения нескольких PDF в один файл'],
     ['<small>Convertido en tu teléfono</small>', '<small>Конвертировано на телефоне</small>'],
     ['Carpeta segura<small>Protegida con PIN</small>', 'Защищённая папка<small>Под PIN-кодом</small>'],
     ['aria-label="Formatos compatibles"', 'aria-label="Поддерживаемые форматы"'],

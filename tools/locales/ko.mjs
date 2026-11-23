@@ -1239,6 +1239,7 @@ export default {
       'Pantalla de inicio de DocuSmart con accesos rápidos a Escanear, Imagen a PDF, Seguridad, Lectura, Notas, Pomodoro y QR',
       '스캔, 이미지를 PDF로, 보안, 읽기, 메모, 뽀모도로, QR 바로가기가 있는 DocuSmart 홈 화면',
     ],
+    ['Pantalla de DocuSmart para unir varios PDF en un solo archivo', '여러 PDF를 하나의 파일로 병합하는 DocuSmart 화면'],
     ['<small>Convertido en tu teléfono</small>', '<small>휴대폰에서 변환</small>'],
     ['Carpeta segura<small>Protegida con PIN</small>', '보안 폴더<small>PIN으로 보호</small>'],
     ['aria-label="Formatos compatibles"', 'aria-label="지원 형식"'],

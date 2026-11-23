@@ -1254,6 +1254,7 @@ export default {
       'Pantalla de inicio de DocuSmart con accesos rápidos a Escanear, Imagen a PDF, Seguridad, Lectura, Notas, Pomodoro y QR',
       'DocuSmarten hasierako pantaila, Eskaneatu, Iruditik PDFra, Segurtasuna, Irakurketa, Oharrak, Pomodoro eta QR lasterbideekin',
     ],
+    ['Pantalla de DocuSmart para unir varios PDF en un solo archivo', 'DocuSmart-en pantaila, hainbat PDF fitxategi bakar batean batzeko'],
     ['<small>Convertido en tu teléfono</small>', '<small>Mugikorrean bihurtua</small>'],
     ['Carpeta segura<small>Protegida con PIN</small>', 'Karpeta segurua<small>PINarekin babestua</small>'],
     ['aria-label="Formatos compatibles"', 'aria-label="Formatu bateragarriak"'],
