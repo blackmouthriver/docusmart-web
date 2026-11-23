@@ -1,7 +1,7 @@
 // W-147.1: escanear con la cámara en vivo. Chromium usa una cámara falsa que pasa un video .y4m
 // hecho aquí: una hoja clara con renglones sobre una mesa oscura. La hoja se queda quieta, así que
 // la foto se toma sola; el botón del obturador toma otra a mano.
-import { writeFileSync } from 'node:fs'
+import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, test } from './helpers'
@@ -27,7 +27,8 @@ function frame(): Buffer {
   return Buffer.concat([y, Buffer.alloc((W / 2) * (H / 2) * 2, 128)])
 }
 
-const video = join(tmpdir(), `docusmart-hoja-${process.pid}.y4m`)
+// En una carpeta temporal propia (no un nombre fijo en la carpeta temporal compartida).
+const video = join(mkdtempSync(join(tmpdir(), 'docusmart-camara-')), 'hoja.y4m')
 const f = frame()
 writeFileSync(video, Buffer.concat([Buffer.from(`YUV4MPEG2 W${W} H${H} F15:1 Ip A1:1 C420jpeg\n`), ...Array.from({ length: 15 }, () => Buffer.concat([Buffer.from('FRAME\n'), f]))]))
 

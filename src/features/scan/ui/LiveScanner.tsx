@@ -156,7 +156,7 @@ export function LiveScanner({ onCapture, onClose, onSystemCamera }: {
           </div>
         ) : (
           <div className="live-scan-stage" style={ratio ? { aspectRatio: String(ratio), width: `min(100cqw, ${(ratio * 100).toFixed(2)}cqh)`, maxHeight: 'none' } : undefined}>
-            <video ref={video} muted playsInline aria-hidden="true" />
+            <video ref={video} muted playsInline aria-label={tr('scan.live.title')} />
             {pts && (
               <svg className="live-scan-quad" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                 <polygon points={pts} className={progress > 0 ? 'is-steady' : ''} vectorEffect="non-scaling-stroke" />
