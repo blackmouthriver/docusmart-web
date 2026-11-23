@@ -139,7 +139,7 @@ export default {
       faq: [
         ['Zein inprimaki dabiltza?', 'Eremu betegarriak dituzten PDFak (AcroForm), gehienak: testu-koadroak, laukitxoak, aukerak, goitibeherako zerrendak eta zerrendak. PDF batek eremurik ez badu, gainean idatz dezakezu «Editatu PDFa» tresnarekin.'],
         ['Zer esan nahi du berdintzeak?', 'Erantzunak dokumentuaren zati finko bihurtzen ditu: edozein irakurgailutan berdin ikusten dira eta inork ezin ditu aldatu arrastorik utzi gabe. Berdindu gabe, inprimakia editagarria izaten jarraitzen du.'],
-        ['Gero betetzen jarrai dezaket?', 'Bai, berdintzen ez baduzu: ireki berriro gordetako PDFa hemen edo edozein irakurgailutan eta zure erantzunak eremuetan egongo dira.'],
+        ['Gero betetzen jarrai dezaket?', "Bai, lautzen ez baduzu: ireki gordetako PDFa hemen edo edozein irakurgailutan, eta zure erantzunak eremuetan egongo dira. Erantzunak fitxategi batean gorde eta kargatu ere egin ditzakezu, inprimaki bera berriro betetzeko."],
         ['Nire datuak internetera igotzen dira?', 'Ez. Inprimakia eta zure erantzunak zure nabigatzailean prozesatzen dira.'],
       ],
     },
@@ -211,7 +211,7 @@ export default {
       ],
       faq: [
         ['Zergatik ez da nahikoa lauki beltz bat jartzea?', 'Testua azpian geratzen delako: edonork kopiatu dezake edo laukia kendu. DocuSmartek datuak ezabatutako orri bakoitza irudi gisa marrazten du berriro, eremuak beltzez, eta horrela jatorrizko testua fitxategitik desagertzen da.'],
-        ['Zer gertatzen da dokumentuaren gainerakoarekin?', 'Eremu markaturik gabeko orriak berdin-berdin geratzen dira. Datuak ezabatutako orrietan testua ezin da gehiago hautatu. Gainera, PDF berriak ez ditu jatorrizkoaren metadatuak gordetzen, egilea edo izenburua adibidez.'],
+        ['Zer gertatzen da dokumentuaren gainerakoarekin?', "Eremu markaturik gabeko orriak berdin-berdin geratzen dira. Zentsuratutako orrietan estalitakoa desagertu egiten da, baina gainerako testua bilatu eta kopiatu daiteke oraindik. Gainera, PDF berriak ez ditu jatorrizkoaren metadatuak gordetzen, hala nola egilea edo izenburua."],
         ['Bilaketak dokumentu eskaneatuekin dabil?', 'Ez: eskaneatu bat irudi bat da eta ez du bilatzeko testurik. Kasu horretan, markatu eremuak orrian arrastatuz.'],
         ['Nire dokumentuak internetera igotzen dira?', 'Ez. Dena zure nabigatzailean egiten da; ez PDFa ez ezabatzen duzuna ez dira zure gailutik irteten.'],
       ],

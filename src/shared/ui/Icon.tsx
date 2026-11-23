@@ -84,6 +84,9 @@ const paths = {
   grip: 'M9 5.5v1M15 5.5v1M9 11.5v1M15 11.5v1M9 17.5v1M15 17.5v1',
   undo: 'M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11',
   redo: 'M15 14l5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13',
+  draw: 'M3 17c2.5-5 4.5-6 6-3s3.5 2 5-2 4-6 7-3',
+  line: 'M5 19 19 5',
+  arrow: 'M5 19 19 5M10 5h9v9',
 } as const
 
 export type IconName = keyof typeof paths

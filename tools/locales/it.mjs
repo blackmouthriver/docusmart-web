@@ -139,7 +139,7 @@ export default {
       faq: [
         ['Quali moduli funzionano?', 'I PDF con campi compilabili (AcroForm), cioè la grande maggioranza: caselle di testo, caselle di spunta, opzioni, menu a tendina ed elenchi. Se un PDF non ha campi, puoi scriverci sopra con "Modifica PDF".'],
         ['Cosa significa appiattire?', 'Le risposte diventano parte fissa del documento: si vedono uguali in ogni lettore e nessuno può cambiarle senza lasciare traccia. Senza appiattire, il modulo resta modificabile.'],
-        ['Posso continuare a compilarlo dopo?', 'Sì, se non lo appiattisci: riapri qui o in qualsiasi lettore il PDF salvato e le risposte saranno ancora nei campi.'],
+        ['Posso continuare a compilarlo dopo?', "Sì, se non lo appiattisci: apri il PDF salvato qui o in qualsiasi lettore e le tue risposte saranno ancora nei campi. Puoi anche salvare le risposte in un file e caricarle per compilare di nuovo lo stesso modulo."],
         ['I miei dati vengono caricati su internet?', 'No. Il modulo e le tue risposte vengono elaborati nel tuo browser.'],
       ],
     },
@@ -211,7 +211,7 @@ export default {
       ],
       faq: [
         ['Perché non basta un riquadro nero?', 'Perché il testo resta sotto: chiunque può copiarlo o togliere il riquadro. DocuSmart ridisegna ogni pagina oscurata come immagine, con le zone in nero, così il testo originale sparisce dal file.'],
-        ['Cosa succede al resto del documento?', 'Le pagine senza zone segnate restano identiche. Nelle pagine oscurate il testo non si può più selezionare. Inoltre il nuovo PDF non conserva i metadati dell’originale, come autore o titolo.'],
+        ['Cosa succede al resto del documento?', "Le pagine senza zone segnate restano identiche. Nelle pagine oscurate ciò che hai coperto sparisce, ma il resto del testo si può ancora cercare e copiare. Inoltre il nuovo PDF non conserva i metadati dell’originale, come l’autore o il titolo."],
         ['La ricerca funziona con documenti scansionati?', 'No: una scansione è un’immagine senza testo da cercare. In quel caso segna le zone trascinando sulla pagina.'],
         ['I miei documenti vengono caricati su internet?', 'No. Tutto avviene nel tuo browser; né il PDF né ciò che oscuri lascia il tuo dispositivo.'],
       ],

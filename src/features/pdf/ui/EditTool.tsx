@@ -9,7 +9,7 @@ import { resultFile } from '../../../shared/files/share'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { canvasToBlob } from '../../../shared/pdf/pdf'
-import { applyEdits, type BoxKind, type EditItem, type FontName } from '../core/pdfEdit'
+import { applyEdits, arrowHead, inkFromPoints, inkPoints, lineEnds, lineFromPoints, linkAction, type BoxKind, type EditItem, type FontName } from '../core/pdfEdit'
 import { areaFromCorners } from '../core/pdfRedact'
 import { backgroundColor, groupLines, groupParagraphs, inkColor, lineFrame, replacementFor, type TextLineBox } from '../core/pdfReplace'
 import { track } from '../../../shared/platform/analytics'
@@ -17,7 +17,11 @@ import { PageNav, usePdfPreview } from './PdfPreview'
 import { EDIT_PDF, clearHandOff, peekHandOff } from '../../../shared/files/handoff'
 
 type Item = EditItem & { id: number }
-type Tool = 'select' | 'text' | 'replace' | Exclude<BoxKind, 'erase'>
+/** `ink`: dibujo a mano alzada; `line`, `arrow` y `link` (W-147.2). */
+type Tool = 'select' | 'text' | 'replace' | Exclude<BoxKind, 'erase'> | 'ink' | 'line' | 'arrow' | 'link'
+/** Elementos que se dibujan con trazos (en la capa SVG de la página). */
+type StrokeItem = Extract<Item, { kind: 'ink' | 'line' | 'arrow' }>
+const isStroke = (it: Item): it is StrokeItem => it.kind === 'ink' || it.kind === 'line' || it.kind === 'arrow'
 /** Línea del PDF que se puede reemplazar, con su caja en fracciones de la página. */
 type ReplaceTarget = { key: string; text: string; frame: { x: number; y: number; w: number; h: number } }
 
@@ -29,7 +33,12 @@ const TOOLS: Array<{ id: Tool; icon: IconName }> = [
   { id: 'ellipse', icon: 'circle' },
   { id: 'highlight', icon: 'marker' },
   { id: 'whiteout', icon: 'eraser' },
+  { id: 'ink', icon: 'draw' },
+  { id: 'line', icon: 'line' },
+  { id: 'arrow', icon: 'arrow' },
+  { id: 'link', icon: 'link' },
 ]
+const WIDTHS: Record<'ink' | 'line' | 'arrow', number> = { ink: 2.5, line: 2, arrow: 2.5 }
 const COLORS = ['#1C1B1A', '#DC2626', '#2563EB', '#16A34A', '#F59E0B', '#FFFFFF']
 const HIGHLIGHTS = ['#FDE047', '#86EFAC', '#F9A8D4', '#93C5FD']
 const CSS_FONT: Record<FontName, string> = {
@@ -45,6 +54,10 @@ const HINT: Record<Tool, MessageKey> = {
   ellipse: 'edit.hint.ellipse',
   highlight: 'edit.hint.highlight',
   whiteout: 'edit.hint.whiteout',
+  ink: 'edit.hint.ink',
+  line: 'edit.hint.line',
+  arrow: 'edit.hint.arrow',
+  link: 'edit.hint.link',
 }
 
 let nextId = 1
@@ -328,6 +341,7 @@ export function EditTool() {
                 url={preview.url}
                 page={pageNo - 1}
                 viewWidthPt={preview.widthPt}
+                viewHeightPt={preview.heightPt}
                 tool={tool}
                 items={onPage}
                 targets={targets}
@@ -337,7 +351,8 @@ export function EditTool() {
                 onAdd={(item) => {
                   const it = add(item)
                   if (it.kind === 'text') setTimeout(() => textArea.current?.select(), 0)
-                  setTool('select')
+                  // Se puede seguir dibujando trazos y líneas sin volver a elegir la herramienta.
+                  if (!isStroke(it)) setTool('select')
                 }}
                 onChange={update}
                 onRemove={remove}
@@ -352,7 +367,7 @@ export function EditTool() {
           !error && <p className="faint">{tr('common.preparingPreview')}</p>
         )}
 
-        {current && <Properties item={current} textArea={textArea} onChange={(p) => update(current.id, p)} onRemove={() => remove(current.id)} />}
+        {current && <Properties item={current} pages={pages ?? 1} textArea={textArea} onChange={(p) => update(current.id, p)} onRemove={() => remove(current.id)} />}
 
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
@@ -376,6 +391,7 @@ function EditStage({
   url,
   page,
   viewWidthPt,
+  viewHeightPt,
   tool,
   items,
   targets,
@@ -389,6 +405,7 @@ function EditStage({
   url: string
   page: number
   viewWidthPt: number
+  viewHeightPt: number
   tool: Tool
   items: Item[]
   targets: ReplaceTarget[]
@@ -409,6 +426,13 @@ function EditStage({
     setDraftState(d)
   }
   const drag = useRef<{ mode: 'new' | 'move' | 'resize'; id?: number; x: number; y: number; start?: Item } | null>(null)
+  // Trazo o línea que se está dibujando (puntos en fracciones de la página).
+  const [stroke, setStrokeState] = useState<Array<[number, number]> | null>(null)
+  const strokeRef = useRef(stroke)
+  const setStroke = (s: typeof stroke) => {
+    strokeRef.current = s
+    setStrokeState(s)
+  }
 
   useEffect(() => {
     const el = stage.current
@@ -439,7 +463,8 @@ function EditStage({
     e.currentTarget.setPointerCapture(e.pointerId)
     onSelect(null)
     drag.current = { mode: 'new', x, y }
-    setDraft({ x, y, w: 0, h: 0 })
+    if (tool === 'ink' || tool === 'line' || tool === 'arrow') setStroke([[x, y]])
+    else setDraft({ x, y, w: 0, h: 0 })
   }
 
   const startItem = (it: Item, mode: 'move' | 'resize') => (e: PointerEvent<HTMLElement>) => {
@@ -459,8 +484,15 @@ function EditStage({
     const [x, y] = frac(e)
     if (!Number.isFinite(x) || !Number.isFinite(y)) return
     if (d.mode === 'new') {
-      const a = areaFromCorners(page, d.x, d.y, x, y)
-      setDraft({ x: a.x, y: a.y, w: a.w, h: a.h })
+      const s = strokeRef.current
+      if (s && tool === 'ink') {
+        const [px, py] = s[s.length - 1]
+        if (Math.hypot(x - px, y - py) > 0.002) setStroke([...s, [clamp(x, 0, 1), clamp(y, 0, 1)]])
+      } else if (s) setStroke([s[0], [clamp(x, 0, 1), clamp(y, 0, 1)]])
+      else {
+        const a = areaFromCorners(page, d.x, d.y, x, y)
+        setDraft({ x: a.x, y: a.y, w: a.w, h: a.h })
+      }
       return
     }
     const s = d.start!
@@ -468,9 +500,11 @@ function EditStage({
     const dy = y - d.y
     if (d.mode === 'move') onChange(s.id, { x: clamp(s.x + dx, 0, 0.98), y: clamp(s.y + dy, 0, 0.98) })
     else if (s.kind !== 'text') {
-      const w = clamp(s.w + dx, 0.02, 1 - s.x)
+      // Una línea horizontal o vertical puede medir cero de alto o de ancho.
+      const min = isStroke(s) ? 0.0001 : 0.01
+      const w = clamp(s.w + dx, isStroke(s) ? min : 0.02, 1 - s.x)
       // Las imágenes conservan su proporción; las formas se estiran libremente.
-      const h = s.kind === 'image' ? (w * s.h) / s.w : clamp(s.h + dy, 0.01, 1 - s.y)
+      const h = s.kind === 'image' ? (w * s.h) / s.w : clamp(s.h + dy, min, 1 - s.y)
       onChange(s.id, { w, h: Math.min(h, 1 - s.y) })
     }
   }
@@ -478,7 +512,14 @@ function EditStage({
   const up = () => {
     const d = drag.current
     const draft = draftRef.current
-    if (d?.mode === 'new' && draft && draft.w > 0.01 && draft.h > 0.005 && tool !== 'select' && tool !== 'text' && tool !== 'replace') {
+    const s = strokeRef.current
+    if (d?.mode === 'new' && s && s.length > 1) {
+      const color = '#DC2626'
+      const made = tool === 'ink' ? inkFromPoints(page, s, color, WIDTHS.ink) : tool === 'line' || tool === 'arrow' ? lineFromPoints(tool, page, s[0][0], s[0][1], s[1][0], s[1][1], color, WIDTHS[tool]) : null
+      if (made) onAdd(made)
+    } else if (d?.mode === 'new' && draft && draft.w > 0.01 && draft.h > 0.005 && tool === 'link') {
+      onAdd({ kind: 'link', page, ...draft, url: '', target: null })
+    } else if (d?.mode === 'new' && draft && draft.w > 0.01 && draft.h > 0.005 && (tool === 'rect' || tool === 'ellipse' || tool === 'highlight' || tool === 'whiteout')) {
       onAdd({
         kind: tool,
         page,
@@ -490,6 +531,7 @@ function EditStage({
     }
     drag.current = null
     setDraft(null)
+    setStroke(null)
   }
 
   const keys = (it: Item) => (e: KeyboardEvent<HTMLElement>) => {
@@ -504,10 +546,11 @@ function EditStage({
   return (
     <div className={'sign-stage edit-stage tool-' + tool} ref={stage} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
       <img src={url} alt={tr('single.pageAlt', { n: page + 1 })} draggable={false} />
+      <StrokeLayer items={items.filter(isStroke)} draft={stroke && tool !== 'select' ? { tool, points: stroke } : null} widthPt={viewWidthPt} heightPt={viewHeightPt} />
       {items.map((it) => (
         <div
           key={it.id}
-          className={'edit-item edit-' + it.kind + (selected === it.id ? ' is-selected' : '')}
+          className={'edit-item ' + (it.kind === 'line' ? 'edit-straight' : 'edit-' + it.kind) + (selected === it.id ? ' is-selected' : '')}
           style={itemStyle(it, scale)}
           role="group"
           tabIndex={0}
@@ -521,6 +564,7 @@ function EditStage({
         >
           {it.kind === 'text' && (it.text || ' ')}
           {it.kind === 'image' && <ImagePreview item={it} />}
+          {it.kind === 'link' && <span className="edit-link-label"><Icon name="link" /> {linkLabel(it)}</span>}
           {selected === it.id && (
             <>
               <button type="button" className="sign-del" style={{ display: 'grid' }} aria-label={tr('edit.remove')} onPointerDown={(e) => e.stopPropagation()} onClick={() => onRemove(it.id)}>
@@ -558,6 +602,37 @@ function ImagePreview({ item }: { item: Extract<Item, { kind: 'image' }> }) {
   return src ? <img src={src} alt="" draggable={false} /> : null
 }
 
+/**
+ * Trazos, líneas y flechas de la página en un SVG con las medidas de la página en puntos: se ven
+ * igual que quedan en el PDF (grosor en puntos, punta de flecha proporcional).
+ */
+function StrokeLayer({ items, draft, widthPt, heightPt }: { items: StrokeItem[]; draft: { tool: Tool; points: Array<[number, number]> } | null; widthPt: number; heightPt: number }) {
+  const pt = ([u, v]: [number, number]): [number, number] => [u * widthPt, v * heightPt]
+  const shape = (key: string | number, kind: 'ink' | 'line' | 'arrow', points: Array<[number, number]>, color: string, width: number) => {
+    const p = points.map(pt)
+    if (p.length < 2) return null
+    return (
+      <g key={key} stroke={color} fill={color}>
+        <polyline points={p.map((q) => q.join(',')).join(' ')} fill="none" strokeWidth={width} strokeLinecap="round" strokeLinejoin="round" />
+        {kind === 'arrow' && <polygon points={arrowHead(p[0], p[p.length - 1], width).map((q) => q.join(',')).join(' ')} stroke="none" />}
+      </g>
+    )
+  }
+  return (
+    <svg className="edit-strokes" viewBox={`0 0 ${widthPt} ${heightPt}`} preserveAspectRatio="none" aria-hidden="true">
+      {items.map((it) => shape(it.id, it.kind, it.kind === 'ink' ? inkPoints(it) : lineEnds(it), it.color, it.width))}
+      {draft && (draft.tool === 'ink' || draft.tool === 'line' || draft.tool === 'arrow') && shape('draft', draft.tool, draft.points, '#DC2626', WIDTHS[draft.tool])}
+    </svg>
+  )
+}
+
+/** Lo que muestra el recuadro de un enlace: la dirección, la página o "sin destino". */
+function linkLabel(it: Extract<Item, { kind: 'link' }>): string {
+  const a = linkAction(it)
+  if (!a) return tr('edit.linkEmpty')
+  return 'page' in a ? tr('edit.linkToPage', { n: a.page + 1 }) : a.url.replace(/^(https?:\/\/|mailto:|tel:)/, '')
+}
+
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
 const labelOf = (it: Item) => tr(`edit.kind.${it.kind}` as MessageKey)
 
@@ -568,7 +643,9 @@ function itemStyle(it: Item, scale: number): CSSProperties {
     return { ...pos, fontSize: it.size * scale, fontFamily: CSS_FONT[it.font], fontWeight: it.bold ? 700 : 400, color: it.color, ...para }
   }
   const size: CSSProperties = { ...pos, width: `${it.w * 100}%`, height: `${it.h * 100}%` }
-  if (it.kind === 'image') return size
+  // Trazos y líneas: la zona para tocarlos es la caja con 8 px de margen (una línea recta mide 0 de alto).
+  if (isStroke(it)) return { left: `calc(${it.x * 100}% - 8px)`, top: `calc(${it.y * 100}% - 8px)`, width: `calc(${it.w * 100}% + 16px)`, height: `calc(${it.h * 100}% + 16px)` }
+  if (it.kind === 'image' || it.kind === 'link') return size
   if (it.kind === 'highlight') return { ...size, background: it.fill ?? '#FDE047' }
   if (it.kind === 'whiteout') return { ...size, background: '#fff' }
   // En la vista previa el texto original se tapa con el color de fondo; al guardar se borra de verdad.
@@ -599,7 +676,7 @@ function Swatches({ label, colors, value, onChange, allowNone }: { label: string
   )
 }
 
-function Properties({ item, textArea, onChange, onRemove }: { item: Item; textArea: RefObject<HTMLTextAreaElement | null>; onChange: (p: Partial<EditItem>) => void; onRemove: () => void }) {
+function Properties({ item, pages, textArea, onChange, onRemove }: { item: Item; pages: number; textArea: RefObject<HTMLTextAreaElement | null>; onChange: (p: Partial<EditItem>) => void; onRemove: () => void }) {
   return (
     <div className="edit-props">
       <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -634,6 +711,38 @@ function Properties({ item, textArea, onChange, onRemove }: { item: Item; textAr
             <span className="faint">{tr('edit.strokeWidth')}</span>
             <input type="range" min={1} max={8} value={item.strokeWidth} onChange={(e) => onChange({ strokeWidth: Number(e.target.value) })} />
           </label>
+        </>
+      )}
+      {isStroke(item) && (
+        <>
+          <Swatches label={tr('edit.color')} colors={COLORS} value={item.color} onChange={(c) => onChange({ color: c ?? '#DC2626' })} />
+          <label className="row" style={{ gap: 8 }}>
+            <span className="faint">{tr('edit.strokeWidth')}</span>
+            <input type="range" min={1} max={12} step={0.5} value={item.width} onChange={(e) => onChange({ width: Number(e.target.value) })} />
+          </label>
+        </>
+      )}
+      {item.kind === 'link' && (
+        <>
+          <Segmented
+            label={tr('edit.linkTo')}
+            value={item.target === null ? 'web' : 'page'}
+            onChange={(v: 'web' | 'page') => onChange({ target: v === 'page' ? 0 : null })}
+            options={[{ value: 'web', label: tr('edit.linkWeb') }, { value: 'page', label: tr('edit.linkPage') }]}
+          />
+          {item.target === null ? (
+            <label className="field">
+              <span>{tr('edit.linkUrl')}</span>
+              <input className="input" type="url" inputMode="url" autoComplete="off" spellCheck={false} placeholder="docusmart.online" value={item.url} onChange={(e) => onChange({ url: e.target.value })} />
+              {item.url.trim() && !linkAction(item) && <small className="faint" style={{ color: 'var(--danger)' }}>{tr('edit.linkInvalid')}</small>}
+            </label>
+          ) : (
+            <label className="field">
+              <span>{tr('edit.linkPageNo')}</span>
+              <input className="input edit-size" type="number" min={1} max={pages} value={item.target + 1} onChange={(e) => onChange({ target: clamp(Math.round(Number(e.target.value) || 1), 1, pages) - 1 })} />
+            </label>
+          )}
+          <small className="faint">{tr('edit.linkHint')}</small>
         </>
       )}
       {item.kind === 'highlight' && <Swatches label={tr('edit.highlighter')} colors={HIGHLIGHTS} value={item.fill} onChange={(fill) => onChange({ fill: fill ?? '#FDE047' })} />}

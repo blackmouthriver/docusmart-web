@@ -1,8 +1,9 @@
 // Formularios PDF: llenar los campos rellenables (AcroForm) de un PDF.
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useApp } from '../../../app/state'
 import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../../../shared/ui/ui'
-import { baseName } from '../../../shared/files/files'
+import { baseName, download } from '../../../shared/files/files'
+import { Icon } from '../../../shared/ui/Icon'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { tr } from '../../../shared/i18n/translate'
@@ -65,6 +66,28 @@ export function FormTool() {
     return Array.isArray(v) ? v.length > 0 : !!v
   }).length ?? 0
   const missing = info?.fields.filter((f) => f.required && !f.readOnly && !values[f.name]) ?? []
+
+  // Guardar y cargar las respuestas (W-147.2): un .json en el equipo para llenar otra vez el mismo formulario.
+  const answersInput = useRef<HTMLInputElement>(null)
+  const saveAnswers = async () => {
+    if (!file || !info) return
+    const { answersToJson } = await import('../core/pdfForm')
+    download(new Blob([answersToJson(values, info.fields, file.name)], { type: 'application/json' }), `${baseName(file.name)}-${tr('file.answers')}.json`)
+    track('pdf_tool_used', { tool_name: 'form_answers_save' })
+  }
+  const loadAnswers = async (f: File) => {
+    if (!info) return
+    const { answersFromJson } = await import('../core/pdfForm')
+    const r = answersFromJson(await f.text(), info.fields)
+    if (!r) {
+      setError(tr('form.answersBad'))
+      return
+    }
+    setError(null)
+    setValues((p) => ({ ...p, ...r.values }))
+    toast(r.skipped ? tr('form.answersLoadedSome', { n: r.used, skipped: r.skipped }) : tr('form.answersLoaded', { n: r.used }))
+    track('pdf_tool_used', { tool_name: 'form_answers_load' })
+  }
 
   const save = async () => {
     if (!file) return
@@ -150,6 +173,11 @@ export function FormTool() {
           </div>
 
           <div className="card stack">
+            <div className="row" style={{ gap: 6, flexWrap: 'wrap' }}>
+              <button type="button" className="btn btn-ghost btn-sm" disabled={!filled} onClick={saveAnswers}><Icon name="download" /> {tr('form.saveAnswers')}</button>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => answersInput.current?.click()}><Icon name="upload" /> {tr('form.loadAnswers')}</button>
+              <input ref={answersInput} type="file" accept=".json,application/json" hidden aria-label={tr('form.loadAnswers')} onChange={(e) => { const f = e.target.files?.[0]; if (f) void loadAnswers(f); e.target.value = '' }} />
+            </div>
             {byPage.map(([page, fields]) => (
               <fieldset key={page} className="form-group">
                 {byPage.length > 1 && <legend>{tr('form.pageN', { n: page })}</legend>}

@@ -139,7 +139,7 @@ export default {
       faq: [
         ['Quais formulários funcionam?', 'PDFs com campos preenchíveis (AcroForm), que são a grande maioria: caixas de texto, caixas de seleção, opções, listas suspensas e listas. Se um PDF não tem campos, você pode escrever por cima com "Editar PDF".'],
         ['O que significa nivelar?', 'Transforma as respostas em parte fixa do documento: aparecem iguais em qualquer leitor e ninguém pode mudá-las sem deixar rastro. Sem nivelar, o formulário continua editável.'],
-        ['Posso continuar preenchendo depois?', 'Sim, se não nivelar: abra o PDF salvo de novo aqui ou em qualquer leitor e suas respostas continuarão nos campos.'],
+        ['Posso continuar preenchendo depois?', "Sim, se você não o achatar: abra o PDF salvo aqui ou em qualquer leitor e suas respostas continuarão nos campos. Você também pode salvar as respostas em um arquivo e carregá-las para preencher o mesmo formulário de novo."],
         ['Meus dados são enviados à internet?', 'Não. O formulário e suas respostas são processados dentro do seu navegador.'],
       ],
     },
@@ -211,7 +211,7 @@ export default {
       ],
       faq: [
         ['Por que não basta colocar um retângulo preto?', 'Porque o texto continua embaixo: qualquer um pode copiá-lo ou tirar o retângulo. O DocuSmart redesenha cada página tarjada como imagem, com as áreas em preto, e assim o texto original desaparece do arquivo.'],
-        ['O que acontece com o resto do documento?', 'As páginas sem áreas marcadas ficam exatamente iguais. Nas páginas tarjadas o texto não pode mais ser selecionado. Além disso, o PDF novo não mantém os metadados do original, como o autor ou o título.'],
+        ['O que acontece com o resto do documento?', "As páginas sem áreas marcadas ficam exatamente iguais. Nas páginas censuradas o que você cobriu desaparece, mas o resto do texto continua pesquisável e copiável. Além disso, o PDF novo não mantém os metadados do original, como o autor ou o título."],
         ['A busca funciona com documentos digitalizados?', 'Não: uma digitalização é uma imagem e não tem texto para buscar. Nesse caso, marque as áreas arrastando sobre a página.'],
         ['Meus documentos são enviados à internet?', 'Não. Tudo é feito dentro do seu navegador; nem o PDF nem o que você oculta sai do seu aparelho.'],
       ],

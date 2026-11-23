@@ -5,13 +5,19 @@
  *
  * Las zonas se expresan como fracción (0 a 1) de la página tal como se ve, con
  * el origen arriba a la izquierda (igual que en Firmar y Recortar).
+ *
+ * W-147.2: sobre la imagen va una capa de texto invisible con las palabras que quedaron fuera de
+ * las zonas censuradas, así el resto de la página se sigue pudiendo buscar y copiar.
  */
 import { PDFDocument } from 'pdf-lib'
+import { drawPieces, fontsForText } from '../../../shared/pdf/pdfFonts'
 
 export type Area = { page: number; x: number; y: number; w: number; h: number }
 
 /** Página ya dibujada con las zonas en negro (la hace el navegador con un canvas). */
-export type RasterPage = { image: Uint8Array; format: 'jpg' | 'png'; widthPt: number; heightPt: number }
+/** Palabra que no tocó ninguna zona censurada: su caja en fracciones de la página vista. */
+export type KeptWord = { str: string; x: number; y: number; w: number; h: number }
+export type RasterPage = { image: Uint8Array; format: 'jpg' | 'png'; widthPt: number; heightPt: number; words?: KeptWord[] }
 export type Rasterizer = (pageIndex: number, areas: Area[]) => Promise<RasterPage>
 
 /** Zonas agrupadas por página (base 0), solo las páginas que tienen alguna. */
@@ -56,8 +62,20 @@ export async function redactPdf(bytes: ArrayBuffer | Uint8Array, areas: Area[], 
     const image = r.format === 'png' ? await out.embedPng(r.image) : await out.embedJpg(r.image)
     const page = out.addPage([r.widthPt, r.heightPt])
     page.drawImage(image, { x: 0, y: 0, width: r.widthPt, height: r.heightPt })
+    if (r.words?.length) await drawHiddenText(out, page, r.words, r.widthPt, r.heightPt)
   }
   return out.save()
+}
+
+/** Texto invisible (transparente) encima de la imagen: se puede buscar y seleccionar, no se ve. */
+async function drawHiddenText(doc: PDFDocument, page: { drawText(text: string, o: object): void }, words: KeptWord[], widthPt: number, heightPt: number) {
+  const set = await fontsForText(doc, 'sans', [], words.map((w) => w.str).join(' '))
+  for (const w of words) {
+    const size = Math.max(1, (w.h * heightPt) / 1.2)
+    // La línea base queda un poco por encima del borde de abajo de la caja (descendentes).
+    const y = heightPt - (w.y + w.h) * heightPt + 0.2 * size
+    drawPieces(page, set.pieces(w.str, 'regular'), { x: w.x * widthPt, y, size, opacity: 0 })
+  }
 }
 
 /* ───────────── Buscar texto para censurar ───────────── */
@@ -130,4 +148,49 @@ export function findTextAreas(page: number, items: TextItem[], match: Matcher, t
     }
   }
   return areas
+}
+
+/** Caja (en fracciones de la página vista) de los caracteres [start, end) de un fragmento de texto. */
+function spanBox(item: TextItem, start: number, end: number, toView: ToView, pad = 0) {
+  const len = Array.from(item.str).length || 1
+  const [a, b, c, d, e, f] = item.transform
+  const size = Math.hypot(c, d) || Math.hypot(a, b) || 10
+  const dirLen = Math.hypot(a, b) || 1
+  const ux = a / dirLen
+  const uy = b / dirLen
+  const x0 = (item.width * start) / len
+  const x1 = (item.width * end) / len
+  const corners = [
+    [x0, -0.25 * size],
+    [x1, -0.25 * size],
+    [x0, 0.95 * size],
+    [x1, 0.95 * size],
+  ].map(([along, up]) => toView(e + ux * along - uy * up, f + uy * along + ux * up))
+  const us = corners.map((p) => p[0])
+  const vs = corners.map((p) => p[1])
+  return { x: Math.min(...us) - pad, y: Math.min(...vs) - pad, w: Math.max(...us) - Math.min(...us) + 2 * pad, h: Math.max(...vs) - Math.min(...vs) + 2 * pad }
+}
+
+const overlaps = (p: { x: number; y: number; w: number; h: number }, q: { x: number; y: number; w: number; h: number }) => p.x < q.x + q.w && q.x < p.x + p.w && p.y < q.y + q.h && q.y < p.y + p.h
+
+/**
+ * Las palabras de la página que no tocan ninguna zona censurada (W-147.2). Basta con que una
+ * palabra roce una zona para quitarla entera: nada de lo censurado puede quedar en la capa de texto.
+ */
+export function keptWords(items: TextItem[], areas: Area[], toView: ToView): KeptWord[] {
+  const out: KeptWord[] = []
+  for (const item of items) {
+    const chars = Array.from(item.str)
+    let i = 0
+    while (i < chars.length) {
+      while (i < chars.length && !chars[i].trim()) i++
+      const start = i
+      while (i < chars.length && chars[i].trim()) i++
+      if (i === start) break
+      const box = spanBox(item, start, i, toView)
+      if (areas.some((a) => overlaps(box, a))) continue
+      out.push({ str: chars.slice(start, i).join(''), ...box })
+    }
+  }
+  return out
 }

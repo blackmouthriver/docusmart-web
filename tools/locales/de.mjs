@@ -139,7 +139,7 @@ export default {
       faq: [
         ['Welche Formulare funktionieren?', 'PDFs mit ausfüllbaren Feldern (AcroForm), also die große Mehrheit: Textfelder, Kontrollkästchen, Optionen, Dropdown-Listen und Listen. Hat ein PDF keine Felder, kannst du mit „PDF bearbeiten“ darauf schreiben.'],
         ['Was bedeutet reduzieren?', 'Die Antworten werden fester Teil des Dokuments: Sie sehen überall gleich aus und niemand kann sie spurlos ändern. Ohne Reduzieren bleibt das Formular bearbeitbar.'],
-        ['Kann ich später weiter ausfüllen?', 'Ja, wenn du es nicht reduzierst: Öffne das gespeicherte PDF hier oder in einem beliebigen Reader und deine Antworten stehen noch in den Feldern.'],
+        ['Kann ich später weiter ausfüllen?', "Ja, wenn du es nicht reduzierst: Öffne das gespeicherte PDF hier oder in einem beliebigen Reader, und deine Antworten stehen weiter in den Feldern. Du kannst die Antworten auch in einer Datei speichern und laden, um dasselbe Formular erneut auszufüllen."],
         ['Werden meine Daten ins Internet hochgeladen?', 'Nein. Das Formular und deine Antworten werden in deinem Browser verarbeitet.'],
       ],
     },
@@ -211,7 +211,7 @@ export default {
       ],
       faq: [
         ['Warum reicht ein schwarzer Kasten nicht?', 'Weil der Text darunter bleibt: Jeder kann ihn kopieren oder den Kasten entfernen. DocuSmart zeichnet jede geschwärzte Seite als Bild neu, mit den Bereichen in Schwarz, und so verschwindet der Originaltext aus der Datei.'],
-        ['Was passiert mit dem Rest des Dokuments?', 'Seiten ohne markierte Bereiche bleiben genau gleich. Auf geschwärzten Seiten lässt sich der Text nicht mehr markieren. Außerdem behält das neue PDF die Metadaten des Originals wie Autor oder Titel nicht.'],
+        ['Was passiert mit dem Rest des Dokuments?', "Seiten ohne markierte Bereiche bleiben genau gleich. Auf geschwärzten Seiten verschwindet das Abgedeckte, der übrige Text bleibt aber durchsuchbar und kopierbar. Außerdem übernimmt das neue PDF keine Metadaten des Originals wie Autor oder Titel."],
         ['Funktioniert die Suche mit gescannten Dokumenten?', 'Nein: Ein Scan ist ein Bild ohne durchsuchbaren Text. Markiere die Bereiche dann, indem du über die Seite ziehst.'],
         ['Werden meine Dokumente ins Internet hochgeladen?', 'Nein. Alles passiert in deinem Browser; weder das PDF noch das Geschwärzte verlässt dein Gerät.'],
       ],

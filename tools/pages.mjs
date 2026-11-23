@@ -145,7 +145,7 @@ export const pages = [
     faq: [
       ['¿Qué formularios funcionan?', 'Los PDF con campos rellenables (AcroForm), que son la gran mayoría: cuadros de texto, casillas, opciones, listas desplegables y listas. Si un PDF no tiene campos, puedes escribir encima con "Editar PDF".'],
       ['¿Qué significa aplanar?', 'Convierte las respuestas en parte fija del documento: se ven igual en cualquier lector y nadie puede cambiarlas sin dejar rastro. Sin aplanar, el formulario sigue siendo editable.'],
-      ['¿Puedo seguir llenándolo después?', 'Sí, si no lo aplanas: abre el PDF guardado de nuevo aquí o en cualquier lector y tus respuestas seguirán en los campos.'],
+      ['¿Puedo seguir llenándolo después?', "Sí, si no lo aplanas: abre el PDF guardado aquí o en cualquier lector y tus respuestas seguirán en los campos. También puedes guardar las respuestas en un archivo y cargarlas para llenar el mismo formulario otra vez."],
       ['¿Mis datos se suben a internet?', 'No. El formulario y tus respuestas se procesan dentro de tu navegador.'],
     ],
   },
@@ -236,7 +236,7 @@ export const pages = [
     ],
     faq: [
       ['¿Por qué no basta con poner un recuadro negro?', 'Porque el texto sigue debajo: cualquiera puede copiarlo o quitar el recuadro. DocuSmart vuelve a dibujar cada página censurada como imagen, con las zonas en negro, y así el texto original desaparece del archivo.'],
-      ['¿Qué pasa con el resto del documento?', 'Las páginas sin zonas marcadas quedan exactamente igual. En las páginas censuradas el texto ya no se puede seleccionar. Además, el PDF nuevo no conserva los metadatos del original, como el autor o el título.'],
+      ['¿Qué pasa con el resto del documento?', "Las páginas sin zonas marcadas quedan exactamente igual. En las páginas censuradas lo tapado desaparece, pero el resto del texto se sigue pudiendo buscar y copiar. Además, el PDF nuevo no conserva los metadatos del original, como el autor o el título."],
       ['¿La búsqueda funciona con documentos escaneados?', 'No: un escaneo es una imagen y no tiene texto que buscar. En ese caso marca las zonas arrastrando sobre la página.'],
       ['¿Mis documentos se suben a internet?', 'No. Todo se hace dentro de tu navegador; ni el PDF ni lo que censuras sale de tu equipo.'],
     ],

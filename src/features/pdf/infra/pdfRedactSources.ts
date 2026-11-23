@@ -2,7 +2,7 @@
 // (excluidas de la cobertura, como ocrSources.ts y pdfCompress.ts).
 import type { PDFDocumentProxy } from 'pdfjs-dist'
 import { canvasToBlob, renderPage } from '../../../shared/pdf/pdf'
-import { findTextAreas, type Area, type Matcher, type RasterPage, type Rasterizer, type TextItem } from '../core/pdfRedact'
+import { findTextAreas, keptWords, type Area, type Matcher, type RasterPage, type Rasterizer, type TextItem } from '../core/pdfRedact'
 
 /** Resolución de las páginas censuradas: nítida para leer e imprimir sin pesar demasiado. */
 export const REDACT_DPI = 200
@@ -23,7 +23,15 @@ export function makeRasterizer(doc: PDFDocumentProxy): Rasterizer {
     }
     const blob = await canvasToBlob(canvas, 'image/jpeg', 0.9)
     canvas.width = canvas.height = 0
-    return { image: new Uint8Array(await blob.arrayBuffer()), format: 'jpg', widthPt: vp.width, heightPt: vp.height }
+    // El texto que no se censuró sigue buscable (W-147.2): se pasa como capa invisible.
+    const content = await page.getTextContent()
+    const items = content.items.filter((it): it is TextItem & (typeof content.items)[number] => 'str' in it)
+    const words = keptWords(items, areas, (x, y) => {
+      const [vx, vy] = vp.convertToViewportPoint(x, y)
+      return [vx / vp.width, vy / vp.height]
+    })
+    page.cleanup()
+    return { image: new Uint8Array(await blob.arrayBuffer()), format: 'jpg', widthPt: vp.width, heightPt: vp.height, words }
   }
 }
 
