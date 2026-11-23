@@ -16,7 +16,12 @@ html { scroll-padding-top: 76px; scroll-behavior: smooth; }
 .th-jump { position: sticky; top: 60px; z-index: 5; overflow: hidden; padding: 12px 0; margin: 0 -12px 8px; border-radius: 20px; background: color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter: blur(12px); box-shadow: 0 0 0 1px var(--line), 0 18px 40px -28px rgba(11, 16, 32, .4); }
 /* Carrusel continuo de categorías, como la franja de formatos de la portada: dos copias que se
    desplazan en bucle; se pausa al pasar el ratón o al llegar con el teclado, y los bordes se desvanecen. */
-.th-marquee { display: flex; width: max-content; animation: th-marquee 42s linear infinite; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.th-marquee { display: flex; width: max-content; animation: th-marquee 42s linear infinite; }
+/* Las categorías entran y salen difuminadas en los bordes fijos de la barra (antes la máscara iba
+   en la tira que se mueve y el borde se veía cortado). */
+.th-jump::before, .th-jump::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 1; width: 56px; pointer-events: none; }
+.th-jump::before { left: 0; border-radius: 20px 0 0 20px; background: linear-gradient(90deg, color-mix(in srgb, var(--card) 96%, transparent), transparent); }
+.th-jump::after { right: 0; border-radius: 0 20px 20px 0; background: linear-gradient(270deg, color-mix(in srgb, var(--card) 96%, transparent), transparent); }
 .th-jump:hover .th-marquee, .th-jump:focus-within .th-marquee, .th-jump:active .th-marquee { animation-play-state: paused; }
 .th-track { display: flex; gap: 8px; padding-right: 8px; }
 @keyframes th-marquee { to { transform: translateX(-50%); } }
