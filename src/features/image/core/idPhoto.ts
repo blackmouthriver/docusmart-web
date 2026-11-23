@@ -120,3 +120,63 @@ export function idPhotoName(name: string, suffix: string): string {
   const base = name.replace(/\.[^./\\]+$/, '') || 'foto'
   return `${base}-${suffix}.jpg`
 }
+
+/* ───────────── Encuadre automático (W-147.5) ───────────── */
+
+/** Parte de la foto que ocupa la cabeza (de la coronilla a la barbilla), como piden los pasaportes. */
+export const HEAD_RATIO = 0.72
+/** Espacio sobre la cabeza, en fracción del alto de la foto. */
+export const TOP_MARGIN = 0.09
+/** De la coronilla a la barbilla mide, más o menos, 1,3 veces el ancho de la cabeza. */
+const HEAD_HEIGHT_PER_WIDTH = 1.3
+
+/**
+ * Encuadre con la cabeza a la medida (W-147.5), a partir de la silueta que da la IA de Quitar
+ * fondo (`alpha`: un valor por pixel, `w` × `h`). Busca la coronilla (la primera fila con persona),
+ * el ancho de la cabeza (antes de que la silueta se ensanche en los hombros) y su centro, y arma
+ * el recuadro con la proporción de la foto. Devuelve fracciones de la imagen, o null si no hay persona.
+ */
+export function frameFromMask(alpha: ArrayLike<number>, w: number, h: number, aspect: number): CropRect | null {
+  const spanOf = (y: number) => {
+    let a = -1
+    let b = -1
+    for (let x = 0; x < w; x++)
+      if (alpha[y * w + x] > 127) {
+        if (a < 0) a = x
+        b = x
+      }
+    return a < 0 ? null : { a, b, width: b - a + 1 }
+  }
+  let top = -1
+  for (let y = 0; y < h && top < 0; y++) {
+    const s = spanOf(y)
+    if (s && s.width >= Math.max(2, w * 0.02)) top = y
+  }
+  if (top < 0) return null
+  // Ancho de la cabeza: el mayor hasta que la silueta se ensancha de golpe (los hombros).
+  let headW = 0
+  let sumCx = 0
+  let rows = 0
+  for (let y = top; y < h; y++) {
+    const s = spanOf(y)
+    if (!s) break
+    if (headW && y - top > headW * 0.8 && s.width > headW * 1.5) break
+    headW = Math.max(headW, s.width)
+    sumCx += (s.a + s.b) / 2
+    rows++
+    if (y - top > headW * 1.6) break
+  }
+  if (!rows || headW < 2) return null
+  const cx = sumCx / rows
+  const headH = headW * HEAD_HEIGHT_PER_WIDTH
+  // Alto y ancho del recuadro en pixeles, con la proporción pedida (ancho / alto).
+  let ph = headH / HEAD_RATIO
+  let pw = ph * aspect
+  // Si no cabe en la foto, se achica todo (la cabeza queda algo más grande, pero entera).
+  const k = Math.min(1, w / pw, h / ph)
+  ph *= k
+  pw *= k
+  const x = Math.min(Math.max(0, cx - pw / 2), w - pw)
+  const y = Math.min(Math.max(0, top - TOP_MARGIN * ph), h - ph)
+  return { x: x / w, y: y / h, w: pw / w, h: ph / h }
+}

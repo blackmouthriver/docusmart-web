@@ -941,6 +941,11 @@ html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms v
 .edit-draft { pointer-events: none; outline: 1.5px dashed var(--blue); }
 /* Dibujo, líneas, flechas y enlaces (W-147.2). Los trazos se ven en una capa SVG con las medidas
    de la página; encima, una zona transparente para tocarlos, moverlos o borrarlos. */
+/* Retocar el recorte con pincel (W-147.5): cuadros de transparencia detrás y el círculo del pincel. */
+.bg-retouch { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; align-items: center; overflow: hidden; border-radius: 12px; background: var(--paper-2); }
+/* Ancho completo sin pasar del 70 % del alto de la ventana (el ancho exacto lo pone el componente). */
+.bg-retouch canvas { display: block; height: auto; max-width: 100%; background: repeating-conic-gradient(#e5e7eb 0% 25%, #fff 0% 50%) 50% / 20px 20px; touch-action: none; cursor: none; }
+.bg-brush-cursor { position: absolute; translate: -50% -50%; border-radius: 50%; border: 1.5px solid #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .55); pointer-events: none; }
 .media-batch { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .media-batch li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 4px 10px; padding: 8px 10px; border-radius: 12px; background: var(--paper-2); }
 .media-batch-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }

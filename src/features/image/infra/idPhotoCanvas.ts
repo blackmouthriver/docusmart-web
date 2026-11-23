@@ -1,7 +1,7 @@
 // Dibujo de "Foto tamaño documento" (W-122): recorte, fondo con IA (opcional), tamaño a 300 ppp
 // y hoja para imprimir. Excluido de la cobertura como los demás archivos que usan canvas.
 import { canvasToBlob } from '../../../shared/pdf/pdf'
-import type { Background } from '../core/background'
+import type { Backdrop } from '../core/background'
 import { ID_DPI, idPixels, mmToPx, setJpegDpi, sheetLayout, type IdSize } from '../core/idPhoto'
 import { loadImage, renderImage } from './imageCanvas'
 
@@ -10,7 +10,7 @@ export type IdPhotoOptions = {
   crop: { x: number; y: number; width: number; height: number }
   size: IdSize
   /** Fondo nuevo (con la IA de Quitar fondo, ya preparada) o null para dejar el original. */
-  background: Background | null
+  background: Backdrop | null
   layout: 'single' | 'sheet'
 }
 
