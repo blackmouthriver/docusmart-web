@@ -28,7 +28,7 @@ Leyenda: ✅ lo tiene · ➖ parcial · ❌ no lo tiene · ? no confirmado.
 | Detectar bordes y enderezar | ✅ | ✅ | ✅ | ✅ | — | — | — |
 | Filtros de documento | ✅ | ✅ | ✅ | ✅ | — | — | — |
 | **Tamaño de página** (A4, Carta) | ❌ (ancho A4, alto variable) | ✅ | ✅ | ? | — | — | — |
-| Captura automática con la cámara en vivo | ❌ (foto con la cámara del sistema) | ✅ | ✅ | ? | — | — | — |
+| Captura automática con la cámara en vivo | ✅ (W-147.1) | ✅ | ✅ | ? | — | — | — |
 | PDF buscable | ✅ | ✅ | ✅ (Pro) | ✅ | ✅ | ✅ | ✅ |
 | **Páginas que ya tienen texto se respetan** | ❌ | ? | ? | ? | ? | ➖ ("Forzar OCR" opcional) | ? |
 | **Girar páginas de lado / enderezar** | ❌ | ✅ | ✅ | ? | ? | ✅ (girar y enderezar) | ? |
@@ -71,4 +71,17 @@ Se hicieron las brechas 1 a 5 (2026-11-22). La 6 (cámara en vivo) queda para m�
 
 **Nueva comparación (filas que cambiaron):** tamaño de página del PDF buscable ✅ · respetar páginas con texto ✅ (como Adobe y PDF24) · orientación automática ✅ · tamaño de página en el escáner ✅ · OCR de PDF a Word ✅.
 
-**Queda por debajo:** captura con la cámara en vivo (#6).
+**Queda por debajo:** captura con la cámara en vivo (#6), hecha después en W-147.1.
+
+## 5. Seguimiento W-147.1 · Cámara en vivo (2026-11-23)
+
+| Mejora | Cómo quedó | Prueba |
+|---|---|---|
+| Cámara en vivo | **Tomar foto** abre la cámara de atrás dentro de la página (pantalla completa). Cada 120 ms se busca la hoja en un cuadro chico (320 px) con la misma detección del escáner y se marca encima del video (azul buscando, verde quieta) | E2E con una cámara falsa de Chromium (video .y4m de una hoja sobre una mesa oscura) |
+| Captura automática | Si la hoja ocupa al menos el 15 % del cuadro y sus esquinas se mueven menos del 2 % durante 8 cuadros (~1 s), se toma la foto en la resolución completa del video. El obturador se llena mientras tanto. Para la siguiente hay que sacar la hoja o moverla (más del 12 %): no se repite la misma página. Se puede apagar ("Captura automática") y usar solo el obturador | Unitarias (`liveCapture.test.ts`); E2E: se toma sola una vez, no se repite con la misma hoja y el obturador toma otra |
+| Varias páginas seguidas | Cada foto pasa al editor de esquinas en segundo plano; el botón **Listo (N)** cuenta las páginas y al cerrar se abre la primera sin terminar, con las esquinas ya detectadas | E2E: dos páginas y la esquina detectada a ±3 % de la real |
+| Detalles | Linterna si la cámara la tiene, vibración leve al tomar, destello, Esc cierra, se apaga la cámara al salir. Si el navegador no da la cámara (permiso negado o sin `getUserMedia`), aviso y botón **Cámara del sistema** (la foto de antes) | E2E: Esc cierra y la cámara queda apagada |
+| Privacidad | El video no sale del equipo: todo el análisis es local (la política de permisos ya permitía `camera=(self)`) | — |
+
+**Nueva comparación:** captura automática con la cámara en vivo ✅, como Adobe Scan y CamScanner. En iOS, la app (W-149.11) usará además el escáner del sistema.
+

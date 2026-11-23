@@ -13,6 +13,7 @@ import type { Quad, ScanFilter, ScanPaper } from '../core/scan'
 import { defaultPaper } from '../../cv/core/cv'
 import type { Photo } from '../infra/scanCanvas'
 import { track } from '../../../shared/platform/analytics'
+import { LiveScanner } from './LiveScanner'
 
 type Page = {
   id: number
@@ -47,6 +48,10 @@ export function ScanTool() {
   const [ocrProgress, setOcrProgress] = useState<number | null>(null)
   const camera = useRef<HTMLInputElement>(null)
   const gallery = useRef<HTMLInputElement>(null)
+  /** Cámara en vivo abierta (W-147.1). */
+  const [live, setLive] = useState(false)
+  /** Al cerrar la cámara, abrir la primera página que llegue (si todavía se está procesando). */
+  const focusNext = useRef(false)
 
   // Liberar las imágenes al salir.
   const pagesRef = useRef(pages)
@@ -60,7 +65,7 @@ export function ScanTool() {
     [],
   )
 
-  const addFiles = async (files: File[]) => {
+  const addFiles = async (files: File[], focus = true) => {
     if (!files.length) return
     setError(null)
     const { loadPhoto, defaultQuad } = await import('../infra/scanCanvas')
@@ -72,6 +77,10 @@ export function ScanTool() {
         const page: Page = { id: nextId++, photo, quad: defaultQuad(photo), filter: 'documento', turns: 0, result: null }
         first ??= page.id
         setPages((p) => [...p, page])
+        if (!focus && focusNext.current) {
+          focusNext.current = false
+          setEditing(page.id)
+        }
         if (!photo.detected) toast(tr('scan.noEdges'))
       } catch (e) {
         setError(e instanceof Error ? e.message : String(e))
@@ -79,7 +88,18 @@ export function ScanTool() {
         setLoading((n) => n - 1)
       }
     }
-    if (first !== null) setEditing(first)
+    if (first !== null && focus) setEditing(first)
+  }
+
+  const openCamera = () => {
+    if (typeof navigator.mediaDevices?.getUserMedia === 'function') setLive(true)
+    else camera.current?.click()
+  }
+  const closeLive = () => {
+    setLive(false)
+    const unfinished = pagesRef.current.find((p) => !p.result)
+    if (unfinished) setEditing(unfinished.id)
+    else focusNext.current = loading > 0
   }
 
   const update = (id: number, patch: Partial<Page>) => setPages((list) => list.map((p) => (p.id === id ? { ...p, ...patch } : p)))
@@ -172,7 +192,7 @@ export function ScanTool() {
   )
   const addButtons = (
     <div className="row scan-add">
-      <button type="button" className="btn btn-primary" onClick={() => camera.current?.click()}><Icon name="camera" /> {tr('scan.takePhoto')}</button>
+      <button type="button" className="btn btn-primary" onClick={openCamera}><Icon name="camera" /> {tr('scan.takePhoto')}</button>
       <button type="button" className="btn btn-soft" onClick={() => gallery.current?.click()}><Icon name="image" /> {tr('scan.pickImages')}</button>
     </div>
   )
@@ -180,6 +200,16 @@ export function ScanTool() {
   return (
     <div className="stack">
       {inputs}
+      {live && (
+        <LiveScanner
+          onCapture={(f) => void addFiles([f], false)}
+          onClose={closeLive}
+          onSystemCamera={() => {
+            setLive(false)
+            camera.current?.click()
+          }}
+        />
+      )}
       {!pages.length && (
         <div className="card stack scan-empty">
           <span className="ico ico-blue scan-empty-ico"><Icon name="camera" /></span>
