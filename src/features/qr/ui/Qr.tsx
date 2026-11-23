@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import QRCode from 'qrcode'
-import jsQR from 'jsqr'
+import { formatLabel, type ScannedCode } from '../core/qrScan'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, BusyButton, HeroCard, Notice, Segmented } from '../../../shared/ui/ui'
@@ -8,7 +8,7 @@ import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { SaveOptions, ShareApp } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { PREFIX, decrypt, encrypt, isProtectedPayload } from '../core/qrCrypto'
-import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, isPlainScheme, parseContact, parseEvent, parseWifi, phoneNumber, safeLink, type QrForm, type QrKind, type ReadType } from '../core/qrContent'
+import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, isPlainScheme, parseContact, parseEvent, parseGeo, parseSms, parseWifi, phoneNumber, safeLink, type QrForm, type QrKind, type ReadType } from '../core/qrContent'
 import { download, isOwnBlobUrl, safeMimeType } from '../../../shared/files/files'
 import { previewOf, type QrHistoryEntry, type QrHistoryKind } from '../core/qrHistory'
 import { clearQrHistory, forgetQr, getQrHistory, recordQr, subscribeQrHistory } from '../infra/historyStore'
@@ -64,6 +64,9 @@ const KINDS: Array<{ id: QrKind; icon: IconName }> = [
   { id: 'text', icon: 'text' },
   { id: 'email', icon: 'mail' },
   { id: 'phone', icon: 'phone' },
+  { id: 'whatsapp', icon: 'chat' },
+  { id: 'sms', icon: 'send' },
+  { id: 'location', icon: 'globe' },
   { id: 'wifi', icon: 'wifi' },
   { id: 'contact', icon: 'user' },
   { id: 'event', icon: 'calendar' },
@@ -81,8 +84,9 @@ function nextHour(addHours = 0): string {
 const emptyForm = (): QrForm => ({
   kind: 'url',
   value: '',
+  message: '',
   wifi: { ssid: '', password: '', security: 'WPA' },
-  contact: { name: '', phone: '', email: '' },
+  contact: { name: '', phone: '', email: '', company: '', title: '', address: '', website: '' },
   event: { title: '', location: '', start: nextHour(), end: nextHour(1) },
 })
 
@@ -358,6 +362,19 @@ export function CreateQr() {
       {form.kind === 'text' && field('qr.label.text', <textarea className="textarea" style={{ minHeight: 96 }} value={form.value} maxLength={900} placeholder={tr('qr.ph.text')} onChange={(e) => change({ value: e.target.value })} />)}
       {form.kind === 'email' && field('qr.label.email', <input className="input" type="email" inputMode="email" value={form.value} placeholder={tr('qr.ph.email')} onChange={(e) => change({ value: e.target.value })} />)}
       {form.kind === 'phone' && field('qr.label.phone', <input className="input" type="tel" inputMode="tel" value={form.value} placeholder="+57 300 000 0000" onChange={(e) => change({ value: e.target.value })} />)}
+      {(form.kind === 'whatsapp' || form.kind === 'sms') && (
+        <>
+          {field('qr.label.phone', <input className="input" type="tel" inputMode="tel" value={form.value} placeholder="+57 300 000 0000" onChange={(e) => change({ value: e.target.value })} />)}
+          {field('qr.label.message', <textarea className="textarea" style={{ minHeight: 72 }} value={form.message} maxLength={500} placeholder={tr('qr.ph.message')} onChange={(e) => change({ message: e.target.value })} />)}
+          {form.kind === 'whatsapp' && <small className="faint">{tr('qr.whatsappHint')}</small>}
+        </>
+      )}
+      {form.kind === 'location' && (
+        <>
+          {field('qr.label.place', <input className="input" value={form.value} placeholder={tr('qr.ph.place')} onChange={(e) => change({ value: e.target.value })} />)}
+          <small className="faint">{tr('qr.placeHint')}</small>
+        </>
+      )}
       {form.kind === 'wifi' && (
         <>
           {field('qr.label.ssid', <input className="input" value={form.wifi.ssid} autoComplete="off" onChange={(e) => change({ wifi: { ...form.wifi, ssid: e.target.value } })} />)}
@@ -375,6 +392,10 @@ export function CreateQr() {
           {field('qr.label.name', <input className="input" autoComplete="name" value={form.contact.name} onChange={(e) => change({ contact: { ...form.contact, name: e.target.value } })} />)}
           {field('qr.label.phone', <input className="input" type="tel" inputMode="tel" value={form.contact.phone} onChange={(e) => change({ contact: { ...form.contact, phone: e.target.value } })} />)}
           {field('qr.label.email', <input className="input" type="email" inputMode="email" value={form.contact.email} onChange={(e) => change({ contact: { ...form.contact, email: e.target.value } })} />)}
+          {field('qr.label.company', <input className="input" autoComplete="organization" value={form.contact.company ?? ''} onChange={(e) => change({ contact: { ...form.contact, company: e.target.value } })} />)}
+          {field('qr.label.jobTitle', <input className="input" autoComplete="organization-title" value={form.contact.title ?? ''} onChange={(e) => change({ contact: { ...form.contact, title: e.target.value } })} />)}
+          {field('qr.label.address', <input className="input" autoComplete="street-address" value={form.contact.address ?? ''} onChange={(e) => change({ contact: { ...form.contact, address: e.target.value } })} />)}
+          {field('qr.label.website', <input className="input" type="url" inputMode="url" value={form.contact.website ?? ''} placeholder="https://" onChange={(e) => change({ contact: { ...form.contact, website: e.target.value } })} />)}
         </>
       )}
       {form.kind === 'event' && (
@@ -480,26 +501,15 @@ export function CreateQr() {
 }
 
 // ── Leer QR (W-84): reconoce el tipo y ofrece la acción que corresponde ──
-type Detector = { detect: (source: ImageBitmapSource) => Promise<Array<{ rawValue: string }>> }
-/** Lector nativo del navegador (Chrome en Android, Edge, Safari reciente), más rápido que jsQR. */
-let nativeDetector: Detector | null | undefined
-function getNativeDetector(): Detector | null {
-  if (nativeDetector !== undefined) return nativeDetector
-  try {
-    const BD = (window as unknown as { BarcodeDetector?: new (o: { formats: string[] }) => Detector }).BarcodeDetector
-    nativeDetector = BD ? new BD({ formats: ['qr_code'] }) : null
-  } catch {
-    nativeDetector = null
-  }
-  return nativeDetector
-}
-
 export function ReadQr() {
   const { toast } = useApp()
   const [mode, setMode] = useState<'camera' | 'image'>('camera')
-  const [result, setResult] = useState<string | null>(null)
+  /** Todos los códigos encontrados (en una imagen o un PDF puede haber varios, W-146.11). */
+  const [results, setResults] = useState<ScannedCode[] | null>(null)
+  const result = results?.[0]?.value ?? null
   const [error, setError] = useState<string | null>(null)
   const [scanning, setScanning] = useState(false)
+  const [reading, setReading] = useState(false)
   const video = useRef<HTMLVideoElement>(null)
   const stream = useRef<MediaStream | null>(null)
   const fileInput = useRef<HTMLInputElement>(null)
@@ -511,41 +521,21 @@ export function ReadQr() {
   }
   useEffect(() => stop, [])
 
-  const found = (data: string) => {
+  const found = (codes: ScannedCode[]) => {
     stop()
-    setResult(data)
-    recordQr({ source: 'scanned', payload: data, kind: isProtectedPayload(data) ? 'protected' : detectType(data) })
-    track('qr_scanned', { qr_content_type: isProtectedPayload(data) ? 'protected' : detectType(data) })
-  }
-
-  /** jsQR sobre un canvas achicado (respaldo cuando no hay lector nativo o no encontró nada). */
-  const decodeJs = (source: CanvasImageSource, w: number, h: number) => {
-    const canvas = document.createElement('canvas')
-    const scale = Math.min(1, 1024 / Math.max(w, h))
-    canvas.width = Math.round(w * scale)
-    canvas.height = Math.round(h * scale)
-    const ctx = canvas.getContext('2d', { willReadFrequently: true })!
-    ctx.drawImage(source, 0, 0, canvas.width, canvas.height)
-    const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height)
-    return jsQR(data, canvas.width, canvas.height)?.data ?? null
-  }
-  const decode = async (source: CanvasImageSource & ImageBitmapSource, w: number, h: number) => {
-    const native = getNativeDetector()
-    if (native) {
-      try {
-        const codes = await native.detect(source)
-        if (codes[0]?.rawValue) return codes[0].rawValue
-      } catch {
-        /* se prueba con jsQR */
-      }
+    setResults(codes)
+    for (const c of codes) {
+      const kind = isProtectedPayload(c.value) ? 'protected' : detectType(c.value)
+      recordQr({ source: 'scanned', payload: c.value, kind })
+      track('qr_scanned', { qr_content_type: kind, format: c.format, count: codes.length })
     }
-    return decodeJs(source, w, h)
   }
 
   const startCamera = async () => {
     setError(null)
-    setResult(null)
+    setResults(null)
     try {
+      const { scanSource } = await import('../infra/qrScan')
       stream.current = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
       const v = video.current!
       v.srcObject = stream.current
@@ -554,8 +544,9 @@ export function ReadQr() {
       const tick = async () => {
         if (!stream.current) return
         if (v.readyState >= 2) {
-          const data = await decode(v, v.videoWidth, v.videoHeight)
-          if (data !== null) return found(data)
+          // Cuadro a cuadro, solo la pasada rápida.
+          const codes = await scanSource(v, v.videoWidth, v.videoHeight, false)
+          if (codes.length) return found(codes.slice(0, 1))
         }
         requestAnimationFrame(() => void tick())
       }
@@ -566,18 +557,21 @@ export function ReadQr() {
     }
   }
 
+  /** Una imagen (también HEIC, TIFF o SVG) o un PDF: se buscan todos los códigos (W-146.11). */
   const fromImage = async (file: File | undefined) => {
     if (!file) return
     setError(null)
-    setResult(null)
+    setResults(null)
+    setReading(true)
     try {
-      const bmp = await createImageBitmap(file)
-      const data = await decode(bmp, bmp.width, bmp.height)
-      bmp.close()
-      if (data === null) setError(tr('qr.notFound'))
-      else found(data)
+      const { scanFile } = await import('../infra/qrScan')
+      const codes = await scanFile(file)
+      if (!codes.length) setError(tr(/pdf$/i.test(file.type) || /\.pdf$/i.test(file.name) ? 'qr.notFoundPdf' : 'qr.notFound'))
+      else found(codes)
     } catch {
       setError(tr('qr.cantRead'))
+    } finally {
+      setReading(false)
     }
   }
 
@@ -623,14 +617,21 @@ export function ReadQr() {
         </>
       ) : (
         <div className="row">
-          <button type="button" className="btn btn-primary" onClick={() => fileInput.current?.click()}><Icon name="image" /> {tr('qr.pickImage')}</button>
-          <input ref={fileInput} type="file" accept="image/*" hidden onChange={(e) => { void fromImage(e.target.files?.[0]); e.target.value = '' }} />
+          <button type="button" className="btn btn-primary" disabled={reading} onClick={() => fileInput.current?.click()}><Icon name="image" /> {tr('qr.pickImageOrPdf')}</button>
+          <input ref={fileInput} type="file" accept="image/*,.heic,.heif,.tif,.tiff,application/pdf,.pdf" hidden onChange={(e) => { void fromImage(e.target.files?.[0]); e.target.value = '' }} />
+          {reading && <small className="faint">{tr('qr.searching')}</small>}
         </div>
       )}
       <small className="faint">{tr('qr.pasteHint')}</small>
 
       {error && <Notice kind="error">{error}</Notice>}
-      {result !== null && (isProtectedPayload(result) ? <ProtectedResult payload={result} onCopy={copied} /> : <QrResult value={result} onCopy={copied} />)}
+      {results && results.length > 1 && <Notice kind="success">{tr('qr.foundMany', { n: results.length })}</Notice>}
+      {results?.map((c, i) => (
+        <div key={`${c.format}-${i}`} className="stack" style={{ gap: 6 }}>
+          {(results.length > 1 || c.format !== 'qr_code') && <small className="faint">{tr('qr.codeN', { n: i + 1, format: formatLabel(c.format) })}</small>}
+          {isProtectedPayload(c.value) ? <ProtectedResult payload={c.value} onCopy={copied} /> : <QrResult value={c.value} onCopy={copied} />}
+        </div>
+      ))}
     </section>
   )
 }
@@ -638,7 +639,7 @@ export function ReadQr() {
 /** Copia un texto y avisa. */
 const copyText = (value: string, onCopy: () => void) => void navigator.clipboard.writeText(value).then(onCopy, () => {})
 
-const READ_ICON: Record<ReadType, IconName> = { url: 'link', email: 'mail', phone: 'phone', wifi: 'wifi', contact: 'user', event: 'calendar', text: 'text' }
+const READ_ICON: Record<ReadType, IconName> = { url: 'link', email: 'mail', phone: 'phone', sms: 'send', location: 'globe', wifi: 'wifi', contact: 'user', event: 'calendar', text: 'text' }
 
 /** Resultado de un QR con las acciones de su tipo (nada se abre ni se descarga sin tocar un botón). */
 function QrResult({ value, onCopy }: { value: string; onCopy: () => void }) {
@@ -706,6 +707,42 @@ function QrResult({ value, onCopy }: { value: string; onCopy: () => void }) {
     )
   }
 
+  if (type === 'sms') {
+    const s = parseSms(value)
+    if (s) {
+      const href = `sms:${encodeURIComponent(s.phone)}${s.message ? `?body=${encodeURIComponent(s.message)}` : ''}`
+      return (
+        <div className="qr-result stack">
+          {head}
+          <div className="qr-fields">
+            {row('qr.label.phone', s.phone)}
+            {row('qr.label.message', s.message)}
+          </div>
+          <div className="row">
+            {/^[+\d*#\s-]+$/.test(s.phone) && <a className="btn btn-primary btn-sm" href={href}><Icon name="send" /> {tr('qr.act.sms')}</a>}
+            {copyBtn(s.message || s.phone)}
+          </div>
+        </div>
+      )
+    }
+  }
+
+  if (type === 'location') {
+    const g = parseGeo(value)
+    if (g) {
+      return (
+        <div className="qr-result stack">
+          {head}
+          <div className="result-box">{`${g.lat}, ${g.lng}`}</div>
+          <div className="row">
+            <a className="btn btn-primary btn-sm" href={g.mapUrl} target="_blank" rel="noopener noreferrer nofollow"><Icon name="globe" /> {tr('qr.act.map')}</a>
+            {copyBtn(`${g.lat}, ${g.lng}`)}
+          </div>
+        </div>
+      )
+    }
+  }
+
   if (type === 'wifi') {
     const w = parseWifi(value)
     if (w) {
@@ -745,6 +782,10 @@ function QrResult({ value, onCopy }: { value: string; onCopy: () => void }) {
             {row('qr.label.name', c.name)}
             {row('qr.label.phone', c.phone)}
             {row('qr.label.email', c.email)}
+            {row('qr.label.company', c.company ?? '')}
+            {row('qr.label.jobTitle', c.title ?? '')}
+            {row('qr.label.address', c.address ?? '')}
+            {row('qr.label.website', c.website ?? '')}
           </div>
           <div className="row">
             <button type="button" className="btn btn-primary btn-sm" onClick={() => download(new Blob([contactPayload(c)], { type: 'text/vcard' }), `${c.name || 'contacto'}.vcf`)}>
