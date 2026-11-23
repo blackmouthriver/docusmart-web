@@ -44,7 +44,7 @@ describe('catálogo de la app', () => {
     expect(n.organizar).toBe(5)
     expect(n.qr).toBe(2)
     expect(n.documentos).toBe(3)
-    expect(n.multimedia).toBe(5)
+    expect(n.multimedia).toBe(7)
     expect(n.texto).toBe(5)
     expect(n.imagen).toBe(19)
   })

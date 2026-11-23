@@ -4,9 +4,12 @@
  * (WebCodecs del navegador, con aceleración por hardware): aquí solo se decide qué pedir.
  */
 
-/** Las cuatro herramientas (id de la página y de la ruta #/multimedia/<id>). */
-export type MediaToolId = 'audio' | 'convertir' | 'recortar' | 'comprimir'
-export const MEDIA_TOOLS: readonly MediaToolId[] = ['audio', 'convertir', 'recortar', 'comprimir']
+/** Las herramientas (id de la página y de la ruta #/multimedia/<id>); girar y GIF desde W-146.9. */
+export type MediaToolId = 'audio' | 'convertir' | 'recortar' | 'comprimir' | 'girar' | 'gif'
+export const MEDIA_TOOLS: readonly MediaToolId[] = ['audio', 'convertir', 'recortar', 'comprimir', 'girar', 'gif']
+/** Las que solo trabajan con video. */
+const VIDEO_ONLY: readonly MediaToolId[] = ['convertir', 'comprimir', 'girar', 'gif']
+export const isVideoOnly = (tool: MediaToolId) => VIDEO_ONLY.includes(tool)
 
 export type AudioFormat = 'mp3' | 'm4a' | 'wav' | 'ogg'
 export type VideoFormat = 'mp4' | 'webm'
@@ -28,8 +31,8 @@ const AUDIO_EXT = ['mp3', 'm4a', 'aac', 'wav', 'ogg', 'oga', 'opus', 'flac']
 export const VIDEO_ACCEPT = 'video/*,' + VIDEO_EXT.map((e) => '.' + e).join(',')
 export const MEDIA_ACCEPT = 'video/*,audio/*,' + [...VIDEO_EXT, ...AUDIO_EXT].map((e) => '.' + e).join(',')
 
-/** Qué archivos acepta cada herramienta: convertir y comprimir son solo de video. */
-export const acceptFor = (tool: MediaToolId) => (tool === 'convertir' || tool === 'comprimir' ? VIDEO_ACCEPT : MEDIA_ACCEPT)
+/** Qué archivos acepta cada herramienta: convertir, comprimir, girar y GIF son solo de video. */
+export const acceptFor = (tool: MediaToolId) => (isVideoOnly(tool) ? VIDEO_ACCEPT : MEDIA_ACCEPT)
 
 const extOf = (name: string) => (name.toLowerCase().match(/\.([a-z0-9]+)$/)?.[1] ?? '')
 
@@ -46,7 +49,7 @@ export function mediaKind(name: string, type: string): 'video' | 'audio' | null 
 /** ¿La herramienta acepta este archivo? */
 export function accepts(tool: MediaToolId, name: string, type: string): boolean {
   const kind = mediaKind(name, type)
-  return tool === 'convertir' || tool === 'comprimir' ? kind === 'video' : kind !== null
+  return isVideoOnly(tool) ? kind === 'video' : kind !== null
 }
 
 /**
@@ -149,7 +152,7 @@ export function compressQuality(level: CompressLevel): { video: QualityName; aud
 export const savedPercent = (before: number, after: number) => (before > 0 && after < before ? Math.round((1 - after / before) * 100) : 0)
 
 /** Por qué no se pudo: lo traduce la pantalla. */
-export type MediaFailure = 'unsupported-browser' | 'unsupported-file' | 'no-codec' | 'no-audio' | 'no-video' | 'canceled' | 'failed'
+export type MediaFailure = 'unsupported-browser' | 'unsupported-file' | 'no-codec' | 'no-audio' | 'no-video' | 'too-small' | 'canceled' | 'failed'
 
 /** Razones de Mediabunny para descartar pistas → el motivo que se le explica a la persona. */
 export function failureFromDiscards(reasons: string[], wanted: 'audio' | 'video' | 'any'): MediaFailure {
@@ -162,3 +165,65 @@ export function failureFromDiscards(reasons: string[], wanted: 'audio' | 'video'
 
 /** Si la versión comprimida no es más liviana, se devuelve la original. */
 export const keepSmaller = (before: number, after: number) => after < before
+
+/* ───────────── W-146.9 ───────────── */
+
+/**
+ * Recortar sin dejar nada escondido: si el inicio no cae en un fotograma clave, copiar el video
+ * arrastraría desde el clave anterior (con tiempos negativos, que no se ven pero siguen en el
+ * archivo). En ese caso hay que recomprimir. `key`: el tiempo del clave anterior al inicio.
+ */
+export const trimNeedsReencode = (start: number, key: number | null) => start > 0.02 && (key === null || start - key > 0.02)
+
+/** Tamaños máximos más pedidos, en MB (lo que acepta cada servicio para enviar un video). */
+export const SIZE_TARGETS = [
+  { id: 'discord', mb: 10 },
+  { id: 'whatsapp', mb: 16 },
+  { id: 'correo', mb: 25 },
+] as const
+export type SizeTargetId = (typeof SIZE_TARGETS)[number]['id']
+
+export type BitratePlan = { videoBps: number; audioBps: number; maxHeight: MaxHeight }
+
+/**
+ * Cuántos bits por segundo dar al video y al audio para que el archivo entre en `targetBytes`
+ * (con un 4 % de margen para el contenedor), y a qué alto bajarlo para que con esa tasa se vea
+ * bien. null si ni así alcanza (menos de 100 kbit/s para el video).
+ */
+export function bitratePlan(targetBytes: number, duration: number, hasAudio: boolean): BitratePlan | null {
+  if (!(duration > 0) || !(targetBytes > 0)) return null
+  const total = (targetBytes * 8 * 0.96) / duration
+  const audioBps = !hasAudio ? 0 : total >= 1_000_000 ? 128_000 : total >= 400_000 ? 96_000 : 48_000
+  const videoBps = Math.floor(total - audioBps)
+  if (videoBps < 100_000) return null
+  const maxHeight: MaxHeight = videoBps < 700_000 ? 480 : videoBps < 1_600_000 ? 720 : videoBps < 4_000_000 ? 1080 : 0
+  return { videoBps, audioBps, maxHeight }
+}
+
+/** Un tamaño achicado por `k`, en números pares (los códecs lo piden). */
+export const shrinkSize = (w: number, h: number, k: number) => ({ width: Math.max(2, Math.round((w * k) / 2) * 2), height: Math.max(2, Math.round((h * k) / 2) * 2) })
+
+/** Si el resultado se pasó del tamaño (los codificadores no son exactos), la tasa para reintentar. */
+export const retryBitrate = (bps: number, got: number, target: number) => Math.max(50_000, Math.floor(bps * (target / got) * 0.92))
+
+/* Girar video */
+export type VideoRotation = 0 | 90 | 180 | 270
+export const rotateVideo = (r: VideoRotation, deg: 90 | -90): VideoRotation => ((((r + deg) % 360) + 360) % 360) as VideoRotation
+
+/* Video a GIF */
+export const GIF_WIDTHS = [320, 480, 640] as const
+export const GIF_FPS = [10, 15] as const
+/** Duración máxima de un GIF (más pesaría demasiado). */
+export const GIF_MAX_SECONDS = 30
+
+/** Los instantes (en segundos) de cada cuadro del GIF entre `start` y `end`, a `fps` cuadros por segundo. */
+export function gifFrameTimes(start: number, end: number, fps: number): number[] {
+  const last = Math.min(end, start + GIF_MAX_SECONDS)
+  const step = 1 / fps
+  const out: number[] = []
+  for (let t = start; t < last - 1e-6; t = Math.round((t + step) * 1000) / 1000) out.push(t)
+  return out
+}
+
+/** Alto del GIF para un ancho dado, conservando la proporción (par, mínimo 2). */
+export const gifHeight = (width: number, srcW: number, srcH: number) => Math.max(2, Math.round((width * srcH) / Math.max(1, srcW) / 2) * 2)

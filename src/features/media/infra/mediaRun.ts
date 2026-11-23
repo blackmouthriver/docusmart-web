@@ -9,6 +9,8 @@ import {
   ALL_FORMATS,
   BlobSource,
   BufferTarget,
+  CanvasSink,
+  EncodedPacketSink,
   Conversion,
   ConversionCanceledError,
   Input,
@@ -35,7 +37,15 @@ import {
   type VideoCodec,
 } from 'mediabunny'
 import {
+  bitratePlan,
   compressQuality,
+  gifFrameTimes,
+  gifHeight,
+  retryBitrate,
+  shrinkSize,
+  trimFormat,
+  trimNeedsReencode,
+  type VideoRotation,
   failureFromDiscards,
   isAudioFormat,
   mediaFileName,
@@ -83,7 +93,8 @@ export type MediaJob =
   | { tool: 'audio'; format: AudioFormat; quality: 'medium' | 'high' }
   | { tool: 'convertir'; format: VideoFormat; mute: boolean }
   | { tool: 'recortar'; format: OutputFormat; start: number; end: number }
-  | { tool: 'comprimir'; level: CompressLevel; maxHeight: MaxHeight }
+  | { tool: 'comprimir'; level: CompressLevel; maxHeight: MaxHeight; targetBytes?: number }
+  | { tool: 'girar'; rotate: VideoRotation; flip: boolean }
 
 const QUALITY: Record<QualityName, Quality> = { 'very-low': QUALITY_VERY_LOW, low: QUALITY_LOW, medium: QUALITY_MEDIUM, high: QUALITY_HIGH }
 
@@ -128,9 +139,33 @@ async function audioCodec(format: OutputFormat) {
  * `signal` permite cancelar. Lanza MediaError con el motivo si no se puede.
  */
 export async function runMedia(file: File, job: MediaJob, names: Record<MediaJob['tool'], string>, onProgress: (p: number) => void, signal?: AbortSignal): Promise<File> {
+  // Comprimir a un tamaño: los codificadores no siempre respetan la tasa de bits (sobre todo con
+  // mucho detalle). Si se pasó, se reintenta con menos tasa y, después, también más chico.
+  if (job.tool === 'comprimir' && job.targetBytes) {
+    let best: File | null = null
+    let bps: number | undefined
+    for (const [i, shrink] of TARGET_ATTEMPTS.entries()) {
+      const step = (p: number) => onProgress((i + p) / TARGET_ATTEMPTS.length)
+      const r = await runOnce(file, job, names, step, signal, bps, shrink)
+      if (!best || r.file.size < best.size) best = r.file
+      if (r.file.size <= job.targetBytes || !r.bitrate) break
+      bps = retryBitrate(r.bitrate, r.file.size, job.targetBytes)
+    }
+    onProgress(1)
+    return best!
+  }
+  return (await runOnce(file, job, names, onProgress, signal)).file
+}
+
+/** Intentos al comprimir a un tamaño: el factor de tamaño de cada uno (el primero, el del plan). */
+const TARGET_ATTEMPTS = [1, 1, 0.7, 0.5]
+
+async function runOnce(file: File, job: MediaJob, names: Record<MediaJob['tool'], string>, onProgress: (p: number) => void, signal?: AbortSignal, videoBps?: number, shrink = 1): Promise<{ file: File; bitrate?: number }> {
   const input = openInput(file)
+  let bitrate: number | undefined
   try {
-    const format: OutputFormat = job.tool === 'audio' ? job.format : job.tool === 'convertir' ? job.format : job.tool === 'recortar' ? job.format : 'mp4'
+    const format: OutputFormat =
+      job.tool === 'audio' || job.tool === 'convertir' || job.tool === 'recortar' ? job.format : job.tool === 'girar' ? trimFormat(file.name, file.type) : 'mp4'
     const audioOnly = isAudioFormat(format)
     if (format === 'mp3') await ensureMp3()
 
@@ -145,8 +180,29 @@ export async function runMedia(file: File, job: MediaJob, names: Record<MediaJob
       audio = job.mute ? { discard: true } : { codec: await audioCodec(format) }
     } else if (job.tool === 'recortar') {
       trim = { start: job.start, end: job.end }
-      if (!audioOnly) video = { codec: await videoCodec(format) }
+      if (!audioOnly) {
+        // Si el inicio no cae en un fotograma clave, se recomprime: copiar dejaría escondido lo
+        // anterior al corte, desde el clave previo (W-146.9).
+        const track = await input.getPrimaryVideoTrack()
+        const key = track ? await new EncodedPacketSink(track).getKeyPacket(job.start) : null
+        video = { codec: await videoCodec(format), ...(track && trimNeedsReencode(job.start, key?.timestamp ?? null) && { forceTranscode: true }) }
+      }
       audio = { codec: await audioCodec(format) }
+    } else if (job.tool === 'girar') {
+      // Girar y voltear: con los metadatos del archivo cuando se puede (sin recomprimir).
+      video = { codec: await videoCodec(format), rotate: job.rotate, flip: job.flip }
+      audio = { codec: await audioCodec(format) }
+    } else if (job.targetBytes) {
+      const track = await input.getPrimaryVideoTrack()
+      if (!track) throw new MediaError('no-video')
+      const hasAudio = !!(await input.getPrimaryAudioTrack())
+      const plan = bitratePlan(job.targetBytes, await input.computeDuration(), hasAudio)
+      if (!plan) throw new MediaError('too-small')
+      const planned = scaledSize(track.displayWidth, track.displayHeight, plan.maxHeight)
+      const size = shrink < 1 ? shrinkSize(planned?.width ?? track.displayWidth, planned?.height ?? track.displayHeight, shrink) : planned
+      bitrate = videoBps ?? plan.videoBps
+      video = { codec: await videoCodec('mp4', size ?? { width: track.displayWidth, height: track.displayHeight }), bitrate, forceTranscode: true, ...(size && { width: size.width, height: size.height, fit: 'contain' as const }) }
+      audio = hasAudio ? { codec: await audioCodec('mp4'), bitrate: plan.audioBps, forceTranscode: true } : {}
     } else {
       const track = await input.getPrimaryVideoTrack()
       if (!track) throw new MediaError('no-video')
@@ -173,10 +229,52 @@ export async function runMedia(file: File, job: MediaJob, names: Record<MediaJob
     }
     const buffer = output.target.buffer
     if (!buffer) throw new MediaError('failed')
-    return new File([buffer], mediaFileName(file.name, names[job.tool], format), { type: mimeOf(format) })
+    return { file: new File([buffer], mediaFileName(file.name, names[job.tool], format), { type: mimeOf(format) }), bitrate }
   } catch (e) {
     if (e instanceof MediaError) throw e
     if (e instanceof ConversionCanceledError || signal?.aborted) throw new MediaError('canceled')
+    if (e instanceof UnsupportedInputFormatError) throw new MediaError('unsupported-file')
+    throw e
+  } finally {
+    input.dispose()
+  }
+}
+
+/**
+ * Video a GIF (W-146.9): los cuadros entre `start` y `end`, a `fps` cuadros por segundo y `width`
+ * de ancho, cada uno con su paleta de 256 colores (gifenc). Se repite sin fin.
+ */
+export async function runGif(file: File, o: { start: number; end: number; width: number; fps: number }, name: string, onProgress: (p: number) => void, signal?: AbortSignal): Promise<File> {
+  const input = openInput(file)
+  try {
+    const track = await input.getPrimaryVideoTrack()
+    if (!track) throw new MediaError('no-video')
+    if (!(await track.canDecode())) throw new MediaError('unsupported-file')
+    const w = Math.min(o.width, track.displayWidth)
+    const width = Math.max(2, w - (w % 2))
+    const height = gifHeight(width, track.displayWidth, track.displayHeight)
+    const times = gifFrameTimes(o.start, o.end, o.fps)
+    const { GIFEncoder, quantize, applyPalette } = await import('gifenc')
+    const gif = GIFEncoder()
+    const sink = new CanvasSink(track, { width, height, fit: 'fill', poolSize: 2 })
+    const delay = Math.round(1000 / o.fps)
+    let n = 0
+    for await (const wrapped of sink.canvasesAtTimestamps(times)) {
+      if (signal?.aborted) throw new MediaError('canceled')
+      if (!wrapped) continue
+      const ctx = wrapped.canvas.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
+      const { data } = ctx.getImageData(0, 0, width, height)
+      const palette = quantize(data, 256, { format: 'rgb565' })
+      gif.writeFrame(applyPalette(data, palette, 'rgb565'), width, height, { palette, delay, ...(n === 0 && { repeat: 0 }) })
+      onProgress(++n / times.length)
+    }
+    if (!n) throw new MediaError('failed')
+    gif.finish()
+    const base = file.name.replace(/\.[^./\\]+$/, '').trim() || 'video'
+    return new File([gif.bytes() as Uint8Array<ArrayBuffer>], `${base}-${name}.gif`, { type: 'image/gif' })
+  } catch (e) {
+    if (e instanceof MediaError) throw e
+    if (signal?.aborted) throw new MediaError('canceled')
     if (e instanceof UnsupportedInputFormatError) throw new MediaError('unsupported-file')
     throw e
   } finally {

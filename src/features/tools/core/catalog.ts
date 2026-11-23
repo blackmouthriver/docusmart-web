@@ -119,6 +119,8 @@ const ENTRIES: readonly CatalogTool[] = [
   media('convertir', 'convert'),
   media('recortar', 'scissors'),
   media('comprimir', 'compress'),
+  media('girar', 'rotate'),
+  media('gif', 'image'),
   { key: 'multimedia/texto', category: 'multimedia', icon: 'volume', name: 'tools.stt', desc: 'tools.stt.desc', section: 'multimedia', sub: 'texto', also: ['texto'] },
   { key: 'archivos/crear', category: 'archivos', icon: 'archive', name: 'tools.arch.create', desc: 'tools.arch.create.desc', section: 'archivos', sub: 'crear' },
   { key: 'archivos/extraer', category: 'archivos', icon: 'folder', name: 'tools.arch.extract', desc: 'tools.arch.extract.desc', section: 'archivos', sub: 'extraer' },
