@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { LANGS, detectLanguage, isLang, langFromTimeZone } from '../../../../src/shared/i18n/languages'
-import { ACCENTS, DEFAULT_APPEARANCE, accentVars, applyAppearance, applyTheme, parseAppearance, resolveSidebar, resolveTheme } from '../../../../src/app/appearance'
+import { ACCENTS, DEFAULT_APPEARANCE, GRADIENT_ACCENTS, SOLID_ACCENTS, accentSwatch, accentVars, applyAppearance, applyTheme, parseAppearance, resolveSidebar, resolveTheme } from '../../../../src/app/appearance'
 
 describe('idiomas', () => {
   it('los 12 de la app', () => {
@@ -35,7 +35,9 @@ describe('idiomas', () => {
 
 describe('apariencia', () => {
   it('los 10 colores de la app', () => {
-    expect(Object.keys(ACCENTS)).toEqual(['blue', 'purple', 'green', 'orange', 'pink', 'teal', 'indigo', 'red', 'amber', 'cyan'])
+    expect(Object.keys(ACCENTS)).toEqual(['blue', 'purple', 'green', 'orange', 'pink', 'teal', 'indigo', 'red', 'amber', 'cyan', 'black', 'navy', 'sunset', 'ocean', 'aurora', 'forest', 'dusk', 'fire', 'lagoon', 'berry', 'galaxy', 'coral', 'night', 'tropical', 'neon', 'obsidian', 'abyss', 'midnight'])
+    expect(SOLID_ACCENTS).toHaveLength(12)
+    expect(GRADIENT_ACCENTS).toEqual(['sunset', 'ocean', 'aurora', 'forest', 'dusk', 'fire', 'lagoon', 'berry', 'galaxy', 'coral', 'night', 'tropical', 'neon', 'obsidian', 'abyss', 'midnight'])
   })
 
   it('lee lo guardado sin aceptar valores raros', () => {
@@ -55,6 +57,27 @@ describe('apariencia', () => {
     expect(accentVars('green', 'light')['--blue']).toBe('#15803D')
     expect(accentVars('green', 'dark')['--blue']).toBe('#86EFAC')
     expect(accentVars('green', 'dark')['--accent']).toBe('#15803D')
+  })
+
+  it('degradados de dos colores (2026-11-23): variables y muestra', () => {
+    expect(accentVars('sunset', 'light')).toMatchObject({ '--grad-a': '#EA580C', '--grad-b': '#DB2777', '--accent': '#DB2777' })
+    // Un color único deja las variables vacías (y así se quitan del documento).
+    expect(accentVars('blue', 'dark')).toMatchObject({ '--grad-a': '', '--grad-b': '' })
+    expect(accentSwatch('ocean')).toBe('linear-gradient(135deg, #2563EB, #0891B2)')
+    expect(accentSwatch('green')).toBe('#15803D')
+    expect(parseAppearance('{"accent":"aurora"}').accent).toBe('aurora')
+    const vars: Record<string, string> = {}
+    const root = { dataset: {} as Record<string, string>, style: { colorScheme: '', setProperty: (k: string, v: string) => (vars[k] = v) } }
+    applyAppearance({ ...DEFAULT_APPEARANCE, theme: 'light', accent: 'fire' }, root as unknown as HTMLElement)
+    expect([vars['--grad-a'], vars['--grad-b']]).toEqual(['#DC2626', '#D97706'])
+    applyAppearance({ ...DEFAULT_APPEARANCE, theme: 'light', accent: 'teal' }, root as unknown as HTMLElement)
+    expect([vars['--grad-a'], vars['--grad-b']]).toEqual(['', ''])
+  })
+
+  it('el fondo se tiñe con el acento: el degradado o el color y su tono claro', () => {
+    expect(accentVars('ocean', 'dark')).toMatchObject({ '--tint-a': '#2563EB', '--tint-b': '#0891B2' })
+    expect(accentVars('navy', 'dark')).toMatchObject({ '--tint-a': '#1E3A8A', '--tint-b': '#3B82F6' })
+    expect(accentVars('black', 'light')).toMatchObject({ '--accent': '#111827', '--tint-a': '#111827' })
   })
 
   it('se aplica al documento', () => {

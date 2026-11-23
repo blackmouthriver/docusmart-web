@@ -5,7 +5,7 @@ import { Segmented } from './ui'
 import { useDialog } from './useDialog'
 import { LANGS } from '../i18n/languages'
 import { useT } from '../i18n/I18n'
-import { ACCENTS, SIDEBAR_STYLES, applyAppearance, systemDark, loadAppearance, saveAppearance, type Accent, type Appearance, type FontScale, type SidebarStyle, type ThemeMode } from '../../app/appearance'
+import { GRADIENT_ACCENTS, SIDEBAR_STYLES, SOLID_ACCENTS, accentSwatch, applyAppearance, systemDark, loadAppearance, saveAppearance, type Appearance, type FontScale, type SidebarStyle, type ThemeMode } from '../../app/appearance'
 import { track } from '../platform/analytics'
 
 export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
@@ -84,21 +84,29 @@ export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
 
         <section>
           <h3>{t('settings.accent')}</h3>
-          <div className="accent-row" role="radiogroup" aria-label={t('settings.accent')}>
-            {(Object.keys(ACCENTS) as Accent[]).map((id) => (
-              <button
-                key={id}
-                type="button"
-                role="radio"
-                aria-checked={look.accent === id}
-                aria-label={t(`accent.${id}`)}
-                title={t(`accent.${id}`)}
-                className="accent-swatch"
-                style={{ background: ACCENTS[id].swatch }}
-                onClick={() => update({ accent: id })}
-              >
-                {look.accent === id && <Icon name="check" />}
-              </button>
+          {/* Colores de un tono y, debajo, los degradados de dos colores; un solo grupo de opciones. */}
+          <div className="stack" style={{ gap: 10 }} role="radiogroup" aria-label={t('settings.accent')}>
+            {[SOLID_ACCENTS, GRADIENT_ACCENTS].map((group, gi) => (
+              <div key={gi} className="stack" style={{ gap: 6 }}>
+                {gi === 1 && <h4 className="settings-sub">{t('settings.gradients')}</h4>}
+                <div className="accent-row">
+                  {group.map((id) => (
+                    <button
+                      key={id}
+                      type="button"
+                      role="radio"
+                      aria-checked={look.accent === id}
+                      aria-label={t(`accent.${id}`)}
+                      title={t(`accent.${id}`)}
+                      className="accent-swatch"
+                      style={{ background: accentSwatch(id) }}
+                      onClick={() => update({ accent: id })}
+                    >
+                      {look.accent === id && <Icon name="check" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </section>

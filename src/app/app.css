@@ -189,6 +189,11 @@ p { margin: 0; }
   background: linear-gradient(135deg, color-mix(in srgb, var(--accent, #2563EB) 78%, #fff) 0%, var(--accent, #2563EB) 45%, var(--accent-deep, #1D4ED8) 100%);
   box-shadow: 0 24px 48px -28px color-mix(in srgb, var(--accent, #2563EB) 80%, transparent);
 }
+/* Temas en degradado de dos colores: la cabecera va de uno al otro. */
+:root[style*="--grad-a"] .hero-card {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--grad-a) 82%, #fff) 0%, var(--grad-a) 30%, var(--grad-b) 100%);
+  box-shadow: 0 24px 48px -28px color-mix(in srgb, var(--grad-b) 80%, transparent);
+}
 .hero-card::before, .hero-card::after { content: ""; position: absolute; z-index: -1; border-radius: 32px; background: rgba(255,255,255,.08); }
 .hero-card::before { width: 260px; height: 220px; right: -40px; top: -60px; }
 .hero-card::after { width: 160px; height: 140px; right: 30px; bottom: -70px; }
@@ -314,9 +319,12 @@ p { margin: 0; }
 .tools-search svg { position: absolute; left: 16px; top: 50%; width: 20px; height: 20px; translate: 0 -50%; color: var(--ink-faint); pointer-events: none; }
 .tools-search .input { width: 100%; height: 52px; padding-left: 46px; border-radius: 999px; font-size: 16px; }
 .tools-jump { position: sticky; top: 0; z-index: 5; overflow: hidden; margin: 12px -4px 0; padding: 10px 4px; background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); }
+/* Las categorías entran y salen difuminadas: la máscara va en el contenedor fijo, no en la tira que
+   se mueve (así el borde nunca se ve cortado). */
+.tools-jump { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%); }
 /* Carrusel continuo (como .th-marquee de /herramientas): se pausa al pasar el ratón, al tocar o
    al llegar con el teclado, y los bordes se desvanecen. */
-.tools-marquee { display: flex; width: max-content; animation: tools-marquee 42s linear infinite; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.tools-marquee { display: flex; width: max-content; animation: tools-marquee 42s linear infinite; }
 .tools-jump:hover .tools-marquee, .tools-jump:focus-within .tools-marquee, .tools-jump:active .tools-marquee { animation-play-state: paused; }
 .tools-track { display: flex; gap: 8px; padding-right: 8px; }
 @keyframes tools-marquee { to { transform: translateX(-50%); } }
@@ -1108,6 +1116,7 @@ html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms v
 .lang-tile small { display: block; font-size: 11.5px; color: var(--ink-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lang-tile > span:last-child { min-width: 0; }
 .accent-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.settings-sub { margin: 4px 0 0; font-size: 14px; font-weight: 700; color: var(--ink); }
 .accent-swatch { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; color: #fff; cursor: pointer; box-shadow: 0 0 0 2px var(--card), 0 0 0 3px transparent; }
 .accent-swatch[aria-checked="true"] { box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--ink); }
 .accent-swatch svg { width: 18px; height: 18px; }
@@ -1140,6 +1149,27 @@ html.vt-screen::view-transition-new(ds-screen) { animation: vt-screen-in 320ms v
 .switch:checked { background: var(--blue); }
 .switch:checked::after { transform: translateX(18px); }
 .switch:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* ── Fondo teñido con el color de acento (2026-11-23) ── */
+:root[data-theme="light"][style*="--tint-a"] {
+  /* --paper-2 sigue neutro y el gris secundario se oscurece un poco: contraste ≥ 4,5:1 con cualquier acento. */
+  --paper: color-mix(in srgb, var(--tint-a) 6%, #F7F7F5);
+  --line: color-mix(in srgb, var(--tint-a) 12%, #E7E5E0);
+  --ink-faint: #5F5954;
+}
+:root[data-theme="dark"][style*="--tint-a"] {
+  --paper: color-mix(in srgb, var(--tint-a) 10%, #0E1116);
+  --paper-2: color-mix(in srgb, var(--tint-a) 12%, #171B22);
+  --card: color-mix(in srgb, var(--tint-a) 6%, #1A1F27);
+  --line: color-mix(in srgb, var(--tint-a) 16%, #2A303B);
+}
+:root[style*="--tint-a"] body {
+  background:
+    radial-gradient(900px 600px at 100% 0%, color-mix(in srgb, var(--tint-b) 16%, transparent), transparent 70%),
+    radial-gradient(900px 600px at 0% 100%, color-mix(in srgb, var(--tint-a) 13%, transparent), transparent 70%),
+    var(--paper);
+  background-attachment: fixed;
+}
 
 /* ── Fondo animado (W-89), como DocuSmartAnimatedBackground.kt de la app ──
    Cuatro formas con el degradado del acento (claro 12 % más blanco, acento, 22 % más oscuro) que derivan
@@ -1218,6 +1248,10 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
   --side-hover: rgba(255, 255, 255, .12); --side-strong: #fff; --side-line-soft: rgba(255, 255, 255, .24); --side-input: rgba(255, 255, 255, .15);
   background: linear-gradient(180deg, var(--accent, #2563EB) 0%, var(--accent-deep, #1D4ED8) 100%);
 }
+:root[data-sidebar="accent"][style*="--grad-a"] .sidebar {
+  --night: var(--grad-b); --night-2: color-mix(in srgb, var(--grad-b) 78%, #000);
+  background: linear-gradient(180deg, var(--grad-a) 0%, var(--grad-b) 100%);
+}
 .nav-item[aria-current="page"] { background: var(--side-active-bg); color: var(--side-active-fg); }
 .nav-item[aria-current="page"] svg { color: var(--side-active-icon); }
 .nav-item[aria-expanded="true"]:not([aria-current]) { color: var(--side-strong); }
@@ -1236,6 +1270,10 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .side-search input { flex: 1; min-width: 0; border: 0; background: none; color: var(--on-night); font: inherit; font-size: 14px; outline: none; }
 .side-search input::placeholder { color: var(--on-night-soft); }
 .side-search:focus-within { box-shadow: 0 0 0 2px var(--side-active-icon); }
+/* Buscar con la barra plegada: sin el estilo de botón del navegador (fondo gris y borde) y con el
+   mismo fondo que el buscador abierto, en cada tema de la barra. */
+.nav-search-btn { width: 100%; margin: 0 0 6px; border: 0; background: var(--side-input); color: var(--on-night-soft); font: inherit; cursor: pointer; }
+@media (hover: hover) and (pointer: fine) { .nav-search-btn:hover { background: var(--side-hover); color: var(--side-strong); } }
 .side-heading { margin: 14px 12px 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--on-night-soft); }
 .side-empty { margin: 4px 12px; color: var(--on-night-soft); font-size: 13px; }
 /* Categorías desplegables con su cantidad de herramientas */
