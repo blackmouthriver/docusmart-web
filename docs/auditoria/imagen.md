@@ -85,3 +85,13 @@ Se hicieron las brechas 1 a 5 (2026-11-22). Quedan para más adelante la 6 (pinc
 Lo que ya estaba bien no cambió: comprimir fotos, rayas sin moiré, metadatos quitados.
 
 **Queda por debajo:** corregir el recorte de Quitar fondo con pincel y fondos difuminados o de imagen (#6), y el encuadre automático de la foto documento (#7).
+
+### Seguimiento W-147.5 (2026-11-23): las brechas 6 y 7
+
+| # | Mejora | Cómo quedó | Prueba |
+|---|---|---|---|
+| 6 | Pincel y fondos nuevos en Quitar fondo | La IA entrega siempre el recorte transparente y el fondo se pone después: **transparente, blanco, color, difuminado** (la misma foto desenfocada, sin bordes claros) o **una imagen** elegida (ajustada sin deformarse). Con una sola foto aparece **Retocar con pincel**: **Borrar** lo que sobró y **Recuperar** lo que la IA cortó de más (la foto original se ve tenue como guía), con tamaño de pincel, deshacer y rehacer. Se guardan los trazos y no copias de la imagen, así deshacer no gasta memoria | Unitarias (`coverRect`, `blurPx`, `strokeDabs`) y E2E con el modelo real (borrar el centro de la manzana y recuperar el borde; difuminado sin transparencia) |
+| 7 | Encuadre automático de la foto documento | Botón **Encuadrar automáticamente**: con la silueta que da la misma IA (no hace falta otro modelo) se ubica la coronilla, el ancho y el centro de la cabeza, y el recuadro queda con la cabeza ocupando cerca del 72 % del alto y un 9 % de espacio arriba, con la proporción de la medida elegida; si no cabe, se achica sin salirse de la foto. Si no encuentra a una persona, lo avisa y se ajusta a mano | Unitarias (`frameFromMask` con una silueta de prueba) y E2E (el recuadro se mueve hacia la persona) |
+
+**Queda por debajo en Imagen:** nada de lo detectado en la auditoría.
+

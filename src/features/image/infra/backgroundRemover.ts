@@ -1,6 +1,6 @@
 // Cliente del worker de "Quitar fondo" (W-121): descarga el modelo una vez, lo entrega al
 // worker y recorta una imagen a la vez. Excluido de la cobertura (worker, canvas y red).
-import type { Background } from '../core/background'
+import type { Backdrop, Background } from '../core/background'
 import type { WorkerRequest, WorkerResponse } from './background.worker'
 import { loadBackgroundModel } from './backgroundModel'
 import { loadImage } from './imageCanvas'
@@ -50,11 +50,25 @@ export function prepareBackgroundRemover(onProgress: (fraction: number) => void)
   return ready
 }
 
-export async function removeBackground(file: Blob, background: Background): Promise<{ blob: Blob; width: number; height: number }> {
+/**
+ * Recorta la persona u objeto principal. La IA entrega siempre el recorte transparente (`cutout`,
+ * para retocarlo con el pincel) y aquí se le pone el fondo pedido (`blob`, W-147.5).
+ */
+export async function removeBackground(file: Blob, backdrop: Backdrop): Promise<{ blob: Blob; cutout: Blob; width: number; height: number }> {
   const { bmp: image } = await loadImage(file)
   const id = ++nextId
-  return new Promise((resolve, reject) => {
+  const transparent: Background = { kind: 'transparent' }
+  const r = await new Promise<{ blob: Blob; width: number; height: number }>((resolve, reject) => {
     pending.set(id, { resolve, reject })
-    getWorker().postMessage({ type: 'run', id, image, background, maxSide: MAX_SIDE } satisfies WorkerRequest, [image])
+    getWorker().postMessage({ type: 'run', id, image, background: transparent, maxSide: MAX_SIDE } satisfies WorkerRequest, [image])
   })
+  if (backdrop.kind === 'transparent') return { ...r, cutout: r.blob }
+  const { composeCutout } = await import('./backgroundCompose')
+  const [cut, original] = await Promise.all([createImageBitmap(r.blob), loadImage(file)])
+  try {
+    return { blob: await composeCutout(cut, original.bmp, backdrop), cutout: r.blob, width: r.width, height: r.height }
+  } finally {
+    cut.close()
+    original.bmp.close()
+  }
 }

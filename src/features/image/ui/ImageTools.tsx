@@ -28,7 +28,7 @@ import {
 } from '../core/imageTools'
 import type { CompressFormat, CompressMode } from '../core/imageCompress'
 import { RESIZE_PRESETS as RESIZE_PRESET_LIST, type ResizePresetId } from '../core/imageMeta'
-import { MODEL as BG_MODEL, backgroundOutputName, parseBackground } from '../core/background'
+import { MODEL as BG_MODEL, backgroundOutputName, parseBackground, type Backdrop, type BrushMode, type BrushStroke } from '../core/background'
 import { looksSpecial } from '../../convert/core/formats'
 import { WATERMARK_POSITIONS, clampPercent, type WatermarkPosition } from '../core/watermark'
 import type { Mark } from '../infra/watermarkCanvas'
@@ -565,24 +565,35 @@ function RotateImageTool() {
 
 /* ───────────── Quitar fondo (W-121) ───────────── */
 
-type BgChoice = 'transparent' | 'white' | 'color'
+type BgChoice = 'transparent' | 'white' | 'color' | 'blur' | 'image'
 
 function RemoveBackgroundTool() {
   const b = useBatch('remove_background')
   const [choice, setChoice] = useState<BgChoice>('transparent')
   const [color, setColor] = useState('#2563eb')
+  const [bgImage, setBgImage] = useState<File | null>(null)
+  const bgInput = useRef<HTMLInputElement>(null)
   const [cached, setCached] = useState<boolean | null>(null)
   const [download, setDownload] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  // Con una sola foto, el recorte transparente queda para retocarlo con el pincel (W-147.5).
+  const [retouch, setRetouch] = useState<{ original: File; cutout: Blob; backdrop: Backdrop } | null>(null)
+  const [editing, setEditing] = useState(false)
   useEffect(() => {
     void import('../infra/backgroundModel').then((m) => m.isModelCached()).then(setCached, () => setCached(false))
   }, [])
   const pick = (c: BgChoice) => {
     setChoice(c)
     b.setResults(null)
+    setRetouch(null)
+    if (c === 'image' && !bgImage) bgInput.current?.click()
   }
+  const backdrop = (): Backdrop =>
+    choice === 'white' ? { kind: 'color', color: '#ffffff' } : choice === 'color' ? parseBackground(color) : choice === 'blur' ? { kind: 'blur' } : choice === 'image' && bgImage ? { kind: 'image', image: bgImage } : { kind: 'transparent' }
   const run = async () => {
     setError(null)
+    setRetouch(null)
+    setEditing(false)
     const { prepareBackgroundRemover, removeBackground } = await import('../infra/backgroundRemover')
     try {
       setDownload(0)
@@ -595,11 +606,19 @@ function RemoveBackgroundTool() {
     } finally {
       setDownload(null)
     }
-    const background = parseBackground(choice === 'white' ? '#ffffff' : choice === 'color' ? color : '')
+    const bd = backdrop()
+    const single = b.files.length === 1
     await b.run(async (file) => {
-      const r = await removeBackground(file, background)
+      const r = await removeBackground(file, bd)
+      if (single) setRetouch({ original: file, cutout: r.cutout, backdrop: bd })
       return { name: backgroundOutputName(file.name, tr('file.noBg')), blob: r.blob, width: r.width, height: r.height }
     })
+  }
+  const applyRetouch = (blob: Blob) => {
+    const r = b.results?.[0]
+    if (r && r.error === undefined) b.setResults([{ ...r, blob }])
+    setEditing(false)
+    track('image_tool_used', { tool_name: 'remove_background_brush', files: 1, ok: 1 })
   }
   return (
     <div className="stack">
@@ -615,15 +634,24 @@ function RemoveBackgroundTool() {
               { value: 'transparent', label: tr('bg.transparent') },
               { value: 'white', label: tr('bg.white') },
               { value: 'color', label: tr('bg.color') },
+              { value: 'blur', label: tr('bg.blur') },
+              { value: 'image', label: tr('bg.image') },
             ]}
           />
         </div>
         {choice === 'color' && (
           <label className="field bg-color">
             <span>{tr('bg.pickColor')}</span>
-            <input type="color" value={color} onChange={(e) => { setColor(e.target.value); b.setResults(null) }} />
+            <input type="color" value={color} onChange={(e) => { setColor(e.target.value); b.setResults(null); setRetouch(null) }} />
           </label>
         )}
+        {choice === 'image' && (
+          <div className="row" style={{ gap: 8 }}>
+            <button type="button" className="btn btn-soft btn-sm" onClick={() => bgInput.current?.click()}><Icon name="image" /> {bgImage ? tr('bg.changeImage') : tr('bg.pickImage')}</button>
+            {bgImage && <small className="faint">{bgImage.name}</small>}
+          </div>
+        )}
+        <input ref={bgInput} type="file" accept={ACCEPT} hidden aria-label={tr('bg.pickImage')} onChange={(e) => { const f = e.target.files?.[0]; if (f) { setBgImage(f); setChoice('image'); b.setResults(null); setRetouch(null) } e.target.value = '' }} />
         <small className="faint">{tr('bg.tip')}</small>
         {cached === false && <Notice kind="info">{tr('bg.firstTime', { size: formatBytes(BG_MODEL.bytes) })}</Notice>}
         {download !== null && (
@@ -635,13 +663,185 @@ function RemoveBackgroundTool() {
         {b.busy && <Progress value={b.progress} />}
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
-          <BusyButton busy={b.busy || download !== null} disabled={!b.files.length} onClick={run} icon="eraser">
+          <BusyButton busy={b.busy || download !== null} disabled={!b.files.length || (choice === 'image' && !bgImage)} onClick={run} icon="eraser">
             {tr('bg.run')}
           </BusyButton>
         </div>
       </Panel>
-      {b.files.length > 0 && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipNoBg')}.zip`} toolName="remove_background" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.removeBg')} />}
+      {retouch && b.results?.length === 1 && !b.results[0].error && !editing && (
+        <Panel>
+          <div className="row" style={{ justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+            <small className="faint">{tr('bg.retouchHint')}</small>
+            <button type="button" className="btn btn-soft btn-sm" onClick={() => setEditing(true)}><Icon name="edit" /> {tr('bg.retouch')}</button>
+          </div>
+        </Panel>
+      )}
+      {retouch && editing && <BrushRetouch {...retouch} onApply={applyRetouch} onCancel={() => setEditing(false)} />}
+      {b.files.length > 0 && !editing && <Results files={b.files} results={b.results} busy={b.busy} zipName={`${tr('file.zipNoBg')}.zip`} toolName="remove_background" title={b.files.length > 1 ? tr('imgt.title.many') : tr('imgt.title.removeBg')} />}
     </div>
+  )
+}
+
+/**
+ * Retocar el recorte con pincel (W-147.5): "Borrar" vuelve transparente lo que pasó de más y
+ * "Recuperar" devuelve la foto original donde la IA cortó de menos. Los trazos se guardan (no
+ * copias de la imagen), así deshacer no gasta memoria aunque la foto sea grande.
+ */
+function BrushRetouch({ original, cutout, backdrop, onApply, onCancel }: { original: File; cutout: Blob; backdrop: Backdrop; onApply: (blob: Blob) => void; onCancel: () => void }) {
+  const view = useRef<HTMLCanvasElement>(null)
+  const assets = useRef<{ orig: ImageBitmap; cut: ImageBitmap; work: HTMLCanvasElement; wctx: CanvasRenderingContext2D; back: HTMLCanvasElement | null } | null>(null)
+  const [ready, setReady] = useState(false)
+  const [ratio, setRatio] = useState(1)
+  const [mode, setMode] = useState<BrushMode>('erase')
+  const [size, setSize] = useState(40)
+  const [strokes, setStrokes] = useState<BrushStroke[]>([])
+  const [redo, setRedo] = useState<BrushStroke[]>([])
+  const [busy, setBusy] = useState(false)
+  const drawing = useRef<BrushStroke | null>(null)
+  const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null)
+
+  useEffect(() => {
+    let alive = true
+    void (async () => {
+      const [{ makeCanvas, drawBackdrop }, orig, cut] = await Promise.all([import('../infra/backgroundCompose'), createImageBitmap(original, { imageOrientation: 'from-image' }), createImageBitmap(cutout)])
+      const { canvas: work, ctx: wctx } = makeCanvas(cut.width, cut.height)
+      const back = await drawBackdrop(backdrop, orig, cut.width, cut.height)
+      if (!alive) return
+      assets.current = { orig, cut, work, wctx, back }
+      setRatio(cut.width / cut.height)
+      setReady(true)
+    })()
+    return () => {
+      alive = false
+      const a = assets.current
+      if (a) {
+        a.orig.close()
+        a.cut.close()
+        a.work.width = a.work.height = 0
+        if (a.back) a.back.width = a.back.height = 0
+      }
+      assets.current = null
+    }
+  }, [original, cutout, backdrop])
+
+  /** Vuelve a armar el recorte con todos los trazos y lo muestra sobre el fondo. */
+  const repaint = async (list: BrushStroke[], current?: BrushStroke) => {
+    const a = assets.current
+    const c = view.current
+    if (!a || !c) return
+    const { applyStroke } = await import('../infra/backgroundCompose')
+    a.wctx.clearRect(0, 0, a.work.width, a.work.height)
+    a.wctx.drawImage(a.cut, 0, 0)
+    for (const st of current ? [...list, current] : list) applyStroke(a.wctx, a.orig, st)
+    show()
+  }
+  const show = () => {
+    const a = assets.current
+    const c = view.current
+    if (!a || !c) return
+    if (c.width !== a.work.width) {
+      c.width = a.work.width
+      c.height = a.work.height
+    }
+    const ctx = c.getContext('2d')!
+    ctx.clearRect(0, 0, c.width, c.height)
+    if (a.back) ctx.drawImage(a.back, 0, 0)
+    // Al recuperar, la foto original se ve tenue debajo: así se sabe qué va a volver.
+    if (mode === 'restore') {
+      ctx.globalAlpha = 0.3
+      ctx.drawImage(a.orig, 0, 0, c.width, c.height)
+      ctx.globalAlpha = 1
+    }
+    ctx.drawImage(a.work, 0, 0)
+  }
+  useEffect(() => {
+    if (ready) void repaint(strokes)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- se repinta al cambiar los trazos, el modo o al estar listo.
+  }, [ready, strokes, mode])
+
+  const toImage = (e: React.PointerEvent<HTMLCanvasElement>): [number, number] => {
+    const r = e.currentTarget.getBoundingClientRect()
+    const k = (assets.current?.work.width ?? r.width) / r.width
+    return [(e.clientX - r.left) * k, (e.clientY - r.top) * k]
+  }
+  const radius = (e: React.PointerEvent<HTMLCanvasElement>) => (size / 2) * ((assets.current?.work.width ?? 1) / e.currentTarget.getBoundingClientRect().width)
+  const down = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!ready) return
+    e.preventDefault()
+    e.currentTarget.setPointerCapture(e.pointerId)
+    drawing.current = { mode, radius: radius(e), points: [toImage(e)] }
+    void repaint(strokes, drawing.current)
+  }
+  const move = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    // El círculo del pincel se ubica en el contenedor (el lienzo va centrado dentro de él).
+    const r = (e.currentTarget.parentElement ?? e.currentTarget).getBoundingClientRect()
+    setCursor({ x: e.clientX - r.left, y: e.clientY - r.top })
+    const d = drawing.current
+    if (!d) return
+    d.points.push(toImage(e))
+    // Solo el último tramo: más rápido que volver a pintar todo en cada movimiento.
+    void import('../infra/backgroundCompose').then(({ applyStroke }) => {
+      const a = assets.current
+      if (!a) return
+      applyStroke(a.wctx, a.orig, { ...d, points: d.points.slice(-2) })
+      show()
+    })
+  }
+  const up = () => {
+    const d = drawing.current
+    drawing.current = null
+    if (!d) return
+    setStrokes((s) => [...s, d])
+    setRedo([])
+  }
+  const undo = () => {
+    const last = strokes[strokes.length - 1]
+    if (!last) return
+    setStrokes(strokes.slice(0, -1))
+    setRedo([last, ...redo])
+  }
+  const redoOne = () => {
+    const [first, ...rest] = redo
+    if (!first) return
+    setStrokes([...strokes, first])
+    setRedo(rest)
+  }
+  const apply = async () => {
+    const a = assets.current
+    if (!a) return
+    setBusy(true)
+    try {
+      await repaint(strokes)
+      const { composeCutout } = await import('../infra/backgroundCompose')
+      onApply(await composeCutout(a.work, a.orig, backdrop))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <Panel>
+      <h3 style={{ margin: 0 }}>{tr('bg.retouch')}</h3>
+      <div className="row" style={{ gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+        <Segmented<BrushMode> label={tr('bg.brushMode')} value={mode} onChange={setMode} options={[{ value: 'erase', label: tr('bg.brushErase') }, { value: 'restore', label: tr('bg.brushRestore') }]} />
+        <label className="row" style={{ gap: 8 }}>
+          <span className="faint">{tr('bg.brushSize')}</span>
+          <input type="range" min={6} max={160} value={size} onChange={(e) => setSize(Number(e.target.value))} aria-label={tr('bg.brushSize')} />
+        </label>
+        <button type="button" className="btn btn-ghost btn-sm" disabled={!strokes.length} onClick={undo}><Icon name="undo" /> {tr('edit.undo')}</button>
+        <button type="button" className="btn btn-ghost btn-sm" disabled={!redo.length} onClick={redoOne}><Icon name="redo" /> {tr('edit.redo')}</button>
+      </div>
+      <small className="faint">{tr(mode === 'erase' ? 'bg.brushEraseHint' : 'bg.brushRestoreHint')}</small>
+      <div className="bg-retouch">
+        <canvas ref={view} aria-label={tr('bg.retouchCanvas')} style={{ width: `min(100%, calc(70vh * ${ratio}))` }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} onPointerLeave={() => setCursor(null)} />
+        {cursor && <span className="bg-brush-cursor" style={{ left: cursor.x, top: cursor.y, width: size, height: size }} aria-hidden="true" />}
+        {!ready && <p className="faint">{tr('common.preparingPreview')}</p>}
+      </div>
+      <div className="row row-end" style={{ gap: 8 }}>
+        <button type="button" className="btn btn-outline" onClick={onCancel} disabled={busy}>{tr('bg.retouchCancel')}</button>
+        <BusyButton busy={busy} disabled={!ready} onClick={apply} icon="check">{tr('bg.retouchApply')}</BusyButton>
+      </div>
+    </Panel>
   )
 }
 
@@ -774,6 +974,7 @@ function IdPhotoTool() {
   const [modelProgress, setModelProgress] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [framing, setFraming] = useState(false)
 
   const size: IdSize | null = preset === 'custom' ? parseSizeMm(customW, customH) : (ID_PRESETS.find((p) => p.id === preset) ?? null)
   const aspect = size ? size.w / size.h : null
@@ -820,6 +1021,58 @@ function IdPhotoTool() {
 
   const px = useMemo(() => (dims ? cropPixels(dims.width, dims.height, marginsToRect(margins)) : null), [dims, margins])
   const copies = size ? sheetLayout(size).cells.length : 0
+
+  /**
+   * Encuadre automático (W-147.5): la IA de Quitar fondo da la silueta de la persona y con ella se
+   * ubica la cabeza a la medida que piden los documentos. Se usa una copia chica de la foto.
+   */
+  const autoFrame = async () => {
+    if (!file || !dims || !aspect) return
+    setError(null)
+    try {
+      setModelProgress(0)
+      const { prepareBackgroundRemover } = await import('../infra/backgroundRemover')
+      await prepareBackgroundRemover((f) => setModelProgress(f))
+      setCached(true)
+    } catch (e) {
+      setError(tr('bg.failedModel'))
+      track('app_error', { error_context: 'id_photo_frame_model', error_message: e instanceof Error ? e.name : 'error' })
+      return
+    } finally {
+      setModelProgress(null)
+    }
+    setFraming(true)
+    try {
+      const [{ loadImage, renderImage }, { removeBackground }, { alphaOf }, { frameFromMask }] = await Promise.all([
+        import('../infra/imageCanvas'),
+        import('../infra/backgroundRemover'),
+        import('../infra/backgroundCompose'),
+        import('../core/idPhoto'),
+      ])
+      const img = await loadImage(file)
+      const k = Math.min(1, 1024 / Math.max(img.width, img.height))
+      let small: Blob
+      try {
+        small = await renderImage(img, { width: Math.round(img.width * k), height: Math.round(img.height * k), mime: 'image/png' })
+      } finally {
+        img.bmp.close()
+      }
+      const { cutout } = await removeBackground(small, { kind: 'transparent' })
+      const m = await alphaOf(cutout, 512)
+      const rect = frameFromMask(m.alpha, m.width, m.height, aspect)
+      if (!rect) {
+        setError(tr('idp.noFace'))
+        return
+      }
+      setMargins(rectToMargins(lockAspect(rect, dims.width, dims.height, aspect)))
+      setOutput(null)
+      track('image_tool_used', { tool_name: 'id_photo_autoframe', files: 1, ok: 1 })
+    } catch (e) {
+      setError(errorMessage(e))
+    } finally {
+      setFraming(false)
+    }
+  }
   const locale = document.documentElement.lang || 'es'
 
   const save = async () => {
@@ -889,9 +1142,12 @@ function IdPhotoTool() {
         <>
           <small className="faint">{tr('idp.frame')}</small>
           <CropStage url={url} margins={margins} onChange={onChange} />
-          <div className="row" style={{ justifyContent: 'space-between' }}>
+          <div className="row" style={{ justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
             <span className="faint">{tr('idp.printSize', { size: formatMm(size, locale), w: idPixels(size).width, h: idPixels(size).height })}</span>
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setDims({ ...dims })}><Icon name="reset" /> {tr('crop.reset')}</button>
+            <div className="row" style={{ gap: 6 }}>
+              <BusyButton busy={framing} disabled={busy || modelProgress !== null} onClick={autoFrame} icon="user">{tr('idp.autoFrame')}</BusyButton>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => setDims({ ...dims })}><Icon name="reset" /> {tr('crop.reset')}</button>
+            </div>
           </div>
         </>
       )}

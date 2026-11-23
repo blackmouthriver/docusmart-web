@@ -90,3 +90,44 @@ export function joinParts(parts: readonly Uint8Array[]): Uint8Array {
   }
   return out
 }
+
+/* ───────────── Fondo nuevo y pincel (W-147.5) ───────────── */
+
+/**
+ * Lo que va detrás del recorte: nada (transparente), un color, la misma foto difuminada o otra
+ * imagen. La IA siempre entrega el recorte transparente; el fondo se pone después, así el pincel
+ * puede corregir el recorte sin volver a pasar por el modelo.
+ */
+export type Backdrop = { kind: 'transparent' } | { kind: 'color'; color: string } | { kind: 'blur' } | { kind: 'image'; image: Blob }
+
+/** Desenfoque del fondo difuminado: proporcional a la foto (en una de 3000 px, unos 50 px). */
+export const blurPx = (width: number, height: number) => Math.max(4, Math.round(Math.max(width, height) / 60))
+
+/** Parte de una imagen que llena un rectángulo sin deformarse (como `object-fit: cover`). */
+export function coverRect(srcW: number, srcH: number, dstW: number, dstH: number): { sx: number; sy: number; sw: number; sh: number } {
+  const k = Math.max(dstW / srcW, dstH / srcH)
+  const sw = dstW / k
+  const sh = dstH / k
+  return { sx: (srcW - sw) / 2, sy: (srcH - sh) / 2, sw, sh }
+}
+
+export type BrushMode = 'erase' | 'restore'
+/** Un trazo del pincel en pixeles de la foto: borrar (transparente) o recuperar (vuelve el original). */
+export type BrushStroke = { mode: BrushMode; radius: number; points: Array<[number, number]> }
+
+/**
+ * Los círculos que pinta un trazo: los puntos del mouse y, entre dos puntos alejados, círculos
+ * intermedios a un tercio del radio, para que un movimiento rápido no deje huecos.
+ */
+export function strokeDabs(points: ReadonlyArray<[number, number]>, radius: number): Array<[number, number]> {
+  if (!points.length) return []
+  const step = Math.max(1, radius / 3)
+  const out: Array<[number, number]> = [points[0]]
+  for (let i = 1; i < points.length; i++) {
+    const [ax, ay] = points[i - 1]
+    const [bx, by] = points[i]
+    const n = Math.ceil(Math.hypot(bx - ax, by - ay) / step)
+    for (let k = 1; k <= n; k++) out.push([ax + ((bx - ax) * k) / n, ay + ((by - ay) * k) / n])
+  }
+  return out
+}
