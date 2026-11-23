@@ -2047,7 +2047,7 @@ const eu: Messages = {
   'txt.viewInline': "Batera",
   'txt.viewSide': "Alboz albo",
   'txt.mode': "Mota",
-  'txt.modePassword': "Pasahitza",
+  'txt.modeRandom': "Pasahitza",
   'txt.modePhrase': "Gogoratzeko esaldi erraza",
   'txt.exclude': "Baztertu karaktereak (gune batek onartzen ez dituenak)",
   'txt.excludePh': "Adib.: {}[]<>",

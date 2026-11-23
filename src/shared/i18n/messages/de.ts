@@ -2047,7 +2047,7 @@ const de: Messages = {
   'txt.viewInline': "Zusammen",
   'txt.viewSide': "Nebeneinander",
   'txt.mode': "Art",
-  'txt.modePassword': "Passwort",
+  'txt.modeRandom': "Passwort",
   'txt.modePhrase': "Merkbare Passphrase",
   'txt.exclude': "Zeichen ausschließen (die eine Website nicht akzeptiert)",
   'txt.excludePh': "Z. B. {}[]<>",

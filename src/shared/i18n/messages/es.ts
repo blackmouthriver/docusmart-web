@@ -2051,7 +2051,7 @@ export const es = {
   'txt.viewInline': "Juntos",
   'txt.viewSide': "Lado a lado",
   'txt.mode': "Tipo",
-  'txt.modePassword': "Contraseña",
+  'txt.modeRandom': "Contraseña",
   'txt.modePhrase': "Frase fácil de recordar",
   'txt.exclude': "Excluir caracteres (los que un sitio no acepta)",
   'txt.excludePh': "Ej.: {}[]<>",

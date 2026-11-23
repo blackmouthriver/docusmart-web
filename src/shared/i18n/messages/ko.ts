@@ -2047,7 +2047,7 @@ const ko: Messages = {
   'txt.viewInline': "한 번에",
   'txt.viewSide': "나란히",
   'txt.mode': "유형",
-  'txt.modePassword': "비밀번호",
+  'txt.modeRandom': "비밀번호",
   'txt.modePhrase': "기억하기 쉬운 문구",
   'txt.exclude': "제외할 문자(사이트에서 허용하지 않는 문자)",
   'txt.excludePh': "예: {}[]<>",

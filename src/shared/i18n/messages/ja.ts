@@ -2047,7 +2047,7 @@ const ja: Messages = {
   'txt.viewInline': "まとめて",
   'txt.viewSide': "左右に並べて",
   'txt.mode': "種類",
-  'txt.modePassword': "パスワード",
+  'txt.modeRandom': "パスワード",
   'txt.modePhrase': "覚えやすいパスフレーズ",
   'txt.exclude': "除外する文字（サイトが受け付けない文字）",
   'txt.excludePh': "例: {}[]<>",

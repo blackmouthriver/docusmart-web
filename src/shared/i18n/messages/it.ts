@@ -2047,7 +2047,7 @@ const it: Messages = {
   'txt.viewInline': "Insieme",
   'txt.viewSide': "Affiancati",
   'txt.mode': "Tipo",
-  'txt.modePassword': "Password",
+  'txt.modeRandom': "Password",
   'txt.modePhrase': "Frase facile da ricordare",
   'txt.exclude': "Escludi caratteri (quelli che un sito non accetta)",
   'txt.excludePh': "Es.: {}[]<>",

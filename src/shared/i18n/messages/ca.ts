@@ -2047,7 +2047,7 @@ const ca: Messages = {
   'txt.viewInline': "Junts",
   'txt.viewSide': "Costat a costat",
   'txt.mode': "Tipus",
-  'txt.modePassword': "Contrasenya",
+  'txt.modeRandom': "Contrasenya",
   'txt.modePhrase': "Frase fàcil de recordar",
   'txt.exclude': "Excloure caràcters (els que un lloc no accepta)",
   'txt.excludePh': "P. ex.: {}[]<>",

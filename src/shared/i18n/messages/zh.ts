@@ -2047,7 +2047,7 @@ const zh: Messages = {
   'txt.viewInline': "合并",
   'txt.viewSide': "并排",
   'txt.mode': "类型",
-  'txt.modePassword': "密码",
+  'txt.modeRandom': "密码",
   'txt.modePhrase': "易记口令",
   'txt.exclude': "排除字符（网站不接受的字符）",
   'txt.excludePh': "例如：{}[]<>",

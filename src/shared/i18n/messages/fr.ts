@@ -2047,7 +2047,7 @@ const fr: Messages = {
   'txt.viewInline': "Ensemble",
   'txt.viewSide': "Côte à côte",
   'txt.mode': "Type",
-  'txt.modePassword': "Mot de passe",
+  'txt.modeRandom': "Mot de passe",
   'txt.modePhrase': "Phrase facile à retenir",
   'txt.exclude': "Exclure des caractères (ceux qu'un site refuse)",
   'txt.excludePh': "Ex. : {}[]<>",

@@ -2047,7 +2047,7 @@ const en: Messages = {
   'txt.viewInline': "Inline",
   'txt.viewSide': "Side by side",
   'txt.mode': "Type",
-  'txt.modePassword': "Password",
+  'txt.modeRandom': "Password",
   'txt.modePhrase': "Memorable passphrase",
   'txt.exclude': "Exclude characters (those a site doesn't accept)",
   'txt.excludePh': "E.g. {}[]<>",

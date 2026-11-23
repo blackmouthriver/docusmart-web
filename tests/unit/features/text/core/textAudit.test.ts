@@ -1,7 +1,7 @@
 // Auditoría W-146.12 (Texto): contador exacto, nivel de lectura, comparar lado a lado,
 // diferencias por letra y frase de contraseña.
 import { describe, expect, it } from 'vitest'
-import { CHAR_LIMITS, hasReadability, readability, readingLevel, syllablesEn, syllablesEs, textStats, topWords, wordsOf } from '../../../../../src/features/text/core/stats'
+import { CHAR_LIMITS, hasReadability, isLink, readability, readingLevel, syllablesEn, syllablesEs, textStats, topWords, wordsOf } from '../../../../../src/features/text/core/stats'
 import { DEFAULT_DIFF, diffTexts, refineParts, sideBySide } from '../../../../../src/features/text/core/textDiff'
 import { DEFAULT_PASSPHRASE, MAX_LENGTH, clampWords, entropyBits, generatePassphrase, generatePassword, passphraseBits, passphraseLang, pools, type Rng } from '../../../../../src/features/text/core/password'
 import es from '../../../../../src/features/text/core/words/es'
@@ -17,6 +17,9 @@ describe('contador exacto', () => {
     // Un guion suelto entre espacios no une palabras.
     expect(textStats('uno - dos').words).toBe(2)
     expect(textStats('Cuesta $1.500.000 o 3,14 USD').words).toBe(5)
+    // Entre paréntesis o comillas también es un enlace; sin dominio válido, no.
+    expect(wordsOf('(ver "www.a.co") y a@b')).toEqual(['ver', 'www.a.co', 'y', 'a', 'b'])
+    expect([isLink('https://a.co'), isLink('www.x.org'), isLink('ana@correo.com'), isLink('a@b@c.com'), isLink('ana@correo.c0'), isLink('https://'), isLink('palabra')]).toEqual([true, true, true, false, false, false, false])
   })
 
   it('las abreviaturas, las iniciales y los enlaces no cortan la oración', () => {

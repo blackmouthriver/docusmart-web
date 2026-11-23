@@ -75,7 +75,7 @@ mación");
  * - un título o línea suelta sin punto, seguida de una línea en blanco, también se cierra.
  */
 export function prepareLines(text: string): string {
-  const joined = text.replace(/(\p{L})[-‐\u00ad]\s*\r?\n\s*(\p{Ll})/gu, '$1$2')
+  const joined = text.replace(/(\p{L})[-‐\u00ad][ \t]*\r?\n[ \t]*(?=\p{Ll})/gu, '$1')
   const lines = joined.split(/\r?\n/)
   return lines
     .map((line, i) => {

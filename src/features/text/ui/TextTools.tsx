@@ -297,7 +297,7 @@ function PasswordGenerator() {
   return (
     <div className="stack">
       <div className="card stack">
-        <Segmented<PassMode> label={tr('txt.mode')} value={mode} onChange={setMode} options={[{ value: 'password', label: tr('txt.modePassword') }, { value: 'phrase', label: tr('txt.modePhrase') }]} />
+        <Segmented<PassMode> label={tr('txt.mode')} value={mode} onChange={setMode} options={[{ value: 'password', label: tr('txt.modeRandom') }, { value: 'phrase', label: tr('txt.modePhrase') }]} />
       </div>
       {mode === 'password' ? <RandomPassword /> : <Passphrase />}
     </div>

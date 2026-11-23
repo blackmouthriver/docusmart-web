@@ -2047,7 +2047,7 @@ const ru: Messages = {
   'txt.viewInline': "Вместе",
   'txt.viewSide': "Рядом",
   'txt.mode': "Тип",
-  'txt.modePassword': "Пароль",
+  'txt.modeRandom': "Пароль",
   'txt.modePhrase': "Запоминаемая фраза",
   'txt.exclude': "Исключить символы (которые сайт не принимает)",
   'txt.excludePh': "Напр.: {}[]<>",

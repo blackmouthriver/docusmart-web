@@ -28,9 +28,49 @@ type Granularity = 'grapheme' | 'word' | 'sentence'
 const segmenter = (locale: string, granularity: Granularity) => (typeof Intl.Segmenter === 'function' ? new Intl.Segmenter(locale, { granularity }) : null)
 
 const WORD_RE = /[\p{L}\p{N}]+(?:['’\-‐][\p{L}\p{N}]+)*/gu
-/** Enlaces (con http, https o www) y correos: cada uno es una sola palabra. */
-const LINK_RE = /(?:https?:\/\/|www\.)[^\s<>"«»“”]+[^\s<>"«»“”.,;:!?)\]}'’]|[\p{L}\p{N}._%+-]+@[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)*\.\p{L}{2,}/gu
-const IS_LINK = new RegExp(`^(?:${LINK_RE.source})$`, 'u')
+/**
+ * Enlaces (con http, https o www) y correos: cada uno es una sola palabra. Se buscan recorriendo
+ * los trozos sin espacios (tiempo lineal, sin expresiones con retroceso; SonarCloud S8786).
+ */
+const LEADING = new Set('(["\'«“¿¡<')
+const TRAILING = new Set('.,;:!?)]}"\'’»”>')
+const EMAIL_PART = /^[\p{L}\p{N}._%+-]+$/u
+const DOMAIN_PART = /^[\p{L}\p{N}-]+$/u
+
+/** ¿El trozo (ya sin puntuación alrededor) es un enlace o un correo? */
+export function isLink(token: string): boolean {
+  const t = token.toLowerCase()
+  if (t.startsWith('http://') || t.startsWith('https://')) return t.length > t.indexOf('//') + 2
+  if (t.startsWith('www.')) return t.length > 4
+  const at = token.indexOf('@')
+  if (at <= 0 || at !== token.lastIndexOf('@')) return false
+  const domain = token.slice(at + 1).split('.')
+  return EMAIL_PART.test(token.slice(0, at)) && domain.length >= 2 && domain.every((d) => DOMAIN_PART.test(d)) && /^\p{L}{2,}$/u.test(domain[domain.length - 1])
+}
+
+type Span = { start: number; end: number }
+/** Posición de cada enlace o correo del texto, sin la puntuación que lo rodea. */
+function linkSpans(text: string): Span[] {
+  const spans: Span[] = []
+  for (const m of text.matchAll(/\S+/g)) {
+    let start = m.index
+    let end = m.index + m[0].length
+    while (start < end && LEADING.has(text[start])) start++
+    while (end > start && TRAILING.has(text[end - 1])) end--
+    if (end > start && isLink(text.slice(start, end))) spans.push({ start, end })
+  }
+  return spans
+}
+/** Reemplaza cada enlace o correo (la puntuación de alrededor se queda: un punto sigue cerrando la oración). */
+function replaceLinks(text: string, by: string): string {
+  let out = ''
+  let last = 0
+  for (const { start, end } of linkSpans(text)) {
+    out += text.slice(last, start) + by
+    last = end
+  }
+  return out + text.slice(last)
+}
 const HYPHENS = new Set(['-', '‐', '‑'])
 
 /** Palabras de un trozo sin enlaces: las que el segmentador separa, unidas por guiones internos. */
@@ -59,9 +99,9 @@ function plainWords(text: string, locale: string): string[] {
 export function wordsOf(text: string, locale = 'es'): string[] {
   const out: string[] = []
   let last = 0
-  for (const m of text.matchAll(LINK_RE)) {
-    out.push(...plainWords(text.slice(last, m.index), locale), m[0])
-    last = m.index + m[0].length
+  for (const { start, end } of linkSpans(text)) {
+    out.push(...plainWords(text.slice(last, start), locale), text.slice(start, end))
+    last = end
   }
   out.push(...plainWords(text.slice(last), locale))
   return out
@@ -74,7 +114,7 @@ function graphemes(text: string, locale: string): string[] {
 
 function sentenceCount(text: string, locale: string): number {
   // Los puntos de los enlaces y correos no cortan la oración.
-  const plain = text.replace(LINK_RE, 'x')
+  const plain = replaceLinks(text, 'x')
   const seg = segmenter(locale, 'sentence')
   const parts = seg ? Array.from(seg.segment(plain), (s) => s.segment) : plain.split(/(?<=[.!?。！？])\s*/)
   // Una abreviatura ("Sr.", "Dra.") o una inicial ("J. García") no termina la oración.
@@ -120,7 +160,7 @@ export function topWords(text: string, locale = 'es', limit = 10, minLength = 3)
   const counts = new Map<string, number>()
   for (const w of words) {
     const k = w.toLocaleLowerCase(locale)
-    if (Array.from(k).length < minLength || /^\p{N}+$/u.test(k) || IS_LINK.test(w)) continue
+    if (Array.from(k).length < minLength || /^\p{N}+$/u.test(k) || isLink(w)) continue
     counts.set(k, (counts.get(k) ?? 0) + 1)
   }
   return [...counts.entries()]
@@ -197,7 +237,7 @@ export const hasReadability = (lang: string) => lang in FORMULAS
 export function readability(text: string, lang: string): Readability | null {
   const f = FORMULAS[lang]
   if (!f) return null
-  const words = wordsOf(text.replace(LINK_RE, ' '), lang).filter((w) => /\p{L}/u.test(w))
+  const words = wordsOf(replaceLinks(text, ' '), lang).filter((w) => /\p{L}/u.test(w))
   if (words.length < MIN_READABILITY_WORDS) return null
   const sentences = Math.max(1, sentenceCount(text, lang))
   const syllables = words.reduce((n, w) => n + f.syllables(w), 0)
