@@ -1236,6 +1236,10 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .side-search input { flex: 1; min-width: 0; border: 0; background: none; color: var(--on-night); font: inherit; font-size: 14px; outline: none; }
 .side-search input::placeholder { color: var(--on-night-soft); }
 .side-search:focus-within { box-shadow: 0 0 0 2px var(--side-active-icon); }
+/* Buscar con la barra plegada: sin el estilo de botón del navegador (fondo gris y borde) y con el
+   mismo fondo que el buscador abierto, en cada tema de la barra. */
+.nav-search-btn { width: 100%; margin: 0 0 6px; border: 0; background: var(--side-input); color: var(--on-night-soft); font: inherit; cursor: pointer; }
+@media (hover: hover) and (pointer: fine) { .nav-search-btn:hover { background: var(--side-hover); color: var(--side-strong); } }
 .side-heading { margin: 14px 12px 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--on-night-soft); }
 .side-empty { margin: 4px 12px; color: var(--on-night-soft); font-size: 13px; }
 /* Categorías desplegables con su cantidad de herramientas */

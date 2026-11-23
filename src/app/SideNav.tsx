@@ -69,7 +69,7 @@ export function SideNav({ route, collapsed, onExpand }: { route: Route; collapse
   return (
     <nav className="side-nav" aria-label={t('nav.sections')}>
       {collapsed ? (
-        <button type="button" className="nav-item" data-tip={t('nav.search')} aria-label={t('nav.search')} onClick={() => (onExpand(), setTimeout(() => search.current?.focus(), 450))}>
+        <button type="button" className="nav-item nav-search-btn" data-tip={t('nav.search')} aria-label={t('nav.search')} onClick={() => (onExpand(), setTimeout(() => search.current?.focus(), 450))}>
           <Icon name="search" />
         </button>
       ) : (
