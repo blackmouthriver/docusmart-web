@@ -1238,6 +1238,7 @@ export default {
       'Pantalla de inicio de DocuSmart con accesos rápidos a Escanear, Imagen a PDF, Seguridad, Lectura, Notas, Pomodoro y QR',
       'スキャン、画像をPDFに、セキュリティ、読み上げ、メモ、ポモドーロ、QRへのショートカットがあるDocuSmartのホーム画面',
     ],
+    ['Pantalla de DocuSmart para unir varios PDF en un solo archivo', '複数のPDFを1つのファイルに結合するDocuSmartの画面'],
     ['<small>Convertido en tu teléfono</small>', '<small>スマホの中で変換</small>'],
     ['Carpeta segura<small>Protegida con PIN</small>', '安全なフォルダー<small>PINで保護</small>'],
     ['aria-label="Formatos compatibles"', 'aria-label="対応形式"'],
