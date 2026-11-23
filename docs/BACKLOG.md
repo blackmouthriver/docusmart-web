@@ -391,6 +391,88 @@ superficie que explicar) y C (solo entre dispositivos cercanos: no es sincroniza
 Orden: W-94 → W-95 → W-96 → W-97; W-98 puede ir en paralelo después de W-94. Reutiliza lo hecho para guardar en
 Google Drive (W-45). Requiere cambios en la app Android (repo DocuSmart) en cada etapa.
 
+## App para iPhone a partir de la web (W-149, opción 3, decisión del usuario 2026-11-23)
+
+Se publica DocuSmart en la App Store **empaquetando este mismo código web con Capacitor**. Así no hace falta una
+tercera base de código: la app Android está en Kotlin y no corre en iOS. Una app nativa en Swift (opción 1) o con
+Kotlin Multiplatform (opción 2) habría obligado a reescribir el núcleo de herramientas, porque iText y POI no existen
+en iOS. Con esta opción, la app de iPhone tiene las mismas herramientas que la web desde el primer día, y cada mejora
+de la web le llega a iOS en la siguiente versión.
+
+**Cuándo empezar:** cuando la web esté estable, que es el plan acordado: web estable → paridad de la app Android →
+iPhone. Mientras tanto, en iPhone ya se puede usar la web instalada desde Safari («Añadir a pantalla de inicio»).
+
+**Principios:**
+- **El código es el mismo para todas las plataformas.** Lo que cambia en iOS va detrás de una capa
+  `src/shared/platform/native/`, que detecta `Capacitor.isNativePlatform()`. La web y Desktop no cambian de
+  comportamiento.
+- **Todo sigue siendo local.** Las herramientas van dentro de la app, no se cargan desde docusmart.online, y
+  funcionan sin conexión.
+- **No es «una web metida en una app».** Apple rechaza esas apps (regla 4.2). Para cumplirla, la app de iPhone
+  agrega funciones nativas: el escáner del sistema, abrir archivos desde Archivos o desde «Compartir», guardar y
+  compartir con la hoja nativa, y recordatorios.
+
+### Fase 0 — Decisiones y cuentas (antes de escribir código)
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-149.1 | **Cuenta de Apple Developer** (99 USD al año). Si es como empresa (Mountblack), hace falta el número D-U-N-S, que es gratis pero tarda días o semanas. Como persona, sale a tu nombre en la tienda. Luego, en App Store Connect: crear la app, el identificador (bundle id, p. ej. `online.docusmart.app`) y reservar el nombre «DocuSmart» | 👤 | Pendiente |
+| W-149.2 | **Dónde se compila**: Xcode solo corre en Mac. Opciones: (a) Codemagic o los equipos macOS de GitHub Actions, que compilan y suben a TestFlight desde el CI sin tener una Mac; (b) alquilar una Mac en la nube para los ajustes en Xcode; (c) una Mac propia. Recomendado: (a), y (b) solo para la configuración inicial y para depurar | 👤 + 🤖 | Pendiente |
+| W-149.3 | **iPhone de prueba**: hace falta un iPhone real (idealmente uno de 3 o 4 años, para medir memoria), además de los simuladores. Decidir si la primera versión sale **solo para iPhone** (recomendado) o también para iPad, que exige capturas y pruebas aparte | 👤 | Pendiente |
+| W-149.4 | **Modelo de ingresos en iOS**: AdSense **no se puede usar dentro de una app**; en iOS sería AdMob, que ya está en la app Android. Si se vende Premium, Apple exige su propio sistema de compras (regla 3.1.1, comisión del 15 % en el programa para desarrolladores pequeños). Recomendado: la **v1 gratis, con AdMob**, y Premium solo cuando exista el Premium compartido (W-98) | 👤 | Pendiente |
+
+### Fase 1 — Base técnica
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-149.5 | **Capacitor en el repo**: `@capacitor/core`, `@capacitor/ios` y la carpeta `ios/` (proyecto de Xcode) en git. Una compilación `npm run build:ios` que empaqueta la **app** (`/app/` y sus herramientas, con los wasm, las fuentes, pdf.js y los datos del OCR), sin las páginas SEO ni las guías. La app abre directo en el Inicio de la app web, no en la portada. Ícono y pantalla de inicio con la marca | 🤖 | Pendiente |
+| W-149.6 | **Capa de plataforma** `src/shared/platform/native/`: `isNative()` y adaptadores con la misma interfaz que la versión web, para que las herramientas no cambien. Pruebas unitarias en las dos ramas (web y nativa), con cobertura ≥ 80 % para SonarCloud | 🤖 | Pendiente |
+| W-149.7 | **Guardar y compartir**: `download()` (`src/shared/files/files.ts`) usa `<a download>`, que no funciona dentro de la app de iOS. En nativo hay que escribir el archivo con `@capacitor/filesystem` y abrir la hoja de compartir de iOS (`@capacitor/share`), con «Guardar en Archivos», AirDrop, WhatsApp y correo. Mismos filtros de tipo y nombre (`safeMimeType`, `safeFilename`) | 🤖 | Pendiente |
+| W-149.8 | **Sin service worker en iOS**: WKWebView no lo soporta en una app de Capacitor, y tampoco hace falta, porque todo va dentro de la app. No registrarlo en nativo, y ocultar «Instalar», «Actualizar» y la ayuda de Desktop | 🤖 | Pendiente |
+| W-149.9 | **Seguridad dentro de la app**: las cabeceras de `firebase.json` (CSP con Trusted Types) **no se aplican** dentro de la app, así que hay que llevar una CSP equivalente en un `<meta>` del HTML empaquetado. Esa CSP debe permitir el origen `capacitor://localhost` y no tener Google Tag Manager ni AdSense. Revisar que la política `default` de Trusted Types siga bloqueando `createHTML`. Repetir sobre la app la prueba de intrusión de la web | 🤖 | Pendiente |
+| W-149.10 | **Memoria**: en iPhone, WKWebView cierra la página si usa demasiada memoria. Medir las herramientas pesadas (video con ffmpeg, archivos 7z, OCR, PDF largos) en el iPhone de prueba y poner límites con mensajes claros, como hace `ArchiveTooBigError`. Ningún cierre inesperado con archivos de hasta 200 MB | 🤖 | Pendiente |
+
+### Fase 2 — Funciones nativas (lo que da valor en iPhone y cumple la regla 4.2)
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-149.11 | **Escáner del sistema** (VisionKit, `VNDocumentCameraViewController`): detecta la hoja, endereza y recorta, igual que el escáner de ML Kit en Android. Las páginas pasan a la herramienta Escanear documento de la web. Cubre en iOS el W-147.1 (cámara en vivo) | 🤖 | Pendiente |
+| W-149.12 | **Abrir archivos con DocuSmart**: declarar los tipos de archivo (PDF, imágenes, Office, ZIP) para que aparezcan en «Abrir con» y en la hoja «Compartir» de otras apps (extensión de compartir), y abrir el archivo directo en la herramienta correspondiente. Integración con la app Archivos | 🤖 | Pendiente |
+| W-149.13 | **Recordatorios de Agenda y Estudio** con notificaciones locales (`@capacitor/local-notifications`), que suenan con la app cerrada; la API `Notification` de la web no funciona en WKWebView. Permisos de cámara, micrófono (Audio a texto) y notificaciones, con textos en los 12 idiomas en `Info.plist` | 🤖 | Pendiente |
+| W-149.14 | **Universal Links**: `/.well-known/apple-app-site-association` en docusmart.online, para que los enlaces de herramientas abran la app si está instalada (lo mismo que W-18 en Android) | 🤖 | Pendiente |
+| W-149.15 | **Detalles nativos**: barra de estado y zonas seguras (notch, Dynamic Island), teclado que no tape los campos, gesto de volver atrás, vibración leve al terminar. Nada debe parecer «una página web» | 🤖 | Pendiente |
+
+### Fase 3 — Privacidad, anuncios y requisitos de Apple
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-149.16 | **AdMob en iOS** (si se aprueba en W-149.4): plugin de AdMob, consentimiento con UMP (como en la web) y el aviso de rastreo **ATT**, que Apple exige antes de mostrar anuncios personalizados. Los anuncios nunca van en el Visor ni durante la lectura (misma regla que en la web) | 🤖 | Pendiente |
+| W-149.17 | **Manifiesto de privacidad** (`PrivacyInfo.xcprivacy`), obligatorio para las apps y SDK que usan ciertas APIs (Firebase y AdMob ya traen el suyo); **etiquetas de privacidad** de App Store Connect (qué datos recogen la analítica y los anuncios: nunca los documentos); **cumplimiento de exportación** del cifrado (el QR protegido usa cifrado estándar) | 🤖 + 👤 (cuestionarios) | Pendiente |
+| W-149.18 | **Política de privacidad** (`/privacidad` y `legal/` de la app): agregar la app de iOS, AdMob y ATT. Mantener la promesa: «los documentos se procesan en tu iPhone» | 🤖 + 👤 (validar textos) | Pendiente |
+
+### Fase 4 — Compilación, pruebas y publicación
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-149.19 | **CI de iOS**: job en macOS (Codemagic o GitHub Actions) que compila, firma (certificados y clave de la API de App Store Connect como secretos, nunca en el repo) y sube a **TestFlight** al etiquetar una versión. La web sigue desplegándose sola como hoy | 🤖 + 👤 (certificados) | Pendiente |
+| W-149.20 | **Pruebas**: (a) los tests unitarios y de Playwright de siempre, más pruebas de la capa nativa con los plugins simulados; (b) una lista de punta a punta en el iPhone real para las herramientas (abrir, procesar, guardar y compartir), el escáner, los recordatorios, sin conexión y en los 12 idiomas, con capturas en `docs/` | 🤖 + 👤 (probar en el iPhone) | Pendiente |
+| W-149.21 | **Beta en TestFlight**: primero pruebas internas (hasta 100 personas, sin revisión de Apple) y luego un grupo externo con enlace público (requiere una revisión corta). Recoger los errores antes de publicar | 👤 | Pendiente |
+| W-149.22 | **Ficha de la App Store**: nombre (30 caracteres), subtítulo (30), palabras clave (100), descripción y capturas de 6,9 pulgadas; primero en español (México/Latinoamérica) e inglés, luego en los demás idiomas. Reutilizar la ficha de Play en español neutro | 🤖 + 👤 | Pendiente |
+| W-149.23 | **Envío a revisión y publicación**: notas para el revisor de Apple que expliquen qué hace la app sin conexión y las funciones nativas, para evitar un rechazo por la regla 4.2. Responder a lo que pida Apple. Enlazar la App Store desde la portada («Disponible en la App Store», junto al botón de Play) | 👤 + 🤖 | Pendiente |
+
+### Fase 5 — Después del lanzamiento
+
+| ID | Ítem | Quién | Estado |
+|---|---|---|---|
+| W-149.24 | **Rutina de versiones**: como el código va dentro de la app, cada mejora de la web llega a iOS solo con una versión nueva en la App Store. Definir el ritmo (p. ej. cada 2 a 4 semanas) y una lista corta antes de cada envío. Evaluar más adelante las actualizaciones en vivo del código web (Capgo o Appflow), dentro de lo que permite Apple | 🤖 + 👤 | Pendiente |
+| W-149.25 | **Premium en iPhone**: compras con StoreKit (p. ej. con RevenueCat, que también unifica Play) y Premium compartido entre la app Android, la web y el iPhone para la misma cuenta. Depende de W-98 | 🤖 + 👤 | Pendiente |
+
+Orden: Fase 0 → 1 → 2 → 3 → 4 → 5. Dentro de la Fase 1, primero W-149.5 y W-149.6; después W-149.7 a W-149.10.
+Las fases 2 y 3 pueden ir en paralelo. **Costos:** Apple Developer (99 USD al año); compilación en la nube (Codemagic
+tiene minutos gratis al mes; GitHub Actions cobra los minutos de macOS en repos privados); un iPhone de prueba si no lo
+tienes. **Riesgos:** rechazo por la regla 4.2 (lo mitiga la Fase 2) y memoria en herramientas pesadas (lo mitiga
+W-149.10).
+
 ## Mantenimiento y limpieza
 
 | ID | Ítem | Quién | Fecha |
