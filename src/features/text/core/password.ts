@@ -4,12 +4,14 @@
  * un carácter de cada tipo elegido. Nada se guarda ni se envía.
  */
 
-export type PasswordOptions = { length: number; lower: boolean; upper: boolean; digits: boolean; symbols: boolean; avoidAmbiguous: boolean }
+/** `exclude`: caracteres que un sitio no acepta (auditoría W-146.12). */
+export type PasswordOptions = { length: number; lower: boolean; upper: boolean; digits: boolean; symbols: boolean; avoidAmbiguous: boolean; exclude?: string }
 export type Strength = 'weak' | 'fair' | 'strong' | 'veryStrong'
 export type Rng = (buf: Uint32Array<ArrayBuffer>) => Uint32Array<ArrayBuffer>
 
 export const MIN_LENGTH = 6
-export const MAX_LENGTH = 64
+// Como Bitwarden (antes 64).
+export const MAX_LENGTH = 128
 export const DEFAULT_PASSWORD: PasswordOptions = { length: 16, lower: true, upper: true, digits: true, symbols: true, avoidAmbiguous: false }
 
 const SETS = {
@@ -25,7 +27,11 @@ export const clampLength = (n: number) => Math.min(MAX_LENGTH, Math.max(MIN_LENG
 
 /** Los grupos de caracteres elegidos (vacío si no se eligió ninguno). */
 export function pools(o: PasswordOptions): string[] {
-  return (Object.keys(SETS) as Array<keyof typeof SETS>).filter((k) => o[k]).map((k) => (o.avoidAmbiguous ? SETS[k].replace(AMBIGUOUS, '') : SETS[k]))
+  const skip = new Set(Array.from(o.exclude ?? ''))
+  return (Object.keys(SETS) as Array<keyof typeof SETS>)
+    .filter((k) => o[k])
+    .map((k) => Array.from(o.avoidAmbiguous ? SETS[k].replace(AMBIGUOUS, '') : SETS[k]).filter((c) => !skip.has(c)).join(''))
+    .filter(Boolean)
 }
 
 const cryptoRng: Rng = (buf) => crypto.getRandomValues(buf)
@@ -67,3 +73,38 @@ export function strength(bits: number): Strength {
   if (bits < 90) return 'strong'
   return 'veryStrong'
 }
+
+/* ───────────── Frase de contraseña (auditoría W-146.12) ───────────── */
+
+export type PassphraseOptions = { words: number; separator: string; capitalize: boolean; number: boolean }
+export const MIN_WORDS = 3
+export const MAX_WORDS = 12
+export const DEFAULT_PASSPHRASE: PassphraseOptions = { words: 6, separator: '-', capitalize: true, number: true }
+export const SEPARATORS = ['-', '.', '_', ' ', ','] as const
+
+export const clampWords = (n: number) => Math.min(MAX_WORDS, Math.max(MIN_WORDS, Number.isFinite(n) ? Math.round(n) : DEFAULT_PASSPHRASE.words))
+
+/**
+ * Frase de palabras al azar de la lista (como Bitwarden y 1Password): más fácil de recordar y
+ * de escribir que una contraseña con símbolos. Con `number`, una cifra pegada a una palabra al azar.
+ */
+export function generatePassphrase(o: PassphraseOptions, list: readonly string[], rng: Rng = cryptoRng): string {
+  if (!list.length) return ''
+  const words = Array.from({ length: clampWords(o.words) }, () => list[randomInt(list.length, rng)])
+  const cased = o.capitalize ? words.map((w) => w.charAt(0).toLocaleUpperCase() + w.slice(1)) : words
+  if (o.number) {
+    const i = randomInt(cased.length, rng)
+    cased[i] += String(randomInt(10, rng))
+  }
+  return cased.join(o.separator)
+}
+
+/** Entropía de la frase: palabras × log₂(tamaño de la lista), más la cifra y su posición. */
+export function passphraseBits(o: PassphraseOptions, listSize: number): number {
+  if (!listSize) return 0
+  const n = clampWords(o.words)
+  return Math.round(n * Math.log2(listSize) + (o.number ? Math.log2(10) + Math.log2(n) : 0))
+}
+
+/** Lista de palabras según el idioma: español para es, ca, eu; inglés para los demás. */
+export const passphraseLang = (uiLang: string): 'es' | 'en' => (['es', 'ca', 'eu'].includes(uiLang) ? 'es' : 'en')

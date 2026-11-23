@@ -130,7 +130,7 @@ describe('contraseñas', () => {
   it('largo dentro de los límites', () => {
     expect(clampLength(2)).toBe(MIN_LENGTH)
     expect(clampLength(500)).toBe(MAX_LENGTH)
-    expect(MAX_LENGTH).toBe(64)
+    expect(MAX_LENGTH).toBe(128)
     expect(clampLength(Number.NaN)).toBe(16)
     expect(clampLength(20.4)).toBe(20)
   })

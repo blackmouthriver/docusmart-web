@@ -8,9 +8,10 @@ import { useT } from '../../../shared/i18n/I18n'
 import { tr } from '../../../shared/i18n/translate'
 import { track } from '../../../shared/platform/analytics'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
-import { durationParts, minWordLength, textStats, topWords } from '../core/stats'
-import { DEFAULT_DIFF, diffReport, diffTexts, type DiffOptions } from '../core/textDiff'
-import { DEFAULT_PASSWORD, MAX_LENGTH, MIN_LENGTH, entropyBits, generatePassword, pools, strength, type PasswordOptions } from '../core/password'
+import { CHAR_LIMITS, durationParts, minWordLength, readability, textStats, topWords } from '../core/stats'
+import { DEFAULT_DIFF, diffReport, diffTexts, refineParts, sideBySide, type DiffOptions, type DiffPart } from '../core/textDiff'
+import { DEFAULT_PASSPHRASE, DEFAULT_PASSWORD, MAX_LENGTH, MAX_WORDS, MIN_LENGTH, MIN_WORDS, SEPARATORS, entropyBits, generatePassphrase, generatePassword, passphraseBits, passphraseLang, pools, strength, type PassphraseOptions, type PasswordOptions } from '../core/password'
+import { detectLanguage } from '../../study/core/summarize'
 
 export type TextToolId = 'contar' | 'comparar' | 'contrasena' | 'resumir'
 export const TEXT_TOOLS: readonly TextToolId[] = ['contar', 'comparar', 'contrasena', 'resumir']
@@ -69,13 +70,26 @@ export function TextTool({ id }: { id: TextToolId }) {
   return <WordCounter />
 }
 
-/** Abre un .txt y entrega su contenido. */
+const FILE_ACCEPT = '.txt,.md,.csv,text/plain,.pdf,application/pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+
+/** Abre un .txt, un PDF o un Word y entrega su texto (auditoría W-146.12; antes solo .txt). */
 function OpenTxt({ onText }: { onText: (t: string) => void }) {
+  const { toast } = useApp()
   const input = useRef<HTMLInputElement>(null)
+  const open = async (f: File) => {
+    try {
+      const { readDocument } = await import('../../summary/infra/readDocument')
+      const { pages, scanned } = await readDocument(f)
+      if (scanned) toast(tr('txt.scannedFile'))
+      else onText(pages.join('\n\n'))
+    } catch {
+      toast(tr('sum.cantRead'))
+    }
+  }
   return (
     <>
-      <button type="button" className="btn btn-ghost btn-sm" onClick={() => input.current?.click()}><Icon name="upload" /> {tr('txt.openTxt')}</button>
-      <input ref={input} type="file" accept=".txt,.md,.csv,text/plain" hidden aria-label={tr('txt.openTxt')} onChange={(e) => { const f = e.target.files?.[0]; if (f) void f.text().then(onText); e.target.value = '' }} />
+      <button type="button" className="btn btn-ghost btn-sm" onClick={() => input.current?.click()}><Icon name="upload" /> {tr('txt.openFile')}</button>
+      <input ref={input} type="file" accept={FILE_ACCEPT} hidden aria-label={tr('txt.openFile')} onChange={(e) => { const f = e.target.files?.[0]; if (f) void open(f); e.target.value = '' }} />
     </>
   )
 }
@@ -87,6 +101,8 @@ function WordCounter() {
   const [text, setText] = useState('')
   const stats = useMemo(() => textStats(text, lang), [text, lang])
   const top = useMemo(() => topWords(text, lang, 10, minWordLength(lang)), [text, lang])
+  // El nivel de lectura usa el idioma del texto (no el de la web).
+  const level = useMemo(() => (text.trim() ? readability(text, detectLanguage(text)) : null), [text])
   const time = (min: number) => {
     const d = durationParts(min)
     return tr('txt.duration', { m: d.minutes, s: d.seconds })
@@ -124,6 +140,36 @@ function WordCounter() {
         <small className="faint">{tr('txt.privacy')}</small>
       </div>
       <div className="card stack">
+        <h3>{tr('txt.readability')}</h3>
+        {level ? (
+          <div className="stack" style={{ gap: 6 }} data-testid="readability">
+            <div className={`pw-strength read-${level.level}`}>
+              <i style={{ width: `${Math.max(4, level.score)}%` }} />
+              <small>{tr('txt.readabilityScore', { score: level.score, label: tr(`txt.lvl.${level.level}` as MessageKey) })}</small>
+            </div>
+            <small className="faint">{tr('txt.readabilityHint', { formula: level.formula })}</small>
+          </div>
+        ) : (
+          <small className="faint">{tr('txt.readabilityEmpty')}</small>
+        )}
+      </div>
+      <div className="card stack">
+        <h3>{tr('txt.limits')}</h3>
+        <ul className="txt-limits" data-testid="char-limits">
+          {CHAR_LIMITS.map((l) => {
+            const over = stats.characters > l.max
+            return (
+              <li key={l.id} className={over ? 'is-over' : undefined}>
+                <span>{tr(`txt.limit.${l.id}` as MessageKey)}</span>
+                <span className="txt-limit-bar"><i style={{ width: `${Math.min(100, (stats.characters / l.max) * 100)}%` }} /></span>
+                <b>{nf.format(stats.characters)} / {nf.format(l.max)}</b>
+                {over && <small>{tr('txt.limitOver', { n: nf.format(stats.characters - l.max) })}</small>}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+      <div className="card stack">
         <h3>{tr('txt.top')}</h3>
         {top.length ? (
           <ol className="txt-top">
@@ -150,7 +196,9 @@ function CompareTexts() {
   const [b, setB] = useState('')
   const [o, setO] = useState<DiffOptions>(DEFAULT_DIFF)
   const [shown, setShown] = useState<{ a: string; b: string; o: DiffOptions } | null>(null)
+  const [view, setView] = useState<'inline' | 'side'>('inline')
   const result = useMemo(() => (shown ? diffTexts(shown.a, shown.b, shown.o) : null), [shown])
+  const rows = useMemo(() => (shown && view === 'side' && result && !result.identical ? sideBySide(shown.a, shown.b, shown.o) : null), [shown, view, result])
   const compare = () => {
     setShown({ a, b, o })
     track('text_compare', { by: o.by })
@@ -178,6 +226,7 @@ function CompareTexts() {
           <Segmented label={tr('txt.by')} value={o.by} onChange={(v: DiffOptions['by']) => setO({ ...o, by: v })} options={[{ value: 'words', label: tr('txt.byWords') }, { value: 'lines', label: tr('txt.byLines') }]} />
           <label className="check"><input type="checkbox" checked={o.ignoreCase} onChange={(e) => setO({ ...o, ignoreCase: e.target.checked })} /><span>{tr('txt.ignoreCase')}</span></label>
           <label className="check"><input type="checkbox" checked={o.ignoreSpaces} onChange={(e) => setO({ ...o, ignoreSpaces: e.target.checked })} /><span>{tr('txt.ignoreSpaces')}</span></label>
+          <label className="check"><input type="checkbox" checked={!!o.ignoreAccents} onChange={(e) => setO({ ...o, ignoreAccents: e.target.checked })} /><span>{tr('txt.ignoreAccents')}</span></label>
         </div>
         <small className="faint">{tr('txt.privacy')}</small>
         <div className="row row-end" style={{ gap: 8 }}>
@@ -202,10 +251,26 @@ function CompareTexts() {
             <>
               <p className="muted">{tr('txt.summary', { added: result.added, removed: result.removed, pct: result.similarity })}</p>
               {result.tooDifferent && <Notice kind="info">{tr('txt.tooDifferent')}</Notice>}
-              <p className="compare-legend"><del className="diff-del">{tr('txt.legendDel')}</del> <ins className="diff-ins">{tr('txt.legendIns')}</ins></p>
-              <div className="txt-diff">
-                {result.parts.map((p, i) => (p.type === 'del' ? <del key={i} className="diff-del">{p.text}</del> : p.type === 'ins' ? <ins key={i} className="diff-ins">{p.text}</ins> : <span key={i}>{p.text}</span>))}
+              <div className="row" style={{ justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+                <p className="compare-legend"><del className="diff-del">{tr('txt.legendDel')}</del> <ins className="diff-ins">{tr('txt.legendIns')}</ins></p>
+                <Segmented label={tr('txt.view')} value={view} onChange={setView} options={[{ value: 'inline', label: tr('txt.viewInline') }, { value: 'side', label: tr('txt.viewSide') }]} />
               </div>
+              {rows ? (
+                <div className="txt-side" role="table" aria-label={tr('txt.viewSide')}>
+                  {rows.map((r, i) => (
+                    <div key={i} role="row" className={'txt-side-row' + (r.changed ? ' is-changed' : '')}>
+                      <span role="cell" className="txt-side-n">{r.left?.n ?? ''}</span>
+                      <span role="cell" className={'txt-side-cell' + (r.left ? '' : ' is-empty')}>{r.left && <DiffParts parts={r.left.parts} />}</span>
+                      <span role="cell" className="txt-side-n">{r.right?.n ?? ''}</span>
+                      <span role="cell" className={'txt-side-cell' + (r.right ? '' : ' is-empty')}>{r.right && <DiffParts parts={r.right.parts} />}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="txt-diff">
+                  <DiffParts parts={refineParts(result.parts)} />
+                </div>
+              )}
             </>
           )}
         </div>
@@ -214,10 +279,57 @@ function CompareTexts() {
   )
 }
 
+/** Lo borrado tachado en rojo y lo agregado en verde; lo demás, tal cual. */
+function DiffParts({ parts }: { parts: readonly DiffPart[] }) {
+  return (
+    <>
+      {parts.map((p, i) => (p.type === 'del' ? <del key={i} className="diff-del">{p.text}</del> : p.type === 'ins' ? <ins key={i} className="diff-ins">{p.text}</ins> : <span key={i}>{p.text}</span>))}
+    </>
+  )
+}
+
 /* ───────────── Contraseñas ───────────── */
 
+type PassMode = 'password' | 'phrase'
+
 function PasswordGenerator() {
+  const [mode, setMode] = useState<PassMode>('password')
+  return (
+    <div className="stack">
+      <div className="card stack">
+        <Segmented<PassMode> label={tr('txt.mode')} value={mode} onChange={setMode} options={[{ value: 'password', label: tr('txt.modeRandom') }, { value: 'phrase', label: tr('txt.modePhrase') }]} />
+      </div>
+      {mode === 'password' ? <RandomPassword /> : <Passphrase />}
+    </div>
+  )
+}
+
+/** Resultado con copiar, generar otra y la barra de fuerza. */
+function PassOutput({ value, bits, onNew, error }: { value: string; bits: number; onNew: () => void; error?: string }) {
   const { toast } = useApp()
+  const level = strength(bits)
+  return (
+    <>
+      <div className="pw-out">
+        <output aria-label={tr('tools.text.contrasena')} className="pw-value">{error ? '—' : value}</output>
+        <div className="row" style={{ gap: 6 }}>
+          <button type="button" className="btn btn-soft btn-sm" disabled={!!error || !value} onClick={() => void navigator.clipboard.writeText(value).then(() => toast(tr('txt.copied')))}><Icon name="copy" /> {tr('txt.copy')}</button>
+          <button type="button" className="btn btn-primary btn-sm" disabled={!!error} onClick={onNew}><Icon name="reset" /> {tr('txt.generate')}</button>
+        </div>
+      </div>
+      {error ? (
+        <Notice kind="error">{error}</Notice>
+      ) : (
+        <div className={`pw-strength pw-${level}`}>
+          <i style={{ width: `${Math.min(100, (bits / 128) * 100)}%` }} />
+          <small>{tr('txt.strength', { label: tr(`txt.s.${level}` as MessageKey), bits })}</small>
+        </div>
+      )}
+    </>
+  )
+}
+
+function RandomPassword() {
   const [o, setO] = useState<PasswordOptions>(DEFAULT_PASSWORD)
   const [password, setPassword] = useState(() => generatePassword(DEFAULT_PASSWORD))
   const valid = pools(o).length > 0
@@ -225,8 +337,6 @@ function PasswordGenerator() {
     setO(next)
     setPassword(generatePassword(next))
   }
-  const bits = entropyBits(o)
-  const level = strength(bits)
   const toggles: Array<[keyof PasswordOptions, MessageKey]> = [
     ['lower', 'txt.lower'],
     ['upper', 'txt.upper'],
@@ -235,37 +345,74 @@ function PasswordGenerator() {
     ['avoidAmbiguous', 'txt.ambiguous'],
   ]
   return (
-    <div className="stack">
-      <div className="card stack">
-        <div className="pw-out">
-          <output aria-label={tr('tools.text.contrasena')} className="pw-value">{valid ? password : '—'}</output>
-          <div className="row" style={{ gap: 6 }}>
-            <button type="button" className="btn btn-soft btn-sm" disabled={!valid} onClick={() => void navigator.clipboard.writeText(password).then(() => toast(tr('txt.copied')))}><Icon name="copy" /> {tr('txt.copy')}</button>
-            <button type="button" className="btn btn-primary btn-sm" disabled={!valid} onClick={() => { setPassword(generatePassword(o)); track('password_generated', { length: o.length }) }}><Icon name="reset" /> {tr('txt.generate')}</button>
-          </div>
-        </div>
-        {valid ? (
-          <div className={`pw-strength pw-${level}`}>
-            <i style={{ width: `${Math.min(100, (bits / 128) * 100)}%` }} />
-            <small>{tr('txt.strength', { label: tr(`txt.s.${level}` as MessageKey), bits })}</small>
-          </div>
-        ) : (
-          <Notice kind="error">{tr('txt.pickOne')}</Notice>
-        )}
-        <label className="field">
-          <span>{tr('txt.length', { n: o.length })}</span>
-          <input type="range" min={MIN_LENGTH} max={MAX_LENGTH} value={o.length} onChange={(e) => regenerate({ ...o, length: Number(e.target.value) })} />
-        </label>
-        <div className="stack" style={{ gap: 6 }}>
-          {toggles.map(([k, label]) => (
-            <label key={k} className="check">
-              <input type="checkbox" checked={o[k] as boolean} onChange={(e) => regenerate({ ...o, [k]: e.target.checked })} />
-              <span>{tr(label)}</span>
-            </label>
-          ))}
-        </div>
-        <small className="faint">{tr('txt.passNote')}</small>
+    <div className="card stack">
+      <PassOutput value={password} bits={entropyBits(o)} error={valid ? undefined : tr('txt.pickOne')} onNew={() => { setPassword(generatePassword(o)); track('password_generated', { length: o.length }) }} />
+      <label className="field">
+        <span>{tr('txt.length', { n: o.length })}</span>
+        <input type="range" min={MIN_LENGTH} max={MAX_LENGTH} value={o.length} onChange={(e) => regenerate({ ...o, length: Number(e.target.value) })} />
+      </label>
+      <div className="stack" style={{ gap: 6 }}>
+        {toggles.map(([k, label]) => (
+          <label key={k} className="check">
+            <input type="checkbox" checked={o[k] as boolean} onChange={(e) => regenerate({ ...o, [k]: e.target.checked })} />
+            <span>{tr(label)}</span>
+          </label>
+        ))}
       </div>
+      <label className="field">
+        <span>{tr('txt.exclude')}</span>
+        <input className="input" value={o.exclude ?? ''} maxLength={60} placeholder={tr('txt.excludePh')} autoComplete="off" spellCheck={false} onChange={(e) => regenerate({ ...o, exclude: e.target.value })} />
+      </label>
+      <small className="faint">{tr('txt.passNote')}</small>
+    </div>
+  )
+}
+
+function Passphrase() {
+  const { lang: uiLang } = useT()
+  const [o, setO] = useState<PassphraseOptions>(DEFAULT_PASSPHRASE)
+  const [wordsLang, setWordsLang] = useState<'es' | 'en'>(() => passphraseLang(uiLang))
+  const [list, setList] = useState<readonly string[]>([])
+  const [phrase, setPhrase] = useState('')
+  // Las listas de palabras se cargan solo al elegir "Frase" (no pesan en el resto de la web).
+  useEffect(() => {
+    let alive = true
+    const load = wordsLang === 'es' ? import('../core/words/es') : import('../core/words/en')
+    void load.then((m) => {
+      if (!alive) return
+      setList(m.default)
+      setPhrase(generatePassphrase(o, m.default))
+    })
+    return () => {
+      alive = false
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- solo al cambiar el idioma de las palabras.
+  }, [wordsLang])
+  const update = (next: PassphraseOptions) => {
+    setO(next)
+    if (list.length) setPhrase(generatePassphrase(next, list))
+  }
+  const sepLabel = (sep: string) => (sep === ' ' ? tr('txt.sepSpace') : sep)
+  return (
+    <div className="card stack">
+      <PassOutput value={phrase} bits={passphraseBits(o, list.length)} onNew={() => { setPhrase(generatePassphrase(o, list)); track('password_generated', { length: o.words, kind: 'phrase' }) }} />
+      <label className="field">
+        <span>{tr('txt.wordCount', { n: o.words })}</span>
+        <input type="range" min={MIN_WORDS} max={MAX_WORDS} value={o.words} onChange={(e) => update({ ...o, words: Number(e.target.value) })} />
+      </label>
+      <div className="field">
+        <span>{tr('txt.separator')}</span>
+        <Segmented label={tr('txt.separator')} value={o.separator} onChange={(separator: string) => update({ ...o, separator })} options={SEPARATORS.map((sep) => ({ value: sep, label: sepLabel(sep) }))} />
+      </div>
+      <div className="field">
+        <span>{tr('txt.wordsLang')}</span>
+        <Segmented<'es' | 'en'> label={tr('txt.wordsLang')} value={wordsLang} onChange={setWordsLang} options={[{ value: 'es', label: 'Español' }, { value: 'en', label: 'English' }]} />
+      </div>
+      <div className="stack" style={{ gap: 6 }}>
+        <label className="check"><input type="checkbox" checked={o.capitalize} onChange={(e) => update({ ...o, capitalize: e.target.checked })} /><span>{tr('txt.capitalize')}</span></label>
+        <label className="check"><input type="checkbox" checked={o.number} onChange={(e) => update({ ...o, number: e.target.checked })} /><span>{tr('txt.addNumber')}</span></label>
+      </div>
+      <small className="faint">{tr('txt.phraseNote', { n: list.length })}</small>
     </div>
   )
 }
