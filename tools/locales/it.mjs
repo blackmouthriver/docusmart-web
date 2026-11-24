@@ -785,6 +785,7 @@ export default {
         ["Quanto è preciso?", "Con una voce chiara e poco rumore, molto. Con molto rumore, più persone che parlano insieme o accenti marcati commette più errori; per questo puoi correggere il testo prima di scaricarlo."],
         ["Quanto tempo ci vuole?", "Dipende dal dispositivo: su un computer un audio di solito viene trascritto in meno tempo di quanto dura; su uno smartphone può volerci di più. Puoi vedere il testo mentre avanza."],
         ["Posso creare i sottotitoli per un video?", "Sì. Scarica il file .srt o .vtt con i tempi di ogni frase e caricalo su YouTube, nel tuo editor video o nel tuo lettore."],
+        ["Riconosce chi parla in una riunione?", "Sì. Seleziona \"Riconoscere chi parla\" e il testo esce per interventi (Parlante 1, Parlante 2…) con l'orario; poi puoi dare loro un nome. Se sai quante persone parlano, indicalo per risultati migliori. La prima volta si scaricano circa 13 MB in più."],
       ],
     },
     'comprimir-archivos': {

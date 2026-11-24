@@ -34,3 +34,36 @@ test('transcribe una nota de voz en español y entrega texto y subtítulos', asy
   file = await wait
   expect((await readFile((await file.path())!)).toString('utf8')).toMatch(/^WEBVTT\n\n00:00:00\.000 --> /)
 })
+
+test('distingue a dos personas en un diálogo y deja ponerles nombre (W-147.4)', async ({ page }) => {
+  test.setTimeout(360_000)
+  await page.goto('/audio-a-texto')
+  const tool = page.locator('#tool')
+  await tool.locator('input[type=file]').first().setInputFiles({ name: 'reunion.wav', mimeType: 'audio/wav', buffer: await readFile('tests/fixtures/audio/dialogo.wav') })
+  await tool.getByLabel('Distinguir quién habla').check()
+  await expect(tool.getByLabel('Cuántas personas hablan')).toHaveValue('0')
+  await expect(tool.getByText(/Para reconocer las voces se descargan 12[,.]\d MB más/)).toBeVisible()
+  await tool.getByRole('button', { name: 'Transcribir', exact: true }).click()
+
+  const box = tool.getByLabel('Puedes corregir el texto antes de copiarlo o descargarlo.')
+  await expect(box).toBeVisible({ timeout: 340_000 })
+  await expect(tool.getByText('Personas que hablan: 2. Ponles nombre:')).toBeVisible()
+  await expect(box).toHaveValue(/^Hablante 1 \(00:00:00\): /)
+  await expect(box).toHaveValue(/\n\nHablante 2 \(00:00:0\d\): /)
+  // Seis intervenciones alternadas.
+  expect(((await box.inputValue()).match(/^Hablante \d/gm) ?? []).join(',')).toBe('Hablante 1,Hablante 2,Hablante 1,Hablante 2,Hablante 1,Hablante 2')
+
+  // Una corrección del usuario se conserva al cambiar un nombre.
+  await box.fill((await box.inputValue()).replace('Buenos', 'Muy buenos'))
+  const name1 = tool.getByLabel('Nombre del hablante 1')
+  await name1.fill('Ana')
+  await name1.press('Enter')
+  await expect(box).toHaveValue(/^Ana \(00:00:00\): Muy buenos/)
+  expect(((await box.inputValue()).match(/^Ana \(/gm) ?? []).length).toBe(3)
+
+  const wait = page.waitForEvent('download')
+  await tool.getByRole('button', { name: '.vtt' }).click()
+  const vtt = (await readFile((await (await wait).path())!)).toString('utf8')
+  expect(vtt).toContain('<v Ana>')
+  expect(vtt).toContain('<v Hablante 2>')
+})

@@ -874,6 +874,7 @@ export const pages = [
       ["¿Qué tan preciso es?", "Con voz clara y poco ruido, muy bueno. Con mucho ruido, varias personas hablando a la vez o acentos marcados, comete más errores; por eso puedes corregir el texto antes de descargarlo."],
       ["¿Cuánto tarda?", "Depende del equipo: en un computador, un audio suele transcribirse en menos tiempo del que dura; en un celular puede tardar más. Puedes ver el texto mientras avanza."],
       ["¿Puedo crear subtítulos para un video?", "Sí. Descarga el archivo .srt o .vtt con los tiempos de cada frase y súbelo a YouTube, a tu editor de video o a tu reproductor."],
+      ["¿Distingue quién habla en una reunión?", "Sí. Marca \"Distinguir quién habla\" y el texto sale por intervenciones (Hablante 1, Hablante 2…) con la hora; luego puedes ponerles nombre. Si sabes cuántas personas hablan, elígelo para que acierte más. La primera vez se descargan unos 13 MB más."],
     ],
   },
   {

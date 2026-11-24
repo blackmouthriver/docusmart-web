@@ -785,6 +785,7 @@ export default {
         ["Quelle est la précision ?", "Avec une voix claire et peu de bruit, très bonne. Avec beaucoup de bruit, plusieurs personnes qui parlent en même temps ou des accents marqués, il fait plus d'erreurs ; c'est pourquoi vous pouvez corriger le texte avant de le télécharger."],
         ["Combien de temps ça prend ?", "Cela dépend de l'appareil : sur un ordinateur, un audio est généralement transcrit en moins de temps qu'il n'en dure ; sur un téléphone, cela peut être plus long. Vous voyez le texte au fur et à mesure."],
         ["Puis-je créer des sous-titres pour une vidéo ?", "Oui. Téléchargez le fichier .srt ou .vtt avec le minutage de chaque phrase et importez-le sur YouTube, dans votre logiciel de montage ou dans votre lecteur."],
+        ["Distingue-t-il qui parle dans une réunion ?", "Oui. Cochez « Identifier qui parle » et le texte sort par interventions (Intervenant 1, Intervenant 2…) avec l'heure ; vous pouvez ensuite leur donner un nom. Si vous savez combien de personnes parlent, choisissez-le pour de meilleurs résultats. La première fois, environ 13 Mo de plus sont téléchargés."],
       ],
     },
     'comprimir-archivos': {

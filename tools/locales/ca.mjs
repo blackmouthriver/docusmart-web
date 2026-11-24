@@ -785,6 +785,7 @@ export default {
         ["Com n'és de precís?", "Amb una veu clara i poc soroll, molt. Amb molt de soroll, diverses persones parlant alhora o accents marcats, s'equivoca més; per això pots corregir el text abans de baixar-lo."],
         ["Quant triga?", "Depèn del dispositiu: en un ordinador, un àudio sol transcriure's en menys temps del que dura; en un mòbil pot trigar més. Pots veure el text mentre avança."],
         ["Puc crear subtítols per a un vídeo?", "Sí. Baixa el fitxer .srt o .vtt amb els temps de cada frase i puja'l a YouTube, al teu editor de vídeo o al teu reproductor."],
+        ["Distingeix qui parla en una reunió?", "Sí. Marca \"Distingir qui parla\" i el text surt per intervencions (Parlant 1, Parlant 2…) amb l'hora; després els pots posar nom. Si saps quantes persones parlen, tria-ho perquè encerti més. La primera vegada es baixen uns 13 MB més."],
       ],
     },
     'comprimir-archivos': {
