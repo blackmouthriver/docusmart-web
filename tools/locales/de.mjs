@@ -340,17 +340,17 @@ export default {
     },
     'pdf-a-pdfa': {
       slug: 'pdf-in-pdfa',
-      title: 'PDF kostenlos in PDF/A umwandeln (PDF/A-2b) | DocuSmart',
+      title: 'PDF kostenlos in PDF/A umwandeln (PDF/A-1b, 2b, 3b) | DocuSmart',
       description:
         'Wandle ein PDF in das Archivformat PDF/A-2b um, das Behörden, Gerichte und Hochschulen verlangen: Schriften und Farben eingebettet. Kostenlos, ohne Anmeldung und ohne Upload.',
       h1: 'PDF in PDF/A',
       howTo: 'Ein PDF in 3 Schritten in PDF/A umwandeln',
       lead: 'Bring deine Dokumente ins Standard-Archivformat, damit sie auch in vielen Jahren gleich aussehen, ohne von externen Schriften oder Programmen abzuhängen.',
       short: 'Langzeit-Archivformat',
-      steps: ['Wähle das PDF.', 'Tippe auf „In PDF/A umwandeln“.', 'Das PDF/A-2b wird heruntergeladen und wir sagen dir, was für die Norm angepasst wurde.'],
+      steps: ['Wähle das PDF.', 'Tippe auf „In PDF/A umwandeln“.', 'Das PDF/A wird heruntergeladen und wir sagen dir, was für die Norm angepasst wurde.'],
       faq: [
         ['Was ist PDF/A?', 'Die PDF-Variante für die Archivierung (Norm ISO 19005): Die Datei enthält ihre Schriften, ihr Farbprofil und ihre Metadaten und darf von nichts Externem abhängen. Viele Behörden, Gerichte und Hochschulen verlangen sie.'],
-        ['Welche PDF/A-Stufe wird erstellt?', 'PDF/A-2b, die meistgenutzte Stufe: Sie garantiert, dass das Dokument künftig gleich aussieht. Wir prüfen es mit veraPDF, dem Referenzvalidator der PDF Association.'],
+        ['Welche PDF/A-Stufe wird erstellt?', 'PDF/A-2b, die meistgenutzte Stufe: Sie garantiert, dass das Dokument künftig gleich aussieht. Wir prüfen es mit veraPDF, dem Referenzvalidator der PDF Association. Du kannst auch PDF/A-1b (die älteste, für Systeme, die nur diese annehmen) oder PDF/A-3b (behält Anhänge wie das XML einer E-Rechnung) wählen.'],
         ['Ändert sich etwas an meinem Dokument?', 'Fehlende Schriften werden eingebettet und Dinge entfernt, die die Norm nicht erlaubt, etwa Skripte, Anhänge oder Töne. Nutzt eine Seite Druckfarben (CMYK) oder nicht eingebettete Schriften, wird diese Seite als Bild gespeichert.'],
         ['Wird die Datei hochgeladen?', 'Nein. Die Umwandlung passiert in deinem Browser.'],
       ],

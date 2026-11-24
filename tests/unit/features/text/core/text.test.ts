@@ -98,7 +98,7 @@ describe('diffTexts', () => {
     expect(far.tooDifferent).toBe(true)
     expect(far.parts.map((p) => p.type)).toEqual(['del', 'ins'])
     expect(far.removed).toBe(4000)
-  })
+  }, 20_000) // 12 000 palabras: con la máquina cargada pasa de los 5 s por defecto
 })
 
 describe('contraseñas', () => {

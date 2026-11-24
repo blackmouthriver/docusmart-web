@@ -30,9 +30,9 @@ Leyenda: ✅ lo tiene · ➖ parcial · ❌ no lo tiene.
 | **Comprimir a un tamaño** (1 MB, 2 MB…) | ❌ | ➖ (guías) | ➖ | ✅ (páginas de 1 y 2 MB) | ➖ | ✅ (tamaño personalizado) |
 | **Escala de grises** | ❌ | ❌ | ❌ | ➖ | ✅ | ➖ |
 | Varios PDF a la vez | ✅ | ✅ | ➖ (Pro) | ➖ | ✅ | ✅ |
-| PDF/A-2b validado | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| PDF/A-2b validado (y 1b y 3b desde W-147.7) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Comparar texto con informe | ✅ | ✅ | ➖ | ✅ | ✅ | ✅ |
-| Comparar **imágenes y diseño** | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| Comparar **imágenes y diseño** | ✅ (W-147.7) | ✅ | ❌ | ✅ | ✅ | ✅ |
 | Comparar: **ignorar mayúsculas/puntuación** | ❌ | ❌ | ❌ | ❌ | ➖ (solo texto) | ➖ |
 | Extraer imágenes en calidad original | ✅ | ✅ | ➖ | ❌ | ✅ | ✅ |
 | **Privacidad** | 100 % local | Sube | Sube | Sube | Escritorio | Sube (o escritorio) |
@@ -70,3 +70,18 @@ Se hicieron las brechas 1 a 4 (2026-11-22). Las 5 (comparar visualmente) y 6 (PD
 **Nueva comparación (filas que cambiaron):** comprimir conservando el texto ✅ · comprimir a un tamaño ✅ (en el mismo paso, sin probar a mano) · escala de grises ✅ · comparar ignorando mayúsculas/puntuación ✅ (ninguno de los competidores en línea lo ofrece).
 
 **Queda por debajo:** comparar imágenes y diseño (#5) y otras versiones de PDF/A (#6).
+
+## 5. Seguimiento W-147.7 (2026-11-24)
+
+Se hicieron las brechas 5 y 6.
+
+| # | Mejora | Cómo quedó | Prueba |
+|---|---|---|---|
+| 5 | Comparar visualmente | Modo **Visual (página por página)** en Comparar: cada página de las dos versiones se dibuja a 1000 px de ancho y se compara pixel a pixel (un cambio de más de 48 de 255 en algún canal). Los pixeles distintos se agrupan en **zonas** (cuadrícula de 12 px, también en diagonal) que se marcan **lado a lado** sobre las dos páginas, o en una vista **superpuesta**: lo igual en gris claro, lo quitado en rojo, lo agregado en verde y lo que cambió de color en ámbar. Las páginas que están solo en una versión se avisan. **Informe en PDF** con la vista superpuesta de cada página que cambió. Detecta lo que el texto no ve: imágenes, colores, sellos, firmas y diseño | Unitarias (`pdfVisualDiff.test.ts`: iguales, quitado/agregado, color, alto distinto, transparencia, zonas, informe); E2E: un sello que cambió de color en la página 2 (con el texto igual) y una página más → "Cambió 1 página", la zona sobre el sello y un informe de 2 páginas; dos PDF iguales → "Las páginas se ven iguales" |
+| 6 | PDF/A-1b y 3b | Selector **Versión**: PDF/A-2b (recomendada), **1b** y **3b**. **1b** (PDF 1.4): las páginas con transparencias (opacidad, modos de fusión, máscaras, imágenes con transparencia) pasan a imagen y se avisa; se quitan las capas (quedan visibles), los grupos de transparencia, la opacidad de las anotaciones y las anotaciones que no existen en PDF 1.4; JPEG 2000 pasa a imagen. **3b**: conserva los adjuntos (por ejemplo, el XML de una factura electrónica) con `/F` y `/UF`, `/AFRelationship`, tipo MIME y fecha, listados en `/AF`; los que no tienen archivo se quitan. El archivo se llama `-pdfa-1b.pdf` o `-pdfa-3b.pdf` | **veraPDF 1.30**: un PDF impreso por Chrome (fuentes en subconjunto, imagen con transparencia, opacidad y enlace) y uno de pdf-lib (Helvetica, opacidad, capas, polígono y adjunto XML) pasan **1b, 2b y 3b** (6 de 6). Unitarias (`pdfAParts.test.ts`); E2E de 1b y 3b |
+
+**Límite conocido:** en 1b, como ya pasaba en 2b con CMYK, la página que pasa a imagen pierde el texto seleccionable (se puede recuperar con "OCR: reconocer texto"). Comparar visualmente marca todo lo que se corrió de lugar: si se agregó un párrafo al principio, el resto de la página también sale como cambio.
+
+**Nueva comparación:** comparar imágenes y diseño ✅ (como Adobe, iLovePDF y Smallpdf) · PDF/A-1b y 3b ✅ (validados con veraPDF).
+
+**Queda por debajo:** nada de lo auditado.

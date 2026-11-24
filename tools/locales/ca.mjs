@@ -340,17 +340,17 @@ export default {
     },
     'pdf-a-pdfa': {
       slug: 'pdf-a-pdfa',
-      title: 'Convertir PDF a PDF/A gratis (PDF/A-2b) | DocuSmart',
+      title: 'Convertir PDF a PDF/A gratis (PDF/A-1b, 2b, 3b) | DocuSmart',
       description:
         'Converteix un PDF al format d’arxiu PDF/A-2b que demanen entitats públiques, jutjats i universitats: lletres i colors inclosos. Gratis, sense registre i sense pujar el fitxer.',
       h1: 'PDF a PDF/A',
       howTo: 'Com convertir un PDF a PDF/A en 3 passos',
       lead: 'Passa els teus documents al format estàndard d’arxiu perquè es vegin igual d’aquí a molts anys, sense dependre de lletres ni programes externs.',
       short: 'Format d’arxiu a llarg termini',
-      steps: ['Tria el PDF.', 'Prem "Converteix a PDF/A".', 'Es baixa el PDF/A-2b i t’expliquem què s’ha ajustat per complir la norma.'],
+      steps: ['Tria el PDF.', 'Prem "Converteix a PDF/A".', 'Es baixa el PDF/A i t’expliquem què s’ha ajustat per complir la norma.'],
       faq: [
         ['Què és PDF/A?', 'És la versió de PDF pensada per arxivar (norma ISO 19005): el fitxer porta a dins les lletres, el perfil de color i les metadades, i no pot dependre de res extern. El demanen molts tràmits amb entitats públiques, jutjats i universitats.'],
-        ['Quin nivell de PDF/A crea?', 'PDF/A-2b, el nivell més utilitzat: garanteix que el document es vegi igual en el futur. El validem amb veraPDF, el validador de referència de la PDF Association.'],
+        ['Quin nivell de PDF/A crea?', 'PDF/A-2b, el nivell més utilitzat: garanteix que el document es vegi igual en el futur. El validem amb veraPDF, el validador de referència de la PDF Association. També pots triar PDF/A-1b (la més antiga, per a sistemes que només accepten aquesta) o PDF/A-3b (conserva els adjunts, com l’XML d’una factura electrònica).'],
         ['Canvia res del meu document?', 'S’inclouen les lletres que faltaven i es treuen coses que la norma no permet, com scripts, adjunts o sons. Si una pàgina fa servir colors d’impremta (CMYK) o lletres que no són al fitxer, aquella pàgina es desa com a imatge.'],
         ['Es puja el fitxer?', 'No. La conversió passa al teu navegador.'],
       ],

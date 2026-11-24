@@ -345,17 +345,17 @@ export default {
     },
     'pdf-a-pdfa': {
       slug: 'pdftik-pdfara',
-      title: 'Bihurtu PDFa PDF/A formatura doan (PDF/A-2b) | DocuSmart',
+      title: 'Bihurtu PDFa PDF/A formatura doan (PDF/A-1b, 2b, 3b) | DocuSmart',
       description:
         'Bihurtu PDF bat erakunde publiko, epaitegi eta unibertsitateek eskatzen duten PDF/A-2b artxibo-formatura: letra-tipoak eta koloreak barne. Doan, erregistratu gabe eta fitxategia igo gabe.',
       h1: 'PDFtik PDF/Ara',
       howTo: 'Nola bihurtu PDF bat PDF/A formatura 3 urratsetan',
       lead: 'Pasa zure dokumentuak artxibatzeko formatu estandarrera urte askoren buruan ere berdin ikus daitezen, kanpoko letra-tipo edo programen menpe egon gabe.',
       short: 'Epe luzerako artxibo-formatua',
-      steps: ['Aukeratu PDFa.', 'Sakatu «Bihurtu PDF/A-ra».', 'PDF/A-2b deskargatzen da eta araua betetzeko zer doitu den esaten dizugu.'],
+      steps: ['Aukeratu PDFa.', 'Sakatu «Bihurtu PDF/A-ra».', 'PDF/A deskargatzen da eta araua betetzeko zer doitu den esaten dizugu.'],
       faq: [
         ['Zer da PDF/A?', 'Artxibatzeko pentsatutako PDF bertsioa da (ISO 19005 araua): fitxategiak bere letra-tipoak, kolore-profila eta metadatuak ditu barruan, eta ezin du kanpoko ezeren menpe egon. Erakunde publiko, epaitegi eta unibertsitateekiko izapide askotan eskatzen da.'],
-        ['Zein PDF/A maila sortzen du?', 'PDF/A-2b, gehien erabiltzen den maila: dokumentua etorkizunean berdin ikusiko dela bermatzen du. veraPDFrekin baliozkotzen dugu, PDF Associationen erreferentziazko baliozkotzailearekin.'],
+        ['Zein PDF/A maila sortzen du?', 'PDF/A-2b, gehien erabiltzen den maila: dokumentua etorkizunean berdin ikusiko dela bermatzen du. veraPDFrekin baliozkotzen dugu, PDF Associationen erreferentziazko baliozkotzailearekin. PDF/A-1b (zaharrena, hori bakarrik onartzen duten sistemetarako) edo PDF/A-3b (eranskinak gordetzen ditu, faktura elektroniko baten XMLa adibidez) ere aukera ditzakezu.'],
         ['Nire dokumentuan zerbait aldatzen da?', 'Falta ziren letra-tipoak sartzen dira eta arauak onartzen ez dituen gauzak kentzen dira, scriptak, eranskinak edo soinuak adibidez. Orri batek inprenta-koloreak (CMYK) edo fitxategian ez dauden letra-tipoak erabiltzen baditu, orri hori irudi gisa gordetzen da.'],
         ['Fitxategia igotzen da?', 'Ez. Bihurketa zure nabigatzailean gertatzen da.'],
       ],

@@ -56,7 +56,7 @@ Dependencias: `ui → core/infra`; `core` no usa React ni el DOM; `shared` no im
   Descargar, Compartir (Web Share) y la sección "recomienda la app".
 - **Herramientas PDF:** unir, dividir, rotar, reordenar, numerar, marca de agua, recortar, firmar, censurar,
   comparar, extraer imágenes, editar, llenar formulario, escáner (foto → PDF), OCR (Tesseract, es/en),
-  comprimir, proteger (AES-256), desbloquear, reparar (qpdf wasm) y PDF/A-2b (validado con veraPDF).
+  comprimir, proteger (AES-256), desbloquear, reparar (qpdf wasm) y PDF/A-1b, 2b y 3b (validados con veraPDF).
 - **Convertidor:** imagen ↔ PDF/JPG/PNG/WebP/BMP, PDF → TXT/Word/Excel, Word/Excel → PDF.
 - **Imagen:** comprimir, redimensionar, recortar, rotar. **Archivos:** crear ZIP/7Z, abrir ZIP/RAR/7Z/TAR/GZ.
 - **QR** (crear, leer, protegido con contraseña compatible con la app) y **Modo Estudio** (lectura en voz alta, notas, Pomodoro).

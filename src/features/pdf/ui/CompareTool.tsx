@@ -1,13 +1,18 @@
-// Comparar PDF: qué cambió entre dos versiones de un documento.
-import { useMemo, useState } from 'react'
+// Comparar PDF: qué cambió entre dos versiones de un documento, en el texto o en cómo se ve
+// cada página (W-147.7).
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '../../../shared/ui/Icon'
-import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../../../shared/ui/ui'
+import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented, errorMessage } from '../../../shared/ui/ui'
 import { baseName } from '../../../shared/files/files'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
 import { tr } from '../../../shared/i18n/translate'
 import { compareTexts, reportText, type Comparison, type CompareOptions, type Line } from '../core/pdfCompare'
 import { track } from '../../../shared/platform/analytics'
+import { visualSummary, type Box } from '../core/pdfVisualDiff'
+import type { VisualResult } from '../infra/pdfVisualSources'
+
+type Mode = 'text' | 'visual'
 
 type Result = Comparison & { nameA: string; nameB: string; pagesA: number; pagesB: number }
 /** El texto leído de los dos PDF: se vuelve a comparar al cambiar las opciones, sin leerlos otra vez. */
@@ -26,6 +31,26 @@ export function CompareTool() {
   const result = useMemo<Result | null>(() => (sources ? { ...compareTexts(sources.a, sources.b, 2, options), ...sources } : null), [sources, options])
   const setResult = (r: null) => setSources(r)
   const [shown, setShown] = useState(PAGE_SIZE)
+  const [mode, setMode] = useState<Mode>('text')
+  /** Comparación visual: páginas, imágenes e informe en PDF. */
+  const [visual, setVisual] = useState<VisualResult | null>(null)
+  const [visualReport, setVisualReport] = useState<File | null>(null)
+  const [progress, setProgress] = useState<number | null>(null)
+  const [vPage, setVPage] = useState<number | null>(null)
+  const [view, setView] = useState<'side' | 'overlay'>('side')
+  // Las imágenes de la comparación visual se liberan al cambiar o salir.
+  const visualRef = useRef(visual)
+  useEffect(() => {
+    const prev = visualRef.current
+    visualRef.current = visual
+    if (prev && prev !== visual) void import('../infra/pdfVisualSources').then((m) => m.revokeVisual(prev))
+  }, [visual])
+  useEffect(() => () => void import('../infra/pdfVisualSources').then((m) => m.revokeVisual(visualRef.current)), [])
+  const clearVisual = () => {
+    setVisual(null)
+    setVisualReport(null)
+    setVPage(null)
+  }
   /** Lo que se guarda: el informe de cambios (si hay cambios). */
   const report = useMemo(
     () => (result && !result.identical ? resultFile(new Blob([reportText(result, result.nameA, result.nameB)], { type: 'text/plain;charset=utf-8' }), `${tr('file.comparison')}-${baseName(result.nameA)}.txt`, 'text/plain;charset=utf-8') : null),
@@ -35,11 +60,40 @@ export function CompareTool() {
   const pick = (set: (f: File | null) => void) => (f: File | null) => {
     set(f)
     setResult(null)
+    clearVisual()
     setError(null)
+  }
+
+  const runVisual = async () => {
+    if (!fileA || !fileB) return
+    setBusy(true)
+    setError(null)
+    clearVisual()
+    setProgress(0)
+    try {
+      const { visualCompare } = await import('../infra/pdfVisualSources')
+      const r = await visualCompare(fileA, fileB, (done, total) => setProgress(done / total))
+      setVisual(r)
+      const first = r.pages.find((pg) => pg.status !== 'same')
+      setVPage(first ? first.page : null)
+      if (r.report.length) {
+        const { visualReportPdf } = await import('../core/pdfVisualDiff')
+        const pdf = await visualReportPdf(r.report, tr('compare.visualReportTitle'))
+        setVisualReport(resultFile(pdf, `${tr('file.comparison')}-${baseName(fileA.name)}-visual.pdf`, 'application/pdf'))
+      }
+      track('pdf_tool_used', { tool_name: 'compare', format: 'visual' })
+    } catch (e) {
+      setError(/password/i.test(String(e)) ? tr('compare.locked') : errorMessage(e))
+      track('app_error', { error_context: 'pdf_tool_compare_visual', error_message: e instanceof Error ? e.name : 'error' })
+    } finally {
+      setBusy(false)
+      setProgress(null)
+    }
   }
 
   const run = async () => {
     if (!fileA || !fileB) return
+    if (mode === 'visual') return runVisual()
     setBusy(true)
     setError(null)
     setResult(null)
@@ -81,8 +135,24 @@ export function CompareTool() {
           {slot(tr('compare.original'), fileA, pick(setFileA))}
           {slot(tr('compare.newVersion'), fileB, pick(setFileB))}
         </div>
-        <small className="faint">{tr('compare.help')}</small>
-        <fieldset className="row" style={{ border: 0, padding: 0, margin: 0, gap: 16 }}>
+        <div className="field">
+          <span aria-hidden="true">{tr('compare.mode')}</span>
+          <Segmented
+            label={tr('compare.mode')}
+            value={mode}
+            onChange={(m: Mode) => {
+              setMode(m)
+              setResult(null)
+              clearVisual()
+            }}
+            options={[
+              { value: 'text', label: tr('compare.mode.text') },
+              { value: 'visual', label: tr('compare.mode.visual') },
+            ]}
+          />
+        </div>
+        <small className="faint">{mode === 'visual' ? tr('compare.visualHelp') : tr('compare.help')}</small>
+        {mode === 'text' && <fieldset className="row" style={{ border: 0, padding: 0, margin: 0, gap: 16 }}>
           <legend className="sr-only">{tr('compare.options')}</legend>
           <label className="check">
             <input type="checkbox" checked={!!options.ignoreCase} onChange={(e) => setOptions((o) => ({ ...o, ignoreCase: e.target.checked }))} />
@@ -92,11 +162,17 @@ export function CompareTool() {
             <input type="checkbox" checked={!!options.ignorePunctuation} onChange={(e) => setOptions((o) => ({ ...o, ignorePunctuation: e.target.checked }))} />
             <span>{tr('compare.ignorePunctuation')}</span>
           </label>
-        </fieldset>
+        </fieldset>}
+        {progress !== null && (
+          <>
+            <Progress value={progress} />
+            <small className="faint">{tr('compare.visualBusy')}</small>
+          </>
+        )}
         {error && <Notice kind="error">{error}</Notice>}
         <div className="row row-end">
           {fileA && fileB && (
-            <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => { setFileA(fileB); setFileB(fileA); setResult(null) }}>
+            <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => { setFileA(fileB); setFileB(fileA); setResult(null); clearVisual() }}>
               <Icon name="convert" /> {tr('compare.swap')}
             </button>
           )}
@@ -105,6 +181,8 @@ export function CompareTool() {
           </BusyButton>
         </div>
       </div>
+
+      {visual && fileA && fileB && <VisualView visual={visual} report={visualReport} fileA={fileA} fileB={fileB} page={vPage} setPage={setVPage} view={view} setView={setView} />}
 
       {result && fileA && fileB && (
         <div className="card">
@@ -171,5 +249,87 @@ export function CompareTool() {
         </div>
       )}
     </div>
+  )
+}
+
+/** Zonas que cambiaron, marcadas encima de la imagen de la página. */
+function Marked({ src, boxes, label }: { src: string; boxes: Box[]; label: string }) {
+  return (
+    <figure className="visual-page">
+      <figcaption>{label}</figcaption>
+      <div className="visual-frame">
+        <img src={src} alt={label} />
+        {boxes.map((b, i) => (
+          <span key={i} className="visual-box" style={{ left: `${b.x * 100}%`, top: `${b.y * 100}%`, width: `${b.w * 100}%`, height: `${b.h * 100}%` }} aria-hidden="true" />
+        ))}
+      </div>
+    </figure>
+  )
+}
+
+function VisualView({ visual, report, fileA, fileB, page, setPage, view, setView }: {
+  visual: VisualResult
+  report: File | null
+  fileA: File
+  fileB: File
+  page: number | null
+  setPage: (n: number) => void
+  view: 'side' | 'overlay'
+  setView: (v: 'side' | 'overlay') => void
+}) {
+  const sum = visualSummary(visual.pages)
+  const listed = visual.pages.filter((p) => p.status !== 'same')
+  const current = listed.find((p) => p.page === page) ?? null
+  const img = current ? visual.images.get(current.page) : undefined
+  const fmt = (n: number) => n.toLocaleString(document.documentElement.lang || undefined, { maximumFractionDigits: n < 10 ? 1 : 0 })
+  const pct = (v: number) => (v < 0.001 ? '<' + fmt(0.1) : fmt(v * 100))
+  return (
+    <>
+      <div className="card stack" aria-live="polite">
+        <h3>{sum.same ? tr('compare.visualSame') : sum.changed.length === 1 ? tr('compare.visualChangedOne') : tr('compare.visualChangedN', { n: sum.changed.length })}</h3>
+        {sum.same && <Notice kind="success">{tr('compare.visualSameText', { n: visual.pages.length })}</Notice>}
+        {!!sum.onlyA.length && <Notice kind="plain">{tr('compare.onlyA', { list: sum.onlyA.join(', ') })}</Notice>}
+        {!!sum.onlyB.length && <Notice kind="plain">{tr('compare.onlyB', { list: sum.onlyB.join(', ') })}</Notice>}
+        {listed.length > 0 && (
+          <div className="row visual-pages" role="group" aria-label={tr('compare.visualPages')}>
+            {listed.map((p) => (
+              <button key={p.page} type="button" className="btn btn-soft btn-sm" aria-pressed={p.page === page} onClick={() => setPage(p.page)}>
+                {tr('compare.pageBtn', { n: p.page })}
+              </button>
+            ))}
+          </div>
+        )}
+        {current && img && (
+          <>
+            {current.status === 'changed' && (
+              <div className="row" style={{ justifyContent: 'space-between' }}>
+                <small className="faint">{current.boxes.length === 1 ? tr('compare.zoneOne', { pct: pct(current.changed) }) : tr('compare.zonesN', { n: current.boxes.length, pct: pct(current.changed) })}</small>
+                <Segmented label={tr('compare.view')} value={view} onChange={setView} options={[{ value: 'side', label: tr('compare.viewSide') }, { value: 'overlay', label: tr('compare.viewOverlay') }]} />
+              </div>
+            )}
+            {current.status === 'changed' && view === 'overlay' ? (
+              <figure className="visual-page visual-overlay">
+                <img src={img.overlay} alt={tr('compare.viewOverlay')} />
+                <figcaption className="row compare-legend">
+                  <span><span className="visual-swatch is-removed" /> {tr('compare.legendRemoved')}</span>
+                  <span><span className="visual-swatch is-added" /> {tr('compare.legendAdded')}</span>
+                  <span><span className="visual-swatch is-recolored" /> {tr('compare.legendRecolored')}</span>
+                </figcaption>
+              </figure>
+            ) : (
+              <div className="visual-side">
+                {img.a ? <Marked src={img.a} boxes={current.boxes} label={tr('compare.original')} /> : <p className="muted">{tr('compare.notInA')}</p>}
+                {img.b ? <Marked src={img.b} boxes={current.boxes} label={tr('compare.newVersion')} /> : <p className="muted">{tr('compare.notInB')}</p>}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      {report && (
+        <div className="card">
+          <BeforeAfter original={fileA} result={fileB} saveAs={report} labels={[tr('compare.original'), tr('compare.newVersion')]} toolName="compare" title={tr('compare.title')} summary={<Notice kind="info">{tr('compare.visualSummary')}</Notice>} />
+        </div>
+      )}
+    </>
   )
 }

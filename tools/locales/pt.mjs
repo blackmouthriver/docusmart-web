@@ -340,17 +340,17 @@ export default {
     },
     'pdf-a-pdfa': {
       slug: 'pdf-para-pdfa',
-      title: 'Converter PDF para PDF/A grátis (PDF/A-2b) | DocuSmart',
+      title: 'Converter PDF para PDF/A grátis (PDF/A-1b, 2b, 3b) | DocuSmart',
       description:
         'Converta um PDF para o formato de arquivamento PDF/A-2b exigido por órgãos públicos, tribunais e universidades: fontes e cores incluídas. Grátis, sem cadastro e sem enviar o arquivo.',
       h1: 'PDF para PDF/A',
       howTo: 'Como converter um PDF para PDF/A em 3 passos',
       lead: 'Passe seus documentos para o formato padrão de arquivamento para que fiquem iguais daqui a muitos anos, sem depender de fontes nem programas externos.',
       short: 'Formato de arquivamento de longo prazo',
-      steps: ['Escolha o PDF.', 'Toque em "Converter para PDF/A".', 'O PDF/A-2b é baixado e contamos o que foi ajustado para cumprir a norma.'],
+      steps: ['Escolha o PDF.', 'Toque em "Converter para PDF/A".', 'O PDF/A é baixado e contamos o que foi ajustado para cumprir a norma.'],
       faq: [
         ['O que é PDF/A?', 'É a versão do PDF pensada para arquivamento (norma ISO 19005): o arquivo leva dentro suas fontes, seu perfil de cor e seus metadados, e não pode depender de nada externo. Muitos trâmites com órgãos públicos, tribunais e universidades o exigem.'],
-        ['Que nível de PDF/A ele cria?', 'PDF/A-2b, o nível mais usado: garante que o documento fique igual no futuro. Validamos com o veraPDF, o validador de referência da PDF Association.'],
+        ['Que nível de PDF/A ele cria?', 'PDF/A-2b, o nível mais usado: garante que o documento fique igual no futuro. Validamos com o veraPDF, o validador de referência da PDF Association. Você também pode escolher PDF/A-1b (a mais antiga, para sistemas que só aceitam esta) ou PDF/A-3b (mantém os anexos, como o XML de uma nota fiscal eletrônica).'],
         ['Algo muda no meu documento?', 'As fontes que faltavam são incluídas e são retiradas coisas que a norma não permite, como scripts, anexos ou sons. Se uma página usa cores de gráfica (CMYK) ou fontes que não estão no arquivo, essa página é salva como imagem.'],
         ['O arquivo é enviado?', 'Não. A conversão acontece no seu navegador.'],
       ],
