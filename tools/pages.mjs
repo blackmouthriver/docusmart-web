@@ -734,7 +734,7 @@ export const pages = [
     howTo: "Cómo quitar los metadatos en 3 pasos",
     lead: "Una foto puede decir dónde vives y un PDF quién lo escribió. Mira qué datos ocultos traen tus archivos y bórralos antes de compartirlos, sin que salgan de tu equipo.",
     short: "Borra los datos ocultos antes de compartir",
-    steps: ["Elige una o varias fotos (JPG, PNG o WebP) o documentos (PDF, Word, Excel o PowerPoint).", "Revisa los datos ocultos que encontramos: ubicación GPS, cámara, autor, programa y fechas.", "Pulsa \"Quitar metadatos\" y descarga los archivos limpios (si son varios, en un ZIP)."],
+    steps: ["Elige una o varias fotos (JPG, PNG, WebP, HEIC o TIFF) o documentos (PDF, Word, Excel o PowerPoint).", "Revisa los datos ocultos que encontramos: ubicación GPS, cámara, autor, programa y fechas.", "Pulsa \"Quitar metadatos\" y descarga los archivos limpios (si son varios, en un ZIP)."],
     faq: [
       ["¿Qué son los metadatos?", "Son datos que se guardan dentro del archivo sin que se vean: en una foto, la cámara, la fecha y muchas veces la ubicación GPS exacta; en un PDF o un Word, el nombre del autor, la empresa, el programa y las fechas de creación y modificación."],
       ["¿La foto pierde calidad?", "No. Solo se quitan los bloques de datos; la imagen se copia tal cual, sin volver a comprimirla. Se conservan el perfil de color y la orientación, para que se vea igual que antes."],

@@ -595,7 +595,7 @@ export default {
       howTo: "Com treure les metadades en 3 passos",
       lead: "Una foto pot dir on vius i un PDF qui l'ha escrit. Mira quines dades ocultes porten els teus fitxers i esborra-les abans de compartir-los, sense que surtin del teu dispositiu.",
       short: "Esborra les dades ocultes abans de compartir",
-      steps: ["Tria una o diverses fotos (JPG, PNG o WebP) o documents (PDF, Word, Excel o PowerPoint).", "Revisa les dades ocultes que hem trobat: ubicació GPS, càmera, autor, programa i dates.", "Prem \"Treure metadades\" i descarrega els fitxers nets (si en són diversos, en un ZIP)."],
+      steps: ["Tria una o diverses fotos (JPG, PNG, WebP, HEIC o TIFF) o documents (PDF, Word, Excel o PowerPoint).", "Revisa les dades ocultes que hem trobat: ubicació GPS, càmera, autor, programa i dates.", "Prem \"Treure metadades\" i descarrega els fitxers nets (si en són diversos, en un ZIP)."],
       faq: [
         ["Què són les metadades?", "Són dades que es guarden dins del fitxer sense que es vegin: en una foto, la càmera, la data i sovint la ubicació GPS exacta; en un PDF o un Word, el nom de l'autor, l'empresa, el programa i les dates de creació i modificació."],
         ["La foto perd qualitat?", "No. Només es treuen els blocs de dades; la imatge es copia tal com és, sense tornar-la a comprimir. Es conserven el perfil de color i l'orientació, perquè es vegi igual que abans."],

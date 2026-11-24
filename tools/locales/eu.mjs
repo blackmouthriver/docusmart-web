@@ -600,7 +600,7 @@ export default {
       howTo: "Nola kendu metadatuak 3 urratsetan",
       lead: "Argazki batek non bizi zaren esan dezake, eta PDF batek nork idatzi zuen. Ikusi zer datu ezkutu dituzten zure fitxategiek eta ezabatu partekatu aurretik, zure gailutik atera gabe.",
       short: "Ezabatu datu ezkutuak partekatu aurretik",
-      steps: ["Aukeratu argazki bat edo gehiago (JPG, PNG edo WebP) edo dokumentuak (PDF, Word, Excel edo PowerPoint).", "Berrikusi aurkitu ditugun datu ezkutuak: GPS kokapena, kamera, egilea, programa eta datak.", "Sakatu «Metadatuak kendu» eta deskargatu fitxategi garbiak (bat baino gehiago badira, ZIP batean)."],
+      steps: ["Aukeratu argazki bat edo gehiago (JPG, PNG, WebP, HEIC edo TIFF) edo dokumentuak (PDF, Word, Excel edo PowerPoint).", "Berrikusi aurkitu ditugun datu ezkutuak: GPS kokapena, kamera, egilea, programa eta datak.", "Sakatu «Metadatuak kendu» eta deskargatu fitxategi garbiak (bat baino gehiago badira, ZIP batean)."],
       faq: [
         ["Zer dira metadatuak?", "Fitxategiaren barruan ikusi gabe gordetzen diren datuak dira: argazki batean, kamera, data eta askotan GPS kokapen zehatza; PDF edo Word batean, egilearen izena, enpresa, programa eta sortze- eta aldatze-datak."],
         ["Argazkiak kalitatea galtzen du?", "Ez. Datu-blokeak bakarrik kentzen dira; irudia dagoen bezala kopiatzen da, berriro konprimitu gabe. Kolore-profila eta orientazioa gordetzen dira, lehen bezala ikus dadin."],

@@ -8,13 +8,12 @@ import { bundleFiles, resultFile } from '../../../shared/files/share'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
-import { HIDDEN_KEYS, META_ACCEPT, MetaError, cleanFileName, isKept, leftovers, readMetadata, stripMetadata, type MetaField } from '../core/metadata'
+import { HIDDEN_KEYS, META_ACCEPT, MetaError, cleanFileName, isKept, leftovers, readMetadataFile, stripMetadataFile, type MetaField } from '../core/metadata'
 
 type Item = { file: File; fields?: MetaField[]; error?: string }
 type Done = { file: File; before: MetaField[]; after: MetaField[]; hidden: boolean }
 
 const errorText = (e: unknown) => tr(e instanceof MetaError ? (`meta.err.${e.reason}` as MessageKey) : 'meta.err.damaged')
-const bytesOf = async (f: File) => new Uint8Array(await f.arrayBuffer())
 
 export function MetadataScreen() {
   return (
@@ -59,7 +58,7 @@ export function MetadataTool() {
     const read = await Promise.all(
       files.map(async (file): Promise<Item> => {
         try {
-          return { file, fields: await readMetadata(file.name, await bytesOf(file)) }
+          return { file, fields: await readMetadataFile(file) }
         } catch (e) {
           return { file, error: errorText(e) }
         }
@@ -77,8 +76,8 @@ export function MetadataTool() {
     try {
       const results: Done[] = []
       for (const it of usable) {
-        const r = await stripMetadata(it.file.name, await bytesOf(it.file), { hidden })
-        results.push({ file: resultFile(r.bytes, cleanFileName(it.file.name, tr('file.noMeta')), it.file.type || 'application/octet-stream'), before: r.before, after: r.after, hidden })
+        const r = await stripMetadataFile(it.file, { hidden })
+        results.push({ file: resultFile(r.data, cleanFileName(it.file.name, tr('file.noMeta')), it.file.type || 'application/octet-stream'), before: r.before, after: r.after, hidden })
       }
       setDone(results)
       setOutput(await bundleFiles(results.map((r) => r.file), `${tr('file.zipNoMeta')}.zip`))

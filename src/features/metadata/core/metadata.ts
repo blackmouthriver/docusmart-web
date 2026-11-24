@@ -5,6 +5,8 @@
 import { readJpeg, readPng, readWebp, stripJpeg, stripPng, stripWebp } from './images'
 import { readOffice, stripOffice } from './officeMeta'
 import { readPdf, stripPdf, type StripPdfOptions } from './pdfMeta'
+import { isTiff, readTiff, stripTiff } from './tiffMeta'
+import { bmffKind, readHeif, readVideo, stripHeif, stripVideo } from './bmffMeta'
 import { MetaError, type MetaField, type MetaKind, type StripResult } from './types'
 
 export { MetaError }
@@ -14,7 +16,9 @@ const OFFICE_EXT = ['docx', 'docm', 'xlsx', 'xlsm', 'pptx', 'pptm']
 
 // Por extensión también: algunos sistemas no les ponen tipo.
 export const META_ACCEPT =
-  'image/jpeg,image/png,image/webp,application/pdf,.jpg,.jpeg,.png,.webp,.pdf,' + OFFICE_EXT.map((e) => '.' + e).join(',')
+  'image/jpeg,image/png,image/webp,image/heic,image/heif,image/avif,image/tiff,application/pdf,video/mp4,video/quicktime,video/3gpp,' +
+  '.jpg,.jpeg,.png,.webp,.heic,.heif,.avif,.tif,.tiff,.pdf,.mp4,.mov,.m4v,.3gp,' +
+  OFFICE_EXT.map((e) => '.' + e).join(',')
 
 /** Tipo de archivo por su contenido (y la extensión para distinguir Office de otros ZIP). */
 export function detectKind(name: string, b: Uint8Array): MetaKind | null {
@@ -22,6 +26,9 @@ export function detectKind(name: string, b: Uint8Array): MetaKind | null {
   if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47) return 'png'
   const ascii = (from: number, to: number) => String.fromCharCode(...b.subarray(from, to))
   if (ascii(0, 4) === 'RIFF' && ascii(8, 12) === 'WEBP') return 'webp'
+  if (isTiff(b)) return 'tiff'
+  const bmff = bmffKind(b)
+  if (bmff) return bmff
   if (ascii(0, Math.min(b.length, 1024)).includes('%PDF-')) return 'pdf'
   const ext = name.toLowerCase().split('.').pop() ?? ''
   if (ascii(0, 4) === 'PK\u0003\u0004' && OFFICE_EXT.includes(ext)) return 'office'
@@ -40,6 +47,9 @@ export async function readMetadata(name: string, bytes: Uint8Array): Promise<Met
   if (kind === 'png') return readPng(bytes)
   if (kind === 'webp') return readWebp(bytes)
   if (kind === 'pdf') return readPdf(bytes)
+  if (kind === 'tiff') return readTiff(bytes)
+  if (kind === 'heif') return readHeif(bytes)
+  if (kind === 'video') return readVideo(new Blob([bytes as Uint8Array<ArrayBuffer>]))
   return readOffice(bytes)
 }
 
@@ -48,8 +58,50 @@ export type StripOptions = StripPdfOptions
 export async function stripMetadata(name: string, bytes: Uint8Array, opts: StripOptions = {}): Promise<StripResult> {
   const kind = kindOf(name, bytes)
   const before = await readMetadata(name, bytes)
-  const out = kind === 'jpeg' ? stripJpeg(bytes) : kind === 'png' ? stripPng(bytes) : kind === 'webp' ? stripWebp(bytes) : kind === 'pdf' ? await stripPdf(bytes, opts) : stripOffice(bytes)
+  const out = await stripBytes(kind, bytes, opts)
   return { bytes: out, before, after: await readMetadata(name, out) }
+}
+
+async function stripBytes(kind: MetaKind, bytes: Uint8Array, opts: StripOptions): Promise<Uint8Array> {
+  switch (kind) {
+    case 'jpeg':
+      return stripJpeg(bytes)
+    case 'png':
+      return stripPng(bytes)
+    case 'webp':
+      return stripWebp(bytes)
+    case 'pdf':
+      return stripPdf(bytes, opts)
+    case 'tiff':
+      return stripTiff(bytes)
+    case 'heif':
+      return stripHeif(bytes)
+    case 'video':
+      return new Uint8Array(await (await stripVideo(new Blob([bytes as Uint8Array<ArrayBuffer>]))).arrayBuffer())
+    default:
+      return stripOffice(bytes)
+  }
+}
+
+/**
+ * Lo mismo, a partir del archivo (W-147.9): los videos se leen y limpian por partes, sin cargar
+ * el archivo entero (pueden pesar varios GB); lo demás, en memoria.
+ */
+export async function readMetadataFile(file: File): Promise<MetaField[]> {
+  const head = new Uint8Array(await file.slice(0, 1024).arrayBuffer())
+  if (detectKind(file.name, head) === 'video') return readVideo(file)
+  return readMetadata(file.name, new Uint8Array(await file.arrayBuffer()))
+}
+
+export async function stripMetadataFile(file: File, opts: StripOptions = {}): Promise<{ data: Blob | Uint8Array; before: MetaField[]; after: MetaField[] }> {
+  const head = new Uint8Array(await file.slice(0, 1024).arrayBuffer())
+  if (detectKind(file.name, head) === 'video') {
+    const before = await readVideo(file)
+    const data = await stripVideo(file)
+    return { data, before, after: await readVideo(data) }
+  }
+  const r = await stripMetadata(file.name, new Uint8Array(await file.arrayBuffer()), opts)
+  return { data: r.bytes, before: r.before, after: r.after }
 }
 
 /** Contenido del PDF que se quita solo si el usuario lo pide (no es un metadato, es parte del documento). */

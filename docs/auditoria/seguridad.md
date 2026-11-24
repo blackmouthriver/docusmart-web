@@ -32,11 +32,11 @@ Leyenda: ✅ lo tiene · ➖ parcial · ❌ no lo tiene.
 | **Cambiar** la contraseña de un PDF protegido | ❌ | ❌ | ❌ | ❌ | ✅ | — |
 | Desbloquear (con contraseña o solo restricciones) | ✅ | ✅ | ✅ | ✅ | ✅ | — |
 | Reparar estructura dañada | ✅ | ✅ | ✅ | ✅ | ➖ | — |
-| Reparar **archivos cortados** (recuperar lo que llegó) | ❌ | ➖ | ➖ | ➖ | ➖ | — |
+| Reparar **archivos cortados** (recuperar lo que llegó) | ✅ (W-147.9) | ➖ | ➖ | ➖ | ➖ | — |
 | Quitar metadatos de PDF (información, XMP) | ✅ | ❌ | ➖ | ❌ | ✅ | ➖ |
 | Limpiar **fotos dentro del PDF**, comentarios, adjuntos y JavaScript ("sanitizar") | ❌ | ❌ | ❌ | ❌ | ✅ (Pro) | ❌ |
 | Fotos JPG, PNG, WebP | ✅ | — | — | — | — | ✅ |
-| Fotos **HEIC** y TIFF | ❌ | — | — | — | — | ✅ |
+| Fotos **HEIC** y TIFF | ✅ (W-147.9, también video) | — | — | — | — | ✅ |
 | **Video** | ❌ | — | — | — | — | ➖ |
 | Word/Excel/PowerPoint: propiedades | ✅ | — | — | — | — | ✅ |
 | Word: **autores de comentarios y cambios** | ❌ | — | — | — | — | ✅ (Univik, Inspector de Word) |
@@ -76,3 +76,19 @@ Se hicieron las brechas 1 a 5 (2026-11-22). Las 6 a 8 quedan para más adelante.
 **Nueva comparación (filas que cambiaron):** proteger solo con restricciones ✅ · cambiar la contraseña ✅ · limpiar fotos dentro del PDF, comentarios, adjuntos y JavaScript ✅ (como "Sanitizar" de Adobe, pero gratis y local) · autores de comentarios y cambios en Word ✅ (también Excel y PowerPoint).
 
 **Queda por debajo:** reparar archivos cortados (#6), HEIC/TIFF/video (#7) y hash de archivos de varios GB y listas SHA256SUMS (#8).
+
+## 5. Seguimiento W-147.9 (2026-11-24)
+
+Se hicieron las brechas 6 a 8.
+
+| # | Mejora | Cómo quedó | Prueba |
+|---|---|---|---|
+| 6 | Reparar archivos cortados | Si el PDF no abre (o no tiene páginas), **Reparar PDF** lo rescata: recorre el archivo buscando los objetos que llegaron completos (también dentro de flujos de objetos, descomprimiendo en parte el que quedó cortado), reconoce las páginas con todo su contenido, les copia lo que heredaban (tamaño, recursos, giro), las ordena según el árbol de páginas si llegó y arma un PDF nuevo con su propia tabla. El aviso dice "se rescataron 3 de 6 páginas". Antes ni pdf-lib ni qpdf abrían el archivo | Unitarias: cortes al 95/85/70/60/30 % → 5/5/4/3/1 páginas con su texto y su tamaño, qpdf sin errores; flujo de objetos cortado; PDF sano sin rescate; cifrado o sin páginas avisa. E2E: PDF de 6 páginas cortado al 60 % → 3 páginas |
+| 7 | Metadatos de HEIC, TIFF y video | **HEIC/AVIF**: los ítems EXIF (cámara, GPS, autor) y XMP se ponen en cero; la imagen y la orientación (`irot`) no se tocan. **TIFF**: en cada página se quitan cámara, programa, fechas, autor, derechos, EXIF, GPS, XMP, IPTC, Photoshop y los textos de Windows, y sus valores se borran del archivo; se conserva lo necesario para ver la imagen y la orientación. **Video MP4/MOV/M4V/3GP**: `udta`, `meta` y XMP pasan a cajas vacías del mismo tamaño y se borran las fechas de creación y modificación; se lee y escribe por partes, así que sirve para videos de varios GB | Unitarias de los tres formatos (lo personal ya no está en los bytes, la imagen y el video quedan iguales byte por byte). E2E: HEIC con GPS y TIFF en un ZIP limpio; un MP4 grabado en el navegador con ubicación queda limpio, del mismo tamaño, y se sigue reproduciendo |
+| 8 | Hash de archivos grandes y listas | Desde 256 MB (y siempre en MD5) el hash se calcula **por partes de 8 MB**, sin cargar el archivo, con avance ("Leyendo por partes… 45 %"): SHA-256 a ~180 MB/s, SHA-1 ~200, SHA-512 y MD5 ~80-90 (las constantes de SHA se calculan con raíces enteras exactas). Modo nuevo **Verificar lista**: pegar o cargar SHA256SUMS/MD5SUMS/.sha256 (formato de sha256sum, `*` binario y BSD/macOS), elegir los archivos y ver cada uno como correcto, cambiado o faltante, más los que no están en la lista | Unitarias: igual a Web Crypto en los 4 algoritmos con cualquier corte, vectores conocidos, avance y cancelar; listas en los 3 formatos y emparejar por nombre. E2E: lista con uno correcto, uno cambiado y uno faltante |
+
+**Límite conocido:** en los PDF que guardan las páginas en un solo flujo de objetos al final (como los que escribe pdf-lib), si el corte cae antes de ese flujo no quedan páginas que rescatar. Los de Word, LibreOffice, Chrome y escáneres no tienen ese problema.
+
+**Nueva comparación:** reparar archivos cortados ✅ (rescata lo que llegó, con aviso) · HEIC, TIFF y video ✅ · hash de varios GB ✅ · verificar listas SHA256SUMS ✅.
+
+**Queda por debajo:** nada de lo auditado.

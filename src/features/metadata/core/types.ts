@@ -45,7 +45,7 @@ export type MetaKey =
 
 export type MetaField = { key: MetaKey; value: string }
 
-export type MetaKind = 'jpeg' | 'png' | 'webp' | 'pdf' | 'office'
+export type MetaKind = 'jpeg' | 'png' | 'webp' | 'pdf' | 'office' | 'tiff' | 'heif' | 'video'
 
 export type StripResult = { bytes: Uint8Array; before: MetaField[]; after: MetaField[] }
 

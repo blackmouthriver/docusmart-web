@@ -26,8 +26,21 @@ export async function hashBytes(data: Uint8Array, algorithm: HashAlgorithm, subt
   return toHex(new Uint8Array(digest))
 }
 
-export async function hashFile(file: Blob, algorithm: HashAlgorithm): Promise<string> {
-  return hashBytes(new Uint8Array(await file.arrayBuffer()), algorithm)
+/** Desde este tamaño el archivo se lee por partes (W-147.9); antes, Web Crypto (más rápido) en memoria. */
+export const STREAM_FROM = 256 * 1024 * 1024
+
+/**
+ * Hash de un archivo de cualquier tamaño (W-147.9). Los grandes (y MD5, que no está en Web
+ * Crypto) se calculan de a pedazos, sin cargar el archivo entero.
+ */
+export async function hashFile(file: Blob, algorithm: HashAlgorithm, onProgress?: (done: number, total: number) => void, signal?: AbortSignal): Promise<string> {
+  if (algorithm !== 'MD5' && file.size <= STREAM_FROM) {
+    const hash = await hashBytes(new Uint8Array(await file.arrayBuffer()), algorithm)
+    onProgress?.(file.size, file.size)
+    return hash
+  }
+  const { hashBlob } = await import('./hashStream')
+  return hashBlob(file, algorithm, onProgress, signal)
 }
 
 /**
@@ -124,4 +137,67 @@ export function md5(data: Uint8Array): string {
   const ov = new DataView(out.buffer)
   ;[a0, b0, c0, d0].forEach((w, i) => ov.setUint32(i * 4, w, true))
   return toHex(out)
+}
+
+/* ───────────── Listas de sumas (SHA256SUMS, MD5SUMS…) — W-147.9 ───────────── */
+
+export type ChecksumEntry = { hash: string; name: string; algorithm: HashAlgorithm }
+
+const BSD_TAGS: Record<string, HashAlgorithm> = { MD5: 'MD5', SHA1: 'SHA-1', 'SHA-1': 'SHA-1', SHA256: 'SHA-256', 'SHA-256': 'SHA-256', SHA512: 'SHA-512', 'SHA-512': 'SHA-512' }
+const isHex = (s: string) => s.length > 0 && [...s].every((c) => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))
+
+/**
+ * Lee una lista de sumas: el formato de sha256sum/md5sum ("<hash>  nombre" o "<hash> *nombre")
+ * y el de BSD/macOS ("SHA256 (nombre) = <hash>"). El algoritmo sale del largo del hash. Se
+ * ignoran las líneas vacías y los comentarios (#); `invalid` cuenta las que no se entienden.
+ */
+export function parseChecksumList(text: string): { entries: ChecksumEntry[]; invalid: number } {
+  const entries: ChecksumEntry[] = []
+  let invalid = 0
+  for (const raw of text.replace(/^\uFEFF/, '').split(/\r?\n/)) {
+    const line = raw.trim()
+    if (!line || line.startsWith('#')) continue
+    let hash = ''
+    let name = ''
+    let tagged: HashAlgorithm | undefined
+    const open = line.indexOf(' (')
+    const close = line.lastIndexOf(') = ')
+    if (open > 0 && close > open && BSD_TAGS[line.slice(0, open).toUpperCase()]) {
+      tagged = BSD_TAGS[line.slice(0, open).toUpperCase()]
+      name = line.slice(open + 2, close)
+      hash = line.slice(close + 4).trim()
+    } else {
+      const space = line.indexOf(' ')
+      hash = space > 0 ? line.slice(0, space) : ''
+      name = space > 0 ? line.slice(space + 1).replace(/^[ *]/, '') : ''
+    }
+    hash = hash.toLowerCase()
+    const algorithm = isHex(hash) ? ALGORITHMS.find((a) => HEX_LENGTH[a] === hash.length) : undefined
+    if (!algorithm || !name.trim() || (tagged && tagged !== algorithm)) {
+      invalid++
+      continue
+    }
+    entries.push({ hash, name: name.trim(), algorithm })
+  }
+  return { entries, invalid }
+}
+
+/** El nombre sin carpetas ("./dist/app.zip" → "app.zip"). */
+export const baseOf = (name: string) => name.split(/[\\/]/).pop() ?? name
+
+/**
+ * Cada línea con su archivo (índice en `names`, o null si no se eligió): primero por nombre
+ * exacto y luego sin importar mayúsculas. `extra`: archivos elegidos que no están en la lista.
+ */
+export function matchChecksumFiles(entries: readonly ChecksumEntry[], names: readonly string[]): { pairs: Array<{ entry: ChecksumEntry; file: number | null }>; extra: number[] } {
+  const used = new Set<number>()
+  const find = (want: string, eq: (a: string, b: string) => boolean) => names.findIndex((n, i) => !used.has(i) && eq(baseOf(n), want))
+  const pairs = entries.map((entry) => {
+    const want = baseOf(entry.name)
+    let i = find(want, (a, b) => a === b)
+    if (i < 0) i = find(want, (a, b) => a.toLowerCase() === b.toLowerCase())
+    if (i >= 0) used.add(i)
+    return { entry, file: i >= 0 ? i : null }
+  })
+  return { pairs, extra: names.map((_, i) => i).filter((i) => !used.has(i)) }
 }

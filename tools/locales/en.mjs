@@ -595,7 +595,7 @@ export default {
       howTo: "How to remove metadata in 3 steps",
       lead: "A photo can reveal where you live and a PDF who wrote it. See what hidden data your files carry and erase it before sharing, without them leaving your device.",
       short: "Erase hidden data before sharing",
-      steps: ["Choose one or more photos (JPG, PNG or WebP) or documents (PDF, Word, Excel or PowerPoint).", "Review the hidden data we found: GPS location, camera, author, software and dates.", "Press \"Remove metadata\" and download the clean files (several come in a ZIP)."],
+      steps: ["Choose one or more photos (JPG, PNG, WebP, HEIC or TIFF) or documents (PDF, Word, Excel or PowerPoint).", "Review the hidden data we found: GPS location, camera, author, software and dates.", "Press \"Remove metadata\" and download the clean files (several come in a ZIP)."],
       faq: [
         ["What is metadata?", "It's data stored inside a file that you don't see: in a photo, the camera, the date and often the exact GPS location; in a PDF or Word file, the author's name, the company, the software and the creation and modification dates."],
         ["Does the photo lose quality?", "No. Only the data blocks are removed; the image is copied as is, without recompressing it. The color profile and orientation are kept, so it looks exactly the same."],
