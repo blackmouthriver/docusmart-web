@@ -34,7 +34,30 @@ function binary(b: Uint8Array): string {
 }
 const toBytes = (s: string) => Uint8Array.from(s, (c) => c.charCodeAt(0) & 0xff)
 
-const HEADER = /(\d+)\s+(\d+)\s+obj\b/g
+const isDigit = (c: string | undefined) => c !== undefined && c >= '0' && c <= '9'
+const isSpace = (c: string | undefined) => c === ' ' || c === '\t' || c === '\r' || c === '\n' || c === '\f' || c === '\0'
+
+/**
+ * La próxima cabecera "N G obj" desde `from` (sin expresiones regulares: el archivo puede ser
+ * grande y binario). Devuelve dónde empieza, el número y dónde termina "obj".
+ */
+function nextHeader(text: string, from: number): { at: number; num: number; end: number } | null {
+  for (let i = text.indexOf('obj', from); i >= 0; i = text.indexOf('obj', i + 3)) {
+    if (!isDelim(text[i + 3])) continue
+    let j = i - 1
+    if (!isSpace(text[j])) continue
+    while (isSpace(text[j])) j--
+    const genEnd = j
+    while (isDigit(text[j])) j--
+    if (j === genEnd || !isSpace(text[j])) continue
+    while (isSpace(text[j])) j--
+    const numEnd = j
+    while (isDigit(text[j])) j--
+    if (j === numEnd || (j >= 0 && !isDelim(text[j]))) continue
+    return { at: j + 1, num: Number(text.slice(j + 1, numEnd + 1)), end: i + 3 }
+  }
+  return null
+}
 const isDelim = (c: string | undefined) => c === undefined || ' \t\r\n\f\0()<>[]{}/%'.includes(c)
 
 /**
@@ -44,14 +67,12 @@ const isDelim = (c: string | undefined) => c === undefined || ' \t\r\n\f\0()<>[]
  */
 export function scanObjects(text: string, cut?: { obj: Obj | null }): Map<number, Obj> {
   const out = new Map<number, Obj>()
-  HEADER.lastIndex = 0
-  for (let m = HEADER.exec(text); m; m = HEADER.exec(text)) {
-    if (m.index > 0 && !isDelim(text[m.index - 1])) continue
-    const bodyStart = m.index + m[0].length
+  for (let h = nextHeader(text, 0); h; ) {
+    const bodyStart = h.end
     const endobj = text.indexOf('endobj', bodyStart)
     if (endobj < 0) {
       // El último objeto quedó cortado.
-      if (cut) cut.obj = { num: Number(m[1]), body: text.slice(bodyStart) }
+      if (cut) cut.obj = { num: h.num, body: text.slice(bodyStart) }
       break
     }
     let end = endobj
@@ -60,14 +81,14 @@ export function scanObjects(text: string, cut?: { obj: Obj | null }): Map<number
       // Con flujo: el "endobj" de verdad viene después de "endstream" (los datos pueden contener esas letras).
       const endstream = text.indexOf('endstream', stream + 6)
       if (endstream < 0) {
-        if (cut) cut.obj = { num: Number(m[1]), body: text.slice(bodyStart) }
+        if (cut) cut.obj = { num: h.num, body: text.slice(bodyStart) }
         break
       }
       end = text.indexOf('endobj', endstream)
       if (end < 0) break
     }
-    out.set(Number(m[1]), { num: Number(m[1]), body: text.slice(bodyStart, end).trim() })
-    HEADER.lastIndex = end + 6
+    out.set(h.num, { num: h.num, body: text.slice(bodyStart, end).trim() })
+    h = nextHeader(text, end + 6)
   }
   return out
 }
@@ -148,7 +169,14 @@ export function objectStreamObjects(body: string, partial = false): Obj[] {
 }
 
 const typeOf = (body: string) => /\/Type\s*\/([A-Za-z]+)/.exec(dictOf(body))?.[1] ?? ''
-const refs = (s: string) => [...s.matchAll(/(\d+)\s+\d+\s+R\b/g)].map((m) => Number(m[1]))
+/** Los números de objeto de las referencias "N G R" del texto. */
+function refs(s: string): number[] {
+  const tokens = s.replace(/[[\]<>/()]/g, ' ').split(/\s+/)
+  const out: number[] = []
+  const num = (t: string | undefined) => !!t && [...t].every(isDigit)
+  for (let i = 0; i + 2 < tokens.length; i++) if (tokens[i + 2] === 'R' && num(tokens[i]) && num(tokens[i + 1])) out.push(Number(tokens[i]))
+  return out
+}
 
 /** El valor de una clave del diccionario (número, nombre, arreglo, diccionario o referencia), como texto. */
 export function valueOf(dict: string, key: string): string | null {

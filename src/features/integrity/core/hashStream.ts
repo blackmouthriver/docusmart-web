@@ -134,23 +134,23 @@ class Sha256 extends BlockHasher {
       const c = w[t - 2]
       const s0 = ((a >>> 7) | (a << 25)) ^ ((a >>> 18) | (a << 14)) ^ (a >>> 3)
       const s1 = ((c >>> 17) | (c << 15)) ^ ((c >>> 19) | (c << 13)) ^ (c >>> 10)
-      w[t] = (w[t - 16] + s0 + w[t - 7] + s1) | 0
+      w[t] = (w[t - 16] + s0 + w[t - 7] + s1) >>> 0
     }
     const h = this.h
     let a = h[0], bb = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], hh = h[7]
     for (let t = 0; t < 64; t++) {
       const S1 = ((e >>> 6) | (e << 26)) ^ ((e >>> 11) | (e << 21)) ^ ((e >>> 25) | (e << 7))
-      const t1 = (hh + S1 + ((e & f) ^ (~e & g)) + K256[t] + w[t]) | 0
+      const t1 = (hh + S1 + ((e & f) ^ (~e & g)) + K256[t] + w[t]) >>> 0
       const S0 = ((a >>> 2) | (a << 30)) ^ ((a >>> 13) | (a << 19)) ^ ((a >>> 22) | (a << 10))
-      const t2 = (S0 + ((a & bb) ^ (a & c) ^ (bb & c))) | 0
+      const t2 = (S0 + ((a & bb) ^ (a & c) ^ (bb & c))) >>> 0
       hh = g
       g = f
       f = e
-      e = (d + t1) | 0
+      e = (d + t1) >>> 0
       d = c
       c = bb
       bb = a
-      a = (t1 + t2) | 0
+      a = (t1 + t2) >>> 0
     }
     h[0] += a
     h[1] += bb
@@ -192,7 +192,7 @@ class Sha1 extends BlockHasher {
     for (let t = 0; t < 80; t++) {
       const f = t < 20 ? (bb & c) | (~bb & d) : t < 40 ? bb ^ c ^ d : t < 60 ? (bb & c) | (bb & d) | (c & d) : bb ^ c ^ d
       const k = t < 20 ? 0x5a827999 : t < 40 ? 0x6ed9eba1 : t < 60 ? 0x8f1bbcdc : 0xca62c1d6
-      const tmp = (((a << 5) | (a >>> 27)) + f + e + k + w[t]) | 0
+      const tmp = (((a << 5) | (a >>> 27)) + f + e + k + w[t]) >>> 0
       e = d
       d = c
       c = (bb << 30) | (bb >>> 2)
@@ -321,13 +321,13 @@ class Md5 extends BlockHasher {
       const f = round === 0 ? (bb & c) | (~bb & d) : round === 1 ? (d & bb) | (~d & c) : round === 2 ? bb ^ c ^ d : c ^ (bb | ~d)
       const g = round === 0 ? i : round === 1 ? (5 * i + 1) & 15 : round === 2 ? (3 * i + 5) & 15 : (7 * i) & 15
       const s = MD5_S[round * 4 + (i & 3)]
-      const x = (a + f + MD5_K[i] + m[g]) | 0
+      const x = (a + f + MD5_K[i] + m[g]) >>> 0
       a = d
       d = c
       c = bb
-      bb = (bb + ((x << s) | (x >>> (32 - s)))) | 0
+      bb = (bb + ((x << s) | (x >>> (32 - s)))) >>> 0
     }
-    this.h = [(this.h[0] + a) | 0, (this.h[1] + bb) | 0, (this.h[2] + c) | 0, (this.h[3] + d) | 0]
+    this.h = [(this.h[0] + a) >>> 0, (this.h[1] + bb) >>> 0, (this.h[2] + c) >>> 0, (this.h[3] + d) >>> 0]
   }
   protected result() {
     return hex(this.h, true)
