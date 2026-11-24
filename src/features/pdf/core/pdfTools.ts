@@ -4,7 +4,8 @@ import { mergePdfs } from './pdfMerge'
 import { watermarkPdf } from './pdfWatermark'
 
 export { numberPages, NUMBER_POSITIONS, DEFAULT_NUMBER_OPTIONS, type NumberOptions, type NumberPosition } from './pdfNumber'
-export { mergePdfs, type MergeInput, type MergeOptions } from './pdfMerge'
+export { mergePdfs, topBookmarks, type MergeInput, type MergeOptions } from './pdfMerge'
+export { bookmarkGroups, fileSafe, splitBySize, type BookmarkGroup, type SizeSplit } from './pdfSplit'
 export { watermarkPdf, DEFAULT_WATERMARK, WATERMARK_POSITIONS, type WatermarkOptions, type WatermarkPosition, type WatermarkSize } from './pdfWatermark'
 
 const load = (bytes: ArrayBuffer | Uint8Array) => PDFDocument.load(bytes, { ignoreEncryption: false })

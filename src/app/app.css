@@ -1426,3 +1426,15 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .live-scan-shutter:disabled { opacity: 0.4; cursor: default; }
 .live-scan-shutter:focus-visible { outline: 3px solid #60A5FA; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .live-scan-flash { animation: none; } .live-scan-quad polygon { transition: none; } }
+
+/* Organizar (W-147.6): páginas de cada PDF al unir, capítulos al dividir, color del número y miniaturas perezosas. */
+.merge-pages > summary { padding: 8px 0; font-weight: 600; cursor: pointer; }
+.chapter-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; counter-reset: chapter; }
+.chapter-list li { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px; border-radius: 10px; background: var(--paper); counter-increment: chapter; }
+.chapter-list li::before { content: counter(chapter) "."; font-weight: 700; color: var(--ink-soft); }
+.chapter-list b { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--blue); }
+.swatch-input { width: 36px; height: 30px; padding: 0; border: 0; background: none; cursor: pointer; }
+.thumb .thumb-pending { margin-top: 0; background: linear-gradient(110deg, #fff 40%, var(--paper) 50%, #fff 60%) 0 0 / 200% 100%; animation: thumb-wait 1.4s linear infinite; }
+@keyframes thumb-wait { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .thumb .thumb-pending { animation: none; } }

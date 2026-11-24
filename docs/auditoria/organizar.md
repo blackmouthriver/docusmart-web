@@ -24,19 +24,19 @@ Leyenda: ✅ lo tiene · ➖ parcial · ❌ no lo tiene.
 | Función | DocuSmart | iLovePDF | Smallpdf | PDF24 | Sejda | Adobe en línea |
 |---|---|---|---|---|---|---|
 | **Unir:** ordenar archivos | ➖ flechas | ✅ arrastrar | ✅ arrastrar | ✅ arrastrar | ✅ arrastrar | ✅ arrastrar |
-| Unir: elegir páginas de cada archivo | ❌ | ➖ | ➖ | ✅ | ✅ | ✅ |
+| Unir: elegir páginas de cada archivo | ✅ (W-147.6) | ➖ | ➖ | ✅ | ✅ | ✅ |
 | Unir: conservar marcadores / crear uno por archivo | ❌ | ❌ | ❌ | ➖ | ✅ | ✅ |
 | Unir: conservar formularios | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Dividir:** varios rangos → varios archivos | ❌ (un solo PDF) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Dividir cada N páginas | ❌ | ✅ | ➖ | ✅ | ✅ | ➖ |
-| Dividir por marcadores o por tamaño | ❌ | ❌ | ❌ | ➖ | ✅ | ❌ |
+| Dividir por marcadores o por tamaño | ✅ (W-147.6) | ❌ | ❌ | ➖ | ✅ | ❌ |
 | **Rotar:** izquierda y derecha por página | ➖ solo a la derecha | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Reordenar:** arrastrar y soltar | ❌ flechas de a una | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Reordenar: insertar página en blanco / duplicar | ❌ | ✅ | ➖ | ✅ | ✅ | ✅ |
 | **Numerar:** posición (6 lugares) | ➖ 2 (abajo centro/derecha) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Numerar: número inicial y saltar portada | ❌ | ✅ | ➖ | ✅ | ✅ | ✅ |
 | Numerar: texto propio ("Página 1 de 10") | ➖ solo "1 / 10" | ✅ | ➖ | ✅ | ✅ | ✅ |
-| Numerar: tamaño y color | ❌ | ✅ | ❌ | ✅ | ✅ | ➖ |
+| Numerar: tamaño y color | ✅ (W-147.6) | ✅ | ❌ | ✅ | ✅ | ➖ |
 | **Límites gratis** | Sin límites | Límite de tamaño y archivos | ≈2 tareas al día (según terceros) | Sin límites | 3 tareas por hora, 50 MB / 50 págs | Requiere cuenta para varias tareas |
 | **Privacidad** | 100 % local | Sube al servidor | Sube al servidor | Sube al servidor (tiene versión de escritorio) | Sube al servidor (tiene versión de escritorio) | Sube al servidor |
 
@@ -74,3 +74,19 @@ Se hicieron las brechas 1 a 6 (2026-11-22). Las 7 (miniaturas perezosas) y 8 (el
 **Nueva comparación (filas que cambiaron):** ordenar archivos ✅ arrastrar · conservar formularios ✅ · marcadores ✅ (como Sejda/Adobe) · varios rangos → varios archivos ✅ · cada N páginas ✅ · rotar a izquierda y derecha ✅ · arrastrar y soltar al reordenar ✅ · página en blanco y duplicar ✅ · 6 posiciones, número inicial, saltar portada y texto propio ✅ · tamaño ➖ (3 tamaños, sin color).
 
 **Queda por debajo:** dividir por marcadores o por tamaño (solo Sejda), elegir páginas de cada archivo al unir (#8) y color del número.
+
+## 5. Seguimiento W-147.6 (2026-11-23)
+
+Se hicieron lo que había quedado: las brechas 7 y 8, dividir por marcadores o por tamaño y el color del número.
+
+| Mejora | Cómo quedó | Prueba |
+|---|---|---|
+| Unir: elegir páginas de cada archivo (#8) | En **Elegir páginas de cada PDF**, un campo por archivo ("1-3, 5, 8-"; vacío = todas). La fila muestra "3 de 5 págs." y un rango que no existe se marca y no deja unir. Los marcadores que apuntan a páginas que quedaron afuera se quitan; los formularios de esas páginas tampoco pasan | Unitarias (orden, página repetida, marcadores podados); E2E con dos PDF y un rango inválido |
+| Miniaturas perezosas (#7) | El PDF se abre una vez y cada miniatura se dibuja cuando se acerca a la pantalla (600 px antes), una a la vez; mientras tanto, una hoja en blanco animada. Se usan en Dividir, Rotar y Reordenar. Antes se dibujaban todas al abrir | E2E con 120 páginas: al abrir se dibujan menos de 120 y la última aparece al bajar |
+| Dividir por marcadores | Modo **Por marcadores**: un PDF por marcador del primer nivel, desde su página hasta antes del siguiente, con la lista de capítulos antes de crear. Las páginas antes del primero van aparte. Nombres como `libro-02-Introducción.pdf` (sin caracteres prohibidos). Si no hay marcadores, lo dice | Unitarias (grupos, orden, duplicados, nombres); E2E con 3 marcadores → 4 PDF |
+| Dividir por tamaño | Modo **Por tamaño**: partes de páginas seguidas de hasta N MB, medidas guardando cada parte (tamaño real, no estimado), con avance. Una página que sola ya pasa del máximo queda en su propio archivo y se avisa | Unitarias (todas bajo el máximo, partes máximas, página que no cabe); E2E con 0,01 MB |
+| Color del número | 6 colores rápidos (gris, negro, azul marino, azul, rojo, verde) y **Otro color** con el selector | Unitaria y E2E que leen el color con pdf.js |
+
+**Nueva comparación:** dividir por marcadores o por tamaño ✅ (como Sejda) · elegir páginas de cada archivo al unir ✅ (como Sejda y PDF24) · numerar con color ✅ · miniaturas rápidas en PDF largos ✅.
+
+**Queda por debajo:** nada de lo auditado. Elegir las páginas al unir es por texto (sin miniaturas de cada archivo).
