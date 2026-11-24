@@ -1,9 +1,13 @@
 // Hoja de vida (W-131): formulario por secciones que arma el PDF o el Word en el navegador. El
 // borrador se guarda como archivo .json que la persona descarga (nada queda en el navegador).
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+// W-147.10: comparar con una oferta y carta de presentación con los mismos datos.
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { useApp } from '../../../app/state'
 import { Icon } from '../../../shared/ui/Icon'
-import { BusyButton, HeroCard, Notice, Segmented, errorMessage } from '../../../shared/ui/ui'
+import { BusyButton, HeroCard, Notice, Progress, Segmented, errorMessage } from '../../../shared/ui/ui'
+import { useT } from '../../../shared/i18n/I18n'
+import { cvText, matchOffer, type Keyword } from '../core/cvMatch'
+import { coverLetterText, letterPdfBlocks, letterWordDoc, type LetterTexts } from '../core/coverLetter'
 import { DocPreview, SaveOptions } from '../../../shared/ui/DocPreview'
 import { download } from '../../../shared/files/files'
 import { track } from '../../../shared/platform/analytics'
@@ -153,6 +157,9 @@ export function CvTool() {
   const [dirty, setDirty] = useState(false)
   const photoInput = useRef<HTMLInputElement>(null)
   const draftInput = useRef<HTMLInputElement>(null)
+  /** La oferta pegada (W-147.10): sus palabras que ya están en la hoja de vida van a la carta. */
+  const [offer, setOffer] = useState('')
+  const offerStrengths = useMemo(() => (offer.trim() ? matchOffer(cvText(cv), offer).found.map((k) => k.term) : []), [cv, offer])
 
   const update = (patch: Partial<CvData>) => {
     setCv((c) => ({ ...c, ...patch }))
@@ -432,7 +439,147 @@ export function CvTool() {
           <SaveOptions file={output} toolName="cv" />
         </div>
       )}
+
+      <OfferMatchCard cv={cv} offer={offer} setOffer={setOffer} onAddSkill={(term) => update({ skills: cv.skills.trim() ? `${cv.skills.trim().replace(/[,;]$/, '')}, ${term}` : term })} />
+      <CoverLetterCard cv={cv} strengths={offerStrengths} />
     </div>
+  )
+}
+
+/* ───────────── Comparar con una oferta (W-147.10) ───────────── */
+
+function OfferMatchCard({ cv, offer, setOffer, onAddSkill }: { cv: CvData; offer: string; setOffer: (s: string) => void; onAddSkill: (term: string) => void }) {
+  const match = useMemo(() => (offer.trim() ? matchOffer(cvText(cv), offer) : null), [cv, offer])
+  const chip = (k: Keyword, missing: boolean) => (
+    <li key={k.key} className={'kw-chip' + (missing ? ' is-missing' : ' is-found')}>
+      <span>{k.term}</span>
+      {missing && (
+        <button type="button" className="kw-add" aria-label={tr('cv.offerAdd', { term: k.term })} title={tr('cv.offerAdd', { term: k.term })} onClick={() => onAddSkill(k.term)}>
+          <Icon name="plus" />
+        </button>
+      )}
+    </li>
+  )
+  return (
+    <details className="card cv-extra" open={offer.trim() ? true : undefined}>
+      <summary><Icon name="search" /> {tr('cv.offerTitle')}</summary>
+      <div className="stack">
+        <small className="faint">{tr('cv.offerHint')}</small>
+        <label className="field">
+          <span>{tr('cv.offerLabel')}</span>
+          <textarea className="textarea" style={{ minHeight: 120 }} value={offer} placeholder={tr('cv.offerPh')} onChange={(e) => setOffer(e.target.value)} />
+        </label>
+        {match && (match.found.length + match.missing.length === 0 ? (
+          <small className="faint">{tr('cv.offerNone')}</small>
+        ) : (
+          <div className="stack" aria-live="polite">
+            <div className="stack" style={{ gap: 4 }}>
+              <b>{tr('cv.offerScore', { n: match.score })}</b>
+              <Progress value={match.score / 100} />
+            </div>
+            {match.missing.length > 0 ? (
+              <div className="stack" style={{ gap: 6 }}>
+                <span className="kw-title">{tr('cv.offerMissing', { n: match.missing.length })}</span>
+                <ul className="kw-list" aria-label={tr('cv.offerMissing', { n: match.missing.length })}>{match.missing.map((k) => chip(k, true))}</ul>
+                <small className="faint">{tr('cv.offerTip')}</small>
+              </div>
+            ) : (
+              <Notice kind="success">{tr('cv.offerAllFound')}</Notice>
+            )}
+            {match.found.length > 0 && (
+              <div className="stack" style={{ gap: 6 }}>
+                <span className="kw-title">{tr('cv.offerFound', { n: match.found.length })}</span>
+                <ul className="kw-list" aria-label={tr('cv.offerFound', { n: match.found.length })}>{match.found.map((k) => chip(k, false))}</ul>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </details>
+  )
+}
+
+/* ───────────── Carta de presentación (W-147.10) ───────────── */
+
+const LETTER_KEYS = ['greetingNamed', 'greetingCompany', 'greeting', 'intro', 'introNoCompany', 'current', 'past', 'strengths', 'education', 'closing', 'closingNoCompany', 'signoff'] as const
+
+function CoverLetterCard({ cv, strengths }: { cv: CvData; strengths: string[] }) {
+  const { lang } = useT()
+  const [company, setCompany] = useState('')
+  const [position, setPosition] = useState('')
+  const [recipient, setRecipient] = useState('')
+  const [reason, setReason] = useState('')
+  const [text, setText] = useState('')
+  const [busy, setBusy] = useState<'pdf' | 'docx' | null>(null)
+  const [output, setOutput] = useState<File | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  useEffect(() => setOutput(null), [text, cv.paper, cv.font, cv.accent, cv.template])
+
+  const write = () => {
+    const t = Object.fromEntries(LETTER_KEYS.map((k) => [k, tr(`cv.letter.${k}` as MessageKey)])) as LetterTexts
+    const date = new Intl.DateTimeFormat(lang, { dateStyle: 'long' }).format(new Date())
+    setText(coverLetterText(cv, { company, position, recipient, reason, strengths }, t, lang, date))
+    track('cover_letter_written', { with_offer: strengths.length > 0 })
+  }
+
+  const create = async (format: 'pdf' | 'docx') => {
+    setBusy(format)
+    setError(null)
+    try {
+      const base = `${cvFileBase(cv.name, tr('file.coverLetter'))}`
+      if (format === 'pdf') {
+        const { layoutPdf } = await import('../../convert/core/officePdf')
+        const pdf = await layoutPdf(letterPdfBlocks(text, cv), { title: tr('cv.letterTitle'), ...cvLayoutOptions(cv) })
+        setOutput(new File([pdf as BlobPart], `${base}.pdf`, { type: 'application/pdf' }))
+      } else {
+        const { writeDocx } = await import('../../convert/core/pdfWord')
+        setOutput(new File([writeDocx(letterWordDoc(text, cv)) as BlobPart], `${base}.docx`, { type: DOCX }))
+      }
+      track('cover_letter_created', { format })
+    } catch (e) {
+      setError(errorMessage(e))
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  return (
+    <details className="card cv-extra">
+      <summary><Icon name="mail" /> {tr('cv.letterTitle')}</summary>
+      <div className="stack">
+        <small className="faint">{tr('cv.letterHint')}</small>
+        <div className="cv-fields">
+          <label className="field"><span>{tr('cv.letterCompany')}</span><input className="input" maxLength={120} value={company} onChange={(e) => setCompany(e.target.value)} /></label>
+          <label className="field"><span>{tr('cv.letterPosition')}</span><input className="input" maxLength={120} value={position} placeholder={cv.headline || undefined} onChange={(e) => setPosition(e.target.value)} /></label>
+          <label className="field cv-wide"><span>{tr('cv.letterRecipient')}</span><input className="input" maxLength={120} value={recipient} placeholder={tr('cv.letterRecipientPh')} onChange={(e) => setRecipient(e.target.value)} /></label>
+          <label className="field cv-wide"><span>{tr('cv.letterReason')}</span><textarea className="textarea" style={{ minHeight: 60 }} value={reason} placeholder={tr('cv.letterReasonPh')} onChange={(e) => setReason(e.target.value)} /></label>
+        </div>
+        {strengths.length > 0 && <small className="faint">{tr('cv.letterStrengths', { list: strengths.slice(0, 4).join(', ') })}</small>}
+        <div className="row row-end">
+          <button type="button" className="btn btn-soft" disabled={!cv.name.trim()} onClick={write}><Icon name="edit" /> {text ? tr('cv.letterRewrite') : tr('cv.letterWrite')}</button>
+        </div>
+        {!cv.name.trim() && <small className="faint">{tr('cv.needName')}</small>}
+        {text && (
+          <>
+            <label className="field">
+              <span>{tr('cv.letterText')}</span>
+              <textarea className="textarea cv-letter" value={text} onChange={(e) => setText(e.target.value)} />
+            </label>
+            {error && <Notice kind="error">{error}</Notice>}
+            <div className="row row-end" style={{ gap: 8 }}>
+              <BusyButton busy={busy === 'docx'} disabled={busy !== null || !text.trim()} onClick={() => create('docx')} icon="file">{tr('cv.letterDocx')}</BusyButton>
+              <BusyButton busy={busy === 'pdf'} disabled={busy !== null || !text.trim()} onClick={() => create('pdf')} icon="pdf">{tr('cv.letterPdf')}</BusyButton>
+            </div>
+          </>
+        )}
+        {output && (
+          <div className="stack" aria-live="polite">
+            <DocPreview source={output} page={1} label={output.name} />
+            <SaveOptions file={output} toolName="cover_letter" />
+          </div>
+        )}
+      </div>
+    </details>
   )
 }
 
