@@ -1350,6 +1350,13 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .sortable [data-dragging] { opacity: .45; }
 .sortable [data-drop-target] { box-shadow: 0 0 0 2px var(--blue) inset; background: var(--blue-soft); }
 .sortable.is-sorting { user-select: none; -webkit-user-select: none; }
+/* En un celular angosto, la fila ordenable (asa, flechas y quitar) deja lugar al nombre: sin el
+   ícono del tipo de archivo y con los botones juntos (siguen de 40 px para el dedo). */
+@media (max-width: 480px) {
+  .file-list.sortable .file-item { gap: 2px; padding-left: 4px; }
+  .file-list.sortable .file-item .ico { display: none; }
+  .file-list.sortable .file-meta { padding-left: 4px; }
+}
 .thumb-hit, .thumb-drag { display: block; width: 100%; padding: 0; border: 0; background: none; border-radius: 6px; position: relative; }
 .thumb-hit { cursor: pointer; }
 .thumb-drag img { pointer-events: none; }

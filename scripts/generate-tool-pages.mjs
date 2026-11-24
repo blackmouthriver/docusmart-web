@@ -14,6 +14,8 @@ import { dirname, join } from 'node:path'
 import { CATEGORIES, FACEBOOK_URL, INSTAGRAM_URL, PAGES_UPDATED, PRIVACY_UPDATED, SITE, TIKTOK_URL, pages } from '../tools/pages.mjs'
 import { KB_OWN, buildKb, kbJson } from '../tools/assistant/build.mjs'
 import { GUIDES_UPDATED } from '../tools/guides.mjs'
+import { GUIDE_IMAGES } from '../tools/guide-images.mjs'
+import { SHOT_WIDTHS } from '../tools/guide-shots.mjs'
 import { GUIDE_LANGS, guideFile, guidePath, guideUi, guides, guidesIndexFile, guidesIndexPath, hasGuides, localizedGuide } from '../tools/guides/index.mjs'
 import { ES, LANGS, LOCALES, filePath, homePath, hubFile, hubPath, localized, pagePath, toolCount } from '../tools/locales/index.mjs'
 
@@ -481,6 +483,37 @@ function guideBlock(b, lang, where) {
   if (b.tip) return `      <aside class="gd-tip">${svg('info', 'gd-tip-ico')}<p>${rich(b.tip, lang, where)}</p></aside>`
   throw new Error(`guías (${where}): bloque desconocido ${JSON.stringify(b)}`)
 }
+
+// Capturas de las guías (W-99/W-100): tamaño de cada una en tools/guide-shots.json (lo escribe
+// scripts/screenshots.mjs). Se usa la del idioma de la guía; si falta, la española.
+const SHOT_SIZES = JSON.parse(readFileSync(join(root, 'tools', 'guide-shots.json'), 'utf8'))
+const { escritorio: WIDE, movil: NARROW } = SHOT_WIDTHS
+function shotFiles(shot, lang, where) {
+  for (const l of [lang, 'es']) {
+    const wide = SHOT_SIZES[`${l}/${shot}-${WIDE}`]
+    const narrow = SHOT_SIZES[`${l}/${shot}-${NARROW}`]
+    if (wide && narrow) return { l, wide, narrow }
+  }
+  throw new Error(`guías (${where}): falta la captura ${shot} (corre node scripts/screenshots.mjs)`)
+}
+function guideFigure(img, lang, where) {
+  const alt = img.alt[lang]
+  if (!alt) throw new Error(`guías (${where}): falta el texto alternativo de ${img.shot} en ${lang}`)
+  const { l, wide, narrow } = shotFiles(img.shot, lang, where)
+  const src = (w) => `/img/guides/${l}/${img.shot}-${w}.webp`
+  return `      <figure class="gd-shot">
+        <picture>
+          <source media="(max-width: 600px)" srcset="${src(NARROW)}" width="${narrow[0]}" height="${narrow[1]}">
+          <img src="${src(WIDE)}" width="${wide[0]}" height="${wide[1]}" alt="${esc(alt)}" loading="lazy" decoding="async">
+        </picture>
+      </figure>`
+}
+/** Bloques de una sección con sus capturas intercaladas (después del bloque `after`). */
+function sectionBlocks(guide, s, i, lang, where) {
+  const imgs = (GUIDE_IMAGES[guide.slug] ?? []).filter((img) => img.section === i)
+  return s.body.flatMap((b, j) => [guideBlock(b, lang, where), ...imgs.filter((img) => img.after === j).map((img) => guideFigure(img, lang, where))])
+}
+
 const toolCards = (slugs, lang, where) =>
   slugs
     .map((s) => {
@@ -680,9 +713,9 @@ ${guideNav(lang, (l) => guidePath(guide, l))}
   <article class="tp-wrap gd-article">
 ${g.sections
   .map(
-    (s) => `    <section class="gd-section reveal">
+    (s, i) => `    <section class="gd-section reveal">
       <h2>${esc(s.h2)}</h2>
-${s.body.map((b) => guideBlock(b, lang, where)).join('\n')}
+${sectionBlocks(guide, s, i, lang, where).join('\n')}
     </section>`,
   )
   .join('\n')}

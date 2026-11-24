@@ -28,6 +28,9 @@ export const toolDesc = (id: string) => tr(`tool.${id}.desc` as MessageKey)
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { bundleFiles, resultFile } from '../../../shared/files/share'
 
+/** "1 página" o "N páginas". */
+const pagesLabel = (n: number) => (n === 1 ? tr('common.onePage') : tr('single.pagesN', { n }))
+
 const TOOLS: Array<{ id: string; icon: IconName; cls: string }> = [
   { id: 'editar', icon: 'edit', cls: 'ico-blue' },
   { id: 'formulario', icon: 'form', cls: 'ico-green' },
@@ -162,7 +165,7 @@ export function MergeTool() {
             <FileRow
               key={id}
               file={f}
-              extra={[`#${i + 1}`, count ? (picked[i] ? tr('merge.pagesOf', { n: picked[i]!.length, total: count }) : tr('single.pagesN', { n: count })) : ''].filter(Boolean).join(' · ')}
+              extra={[`#${i + 1}`, count ? (picked[i] ? tr('merge.pagesOf', { n: picked[i]!.length, total: count }) : pagesLabel(count)) : ''].filter(Boolean).join(' · ')}
               rowProps={sort.item(i)}
               lead={
                 files.length > 1 && (
@@ -203,7 +206,7 @@ export function MergeTool() {
           <div className="stack" style={{ gap: 10 }}>
             {files.map((x, i) => (
               <label key={x.id} className="field">
-                <span>{`#${i + 1} ${x.file.name}`}{x.count ? ` (${tr('single.pagesN', { n: x.count })})` : ''}</span>
+                <span>{`#${i + 1} ${x.file.name}`}{x.count ? ` (${pagesLabel(x.count)})` : ''}</span>
                 <input className="input" value={x.pages} placeholder={tr('merge.pagesAll')} onChange={(e) => patch(x.id, { pages: e.target.value })} />
                 {x.pages.trim() && x.count !== null && (picked[i] === null || picked[i]?.length === 0) && <small style={{ color: 'var(--danger)' }}>{tr('single.rangeBad', { n: x.count })}</small>}
               </label>
@@ -529,7 +532,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
       <ul className="file-list" style={{ marginTop: 0 }}>
         <FileRow
           file={file}
-          extra={count ? tr('single.pagesN', { n: count }) : tr('single.reading')}
+          extra={count ? pagesLabel(count) : tr('single.reading')}
           actions={<button type="button" className="btn btn-ghost btn-sm" onClick={() => setFile(null)}>{tr('common.change')}</button>}
         />
       </ul>

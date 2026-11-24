@@ -21,6 +21,11 @@
 .gd-tip p { margin: 0; font-size: 16px; color: var(--ink); }
 .gd-tip-ico { width: 22px; height: 22px; flex: none; margin-top: 3px; color: var(--blue); }
 
+/* Capturas de las guías (W-100): tamaño fijo (width/height en el HTML) para no mover la página. */
+.gd-shot { margin: 22px 0 8px; }
+.gd-shot img { display: block; width: 100%; height: auto; border-radius: 16px; background: #fff; box-shadow: 0 0 0 1px var(--line), 0 12px 32px rgba(11, 16, 32, .10); }
+@media (max-width: 600px) { .gd-shot { max-width: 420px; margin-inline: auto; } }
+
 .gd-steps { margin: 0; padding: 0; list-style: none; counter-reset: gd; display: grid; gap: 10px; }
 .gd-steps li { position: relative; counter-increment: gd; padding: 14px 16px 14px 56px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; font-size: 16px; }
 .gd-steps li::before { content: counter(gd); position: absolute; left: 14px; top: 13px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: #fff; font-family: var(--font-display); font-size: 14px; font-weight: 700; }

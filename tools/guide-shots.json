@@ -1,0 +1,770 @@
+{
+ "ca/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ca/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "ca/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "ca/escanear-documento/bordes-390": [
+  700,
+  1628
+ ],
+ "ca/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "ca/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "ca/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "ca/firmar-pdf/firma-390": [
+  700,
+  1070
+ ],
+ "ca/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "ca/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "ca/proteger-pdf/clave-1280": [
+  940,
+  601
+ ],
+ "ca/proteger-pdf/clave-390": [
+  700,
+  1368
+ ],
+ "ca/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "ca/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "ca/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ca/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "de/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "de/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "de/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "de/escanear-documento/bordes-390": [
+  700,
+  1628
+ ],
+ "de/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "de/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "de/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "de/firmar-pdf/firma-390": [
+  700,
+  1070
+ ],
+ "de/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "de/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "de/proteger-pdf/clave-1280": [
+  940,
+  601
+ ],
+ "de/proteger-pdf/clave-390": [
+  700,
+  1412
+ ],
+ "de/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "de/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "de/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "de/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "en/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "en/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "en/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "en/escanear-documento/bordes-390": [
+  700,
+  1628
+ ],
+ "en/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "en/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "en/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "en/firmar-pdf/firma-390": [
+  700,
+  1070
+ ],
+ "en/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "en/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "en/proteger-pdf/clave-1280": [
+  940,
+  601
+ ],
+ "en/proteger-pdf/clave-390": [
+  700,
+  1288
+ ],
+ "en/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "en/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "en/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "en/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "es/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "es/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "es/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "es/escanear-documento/bordes-390": [
+  700,
+  1628
+ ],
+ "es/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "es/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "es/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "es/firmar-pdf/firma-390": [
+  700,
+  1070
+ ],
+ "es/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "es/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "es/proteger-pdf/clave-1280": [
+  940,
+  601
+ ],
+ "es/proteger-pdf/clave-390": [
+  700,
+  1368
+ ],
+ "es/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "es/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "es/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "es/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "eu/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "eu/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "eu/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "eu/escanear-documento/bordes-390": [
+  700,
+  1708
+ ],
+ "eu/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "eu/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "eu/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "eu/firmar-pdf/firma-390": [
+  700,
+  1070
+ ],
+ "eu/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "eu/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "eu/proteger-pdf/clave-1280": [
+  940,
+  601
+ ],
+ "eu/proteger-pdf/clave-390": [
+  700,
+  1370
+ ],
+ "eu/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "eu/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "eu/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "eu/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "fr/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "fr/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "fr/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "fr/escanear-documento/bordes-390": [
+  700,
+  1748
+ ],
+ "fr/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "fr/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "fr/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "fr/firmar-pdf/firma-390": [
+  700,
+  1070
+ ],
+ "fr/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "fr/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "fr/proteger-pdf/clave-1280": [
+  940,
+  601
+ ],
+ "fr/proteger-pdf/clave-390": [
+  700,
+  1370
+ ],
+ "fr/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "fr/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "fr/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "fr/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "it/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "it/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "it/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "it/escanear-documento/bordes-390": [
+  700,
+  1708
+ ],
+ "it/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "it/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "it/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "it/firmar-pdf/firma-390": [
+  700,
+  1070
+ ],
+ "it/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "it/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "it/proteger-pdf/clave-1280": [
+  940,
+  601
+ ],
+ "it/proteger-pdf/clave-390": [
+  700,
+  1290
+ ],
+ "it/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "it/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "it/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "it/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "ja/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ja/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "ja/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "ja/escanear-documento/bordes-390": [
+  700,
+  1628
+ ],
+ "ja/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "ja/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "ja/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "ja/firmar-pdf/firma-390": [
+  700,
+  1010
+ ],
+ "ja/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "ja/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "ja/proteger-pdf/clave-1280": [
+  940,
+  600
+ ],
+ "ja/proteger-pdf/clave-390": [
+  700,
+  1288
+ ],
+ "ja/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "ja/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "ja/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ja/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "ko/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ko/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "ko/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "ko/escanear-documento/bordes-390": [
+  700,
+  1628
+ ],
+ "ko/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "ko/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "ko/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "ko/firmar-pdf/firma-390": [
+  700,
+  1010
+ ],
+ "ko/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "ko/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "ko/proteger-pdf/clave-1280": [
+  940,
+  600
+ ],
+ "ko/proteger-pdf/clave-390": [
+  700,
+  1288
+ ],
+ "ko/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "ko/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "ko/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ko/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "pt/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "pt/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "pt/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "pt/escanear-documento/bordes-390": [
+  700,
+  1630
+ ],
+ "pt/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "pt/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "pt/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "pt/firmar-pdf/firma-390": [
+  700,
+  1070
+ ],
+ "pt/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "pt/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "pt/proteger-pdf/clave-1280": [
+  940,
+  600
+ ],
+ "pt/proteger-pdf/clave-390": [
+  700,
+  1288
+ ],
+ "pt/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "pt/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "pt/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "pt/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "ru/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ru/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "ru/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "ru/escanear-documento/bordes-390": [
+  700,
+  1628
+ ],
+ "ru/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "ru/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "ru/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "ru/firmar-pdf/firma-390": [
+  700,
+  1150
+ ],
+ "ru/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "ru/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "ru/proteger-pdf/clave-1280": [
+  940,
+  600
+ ],
+ "ru/proteger-pdf/clave-390": [
+  700,
+  1412
+ ],
+ "ru/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "ru/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "ru/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ru/unir-pdf/resultado-390": [
+  612,
+  1080
+ ],
+ "zh/comprimir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "zh/comprimir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "zh/escanear-documento/bordes-1280": [
+  940,
+  935
+ ],
+ "zh/escanear-documento/bordes-390": [
+  700,
+  1588
+ ],
+ "zh/firmar-pdf/colocar-1280": [
+  940,
+  760
+ ],
+ "zh/firmar-pdf/colocar-390": [
+  700,
+  1800
+ ],
+ "zh/firmar-pdf/firma-1280": [
+  940,
+  505
+ ],
+ "zh/firmar-pdf/firma-390": [
+  700,
+  1010
+ ],
+ "zh/imagen-a-pdf/fotos-1280": [
+  940,
+  760
+ ],
+ "zh/imagen-a-pdf/fotos-390": [
+  700,
+  1540
+ ],
+ "zh/proteger-pdf/clave-1280": [
+  940,
+  600
+ ],
+ "zh/proteger-pdf/clave-390": [
+  700,
+  1246
+ ],
+ "zh/unir-pdf/lista-1280": [
+  940,
+  640
+ ],
+ "zh/unir-pdf/lista-390": [
+  700,
+  1280
+ ],
+ "zh/unir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "zh/unir-pdf/resultado-390": [
+  612,
+  1080
+ ]
+}

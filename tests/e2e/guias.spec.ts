@@ -1,5 +1,5 @@
 // Guías (W-19): índice, una guía y sus enlaces a las herramientas.
-import { expect, test } from './helpers'
+import { expect, makePdf, test } from './helpers'
 
 test('el índice de guías muestra las 6 guías @movil', async ({ page }) => {
   await page.goto('/guias')
@@ -39,4 +39,50 @@ test('una guía en inglés enlaza a las herramientas en inglés y ofrece las otr
   await expect(page.locator('link[rel="alternate"][hreflang="pt"]')).toHaveAttribute('href', 'https://docusmart.online/pt/guias/juntar-pdf-no-celular')
   await page.goto('/pt/guias')
   await expect(page.locator('.gd-cards > li')).toHaveCount(6)
+})
+
+test('las guías muestran capturas de la herramienta, en su idioma y sin mover la página (W-100) @movil', async ({ page }) => {
+  await page.goto('/guias/unir-pdf-en-el-celular')
+  const shots = page.locator('.gd-shot img')
+  await expect(shots).toHaveCount(2)
+  const first = shots.first()
+  await expect(first).toHaveAttribute('alt', /^Unir PDF con tres archivos en la lista/)
+  await expect(first).toHaveAttribute('loading', 'lazy')
+  await expect(first).toHaveAttribute('width', /^\d+$/)
+  await expect(first).toHaveAttribute('height', /^\d+$/)
+  await first.scrollIntoViewIfNeeded()
+  // Carga la del ancho de la pantalla (celular o escritorio).
+  await expect.poll(() => first.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth)).toBeGreaterThan(0)
+  const wide = (page.viewportSize()?.width ?? 1280) > 600
+  expect(await first.evaluate((img: HTMLImageElement) => img.currentSrc)).toMatch(wide ? /\/img\/guides\/es\/unir-pdf\/lista-1280\.webp$/ : /\/img\/guides\/es\/unir-pdf\/lista-390\.webp$/)
+  // La caja ya tiene la proporción de la imagen antes de cargarla (sin saltos).
+  const box = await first.boundingBox()
+  const ratio = await first.evaluate((img: HTMLImageElement) => img.naturalHeight / img.naturalWidth)
+  expect(Math.abs(box!.height / box!.width - ratio)).toBeLessThan(0.02)
+
+  await page.goto('/ja/guides/merge-pdf-on-your-phone')
+  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/ja/unir-pdf/lista-1280.webp')
+  // Todas las guías traen al menos una captura.
+  for (const path of ['/guias/pasar-fotos-a-pdf', '/guias/reducir-tamano-pdf', '/guias/firmar-pdf-sin-imprimir', '/guias/escanear-documentos-con-el-celular', '/guias/proteger-pdf-con-contrasena']) {
+    await page.goto(path)
+    expect(await page.locator('.gd-shot img').count()).toBeGreaterThan(0)
+  }
+})
+
+test('en el celular, la lista de unir PDF deja ver el nombre y dice "1 página" @movil', async ({ page }) => {
+  await page.goto('/unir-pdf')
+  const tool = page.locator('#tool')
+  await tool.locator('input[type=file]').first().setInputFiles([
+    { name: 'contrato.pdf', mimeType: 'application/pdf', buffer: makePdf(3) },
+    { name: 'recibo.pdf', mimeType: 'application/pdf', buffer: makePdf(1) },
+  ])
+  const rows = tool.locator('.file-item')
+  await expect(rows.nth(1)).toContainText('1 página')
+  await expect(rows.nth(1)).not.toContainText('1 páginas')
+  await expect(rows.first()).toContainText('3 páginas')
+  // El nombre entra completo (antes quedaba en "c…" con los datos uno por renglón).
+  const name = rows.first().locator('.file-meta b')
+  expect(await name.evaluate((b) => b.scrollWidth <= b.clientWidth)).toBe(true)
+  const meta = await rows.first().locator('.file-meta').boundingBox()
+  expect(meta!.width).toBeGreaterThan(100)
 })
