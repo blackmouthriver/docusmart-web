@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
-import QRCode from 'qrcode'
 import { formatLabel, type ScannedCode } from '../core/qrScan'
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
@@ -12,7 +11,9 @@ import { buildPayload, contactPayload, detectType, emailAddress, eventPayload, i
 import { download, isOwnBlobUrl, safeMimeType } from '../../../shared/files/files'
 import { previewOf, type QrHistoryEntry, type QrHistoryKind } from '../core/qrHistory'
 import { clearQrHistory, forgetQr, getQrHistory, recordQr, subscribeQrHistory } from '../infra/historyStore'
-import { QR_COLORS, QR_SIZES, cropSquare, errorLevels, hasSufficientContrast, logoBox, svgWithLogo, type QrColorId, type QrSize } from '../core/qrDesign'
+import { QR_BACKGROUNDS, QR_COLORS, QR_PRINT_CM, QR_SIZES, colorProblem, cropSquare, normalizeHex, type QrSize } from '../core/qrDesign'
+import { renderQr, renderQrSvg } from '../infra/qrRender'
+import { QrBatch } from './QrBatch'
 import { useT } from '../../../shared/i18n/I18n'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
@@ -89,81 +90,6 @@ const emptyForm = (): QrForm => ({
   contact: { name: '', phone: '', email: '', company: '', title: '', address: '', website: '' },
   event: { title: '', location: '', start: nextHour(), end: nextHour(1) },
 })
-
-/**
- * Dibuja el QR en un canvas con el color, el tamaño y el logo elegidos (W-85). Con logo usa
- * corrección alta (H, o Q si el contenido no entra) para que siga leyéndose con el centro tapado.
- */
-async function renderQr(payload: string, opts: { color: string; size: number; logo: File | null }): Promise<string> {
-  const canvas = document.createElement('canvas')
-  let failure: unknown = null
-  for (const level of errorLevels(!!opts.logo)) {
-    try {
-      await QRCode.toCanvas(canvas, payload, { width: opts.size, margin: 2, errorCorrectionLevel: level, color: { dark: opts.color, light: '#FFFFFF' } })
-      failure = null
-      break
-    } catch (e) {
-      failure = e
-    }
-  }
-  if (failure) throw failure
-  if (opts.logo) {
-    const bmp = await createImageBitmap(opts.logo)
-    const ctx = canvas.getContext('2d')!
-    const box = logoBox(canvas.width)
-    // Logo circular (W-85b): círculo blanco de fondo y la imagen recortada en círculo, cubriéndolo.
-    const r = box.side / 2
-    const cx = box.x + r
-    const cy = box.y + r
-    ctx.fillStyle = '#FFFFFF'
-    ctx.beginPath()
-    ctx.arc(cx, cy, r + box.pad, 0, Math.PI * 2)
-    ctx.fill()
-    ctx.save()
-    ctx.beginPath()
-    ctx.arc(cx, cy, r, 0, Math.PI * 2)
-    ctx.clip()
-    const fit = box.side / Math.min(bmp.width, bmp.height)
-    const w = bmp.width * fit
-    const h = bmp.height * fit
-    ctx.drawImage(bmp, cx - w / 2, cy - h / 2, w, h)
-    ctx.restore()
-    bmp.close()
-  }
-  const url = canvas.toDataURL('image/png')
-  canvas.width = canvas.height = 0
-  return url
-}
-
-/** El mismo QR en SVG (W-86): vectorial, para imprimir nítido en cualquier tamaño. */
-async function renderQrSvg(payload: string, opts: { color: string; logo: File | null }): Promise<string> {
-  let svg = ''
-  let failure: unknown = null
-  for (const level of errorLevels(!!opts.logo)) {
-    try {
-      svg = await QRCode.toString(payload, { type: 'svg', margin: 2, errorCorrectionLevel: level, color: { dark: opts.color, light: '#FFFFFF' } })
-      failure = null
-      break
-    } catch (e) {
-      failure = e
-    }
-  }
-  if (failure) throw failure
-  let logoUrl: string | null = null
-  if (opts.logo) {
-    // El logo se vuelve a dibujar como PNG: dentro del SVG solo va una imagen limpia.
-    const bmp = await createImageBitmap(opts.logo)
-    const k = Math.min(1, 512 / Math.max(bmp.width, bmp.height))
-    const canvas = document.createElement('canvas')
-    canvas.width = Math.round(bmp.width * k)
-    canvas.height = Math.round(bmp.height * k)
-    canvas.getContext('2d')!.drawImage(bmp, 0, 0, canvas.width, canvas.height)
-    bmp.close()
-    logoUrl = canvas.toDataURL('image/png')
-    canvas.width = canvas.height = 0
-  }
-  return svgWithLogo(svg, logoUrl)
-}
 
 /** Ajustar el logo (W-85b): arrastrar para mover, acercar con el control (o la rueda), vista previa circular. */
 function LogoCropper({ file, onDone, onCancel }: { file: File; onDone: (f: File) => void; onCancel: () => void }) {
@@ -255,8 +181,9 @@ export function CreateQr() {
     [img, protect],
   )
   const [busy, setBusy] = useState(false)
-  // Diseño (W-85): color, logo y tamaño, como en la app.
-  const [color, setColor] = useState<QrColorId>('black')
+  // Diseño (W-85): color, logo y tamaño, como en la app; color libre y fondo (W-147.8).
+  const [hex, setHex] = useState<string>(QR_COLORS[0].hex)
+  const [background, setBackground] = useState<string>('#FFFFFF')
   const [logo, setLogo] = useState<File | null>(null)
   // Imagen original elegida (para volver a ajustarla) y si el recortador está abierto.
   const [logoSource, setLogoSource] = useState<File | null>(null)
@@ -264,8 +191,8 @@ export function CreateQr() {
   const [logoUrl, setLogoUrl] = useState('')
   const [size, setSize] = useState<QrSize>('m')
   const logoInput = useRef<HTMLInputElement>(null)
-  const hex = QR_COLORS.find((c) => c.id === color)!.hex
-  const lowContrast = !hasSufficientContrast(hex)
+  const problem = colorProblem(hex, background)
+  const lowContrast = problem !== null
   useEffect(() => {
     if (!logo) return setLogoUrl('')
     // Se re-empaqueta con un tipo de imagen y se comprueba que la URL sea del propio sitio.
@@ -298,9 +225,20 @@ export function CreateQr() {
   const baseName = protect ? `docusmart-qr-${tr('file.protected')}` : 'docusmart-qr'
   const downloadSvg = async () => {
     try {
-      const svg = await renderQrSvg(lastPayload, { color: hex, logo })
+      const svg = await renderQrSvg(lastPayload, { color: hex, background, logo })
       download(new Blob([svg], { type: 'image/svg+xml' }), `${baseName}.svg`)
       track('qr_exported', { format: 'svg' })
+    } catch {
+      toast(tr('qr.tooLong'))
+    }
+  }
+  /** PDF vectorial del tamaño de impresión elegido (W-147.8). */
+  const downloadPdf = async () => {
+    try {
+      const [{ qrMatrix, qrPdf }, { circleLogoPng }] = await Promise.all([import('../core/qrPdf'), import('../infra/qrRender')])
+      const pdf = await qrPdf(qrMatrix(lastPayload, !!logo), { dark: hex, background, cm: QR_PRINT_CM[size], logoPng: logo ? await circleLogoPng(logo) : null, title: 'QR' })
+      download(new Blob([pdf as BlobPart], { type: 'application/pdf' }), `${baseName}.pdf`)
+      track('qr_exported', { format: 'pdf' })
     } catch {
       toast(tr('qr.tooLong'))
     }
@@ -326,10 +264,10 @@ export function CreateQr() {
     setBusy(true)
     try {
       const payload = protect ? PREFIX + (await encrypt(built.payload, password)) : built.payload
-      setImg(await renderQr(payload, { color: hex, size: QR_SIZES[size], logo }))
+      setImg(await renderQr(payload, { color: hex, background, size: QR_SIZES[size], logo }))
       setLastPayload(payload)
       recordQr({ source: 'created', payload, kind: protect ? 'protected' : detectType(built.payload), color: hex })
-      track('qr_created', { qr_content_type: form.kind, has_password: protect, color, has_logo: !!logo, size })
+      track('qr_created', { qr_content_type: form.kind, has_password: protect, color: hex, has_logo: !!logo, size })
     } catch {
       toast(tr('qr.tooLong'))
     } finally {
@@ -420,16 +358,41 @@ export function CreateQr() {
                   key={c.id}
                   type="button"
                   role="radio"
-                  aria-checked={color === c.id}
+                  aria-checked={hex === c.hex}
                   className="qr-color"
                   style={{ background: c.hex }}
                   title={tr(`qr.color.${c.id}` as MessageKey)}
                   aria-label={tr(`qr.color.${c.id}` as MessageKey)}
-                  onClick={() => { setColor(c.id); setImg(null) }}
+                  onClick={() => { setHex(c.hex); setImg(null) }}
                 />
               ))}
+              <label className="qr-color-custom" title={tr('qr.colorOther')}>
+                <input type="color" value={hex} aria-label={tr('qr.colorOther')} onChange={(e) => { setHex(normalizeHex(e.target.value) ?? hex); setImg(null) }} />
+              </label>
             </div>
-            {lowContrast && <Notice kind="error">{tr('qr.contrastWarn')}</Notice>}
+          </div>
+          <div className="field">
+            <span>{tr('qr.background')}</span>
+            <div className="qr-colors" role="radiogroup" aria-label={tr('qr.background')}>
+              {QR_BACKGROUNDS.map((b) => (
+                <button
+                  key={b}
+                  type="button"
+                  role="radio"
+                  aria-checked={background === b}
+                  className={'qr-color qr-bg' + (b === 'transparent' ? ' is-transparent' : '')}
+                  style={b === 'transparent' ? undefined : { background: b }}
+                  title={b === 'transparent' ? tr('qr.bgTransparent') : b}
+                  aria-label={b === 'transparent' ? tr('qr.bgTransparent') : tr('qr.bgColor', { color: b })}
+                  onClick={() => { setBackground(b); setImg(null) }}
+                />
+              ))}
+              <label className="qr-color-custom" title={tr('qr.bgOther')}>
+                <input type="color" value={background === 'transparent' ? '#FFFFFF' : background} aria-label={tr('qr.bgOther')} onChange={(e) => { setBackground(normalizeHex(e.target.value) ?? background); setImg(null) }} />
+              </label>
+            </div>
+            {background === 'transparent' && <small className="faint">{tr('qr.bgTransparentHint')}</small>}
+            {problem && <Notice kind="error">{tr(problem === 'inverted' ? 'qr.invertedWarn' : 'qr.contrastWarn')}</Notice>}
           </div>
           <div className="field">
             <span>{tr('qr.logo')}</span>
@@ -478,7 +441,7 @@ export function CreateQr() {
         </BusyButton>
       </div>
       {img && (
-        <div className="qr-preview">
+        <div className={'qr-preview' + (background === 'transparent' ? ' is-transparent' : '')}>
           <img src={img} alt={tr('qr.alt')} />
         </div>
       )}
@@ -486,6 +449,7 @@ export function CreateQr() {
         <>
           <div className="row qr-extra">
             <button type="button" className="btn btn-outline btn-sm" onClick={() => void downloadSvg()}><Icon name="download" /> {tr('qr.svg')}</button>
+            <button type="button" className="btn btn-outline btn-sm" onClick={() => void downloadPdf()}><Icon name="pdf" /> {tr('qr.pdf', { cm: QR_PRINT_CM[size] })}</button>
             {canCopyImage && <button type="button" className="btn btn-outline btn-sm" onClick={() => void copyImage()}><Icon name="copy" /> {tr('qr.copyImage')}</button>}
             <button type="button" className="btn btn-outline btn-sm" onClick={printQr}><Icon name="file" /> {tr('qr.print')}</button>
           </div>
@@ -496,6 +460,7 @@ export function CreateQr() {
           <ShareApp toolName="qr" />
         </>
       )}
+      <QrBatch design={{ color: hex, background, logo, size }} disabled={lowContrast} />
     </section>
   )
 }

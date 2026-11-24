@@ -89,3 +89,50 @@ export function cropSquare(width: number, height: number, zoom: number, offsetX:
   const clamp = (v: number, max: number) => Math.min(Math.max(v, 0), Math.max(0, max))
   return { sx: clamp((width - size) / 2 + offsetX, width - size), sy: clamp((height - size) / 2 + offsetY, height - size), size }
 }
+
+/* ───────────── Color libre y fondo (W-147.8) ───────────── */
+
+/** Fondos rápidos; "transparent" deja el fondo sin pintar (para poner el QR sobre un diseño). */
+export const QR_BACKGROUNDS = ['#FFFFFF', '#FFF8E1', '#E3F2FD', '#F1F8E9', 'transparent'] as const
+
+/** Contra qué color se mide el contraste: el fondo transparente se toma como papel blanco. */
+export const paperOf = (background: string) => (background === 'transparent' ? '#FFFFFF' : background)
+
+/**
+ * Si el par de colores no sirve: 'inverted' si el código es más claro que el fondo (muchas
+ * cámaras no leen QR invertidos) y 'contrast' si no hay contraste suficiente. null si está bien.
+ */
+export function colorProblem(dark: string, background: string): 'inverted' | 'contrast' | null {
+  const light = paperOf(background)
+  if (luminance(dark) > luminance(light)) return 'inverted'
+  return contrastRatio(dark, light) < MIN_CONTRAST ? 'contrast' : null
+}
+
+/** "#rgb" o "#rrggbb" a "#RRGGBB"; null si no es un color. */
+export function normalizeHex(value: string): string | null {
+  const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(value.trim())
+  if (!m) return null
+  const h = m[1].length === 3 ? m[1].replace(/./g, (c) => c + c) : m[1]
+  return `#${h.toUpperCase()}`
+}
+
+/** Lado del QR en el PDF para cada tamaño, en centímetros. */
+export const QR_PRINT_CM: Record<QrSize, number> = { s: 5, m: 10, l: 20 }
+
+/** Lado de cada QR en la hoja para imprimir varios (W-147.8), en centímetros. */
+export const QR_SHEET_CM: Record<QrSize, number> = { s: 3, m: 5, l: 8 }
+
+/** Posición de cada QR en la hoja: columnas y filas que caben en A4 con márgenes de 12 mm. */
+export function sheetLayout(cm: number): { cols: number; rows: number; side: number; gapX: number; gapY: number; label: number } {
+  const W = 595.28
+  const H = 841.89
+  const MM = 72 / 25.4
+  const margin = 12 * MM
+  const label = 14
+  const side = cm * 10 * MM
+  const cols = Math.max(1, Math.floor((W - 2 * margin + 6 * MM) / (side + 6 * MM)))
+  const rows = Math.max(1, Math.floor((H - 2 * margin + 4 * MM) / (side + label + 4 * MM)))
+  const gapX = cols > 1 ? (W - 2 * margin - cols * side) / (cols - 1) : 0
+  const gapY = rows > 1 ? (H - 2 * margin - rows * (side + label)) / (rows - 1) : 0
+  return { cols, rows, side, gapX, gapY, label }
+}
