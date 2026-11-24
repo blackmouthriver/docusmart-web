@@ -37,7 +37,7 @@ Leyenda: ✅ lo tiene · ➖ parcial · ❌ no lo tiene.
 | Firmar: pedir firmas a otros | ❌ | ✅ | ✅ | ✅ (Sign.com) | ✅ | ✅ (DocuSign) |
 | **Formulario:** llenar y aplanar | ✅ | ✅ | ✅ | ✅ | ➖ | ✅ |
 | Formulario: **cualquier alfabeto** | ❌ (falla) | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Formulario: crear campos nuevos | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ |
+| Formulario: crear campos nuevos | ✅ (W-147.2) | ✅ | ✅ | ❌ | ❌ | ✅ |
 | **Marca de agua:** texto | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Marca de agua: **imagen o logo** | ❌ | ✅ | ✅ | ➖ | ✅ | ✅ |
 | Marca de agua: **posición, mosaico, rotación, transparencia, tamaño, color** | ❌ (fija: diagonal, azul, 18 %) | ✅ | ✅ | ➖ | ✅ | ✅ |
@@ -99,5 +99,12 @@ Además se corrigió una falla encontrada al hacerlo: al mover o cambiar el tama
 
 También se actualizaron las preguntas frecuentes de Censurar PDF y Llenar formulario en los 12 idiomas.
 
-**Queda por debajo en Editar:** crear campos de formulario nuevos (Adobe y Sejda lo tienen) y pedir firmas a otras personas (fuera de alcance por privacidad).
+**Queda por debajo en Editar:** pedir firmas a otras personas (fuera de alcance por privacidad). Crear campos de formulario se hizo después (sección siguiente).
 
+## Seguimiento W-147.2 · Crear campos de formulario (2026-11-24)
+
+| Mejora | Cómo quedó | Prueba |
+|---|---|---|
+| Crear campos | En **Llenar formulario PDF**, modo **Crear campos** (y, si el PDF no tiene campos, el aviso lleva ahí): se elige el tipo (**texto**, **texto largo**, **casilla**, **opciones** o **lista desplegable**), se **dibuja arrastrando** sobre la página (o un toque lo pone con el tamaño normal) y se **mueve** arrastrándolo. Cada campo tiene nombre, opciones (por comas o una por línea) y **obligatorio**. Los campos que ya traía el PDF se ven tenues para no encimarlos. **Crear PDF rellenable** guarda un AcroForm real (se llena en cualquier lector) y **Llenarlo ahora** lo abre en Llenar campos. Funciona en páginas giradas o recortadas; los nombres no se repiten con los que ya existían; los textos de las opciones se escriben con fuentes de cualquier idioma | Unitarias (`pdfFormCreate.test.ts`: los 5 tipos con nombre, opciones y obligatorio; página girada; no pisa campos existentes; lo creado se llena). E2E: en un PDF sin campos se dibuja un texto, se pone una casilla y se dibujan opciones, se crea, se llena y el PDF descargado trae los valores |
+
+**Nueva comparación:** crear campos de formulario ✅ (como Adobe y Sejda, gratis y en el navegador).
