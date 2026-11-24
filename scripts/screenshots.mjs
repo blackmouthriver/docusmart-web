@@ -10,7 +10,7 @@
 // Escribe también tools/guide-shots.json con el tamaño de cada captura (el generador de páginas
 // lo usa para poner width/height y no mover la página al cargar).
 import { spawn } from 'node:child_process'
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from '@playwright/test'
@@ -156,7 +156,15 @@ const [onlyTool, onlyLangs] = process.argv.slice(2)
 const langs = LANGS.filter((l) => !onlyLangs || onlyLangs.split(',').includes(l.lang))
 const shots = SHOTS.filter((s) => !onlyTool || s.tool === onlyTool)
 
-const manifest = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, 'utf8')) : {}
+/** Tamaños ya guardados (si todavía no hay, se empieza de cero). */
+function readManifest() {
+  try {
+    return JSON.parse(readFileSync(MANIFEST, 'utf8'))
+  } catch {
+    return {}
+  }
+}
+const manifest = readManifest()
 const server = await startPreview()
 // En CI, el Chromium de Playwright; en un equipo, el Chrome instalado (como las pruebas).
 const browser = await chromium.launch(process.env.CI ? {} : { channel: 'chrome' })
