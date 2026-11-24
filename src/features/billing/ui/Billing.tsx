@@ -22,7 +22,7 @@ import {
   type HistoryEntry,
   type SavedItem,
   advanceCounter,
-  amountInWordsEs,
+
   billingBlocks,
   billingFileName,
   emptyParty,
@@ -40,6 +40,7 @@ import {
   type Item,
   type Party,
 } from '../core/billing'
+import { amountInWords } from '../core/numberWords'
 import type { Signature } from '../../pdf/ui/SignTool'
 import { COUNTRIES, countryFromLocale, countryName, defaultIdType, findCountry, idsFor, matchCountry, type Country } from '../core/countries'
 
@@ -253,7 +254,7 @@ export function BillingTool() {
       const sigSize = signature ? imageSize(signature.png) : null
       const blocks = billingBlocks(doc, labels, (n) => formatMoney(n, currency, moneyLocale(lang, currency)), {
         dateText: (iso) => (iso ? new Date(`${iso}T12:00`).toLocaleDateString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' }) : ''),
-        words: lang.startsWith('es') ? amountInWordsEs(t.total, currency) : undefined,
+        words: amountInWords(lang, t.total, currency),
         signature: signature && sigSize ? { data: signature.png, width: sigSize.width, height: sigSize.height } : undefined,
         logo: logo ? { data: logo.data, type: logo.type, width: logo.width, height: logo.height } : undefined,
       })
@@ -485,7 +486,7 @@ export function BillingTool() {
           {t.withholding > 0 && <><dt>{country?.withholding || tr('bill.withholdingPdf')}</dt><dd>-{money(t.withholding)}</dd></>}
           <dt className="bill-grand">{tr('bill.total')}</dt><dd className="bill-grand">{money(t.total)}</dd>
         </dl>
-        {lang.startsWith('es') && t.total > 0 && <small className="faint bill-words">{amountInWordsEs(t.total, currency)}</small>}
+        {t.total > 0 && amountInWords(lang, t.total, currency) && <small className="faint bill-words">{amountInWords(lang, t.total, currency)}</small>}
       </div>
 
       <div className="card stack">

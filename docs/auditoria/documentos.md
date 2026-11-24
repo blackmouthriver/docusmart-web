@@ -34,15 +34,15 @@ Leyenda: ✅ lo tiene · ➖ parcial · ❌ no lo tiene.
 | **Ordenar secciones y secciones propias** | ❌ | ✅ | ✅ | ✅ | ➖ |
 | **Guardado automático** | ❌ (borrador manual) | ✅ (cuenta) | ✅ (cuenta) | ✅ (cuenta) | ✅ (cuenta) |
 | Elegir **Carta o A4** | ❌ | ✅ | ✅ | ✅ | ➖ |
-| **Comparar con una oferta** (palabras clave) | ❌ | ❌ | ➖ | ✅ | ✅ |
-| **Carta de presentación** | ❌ | ✅ | ✅ | ✅ | ➖ |
+| **Comparar con una oferta** (palabras clave) | ✅ (W-147.10) | ❌ | ➖ | ✅ | ✅ |
+| **Carta de presentación** | ✅ (W-147.10) | ✅ | ✅ | ✅ | ➖ |
 | Privacidad | 100 % local, sin cuenta | Cuenta | Cuenta | Cuenta | Cuenta |
 
 ### Cuenta de cobro, cotización y recibo
 
 | Función | DocuSmart | Generadores gratis (Wix, FreshBooks, Invoice Simple) | Zoho Invoice | Colombia Move (cuenta de cobro) |
 |---|---|---|---|---|
-| Cuenta de cobro con valor en letras | ✅ | ❌ | ❌ | ✅ |
+| Cuenta de cobro con valor en letras | ✅ (español, portugués e inglés) | ❌ | ❌ | ✅ |
 | Cotización y recibo | ✅ | ➖ | ✅ | ❌ |
 | Impuesto y retención por país | ✅ | ➖ | ✅ | ➖ |
 | Firma | ✅ | ✅ | ✅ | ➖ |
@@ -88,3 +88,17 @@ Se hicieron las brechas 1 a 6 (2026-11-22). Las 7 a 9 quedan para más adelante.
 **Nueva comparación (filas que cambiaron):** color de acento y letra ✅ · ordenar secciones y secciones propias ✅ · guardado automático ✅ (sin cuenta) · Carta o A4 ✅ · logo, descuento y fecha de vencimiento ✅ · clientes y conceptos guardados ✅ · convertir cotización e historial ✅ (como Zoho, pero sin cuenta y local).
 
 **Queda por debajo:** comparar la hoja de vida con una oferta (#7), carta de presentación (#8) y valor en letras en portugués e inglés (#9). La cantidad de plantillas (3) sigue lejos de Canva, a propósito: todas son aptas para ATS.
+
+## 5. Seguimiento W-147.10 (2026-11-24)
+
+Se hicieron las brechas 7 a 9.
+
+| # | Mejora | Cómo quedó | Prueba |
+|---|---|---|---|
+| 7 | Comparar con una oferta | Tarjeta **Comparar con una oferta de trabajo** en la hoja de vida: se pega el aviso y se sacan sus palabras clave (las más repetidas, sin palabras vacías en español, inglés y portugués ni las de cualquier aviso como "experiencia" o "requisitos"; pares como "servicio al cliente" o "Power BI"; conserva C++, C#, .NET y siglas como BI). Se comparan con toda la hoja de vida sin tildes, mayúsculas ni plurales: **porcentaje de coincidencia**, **"Te faltan"** (con un botón para agregar cada una a Habilidades) y **"Ya las tienes"**. Todo en el navegador | Unitarias (palabras, pares, siglas, plurales, porcentaje). E2E: con una oferta de analista de datos, "Power BI" falta, se agrega y el porcentaje sube |
+| 8 | Carta de presentación | Tarjeta **Carta de presentación**: empresa, cargo (por defecto, el titular), destinatario y por qué le interesa (opcionales). Arma la carta con la ciudad y la fecha, el saludo, el último trabajo (con cargo y empresa), las dos primeras frases del perfil, las **fortalezas que coinciden con la oferta** (o las primeras habilidades), los estudios y la despedida con nombre, teléfono y correo. Queda en un cuadro editable y se guarda en **PDF o Word** con el mismo papel, letra y color de la hoja de vida. Frases en los 12 idiomas | Unitarias (cada párrafo, sin empresa ni oferta, sin frases cojas). E2E: carta con la empresa, editada y en PDF |
+| 9 | Valor en letras en portugués e inglés | En la cuenta de cobro, el valor en letras sale en el idioma de la pantalla: **portugués de Brasil** ("Mil duzentos e cinquenta reais e trinta centavos", con "e" entre grupos, "um milhão de reais", bilhão) e **inglés** de cheque ("One thousand two hundred fifty dollars and 30/100"), además del español. En los demás idiomas no se muestra | Unitarias (casos de "e", cem/cento, milhões, centavos, guiones en inglés). E2E en portugués (BRL) e inglés (USD) |
+
+**Nueva comparación:** comparar con una oferta ✅ (como Jobscan, gratis y sin subir nada) · carta de presentación ✅ · valor en letras en portugués e inglés ✅.
+
+**Queda por debajo:** la cantidad de plantillas de hoja de vida (3), a propósito: todas son aptas para ATS.
