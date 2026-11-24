@@ -37,7 +37,12 @@ type Token = { raw: string; norm: string; stop: boolean }
 export function tokens(text: string): Token[] {
   const out: Token[] = []
   for (const piece of text.split(/[^\p{L}\p{N}+#.]+/u)) {
-    const raw = piece.replace(/^\.+|\.+$/g, '')
+    // Sin puntos al principio ni al final ("Python." → "Python"; ".NET" → "NET").
+    let from = 0
+    let to = piece.length
+    while (from < to && piece[from] === '.') from++
+    while (to > from && piece[to - 1] === '.') to--
+    const raw = piece.slice(from, to)
     if (!raw) continue
     const norm = fold(raw)
     const tech = /[+#.\d]/.test(norm)
