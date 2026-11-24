@@ -1479,3 +1479,15 @@ html[data-anim-bg="off"] .anim-bg { display: none; }
 .kw-add { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; background: rgba(146, 64, 14, 0.12); color: inherit; cursor: pointer; }
 .kw-add svg { width: 14px; height: 14px; }
 .cv-letter { min-height: 360px; font-family: inherit; line-height: 1.5; }
+
+/* Crear campos de formulario (W-147.2): los que ya había (tenues), los nuevos (con su nombre) y el que se está dibujando. */
+.form-create-stage { cursor: crosshair; }
+.form-rect.is-existing { background: rgba(100, 116, 139, 0.12); outline: 1px dashed rgba(100, 116, 139, 0.6); pointer-events: none; }
+.form-rect.is-new { background: rgba(124, 58, 237, 0.12); outline: 1.5px solid rgba(124, 58, 237, 0.7); cursor: move; touch-action: none; overflow: hidden; }
+.form-rect.is-new.is-active { background: rgba(245, 158, 11, 0.22); outline: 2px solid #F59E0B; }
+.form-rect.is-draft { background: rgba(124, 58, 237, 0.1); outline: 1.5px dashed #7C3AED; pointer-events: none; }
+.form-rect-label { position: absolute; left: 3px; top: 2px; max-width: calc(100% - 6px); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 10px; line-height: 1.2; font-weight: 700; color: #5B21B6; pointer-events: none; }
+.form-new { padding: 8px 10px; border-radius: 12px; }
+.form-new.is-active { box-shadow: 0 0 0 2px #F59E0B inset; }
+.form-new legend { display: flex; align-items: center; gap: 6px; font-weight: 700; }
+.form-new legend svg { width: 16px; height: 16px; }

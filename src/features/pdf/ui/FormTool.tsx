@@ -1,7 +1,8 @@
-// Formularios PDF: llenar los campos rellenables (AcroForm) de un PDF.
+// Formularios PDF: llenar los campos rellenables (AcroForm) de un PDF y crear campos nuevos (W-147.2).
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useApp } from '../../../app/state'
-import { BusyButton, DropZone, FileRow, Notice, errorMessage } from '../../../shared/ui/ui'
+import { BusyButton, DropZone, FileRow, Notice, Segmented, errorMessage } from '../../../shared/ui/ui'
+import { FormCreate } from './FormCreate'
 import { baseName, download } from '../../../shared/files/files'
 import { Icon } from '../../../shared/ui/Icon'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
@@ -25,6 +26,8 @@ export function FormTool() {
   const [active, setActive] = useState<string | null>(null)
   const [flatten, setFlatten] = useState(false)
   const [busy, setBusy] = useState(false)
+  /** Llenar los campos que hay o crear campos nuevos. */
+  const [mode, setMode] = useState<'fill' | 'create'>('fill')
 
   useEffect(() => {
     setInfo(null)
@@ -126,17 +129,28 @@ export function FormTool() {
             actions={<button type="button" className="btn btn-ghost btn-sm" disabled={busy} onClick={() => setFile(null)}>{tr('common.change')}</button>}
           />
         </ul>
-        {info && !info.fields.length && (
+        <Segmented
+          label={tr('form.mode')}
+          value={mode}
+          onChange={setMode}
+          options={[
+            { value: 'fill', label: tr('form.mode.fill') },
+            { value: 'create', label: tr('form.mode.create') },
+          ]}
+        />
+        {mode === 'fill' && info && !info.fields.length && (
           <Notice kind="info">
-            {info.hasXfa ? tr('form.noFieldsXfa') : tr('form.noFields')}{' '}
-            <a href="/editar-pdf">{tr('tool.editar')}</a>.
+            {info.hasXfa ? tr('form.noFieldsXfa') : tr('form.noFieldsCreate')}{' '}
+            {!info.hasXfa && <button type="button" className="link-btn" onClick={() => setMode('create')}>{tr('form.mode.create')}</button>}
           </Notice>
         )}
         {info && info.unsupported > 0 && <Notice kind="plain">{tr('form.unsupported', { n: info.unsupported })}</Notice>}
         {error && <Notice kind="error">{error}</Notice>}
       </div>
 
-      {info && info.fields.length > 0 && (
+      {mode === 'create' && info && <FormCreate file={file} existing={info.fields} onFill={(f) => { setFile(f); setMode('fill') }} />}
+
+      {mode === 'fill' && info && info.fields.length > 0 && (
         <div className="form-layout">
           <div className="card stack form-preview">
             {preview ? (
@@ -200,7 +214,7 @@ export function FormTool() {
           </div>
         </div>
       )}
-      {file && output && (
+      {mode === 'fill' && file && output && (
         <div className="card">
           <BeforeAfter original={file} result={output} toolName="form" title={tr('form.title')} />
         </div>
