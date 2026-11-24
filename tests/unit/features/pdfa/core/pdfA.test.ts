@@ -234,7 +234,7 @@ describe('convertToPdfA', () => {
     const d = await PDFDocument.create()
     d.addPage().drawText('Hola', { x: 50, y: 700, font: await d.embedFont(StandardFonts.CourierBold) })
     const { pdf, report } = await convertToPdfA(await d.save(), { loadFont })
-    expect(report).toEqual({ fonts: ['Courier-Bold'], rasterPages: [], removed: { actions: 0, attachments: 0, annotations: 0 }, formAppearances: false })
+    expect(report).toEqual({ fonts: ['Courier-Bold'], rasterPages: [], removed: { actions: 0, attachments: 0, annotations: 0 }, attachments: 0, layers: false, formAppearances: false })
     const out = await PDFDocument.load(pdf, { updateMetadata: false })
     const font = out.getPages()[0].node.Resources()!.lookup(N('Font'), PDFDict)
     const f = font.lookup(font.keys()[0], PDFDict)

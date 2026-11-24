@@ -1,5 +1,12 @@
 /**
- * PDF a PDF/A-2b (archivo a largo plazo) con pdf-lib, todo en el navegador.
+ * PDF a PDF/A-2b, 1b o 3b (archivo a largo plazo) con pdf-lib, todo en el navegador.
+ *
+ * Versiones (W-147.7):
+ * - 2b (la recomendada): lo de abajo.
+ * - 1b (PDF 1.4, la más antigua y estricta): además, sin transparencias (las páginas que las usan
+ *   pasan a imagen), sin capas (contenido opcional) y solo anotaciones de PDF 1.4.
+ * - 3b: como 2b, pero conserva los adjuntos (de cualquier tipo), con el tipo de archivo, la fecha
+ *   y la relación con el documento que pide la norma.
  *
  * Qué hace para cumplir la norma (validado con veraPDF):
  * - Perfil de color sRGB (escrito aquí mismo, ~500 bytes) como OutputIntent.
@@ -34,13 +41,19 @@ import { tr } from '../../../shared/i18n/translate'
 
 export type FontLoader = (file: string) => Promise<Uint8Array>
 export type PageRasterizer = (pageIndex: number) => Promise<RasterPage>
-export type RasterReason = 'cmyk' | 'font' | 'other'
+export type RasterReason = 'cmyk' | 'font' | 'transparency' | 'other'
+/** La parte de la norma: 1, 2 o 3 (siempre nivel B). */
+export type PdfAPart = 1 | 2 | 3
 export type PdfAReport = {
   /** Fuentes estándar que se incrustaron. */
   fonts: string[]
   /** Páginas (desde 1) convertidas en imagen y por qué. */
   rasterPages: Array<{ page: number; reason: RasterReason }>
   removed: { actions: number; attachments: number; annotations: number }
+  /** Adjuntos que se conservaron (solo PDF/A-3b). */
+  attachments: number
+  /** Capas (contenido opcional) que quedaron siempre visibles (solo PDF/A-1b). */
+  layers: boolean
   /** Se generó la apariencia de campos de formulario que no la tenían. */
   formAppearances: boolean
 }
@@ -157,15 +170,15 @@ const xmlEsc = (s: string) =>
     .replace(/>/g, '&gt;')
 const isoDate = (d: Date) => d.toISOString().replace(/\.\d{3}Z$/, 'Z')
 
-/** Paquete XMP con pdfaid (parte 2, nivel B) y los mismos datos que el diccionario Info. */
-export function xmpPacket(m: XmpInfo): string {
+/** Paquete XMP con pdfaid (la parte pedida, nivel B) y los mismos datos que el diccionario Info. */
+export function xmpPacket(m: XmpInfo, part: PdfAPart = 2): string {
   const alt = (tag: string, v?: string) => (v ? `<${tag}><rdf:Alt><rdf:li xml:lang="x-default">${xmlEsc(v)}</rdf:li></rdf:Alt></${tag}>` : '')
   return [
     '<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>',
     '<x:xmpmeta xmlns:x="adobe:ns:meta/">',
     '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">',
     '<rdf:Description rdf:about="" xmlns:pdfaid="http://www.aiim.org/pdfa/ns/id/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:pdf="http://ns.adobe.com/pdf/1.3/">',
-    '<pdfaid:part>2</pdfaid:part>',
+    `<pdfaid:part>${part}</pdfaid:part>`,
     '<pdfaid:conformance>B</pdfaid:conformance>',
     alt('dc:title', m.title),
     m.author ? `<dc:creator><rdf:Seq><rdf:li>${xmlEsc(m.author)}</rdf:li></rdf:Seq></dc:creator>` : '',
@@ -282,6 +295,29 @@ async function embedStandard(ctx: PDFContext, font: PDFDict, plan: Extract<FontP
 const FORBIDDEN_ACTIONS = new Set(['Launch', 'Sound', 'Movie', 'ResetForm', 'ImportData', 'Hide', 'SetOCGState', 'Rendition', 'Trans', 'GoTo3DView', 'JavaScript'])
 const NAMED_OK = new Set(['NextPage', 'PrevPage', 'FirstPage', 'LastPage'])
 const FORBIDDEN_ANNOTS = new Set(['3D', 'Sound', 'Screen', 'Movie', 'FileAttachment', 'RichMedia'])
+/** PDF/A-1 solo admite las anotaciones de PDF 1.4 (sin sonido, película ni adjuntos). */
+const PDFA1_ANNOTS = new Set(['Text', 'Link', 'FreeText', 'Line', 'Square', 'Circle', 'Highlight', 'Underline', 'Squiggly', 'StrikeOut', 'Stamp', 'Ink', 'Popup', 'Widget', 'PrinterMark', 'TrapNet'])
+/** Si una anotación de este tipo se puede conservar en la parte dada. */
+export function annotAllowed(sub: string, part: PdfAPart): boolean {
+  if (part === 1) return PDFA1_ANNOTS.has(sub)
+  if (part === 3 && sub === 'FileAttachment') return true
+  return !FORBIDDEN_ANNOTS.has(sub)
+}
+
+/** Tipo de archivo (MIME) por la extensión, para los adjuntos de PDF/A-3. */
+export function mimeOf(name: string): string {
+  const ext = /\.([a-z0-9]+)$/i.exec(name)?.[1]?.toLowerCase() ?? ''
+  const MIME: Record<string, string> = {
+    pdf: 'application/pdf', xml: 'application/xml', json: 'application/json', txt: 'text/plain', csv: 'text/csv', html: 'text/html', htm: 'text/html',
+    png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', tif: 'image/tiff', tiff: 'image/tiff',
+    zip: 'application/zip', doc: 'application/msword', xls: 'application/vnd.ms-excel',
+    docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    odt: 'application/vnd.oasis.opendocument.text', ods: 'application/vnd.oasis.opendocument.spreadsheet',
+  }
+  return MIME[ext] ?? 'application/octet-stream'
+}
 
 const dictOf = (o: unknown): PDFDict | null => (o instanceof PDFDict ? o : o instanceof PDFStream ? o.dict : null)
 const nameOf = (o: unknown) => (o instanceof PDFName ? o.decodeText() : undefined)
@@ -339,15 +375,18 @@ function decodeText(s: PDFRawStream): string {
 }
 
 /** Motivo por el que una página tiene que pasar a imagen, o null si se puede conservar. */
-function pageProblem(ctx: PDFContext, page: PDFDict, fontPlans: Map<PDFDict, FontPlan>, bad: Set<unknown>): RasterReason | null {
+function pageProblem(ctx: PDFContext, page: PDFDict, fontPlans: Map<PDFDict, FontPlan>, bad: Set<unknown>, transparent: Set<unknown>, noTransparency: boolean): RasterReason | null {
   let reason: RasterReason | null = null
   const contentStreams: PDFRawStream[] = []
   const check = (obj: PDFObject, key: string) => {
     if (reason === 'font') return
     if (bad.has(obj)) reason ??= 'other'
+    if (transparent.has(obj)) reason ??= 'transparency'
     if (obj === N('DeviceCMYK') || obj === N('CMYK')) reason ??= 'cmyk'
     const d = dictOf(obj)
     if (!d) return
+    // Estados gráficos escritos dentro de los recursos (no como objeto aparte).
+    if (noTransparency && (d.get(N('Type')) === N('ExtGState') || isUntypedGraphicsState(d)) && usesTransparency(d)) reason ??= 'transparency'
     if (d.get(N('Type')) === N('Font') || (d.has(N('BaseFont')) && d.has(N('Subtype')))) {
       if (fontPlans.get(d)?.status === 'broken' || (!fontPlans.has(d) && planFont(d).status === 'broken')) reason = 'font'
     }
@@ -404,7 +443,7 @@ function dropUnreachable(ctx: PDFContext) {
 
 /* ───────────── Conversión ───────────── */
 
-export type PdfAOptions = { loadFont: FontLoader; rasterize?: PageRasterizer; now?: Date }
+export type PdfAOptions = { loadFont: FontLoader; rasterize?: PageRasterizer; now?: Date; part?: PdfAPart }
 
 export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promise<{ pdf: Uint8Array; report: PdfAReport }> {
   let doc: PDFDocument
@@ -417,7 +456,8 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
   if (doc.isEncrypted) throw new PdfAEncryptedError()
   const ctx = doc.context
   const cat = doc.catalog
-  const report: PdfAReport = { fonts: [], rasterPages: [], removed: { actions: 0, attachments: 0, annotations: 0 }, formAppearances: false }
+  const part: PdfAPart = opts.part ?? 2
+  const report: PdfAReport = { fonts: [], rasterPages: [], removed: { actions: 0, attachments: 0, annotations: 0 }, attachments: 0, layers: false, formAppearances: false }
 
   // 1. Formularios: apariencia para los campos que no la tienen (antes de las fuentes:
   //    pdf-lib la dibuja con Helvetica, que luego se incrusta como las demás).
@@ -455,17 +495,24 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
     if (names.has(N('JavaScript'))) report.removed.actions++
     names.delete(N('JavaScript'))
     const ef = names.lookup(N('EmbeddedFiles'))
-    if (ef instanceof PDFDict) {
+    if (ef instanceof PDFDict && part !== 3) {
       const list = ef.lookup(N('Names'))
       report.removed.attachments += list instanceof PDFArray ? Math.floor(list.size() / 2) : 1
       names.delete(N('EmbeddedFiles'))
     }
   }
   cat.delete(N('AF'))
+  // PDF/A-1: sin capas. Todo el contenido queda visible, como se ve por defecto en la mayoría.
+  if (part === 1 && cat.has(N('OCProperties'))) {
+    cat.delete(N('OCProperties'))
+    report.layers = true
+  }
 
   // 3. Todos los objetos: fuentes, imágenes, estados gráficos, acciones, contenido opcional.
   const fontPlans = new Map<PDFDict, FontPlan>()
   const bad = new Set<unknown>()
+  /** PDF/A-1: objetos con transparencia (la página que los usa pasa a imagen). */
+  const transparent = new Set<unknown>()
   for (const [ref, obj] of ctx.enumerateIndirectObjects()) {
     const d = dictOf(obj)
     if (!d) continue
@@ -484,9 +531,10 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
       // CIDSet y CharSet son opcionales y, si están incompletos, no cumplen.
       d.delete(N('CIDSet'))
       d.delete(N('CharSet'))
-    } else if (type === N('ExtGState')) {
+    } else if (type === N('ExtGState') || isUntypedGraphicsState(d)) {
       for (const k of ['TR', 'HTP', 'HT']) d.delete(N(k))
       if (d.has(N('TR2')) && d.get(N('TR2')) !== N('Default')) d.set(N('TR2'), N('Default'))
+      if (part === 1 && usesTransparency(d)) transparent.add(obj)
     } else if (type === N('OutputIntent')) {
       // Se reemplazan por el perfil sRGB.
     }
@@ -494,6 +542,19 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
       d.delete(N('Interpolate'))
       d.delete(N('Alternates'))
       d.delete(N('OPI'))
+      if (part === 1) {
+        const smask = d.get(N('SMask'))
+        const inData = d.get(N('SMaskInData'))
+        if ((smask && smask !== N('None')) || (inData instanceof PDFNumber && inData.asNumber() > 0)) transparent.add(obj)
+        // JPEG 2000 no existe en PDF 1.4.
+        if (/JPX/.test(String(d.get(N('Filter'))))) bad.add(obj)
+      }
+    }
+    if (part === 1) {
+      // Sin capas: las marcas de contenido opcional en imágenes, formularios y anotaciones se quitan.
+      d.delete(N('OC'))
+      // Grupos de transparencia (en páginas y formularios): no existen en PDF 1.4.
+      if (d.get(N('Subtype')) === N('Form')) d.delete(N('Group'))
     }
     if (d.get(N('Subtype')) === N('Form')) {
       d.delete(N('OPI'))
@@ -543,7 +604,7 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
         const r = rect instanceof PDFArray ? rect.asArray().map((x) => (x instanceof PDFNumber ? x.asNumber() : 0)) : [0, 0, 0, 0]
         const hasArea = Math.abs(r[2] - r[0]) > 0 && Math.abs(r[3] - r[1]) > 0
         const needsAp = !['Popup', 'Link'].includes(sub) && hasArea
-        if (FORBIDDEN_ANNOTS.has(sub) || (needsAp && !(ap instanceof PDFDict && ap.has(N('N'))))) {
+        if (!annotAllowed(sub, part) || (needsAp && !(ap instanceof PDFDict && ap.has(N('N'))))) {
           report.removed.annotations++
           continue
         }
@@ -553,13 +614,16 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
         // Imprimible (4); nunca invisible (1), oculta (2), "no ver" (32) ni alternable (256).
         a.set(N('F'), PDFNumber.of((flags | 4) & ~(1 | 2 | 32 | 256)))
         a.delete(N('AA'))
+        // PDF/A-1: anotaciones sin transparencia.
+        if (part === 1) a.delete(N('CA'))
         keep.push(ref)
       }
       if (keep.length) node.set(N('Annots'), ctx.obj(keep))
       else node.delete(N('Annots'))
     }
-    const reason = pageProblem(ctx, node, fontPlans, bad)
+    const reason = pageProblem(ctx, node, fontPlans, bad, transparent, part === 1)
     if (reason) toRaster.push({ index, reason })
+    if (part === 1) node.delete(N('Group'))
   })
 
   if (toRaster.length) {
@@ -588,6 +652,9 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
     void ref
   }
 
+  // PDF/A-3: cada adjunto con nombre, tipo, fecha y relación, listado en /AF del catálogo.
+  if (part === 3) report.attachments = fixAttachments(doc, opts.now ?? new Date())
+
   // 6. Perfil de color, metadatos e identificador.
   const icc = ctx.register(ctx.flateStream(srgbIcc(), { N: 3 }))
   const intent = ctx.obj({ Type: 'OutputIntent', S: 'GTS_PDFA1', OutputConditionIdentifier: PDFString.of('sRGB IEC61966-2.1'), Info: PDFString.of('sRGB IEC61966-2.1'), DestOutputProfile: icc })
@@ -615,7 +682,7 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
   doc.setProducer(meta.producer)
   doc.setCreationDate(meta.created)
   doc.setModificationDate(meta.modified)
-  cat.set(N('Metadata'), ctx.register(ctx.stream(new TextEncoder().encode(xmpPacket(meta)), { Type: 'Metadata', Subtype: 'XML' })))
+  cat.set(N('Metadata'), ctx.register(ctx.stream(new TextEncoder().encode(xmpPacket(meta, part)), { Type: 'Metadata', Subtype: 'XML' })))
   cat.delete(N('PieceInfo'))
 
   const id = Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, '0')).join('')
@@ -627,3 +694,99 @@ export async function convertToPdfA(bytes: Uint8Array, opts: PdfAOptions): Promi
 }
 
 const safeDate = (d: Date | undefined) => (d && !Number.isNaN(d.getTime()) ? d : undefined)
+
+/** Un estado gráfico sin /Type (es opcional): tiene claves de transparencia y no es otra cosa. */
+const isUntypedGraphicsState = (d: PDFDict) => !d.has(N('Type')) && !d.has(N('Subtype')) && ['CA', 'ca', 'BM', 'SMask'].some((k) => d.has(N(k)))
+
+/** PDF/A-1: un estado gráfico con opacidad, modo de fusión o máscara suave usa transparencia. */
+export function usesTransparency(gs: PDFDict): boolean {
+  const num = (k: string) => {
+    const v = gs.get(N(k))
+    return v instanceof PDFNumber ? v.asNumber() : 1
+  }
+  if (num('CA') < 1 || num('ca') < 1) return true
+  const smask = gs.get(N('SMask'))
+  if (smask && smask !== N('None')) return true
+  const bm = gs.get(N('BM'))
+  const modes = bm instanceof PDFArray ? bm.asArray() : bm ? [bm] : []
+  return modes.some((m) => m !== N('Normal') && m !== N('Compatible'))
+}
+
+/** Fecha en el formato de PDF (D:AAAAMMDDHHmmSSZ). */
+const pdfDate = (d: Date) => `D:${d.toISOString().replace(/[-:T]/g, '').slice(0, 14)}Z`
+
+/**
+ * PDF/A-3: deja cada adjunto como pide la norma (nombre en /F y /UF, /AFRelationship, tipo MIME
+ * y fecha en el archivo incrustado) y los lista en /AF del catálogo. Los que no tienen el archivo
+ * se quitan. Devuelve cuántos quedaron.
+ */
+function fixAttachments(doc: PDFDocument, now: Date): number {
+  const ctx = doc.context
+  const cat = doc.catalog
+  const af: PDFRef[] = []
+  const seen = new Set<string>()
+  /** Arregla una especificación de archivo; devuelve su referencia o null si no tiene archivo. */
+  const fix = (obj: PDFObject | undefined): PDFRef | null => {
+    const ref = obj instanceof PDFRef ? obj : obj ? ctx.register(obj) : null
+    const spec = ref ? ctx.lookup(ref) : undefined
+    if (!(spec instanceof PDFDict)) return null
+    const stream = spec.lookupMaybe(N('EF'), PDFDict)?.lookup(N('F'))
+    if (!(stream instanceof PDFStream)) return null
+    const text = (k: string) => {
+      const v = spec.lookup(N(k))
+      return v instanceof PDFString || v instanceof PDFHexString ? v.decodeText() : ''
+    }
+    const name = text('UF') || text('F') || 'adjunto'
+    // /F en ASCII (lo que admiten los lectores viejos) y /UF con el nombre real.
+    spec.set(N('F'), PDFString.of(Array.from(name, (c) => (c >= ' ' && c <= '~' && c !== '(' && c !== ')' && c !== '\\' ? c : '_')).join('')))
+    spec.set(N('UF'), PDFHexString.fromText(name))
+    spec.set(N('Type'), N('Filespec'))
+    if (!(spec.get(N('AFRelationship')) instanceof PDFName)) spec.set(N('AFRelationship'), N('Unspecified'))
+    const sd = stream.dict
+    sd.set(N('Type'), N('EmbeddedFile'))
+    if (!(sd.get(N('Subtype')) instanceof PDFName)) sd.set(N('Subtype'), N(mimeOf(name)))
+    let params = sd.lookup(N('Params'))
+    if (!(params instanceof PDFDict)) {
+      params = ctx.obj({})
+      sd.set(N('Params'), params as PDFDict)
+    }
+    if (!(params as PDFDict).has(N('ModDate'))) (params as PDFDict).set(N('ModDate'), PDFString.of(pdfDate(now)))
+    if (!seen.has(ref!.toString())) {
+      seen.add(ref!.toString())
+      af.push(ref!)
+    }
+    return ref
+  }
+
+  // Árbol de nombres /EmbeddedFiles: hojas con pares [nombre, especificación].
+  const tree = cat.lookupMaybe(N('Names'), PDFDict)?.lookupMaybe(N('EmbeddedFiles'), PDFDict)
+  let budget = 10000
+  const visit = (node: PDFDict | undefined) => {
+    if (!node || budget-- <= 0) return
+    const pairs = node.lookupMaybe(N('Names'), PDFArray)
+    if (pairs) {
+      const keep: PDFObject[] = []
+      for (let i = 0; i + 1 < pairs.size(); i += 2) {
+        const ref = fix(pairs.get(i + 1))
+        if (ref) keep.push(pairs.get(i), ref)
+      }
+      node.set(N('Names'), ctx.obj(keep))
+    }
+    const kids = node.lookupMaybe(N('Kids'), PDFArray)
+    if (kids) for (let i = 0; i < kids.size(); i++) visit(kids.lookupMaybe(i, PDFDict))
+  }
+  visit(tree)
+  // Anotaciones de archivo adjunto en las páginas.
+  for (const page of doc.getPages()) {
+    const annots = page.node.lookup(N('Annots'))
+    if (!(annots instanceof PDFArray)) continue
+    for (const a of annots.asArray()) {
+      const ad = ctx.lookup(a)
+      if (!(ad instanceof PDFDict) || ad.get(N('Subtype')) !== N('FileAttachment')) continue
+      const ref = fix(ad.get(N('FS')))
+      if (ref) ad.set(N('FS'), ref)
+    }
+  }
+  if (af.length) cat.set(N('AF'), ctx.obj(af))
+  return af.length
+}

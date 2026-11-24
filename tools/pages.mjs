@@ -400,7 +400,7 @@ export const pages = [
     slug: 'pdf-a-pdfa',
     category: 'optimizar',
     tool: { kind: 'pdf', id: 'pdfa' },
-    title: 'Convertir PDF a PDF/A gratis (PDF/A-2b) | DocuSmart',
+    title: 'Convertir PDF a PDF/A gratis (PDF/A-1b, 2b, 3b) | DocuSmart',
     description:
       'Convierte un PDF al formato de archivo PDF/A-2b que piden entidades públicas, juzgados y universidades: fuentes y colores incluidos. Gratis, sin registro y sin subir el archivo.',
     h1: 'PDF a PDF/A',
@@ -409,11 +409,11 @@ export const pages = [
     steps: [
       'Elige el PDF.',
       'Pulsa "Convertir a PDF/A".',
-      'Se descarga el PDF/A-2b y te contamos qué se ajustó para cumplir la norma.',
+      'Se descarga el PDF/A y te contamos qué se ajustó para cumplir la norma.',
     ],
     faq: [
       ['¿Qué es PDF/A?', 'Es la versión de PDF pensada para archivar (norma ISO 19005): el archivo lleva dentro sus fuentes, su perfil de color y sus metadatos, y no puede depender de nada externo. Lo piden muchos trámites con entidades públicas, juzgados y universidades.'],
-      ['¿Qué nivel de PDF/A crea?', 'PDF/A-2b, el nivel más usado: garantiza que el documento se vea igual en el futuro. Lo validamos con veraPDF, el validador de referencia de la PDF Association.'],
+      ['¿Qué nivel de PDF/A crea?', 'PDF/A-2b, el nivel más usado: garantiza que el documento se vea igual en el futuro. Lo validamos con veraPDF, el validador de referencia de la PDF Association. También puedes elegir PDF/A-1b (la más antigua, para sistemas que solo aceptan esa) o PDF/A-3b (conserva los adjuntos, como el XML de una factura electrónica).'],
       ['¿Cambia algo de mi documento?', 'Se incluyen las fuentes que faltaban y se quitan cosas que la norma no permite, como scripts, adjuntos o sonidos. Si una página usa colores de imprenta (CMYK) o fuentes que no vienen en el archivo, esa página se guarda como imagen.'],
       ['¿Se sube el archivo?', 'No. La conversión ocurre en tu navegador.'],
     ],

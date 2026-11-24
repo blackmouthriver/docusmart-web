@@ -340,17 +340,17 @@ export default {
     },
     'pdf-a-pdfa': {
       slug: 'pdf-en-pdfa',
-      title: 'Convertir un PDF en PDF/A gratuitement (PDF/A-2b) | DocuSmart',
+      title: 'Convertir un PDF en PDF/A gratuitement (PDF/A-1b, 2b, 3b) | DocuSmart',
       description:
         "Convertissez un PDF au format d'archivage PDF/A-2b demandé par les administrations, tribunaux et universités : polices et couleurs incluses. Gratuit, sans inscription et sans envoyer le fichier.",
       h1: 'PDF en PDF/A',
       howTo: 'Comment convertir un PDF en PDF/A en 3 étapes',
       lead: 'Passez vos documents au format d’archivage standard pour qu’ils s’affichent pareil dans de nombreuses années, sans dépendre de polices ou logiciels externes.',
       short: "Format d'archivage à long terme",
-      steps: ['Choisissez le PDF.', 'Appuyez sur « Convertir en PDF/A ».', 'Le PDF/A-2b se télécharge et nous vous indiquons ce qui a été ajusté pour respecter la norme.'],
+      steps: ['Choisissez le PDF.', 'Appuyez sur « Convertir en PDF/A ».', 'Le PDF/A se télécharge et nous vous indiquons ce qui a été ajusté pour respecter la norme.'],
       faq: [
         ['Qu’est-ce que le PDF/A ?', 'C’est la version du PDF conçue pour l’archivage (norme ISO 19005) : le fichier contient ses polices, son profil de couleur et ses métadonnées, et ne peut dépendre de rien d’externe. De nombreuses démarches auprès des administrations, tribunaux et universités l’exigent.'],
-        ['Quel niveau de PDF/A crée-t-il ?', 'PDF/A-2b, le niveau le plus utilisé : il garantit que le document s’affichera pareil à l’avenir. Nous le validons avec veraPDF, le validateur de référence de la PDF Association.'],
+        ['Quel niveau de PDF/A crée-t-il ?', 'PDF/A-2b, le niveau le plus utilisé : il garantit que le document s’affichera pareil à l’avenir. Nous le validons avec veraPDF, le validateur de référence de la PDF Association. Vous pouvez aussi choisir PDF/A-1b (la plus ancienne, pour les systèmes qui n’acceptent qu’elle) ou PDF/A-3b (conserve les pièces jointes, comme le XML d’une facture électronique).'],
         ['Mon document change-t-il ?', 'Les polices manquantes sont intégrées et ce que la norme interdit est retiré, comme les scripts, pièces jointes ou sons. Si une page utilise des couleurs d’impression (CMJN) ou des polices absentes du fichier, cette page est enregistrée en image.'],
         ['Le fichier est-il envoyé ?', 'Non. La conversion se fait dans votre navigateur.'],
       ],

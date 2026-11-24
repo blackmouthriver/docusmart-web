@@ -340,17 +340,17 @@ export default {
     },
     'pdf-a-pdfa': {
       slug: 'pdf-in-pdfa',
-      title: 'Convertire PDF in PDF/A gratis (PDF/A-2b) | DocuSmart',
+      title: 'Convertire PDF in PDF/A gratis (PDF/A-1b, 2b, 3b) | DocuSmart',
       description:
         'Converti un PDF nel formato di archiviazione PDF/A-2b richiesto da enti pubblici, tribunali e università: caratteri e colori inclusi. Gratis, senza registrazione e senza caricare il file.',
       h1: 'Da PDF a PDF/A',
       howTo: 'Come convertire un PDF in PDF/A in 3 passi',
       lead: 'Porta i tuoi documenti nel formato standard di archiviazione perché si vedano uguali tra molti anni, senza dipendere da caratteri o programmi esterni.',
       short: 'Formato di archiviazione a lungo termine',
-      steps: ['Scegli il PDF.', 'Premi "Converti in PDF/A".', 'Viene scaricato il PDF/A-2b e ti diciamo cosa è stato adattato per rispettare la norma.'],
+      steps: ['Scegli il PDF.', 'Premi "Converti in PDF/A".', 'Viene scaricato il PDF/A e ti diciamo cosa è stato adattato per rispettare la norma.'],
       faq: [
         ['Cos’è il PDF/A?', 'È la versione del PDF pensata per l’archiviazione (norma ISO 19005): il file contiene i suoi caratteri, il profilo colore e i metadati, e non può dipendere da nulla di esterno. Lo chiedono molte pratiche con enti pubblici, tribunali e università.'],
-        ['Che livello di PDF/A crea?', 'PDF/A-2b, il livello più usato: garantisce che il documento si veda uguale in futuro. Lo validiamo con veraPDF, il validatore di riferimento della PDF Association.'],
+        ['Che livello di PDF/A crea?', 'PDF/A-2b, il livello più usato: garantisce che il documento si veda uguale in futuro. Lo validiamo con veraPDF, il validatore di riferimento della PDF Association. Puoi anche scegliere PDF/A-1b (la più vecchia, per sistemi che accettano solo questa) o PDF/A-3b (conserva gli allegati, come l’XML di una fattura elettronica).'],
         ['Cambia qualcosa nel mio documento?', 'Vengono inclusi i caratteri mancanti e tolte le cose che la norma non permette, come script, allegati o suoni. Se una pagina usa colori di stampa (CMYK) o caratteri non presenti nel file, quella pagina viene salvata come immagine.'],
         ['Il file viene caricato?', 'No. La conversione avviene nel tuo browser.'],
       ],

@@ -340,17 +340,17 @@ export default {
     },
     'pdf-a-pdfa': {
       slug: 'pdf-to-pdfa',
-      title: 'Convert PDF to PDF/A for free (PDF/A-2b) | DocuSmart',
+      title: 'Convert PDF to PDF/A for free (PDF/A-1b, 2b, 3b) | DocuSmart',
       description:
         'Convert a PDF to the PDF/A-2b archival format required by public bodies, courts and universities: fonts and colours included. Free, no sign-up and without uploading the file.',
       h1: 'PDF to PDF/A',
       howTo: 'How to convert a PDF to PDF/A in 3 steps',
       lead: 'Convert your documents to the standard archival format so they look the same many years from now, without depending on external fonts or software.',
       short: 'Long-term archival format',
-      steps: ['Choose the PDF.', 'Press "Convert to PDF/A".', 'The PDF/A-2b is downloaded and we tell you what was adjusted to meet the standard.'],
+      steps: ['Choose the PDF.', 'Press "Convert to PDF/A".', 'The PDF/A is downloaded and we tell you what was adjusted to meet the standard.'],
       faq: [
         ['What is PDF/A?', "It's the version of PDF designed for archiving (ISO 19005): the file contains its fonts, colour profile and metadata, and can't depend on anything external. Many procedures with public bodies, courts and universities require it."],
-        ['What level of PDF/A does it create?', 'PDF/A-2b, the most widely used level: it guarantees the document will look the same in the future. We validate it with veraPDF, the PDF Association\'s reference validator.'],
+        ['What level of PDF/A does it create?', 'PDF/A-2b, the most widely used level: it guarantees the document will look the same in the future. We validate it with veraPDF, the PDF Association\'s reference validator. You can also choose PDF/A-1b (the oldest, for systems that only accept it) or PDF/A-3b (keeps attachments, such as the XML of an e-invoice).'],
         ['Does anything in my document change?', "Missing fonts are embedded and things the standard doesn't allow are removed, such as scripts, attachments or sounds. If a page uses print colours (CMYK) or fonts that aren't in the file, that page is saved as an image."],
         ['Is the file uploaded?', 'No. The conversion happens in your browser.'],
       ],

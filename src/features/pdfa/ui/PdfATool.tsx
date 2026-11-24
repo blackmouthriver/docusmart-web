@@ -1,11 +1,11 @@
-// PDF a PDF/A-2b: formato de archivo a largo plazo, todo en el navegador.
+// PDF a PDF/A-2b, 1b o 3b (W-147.7): formato de archivo a largo plazo, todo en el navegador.
 import { useState } from 'react'
 import { useApp } from '../../../app/state'
-import { BusyButton, DropZone, FileRow, Notice } from '../../../shared/ui/ui'
+import { BusyButton, DropZone, FileRow, Notice, Segmented } from '../../../shared/ui/ui'
 import { baseName } from '../../../shared/files/files'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { resultFile } from '../../../shared/files/share'
-import type { PdfAReport, RasterReason } from '../core/pdfA'
+import type { PdfAPart, PdfAReport, RasterReason } from '../core/pdfA'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
@@ -27,7 +27,9 @@ export function describeReport(r: PdfAReport): string[] {
     r.removed.annotations && (r.removed.annotations === 1 ? tr('pdfa.annotOne') : tr('pdfa.annotN', { n: r.removed.annotations })),
   ].filter(Boolean) as string[]
   if (removed.length) out.push(tr('pdfa.removed', { list: list(removed) }))
-  for (const why of ['cmyk', 'font', 'other'] as RasterReason[]) {
+  if (r.attachments) out.push(r.attachments === 1 ? tr('pdfa.attachKeptOne') : tr('pdfa.attachKeptN', { n: r.attachments }))
+  if (r.layers) out.push(tr('pdfa.layers'))
+  for (const why of ['cmyk', 'font', 'transparency', 'other'] as RasterReason[]) {
     const pages = r.rasterPages.filter((p) => p.reason === why).map((p) => String(p.page))
     if (!pages.length) continue
     out.push(pages.length === 1 ? tr('pdfa.pageRaster', { page: pages[0], reason: reason(why, false) }) : tr('pdfa.pagesRaster', { pages: list(pages), reason: reason(why, true) }))
@@ -42,6 +44,10 @@ export function PdfATool() {
   const [error, setError] = useState<string | null>(null)
   const [report, setReport] = useState<PdfAReport | null>(null)
   const [output, setOutput] = useState<File | null>(null)
+  /** Versión de la norma (W-147.7): 2b por defecto. */
+  const [part, setPart] = useState<PdfAPart>(2)
+  /** La versión con la que se hizo el resultado que se muestra. */
+  const [donePart, setDonePart] = useState<PdfAPart>(2)
 
   const pick = (f: File | null) => {
     setFile(f)
@@ -62,6 +68,7 @@ export function PdfATool() {
       const bytes = new Uint8Array(await file.arrayBuffer())
       try {
         const { pdf: out, report: r } = await convertToPdfA(bytes, {
+          part,
           loadFont: async (name) => {
             const res = await fetch(`/pdfjs/standard_fonts/${name}`)
             if (!res.ok) throw new Error(tr('pdfa.fontError'))
@@ -73,9 +80,10 @@ export function PdfATool() {
             return raster.makeRasterizer(pdfDoc)(index, [])
           },
         })
-        setOutput(resultFile(out, `${baseName(file.name)}-pdfa.pdf`, PDF))
+        setOutput(resultFile(out, `${baseName(file.name)}-${part === 2 ? 'pdfa' : `pdfa-${part}b`}.pdf`, PDF))
+        setDonePart(part)
         setReport(r)
-        track('pdf_tool_used', { tool_name: 'pdfa' })
+        track('pdf_tool_used', { tool_name: 'pdfa', format: `${part}b` })
         toast(tr('common.doneReview'))
       } catch (e) {
         if (e instanceof PdfAEncryptedError) throw e
@@ -100,6 +108,26 @@ export function PdfATool() {
         <DropZone accept={PDF} title={tr('common.pickPdf')} hint={tr('common.dragHere')} onFiles={([f]) => pick(f)} />
       )}
       {file && (
+        <div className="field">
+          <span aria-hidden="true">{tr('pdfa.version')}</span>
+          <Segmented
+            label={tr('pdfa.version')}
+            value={String(part) as '1' | '2' | '3'}
+            onChange={(v) => {
+              setPart(Number(v) as PdfAPart)
+              setReport(null)
+              setOutput(null)
+            }}
+            options={[
+              { value: '2', label: 'PDF/A-2b' },
+              { value: '1', label: 'PDF/A-1b' },
+              { value: '3', label: 'PDF/A-3b' },
+            ]}
+          />
+          <small className="faint">{tr(`pdfa.hint.${part}` as MessageKey)}</small>
+        </div>
+      )}
+      {file && (
         <BeforeAfter
           original={file}
           result={report ? output : null}
@@ -109,7 +137,7 @@ export function PdfATool() {
           placeholder={busy ? tr('pdfa.busy') : tr('pdfa.placeholder')}
           summary={
             report && <Notice kind="success">
-              <strong>{tr('pdfa.done')}</strong>
+              <strong>{tr('pdfa.done', { version: `PDF/A-${donePart}b` })}</strong>
               {describeReport(report).map((line) => (
                 <span key={line} style={{ display: 'block', marginTop: 6 }}>{line}</span>
               ))}
