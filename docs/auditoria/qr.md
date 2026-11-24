@@ -41,10 +41,10 @@ Leyenda: ✅ lo tiene · ➖ parcial · ❌ no lo tiene · ? no confirmado.
 | Sin cuenta ni servidor | ✅ | ✅ | ➖ (los dinámicos piden cuenta) | ✅ |
 | Tipos WhatsApp, SMS, ubicación | ❌ | ➖ | ✅ | – |
 | Contacto completo (vCard) | ➖ | ✅ | ✅ | – |
-| Colores a elección, degradados, formas de puntos y ojos | ➖ (8 colores) | ✅ | ✅ | – |
+| Colores a elección, degradados, formas de puntos y ojos | ➖ (color libre y fondo, W-147.8; sin degradados ni formas) | ✅ | ✅ | – |
 | Logo | ✅ | ✅ | ✅ | – |
-| SVG y PDF | ➖ (SVG) | ✅ (PNG, SVG, PDF, EPS) | ✅ | – |
-| Varios desde una lista (CSV) | ❌ | ❌ | ✅ (algunos tipos) | – |
+| SVG y PDF | ✅ (SVG y PDF vectorial, W-147.8) | ✅ (PNG, SVG, PDF, EPS) | ✅ | – |
+| Varios desde una lista (CSV) | ✅ (W-147.8) | ❌ | ✅ (algunos tipos) | – |
 | QR con contraseña | ✅ | ❌ | ❌ | – |
 | Leer QR en fotos grandes y escaneos | ❌ (en computador) | – | – | ✅ |
 | Leer desde PDF | ❌ | – | – | ➖ (captura de pantalla) |
@@ -89,3 +89,16 @@ Se hicieron las brechas 1 a 4 (2026-11-22). Quedan para más adelante la 5 (dise
 **Límite conocido:** en un computador sin lector nativo (Chrome y Edge en Windows, Firefox) solo se leen códigos QR; los códigos de barras dependen del navegador (Chrome en Android y en Mac, Safari).
 
 **Queda por debajo:** diseño con color a elección, fondo y PDF (#5) y crear varios QR desde una lista (#6).
+
+## 5. Seguimiento W-147.8 (2026-11-24)
+
+Se hicieron las brechas 5 y 6.
+
+| # | Mejora | Cómo quedó | Prueba |
+|---|---|---|---|
+| 5 | Color libre, fondo y PDF | En **Personalizar diseño**, además de los 8 colores, **Otro color** (cualquiera) y **Fondo**: blanco, crema, celeste, verde claro, **transparente** (para ponerlo sobre un diseño, con la vista previa en cuadritos) u **Otro fondo**. El contraste se mide contra el fondo elegido y, si el código queda **más claro que el fondo** (QR invertido, que muchas cámaras no leen) o sin contraste, se avisa y no deja generar. Botón **PDF** vectorial del tamaño de impresión (5, 10 o 20 cm según el tamaño), con el logo en círculo; los módulos seguidos van en un solo rectángulo | Unitarias: colores, matriz con y sin logo, el PDF rearma exactamente la matriz del QR, fondo transparente sin pintar. E2E: QR azul marino sobre crema (los dos colores en la imagen), PDF de 10 cm y vuelto a leer con el lector de la app; colores invertidos y sin contraste bloquean |
+| 6 | Varios QR desde una lista | Sección **Varios QR desde una lista**: pegar o **cargar un CSV/TXT** con una línea por QR; si hay columnas (punto y coma, tabulador o coma, con comillas de CSV), la segunda es el **nombre**. Se salta un encabezado como "url;nombre", hasta 500. Usa el diseño de arriba (color, fondo, logo). Sale una **hoja para imprimir (PDF)** A4 con el nombre debajo de cada QR (3, 5 u 8 cm: 35, 12 o 6 por hoja; nombres en cualquier idioma y recortados con "…" si no entran) o un **ZIP de PNG** con nombres como `001-Mesa-1.png`. Las líneas que no caben en un QR se saltan y se avisan | Unitarias: lista con y sin columnas, comillas, encabezado, máximo, nombres de archivo; hoja de 14 QR en 2 páginas con los nombres. E2E: CSV con 3 líneas (una demasiado larga) → hoja con "Mesa 1" y "Mesa 2", y ZIP con los PNG, uno vuelto a leer |
+
+**Nueva comparación:** colores ➖ (color libre y fondo; faltan degradados y formas de puntos) · SVG y PDF ✅ · varios desde una lista ✅ (QR Code Monkey no lo tiene).
+
+**Queda por debajo:** degradados y formas de puntos y ojos (QR Code Monkey).
