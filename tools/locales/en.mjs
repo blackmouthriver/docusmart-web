@@ -785,6 +785,7 @@ export default {
         ["How accurate is it?", "With clear speech and little noise, very good. With lots of noise, several people talking at once or strong accents it makes more mistakes, which is why you can fix the text before downloading it."],
         ["How long does it take?", "It depends on the device: on a computer a recording is usually transcribed in less time than it lasts; on a phone it can take longer. You can watch the text as it goes."],
         ["Can I create subtitles for a video?", "Yes. Download the .srt or .vtt file with each sentence's timing and upload it to YouTube, your video editor or your player."],
+        ["Can it tell who is speaking in a meeting?", "Yes. Tick \"Identify who is speaking\" and the text comes out by turns (Speaker 1, Speaker 2…) with the time; then you can give them names. If you know how many people speak, choose it for better results. The first time, about 13 MB more are downloaded."],
       ],
     },
     'comprimir-archivos': {

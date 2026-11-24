@@ -785,6 +785,7 @@ export default {
         ["Qual é a precisão?", "Com voz clara e pouco ruído, muito boa. Com muito ruído, várias pessoas falando ao mesmo tempo ou sotaques fortes, ele erra mais; por isso você pode corrigir o texto antes de baixá-lo."],
         ["Quanto tempo demora?", "Depende do dispositivo: em um computador, um áudio costuma ser transcrito em menos tempo do que dura; em um celular pode demorar mais. Você pode ver o texto enquanto avança."],
         ["Posso criar legendas para um vídeo?", "Sim. Baixe o arquivo .srt ou .vtt com os tempos de cada frase e envie-o ao YouTube, ao seu editor de vídeo ou ao seu player."],
+        ["Ele distingue quem fala em uma reunião?", "Sim. Marque \"Identificar quem fala\" e o texto sai por falas (Falante 1, Falante 2…) com o horário; depois você pode dar nomes a eles. Se souber quantas pessoas falam, escolha o número para acertar mais. Na primeira vez são baixados cerca de 13 MB a mais."],
       ],
     },
     'comprimir-archivos': {

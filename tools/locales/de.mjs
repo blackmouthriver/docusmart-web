@@ -785,6 +785,7 @@ export default {
         ["Wie genau ist es?", "Bei deutlicher Sprache und wenig Hintergrundgeräuschen sehr gut. Bei viel Lärm, mehreren Personen, die gleichzeitig sprechen, oder starken Akzenten macht es mehr Fehler; deshalb kannst du den Text vor dem Herunterladen korrigieren."],
         ["Wie lange dauert es?", "Das hängt vom Gerät ab: Auf einem Computer wird eine Aufnahme meist schneller transkribiert, als sie lang ist; auf einem Handy kann es länger dauern. Du siehst den Text, während er entsteht."],
         ["Kann ich Untertitel für ein Video erstellen?", "Ja. Lade die .srt- oder .vtt-Datei mit den Zeitangaben jedes Satzes herunter und lade sie auf YouTube, in dein Videoschnittprogramm oder in deinen Player hoch."],
+        ["Erkennt es, wer in einem Meeting spricht?", "Ja. Aktiviere \"Erkennen, wer spricht\", dann kommt der Text nach Wortbeiträgen (Sprecher 1, Sprecher 2…) mit Uhrzeit; danach kannst du ihnen Namen geben. Wenn du weißt, wie viele Personen sprechen, wähle die Zahl für bessere Ergebnisse. Beim ersten Mal werden etwa 13 MB zusätzlich heruntergeladen."],
       ],
     },
     'comprimir-archivos': {

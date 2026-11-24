@@ -790,6 +790,7 @@ export default {
         ["Zein zehatza da?", "Ahots argiarekin eta zarata gutxirekin, oso ona. Zarata handiarekin, hainbat pertsona aldi berean hitz egiten edo azentu nabarmenekin akats gehiago egiten ditu; horregatik testua zuzen dezakezu deskargatu aurretik."],
         ["Zenbat denbora behar du?", "Gailuaren araberakoa da: ordenagailu batean audio bat iraupena baino denbora gutxiagoan transkribatu ohi da; mugikor batean gehiago behar dezake. Testua aurrera doan heinean ikus dezakezu."],
         ["Bideo baterako azpitituluak sor ditzaket?", "Bai. Deskargatu .srt edo .vtt fitxategia esaldi bakoitzaren denborekin eta igo YouTubera, zure bideo-editorera edo zure erreproduzigailura."],
+        ["Bereizten du bilera batean nor ari den hizketan?", "Bai. Markatu \"Nor ari den hizketan bereizi\" eta testua txandaka aterako da (1. hiztuna, 2. hiztuna…) orduarekin; gero izena jar diezaiekezu. Zenbat pertsona ari diren badakizu, aukeratu hobeto asmatzeko. Lehen aldian 13 MB inguru gehiago deskargatzen dira."],
       ],
     },
     'comprimir-archivos': {
