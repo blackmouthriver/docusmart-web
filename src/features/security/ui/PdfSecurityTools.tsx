@@ -486,19 +486,23 @@ export function RepairTool() {
   const [file, setFile] = useState<File | null>(null)
   const [done, setDone] = useState<null | boolean>(null)
   const [output, setOutput] = useState<File | null>(null)
+  /** Si el archivo estaba cortado: cuántas páginas se rescataron (W-147.9). */
+  const [rescued, setRescued] = useState<{ pages: number; expected: number | null } | null>(null)
   const { busy, error, run } = useJob('repair')
 
   const go = () =>
     run(async () => {
       setDone(null)
+      setRescued(null)
       const r = await repair(new Uint8Array(await file!.arrayBuffer()))
+      setRescued(r.rescued ?? null)
       setOutput(resultFile(r.bytes, `${baseName(file!.name)}-${tr('file.repaired')}.pdf`, PDF))
       setDone(r.hadProblems)
     }, tr('common.doneReview'))
 
   return (
     <div className="card stack">
-      <PickPdf file={file} onFile={(f) => { setFile(f); setDone(null); setOutput(null) }} />
+      <PickPdf file={file} onFile={(f) => { setFile(f); setDone(null); setOutput(null); setRescued(null) }} />
       {file && (
         <BeforeAfter
           original={file}
@@ -508,7 +512,11 @@ export function RepairTool() {
           previewTitle={tr('common.previewPdf')}
           placeholder={busy ? tr('repair.busy') : tr('repair.placeholder')}
           summary={
-            done ? (
+            rescued ? (
+              <Notice kind={rescued.expected !== null && rescued.pages < rescued.expected ? 'info' : 'success'}>
+                {rescued.expected !== null && rescued.expected > rescued.pages ? tr('repair.rescuedOf', { n: rescued.pages, total: rescued.expected }) : tr('repair.rescued', { n: rescued.pages })}
+              </Notice>
+            ) : done ? (
               <Notice kind="success">{tr('repair.fixed')}</Notice>
             ) : (
               <Notice kind="info">{tr('repair.ok')}</Notice>

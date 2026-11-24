@@ -595,7 +595,7 @@ export default {
       howTo: "So entfernst du Metadaten in 3 Schritten",
       lead: "Ein Foto kann verraten, wo du wohnst, und ein PDF, wer es geschrieben hat. Sieh dir an, welche versteckten Daten deine Dateien enthalten, und lösche sie vor dem Teilen, ohne dass sie dein Gerät verlassen.",
       short: "Versteckte Daten vor dem Teilen löschen",
-      steps: ["Wähle ein oder mehrere Fotos (JPG, PNG oder WebP) oder Dokumente (PDF, Word, Excel oder PowerPoint) aus.", "Prüfe die gefundenen versteckten Daten: GPS-Standort, Kamera, Autor, Programm und Datumsangaben.", "Tippe auf „Metadaten entfernen“ und lade die bereinigten Dateien herunter (bei mehreren als ZIP)."],
+      steps: ["Wähle ein oder mehrere Fotos (JPG, PNG, WebP, HEIC oder TIFF) oder Dokumente (PDF, Word, Excel oder PowerPoint) aus.", "Prüfe die gefundenen versteckten Daten: GPS-Standort, Kamera, Autor, Programm und Datumsangaben.", "Tippe auf „Metadaten entfernen“ und lade die bereinigten Dateien herunter (bei mehreren als ZIP)."],
       faq: [
         ["Was sind Metadaten?", "Das sind Daten, die unsichtbar in der Datei gespeichert sind: bei einem Foto die Kamera, das Datum und oft der genaue GPS-Standort; bei einem PDF oder Word-Dokument der Name des Autors, die Firma, das Programm sowie Erstellungs- und Änderungsdatum."],
         ["Verliert das Foto an Qualität?", "Nein. Es werden nur die Datenblöcke entfernt; das Bild wird unverändert kopiert, ohne erneute Komprimierung. Farbprofil und Ausrichtung bleiben erhalten, damit es genauso aussieht wie vorher."],

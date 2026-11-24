@@ -50,7 +50,7 @@ test('muestra los datos ocultos de foto, PDF y Word y los quita en un ZIP', asyn
   await expect(tool.getByText('Contrato privado')).toBeVisible()
   await expect(tool.getByText('Empresa Secreta S.A.S.')).toBeVisible()
   // El .txt no es compatible y no cuenta.
-  await expect(tool.getByText('Este tipo de archivo no es compatible. Usa JPG, PNG, WebP, PDF, Word, Excel o PowerPoint.')).toBeVisible()
+  await expect(tool.getByText('Este tipo de archivo no es compatible. Usa JPG, PNG, WebP, HEIC, TIFF, MP4, MOV, PDF, Word, Excel o PowerPoint.')).toBeVisible()
   await tool.getByRole('button', { name: 'Quitar de la lista nota.txt' }).click()
   await expect(tool.getByText('Este tipo de archivo no es compatible', { exact: false })).toHaveCount(0)
 

@@ -595,7 +595,7 @@ export default {
       howTo: "Come rimuovere i metadati in 3 passaggi",
       lead: "Una foto può rivelare dove abiti e un PDF chi l'ha scritto. Scopri quali dati nascosti contengono i tuoi file e cancellali prima di condividerli, senza che lascino il tuo dispositivo.",
       short: "Cancella i dati nascosti prima di condividere",
-      steps: ["Scegli una o più foto (JPG, PNG o WebP) o documenti (PDF, Word, Excel o PowerPoint).", "Controlla i dati nascosti che abbiamo trovato: posizione GPS, fotocamera, autore, programma e date.", "Premi \"Rimuovi metadati\" e scarica i file puliti (se sono più di uno, in un file ZIP)."],
+      steps: ["Scegli una o più foto (JPG, PNG, WebP, HEIC o TIFF) o documenti (PDF, Word, Excel o PowerPoint).", "Controlla i dati nascosti che abbiamo trovato: posizione GPS, fotocamera, autore, programma e date.", "Premi \"Rimuovi metadati\" e scarica i file puliti (se sono più di uno, in un file ZIP)."],
       faq: [
         ["Cosa sono i metadati?", "Sono dati salvati dentro il file senza che si vedano: in una foto, la fotocamera, la data e spesso la posizione GPS esatta; in un PDF o in un Word, il nome dell'autore, l'azienda, il programma e le date di creazione e modifica."],
         ["La foto perde qualità?", "No. Vengono rimossi solo i blocchi di dati; l'immagine viene copiata così com'è, senza ricomprimerla. Il profilo colore e l'orientamento vengono mantenuti, così appare identica a prima."],

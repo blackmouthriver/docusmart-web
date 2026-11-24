@@ -595,7 +595,7 @@ export default {
       howTo: "Comment supprimer les métadonnées en 3 étapes",
       lead: "Une photo peut révéler où vous habitez et un PDF qui l'a écrit. Voyez quelles données cachées contiennent vos fichiers et effacez-les avant de les partager, sans qu'ils quittent votre appareil.",
       short: "Effacez les données cachées avant de partager",
-      steps: ["Choisissez une ou plusieurs photos (JPG, PNG ou WebP) ou documents (PDF, Word, Excel ou PowerPoint).", "Vérifiez les données cachées que nous avons trouvées : position GPS, appareil photo, auteur, logiciel et dates.", "Appuyez sur «Supprimer les métadonnées» et téléchargez les fichiers nettoyés (s'il y en a plusieurs, dans un ZIP)."],
+      steps: ["Choisissez une ou plusieurs photos (JPG, PNG, WebP, HEIC ou TIFF) ou documents (PDF, Word, Excel ou PowerPoint).", "Vérifiez les données cachées que nous avons trouvées : position GPS, appareil photo, auteur, logiciel et dates.", "Appuyez sur «Supprimer les métadonnées» et téléchargez les fichiers nettoyés (s'il y en a plusieurs, dans un ZIP)."],
       faq: [
         ["Que sont les métadonnées ?", "Ce sont des données enregistrées dans le fichier sans être visibles : dans une photo, l'appareil, la date et souvent la position GPS exacte ; dans un PDF ou un Word, le nom de l'auteur, la société, le logiciel et les dates de création et de modification."],
         ["La photo perd-elle en qualité ?", "Non. Seuls les blocs de données sont retirés ; l'image est copiée telle quelle, sans être recompressée. Le profil de couleur et l'orientation sont conservés, pour qu'elle reste identique."],

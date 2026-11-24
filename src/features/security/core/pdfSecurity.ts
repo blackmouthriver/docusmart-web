@@ -5,6 +5,7 @@
 import { PDFDocument } from 'pdf-lib'
 import { QPDF_ERROR, QPDF_OK, QPDF_WARNINGS, runQpdf } from '../infra/qpdf'
 import { tr } from '../../../shared/i18n/translate'
+import { SalvageError, salvagePdf } from './pdfSalvage'
 
 export class WrongPasswordError extends Error {
   constructor() {
@@ -108,7 +109,12 @@ export async function changeProtection(bytes: ArrayBuffer | Uint8Array, current:
   return protect(await unlock(bytes, current), opts)
 }
 
-export type RepairResult = { bytes: Uint8Array; hadProblems: boolean }
+export type RepairResult = {
+  bytes: Uint8Array
+  hadProblems: boolean
+  /** Si el archivo estaba cortado: cuántas páginas se rescataron y cuántas tenía (null si no se sabe). W-147.9 */
+  rescued?: { pages: number; expected: number | null }
+}
 
 /**
  * Reconstruye la estructura del PDF (tabla de referencias, trailer, posiciones).
@@ -118,14 +124,35 @@ export type RepairResult = { bytes: Uint8Array; hadProblems: boolean }
  */
 export async function repair(bytes: ArrayBuffer | Uint8Array): Promise<RepairResult> {
   const input = toBytes(bytes)
-  let doc: PDFDocument
+  let doc: PDFDocument | null = null
   try {
     doc = await PDFDocument.load(input, { ignoreEncryption: true, throwOnInvalidObject: false, updateMetadata: false })
   } catch {
+    doc = null
+  }
+  if (doc?.isEncrypted) throw new QpdfError(tr('libErr.qpdfLocked'))
+  if (doc && doc.getPageCount() > 0) {
+    const check = await runQpdf(['--check', '{in}'], input)
+    return { bytes: await doc.save(), hadProblems: check.code !== QPDF_OK }
+  }
+  // No abre o no tiene páginas: puede estar cortado. Se rescatan las páginas que llegaron.
+  return rescue(input)
+}
+
+async function rescue(input: Uint8Array): Promise<RepairResult> {
+  let saved
+  try {
+    saved = salvagePdf(input)
+  } catch (e) {
+    if (e instanceof SalvageError && e.reason === 'encrypted') throw new QpdfError(tr('libErr.qpdfLocked'))
+    throw new QpdfError(tr(e instanceof SalvageError ? 'libErr.qpdfNoPages' : 'libErr.qpdfTooDamaged'))
+  }
+  let doc: PDFDocument
+  try {
+    doc = await PDFDocument.load(saved.bytes, { throwOnInvalidObject: false, updateMetadata: false })
+  } catch {
     throw new QpdfError(tr('libErr.qpdfTooDamaged'))
   }
-  if (doc.isEncrypted) throw new QpdfError(tr('libErr.qpdfLocked'))
   if (doc.getPageCount() === 0) throw new QpdfError(tr('libErr.qpdfNoPages'))
-  const check = await runQpdf(['--check', '{in}'], input)
-  return { bytes: await doc.save(), hadProblems: check.code !== QPDF_OK }
+  return { bytes: await doc.save(), hadProblems: true, rescued: { pages: doc.getPageCount(), expected: saved.expected } }
 }
