@@ -6,9 +6,10 @@
  * La decodificación usa la de "Extraer imágenes"; el JPEG nuevo lo hace el `encode` que se
  * recibe (en el navegador, un canvas), así esta parte se puede probar sin navegador.
  */
-import { PDFArray, PDFDict, PDFDocument, PDFName, PDFNumber, PDFRawStream, PDFRef, type PDFObject } from 'pdf-lib'
+import { PDFArray, PDFDict, PDFName, PDFNumber, PDFRawStream, PDFRef, type PDFObject } from 'pdf-lib'
 import { convertImage, resolveColorSpace } from '../../pdf/core/pdfImages'
 import type { CompressResult } from './pdfSecurity'
+import { loadPdf } from './openPdf'
 
 export type ImageTarget = { maxSide: number; quality: number; gray: boolean }
 export type EncodedImage = { data: Uint8Array; width: number; height: number }
@@ -37,7 +38,7 @@ export type ImageCompressResult = CompressResult & { images: number; changed: nu
 
 export async function compressImages(bytes: ArrayBuffer | Uint8Array, target: ImageTarget, encode: ImageEncoder, onProgress?: (done: number, total: number) => void): Promise<ImageCompressResult> {
   const input = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes)
-  const doc = await PDFDocument.load(input)
+  const doc = await loadPdf(input)
   const ctx = doc.context
   const all = ctx.enumerateIndirectObjects()
 

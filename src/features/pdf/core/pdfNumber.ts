@@ -5,9 +5,10 @@
  * 6 posiciones, número inicial, saltar las primeras páginas (portada), texto propio con
  * {n} y {total}, tamaño y color (W-147.6). Con texto no latino usa las fuentes incrustadas de DocuSmart.
  */
-import { PDFDocument, degrees } from 'pdf-lib'
+import { degrees } from 'pdf-lib'
 import { drawPieces, fontsForText, piecesWidth } from '../../../shared/pdf/pdfFonts'
 import { hexToRgb } from './pdfEdit'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type NumberPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
 export const NUMBER_POSITIONS: readonly NumberPosition[] = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right']
@@ -63,7 +64,7 @@ export function toPdfPoint(u: number, v: number, box: { x: number; y: number; wi
 export async function numberPages(bytes: ArrayBuffer | Uint8Array, opts: Partial<NumberOptions> = {}): Promise<Uint8Array> {
   const o = { ...DEFAULT_NUMBER_OPTIONS, ...opts }
   const size = Math.max(6, Math.min(36, o.size))
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   const labels = pageLabels(doc.getPageCount(), o)
   const color = hexToRgb(/^#[0-9a-f]{6}$/i.test(o.color) ? o.color : DEFAULT_NUMBER_OPTIONS.color)
   const fonts = await fontsForText(doc, 'sans', ['regular'], labels.filter(Boolean).join(' ') || '0')

@@ -69,4 +69,11 @@ describe('anuncios (W-90)', () => {
       for (const host of ['googlesyndication.com', 'doubleclick.net', 'adtrafficquality.google']) expect(csp.includes(host)).toBe(false)
     }
   })
+
+  it('la CSP deja a Google Analytics enviar las visitas, también a analytics.google.com sin subdominio', () => {
+    // "*.analytics.google.com" no cubre "analytics.google.com": GA4 manda ahí /g/collect.
+    const connect = directive('connect-src').split(' ')
+    for (const host of ['https://analytics.google.com', 'https://*.analytics.google.com', 'https://*.google-analytics.com', 'https://www.googletagmanager.com']) expect(connect).toContain(host)
+  })
 })
+

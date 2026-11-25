@@ -587,6 +587,7 @@ export const es = {
   'protect.aes': "Cifrado AES-256. Guarda bien la contraseña: si la olvidas, nadie puede recuperar el PDF.",
   'protect.go': "Proteger PDF",
   'unlock.notLocked': "Este PDF no tiene contraseña ni restricciones: no hace falta desbloquearlo.",
+  'unlock.restrictionsOnly': "Este PDF se abre sin contraseña, pero tiene restricciones (por ejemplo, no deja imprimir o copiar). Pulsa Desbloquear para quitarlas.",
   'unlock.pw': "Contraseña del PDF",
   'unlock.hint': "Si el PDF abre sin contraseña pero no deja imprimir o copiar, déjala vacía.",
   'unlock.go': "Desbloquear PDF",

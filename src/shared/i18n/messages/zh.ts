@@ -583,6 +583,7 @@ const zh: Messages = {
   'protect.aes': "AES-256 加密。请妥善保管密码：一旦忘记，任何人都无法恢复该 PDF。",
   'protect.go': "保护 PDF",
   'unlock.notLocked': "此 PDF 没有密码或限制，无需解锁。",
+  'unlock.restrictionsOnly': "此 PDF 无需密码即可打开，但带有限制（例如禁止打印或复制）。点按“解锁”即可移除这些限制。",
   'unlock.pw': "PDF 密码",
   'unlock.hint': "如果 PDF 无需密码即可打开，但不能打印或复制，请留空。",
   'unlock.go': "解锁 PDF",

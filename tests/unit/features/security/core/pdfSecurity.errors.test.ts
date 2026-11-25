@@ -39,3 +39,27 @@ describe('pdfSecurity: errores de qpdf', () => {
     await expect(compressLossless(await pdf())).rejects.toThrow('No se pudo comprimir el PDF.')
   })
 })
+
+describe('withoutRestrictions: errores de qpdf', () => {
+  it('sin mensaje o con "password" es que pide contraseña; otro error se informa tal cual', async () => {
+    const { LockedPdfError, withoutRestrictions } = await import('../../../../../src/features/security/core/openPdf')
+    runQpdf.mockResolvedValueOnce({ code: 2, output: null, messages: [] })
+    await expect(withoutRestrictions(new Uint8Array([1]))).rejects.toBeInstanceOf(LockedPdfError)
+    runQpdf.mockResolvedValueOnce({ code: 2, output: null, messages: ['file.pdf: invalid password'] })
+    await expect(withoutRestrictions(new Uint8Array([1]))).rejects.toBeInstanceOf(LockedPdfError)
+    runQpdf.mockResolvedValueOnce({ code: 2, output: null, messages: ['file.pdf: damaged xref'] })
+    await expect(withoutRestrictions(new Uint8Array([1]))).rejects.toThrow('damaged xref')
+    runQpdf.mockResolvedValueOnce({ code: 0, output: new Uint8Array([7]), messages: [] })
+    expect(await withoutRestrictions(new ArrayBuffer(1))).toEqual(new Uint8Array([7]))
+  })
+
+  it('si qpdf no puede (no cargó), loadPdf deja el error original de "cifrado"', async () => {
+    const { loadPdf } = await import('../../../../../src/features/security/core/openPdf')
+    const { EncryptedPDFError } = await import('pdf-lib')
+    const load = vi.spyOn(PDFDocument, 'load').mockRejectedValueOnce(new EncryptedPDFError())
+    runQpdf.mockRejectedValueOnce(new Error('no cargó el wasm'))
+    await expect(loadPdf(new Uint8Array([1]))).rejects.toThrow(/is encrypted/)
+    load.mockRestore()
+  })
+})
+

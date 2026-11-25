@@ -11,6 +11,7 @@
  */
 import { PDFDocument } from 'pdf-lib'
 import { drawPieces, fontsForText } from '../../../shared/pdf/pdfFonts'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type Area = { page: number; x: number; y: number; w: number; h: number }
 
@@ -49,7 +50,7 @@ export function areaFromCorners(page: number, x1: number, y1: number, x2: number
 export async function redactPdf(bytes: ArrayBuffer | Uint8Array, areas: Area[], rasterize: Rasterizer): Promise<Uint8Array> {
   const byPage = groupByPage(areas)
   if (!byPage.size) throw new Error('Marca al menos una zona para censurar.')
-  const src = await PDFDocument.load(bytes)
+  const src = await loadPdf(bytes)
   const out = await PDFDocument.create()
   for (const i of src.getPageIndices()) {
     const pageAreas = byPage.get(i)

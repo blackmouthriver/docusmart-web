@@ -7,6 +7,7 @@
  */
 import { PDFArray, PDFDict, PDFDocument, PDFHexString, PDFName, PDFNumber, PDFRawStream, PDFRef, PDFStream, PDFString, decodePDFRawStream, type PDFObject } from 'pdf-lib'
 import { zlibSync } from 'fflate'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type ExtractedImage = { page: number; index: number; width: number; height: number; format: 'jpg' | 'png'; data: Uint8Array }
 export type ExtractResult = { images: ExtractedImage[]; skipped: number; small: number }
@@ -18,7 +19,7 @@ const num = (o: PDFObject | undefined, def: number) => (o instanceof PDFNumber ?
 
 /** Imágenes del PDF en orden de aparición, cada una una sola vez (aunque se repita en varias páginas). */
 export async function extractImages(bytes: ArrayBuffer | Uint8Array, opts: { minSize?: number } = {}): Promise<ExtractResult> {
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   const minSize = opts.minSize ?? 0
   const seen = new Set<string>()
   const result: ExtractResult = { images: [], skipped: 0, small: 0 }

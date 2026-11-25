@@ -10,7 +10,8 @@
  */
 import forge from 'node-forge'
 import { placementToPdf, type Placement } from './pdfSign'
-import { PDFArray, PDFDict, PDFDocument, PDFHexString, PDFName, PDFNumber, PDFSignature, PDFString, type PDFRef } from 'pdf-lib'
+import { PDFArray, PDFDict, PDFHexString, PDFName, PDFNumber, PDFSignature, PDFString, type PDFRef } from 'pdf-lib'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type CertInfo = { name: string; issuer: string; email?: string; notBefore: Date; notAfter: Date }
 export type Certificate = { key: forge.pki.rsa.PrivateKey; cert: forge.pki.Certificate; chain: forge.pki.Certificate[]; info: CertInfo }
@@ -87,7 +88,7 @@ export type SignOptions = {
 
 /** Firma el PDF con el certificado. Devuelve el PDF firmado. */
 export async function signWithCertificate(bytes: ArrayBuffer | Uint8Array, cert: Certificate, opts: SignOptions = {}): Promise<Uint8Array> {
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   const ctx = doc.context
   const date = opts.date ?? new Date()
   if (opts.placement && !opts.rect) {

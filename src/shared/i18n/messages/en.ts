@@ -583,6 +583,7 @@ const en: Messages = {
   'protect.aes': "AES-256 encryption. Keep the password safe: if you forget it, nobody can recover the PDF.",
   'protect.go': "Protect PDF",
   'unlock.notLocked': "This PDF has no password or restrictions: there's no need to unlock it.",
+  'unlock.restrictionsOnly': "This PDF opens without a password but has restrictions (for example, it won't let you print or copy). Press Unlock to remove them.",
   'unlock.pw': "PDF password",
   'unlock.hint': "If the PDF opens without a password but won't let you print or copy, leave it empty.",
   'unlock.go': "Unlock PDF",

@@ -583,6 +583,7 @@ const fr: Messages = {
   'protect.aes': "Chiffrement AES-256. Conservez bien le mot de passe : si vous l'oubliez, personne ne pourra récupérer le PDF.",
   'protect.go': "Protéger le PDF",
   'unlock.notLocked': "Ce PDF n'a ni mot de passe ni restriction : inutile de le déverrouiller.",
+  'unlock.restrictionsOnly': "Ce PDF s'ouvre sans mot de passe, mais il a des restrictions (par exemple, il empêche d'imprimer ou de copier). Appuyez sur Déverrouiller pour les retirer.",
   'unlock.pw': "Mot de passe du PDF",
   'unlock.hint': "Si le PDF s'ouvre sans mot de passe mais empêche d'imprimer ou de copier, laissez vide.",
   'unlock.go': "Déverrouiller le PDF",

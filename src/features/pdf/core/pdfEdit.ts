@@ -8,6 +8,7 @@ import { LineCapStyle, LineJoinStyle, PDFArray, PDFDocument, PDFName, PDFString,
 import { drawPieces, fontsForText, wrapPieces, type FontFamily, type FontSet } from '../../../shared/pdf/pdfFonts'
 import { viewToPdf } from './pdfSign'
 import { eraseText, type Zone } from './pdfContent'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type FontName = 'helvetica' | 'times' | 'courier'
 /**
@@ -65,7 +66,7 @@ export function viewRectToPdf(x: number, y: number, w: number, h: number, box: B
 export async function applyEdits(bytes: ArrayBuffer | Uint8Array, items: EditItem[]): Promise<Uint8Array> {
   if (!items.length) throw new Error('Agrega al menos un texto, una imagen o una forma.')
   if (items.every((i) => i.kind === 'link' && !linkAction(i))) throw new Error('Completa el enlace: escribe la dirección o elige la página.')
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   // Una carga de fuentes por familia, con todo el texto que se va a escribir en ella.
   const texts = items.filter((i): i is TextItem => i.kind === 'text')
   const fonts = new Map<FontName, FontSet>()

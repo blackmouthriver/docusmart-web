@@ -583,6 +583,7 @@ const it: Messages = {
   'protect.aes': "Crittografia AES-256. Conserva bene la password: se la dimentichi, nessuno potrà recuperare il PDF.",
   'protect.go': "Proteggi PDF",
   'unlock.notLocked': "Questo PDF non ha password né restrizioni: non serve sbloccarlo.",
+  'unlock.restrictionsOnly': "Questo PDF si apre senza password, ma ha delle restrizioni (per esempio non consente di stampare o copiare). Premi Sblocca per rimuoverle.",
   'unlock.pw': "Password del PDF",
   'unlock.hint': "Se il PDF si apre senza password ma non permette di stampare o copiare, lasciala vuota.",
   'unlock.go': "Sblocca PDF",
