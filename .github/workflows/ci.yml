@@ -1,8 +1,11 @@
 name: CI
 
+# Flujo de ramas (desde 2026-11-25): los PR se fusionan a `preproduccion`; ahí se juntan varios
+# cambios y se verifican. A `main` (producción) se pasan en paquete, como mucho una vez al día o
+# cuando haga falta, y solo `main` despliega a docusmart.online.
 on:
   push:
-    branches: [main]
+    branches: [main, preproduccion]
   pull_request:
 
 permissions:
