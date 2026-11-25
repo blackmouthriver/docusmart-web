@@ -46,6 +46,12 @@ test('la barra lateral muestra las herramientas por categoría, busca y cambia d
   await expect(security).toHaveAttribute('aria-expanded', 'true')
   await expect(page).toHaveURL(/#\/herramientas\/seguridad$/)
   await expect(security).toHaveAttribute('aria-current', 'page')
+  // La vista muestra solo esa categoría (como Modo Estudio), no todas las herramientas.
+  const screen = page.locator('.screen')
+  await expect(screen.getByRole('heading', { level: 1 })).toHaveText('Seguridad')
+  await expect(screen.getByRole('button', { name: /Proteger PDF/ })).toBeVisible()
+  await expect(screen.getByRole('button', { name: /Unir PDFs/ })).toHaveCount(0)
+  await expect(screen.locator('.tools-jump')).toHaveCount(0)
   await nav.getByRole('link', { name: 'Proteger PDF' }).click()
   await expect(page).toHaveURL(/#\/pdf\/proteger/)
   await expect(nav.getByRole('link', { name: 'Proteger PDF' })).toHaveAttribute('aria-current', 'page')
@@ -101,10 +107,34 @@ test('la barra lateral muestra las herramientas por categoría, busca y cambia d
   await sidebar.getByRole('button', { name: 'Según el tema' }).click()
   await expect(page.locator('html')).toHaveAttribute('data-sidebar', 'dark')
   await page.keyboard.press('Escape')
-  // Plegada, cada categoría es un ícono que lleva a ella en "Todas las herramientas".
+  // Plegada, cada categoría es un ícono que lleva a la vista de esa categoría.
   await page.getByRole('button', { name: 'Contraer menú' }).click()
   await nav.getByRole('link', { name: 'Seguridad' }).click()
   await expect(page).toHaveURL(/#\/herramientas\/seguridad/)
+  await expect(page.locator('.screen').getByRole('heading', { level: 1 })).toHaveText('Seguridad')
+})
+
+test('la vista de una categoría: solo sus herramientas, buscar dentro y volver a todas @movil', async ({ page }) => {
+  await page.goto('/app/')
+  // Desde el inicio, la tarjeta de la categoría lleva a su vista.
+  await page.locator('.home-cat').filter({ hasText: 'Organizar PDF' }).click()
+  await expect(page).toHaveURL(/#\/herramientas\/organizar$/)
+  const screen = page.locator('.screen')
+  await expect(screen.getByRole('heading', { level: 1 })).toHaveText('Organizar PDF')
+  await expect(page).toHaveTitle(/^Organizar PDF · /)
+  await expect(screen.getByRole('button', { name: /Unir PDFs/ })).toBeVisible()
+  await expect(screen.getByRole('button', { name: /Proteger PDF/ })).toHaveCount(0)
+  // El buscador filtra dentro de la categoría.
+  await screen.getByRole('searchbox').fill('rotar')
+  await expect(screen.locator('.quick')).toHaveCount(1)
+  await expect(screen.getByRole('button', { name: /Rotar páginas/ })).toBeVisible()
+  await screen.getByRole('searchbox').fill('zzz')
+  await expect(screen.getByText('Ninguna herramienta coincide con tu búsqueda.')).toBeVisible()
+  // "Todas las herramientas" vuelve a la lista completa con su carrusel.
+  await screen.getByRole('button', { name: 'Todas las herramientas' }).click()
+  await expect(page).toHaveURL(/#\/herramientas$/)
+  await expect(screen.getByRole('heading', { level: 1 })).toHaveText('Todas las herramientas')
+  await expect(screen.locator('.tools-jump')).toBeVisible()
 })
 
 test('crear un código QR', async ({ page }) => {

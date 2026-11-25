@@ -10,6 +10,7 @@ import { AppContext, parseHash, type Route } from './state'
 import { useT } from '../shared/i18n/I18n'
 import { LANGS } from '../shared/i18n/languages'
 import type { MessageKey } from '../shared/i18n/messages/es'
+import { CATEGORIES } from '../features/tools/core/catalog'
 import { SettingsPanel } from '../shared/ui/SettingsPanel'
 import { DesktopHelp } from '../shared/ui/DesktopHelp'
 import { loadCollapsed, saveCollapsed } from './sidebarPref'
@@ -165,7 +166,9 @@ export function App() {
     // Instalada en la computadora se llama DocuSmart Desktop (W-16); en el navegador, DocuSmart Web.
     const standalone = isStandalone(window)
     const brand = standalone ? 'DocuSmart Desktop' : 'DocuSmart Web'
-    if (route.section !== '') document.title = `${t(nav?.label ?? 'nav.viewer')} · ${brand}`
+    // La vista de una categoría (#/herramientas/seguridad) lleva su nombre en la pestaña.
+    const category = route.section === 'herramientas' && CATEGORIES.some((c) => c.id === route.sub) ? (`cat.${route.sub}` as MessageKey) : null
+    if (route.section !== '') document.title = `${t(category ?? nav?.label ?? 'nav.viewer')} · ${brand}`
     else document.title = standalone || !htmlTitle.current ? brand : htmlTitle.current
   }, [route.section, route.sub, t])
 
