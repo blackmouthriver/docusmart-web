@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { generateKeyPairSync } from 'node:crypto'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import forge from 'node-forge'
 import { PDFDocument, StandardFonts } from 'pdf-lib'
-import { CertError, readCertificate, signWithCertificate, verifySignatures } from '../../../../../src/features/pdf/core/pdfDigitalSign'
+import { CertError, readCertificate, signatureDer, signWithCertificate, verifySignatures } from '../../../../../src/features/pdf/core/pdfDigitalSign'
 
 /** Certificado de prueba autofirmado en un .p12 (generado aquí: no es de nadie). */
 function testP12(password: string, algorithm: '3des' | 'aes256' = '3des', days = 365) {
@@ -85,5 +87,28 @@ describe('signWithCertificate', () => {
     // Sin actualización incremental, la segunda firma reescribe el archivo: la última es la válida.
     expect(checks.at(-1)).toMatchObject({ intact: true, coversWholeFile: true })
     expect((await PDFDocument.load(twice)).getForm().getFields().length).toBe(2)
+  })
+})
+
+describe('leer la firma guardada en el PDF', () => {
+  it('toma el largo de la cabecera DER, no de los ceros de relleno', () => {
+    // Forma corta: 30 03 + 3 bytes (el último es 00) + relleno.
+    expect(signatureDer('\x30\x03\x02\x01\x00' + '\x00'.repeat(5))).toBe('\x30\x03\x02\x01\x00')
+    // Forma larga: 30 82 01 00 = 256 bytes de contenido.
+    const long = '\x30\x82\x01\x00' + 'a'.repeat(255) + '\x00'
+    expect(signatureDer(long + '\x00'.repeat(10))).toBe(long)
+    // Lo que no es una secuencia DER se deja igual (y falla después al leerla).
+    expect(signatureDer('hola')).toBe('hola')
+    expect(signatureDer('\x30\x80')).toBe('\x30\x80')
+  })
+
+  it('una firma real que termina en 00 es válida (antes se cortaba y salía inválida)', async () => {
+    const pdf = new Uint8Array(readFileSync(resolve(process.cwd(), 'tests/fixtures/pdf/firma-termina-en-00.pdf')))
+    const [check] = verifySignatures(pdf)
+    expect(check).toMatchObject({ name: 'Ana Prueba', intact: true, coversWholeFile: true })
+    // Y si se cambia un byte de lo firmado, se detecta.
+    const altered = pdf.slice()
+    altered[200] ^= 1
+    expect(verifySignatures(altered)[0].intact).toBe(false)
   })
 })
