@@ -44,6 +44,8 @@ test('la barra lateral muestra las herramientas por categoría, busca y cambia d
   await expect(security).toHaveAttribute('aria-expanded', 'false')
   await security.click()
   await expect(security).toHaveAttribute('aria-expanded', 'true')
+  // Una sola categoría abierta a la vez: al abrir Seguridad se cierra Organizar.
+  await expect(organize).toHaveAttribute('aria-expanded', 'false')
   await expect(page).toHaveURL(/#\/herramientas\/seguridad$/)
   await expect(security).toHaveAttribute('aria-current', 'page')
   // La vista muestra solo esa categoría (como Modo Estudio), no todas las herramientas.
@@ -62,6 +64,7 @@ test('la barra lateral muestra las herramientas por categoría, busca y cambia d
   await organize.click()
   await expect(page).toHaveURL(/#\/herramientas\/organizar$/)
   await expect(organize).toHaveAttribute('aria-expanded', 'true')
+  await expect(security).toHaveAttribute('aria-expanded', 'false')
   await organize.click()
   await expect(organize).toHaveAttribute('aria-expanded', 'false')
   await expect.poll(() => height('organizar')).toBe(0)
@@ -74,7 +77,9 @@ test('la barra lateral muestra las herramientas por categoría, busca y cambia d
   await expect(study).toHaveAttribute('aria-expanded', 'false')
   await study.click()
   await expect(study).toHaveAttribute('aria-expanded', 'true')
+  await expect(organize).toHaveAttribute('aria-expanded', 'false')
   await expect(page).toHaveURL(/#\/estudio$/)
+  await expect(nav.locator('.nav-cat-btn[aria-expanded="true"]')).toHaveCount(1)
   await nav.getByRole('link', { name: 'Notas' }).click()
   await expect(page).toHaveURL(/#\/estudio\/notas/)
   await study.click()

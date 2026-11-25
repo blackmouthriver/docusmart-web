@@ -46,14 +46,15 @@ export function SideNav({ route, collapsed, onExpand }: { route: Route; collapse
   const current: GroupId | null = route.section === 'estudio' ? 'estudio' : categoryOf(route)
   const [open, setOpen] = useState<ReadonlySet<GroupId>>(() => new Set(current ? [current] : []))
   const search = useRef<HTMLInputElement>(null)
-  // Al cambiar de herramienta, su grupo se abre (los demás quedan como el usuario los dejó).
+  // Al cambiar de herramienta o de categoría, se abre su grupo y se cierran los demás (acordeón).
   useEffect(() => {
-    if (current) setOpen((o) => (o.has(current) ? o : new Set([...o, current])))
+    if (current) setOpen((o) => (o.size === 1 && o.has(current) ? o : new Set([current])))
   }, [current])
 
   const groups = useMemo(() => groupTools(t, lang, query), [t, lang, query])
   const searching = query.trim().length > 0
-  const toggle = (id: GroupId) => setOpen((o) => (o.has(id) ? new Set([...o].filter((x) => x !== id)) : new Set([...o, id])))
+  /** Abre un grupo y cierra los demás (uno solo abierto a la vez), o cierra el que está abierto. */
+  const toggle = (id: GroupId) => setOpen((o) => (o.has(id) ? new Set([...o].filter((x) => x !== id)) : new Set([id])))
   const here = (section: string, sub = '') => route.section === section && (route.sub ?? '') === sub
 
   /** Vista general del grupo: la categoría en "Todas las herramientas", o el inicio de Modo Estudio. */
@@ -65,7 +66,7 @@ export function SideNav({ route, collapsed, onExpand }: { route: Route; collapse
    */
   const pickGroup = (id: GroupId) => {
     if (onOverview(id)) return toggle(id)
-    setOpen((o) => (o.has(id) ? o : new Set([...o, id])))
+    setOpen(new Set([id]))
     window.location.hash = overview(id)
   }
 
