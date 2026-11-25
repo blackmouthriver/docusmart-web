@@ -38,29 +38,42 @@ test('la barra lateral muestra las herramientas por categoría, busca y cambia d
   const organize = nav.getByRole('button', { name: /Organizar PDF/ })
   await expect(organize).toHaveAttribute('aria-expanded', 'true')
   await expect(nav.getByRole('link', { name: 'Unir PDFs' })).toHaveAttribute('aria-current', 'page')
-  // Las demás categorías se despliegan al tocarlas y llevan a sus herramientas.
+  // Tocar otra categoría despliega sus herramientas y lleva a su vista general (como "Todas las
+  // herramientas", pero solo esa categoría).
   const security = nav.getByRole('button', { name: /Seguridad/ })
   await expect(security).toHaveAttribute('aria-expanded', 'false')
   await security.click()
   await expect(security).toHaveAttribute('aria-expanded', 'true')
+  await expect(page).toHaveURL(/#\/herramientas\/seguridad$/)
+  await expect(security).toHaveAttribute('aria-current', 'page')
   await nav.getByRole('link', { name: 'Proteger PDF' }).click()
   await expect(page).toHaveURL(/#\/pdf\/proteger/)
   await expect(nav.getByRole('link', { name: 'Proteger PDF' })).toHaveAttribute('aria-current', 'page')
-  // Un grupo abierto se vuelve a cerrar (con la misma transición de alto en los dos sentidos).
+  await expect(security).not.toHaveAttribute('aria-current', 'page')
+  // Desde una herramienta, tocar una categoría ya abierta lleva a su vista sin cerrarla; ya en su
+  // vista, tocarla la cierra y la vuelve a abrir (la misma transición de alto en los dos sentidos).
   const height = (id: string) => page.locator(`#nav-cat-${id}`).evaluate((el) => el.getBoundingClientRect().height)
+  await organize.click()
+  await expect(page).toHaveURL(/#\/herramientas\/organizar$/)
+  await expect(organize).toHaveAttribute('aria-expanded', 'true')
   await organize.click()
   await expect(organize).toHaveAttribute('aria-expanded', 'false')
   await expect.poll(() => height('organizar')).toBe(0)
   await organize.click()
   await expect.poll(() => height('organizar')).toBeGreaterThan(100)
-  // Modo Estudio se despliega y se cierra como las categorías, con su cantidad de funciones.
+  await expect(page).toHaveURL(/#\/herramientas\/organizar$/)
+  // Modo Estudio igual: lleva a su inicio y se despliega, con su cantidad de funciones.
   const study = nav.getByRole('button', { name: /Modo Estudio/ })
   await expect(study).toContainText('5')
   await expect(study).toHaveAttribute('aria-expanded', 'false')
   await study.click()
   await expect(study).toHaveAttribute('aria-expanded', 'true')
+  await expect(page).toHaveURL(/#\/estudio$/)
   await nav.getByRole('link', { name: 'Notas' }).click()
   await expect(page).toHaveURL(/#\/estudio\/notas/)
+  await study.click()
+  await expect(page).toHaveURL(/#\/estudio$/)
+  await expect(study).toHaveAttribute('aria-expanded', 'true')
   await study.click()
   await expect(study).toHaveAttribute('aria-expanded', 'false')
   await expect.poll(() => height('estudio')).toBe(0)
