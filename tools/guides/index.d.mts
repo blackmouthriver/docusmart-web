@@ -19,6 +19,11 @@ export interface GuideUi {
 export const ES_GUIDE_UI: GuideUi
 export const GUIDE_LANGS: string[]
 export function hasGuides(lang: string): boolean
+/** Idiomas en que existe una guía (el español siempre). */
+export function guideLangs(guide: Guide): string[]
+export function hasGuideIn(guide: Guide, lang: string): boolean
+/** Las guías de un idioma (las que ya tienen traducción). */
+export function guidesIn(lang: string): Guide[]
 export function guideUi(lang: string): GuideUi
 export function localizedGuide(guide: Guide, lang: string): Guide & { esSlug?: string }
 export function guidesIndexPath(lang: string): string

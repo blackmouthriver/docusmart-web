@@ -4,7 +4,9 @@ import { describe, expect, it } from 'vitest'
 import { GUIDES_UPDATED, guides, type GuideBlock } from '../../../../tools/guides.mjs'
 import { pages } from '../../../../tools/pages.mjs'
 import { generatedHtml } from '../../../../tools/locales/index.mjs'
-import { GUIDE_LANGS, guideFile, guidePath, guideUi, guidesIndexPath, localizedGuide } from '../../../../tools/guides/index.mjs'
+import { GUIDE_LANGS, guideFile, guideLangs, guidePath, guideUi, guidesIn, guidesIndexPath, localizedGuide } from '../../../../tools/guides/index.mjs'
+import { TOOL_GUIDES } from '../../../../tools/guides-herramientas.mjs'
+import { GUIDE_IMAGES } from '../../../../tools/guide-images.mjs'
 
 const root = resolve(__dirname, '../../../..')
 const toolSlugs = new Set(pages.map((p) => p.slug))
@@ -53,7 +55,7 @@ describe('guías (W-19)', () => {
     for (const g of guides) {
       expect(html).toContain(`guias/${g.slug}.html`)
       expect(sitemap).toContain(`<loc>https://docusmart.online/guias/${g.slug}</loc>`)
-      expect(sitemap).toContain(`<lastmod>${GUIDES_UPDATED}</lastmod>`)
+      expect(sitemap).toContain(`<lastmod>${g.updated ?? GUIDES_UPDATED}</lastmod>`)
       const page = readFileSync(resolve(root, `site/guias/${g.slug}.html`), 'utf8')
       expect(page).toContain(`<link rel="canonical" href="https://docusmart.online/guias/${g.slug}">`)
       expect(page).toContain('"@type": "Article"')
@@ -78,9 +80,13 @@ describe('guías traducidas (W-19)', () => {
     expect(translated.sort()).toEqual(['ca', 'de', 'en', 'eu', 'fr', 'it', 'ja', 'ko', 'pt', 'ru', 'zh'])
   })
 
+  it('las 6 guías de W-19 están en los 12 idiomas', () => {
+    for (const lang of translated) expect(guidesIn(lang).length, lang).toBeGreaterThanOrEqual(6)
+  })
+
   for (const lang of translated) {
     it(`${lang}: cada guía tiene la misma estructura y los mismos enlaces que el español`, () => {
-      for (const g of guides) {
+      for (const g of guidesIn(lang)) {
         const t = localizedGuide(g, lang)
         expect(shape(t), `${lang}/${t.slug}`).toEqual(shape(g))
         expect(links(t), `${lang}/${t.slug}`).toEqual(links(g))
@@ -98,7 +104,7 @@ describe('guías traducidas (W-19)', () => {
       expect(ui.minutes).toContain('{n}')
       expect(ui.updated).toContain('{date}')
       const html = generatedHtml()
-      for (const g of guides) {
+      for (const g of guidesIn(lang)) {
         expect(html).toContain(guideFile(g, lang))
         const page = readFileSync(resolve(root, 'site', guideFile(g, lang)), 'utf8')
         expect(page).toContain(`<html lang="${lang}">`)
@@ -111,3 +117,29 @@ describe('guías traducidas (W-19)', () => {
     })
   }
 })
+
+describe('guías ilustradas por herramienta (W-101)', () => {
+  it('cada una lleva a su herramienta, trae al menos una captura y tiene fecha propia', () => {
+    expect(TOOL_GUIDES.length).toBeGreaterThanOrEqual(8)
+    for (const g of TOOL_GUIDES) {
+      expect(toolSlugs.has(g.tools[0]), g.slug).toBe(true)
+      expect(GUIDE_IMAGES[g.slug]?.length, g.slug).toBeGreaterThan(0)
+      expect(g.updated).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    }
+  })
+
+  it('una guía todavía sin traducir solo existe en español (sin hreflang ni páginas en otros idiomas)', () => {
+    const pending = TOOL_GUIDES.filter((g) => guideLangs(g).length === 1)
+    expect(pending.length).toBeGreaterThan(0)
+    const html = generatedHtml()
+    for (const g of pending) {
+      expect(guideLangs(g)).toEqual(['es'])
+      for (const lang of GUIDE_LANGS.filter((l) => l !== 'es')) expect(guidesIn(lang)).not.toContain(g)
+      const page = readFileSync(resolve(root, `site/guias/${g.slug}.html`), 'utf8')
+      expect(page).not.toMatch(/hreflang="en"/)
+      expect(page).toContain('class="gd-shot"')
+      expect(html).toContain(`guias/${g.slug}.html`)
+    }
+  })
+})
+

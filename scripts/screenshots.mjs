@@ -14,7 +14,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from '@playwright/test'
-import { PDFDocument, rgb } from 'pdf-lib'
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { LANGS, pagePath } from '../tools/locales/index.mjs'
 import { pages } from '../tools/pages.mjs'
 import { SHOT_WIDTHS, SHOTS } from '../tools/guide-shots.mjs'
@@ -86,6 +86,39 @@ async function photoPdf(photo) {
   return Buffer.from(await doc.save())
 }
 
+/**
+ * Contrato de muestra con texto de verdad (para comparar y censurar). Todo es inventado: nombres,
+ * número de documento y valores. `version` 2 cambia el canon, la fecha y suma una cláusula.
+ */
+async function contractPdf(version) {
+  const doc = await PDFDocument.create()
+  const regular = await doc.embedFont(StandardFonts.Helvetica)
+  const bold = await doc.embedFont(StandardFonts.HelveticaBold)
+  const lines = [
+    ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA', bold, 15],
+    ['', regular, 11],
+    ['Arrendador: Ana María Ejemplo, documento 1.023.456.789.', regular, 11],
+    ['Arrendatario: Luis Prueba Gómez, documento 79.654.321.', regular, 11],
+    ['Inmueble: apartamento 302, Calle 10 # 20-30.', regular, 11],
+    ['', regular, 11],
+    ['PRIMERA. Duración: doce (12) meses desde el 1 de febrero de 2026.', regular, 11],
+    [version === 1 ? 'SEGUNDA. Canon mensual: un millón doscientos mil pesos ($1.200.000).' : 'SEGUNDA. Canon mensual: un millón trescientos mil pesos ($1.300.000).', regular, 11],
+    ['TERCERA. El pago se hará dentro de los primeros cinco días de cada mes.', regular, 11],
+    [version === 1 ? 'CUARTA. Servicios públicos a cargo del arrendatario.' : 'CUARTA. Servicios públicos y administración a cargo del arrendatario.', regular, 11],
+    ...(version === 2 ? [['QUINTA. Se permite una mascota pequeña.', regular, 11]] : []),
+    ['', regular, 11],
+    [`Firmado en Bogotá el ${version === 1 ? '15' : '20'} de enero de 2026.`, regular, 11],
+  ]
+  const page = doc.addPage([595, 842])
+  let y = 770
+  for (const [text, font, size] of lines) {
+    if (text) page.drawText(text, { x: 60, y, size, font, color: rgb(0.1, 0.1, 0.12) })
+    y -= size + 12
+  }
+  for (let p = 2; p <= 2; p++) doc.addPage([595, 842]).drawText(`Página ${p}: anexos del contrato.`, { x: 60, y: 770, size: 11, font: regular })
+  return Buffer.from(await doc.save())
+}
+
 /* ───────────── Servidor y navegador ───────────── */
 
 function startPreview() {
@@ -154,7 +187,8 @@ async function capture(page, target, maxHeight) {
 
 const [onlyTool, onlyLangs] = process.argv.slice(2)
 const langs = LANGS.filter((l) => !onlyLangs || onlyLangs.split(',').includes(l.lang))
-const shots = SHOTS.filter((s) => !onlyTool || s.tool === onlyTool)
+// Herramientas separadas por comas (o todas).
+const shots = SHOTS.filter((s) => !onlyTool || onlyTool.split(',').includes(s.tool))
 
 /** Tamaños ya guardados (si todavía no hay, se empieza de cero). */
 function readManifest() {
@@ -176,6 +210,7 @@ try {
     pdfs: [await samplePdf(3, 0), await samplePdf(1, 1), await samplePdf(2, 2)],
     photos,
     scanned: await photoPdf(photos[1]),
+    contract: [await contractPdf(1), await contractPdf(2)],
   }
   for (const [w, width] of Object.entries(SHOT_WIDTHS)) {
     const context = await browser.newContext({

@@ -15,6 +15,8 @@ export interface Guide {
   sections: Array<{ h2: string; body: GuideBlock[] }>
   steps: Array<{ name: string; text: string }>
   faq: Array<[string, string]>
+  /** Fecha de su última revisión (ISO); si falta, GUIDES_UPDATED. */
+  updated?: string
 }
 
 export const GUIDES_UPDATED: string

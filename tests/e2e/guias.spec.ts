@@ -1,17 +1,17 @@
 // Guías (W-19): índice, una guía y sus enlaces a las herramientas.
 import { expect, makePdf, test } from './helpers'
 
-test('el índice de guías muestra las 6 guías @movil', async ({ page }) => {
+test('el índice de guías muestra las 14 guías en español (6 + 8 por herramienta) @movil', async ({ page }) => {
   await page.goto('/guias')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Guías paso a paso')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(6)
+  await expect(page.locator('.gd-cards > li')).toHaveCount(14)
 })
 
 test('una guía lleva a su herramienta y a otras guías', async ({ page }) => {
   await page.goto('/guias/unir-pdf-en-el-celular')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo unir PDF en el celular sin subir tus archivos')
   expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain('"@type": "HowTo"')
-  await expect(page.locator('.tp-related a[href^="/guias/"]')).toHaveCount(5)
+  await expect(page.locator('.tp-related a[href^="/guias/"]')).toHaveCount(13)
   const toTool = page.locator('.gd-article').getByRole('link', { name: 'Unir PDF', exact: true }).first()
   await expect(toTool).toHaveAttribute('href', '/unir-pdf')
   await page.goto('/unir-pdf')
@@ -86,3 +86,25 @@ test('en el celular, la lista de unir PDF deja ver el nombre y dice "1 página" 
   const meta = await rows.first().locator('.file-meta').boundingBox()
   expect(meta!.width).toBeGreaterThan(100)
 })
+
+test('una guía por herramienta (W-101): sus capturas, su herramienta y solo en español mientras se traduce', async ({ page }) => {
+  await page.goto('/guias/tapar-datos-personales-en-un-pdf')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo tapar datos personales en un PDF (de verdad)')
+  const shot = page.locator('.gd-shot img').first()
+  await expect(shot).toHaveAttribute('src', '/img/guides/es/censurar-pdf/zonas-1280.webp')
+  await expect(shot).toHaveAttribute('alt', /^Censurar PDF con el buscador/)
+  await shot.scrollIntoViewIfNeeded()
+  await expect.poll(() => shot.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
+  // Todavía sin traducir: el menú de idioma solo ofrece español y no hay hreflang a otros idiomas.
+  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(0)
+  await expect(page.locator('.tp-lang a[hreflang]')).toHaveCount(1)
+  await expect(page.locator('.gd-article a[href="/censurar-pdf"]').first()).toBeVisible()
+  // La página de la herramienta enlaza a su guía, solo en español.
+  await page.goto('/censurar-pdf')
+  await expect(page.locator('a[href="/guias/tapar-datos-personales-en-un-pdf"]')).toHaveCount(1)
+  await page.goto('/en/redact-pdf')
+  await expect(page.locator('a[href*="tapar-datos-personales"]')).toHaveCount(0)
+  await page.goto('/en/guides')
+  await expect(page.locator('.gd-cards > li')).toHaveCount(6)
+})
+

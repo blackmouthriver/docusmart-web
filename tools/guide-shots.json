@@ -191,6 +191,22 @@
   612,
   1080
  ],
+ "es/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "es/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "es/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "es/comparar-pdf/diferencias-390": [
+  700,
+  1596
+ ],
  "es/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -198,6 +214,30 @@
  "es/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "es/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "es/dividir-pdf/elegir-390": [
+  700,
+  1880
+ ],
+ "es/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "es/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "es/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "es/editar-pdf/texto-390": [
+  700,
+  2000
  ],
  "es/escanear-documento/bordes-1280": [
   940,
@@ -231,6 +271,30 @@
   700,
   1540
  ],
+ "es/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "es/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "es/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "es/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "es/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "es/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1854
+ ],
  "es/proteger-pdf/clave-1280": [
   940,
   601
@@ -238,6 +302,14 @@
  "es/proteger-pdf/clave-390": [
   700,
   1368
+ ],
+ "es/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "es/rotar-pdf/paginas-390": [
+  700,
+  1782
  ],
  "es/unir-pdf/lista-1280": [
   940,

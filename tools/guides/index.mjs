@@ -42,6 +42,15 @@ export const GUIDE_LANGS = ['es', ...Object.keys(TRANSLATIONS)]
 export const hasGuides = (lang) => GUIDE_LANGS.includes(lang)
 export const guideUi = (lang) => (lang === 'es' ? ES_GUIDE_UI : TRANSLATIONS[lang].ui)
 
+/**
+ * Idiomas en que existe una guía: el español siempre; los demás, cuando tienen su traducción.
+ * Una guía nueva (W-101) se publica primero en español y se suma a cada idioma al traducirla.
+ */
+export const guideLangs = (guide) => ['es', ...Object.keys(TRANSLATIONS).filter((l) => TRANSLATIONS[l].guides[guide.slug])]
+export const hasGuideIn = (guide, lang) => lang === 'es' || Boolean(TRANSLATIONS[lang]?.guides[guide.slug])
+/** Las guías de un idioma, en el orden del español. */
+export const guidesIn = (lang) => guides.filter((g) => hasGuideIn(g, lang))
+
 /** La guía en un idioma (texto traducido + lo que hereda del español). */
 export function localizedGuide(guide, lang) {
   if (lang === 'es') return guide
@@ -57,6 +66,6 @@ export const guidesIndexFile = (lang) => `${guidesIndexPath(lang).slice(1)}.html
 export const guideFile = (guide, lang) => `${guidePath(guide, lang).slice(1)}.html`
 
 /** Todos los HTML de guías, para las entradas de Vite. */
-export const guideHtmlFiles = () => GUIDE_LANGS.flatMap((lang) => [guidesIndexFile(lang), ...guides.map((g) => guideFile(g, lang))])
+export const guideHtmlFiles = () => GUIDE_LANGS.flatMap((lang) => [guidesIndexFile(lang), ...guidesIn(lang).map((g) => guideFile(g, lang))])
 
 export { guides }

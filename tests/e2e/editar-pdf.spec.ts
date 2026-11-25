@@ -24,3 +24,27 @@ test('reemplazar texto: el original se borra del PDF y el nuevo queda en su luga
   expect(text).toContain('Hoja corregida')
   expect(text).not.toContain('Pagina 1')
 })
+
+test('la × de quitar no tapa el final de un texto nuevo @movil', async ({ page }) => {
+  await page.goto('/editar-pdf')
+  const tool = page.locator('#tool')
+  await tool.locator('input[type=file]').first().setInputFiles({ name: 'hoja.pdf', mimeType: 'application/pdf', buffer: makePdf(1) })
+  const pageImg = tool.getByRole('img', { name: 'Página 1' })
+  await pageImg.scrollIntoViewIfNeeded()
+  const b = (await pageImg.boundingBox())!
+  await page.mouse.click(b.x + b.width * 0.2, b.y + b.height * 0.3)
+  await tool.locator('textarea').fill('Aprobado por la gerencia general')
+  const item = tool.locator('.edit-item.edit-text')
+  await expect(item).toHaveText('Aprobado por la gerencia general')
+  // La × (visible mientras está elegido) no se monta sobre ninguna letra.
+  const overlap = await item.evaluate((el) => {
+    const range = document.createRange()
+    range.selectNodeContents(el.firstChild!)
+    const t = range.getBoundingClientRect()
+    const x = el.querySelector('.sign-del')!.getBoundingClientRect()
+    const w = Math.max(0, Math.min(t.right, x.right) - Math.max(t.left, x.left))
+    const h = Math.max(0, Math.min(t.bottom, x.bottom) - Math.max(t.top, x.top))
+    return w * h
+  })
+  expect(overlap).toBe(0)
+})

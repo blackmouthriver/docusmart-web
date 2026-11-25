@@ -168,4 +168,83 @@ export const GUIDE_IMAGES = {
       },
     },
   ],
+  'dividir-pdf-en-varios-archivos': [
+    {
+      section: 1,
+      after: 0,
+      shot: 'dividir-pdf/elegir',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Dividir PDF con el modo Elegir páginas: las páginas 2 y 3 marcadas en azul entre las miniaturas y el botón Extraer páginas.' },
+    },
+    {
+      section: 1,
+      after: 1,
+      shot: 'dividir-pdf/resultado',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Resultado de Dividir PDF: a la izquierda el original de 3 páginas y a la derecha el nuevo PDF con las 2 páginas elegidas.' },
+    },
+  ],
+  'girar-paginas-de-un-pdf': [
+    {
+      section: 1,
+      after: 0,
+      shot: 'rotar-pdf/paginas',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Rotar PDF con tres páginas en miniatura: la segunda girada 90°, cada una con flechas para girar y los botones Todas a la izquierda y Todas a la derecha.' },
+    },
+  ],
+  'ordenar-paginas-de-un-pdf': [
+    {
+      section: 1,
+      after: 0,
+      shot: 'ordenar-paginas-pdf/paginas',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Ordenar páginas con las tarjetas en el nuevo orden Pág. 2, Pág. 1 y Pág. 3, cada una con flechas, duplicar, agregar en blanco y quitar.' },
+    },
+  ],
+  'numerar-paginas-de-un-pdf': [
+    {
+      section: 0,
+      after: 1,
+      shot: 'numerar-paginas-pdf/resultado',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Antes y después de numerar: la misma página sin número y con "Página 1 de 3" abajo a la derecha.' },
+    },
+  ],
+  'poner-marca-de-agua-a-un-pdf': [
+    {
+      section: 0,
+      after: 1,
+      shot: 'marca-de-agua-pdf/resultado',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Antes y después de la marca de agua: la página con la palabra CONFIDENCIAL en diagonal, en azul claro, sobre el texto.' },
+    },
+  ],
+  'editar-un-pdf-sin-programas': [
+    {
+      section: 1,
+      after: 0,
+      shot: 'editar-pdf/texto',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Editar PDF con la barra de herramientas (texto, reemplazar, formas, resaltar, tapar, dibujar, flechas, enlace e imagen) y el texto "Aprobado - 20/01/2026" agregado en un contrato.' },
+    },
+  ],
+  'comparar-dos-versiones-de-un-pdf': [
+    {
+      section: 0,
+      after: 1,
+      shot: 'comparar-pdf/diferencias',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Resultado de comparar dos versiones de un contrato: 2 cambios, 11 palabras agregadas y 3 quitadas; el canon pasa de doscientos a trescientos mil pesos y se agrega una cláusula.' },
+    },
+  ],
+  'tapar-datos-personales-en-un-pdf': [
+    {
+      section: 1,
+      after: 0,
+      shot: 'censurar-pdf/zonas',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Censurar PDF con el buscador y los botones Correos y Números; en el contrato quedan marcados los números de documento y el valor del canon.' },
+    },
+  ],
 }
