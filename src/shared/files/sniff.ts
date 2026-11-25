@@ -29,8 +29,20 @@ export function sniff(head: Uint8Array): Sniffed {
   if (startsWith(head, [0x50, 0x4b, 0x03, 0x04]) || startsWith(head, [0x50, 0x4b, 0x05, 0x06])) return 'zip'
   // SVG: texto que empieza (tras BOM, espacios, <?xml…?> o comentarios) con una etiqueta <svg.
   const text = new TextDecoder('utf-8', { fatal: false }).decode(head).replace(/^﻿/, '')
-  if (/^\s*(<\?xml[^>]*>\s*)?(<!--[\s\S]*?-->\s*|<!DOCTYPE[^>]*>\s*)*<svg[\s>]/i.test(text)) return 'svg'
-  return null
+  return isSvgText(text) ? 'svg' : null
+}
+
+/** ¿Empieza con <svg, tras la declaración XML, comentarios y DOCTYPE? (recorrido lineal, sin regex que se trabe) */
+function isSvgText(text: string): boolean {
+  let t = text.trimStart()
+  for (;;) {
+    const end = t.startsWith('<?xml') ? t.indexOf('>') + 1 : t.startsWith('<!--') ? t.indexOf('-->', 4) + 3 : /^<!doctype/i.test(t) ? t.indexOf('>') + 1 : -1
+    if (end === -1) break
+    // Un prólogo sin cerrar: no se sabe qué sigue.
+    if (end <= 2) return false
+    t = t.slice(end).trimStart()
+  }
+  return /^<svg[\s>]/i.test(t)
 }
 
 const IMAGE: ReadonlySet<Sniffed> = new Set(['jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'heif', 'avif', 'svg'])
