@@ -123,7 +123,8 @@ export function TranscribeTool() {
       const started = performance.now()
       const r = await runTranscription(
         audio,
-        { language, translate },
+        // El idioma de la página se prueba siempre en automático (el modelo a veces se equivoca).
+        { language, translate, preferred: LANGUAGE_IDS.find(([c]) => c === document.documentElement.lang)?.[0] },
         (p) => {
           if ('speakers' in p) {
             setStage('speakers')
