@@ -5,6 +5,7 @@
  * Excluido de la cobertura (necesita el modelo); se prueba de punta a punta.
  */
 import type * as Ort from 'onnxruntime-web'
+import { deflateSync } from 'fflate'
 import {
   CHUNK_SAMPLES,
   EOT,
@@ -14,10 +15,15 @@ import {
   NO_SPEECH,
   SAMPLE_RATE,
   SOT,
+  TEMPERATURES,
   applyRules,
-  argmax,
-  detectLanguage,
+  attemptScore,
+  compressionRatio,
+  decodeTokens,
   isSilence,
+  languageCandidates,
+  needsFallback,
+  sampleToken,
   logMel,
   prompt,
   tokenLogProb,
@@ -27,7 +33,8 @@ import {
 } from '../core/whisper'
 
 export type Engine = { ort: typeof Ort; encoder: Ort.InferenceSession; decoder: Ort.InferenceSession; vocab: readonly string[] }
-export type TranscribeOptions = { language: LanguageCode | 'auto'; translate: boolean }
+/** `preferred`: idioma de la página, que se prueba siempre en el modo automático. */
+export type TranscribeOptions = { language: LanguageCode | 'auto'; translate: boolean; preferred?: LanguageCode }
 export type Progress = { fraction: number; segments: Segment[]; language: LanguageCode }
 
 const LAYERS = 6
@@ -85,13 +92,21 @@ function nextCache(out: Record<string, Ort.Tensor>, prev: Cache | null): Cache {
   return c
 }
 
-/** Idioma hablado en la ventana (logits del token que sigue a <|startoftranscript|>). */
-async function languageOf(e: Engine, hidden: Ort.Tensor): Promise<LanguageCode> {
+/** Logits del token que sigue a <|startoftranscript|> (el idioma hablado según el modelo). */
+async function languageLogits(e: Engine, hidden: Ort.Tensor): Promise<Float32Array> {
   const out = await step(e, [SOT], hidden, emptyCache(e), false)
-  return detectLanguage(logitsAt(out.logits, 0))
+  return logitsAt(out.logits, 0)
 }
 
-async function decodeWindow(e: Engine, hidden: Ort.Tensor, language: LanguageCode, translate: boolean, signal?: AbortSignal) {
+// Semilla fija: el mismo audio da siempre el mismo texto.
+function seeded(seed = 1) {
+  let s = seed
+  return () => (s = (s * 16807) % 2147483647) / 2147483647
+}
+
+type Attempt = { tokens: number[]; noSpeech: number; avgLogProb: number; compression: number; text: string }
+
+async function decodeWindow(e: Engine, hidden: Ort.Tensor, language: LanguageCode, translate: boolean, temperature: number, random: () => number, signal?: AbortSignal): Promise<Attempt> {
   const ids = prompt(language, translate)
   let out = await step(e, ids, hidden, emptyCache(e), false)
   const noSpeech = softmaxAt(logitsAt(out.logits, 0), NO_SPEECH)
@@ -102,7 +117,7 @@ async function decodeWindow(e: Engine, hidden: Ort.Tensor, language: LanguageCod
   for (;;) {
     if (signal?.aborted) throw new DOMException('aborted', 'AbortError')
     applyRules(logits, generated)
-    const tok = argmax(logits)
+    const tok = sampleToken(logits, temperature, random)
     logProb += tokenLogProb(logits, tok)
     if (tok === EOT || generated.length >= MAX_NEW_TOKENS) break
     generated.push(tok)
@@ -110,7 +125,22 @@ async function decodeWindow(e: Engine, hidden: Ort.Tensor, language: LanguageCod
     logits = logitsAt(out.logits, 0)
     cache = nextCache(out, cache)
   }
-  return { tokens: generated, noSpeech, avgLogProb: logProb / Math.max(1, generated.length + 1) }
+  const text = decodeTokens(generated, e.vocab).trim()
+  return { tokens: generated, noSpeech, avgLogProb: logProb / Math.max(1, generated.length + 1), compression: compressionRatio(text, deflateSync), text }
+}
+
+/**
+ * Decodifica la ventana como Whisper de OpenAI: primero sin azar; si el texto se repite en bucle
+ * o es poco probable, otra vez con más temperatura. Se queda con el mejor intento.
+ */
+async function decodeBest(e: Engine, hidden: Ort.Tensor, language: LanguageCode, translate: boolean, random: () => number, signal?: AbortSignal): Promise<Attempt> {
+  let best: Attempt | null = null
+  for (const t of TEMPERATURES) {
+    const a = await decodeWindow(e, hidden, language, translate, t, random, signal)
+    if (!best || attemptScore(a, a.text.length) > attemptScore(best, best.text.length)) best = a
+    if (!needsFallback(a)) return a
+  }
+  return best!
 }
 
 /**
@@ -119,18 +149,33 @@ async function decodeWindow(e: Engine, hidden: Ort.Tensor, language: LanguageCod
  */
 export async function transcribe(e: Engine, audio: Float32Array, o: TranscribeOptions, onProgress?: (p: Progress) => void, signal?: AbortSignal): Promise<{ language: LanguageCode; segments: Segment[] }> {
   const segments: Segment[] = []
-  let language: LanguageCode = o.language === 'auto' ? 'es' : o.language
+  let language: LanguageCode = o.language === 'auto' ? (o.preferred ?? 'es') : o.language
+  // En automático, el idioma se decide en la primera ventana con voz y queda fijo: así no cambia
+  // de idioma a mitad del audio.
+  let decided = o.language !== 'auto'
+  const random = seeded()
   let seek = 0
-  let first = true
   while (seek < audio.length) {
     if (signal?.aborted) throw new DOMException('aborted', 'AbortError')
     const windowSamples = Math.min(CHUNK_SAMPLES, audio.length - seek)
     // Los últimos instantes (menos de 0,2 s) no alcanzan para una palabra.
     if (windowSamples < SAMPLE_RATE * 0.2) break
     const hidden = await encode(e, audio.subarray(seek, seek + windowSamples))
-    if (first && o.language === 'auto') language = await languageOf(e, hidden)
-    first = false
-    const w = await decodeWindow(e, hidden, language, o.translate, signal)
+    let w: Attempt
+    if (decided) w = await decodeBest(e, hidden, language, o.translate, random, signal)
+    else {
+      // Cada candidato se prueba de verdad: gana el que da el texto más probable sin bucles.
+      const candidates = languageCandidates(await languageLogits(e, hidden), 3, o.preferred)
+      let best: { lang: LanguageCode; a: Attempt } | null = null
+      for (const lang of candidates) {
+        const a = await decodeWindow(e, hidden, lang, o.translate, 0, random, signal)
+        if (!best || attemptScore(a, a.text.length) > attemptScore(best.a, best.a.text.length)) best = { lang, a }
+      }
+      language = best!.lang
+      w = needsFallback(best!.a) ? await decodeBest(e, hidden, language, o.translate, random, signal) : best!.a
+      // Una ventana de silencio no decide el idioma: se vuelve a probar en la siguiente.
+      decided = !isSilence(w.noSpeech, w.avgLogProb)
+    }
     if (isSilence(w.noSpeech, w.avgLogProb)) seek += windowSamples
     else {
       const r = windowSegments(w.tokens, e.vocab, seek / SAMPLE_RATE, windowSamples)
