@@ -5,6 +5,7 @@ import { Icon } from '../../../shared/ui/Icon'
 import { BusyButton, DropZone, FileRow, Notice, Progress, Segmented } from '../../../shared/ui/ui'
 import { baseName, formatBytes } from '../../../shared/files/files'
 import { MAX_PASSWORD_BYTES, QpdfError, WrongPasswordError, changeProtection, compressLossless, isEncrypted, passwordTooLong, protect, repair, unlock, type CompressResult } from '../core/pdfSecurity'
+import { pdfLock, withoutRestrictions, type PdfLock } from '../core/openPdf'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
@@ -109,8 +110,9 @@ export function CompressTool() {
 
   /** Comprime un PDF según el nivel elegido o, con tamaño máximo, con el primer nivel que entre. */
   const compressOne = async (f: File, onProgress: (done: number) => void): Promise<CompressResult> => {
-    const bytes = new Uint8Array(await f.arrayBuffer())
-    if (await isEncrypted(bytes)) throw new Error(tr('err.lockedPdf'))
+    const raw = new Uint8Array(await f.arrayBuffer())
+    // Con solo restricciones (se abre sin contraseña) se comprime igual; con contraseña, se avisa.
+    const bytes = (await isEncrypted(raw)) ? await withoutRestrictions(raw) : raw
     const max = Number(maxMb)
     if (!max) return runLevel(bytes, level, onProgress)
     const { compressToSize, megabytes } = await import('../core/pdfImageCompress')
@@ -314,7 +316,10 @@ function PasswordInput({ label, value, onChange, autoComplete }: { label: string
 export function ProtectTool() {
   const [file, setFile] = useState<File | null>(null)
   /** El PDF elegido ya tiene contraseña: se pide la actual para cambiarla (W-146.3). */
-  const [encrypted, setEncrypted] = useState(false)
+  const [lock, setLock] = useState<PdfLock>('none')
+  const encrypted = lock !== 'none'
+  // Solo con contraseña de apertura hace falta escribir la actual (con solo restricciones, no).
+  const needsCurrent = lock === 'password'
   const [current, setCurrent] = useState('')
   /** 'open': contraseña para abrir; 'restrict': abre sin contraseña, solo con restricciones. */
   const [mode, setMode] = useState<'open' | 'restrict'>('open')
@@ -330,17 +335,17 @@ export function ProtectTool() {
   const tooLong = passwordTooLong(pw)
   const restricted = !allowPrint || !allowCopy || !allowModify
   const ready =
-    !!file && (!encrypted || current.length > 0) && (mode === 'restrict' ? restricted : pw.length >= 4 && pw === pw2 && !tooLong)
+    !!file && (!needsCurrent || current.length > 0) && (mode === 'restrict' ? restricted : pw.length >= 4 && pw === pw2 && !tooLong)
 
   const pick = async (f: File | null) => {
     setFile(f)
     setOutput(null)
-    setEncrypted(false)
+    setLock('none')
     setCurrent('')
     setError(null)
     if (!f) return
     try {
-      setEncrypted(await isEncrypted(new Uint8Array(await f.arrayBuffer())))
+      setLock(await pdfLock(new Uint8Array(await f.arrayBuffer())))
     } catch {
       setError(tr('err.invalidPdf'))
     }
@@ -360,7 +365,7 @@ export function ProtectTool() {
   return (
     <div className="card stack">
       <PickPdf file={file} onFile={(f) => void pick(f)} />
-      {encrypted && (
+      {needsCurrent && (
         <>
           <Notice kind="info">{tr('protect.change')}</Notice>
           <PasswordInput label={tr('protect.current')} value={current} onChange={setCurrent} autoComplete="current-password" />
@@ -425,20 +430,20 @@ export function ProtectTool() {
 // ── Desbloquear ───────────────────────────────────────────────────────
 export function UnlockTool() {
   const [file, setFile] = useState<File | null>(null)
-  const [encrypted, setEncrypted] = useState<boolean | null>(null)
+  const [lock, setLock] = useState<PdfLock | null>(null)
   const [pw, setPw] = useState('')
   const { busy, error, setError, run } = useJob('unlock')
   const [output, setOutput] = useState<{ file: File; password: string } | null>(null)
 
   const pick = async (f: File | null) => {
     setFile(f)
-    setEncrypted(null)
+    setLock(null)
     setError(null)
     setPw('')
     setOutput(null)
     if (!f) return
     try {
-      setEncrypted(await isEncrypted(new Uint8Array(await f.arrayBuffer())))
+      setLock(await pdfLock(new Uint8Array(await f.arrayBuffer())))
     } catch {
       setError(tr('err.invalidPdf'))
     }
@@ -454,8 +459,9 @@ export function UnlockTool() {
   return (
     <div className="card stack">
       <PickPdf file={file} onFile={pick} />
-      {encrypted === false && <Notice kind="info">{tr('unlock.notLocked')}</Notice>}
-      {encrypted && (
+      {lock === 'none' && <Notice kind="info">{tr('unlock.notLocked')}</Notice>}
+      {lock === 'restrictions' && <Notice kind="info">{tr('unlock.restrictionsOnly')}</Notice>}
+      {lock === 'password' && (
         <>
           <PasswordInput label={tr('unlock.pw')} value={pw} onChange={setPw} autoComplete="current-password" />
           <small className="faint">{tr('unlock.hint')}</small>
@@ -463,7 +469,7 @@ export function UnlockTool() {
       )}
       {error && <Notice kind="error">{error}</Notice>}
       <div className="row row-end">
-        <BusyButton busy={busy} disabled={!file || !encrypted} onClick={go} icon="unlock">
+        <BusyButton busy={busy} disabled={!file || !lock || lock === 'none'} onClick={go} icon="unlock">
           {tr('unlock.go')}
         </BusyButton>
       </div>

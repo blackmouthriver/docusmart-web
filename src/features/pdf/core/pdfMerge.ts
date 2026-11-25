@@ -20,6 +20,7 @@ import {
   PDFString,
   type PDFObject,
 } from 'pdf-lib'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type MergeInput = {
   bytes: ArrayBuffer | Uint8Array
@@ -46,7 +47,7 @@ export async function mergePdfs(inputs: MergeInput[], opts: MergeOptions = {}): 
   let resources: PDFObject | undefined
 
   for (const input of inputs) {
-    const src = await PDFDocument.load(input.bytes)
+    const src = await loadPdf(input.bytes)
     title ??= src.getTitle() || undefined
     const wanted = input.pages ? pickPages(input.pages, src.getPageCount()) : src.getPageIndices()
     const pages = await out.copyPages(src, wanted)

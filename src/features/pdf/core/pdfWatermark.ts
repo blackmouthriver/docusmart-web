@@ -9,6 +9,7 @@ import { PDFArray, PDFDocument, PDFName, degrees, type PDFImage, type PDFPage, t
 import { drawPieces, fontsForText, piecesWidth, type FontSet, type Piece } from '../../../shared/pdf/pdfFonts'
 import { hexToRgb } from './pdfEdit'
 import { toPdfPoint } from './pdfNumber'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type WatermarkPosition = 'top-left' | 'top-center' | 'top-right' | 'middle-left' | 'center' | 'middle-right' | 'bottom-left' | 'bottom-center' | 'bottom-right' | 'mosaic'
 export const WATERMARK_POSITIONS: readonly WatermarkPosition[] = ['top-left', 'top-center', 'top-right', 'middle-left', 'center', 'middle-right', 'bottom-left', 'bottom-center', 'bottom-right']
@@ -99,7 +100,7 @@ function contentRefs(page: PDFPage): PDFRef[] {
 
 export async function watermarkPdf(bytes: ArrayBuffer | Uint8Array, opts: Partial<WatermarkOptions> = {}): Promise<Uint8Array> {
   const o = { ...DEFAULT_WATERMARK, ...opts, opacity: Math.min(1, Math.max(0.02, opts.opacity ?? DEFAULT_WATERMARK.opacity)) }
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   const markFor = await makeMark(doc, o)
   const indices = o.pages?.length ? o.pages.filter((i) => i >= 0 && i < doc.getPageCount()) : doc.getPageIndices()
   for (const i of indices) {

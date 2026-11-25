@@ -6,7 +6,6 @@
 import {
   PDFButton,
   PDFCheckBox,
-  PDFDocument,
   PDFDropdown,
   PDFName,
   PDFOptionList,
@@ -19,6 +18,7 @@ import {
   type PDFField,
 } from 'pdf-lib'
 import { fontsForText, isWinAnsi } from '../../../shared/pdf/pdfFonts'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type FieldKind = 'text' | 'checkbox' | 'radio' | 'dropdown' | 'list'
 export type FieldRect = { page: number; x: number; y: number; w: number; h: number }
@@ -92,7 +92,7 @@ function optionsOf(f: PDFField): string[] {
 }
 
 export async function readForm(bytes: ArrayBuffer | Uint8Array): Promise<FormInfo> {
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   const form = doc.getForm()
   const hasXfa = form.hasXFA()
   const pages = doc.getPages()
@@ -169,7 +169,7 @@ function fixAutoSize(f: PDFTextField) {
 
 /** Llena los campos indicados. `flatten` los convierte en contenido fijo (ya no se pueden editar). */
 export async function fillForm(bytes: ArrayBuffer | Uint8Array, values: FormValues, opts: { flatten?: boolean } = {}): Promise<Uint8Array> {
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   const form = doc.getForm()
   // Campos cuyo texto no entra en las fuentes estándar (ruso, japonés, coreano…): se dibujan
   // con las fuentes de DocuSmart en vez de perder el texto.

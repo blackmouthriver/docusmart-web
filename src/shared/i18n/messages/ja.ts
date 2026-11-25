@@ -583,6 +583,7 @@ const ja: Messages = {
   'protect.aes': "AES-256で暗号化します。パスワードは大切に保管してください。忘れると誰もPDFを復元できません。",
   'protect.go': "PDFを保護",
   'unlock.notLocked': "このPDFにはパスワードも制限もありません。ロック解除は不要です。",
+  'unlock.restrictionsOnly': "この PDF はパスワードなしで開けますが、制限（印刷やコピーの禁止など）があります。「ロック解除」を押すと制限を外せます。",
   'unlock.pw': "PDFのパスワード",
   'unlock.hint': "パスワードなしで開けるのに印刷やコピーができない場合は、空欄のままにしてください。",
   'unlock.go': "PDFのロック解除",

@@ -583,6 +583,7 @@ const ca: Messages = {
   'protect.aes': "Xifratge AES-256. Guarda bé la contrasenya: si l'oblides, ningú no podrà recuperar el PDF.",
   'protect.go': "Protegeix PDF",
   'unlock.notLocked': "Aquest PDF no té contrasenya ni restriccions: no cal desbloquejar-lo.",
+  'unlock.restrictionsOnly': "Aquest PDF s'obre sense contrasenya, però té restriccions (per exemple, no deixa imprimir ni copiar). Prem Desbloqueja per treure-les.",
   'unlock.pw': "Contrasenya del PDF",
   'unlock.hint': "Si el PDF s'obre sense contrasenya però no deixa imprimir o copiar, deixa-la buida.",
   'unlock.go': "Desbloqueja PDF",

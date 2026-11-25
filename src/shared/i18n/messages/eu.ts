@@ -583,6 +583,7 @@ const eu: Messages = {
   'protect.aes': "AES-256 zifratzea. Gorde ondo pasahitza: ahazten baduzu, inork ezin izango du PDFa berreskuratu.",
   'protect.go': "Babestu PDFa",
   'unlock.notLocked': "PDF honek ez du pasahitzik ez murrizketarik: ez dago desblokeatu beharrik.",
+  'unlock.restrictionsOnly': "PDF hau pasahitzik gabe irekitzen da, baina murrizketak ditu (adibidez, ez du inprimatzen edo kopiatzen uzten). Sakatu Desblokeatu horiek kentzeko.",
   'unlock.pw': "PDFaren pasahitza",
   'unlock.hint': "PDFa pasahitzik gabe irekitzen bada baina ez badu inprimatzen edo kopiatzen uzten, utzi hutsik.",
   'unlock.go': "Desblokeatu PDFa",

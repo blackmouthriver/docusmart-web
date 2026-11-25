@@ -583,6 +583,7 @@ const de: Messages = {
   'protect.aes': "AES-256-Verschlüsselung. Bewahre das Passwort gut auf: Wenn du es vergisst, kann niemand das PDF wiederherstellen.",
   'protect.go': "PDF schützen",
   'unlock.notLocked': "Dieses PDF hat weder Passwort noch Einschränkungen: Es muss nicht entsperrt werden.",
+  'unlock.restrictionsOnly': "Dieses PDF öffnet sich ohne Passwort, hat aber Einschränkungen (zum Beispiel kein Drucken oder Kopieren). Tippe auf Entsperren, um sie zu entfernen.",
   'unlock.pw': "Passwort des PDFs",
   'unlock.hint': "Wenn sich das PDF ohne Passwort öffnet, aber Drucken oder Kopieren nicht erlaubt, lass es leer.",
   'unlock.go': "PDF entsperren",

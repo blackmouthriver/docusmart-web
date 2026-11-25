@@ -7,6 +7,7 @@
 import { EncryptedPDFError, PDFArray, PDFDict, PDFDocument, PDFHexString, PDFName, PDFNumber, PDFRawStream, PDFRef, PDFStream, PDFString, type PDFObject } from 'pdf-lib'
 import { readJpeg, stripJpeg } from './images'
 import { MetaError, type MetaField, type MetaKey } from './types'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type StripPdfOptions = {
   /** Quitar también comentarios, adjuntos y JavaScript (no solo los datos del autor). */
@@ -40,7 +41,7 @@ const text = (o: PDFObject | undefined): string => (o instanceof PDFString || o 
 
 async function open(bytes: Uint8Array) {
   try {
-    const doc = await PDFDocument.load(bytes, { updateMetadata: false })
+    const doc = await loadPdf(bytes, { updateMetadata: false })
     return doc
   } catch (e) {
     // pdf-lib está compilado a ES5: `instanceof` no reconoce su error, así que se mira también el mensaje.

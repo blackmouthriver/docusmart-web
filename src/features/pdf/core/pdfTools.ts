@@ -2,13 +2,14 @@
 import { PDFDocument, degrees } from 'pdf-lib'
 import { mergePdfs } from './pdfMerge'
 import { watermarkPdf } from './pdfWatermark'
+import { loadPdf } from '../../security/core/openPdf'
 
 export { numberPages, NUMBER_POSITIONS, DEFAULT_NUMBER_OPTIONS, type NumberOptions, type NumberPosition } from './pdfNumber'
 export { mergePdfs, topBookmarks, type MergeInput, type MergeOptions } from './pdfMerge'
 export { bookmarkGroups, fileSafe, splitBySize, type BookmarkGroup, type SizeSplit } from './pdfSplit'
 export { watermarkPdf, DEFAULT_WATERMARK, WATERMARK_POSITIONS, type WatermarkOptions, type WatermarkPosition, type WatermarkSize } from './pdfWatermark'
 
-const load = (bytes: ArrayBuffer | Uint8Array) => PDFDocument.load(bytes, { ignoreEncryption: false })
+const load = (bytes: ArrayBuffer | Uint8Array) => loadPdf(bytes)
 
 export async function pageCount(bytes: ArrayBuffer): Promise<number> {
   return (await load(bytes)).getPageCount()

@@ -583,6 +583,7 @@ const ko: Messages = {
   'protect.aes': "AES-256 암호화입니다. 암호를 잘 보관하세요. 잊어버리면 아무도 PDF를 복구할 수 없습니다.",
   'protect.go': "PDF 보호",
   'unlock.notLocked': "이 PDF에는 암호나 제한이 없어 잠금을 해제할 필요가 없습니다.",
+  'unlock.restrictionsOnly': "이 PDF는 비밀번호 없이 열리지만 제한(예: 인쇄나 복사 금지)이 있습니다. 잠금 해제를 누르면 제한을 없앨 수 있습니다.",
   'unlock.pw': "PDF 암호",
   'unlock.hint': "암호 없이 열리지만 인쇄나 복사가 안 된다면 비워 두세요.",
   'unlock.go': "PDF 잠금 해제",

@@ -6,6 +6,7 @@
  *   mandarlas por correo). Se mide guardando cada parte, así el tamaño es el real.
  */
 import { PDFDocument } from 'pdf-lib'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type BookmarkGroup = { title: string | null; pages: number[] }
 
@@ -52,7 +53,7 @@ export type SizeSplit = {
  * cuántas páginas caben duplicando y luego por bisección: unas pocas veces guardar por parte.
  */
 export async function splitBySize(bytes: ArrayBuffer | Uint8Array, maxBytes: number, onProgress?: (done: number, total: number) => void): Promise<SizeSplit> {
-  const src = await PDFDocument.load(bytes)
+  const src = await loadPdf(bytes)
   const total = src.getPageCount()
   const save = async (from: number, n: number) => {
     const out = await PDFDocument.create()

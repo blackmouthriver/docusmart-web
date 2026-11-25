@@ -39,12 +39,26 @@ export function setQpdfWasmUrl(url: string) {
 export async function runQpdf(args: string[], input: Uint8Array, outName = 'out.pdf'): Promise<QpdfResult> {
   const { default: createModule } = (await import('@neslinesli93/qpdf-wasm')) as unknown as { default: CreateModule }
   const messages: string[] = []
-  const qpdf = await createModule({
-    locateFile: () => wasmUrl,
-    noInitialRun: true,
-    print: (s) => messages.push(s),
-    printErr: (s) => messages.push(s),
-  })
+  // Este módulo ignora printErr: al crearse guarda console.error y escribe ahí mensajes como
+  // "invalid password". Mientras se crea (de forma síncrona) se le da uno que los junta con los
+  // demás, y enseguida se devuelve el de verdad: así no ensucian la consola de la página.
+  const { error, warn } = console
+  const collect = (...a: unknown[]) => void messages.push(a.join(' '))
+  console.error = collect
+  console.warn = collect
+  let pending: Promise<QpdfInstance>
+  try {
+    pending = createModule({
+      locateFile: () => wasmUrl,
+      noInitialRun: true,
+      print: (s) => messages.push(s),
+      printErr: (s) => messages.push(s),
+    })
+  } finally {
+    console.error = error
+    console.warn = warn
+  }
+  const qpdf = await pending
   qpdf.FS.writeFile('/in.pdf', input)
   let code: number
   try {

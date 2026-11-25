@@ -4,9 +4,10 @@
  * coordenadas del PDF, también en páginas giradas o recortadas. Los nombres no se repiten con
  * los campos que ya traía el documento.
  */
-import { PDFDocument, PDFHexString, PDFName, degrees, rgb, type PDFField, type PDFPage } from 'pdf-lib'
+import { PDFHexString, PDFName, degrees, rgb, type PDFField, type PDFPage } from 'pdf-lib'
 import { drawPieces, fontsForText, piecesWidth } from '../../../shared/pdf/pdfFonts'
 import { viewToPdf } from './pdfSign'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type NewFieldKind = 'text' | 'multiline' | 'checkbox' | 'radio' | 'dropdown'
 export type NewField = {
@@ -69,7 +70,7 @@ function finish(field: PDFField, f: NewField, label: string, rotation: number) {
 
 /** Agrega los campos al PDF y devuelve el documento rellenable. */
 export async function addFormFields(bytes: ArrayBuffer | Uint8Array, fields: NewField[]): Promise<Uint8Array> {
-  const doc = await PDFDocument.load(bytes, { updateMetadata: false })
+  const doc = await loadPdf(bytes, { updateMetadata: false })
   const form = doc.getForm()
   const used = new Set(form.getFields().map((x) => x.getName()))
   const pages = doc.getPages()

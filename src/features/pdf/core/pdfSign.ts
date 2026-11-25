@@ -10,6 +10,7 @@ import { LineCapStyle, PDFDocument, degrees } from 'pdf-lib'
 import { drawPieces, fontsForText, piecesWidth } from '../../../shared/pdf/pdfFonts'
 import type { Pixels } from './pdfCrop'
 import { hexToRgb } from './pdfEdit'
+import { loadPdf } from '../../security/core/openPdf'
 
 /**
  * Qué va en cada recuadro (W-146.2): la firma, las iniciales (imágenes), la fecha o un texto
@@ -78,7 +79,7 @@ const CHECK: Array<[number, number]> = [
  */
 export async function signPdf(bytes: ArrayBuffer | Uint8Array, images: Uint8Array | SignImages, placements: Placement[], ink = '#1C1B1A'): Promise<Uint8Array> {
   if (!placements.length) throw new Error('Coloca la firma en al menos una página.')
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   const pngs: SignImages = images instanceof Uint8Array ? { signature: images } : images
   const embedded = new Map<StampKind, Awaited<ReturnType<PDFDocument['embedPng']>>>()
   for (const kind of ['signature', 'initials'] as const) {

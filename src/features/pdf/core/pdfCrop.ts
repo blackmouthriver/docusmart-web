@@ -3,7 +3,7 @@
  * Los márgenes se expresan como fracción (0 a 1) de la página tal como se ve,
  * es decir, con su rotación aplicada; aquí se traducen a las coordenadas del PDF.
  */
-import { PDFDocument } from 'pdf-lib'
+import { loadPdf } from '../../security/core/openPdf'
 
 export type Margins = { top: number; right: number; bottom: number; left: number }
 
@@ -50,7 +50,7 @@ export function toUnrotated(m: Margins, rotation: number): Margins {
 
 /** Recorta las páginas indicadas (base 0; todas si se omite) con los mismos márgenes. */
 export async function cropPdf(bytes: ArrayBuffer | Uint8Array, margins: Margins, pages?: number[]): Promise<Uint8Array> {
-  const doc = await PDFDocument.load(bytes)
+  const doc = await loadPdf(bytes)
   const m = clampMargins(margins)
   const indices = pages ?? doc.getPageIndices()
   for (const i of indices) {

@@ -11,6 +11,7 @@ import { PDFDocument } from 'pdf-lib'
 
 import type { OcrLang } from './ocrLangs'
 import type { OcrLine } from '../../convert/core/ocrLayout'
+import { loadPdf } from '../../security/core/openPdf'
 export * from './ocrLangs'
 export type OcrImage = Blob | HTMLCanvasElement
 /** `lines`, `width` y `height` (en píxeles de la imagen) solo si se pidió el diseño (W-147.3). */
@@ -122,7 +123,7 @@ export type PdfPart = { kind: 'original'; index: number } | { kind: 'ocr'; pdf: 
  */
 export async function assembleSearchablePdf(parts: PdfPart[], original?: Uint8Array): Promise<Uint8Array> {
   const out = await PDFDocument.create()
-  const src = original && parts.some((p) => p.kind === 'original') ? await PDFDocument.load(original) : null
+  const src = original && parts.some((p) => p.kind === 'original') ? await loadPdf(original) : null
   for (const part of parts) {
     if (part.kind === 'original') {
       if (!src) continue
@@ -130,7 +131,7 @@ export async function assembleSearchablePdf(parts: PdfPart[], original?: Uint8Ar
       out.addPage(page)
       continue
     }
-    const ocr = await PDFDocument.load(part.pdf)
+    const ocr = await loadPdf(part.pdf)
     if (!part.size) {
       // Sin tamaño pedido, la página va tal cual.
       const [page] = await out.copyPages(ocr, [0])
