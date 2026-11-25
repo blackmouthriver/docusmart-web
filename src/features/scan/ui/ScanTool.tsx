@@ -187,7 +187,7 @@ export function ScanTool() {
   const inputs = (
     <>
       <input ref={camera} type="file" accept="image/*" capture="environment" hidden onChange={(e) => { const files = Array.from(e.target.files ?? []); e.target.value = ''; void addFiles(files) }} />
-      <input ref={gallery} type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={(e) => { const files = Array.from(e.target.files ?? []); e.target.value = ''; void addFiles(files) }} />
+      <input ref={gallery} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif,image/tiff,.tif,.tiff" multiple hidden onChange={(e) => { const files = Array.from(e.target.files ?? []); e.target.value = ''; void addFiles(files) }} />
     </>
   )
   const addButtons = (

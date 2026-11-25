@@ -243,3 +243,14 @@ describe('utilidades', () => {
     expect(dedupe([{ key: 'author', value: 'A' }, { key: 'author', value: 'A' }, { key: 'author', value: 'B' }])).toHaveLength(2)
   })
 })
+
+describe('archivos que no se pueden leer (barrido 2026-11-25)', () => {
+  const bytes = (s: string) => new TextEncoder().encode(s)
+  it('vacío, dañado (extensión conocida) o de otro tipo', async () => {
+    await expect(readMetadata('foto.jpg', new Uint8Array(0))).rejects.toMatchObject({ reason: 'empty' })
+    await expect(readMetadata('foto.jpg', bytes('no es una foto'))).rejects.toMatchObject({ reason: 'damaged' })
+    await expect(readMetadata('informe.PDF', bytes('tampoco es un PDF'))).rejects.toMatchObject({ reason: 'damaged' })
+    await expect(readMetadata('notas.txt', bytes('texto'))).rejects.toMatchObject({ reason: 'unsupported' })
+    await expect(readMetadata('sin-extension', bytes('texto'))).rejects.toBeInstanceOf(MetaError)
+  })
+})

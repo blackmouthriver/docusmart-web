@@ -34,6 +34,9 @@ export async function createRecognizer(lang: OcrLang, onStatus?: (fraction: numb
     langPath: '/ocr/lang',
     gzip: true,
     logger: (m) => onStatus?.(m.progress ?? 0, m.status ?? ''),
+    // Sin esto, una imagen que Tesseract no puede leer deja un error sin atrapar en la página
+    // (además del rechazo de recognize, que sí se maneja y se muestra).
+    errorHandler: () => undefined,
   })
   return {
     async recognize(image, wantPdf, layout = false) {

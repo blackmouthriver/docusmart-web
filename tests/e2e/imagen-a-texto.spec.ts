@@ -32,7 +32,8 @@ test('reconoce el texto de dos imágenes, se edita y se descarga en .txt y Word'
     { name: 'cartel.png', mimeType: 'image/png', buffer: await textImage(page, ['HOLA MUNDO', 'DOCUMENTO 2026']) },
     { name: 'nota.txt', mimeType: 'text/plain', buffer: Buffer.from('x') },
   ])
-  await expect(tool.getByText('Algunos archivos no son imágenes y no se agregaron.')).toBeVisible()
+  // Lo que no es imagen se rechaza al elegirlo, con su nombre (barrido 2026-11-25); la imagen sí entra.
+  await expect(tool.getByText(/^nota\.txt: No se pudo abrir la imagen/)).toBeVisible()
 
   // Una captura pegada con Ctrl+V se agrega a la lista.
   const second = (await textImage(page, ['SEGUNDA IMAGEN'])).toString('base64')

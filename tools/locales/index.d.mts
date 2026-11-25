@@ -12,3 +12,5 @@ export const generatedHtml: () => string[]
 export const LANGS: Locale[]
 /** La página de una herramienta en un idioma (textos traducidos). */
 export function localized(page: ToolPage, loc: Locale): ToolPage
+/** Ruta de la página de una herramienta en un idioma (/unir-pdf, /en/merge-pdf…). */
+export function pagePath(page: ToolPage, loc: Locale): string
