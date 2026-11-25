@@ -56,9 +56,22 @@ export function SideNav({ route, collapsed, onExpand }: { route: Route; collapse
   const toggle = (id: GroupId) => setOpen((o) => (o.has(id) ? new Set([...o].filter((x) => x !== id)) : new Set([...o, id])))
   const here = (section: string, sub = '') => route.section === section && (route.sub ?? '') === sub
 
+  /** Vista general del grupo: la categoría en "Todas las herramientas", o el inicio de Modo Estudio. */
+  const overview = (id: GroupId) => (id === 'estudio' ? '#/estudio' : `#/herramientas/${id}`)
+  const onOverview = (id: GroupId) => (id === 'estudio' ? here('estudio') : here('herramientas', id))
+  /**
+   * Tocar un grupo lleva a su vista general y despliega sus herramientas. Si ya se está en esa
+   * vista, solo se despliega o se pliega (así se puede cerrar).
+   */
+  const pickGroup = (id: GroupId) => {
+    if (onOverview(id)) return toggle(id)
+    setOpen((o) => (o.has(id) ? o : new Set([...o, id])))
+    window.location.hash = overview(id)
+  }
+
   /** Botón de un grupo desplegable, con su ícono, su cantidad y la flecha. */
   const groupButton = (id: GroupId, icon: IconName, name: string, count: number, expanded: boolean) => (
-    <button type="button" className="nav-item nav-cat-btn" aria-expanded={expanded} aria-controls={`nav-cat-${id}`} disabled={searching} onClick={() => toggle(id)} data-current={current === id || undefined}>
+    <button type="button" className="nav-item nav-cat-btn" aria-expanded={expanded} aria-controls={`nav-cat-${id}`} aria-current={onOverview(id) ? 'page' : undefined} disabled={searching} onClick={() => pickGroup(id)} data-current={current === id || undefined}>
       <Icon name={icon} />
       <span className="nav-label">{name}</span>
       <span className="nav-count">{count}</span>
