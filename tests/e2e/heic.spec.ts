@@ -61,7 +61,8 @@ test('varias fotos a PNG en un ZIP, y un archivo que no es HEIC avisa', async ({
   expect(r.data.subarray(0, 2).toString('latin1')).toBe('PK')
 
   await page.reload()
+  // Un archivo que no es una foto se rechaza al elegirlo (barrido 2026-11-25), con su nombre.
   await upload(page, [{ name: 'falsa.heic', mimeType: 'image/heic', buffer: Buffer.from('esto no es una foto') }])
-  await tool.getByRole('button', { name: 'Convertir' }).click()
-  await expect(tool.getByText('Este archivo no es una foto HEIC o está dañado.')).toBeVisible()
+  await expect(tool.getByText(/^falsa\.heic: No se pudo abrir la imagen/)).toBeVisible()
+  await expect(tool.getByRole('button', { name: 'Convertir' })).toBeDisabled()
 })

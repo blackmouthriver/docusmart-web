@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+import { checkFile, expectFromAccept, problemMessage } from '../files/sniff'
 import { Icon, type IconName } from './Icon'
 import { formatBytes, kindOf } from '../files/files'
 import { AppContext } from '../../app/state'
@@ -42,27 +43,45 @@ export function DropZone({
   onFiles,
   title,
   hint,
+  check = true,
 }: {
   accept: string
   multiple?: boolean
   onFiles: (files: File[]) => void
   title: string
   hint: string
+  /**
+   * Revisar la firma de los archivos antes de entregarlos (si el selector es solo de PDF o solo de
+   * imágenes): los vacíos o dañados se rechazan con un mensaje claro en vez de fallar después.
+   * Reparar PDF lo apaga, porque justamente recibe archivos dañados.
+   */
+  check?: boolean
 }) {
   const input = useRef<HTMLInputElement>(null)
   const [over, setOver] = useState(false)
+  const [rejected, setRejected] = useState<string[]>([])
+  const expect = check ? expectFromAccept(accept) : null
+  /** Entrega los archivos que sirven y anota los que no. */
+  const deliver = async (files: File[]) => {
+    if (!expect) return onFiles(files)
+    const problems = await Promise.all(files.map((f) => checkFile(f, expect)))
+    setRejected(files.flatMap((f, i) => (problems[i] ? [`${f.name}: ${problemMessage(problems[i])}`] : [])))
+    const ok = files.filter((_, i) => !problems[i])
+    if (ok.length) onFiles(ok)
+  }
   // W-110: si la herramienta anterior dejó un archivo para esta, se recibe como si el usuario lo hubiera elegido.
   useEffect(() => {
     const handed = takeChainedFiles(accept, !!multiple)
-    if (handed) onFiles(handed)
+    if (handed) void deliver(handed)
     // solo al abrir la pantalla: el traspaso es de un solo uso
   }, [])
   const take = (list: FileList | null) => {
     if (!list?.length) return
     const files = Array.from(list)
-    onFiles(multiple ? files : files.slice(0, 1))
+    void deliver(multiple ? files : files.slice(0, 1))
   }
   return (
+    <>
     <div
       className={'drop' + (over ? ' is-over' : '')}
       role="button"
@@ -100,6 +119,16 @@ export function DropZone({
         }}
       />
     </div>
+    {rejected.length > 0 && (
+      <Notice kind="error">
+        {rejected.length === 1 ? rejected[0] : (
+          <ul className="drop-rejected">
+            {rejected.map((r) => <li key={r}>{r}</li>)}
+          </ul>
+        )}
+      </Notice>
+    )}
+    </>
   )
 }
 
@@ -220,6 +249,8 @@ export function Progress({ value }: { value: number }) {
 
 export function errorMessage(e: unknown): string {
   const msg = e instanceof Error ? e.message : String(e)
+  // pdf.js: "The PDF file is empty, i.e. its size is zero bytes."
+  if (/file is empty|zero bytes/i.test(msg)) return tr('err.emptyFile')
   if (/encrypt/i.test(msg) || /password/i.test(msg))
     return tr('err.lockedPdf')
   if (/Invalid PDF|No PDF header|InvalidPDF/i.test(msg)) return tr('err.invalidPdf')

@@ -35,10 +35,16 @@ export function detectKind(name: string, b: Uint8Array): MetaKind | null {
   return null
 }
 
+/** Extensiones que la herramienta sabe limpiar: si el contenido no se reconoce, está dañado. */
+const KNOWN_EXT = ['jpg', 'jpeg', 'png', 'webp', 'tif', 'tiff', 'heic', 'heif', 'avif', 'mp4', 'mov', 'm4v', 'pdf', ...OFFICE_EXT]
+
 function kindOf(name: string, bytes: Uint8Array): MetaKind {
+  if (!bytes.length) throw new MetaError('empty')
   const kind = detectKind(name, bytes)
-  if (!kind) throw new MetaError('unsupported')
-  return kind
+  if (kind) return kind
+  // Un .jpg que no empieza como JPG no es "otro tipo": está dañado (o es otra cosa renombrada).
+  const ext = name.toLowerCase().split('.').pop() ?? ''
+  throw new MetaError(KNOWN_EXT.includes(ext) ? 'damaged' : 'unsupported')
 }
 
 export async function readMetadata(name: string, bytes: Uint8Array): Promise<MetaField[]> {
