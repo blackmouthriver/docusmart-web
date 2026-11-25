@@ -49,6 +49,8 @@ export default {
     toolsOne: "1 инструмент",
     toolsMany: "Инструментов: {n}",
     seeAll: "Все инструменты ({n})",
+    countChip: "Бесплатных инструментов: {n}",
+    countTitle: "Бесплатные инструменты ({n}) — без загрузки файлов.",
   },
   pages: {
     'unir-pdf': {
@@ -1346,7 +1348,6 @@ export default {
       'Подписка управляется и отменяется в Google Play. Она продлевается автоматически, пока вы её не отмените.',
     ],
     ['En el navegador', 'В браузере'],
-    ['Herramientas gratis, sin subir tus archivos.', 'Бесплатные инструменты без загрузки файлов.'],
     [
       'Úsalas desde cualquier computadora o celular, sin instalar nada ni crear cuenta. Todo se procesa en tu equipo.',
       'Пользуйтесь с любого компьютера или телефона без установки и регистрации. Всё обрабатывается на вашем устройстве.',

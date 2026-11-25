@@ -45,6 +45,8 @@ export default {
     toolsOne: "1 strumento",
     toolsMany: "{n} strumenti",
     seeAll: "Vedi tutti i {n} strumenti",
+    countChip: "{n} strumenti gratuiti",
+    countTitle: "{n} strumenti gratuiti, senza caricare i tuoi file.",
   },
   pages: {
     'unir-pdf': {
@@ -1334,7 +1336,6 @@ export default {
       'L’abbonamento si gestisce e si annulla da Google Play. Si rinnova automaticamente finché non lo annulli.',
     ],
     ['En el navegador', 'Nel browser'],
-    ['Herramientas gratis, sin subir tus archivos.', 'Strumenti gratis, senza caricare i tuoi file.'],
     [
       'Úsalas desde cualquier computadora o celular, sin instalar nada ni crear cuenta. Todo se procesa en tu equipo.',
       'Usali da qualsiasi computer o telefono, senza installare nulla né creare un account. Tutto viene elaborato sul tuo dispositivo.',

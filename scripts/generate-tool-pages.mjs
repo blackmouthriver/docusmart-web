@@ -874,6 +874,21 @@ function landingLd(html, loc, file) {
   return `<script type="application/ld+json">\n${jsonLd(graph)}\n</script>`
 }
 
+/**
+ * Cuántas herramientas hay, en el chip del hero y en el título de la sección (data-tool-count):
+ * sale de tools/pages.mjs, así no queda desactualizado cuando se suma una herramienta.
+ */
+function toolCountTexts(html, loc, file) {
+  const texts = { chip: loc.ui.countChip, title: loc.ui.countTitle }
+  let out = html
+  for (const [kind, tpl] of Object.entries(texts)) {
+    const re = new RegExp(String.raw`(data-tool-count="${kind}">(?:<svg[^>]*>[\s\S]*?</svg>)?)[^<]*`)
+    if (!re.test(out)) throw new Error(`${file} no tiene data-tool-count="${kind}"`)
+    out = out.replace(re, (_, head) => head + esc(tpl.replace('{n}', String(pages.length))))
+  }
+  return out
+}
+
 function landingBlocks(html, loc, file) {
   const hub = hubPath(loc)
   const cards = CATEGORIES.map((c) => {
@@ -885,6 +900,7 @@ ${cards}
       </ul>
       <div class="wt-more reveal"><a class="btn btn-primary" href="${hub}">${esc(loc.ui.seeAll.replace('{n}', String(pages.length)))} <span aria-hidden="true">→</span></a></div>`
   let out = block(html, 'tools', items, file)
+  out = toolCountTexts(out, loc, file)
   out = block(out, 'ldjson', landingLd(html, loc, file), file)
   out = block(out, 'hreflang', alternates(homePath), file)
   out = block(out, 'langs', langMenu(loc, homePath, 'lang-menu', '  '), file)
