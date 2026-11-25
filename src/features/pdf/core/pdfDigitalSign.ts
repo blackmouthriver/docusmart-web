@@ -185,13 +185,29 @@ export type SignatureCheck = { name: string; signedAt?: Date; intact: boolean; c
  * Verifica las firmas del PDF: que el contenido firmado no cambió (el hash coincide) y que la
  * firma corresponde a la clave del certificado. No comprueba la confianza en el emisor.
  */
+/**
+ * La firma (DER) sin el relleno de ceros del hueco reservado. Se lee su largo de la propia
+ * cabecera DER: quitar los ceros del final cortaba la firma cuando sus últimos bytes eran 00
+ * (pasaba en ~1 de cada 40 firmas y una firma buena salía como inválida).
+ */
+export function signatureDer(bytes: string): string {
+  if (bytes.charCodeAt(0) !== 0x30 || bytes.length < 2) return bytes
+  const first = bytes.charCodeAt(1)
+  if (first < 0x80) return bytes.slice(0, 2 + first)
+  const n = first & 0x7f
+  if (n === 0 || n > 4 || bytes.length < 2 + n) return bytes
+  let len = 0
+  for (let i = 0; i < n; i++) len = len * 256 + bytes.charCodeAt(2 + i)
+  return bytes.slice(0, 2 + n + len)
+}
+
 export function verifySignatures(pdf: Uint8Array): SignatureCheck[] {
   const text = new TextDecoder('latin1').decode(pdf)
   const out: SignatureCheck[] = []
   const re = /\/ByteRange\s*\[\s*(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*\]/g
   for (let m; (m = re.exec(text)); ) {
     const [a, b, c, d] = m.slice(1).map(Number)
-    const hex = text.slice(b + 1, c - 1).replace(/0+$/, '')
+    const hex = text.slice(b + 1, c - 1)
     let intact = false
     let name = ''
     let signedAt: Date | undefined
@@ -201,7 +217,7 @@ export function verifySignatures(pdf: Uint8Array): SignatureCheck[] {
       data.set(pdf.subarray(c, c + d), b)
       const md = forge.md.sha256.create()
       md.update(binary(data))
-      const p7 = forge.pkcs7.messageFromAsn1(forge.asn1.fromDer(forge.util.hexToBytes(hex.length % 2 ? hex + '0' : hex))) as forge.pkcs7.PkcsSignedData & {
+      const p7 = forge.pkcs7.messageFromAsn1(forge.asn1.fromDer(signatureDer(forge.util.hexToBytes(hex.length % 2 ? hex + '0' : hex)))) as forge.pkcs7.PkcsSignedData & {
         rawCapture: { authenticatedAttributes: forge.asn1.Asn1[]; signature: string }
       }
       const cert = p7.certificates[0]
