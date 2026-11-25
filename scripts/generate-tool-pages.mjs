@@ -16,7 +16,7 @@ import { KB_OWN, buildKb, kbJson } from '../tools/assistant/build.mjs'
 import { GUIDES_UPDATED } from '../tools/guides.mjs'
 import { GUIDE_IMAGES } from '../tools/guide-images.mjs'
 import { SHOT_WIDTHS } from '../tools/guide-shots.mjs'
-import { GUIDE_LANGS, guideFile, guidePath, guideUi, guides, guidesIndexFile, guidesIndexPath, hasGuides, localizedGuide } from '../tools/guides/index.mjs'
+import { GUIDE_LANGS, guideFile, guideLangs, guidePath, guideUi, guides, guidesIn, guidesIndexFile, guidesIndexPath, hasGuideIn, hasGuides, localizedGuide } from '../tools/guides/index.mjs'
 import { ES, LANGS, LOCALES, filePath, homePath, hubFile, hubPath, localized, pagePath, toolCount } from '../tools/locales/index.mjs'
 
 const root = join(import.meta.dirname, '..')
@@ -120,7 +120,7 @@ const guidesFootLink = (loc) =>
 
 function relatedGuides(page, loc) {
   if (!hasGuides(loc.lang)) return ''
-  const list = guides.filter((g) => g.tools.includes(page.slug))
+  const list = guidesIn(loc.lang).filter((g) => g.tools.includes(page.slug))
   if (!list.length) return ''
   const gui = guideUi(loc.lang)
   return `  <section class="tp-wrap tp-section reveal">
@@ -467,7 +467,7 @@ function localHref(href, lang, where) {
   if (href === hubPath(ES)) return hubPath(loc)
   if (href === '/guias') return guidesIndexPath(lang)
   const guide = guides.find((g) => `/guias/${g.slug}` === href)
-  if (guide) return guidePath(guide, lang)
+  if (guide) return guidePath(guide, hasGuideIn(guide, lang) ? lang : 'es')
   if (href === '/app/' || href === '/privacidad') return href
   throw new Error(`guías (${where}): enlace a una ruta que no existe: ${href}`)
 }
@@ -525,13 +525,13 @@ const toolCards = (slugs, lang, where) =>
     .join('\n')
 
 /** hreflang entre los idiomas que tienen la guía (más x-default = español). */
-const guideAlternates = (pathFor) =>
-  [...GUIDE_LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${SITE}${pathFor(l)}">`), `<link rel="alternate" hreflang="x-default" href="${SITE}${pathFor('es')}">`].join('\n')
+const guideAlternates = (pathFor, langs = GUIDE_LANGS) =>
+  [...langs.map((l) => `<link rel="alternate" hreflang="${l}" href="${SITE}${pathFor(l)}">`), `<link rel="alternate" hreflang="x-default" href="${SITE}${pathFor('es')}">`].join('\n')
 
 /** Selector de idioma de las guías: solo los idiomas que las tienen. */
-function guideLangMenu(lang, pathFor) {
+function guideLangMenu(lang, pathFor, langs = GUIDE_LANGS) {
   const loc = LOC_BY_LANG[lang]
-  const items = GUIDE_LANGS.map((l) => {
+  const items = langs.map((l) => {
     const o = LOC_BY_LANG[l]
     return `          <li><a href="${pathFor(l)}" hreflang="${l}" lang="${l}" data-set-lang="${l}"${l === lang ? ' aria-current="page"' : ''}>${esc(o.label)}</a></li>`
   })
@@ -545,7 +545,7 @@ function guideLangMenu(lang, pathFor) {
   ].join('\n')
 }
 
-function guideHead({ lang, title, description, url, pathFor, structured }) {
+function guideHead({ lang, title, description, url, pathFor, structured, langs = GUIDE_LANGS }) {
   const loc = LOC_BY_LANG[lang]
   return `<!doctype html>
 <!-- Generado por scripts/generate-tool-pages.mjs desde tools/guides. No editar a mano. -->
@@ -557,7 +557,7 @@ function guideHead({ lang, title, description, url, pathFor, structured }) {
 <meta name="description" content="${esc(description)}">
 <meta name="theme-color" content="#0B1020">
 <link rel="canonical" href="${url}">
-${guideAlternates(pathFor)}
+${guideAlternates(pathFor, langs)}
 <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="DocuSmart">
@@ -576,7 +576,7 @@ ${jsonLd(structured)}
 </head>`
 }
 
-function guideNav(lang, pathFor) {
+function guideNav(lang, pathFor, langs = GUIDE_LANGS) {
   const loc = LOC_BY_LANG[lang]
   const ui = loc.ui
   return `<header class="tp-nav">
@@ -586,7 +586,7 @@ function guideNav(lang, pathFor) {
       <a href="${hubPath(loc)}">${esc(ui.navTools)}</a>
       <a href="${guidesIndexPath(lang)}">${esc(guideUi(lang).guides)}</a>
       <a href="/app/">${esc(ui.navWebApp)}</a>
-${guideLangMenu(lang, pathFor)}
+${guideLangMenu(lang, pathFor, langs)}
       <a class="tp-nav-cta" href="${PLAY}" target="_blank" rel="noopener" data-track="play_store_guide">${esc(ui.navDownload)}</a>
     </nav>
   </div>
@@ -648,7 +648,7 @@ function renderGuide(guide, lang) {
   const path = guidePath(guide, lang)
   const url = `${SITE}${path}`
   const where = `${lang}/${g.slug}`
-  const others = guides.filter((x) => x.slug !== guide.slug)
+  const others = guidesIn(lang).filter((x) => x.slug !== guide.slug)
   const org = { '@type': 'Organization', name: 'DocuSmart', url: SITE }
   const structured = [
     {
@@ -658,8 +658,8 @@ function renderGuide(guide, lang) {
       description: g.description,
       url,
       inLanguage: lang,
-      datePublished: GUIDES_UPDATED,
-      dateModified: GUIDES_UPDATED,
+      datePublished: guide.updated ?? GUIDES_UPDATED,
+      dateModified: guide.updated ?? GUIDES_UPDATED,
       image: `${SITE}/img/og/${lang}.jpg`,
       author: org,
       publisher: { ...org, logo: { '@type': 'ImageObject', url: `${SITE}/img/pwa/icon-512.png` } },
@@ -688,9 +688,9 @@ function renderGuide(guide, lang) {
     },
   ]
   const [before, after = ''] = gui.updated.split('{date}')
-  return `${guideHead({ lang, title: g.title, description: g.description, url, pathFor: (l) => guidePath(guide, l), structured })}
+  return `${guideHead({ lang, title: g.title, description: g.description, url, pathFor: (l) => guidePath(guide, l), structured, langs: guideLangs(guide) })}
 <body class="tool-page guide-page">
-${guideNav(lang, (l) => guidePath(guide, l))}
+${guideNav(lang, (l) => guidePath(guide, l), guideLangs(guide))}
 
 <main>
   <section class="tp-hero gd-hero">
@@ -699,7 +699,7 @@ ${guideNav(lang, (l) => guidePath(guide, l))}
       <nav class="tp-crumbs" aria-label="${esc(loc.ui.crumbs)}"><a href="${homePath(loc)}">DocuSmart</a><span aria-hidden="true">›</span><a href="${guidesIndexPath(lang)}">${esc(gui.guides)}</a><span aria-hidden="true">›</span><span>${esc(g.h1)}</span></nav>
       <h1>${esc(g.h1)}</h1>
       <p class="tp-lead">${esc(g.lead)}</p>
-      <p class="gd-meta"><span>${svg('clock', 'gd-meta-ico')}${esc(minutesLabel(g.minutes, lang))}</span><span>${esc(before)}<time datetime="${GUIDES_UPDATED}">${esc(dateLabel(GUIDES_UPDATED, lang))}</time>${esc(after)}</span></p>
+      <p class="gd-meta"><span>${svg('clock', 'gd-meta-ico')}${esc(minutesLabel(g.minutes, lang))}</span><span>${esc(before)}<time datetime="${guide.updated ?? GUIDES_UPDATED}">${esc(dateLabel(guide.updated ?? GUIDES_UPDATED, lang))}</time>${esc(after)}</span></p>
       </div>
       <div class="tp-hero-art" aria-hidden="true">
         <span class="tp-ring"></span><span class="tp-ring tp-ring-2"></span>
@@ -763,8 +763,8 @@ function renderGuidesIndex(lang) {
       inLanguage: lang,
       mainEntity: {
         '@type': 'ItemList',
-        numberOfItems: guides.length,
-        itemListElement: guides.map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: localizedGuide(g, lang).h1, url: `${SITE}${guidePath(g, lang)}` })),
+        numberOfItems: guidesIn(lang).length,
+        itemListElement: guidesIn(lang).map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: localizedGuide(g, lang).h1, url: `${SITE}${guidePath(g, lang)}` })),
       },
     },
     {
@@ -793,7 +793,7 @@ ${guideNav(lang, guidesIndexPath)}
 
   <section class="tp-wrap tp-section">
     <ul class="gd-cards">
-${guides
+${guidesIn(lang)
   .map((guide) => {
     const g = localizedGuide(guide, lang)
     return `      <li class="reveal"><a href="${guidePath(guide, lang)}">
@@ -815,7 +815,7 @@ ${guideFoot(lang, depthOf(guidesIndexFile(lang)))}`
 
 for (const lang of GUIDE_LANGS) {
   emit(`${SITE_DIR}/${guidesIndexFile(lang)}`, renderGuidesIndex(lang))
-  for (const g of guides) emit(`${SITE_DIR}/${guideFile(g, lang)}`, renderGuide(g, lang))
+  for (const g of guidesIn(lang)) emit(`${SITE_DIR}/${guideFile(g, lang)}`, renderGuide(g, lang))
 }
 
 // ── Portada ──────────────────────────────────────────────────────────────────
@@ -951,15 +951,15 @@ const entry = (pathFor, freq, prio) => {
 }
 /** Guías en el sitemap: una <url> por idioma, con sus alternativas. */
 function guideEntries() {
-  const entryFor = (pathFor, prio, lastmod) => {
-    const links = [...GUIDE_LANGS.map((l) => [l, pathFor(l)]), ['x-default', pathFor('es')]]
+  const entryFor = (pathFor, prio, lastmod, langs = GUIDE_LANGS) => {
+    const links = [...langs.map((l) => [l, pathFor(l)]), ['x-default', pathFor('es')]]
       .map(([hl, p]) => `    <xhtml:link rel="alternate" hreflang="${hl}" href="${SITE}${p}"/>`)
       .join('\n')
-    return GUIDE_LANGS.map(
+    return langs.map(
       (l) => `  <url>\n    <loc>${SITE}${pathFor(l)}</loc>\n${links}\n${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ''}    <changefreq>monthly</changefreq>\n    <priority>${prio}</priority>\n  </url>`,
     ).join('\n')
   }
-  return [entryFor(guidesIndexPath, '0.8', GUIDES_UPDATED), ...guides.map((g) => entryFor((l) => guidePath(g, l), '0.7', GUIDES_UPDATED))].join('\n')
+  return [entryFor(guidesIndexPath, '0.8', GUIDES_UPDATED), ...guides.map((g) => entryFor((l) => guidePath(g, l), '0.7', g.updated ?? GUIDES_UPDATED, guideLangs(g)))].join('\n')
 }
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <!-- Generado por scripts/generate-tool-pages.mjs. No editar a mano. -->
@@ -988,4 +988,4 @@ if (check && stale.length) {
   console.error(`Páginas desactualizadas: ${stale.join(', ')}. Ejecuta: npm run pages`)
   process.exit(1)
 }
-console.log(`Páginas: ${pages.length} herramientas × ${LANGS.length} idiomas y ${guides.length} guías × ${GUIDE_LANGS.length} idiomas ${check ? 'al día' : 'generadas'}`)
+console.log(`Páginas: ${pages.length} herramientas × ${LANGS.length} idiomas y ${GUIDE_LANGS.reduce((n, l) => n + guidesIn(l).length, 0)} páginas de guías (${guides.length} en español) ${check ? "al día" : "generadas"}`)

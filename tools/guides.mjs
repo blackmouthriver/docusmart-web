@@ -11,10 +11,12 @@
 //   - tools: slugs de tools/pages.mjs que la guía recomienda (tarjetas al final).
 //   - faq: preguntas frecuentes [pregunta, respuesta].
 
+import { TOOL_GUIDES } from './guides-herramientas.mjs'
+
 /** Fecha de la última revisión del contenido (ISO). */
 export const GUIDES_UPDATED = '2026-11-18'
 
-export const guides = [
+const W19_GUIDES = [
   {
     slug: 'unir-pdf-en-el-celular',
     title: 'Cómo unir PDF en el celular sin subir tus archivos | DocuSmart',
@@ -420,3 +422,6 @@ export const guides = [
     ],
   },
 ]
+
+/** Las guías de W-19 y, después, las guías ilustradas por herramienta (W-101). */
+export const guides = [...W19_GUIDES, ...TOOL_GUIDES]
