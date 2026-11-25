@@ -61,6 +61,8 @@ export const ES_UI = {
   toolsOne: "1 herramienta",
   toolsMany: "{n} herramientas",
   seeAll: "Ver las {n} herramientas",
+  countChip: "{n} herramientas gratis",
+  countTitle: "{n} herramientas gratis, sin subir tus archivos.",
 }
 
 export const ES = { lang: 'es', label: 'Español', ogLocale: 'es_ES', ui: ES_UI, pages: {}, landing: [] }

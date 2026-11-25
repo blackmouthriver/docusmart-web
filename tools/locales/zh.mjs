@@ -47,6 +47,8 @@ export default {
     toolsOne: "1 个工具",
     toolsMany: "{n} 个工具",
     seeAll: "查看全部 {n} 个工具",
+    countChip: "{n} 个免费工具",
+    countTitle: "{n} 个免费工具，无需上传文件。",
   },
   pages: {
     'unir-pdf': {
@@ -1284,7 +1286,6 @@ export default {
       '订阅通过 Google Play 管理和取消。在你取消之前会自动续订。',
     ],
     ['En el navegador', '在浏览器中'],
-    ['Herramientas gratis, sin subir tus archivos.', '免费工具，无需上传文件。'],
     [
       'Úsalas desde cualquier computadora o celular, sin instalar nada ni crear cuenta. Todo se procesa en tu equipo.',
       '在任何电脑或手机上都能用，无需安装，也无需注册。一切都在你的设备上处理。',

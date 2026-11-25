@@ -45,6 +45,8 @@ export default {
     toolsOne: "1 eina",
     toolsMany: "{n} eines",
     seeAll: "Veure les {n} eines",
+    countChip: "{n} eines gratuïtes",
+    countTitle: "{n} eines gratuïtes, sense pujar els teus fitxers.",
   },
   pages: {
     'unir-pdf': {
@@ -1334,7 +1336,6 @@ export default {
       'La subscripció es gestiona i es cancel·la des de Google Play. Es renova automàticament fins que la cancel·lis.',
     ],
     ['En el navegador', 'Al navegador'],
-    ['Herramientas gratis, sin subir tus archivos.', 'Eines gratis, sense pujar els teus fitxers.'],
     [
       'Úsalas desde cualquier computadora o celular, sin instalar nada ni crear cuenta. Todo se procesa en tu equipo.',
       'Fes-les servir des de qualsevol ordinador o mòbil, sense instal·lar res ni crear compte. Tot es processa al teu equip.',

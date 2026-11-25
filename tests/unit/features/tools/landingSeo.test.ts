@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { PAGES_UPDATED, PRIVACY_UPDATED } from '../../../../tools/pages.mjs'
+import { PAGES_UPDATED, PRIVACY_UPDATED, pages } from '../../../../tools/pages.mjs'
 import { LANGS } from '../../../../tools/locales/index.mjs'
 
 const root = resolve(__dirname, '../../../..')
@@ -40,5 +40,14 @@ describe('SEO de la portada', () => {
     for (const u of urls) expect(u).toMatch(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/)
     expect(sitemap).toContain(`<lastmod>${PAGES_UPDATED}</lastmod>`)
     expect(sitemap).toContain(`/privacidad</loc><lastmod>${PRIVACY_UPDATED}</lastmod>`)
+  })
+
+  it.each(LANGS.map((l) => l.lang))('portada %s: dice cuántas herramientas hay (el número real)', (lang) => {
+    const html = read(landingFile(lang))
+    const n = String(pages.length)
+    for (const kind of ['chip', 'title']) {
+      const text = html.match(new RegExp(String.raw`data-tool-count="${kind}">(?:<svg[^>]*>[\s\S]*?</svg>)?([^<]*)<`))?.[1] ?? ''
+      expect(text, kind).toContain(n)
+    }
   })
 })

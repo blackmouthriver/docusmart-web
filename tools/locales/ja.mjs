@@ -48,6 +48,8 @@ export default {
     toolsOne: "1 個のツール",
     toolsMany: "{n} 個のツール",
     seeAll: "{n} 個のツールをすべて見る",
+    countChip: "{n} 個の無料ツール",
+    countTitle: "ファイルをアップロードしない {n} 個の無料ツール。",
   },
   pages: {
     'unir-pdf': {
@@ -1325,7 +1327,6 @@ export default {
       '定期購入はGoogle Playで管理・解約できます。解約するまで自動更新されます。',
     ],
     ['En el navegador', 'ブラウザで'],
-    ['Herramientas gratis, sin subir tus archivos.', 'ファイルをアップロードしない無料ツール。'],
     [
       'Úsalas desde cualquier computadora o celular, sin instalar nada ni crear cuenta. Todo se procesa en tu equipo.',
       'どのパソコンやスマホからも、インストールもアカウント作成もせずに使えます。処理はすべてお使いの端末で行われます。',

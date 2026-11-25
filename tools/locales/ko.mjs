@@ -48,6 +48,8 @@ export default {
     toolsOne: "도구 1개",
     toolsMany: "도구 {n}개",
     seeAll: "도구 {n}개 모두 보기",
+    countChip: "무료 도구 {n}개",
+    countTitle: "파일을 올리지 않는 무료 도구 {n}개.",
   },
   pages: {
     'unir-pdf': {
@@ -1326,7 +1328,6 @@ export default {
       '구독은 Google Play에서 관리하고 해지합니다. 해지할 때까지 자동으로 갱신됩니다.',
     ],
     ['En el navegador', '브라우저에서'],
-    ['Herramientas gratis, sin subir tus archivos.', '파일을 올리지 않는 무료 도구.'],
     [
       'Úsalas desde cualquier computadora o celular, sin instalar nada ni crear cuenta. Todo se procesa en tu equipo.',
       '어떤 컴퓨터나 휴대폰에서도 설치나 계정 없이 쓰세요. 모든 처리는 내 기기에서 이루어집니다.',

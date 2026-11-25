@@ -45,6 +45,8 @@ export default {
     toolsOne: "Tresna 1",
     toolsMany: "{n} tresna",
     seeAll: "Ikusi {n} tresnak",
+    countChip: "{n} tresna doan",
+    countTitle: "{n} tresna doan, zure fitxategiak igo gabe.",
   },
   pages: {
     'unir-pdf': {
@@ -1341,7 +1343,6 @@ export default {
       'Harpidetza Google Playtik kudeatzen eta bertan behera uzten da. Automatikoki berritzen da bertan behera utzi arte.',
     ],
     ['En el navegador', 'Nabigatzailean'],
-    ['Herramientas gratis, sin subir tus archivos.', 'Doako tresnak, zure fitxategiak igo gabe.'],
     [
       'Úsalas desde cualquier computadora o celular, sin instalar nada ni crear cuenta. Todo se procesa en tu equipo.',
       'Erabili edozein ordenagailu edo mugikorretatik, ezer instalatu gabe eta konturik sortu gabe. Dena zure gailuan prozesatzen da.',
