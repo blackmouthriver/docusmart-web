@@ -50,12 +50,20 @@ function openPopup(): Window {
   return popup
 }
 
+/**
+ * Espera la vuelta de la autorización por dos vías (la primera que llegue): el canal entre pestañas que publica
+ * /oauth y el mensaje directo de la ventana emergente a esta (solo de nuestro origen). En Safari el canal a veces
+ * no llega, por eso la segunda vía.
+ */
 function waitForCallback(state: string, signal?: AbortSignal): Promise<OAuthCallback> {
   return new Promise((resolve, reject) => {
     const channel = new BroadcastChannel('docusmart-oauth')
+    let finished = false
     const done = () => {
+      finished = true
       clearTimeout(timer)
       channel.close()
+      window.removeEventListener('message', onWindowMessage)
     }
     const timer = setTimeout(() => {
       done()
@@ -65,14 +73,20 @@ function waitForCallback(state: string, signal?: AbortSignal): Promise<OAuthCall
       done()
       reject(new CloudCancelled())
     })
-    channel.onmessage = (e: MessageEvent<{ href?: string }>) => {
-      if (typeof e.data?.href !== 'string') return
-      const cb = parseCallback(e.data.href)
+    const handle = (href: unknown) => {
+      if (finished || typeof href !== 'string') return
+      const cb = parseCallback(href)
       if (cb.state !== state) return
       done()
       if (cb.error) reject(new CloudCancelled())
       else resolve(cb)
     }
+    const onWindowMessage = (e: MessageEvent<{ type?: string; href?: string }>) => {
+      if (e.origin !== window.location.origin || e.data?.type !== 'docusmart-oauth') return
+      handle(e.data.href)
+    }
+    channel.onmessage = (e: MessageEvent<{ href?: string }>) => handle(e.data?.href)
+    window.addEventListener('message', onWindowMessage)
   })
 }
 

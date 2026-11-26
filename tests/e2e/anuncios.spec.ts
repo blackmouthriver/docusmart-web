@@ -43,7 +43,8 @@ test('al aceptar, el anuncio va antes de las preguntas y se pide al acercarse', 
   expect(await slot.evaluate((el) => !!el.nextElementSibling?.querySelector('.tp-faq'))).toBe(true)
   await expect(slot.locator('ins.adsbygoogle')).toHaveAttribute('data-ad-slot', '2392088871')
   await slot.scrollIntoViewIfNeeded()
-  await expect.poll(() => requested.some((u) => u.includes('adsbygoogle.js'))).toBe(true)
+  // El script de AdSense o, en WebKit (donde la simulación no siempre lo intercepta), el pedido del anuncio.
+  await expect.poll(() => requested.some((u) => u.includes('adsbygoogle.js') || u.includes('/pagead/ads?'))).toBe(true)
 })
 
 test('en /herramientas va después de la tercera categoría', async ({ page }) => {
