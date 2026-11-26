@@ -887,5 +887,471 @@ export default {
         ['Peut-on toujours faire des recherches dans le reste du document ?', 'Oui. Seules les pages contenant des zones marquées sont converties en image, et le reste de leur texte est conservé pour la recherche et la copie.'],
       ],
     },
+    'pasar-un-pdf-escaneado-a-texto': {
+      slug: 'pdf-scanne-en-texte',
+      title: 'Comment transformer un PDF scanné en texte à copier et rechercher | DocuSmart',
+      description:
+        "Reconnaissez le texte d'un PDF scanné par OCR : copiez-le, téléchargez-le en .txt ou Word, ou créez un PDF consultable. En 12 langues, gratuit et sans envoi.",
+      h1: 'Comment transformer un PDF scanné en texte à copier et rechercher',
+      lead: "Un scan, c'est une photo de chaque page : on peut le lire, mais pas copier le texte ni chercher un mot. Avec l'OCR, le texte redevient du texte, sans tout retaper.",
+      sections: [
+        {
+          h2: "Ce que fait l'OCR",
+          body: [
+            "OCR signifie reconnaissance optique de caractères : le logiciel regarde l'image de chaque page et reconnaît les lettres. [OCR : reconnaître le texte](/ocr-pdf) vous fournit deux choses à la fois :",
+            { ul: [
+              "**Le texte reconnu**, à copier ou à télécharger en .txt ou Word, avec la page d'où provient chaque passage.",
+              "**Un PDF consultable** : le même scan, identique à l'œil, avec une couche de texte invisible par-dessus. Vous pouvez sélectionner, copier et rechercher des mots avec Ctrl+F.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [OCR : reconnaître le texte](/ocr-pdf) et choisissez le PDF scanné (une photo en JPG, PNG ou WebP fonctionne aussi). Choisissez la **Langue du document** : la reconnaissance est bien plus fiable quand elle sait quelle langue attendre. Si le document mélange sa langue avec de l'anglais, cochez aussi la case correspondante.",
+            "Laissez cochée la case **Créer aussi un PDF consultable** si vous voulez le PDF, puis appuyez sur **Reconnaître le texte**. La progression s'affiche page par page. À la fin, vous avez le PDF à télécharger et, en dessous, le texte, que vous pouvez copier ou télécharger en .txt ou Word.",
+            { tip: "La première fois, le modèle de la langue se télécharge (quelques secondes) et reste enregistré dans votre navigateur : les fois suivantes, ça démarre tout de suite." },
+          ],
+        },
+        {
+          h2: 'Comment obtenir un meilleur résultat',
+          body: [
+            "L'OCR lit ce qu'il voit. Un scan net, droit et bien éclairé est reconnu presque sans erreur ; une photo floue, avec des ombres ou trop petite, non. Si la reconnaissance paraît douteuse, DocuSmart vous prévient avec le pourcentage de confiance pour que vous relisiez le texte.",
+            { ul: [
+              "Les pages tournées sont détectées et lues à l'endroit automatiquement.",
+              "Les pages qui contiennent déjà du texte (un PDF mixte) restent telles quelles, sauf si vous cochez **Reconnaître aussi les pages qui contiennent déjà du texte**.",
+              "Ça fonctionne avec des caractères imprimés. L'écriture manuscrite est rarement bien reconnue.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Si votre but est de le modifier dans Word',
+          body: [
+            "Si vous voulez corriger le document et pas seulement copier le texte, passez directement par [PDF en Word](/pdf-a-word) avec la case OCR : les pages scannées sont reconnues dans la même étape et vous obtenez un .docx modifiable. Et si le PDF consultable est trop lourd à envoyer, passez-le dans [Compresser un PDF](/comprimir-pdf).",
+          ],
+        },
+        {
+          h2: 'Votre document ne quitte pas votre appareil',
+          body: [
+            "La reconnaissance tourne dans votre navigateur avec Tesseract, un moteur d'OCR open source. Le PDF n'est envoyé sur aucun serveur : vous pouvez l'utiliser avec des pièces d'identité, des dossiers médicaux ou des relevés bancaires sans laisser de copie ailleurs.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ouvrez l'OCR", text: 'Allez sur docusmart.online/fr/ocr-pdf et choisissez le PDF scanné ou une photo.' },
+        { name: 'Choisissez la langue', text: "Sélectionnez la langue du document et indiquez s'il contient aussi du texte en anglais." },
+        { name: 'Reconnaissez le texte', text: 'Appuyez sur Reconnaître le texte et attendez la fin de chaque page.' },
+        { name: 'Téléchargez', text: 'Téléchargez le PDF consultable, copiez le texte ou enregistrez-le en .txt ou Word.' },
+      ],
+      faq: [
+        ["Qu'est-ce qu'un PDF consultable ?", 'Votre scan, avec une couche de texte invisible par-dessus : il a le même aspect, mais vous pouvez sélectionner, copier et rechercher des mots.'],
+        ['Combien de pages puis-je reconnaître ?', "Autant qu'il vous en faut : elles sont reconnues une à une dans votre navigateur. Un long document prend plus de temps, mais il n'y a pas de limite de pages."],
+        ['Reconnaît-il plusieurs langues ?', "Douze : espagnol, anglais, portugais, français, italien, allemand, catalan, basque, russe, japonais, coréen et chinois. Si le document mélange sa langue avec de l'anglais, cochez cette case."],
+      ],
+    },
+    'copiar-el-texto-de-una-foto': {
+      slug: 'copier-texte-photo',
+      title: "Comment copier le texte d'une photo ou d'une capture d'écran | DocuSmart",
+      description:
+        "Récupérez le texte d'une photo, d'une capture ou d'un document photographié pour le copier, le corriger ou le passer en Word. Gratuit, en 12 langues et sans envoi.",
+      h1: "Comment copier le texte d'une photo ou d'une capture d'écran",
+      lead: "La photo d'un ticket, la capture d'une conversation ou une affiche : le texte est sous vos yeux, mais impossible de le copier. Voici comment le récupérer en quelques secondes, sans le retaper.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Image en texte](/imagen-a-texto) et choisissez la photo. Les formats JPG, PNG, WebP sont acceptés, ainsi que les photos HEIC de l'iPhone. Pour une capture d'écran, inutile même de l'enregistrer : copiez-la et collez-la dans la page avec **Ctrl+V**.",
+            "Choisissez la **Langue du document** (celle du texte de l'image) et appuyez sur **Reconnaître le texte**. En quelques secondes, le texte apparaît dans un cadre que vous pouvez corriger. De là, vous le copiez d'une touche ou le téléchargez en .txt ou en Word (.docx).",
+            { tip: "Si le texte mélange du français et des mots anglais (noms de produits, termes techniques), cochez « Le document contient aussi du texte en anglais » : ces mots seront mieux reconnus." },
+          ],
+        },
+        {
+          h2: 'Plusieurs photos, un seul document',
+          body: [
+            "Si vous avez photographié un document de plusieurs pages, choisissez toutes les photos d'un coup. Le texte de toutes les images sort à la suite, dans l'ordre, et vous le téléchargez dans un seul fichier Word. C'est le moyen le plus rapide de numériser quelques pages imprimées qu'on vous a prêtées.",
+          ],
+        },
+        {
+          h2: 'Comment prendre la photo pour une bonne lecture',
+          body: [
+            "La reconnaissance dépend de la photo. Quelques détails font toute la différence :",
+            { ul: [
+              "**Bonne lumière, sans ombres** : l'ombre du téléphone sur le papier est la cause d'erreur la plus fréquente.",
+              "**De face et bien droite** : moins elle est inclinée, mieux c'est.",
+              "**Un texte bien visible** : rapprochez-vous jusqu'à ce que la feuille remplisse la photo.",
+              "**Nette** : si la photo est floue, reprenez-la.",
+            ] },
+            "Si le résultat paraît douteux, DocuSmart vous prévient avec le pourcentage de confiance pour que vous relisiez le texte avant de l'utiliser. L'écriture manuscrite est rarement bien reconnue : l'outil est conçu pour du texte imprimé ou affiché à l'écran.",
+          ],
+        },
+        {
+          h2: 'Photo ou PDF scanné ?',
+          body: [
+            "Si vous avez un PDF scanné de plusieurs pages, ou si vous voulez garder le document avec son aspect tout en pouvant y rechercher des mots, utilisez [OCR : reconnaître le texte](/ocr-pdf), qui crée un PDF consultable. Et si vous devez remettre les photos sous forme de document, réunissez-les d'abord avec [Image en PDF](/imagen-a-pdf).",
+          ],
+        },
+        {
+          h2: 'Vos photos ne quittent pas votre appareil',
+          body: [
+            "Le texte est reconnu dans votre navigateur : les images ne sont envoyées sur aucun serveur. Vous pouvez l'utiliser avec des photos de documents, de tickets ou de conversations sans laisser de copie ailleurs.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Image en texte', text: "Allez sur docusmart.online/fr/image-en-texte et choisissez la photo, ou collez une capture avec Ctrl+V." },
+        { name: 'Choisissez la langue', text: "Sélectionnez la langue du texte de l'image." },
+        { name: 'Reconnaissez le texte', text: 'Appuyez sur Reconnaître le texte et vérifiez le résultat dans le cadre.' },
+        { name: 'Copiez ou téléchargez', text: "Copiez-le d'une touche ou téléchargez-le en .txt ou Word." },
+      ],
+      faq: [
+        ["Ça fonctionne avec les photos de l'iPhone ?", 'Oui. Les photos HEIC s’ouvrent directement, sans conversion préalable.'],
+        ["Reconnaît-il l'écriture manuscrite ?", 'Rarement bien. Il fonctionne avec du texte imprimé ou affiché à l’écran.'],
+        ['Puis-je corriger le texte avant de le copier ?', 'Oui. Le texte apparaît dans un cadre modifiable : corrigez ce qu’il faut, puis copiez-le ou téléchargez-le.'],
+      ],
+    },
+    'convertir-un-pdf-a-word-para-editarlo': {
+      slug: 'convertir-pdf-en-word-modifiable',
+      title: 'Comment convertir un PDF en Word pour le modifier, même scanné | DocuSmart',
+      description:
+        'Transformez un PDF en Word (.docx) modifiable avec titres, gras, tableaux, images et deux colonnes. Avec OCR pour les scans, gratuit et sans envoyer le fichier.',
+      h1: 'Comment convertir un PDF en Word pour le modifier, même s’il est scanné',
+      lead: "On vous a envoyé un PDF et vous devez changer une date, un nom ou un paragraphe, mais vous n'avez pas le Word d'origine. Voici comment le récupérer sous forme de document modifiable.",
+      sections: [
+        {
+          h2: 'Avant de convertir : à quoi vous attendre',
+          body: [
+            "Un PDF ne garde ni paragraphes ni tableaux : seulement des lettres avec leur position sur la page. Toute conversion en Word **reconstruit** donc le document, et le résultat ressemble beaucoup à l'original, sans être identique. [PDF en Word](/pdf-a-word) conserve :",
+            { ul: [
+              "Les titres, le gras, l'italique, la taille et la couleur des caractères.",
+              'Les listes, les tableaux simples et les images.',
+              'Les mises en page sur deux colonnes, comme celles des CV, avec le fond de chaque colonne.',
+            ] },
+            "Les zones de texte et les formes décoratives complexes peuvent différer. Ça fonctionne mieux avec des PDF créés depuis Word ou un logiciel similaire.",
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [PDF en Word](/pdf-a-word) et choisissez le fichier. Si le PDF est scanné, ou s'il contient quelques pages scannées, laissez cochée la case **Reconnaître le texte des pages numérisées** et choisissez la langue du document : ces pages sont lues par OCR dans la même étape et leur texte devient modifiable.",
+            "Appuyez sur **Convertir**. Un aperçu approximatif du résultat s'affiche à côté de l'original, avec le nombre de paragraphes et d'images obtenus. Téléchargez le .docx et ouvrez-le dans Word, Google Docs, LibreOffice, Pages ou WPS.",
+            { tip: "Relisez le document en l'ouvrant, surtout les tableaux et les sauts de page : c'est là que la mise en page varie le plus souvent." },
+          ],
+        },
+        {
+          h2: 'Besoin de Word, ou suffit-il de modifier le PDF ?',
+          body: [
+            "Si vous voulez seulement changer un mot, ajouter une date ou masquer une donnée, inutile de passer par Word : avec [Modifier un PDF](/editar-pdf), vous écrivez directement sur le PDF, qui garde exactement sa mise en page. Convertir en Word vaut le coup quand vous allez réécrire des paragraphes entiers ou réutiliser le contenu dans un autre document.",
+          ],
+        },
+        {
+          h2: 'Retour au PDF',
+          body: [
+            "Une fois les modifications terminées, enregistrez le document et reconvertissez-le avec [Word en PDF](/word-a-pdf) pour l'envoyer. Ainsi, le destinataire le voit à l'identique sur n'importe quel appareil, quelles que soient les polices installées.",
+          ],
+        },
+        {
+          h2: 'Votre document ne quitte pas votre appareil',
+          body: [
+            "La conversion, tout comme l'OCR des pages scannées, se fait dans votre navigateur : le PDF n'est envoyé sur aucun serveur. C'est valable aussi pour les contrats, les CV ou les documents de travail qui ne doivent pas circuler.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez PDF en Word', text: 'Allez sur docusmart.online/fr/pdf-en-word et choisissez le PDF.' },
+        { name: "Activez l'OCR si besoin", text: "S'il contient des pages scannées, laissez la case OCR cochée et choisissez la langue." },
+        { name: 'Convertissez', text: "Appuyez sur Convertir et vérifiez l'aperçu approximatif." },
+        { name: 'Téléchargez et modifiez', text: 'Téléchargez le .docx et ouvrez-le dans Word, Google Docs ou LibreOffice.' },
+      ],
+      faq: [
+        ['Le résultat est-il identique au PDF ?', 'Très proche, mais pas identique : le document est reconstruit à partir de la position des lettres. Les titres, la mise en forme, les listes, les tableaux simples, les images et les deux colonnes sont conservés.'],
+        ['Ça fonctionne avec des PDF scannés ?', 'Oui. Avec la case OCR cochée, les pages scannées sont reconnues dans votre navigateur et leur texte devient modifiable.'],
+        ['Peut-on convertir un PDF protégé par mot de passe ?', "S'il n'a que des restrictions (il s'ouvre sans mot de passe), oui. S'il demande un mot de passe à l'ouverture, retirez-le d'abord avec Déverrouiller un PDF."],
+      ],
+    },
+    'pasar-un-extracto-bancario-pdf-a-excel': {
+      slug: 'releve-bancaire-pdf-en-excel',
+      title: 'Comment passer un relevé bancaire ou une facture PDF dans Excel | DocuSmart',
+      description:
+        "Convertissez les tableaux d'un relevé, d'une facture ou d'un rapport PDF en feuille Excel, avec des nombres prêts à additionner. Gratuit et sans envoyer le fichier.",
+      h1: 'Comment passer un relevé bancaire ou une facture PDF dans Excel',
+      lead: "Vous devez additionner les dépenses du mois, rapprocher un compte ou filtrer un rapport, et les données sont dans un PDF. Voici comment les mettre dans un tableur sans recopier cellule par cellule.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            'Ouvrez [PDF en Excel](/pdf-a-excel) et choisissez le PDF. Choisissez comment organiser les **Feuilles** :',
+            { ul: [
+              "**Une par page** : chaque page du PDF sur sa propre feuille. Pratique pour les rapports où chaque page est un tableau différent.",
+              "**Tout sur une feuille** : toutes les lignes à la suite sur une seule feuille. L'idéal pour un relevé de plusieurs pages, que vous pourrez filtrer et additionner d'un coup.",
+            ] },
+            "Appuyez sur **Convertir**. Un aperçu approximatif indique combien de lignes et de nombres ont été obtenus. Téléchargez le .xlsx et ouvrez-le dans Excel, Google Sheets ou LibreOffice.",
+          ],
+        },
+        {
+          h2: 'Les nombres restent des nombres',
+          body: [
+            "C'est le détail qui fait gagner le plus de temps : des valeurs comme 1.500.000, € 2.000, 3,5 ou 45 % sont enregistrées comme des nombres Excel avec leur format, et non comme du texte. Vous pouvez les additionner, calculer des moyennes ou les utiliser dans des formules dès l'ouverture du fichier, sans nettoyer les séparateurs ni les symboles monétaires.",
+            { tip: "Si une colonne de montants ne s'additionne pas, vérifiez qu'elle ne mélange pas des textes comme « N/A » ou des tirets : Excel ignore ces cellules dans la somme." },
+          ],
+        },
+        {
+          h2: 'Les PDF qui donnent les meilleurs résultats',
+          body: [
+            "Les colonnes sont reconstituées selon la position du texte sur la page. Ça fonctionne donc très bien avec les PDF exportés par un logiciel : relevés bancaires, factures électroniques, états comptables ou listings. Avec des PDF à mise en page libre, où le texte ne suit pas de colonnes, le résultat demande plus de vérification.",
+            "Si le relevé est scanné, ou si c'est une photo que quelqu'un a mise en PDF, laissez cochée la case **Reconnaître le texte des pages numérisées** et choisissez la langue : ces pages sont lues par OCR dans la même étape et chaque colonne arrive dans sa cellule. Plus le scan est net, meilleur est le résultat.",
+          ],
+        },
+        {
+          h2: 'Pour le remettre ensuite',
+          body: [
+            "Si, après avoir travaillé la feuille, vous devez l'envoyer sous forme de document, convertissez-la avec [Excel en PDF](/excel-a-pdf). Et si vous n'avez besoin que du texte du scan, sans tableaux, utilisez [OCR : reconnaître le texte](/ocr-pdf).",
+          ],
+        },
+        {
+          h2: 'Vos données ne quittent pas votre appareil',
+          body: [
+            "Un relevé bancaire contient votre numéro de compte, votre solde et vos opérations. Ici, la conversion se fait dans votre navigateur : le PDF n'est envoyé sur aucun serveur et n'est conservé nulle part ailleurs.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez PDF en Excel', text: 'Allez sur docusmart.online/fr/pdf-en-excel et choisissez le PDF.' },
+        { name: 'Choisissez les feuilles', text: "Une feuille par page, ou tout sur une seule feuille pour tout additionner d'un coup." },
+        { name: 'Convertissez', text: "Appuyez sur Convertir et vérifiez l'aperçu approximatif." },
+        { name: 'Téléchargez', text: 'Téléchargez le .xlsx et ouvrez-le dans Excel, Google Sheets ou LibreOffice.' },
+      ],
+      faq: [
+        ['Peut-on additionner les nombres ?', 'Oui. Les valeurs avec séparateurs de milliers, symbole monétaire, virgule décimale ou pourcentage sont enregistrées comme des nombres Excel.'],
+        ['Ça fonctionne avec un relevé scanné ?', 'Oui. Avec la case OCR cochée, les pages scannées sont reconnues dans votre navigateur et chaque colonne arrive dans sa cellule.'],
+        ['Mon relevé est-il envoyé sur internet ?', 'Non. La conversion se fait dans votre navigateur ; le fichier ne quitte pas votre appareil.'],
+      ],
+    },
+    'sacar-el-texto-de-un-pdf': {
+      slug: 'extraire-texte-pdf',
+      title: "Comment extraire tout le texte d'un PDF pour le copier ou le rechercher | DocuSmart",
+      description:
+        "Extrayez le texte d'un PDF dans un fichier .txt ou copiez-le depuis l'écran en un clic, sans la mise en page. Gratuit, instantané et sans envoyer le fichier.",
+      h1: "Comment extraire tout le texte d'un PDF pour le copier ou le rechercher",
+      lead: "Vous voulez coller le contenu d'un PDF dans un e-mail, une conversation ou un autre document, et au copier-coller les lignes se coupent n'importe où. Voici comment obtenir un texte propre, de toutes les pages à la fois.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [PDF en texte](/pdf-a-texto), choisissez le PDF et appuyez sur **Convertir**. En un instant, le texte de toutes les pages s'affiche à l'écran, avec son nombre de lignes. De là, vous le copiez en un clic ou téléchargez le fichier .txt.",
+            "Le .txt s'ouvre sur n'importe quel appareil, même dans le Bloc-notes ou sur un téléphone, et ne pèse presque rien : un document de cent pages tient généralement en quelques centaines de Ko.",
+          ],
+        },
+        {
+          h2: 'À quoi ça sert',
+          body: [
+            { ul: [
+              "**Rechercher** : ouvrir le texte et chercher un mot ou un nombre dans un long document.",
+              "**Réutiliser** : coller des paragraphes dans un e-mail ou une conversation sans les retours à la ligne du PDF.",
+              "**Compter ou analyser** : passer le texte à un autre outil, comme le [Compteur de mots](/contador-de-palabras).",
+              "**Garder l'essentiel** : conserver le contenu d'un document sans sa mise en page.",
+              "**Traduire ou écouter** : coller le texte dans un traducteur, ou dans la lecture à voix haute du téléphone, sans les coupures que laisse un copier-coller direct depuis le PDF.",
+            ] },
+          ],
+        },
+        {
+          h2: "Ce qui est conservé et ce qui ne l'est pas",
+          body: [
+            "Le texte et les retours à la ligne sont conservés, dans l'ordre de lecture de chaque page. La mise en page (colonnes, tableaux, couleurs, images) devient du texte brut. Si vous avez besoin du contenu **avec sa mise en forme** pour continuer à le modifier, utilisez [PDF en Word](/pdf-a-word).",
+            { tip: "Si un tableau compte pour vous, sachez que dans le .txt il perd ses colonnes. Pour le travailler en cellules, mieux vaut [PDF en Excel](/pdf-a-excel)." },
+          ],
+        },
+        {
+          h2: "S'il ressort vide : c'est un scan",
+          body: [
+            "Si DocuSmart vous indique qu'il n'a pas trouvé de texte, le PDF est scanné : chaque page est une photo, et il n'y a pas de lettres à extraire. Dans ce cas, utilisez [OCR : reconnaître le texte](/ocr-pdf), qui reconnaît le texte de l'image dans votre navigateur et vous le donne à copier ou à télécharger.",
+          ],
+        },
+        {
+          h2: 'Votre document ne quitte pas votre appareil',
+          body: [
+            "Le texte est lu dans votre navigateur : le PDF n'est envoyé sur aucun serveur. Vous pouvez donc l'utiliser avec des documents professionnels ou personnels sans laisser de copie ailleurs.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez PDF en texte', text: 'Allez sur docusmart.online/fr/pdf-en-texte et choisissez le PDF.' },
+        { name: 'Convertissez', text: 'Appuyez sur Convertir : le texte de toutes les pages s’affiche.' },
+        { name: 'Copiez ou téléchargez', text: 'Copiez-le en un clic ou téléchargez le fichier .txt.' },
+      ],
+      faq: [
+        ['Pourquoi le résultat est-il vide ?', "Parce que le PDF est scanné : les pages sont des images. Utilisez OCR : reconnaître le texte pour en extraire le texte."],
+        ['Les tableaux sont-ils conservés ?', 'Pas en tant que tableaux : ils deviennent des lignes de texte. Pour garder les colonnes, utilisez PDF en Excel.'],
+        ['Y a-t-il une limite de pages ?', "Non. Le texte de toutes les pages est extrait, même si le document est long."],
+      ],
+    },
+    'convertir-un-pdf-a-jpg-o-sacar-sus-imagenes': {
+      slug: 'pdf-en-jpg-ou-extraire-images',
+      title: "Comment convertir un PDF en JPG ou extraire les photos qu'il contient | DocuSmart",
+      description:
+        "Transformez chaque page d'un PDF en JPG ou PNG à la résolution de votre choix, ou extrayez les photos qu'il contient en qualité d'origine. Gratuit et sans envoi.",
+      h1: "Comment convertir un PDF en JPG ou extraire les photos qu'il contient",
+      lead: "Pour publier une page sur les réseaux sociaux, l'envoyer en image sur WhatsApp ou récupérer une photo que vous n'avez que dans un PDF. Ce sont deux outils différents, et mieux vaut savoir lequel utiliser.",
+      sections: [
+        {
+          h2: 'Page entière ou seulement les photos ?',
+          body: [
+            { ul: [
+              "**[PDF en JPG](/pdf-a-jpg)** transforme chaque **page entière** en image, avec son texte, ses photos et sa mise en page, comme une capture d'écran mais en bonne qualité.",
+              "**[Extraire les images d'un PDF](/extraer-imagenes-pdf)** récupère **uniquement les photos et graphiques** qu'il contient, chacun séparément et à sa taille d'origine, sans le texte autour.",
+            ] },
+            "Pour montrer une page telle qu'elle apparaît, utilisez PDF en JPG. Pour récupérer le logo, la photo du produit ou le plan inclus dans le document, utilisez Extraire les images.",
+          ],
+        },
+        {
+          h2: 'PDF en JPG, pas à pas',
+          body: [
+            'Ouvrez [PDF en JPG](/pdf-a-jpg) et choisissez le PDF. Choisissez le **Format** et la **Résolution** :',
+            { ul: [
+              "**PNG** conserve la qualité exacte et convient mieux aux pages avec du texte ; **JPG** est plus léger et idéal pour partager. En JPG, vous choisissez aussi la qualité.",
+              "**72 ppp** pour l'écran, **150 ppp** pour presque tout et **300 ppp** pour l'impression.",
+            ] },
+            "Si vous ne voulez que certaines pages, indiquez-les dans **Pages** (par exemple 1-3, 5) ; laissé vide, toutes sont converties. Appuyez sur **Convertir** : chaque image s'affiche avec son numéro de page, et s'il y en a plusieurs, elles se téléchargent ensemble dans un ZIP.",
+          ],
+        },
+        {
+          h2: 'Extraire les images, pas à pas',
+          body: [
+            "Ouvrez [Extraire les images d'un PDF](/extraer-imagenes-pdf), choisissez le PDF et appuyez sur **Rechercher les images**. Toutes les photos et tous les graphiques apparaissent, avec leur page, leur taille et leur format. Choisissez ceux que vous voulez et téléchargez-les un par un ou tous ensemble dans un ZIP.",
+            "Les photos JPEG sortent **identiques** aux originales, octet pour octet ; les autres sont enregistrées en PNG, sans perte. Laissez cochée la case **Ignorer les petites images** pour ne pas vous retrouver avec des icônes et des puces.",
+            { tip: "Dans un PDF scanné, chaque page est une seule grande image : Extraire les images vous renvoie donc les pages. Dans ce cas, les deux outils se valent." },
+          ],
+        },
+        {
+          h2: "Si l'image est trop lourde",
+          body: [
+            "À 300 ppp, une page A4 dépasse 2 400 pixels de large. Si vous avez besoin d'une image plus légère pour le web ou un formulaire, passez-la dans [Compresser une image](/comprimir-imagen). Et tout se fait dans votre navigateur : le PDF n'est envoyé sur aucun serveur.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Choisissez l'outil", text: "PDF en JPG pour des pages entières ; Extraire les images pour les photos qu'il contient." },
+        { name: 'Choisissez le PDF', text: "Ouvrez l'outil sur docusmart.online et choisissez le fichier." },
+        { name: 'Réglez et convertissez', text: 'Dans PDF en JPG, choisissez le format, la résolution et les pages ; dans Extraire les images, appuyez sur Rechercher les images et choisissez celles que vous voulez.' },
+        { name: 'Téléchargez', text: 'Téléchargez chaque image ou toutes ensemble dans un ZIP.' },
+      ],
+      faq: [
+        ['Quelle résolution choisir ?', "150 ppp convient à presque tout. 72 ppp si l'image ne sera vue qu'à l'écran et 300 ppp si elle doit être imprimée."],
+        ['Les photos extraites perdent-elles en qualité ?', 'Non. Les photos JPEG sont copiées à l’identique et les autres sont enregistrées en PNG, sans perte.'],
+        ['Puis-je convertir une seule page ?', "Oui. Dans PDF en JPG, indiquez son numéro dans Pages, par exemple 3, et seule cette page est convertie."],
+      ],
+    },
+    'convertir-un-pdf-a-pdfa-para-un-tramite': {
+      slug: 'convertir-pdf-en-pdfa-demarche',
+      title: 'Comment convertir un PDF en PDF/A pour une démarche ou un archivage | DocuSmart',
+      description:
+        "Convertissez un PDF en PDF/A-2b, 1b ou 3b, le format d'archivage exigé par les administrations, les tribunaux et les universités. Gratuit et sans envoyer le fichier.",
+      h1: 'Comment convertir un PDF en PDF/A pour une démarche ou pour l’archiver',
+      lead: "Un tribunal, une université ou une administration vous demande le document « en PDF/A » et le portail refuse votre PDF. Voici comment le convertir, et quelle version choisir.",
+      sections: [
+        {
+          h2: "Qu'est-ce que le PDF/A et pourquoi on le demande",
+          body: [
+            "Le PDF/A est la version du PDF conçue pour l'archivage (norme ISO 19005). Le fichier contient tout ce dont il a besoin pour s'afficher : ses polices, son profil de couleur et ses métadonnées, et il ne peut dépendre de rien d'externe, comme des scripts, des liens vers des polices ou du contenu chargé ailleurs. Il s'affiche ainsi de la même façon aujourd'hui et dans de nombreuses années.",
+            "C'est pour cela que les tribunaux l'exigent pour le dépôt des actes de procédure, que beaucoup d'universités le demandent pour les thèses et mémoires, et que les administrations l'utilisent pour leurs démarches et leurs archives.",
+          ],
+        },
+        {
+          h2: 'Quelle version choisir',
+          body: [
+            { ul: [
+              "**PDF/A-2b** : la version recommandée, celle que demandent presque toutes les administrations. Elle accepte les transparences et les calques.",
+              "**PDF/A-1b** : la plus ancienne, uniquement pour les systèmes qui n'en acceptent pas d'autre. Elle n'accepte ni transparences ni calques.",
+              "**PDF/A-3b** : comme la 2b, mais elle conserve les pièces jointes, par exemple le XML d'une facture électronique.",
+            ] },
+            'Si la démarche ne précise pas laquelle, utilisez PDF/A-2b.',
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [PDF en PDF/A](/pdf-a-pdfa), choisissez le PDF et la **Version**, puis appuyez sur **Convertir en PDF/A**. À la fin, le résultat s'affiche à côté de l'original, avec un résumé de ce qui a été ajusté pour respecter la norme : par exemple, les polices intégrées au fichier ou les scripts supprimés.",
+            { tip: "Les fichiers créés par DocuSmart sont validés avec veraPDF, le validateur de référence de la PDF Association, celui-là même qu'utilisent de nombreux portails pour vérifier ce qu'ils reçoivent." },
+          ],
+        },
+        {
+          h2: 'Si une page a été enregistrée en image',
+          body: [
+            "Certains éléments ne peuvent pas passer tels quels en PDF/A : des couleurs d'imprimerie (CMJN) sans leur profil, ou des polices absentes du fichier qui ne peuvent pas être intégrées. Dans ce cas, la page concernée est enregistrée en image : elle a le même aspect, mais son texte n'est plus sélectionnable. DocuSmart vous indique quelles pages et pourquoi. Si ce texte doit rester consultable, passez le résultat dans [OCR : reconnaître le texte](/ocr-pdf).",
+            "Si le portail impose aussi une taille maximale, vérifiez ensuite le poids du fichier et, si besoin, utilisez [Compresser un PDF](/comprimir-pdf).",
+          ],
+        },
+        {
+          h2: 'Votre document ne quitte pas votre appareil',
+          body: [
+            "La conversion se fait dans votre navigateur : le PDF n'est envoyé sur aucun serveur. Vous pouvez convertir des actes de procédure, des contrats ou des pièces d'identité sans laisser de copie ailleurs.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez PDF en PDF/A', text: 'Allez sur docusmart.online/fr/pdf-en-pdfa et choisissez le PDF.' },
+        { name: 'Choisissez la version', text: "PDF/A-2b si la démarche ne précise rien ; 1b ou 3b seulement si on vous les demande." },
+        { name: 'Convertissez', text: 'Appuyez sur Convertir en PDF/A et lisez le résumé des ajustements.' },
+        { name: 'Téléchargez', text: 'Téléchargez le PDF/A et déposez-le sur le portail de la démarche.' },
+      ],
+      faq: [
+        ['Quelle version demandent les tribunaux ?', "Presque toujours PDF/A-2b, ou simplement « PDF/A ». Si l'organisme précise une version, choisissez celle-là."],
+        ['Le contenu de mon document change-t-il ?', "Ni le texte ni la mise en page. Les polices manquantes sont intégrées et les éléments que la norme n'autorise pas sont retirés, comme les scripts ou les pièces jointes (sauf en PDF/A-3b)."],
+        ['Comment savoir si le fichier respecte la norme ?', "À la fin, DocuSmart vous indique à quelle version il est conforme. Les résultats sont validés avec veraPDF, le validateur de référence."],
+      ],
+    },
+    'reparar-un-pdf-que-no-abre': {
+      slug: 'reparer-pdf-endommage',
+      title: "Comment réparer un PDF qui ne s'ouvre pas, reste blanc ou affiche une erreur | DocuSmart",
+      description:
+        "Récupérez un PDF endommagé ou un téléchargement interrompu : DocuSmart reconstruit sa structure et sauve les pages complètes. Gratuit et sans envoyer le fichier.",
+      h1: "Comment réparer un PDF qui ne s'ouvre pas, reste blanc ou affiche une erreur",
+      lead: "« Le fichier est endommagé et n'a pas pu être réparé », un écran blanc ou un téléchargement interrompu. Avant de considérer le document comme perdu, essayez de le reconstruire.",
+      sections: [
+        {
+          h2: "Pourquoi un PDF s'abîme",
+          body: [
+            "À la fin du fichier, un PDF contient un index qui indique où commence chaque page et chaque image. Si cet index est perdu ou décalé, le lecteur ne trouve plus rien et affiche une erreur, même si le contenu est toujours là. Ça arrive surtout avec :",
+            { ul: [
+              'Des téléchargements ou des pièces jointes interrompus en cours de route.',
+              'Des fichiers copiés sur une clé USB retirée trop tôt.',
+              'Des logiciels qui ont mal enregistré le PDF ou qui ne l’ont modifié qu’à moitié.',
+            ] },
+            "Les symptômes se ressemblent toujours : le lecteur indique que le fichier est endommagé, il s'ouvre mais les pages restent blanches, ou il s'affiche bien sur votre appareil mais un portail le refuse à l'envoi.",
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Réparer un PDF](/reparar-pdf), choisissez le fichier endommagé et appuyez sur **Réparer le PDF**. L'outil lit le fichier du début à la fin, retrouve les pages même si l'index est cassé et écrit une nouvelle copie saine.",
+            "À la fin, la copie réparée s'affiche à côté de l'original, avec ce qui s'est passé : des problèmes ont été trouvés et corrigés, le fichier était en bon état, ou, s'il était tronqué, combien de pages ont été sauvées sur le total.",
+            { tip: "Même si le PDF s'ouvre, le réparer peut être utile : si un portail le refuse ou si un outil affiche une erreur, une copie réécrite règle souvent le problème." },
+          ],
+        },
+        {
+          h2: 'Ce qui peut être récupéré et ce qui ne peut pas l’être',
+          body: [
+            "On récupère ce qui est arrivé complet. Si un téléchargement s'est interrompu à 70 %, les pages contenues dans ces 70 % sont sauvées ; celles de la fin, qui ne sont jamais arrivées, ne peuvent pas être reconstruites. Dans ce cas, le mieux est de retélécharger le fichier ou de le redemander, et d'utiliser la copie réparée en attendant.",
+            "Si le PDF demande un mot de passe à l'ouverture, retirez-le d'abord avec [Déverrouiller un PDF](/desbloquear-pdf), puis réparez-le. Et si vous avez sauvé des pages scannées dont vous voulez le texte, utilisez [OCR : reconnaître le texte](/ocr-pdf).",
+          ],
+        },
+        {
+          h2: 'Votre document ne quitte pas votre appareil',
+          body: [
+            "La réparation se fait dans votre navigateur : le fichier n'est envoyé sur aucun serveur. Vous pouvez essayer avec des documents personnels ou professionnels sans laisser de copie ailleurs, et l'original n'est pas modifié.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Réparer un PDF', text: 'Allez sur docusmart.online/fr/reparer-pdf et choisissez le PDF endommagé.' },
+        { name: 'Réparez', text: 'Appuyez sur Réparer le PDF : sa structure est reconstruite.' },
+        { name: 'Vérifiez le résultat', text: 'Regardez ce qui a été corrigé et combien de pages ont été sauvées.' },
+        { name: 'Téléchargez', text: "Téléchargez la copie réparée ; l'original ne change pas." },
+      ],
+      faq: [
+        ['Peut-on récupérer un fichier tronqué ?', "Oui, les pages arrivées complètes. Celles qui manquent à la fin du fichier ne peuvent pas être reconstruites."],
+        ['Mon fichier original est-il modifié ?', 'Non. Une copie réparée est téléchargée à part.'],
+        ['Ça fonctionne avec un PDF protégé par mot de passe ?', "Retirez d'abord le mot de passe avec Déverrouiller un PDF, puis réparez-le."],
+      ],
+    },
   },
 }

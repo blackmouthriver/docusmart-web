@@ -282,6 +282,8 @@ export const SHOTS = [
         run: async ({ host, files }) => {
           await upload(host, [pdf('constancia.pdf', files.textScan)])
           await host.locator('.compare-panel img, .compare-panel canvas').first().waitFor()
+          // La muestra está en español: se elige ese idioma en cualquier idioma de la página.
+          await host.locator('select').first().selectOption('spa')
           await primary(host).click()
           await host.locator('pre.text-view').waitFor({ timeout: 120_000 })
           await host.page().waitForTimeout(800)
@@ -300,6 +302,7 @@ export const SHOTS = [
         run: async ({ host, files }) => {
           await upload(host, [jpg('constancia.jpg', files.textPhoto)])
           await host.locator('.file-item').first().waitFor()
+          await host.locator('select').first().selectOption('spa')
           await primary(host).click()
           await host.page().waitForFunction(() => (document.querySelector('#tool textarea')?.value ?? '').length > 40, null, { timeout: 120_000 })
           await host.page().waitForTimeout(500)

@@ -38,8 +38,8 @@ test('una guía en inglés enlaza a las herramientas en inglés y ofrece las otr
   await expect(page.locator('.gd-article a[href="/unir-pdf"]')).toHaveCount(0)
   await expect(page.locator('link[rel="alternate"][hreflang="pt"]')).toHaveAttribute('href', 'https://docusmart.online/pt/guias/juntar-pdf-no-celular')
   await page.goto('/pt/guias')
-  // Las 6 de W-19 y las 8 del lote 1 por herramienta (W-101), ya traducidas.
-  await expect(page.locator('.gd-cards > li')).toHaveCount(14)
+  // Las 6 de W-19 y las 16 por herramienta (W-101), ya traducidas.
+  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
 })
 
 test('las guías muestran capturas de la herramienta, en su idioma y sin mover la página (W-100) @movil', async ({ page }) => {
@@ -107,16 +107,15 @@ test('una guía por herramienta traducida (W-101): sus capturas en el idioma y e
   await expect(page.locator('a[href="/en/guides/redact-personal-data-in-pdf"]')).toHaveCount(1)
 })
 
-test('una guía por herramienta sin traducir (lote 2, W-101) solo existe en español', async ({ page }) => {
+test('una guía del lote 2 en ruso: captura en ruso y enlaces en ruso (W-101)', async ({ page }) => {
   await page.goto('/guias/reparar-un-pdf-que-no-abre')
-  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/es/reparar-pdf/resultado-1280.webp')
-  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(0)
-  await expect(page.locator('.tp-lang a[hreflang]')).toHaveCount(1)
-  await page.goto('/reparar-pdf')
-  await expect(page.locator('a[href="/guias/reparar-un-pdf-que-no-abre"]')).toHaveCount(1)
-  await page.goto('/en/repair-pdf')
-  await expect(page.locator('a[href*="reparar-un-pdf"]')).toHaveCount(0)
+  await expect(page.locator('.tp-lang a[hreflang]')).toHaveCount(12)
+  const ru = await page.locator('link[rel="alternate"][hreflang="ru"]').getAttribute('href')
+  await page.goto(ru!.replace('https://docusmart.online', ''))
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ru')
+  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/ru/reparar-pdf/resultado-1280.webp')
+  await expect(page.locator('.gd-article a[href="/reparar-pdf"]')).toHaveCount(0)
   await page.goto('/en/guides')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(14)
+  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
 })
 

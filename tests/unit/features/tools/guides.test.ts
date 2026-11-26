@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { GUIDES_UPDATED, guides, type GuideBlock } from '../../../../tools/guides.mjs'
@@ -128,9 +128,22 @@ describe('guías ilustradas por herramienta (W-101)', () => {
     }
   })
 
+  it('cada captura tiene su texto alternativo y su archivo en cada idioma de la guía', () => {
+    for (const g of TOOL_GUIDES)
+      for (const img of GUIDE_IMAGES[g.slug])
+        for (const lang of guideLangs(g)) {
+          expect(img.alt[lang]?.trim(), `${g.slug} ${img.shot} ${lang}`).toBeTruthy()
+          for (const w of [1280, 390]) expect(existsSync(resolve(root, `public/img/guides/${lang}/${img.shot}-${w}.webp`)), `${lang}/${img.shot}-${w}`).toBe(true)
+        }
+  })
+
+  it('los lotes 1 y 2 están en los 12 idiomas', () => {
+    for (const g of TOOL_GUIDES.slice(0, 16)) expect(guideLangs(g), g.slug).toEqual(GUIDE_LANGS)
+  })
+
   it('una guía todavía sin traducir solo existe en español (sin hreflang ni páginas en otros idiomas)', () => {
+    // Las guías nuevas se publican primero en español (hoy no hay ninguna pendiente).
     const pending = TOOL_GUIDES.filter((g) => guideLangs(g).length === 1)
-    expect(pending.length).toBeGreaterThan(0)
     const html = generatedHtml()
     for (const g of pending) {
       expect(guideLangs(g)).toEqual(['es'])

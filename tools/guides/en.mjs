@@ -887,5 +887,471 @@ export default {
         ['Can the rest of the document still be searched?', 'Yes. Only the pages with marked areas are turned into images, and their remaining text is kept for searching and copying.'],
       ],
     },
+    'pasar-un-pdf-escaneado-a-texto': {
+      slug: 'scanned-pdf-to-text',
+      title: 'How to turn a scanned PDF into text you can copy and search | DocuSmart',
+      description:
+        'Recognize the text in a scanned PDF with OCR: copy it, download it as .txt or Word, or create a searchable PDF. In 12 languages, free and without uploading the file.',
+      h1: 'How to turn a scanned PDF into text you can copy and search',
+      lead: 'A scan is a photo of each page: you can read it, but you can\'t copy it or search for a word. OCR turns the text back into text, without retyping it.',
+      sections: [
+        {
+          h2: 'What OCR does',
+          body: [
+            'OCR stands for optical character recognition: the software looks at the image of each page and recognizes the letters. [OCR: recognize text](/ocr-pdf) gives you two things at once:',
+            { ul: [
+              '**The recognized text**, to copy it or download it as .txt or Word, with the page each part comes from.',
+              '**A searchable PDF**: the same scan, identical to the eye, with an invisible layer of text on top. You can select, copy and search for words with Ctrl+F.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [OCR: recognize text](/ocr-pdf) and choose the scanned PDF (a JPG, PNG or WebP photo also works). Pick the **Document language**: recognition is far more accurate when it knows which language to expect. If the document mixes its language with English, tick that box too.',
+            'Leave **Also create a searchable PDF** ticked if you want the PDF, and press **Recognize text**. You will see the progress page by page. When it finishes, the PDF is ready to download and, below it, the text, which you can copy or download as .txt or Word.',
+            { tip: 'The first time, the language model is downloaded (a few seconds) and stays saved in your browser, so next time it starts right away.' },
+          ],
+        },
+        {
+          h2: 'How to get a better result',
+          body: [
+            'OCR reads what it sees. A sharp, straight, well-lit scan is recognized almost without errors; a blurry, shadowy or very small photo isn\'t. If the result looks doubtful, DocuSmart warns you with the confidence percentage so you can check the text.',
+            { ul: [
+              'Rotated pages are detected and read the right way up automatically.',
+              'Pages that already have text (a mixed PDF) are left as they are, unless you tick **Also recognize pages that already have text**.',
+              'It works with printed text. Handwriting is rarely recognized well.',
+            ] },
+          ],
+        },
+        {
+          h2: 'If what you want is to edit it in Word',
+          body: [
+            'If your goal is to correct the document and not just copy the text, go straight to [PDF to Word](/pdf-a-word) with the OCR box ticked: it recognizes the scanned pages in the same step and builds an editable .docx. And if the searchable PDF is too heavy to send, run it through [Compress PDF](/comprimir-pdf).',
+          ],
+        },
+        {
+          h2: 'Your document stays on your device',
+          body: [
+            'Recognition runs in your browser with Tesseract, an open-source OCR engine. The PDF isn\'t uploaded to any server, so you can use it with ID cards, medical records or bank statements without leaving copies anywhere else.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open OCR', text: 'Go to docusmart.online/en/ocr-pdf and choose the scanned PDF or a photo.' },
+        { name: 'Pick the language', text: 'Choose the document\'s language and tick whether it also has English text.' },
+        { name: 'Recognize the text', text: 'Press Recognize text and wait for every page to finish.' },
+        { name: 'Download', text: 'Download the searchable PDF, or copy the text or download it as .txt or Word.' },
+      ],
+      faq: [
+        ['What is a searchable PDF?', 'It\'s your same scan with an invisible layer of text on top: it looks the same, but you can select, copy and search for words.'],
+        ['How many pages can I recognize?', 'As many as you need: they are recognized one by one in your browser. A long document takes longer, but there is no page limit.'],
+        ['Does it recognize several languages?', 'Twelve: Spanish, English, Portuguese, French, Italian, German, Catalan, Basque, Russian, Japanese, Korean and Chinese. If the document mixes its language with English, tick that box.'],
+      ],
+    },
+    'copiar-el-texto-de-una-foto': {
+      slug: 'copy-text-from-a-photo',
+      title: 'How to copy the text from a photo or a screenshot | DocuSmart',
+      description:
+        'Get the text out of a photo, a screenshot or a photographed document and copy it, correct it or turn it into Word. Free, in 12 languages and without uploading the image.',
+      h1: 'How to copy the text from a photo or a screenshot',
+      lead: 'A photo of a receipt, a screenshot of a chat or a sign: the text is right in front of you, but you can\'t copy it. Here is how to get it out in seconds, without typing it by hand.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Image to text (OCR)](/imagen-a-texto) and choose the photo. JPG, PNG, WebP and iPhone HEIC photos all work. If it\'s a screenshot, you don\'t even need to save it: copy it and paste it into the page with **Ctrl+V**.',
+            'Pick the language under **Document language** and press **Recognize text**. In a few seconds the text appears in a box you can correct. From there you copy it with one tap or download it as .txt or Word (.docx).',
+            { tip: 'If the text mixes your language with English words (product names, technical terms), tick "The document also has English text": it gets those words right more often.' },
+          ],
+        },
+        {
+          h2: 'Several photos into one document',
+          body: [
+            'If you photographed a document with several sheets, choose all the photos at once. The text from all of them comes out together, in order, and you download it as a single Word file. It\'s the fastest way to digitize a few printed pages someone lent you.',
+          ],
+        },
+        {
+          h2: 'How to take the photo so it reads well',
+          body: [
+            'Recognition depends on the photo. A few details make all the difference:',
+            { ul: [
+              '**Good light and no shadows**: your phone\'s shadow on the paper is the most common cause of errors.',
+              '**Straight on and level**: the less tilted, the better.',
+              '**Make the text look big**: move closer until the sheet fills the photo.',
+              '**Sharp**: if the photo came out blurry, take it again.',
+            ] },
+            'If the result looks doubtful, DocuSmart warns you with the confidence percentage so you can check the text before using it. Handwriting is rarely recognized well: the tool is designed for printed or on-screen text.',
+          ],
+        },
+        {
+          h2: 'Photo or scanned PDF?',
+          body: [
+            'If what you have is a scanned PDF with several pages, or you want to keep the document as it looks and also be able to search for words, use [OCR: recognize text](/ocr-pdf), which creates a searchable PDF. And if you need to hand in the photos as a document, put them together first with [Image to PDF](/imagen-a-pdf).',
+          ],
+        },
+        {
+          h2: 'Your photos stay on your device',
+          body: [
+            'The text is recognized in your browser: the images aren\'t uploaded to any server. You can use it with photos of documents, receipts or conversations without leaving copies anywhere else.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Image to text', text: 'Go to docusmart.online/en/image-to-text and choose the photo, or paste a screenshot with Ctrl+V.' },
+        { name: 'Pick the language', text: 'Choose the language of the text in the image.' },
+        { name: 'Recognize the text', text: 'Press Recognize text and check the result in the box.' },
+        { name: 'Copy or download', text: 'Copy it with one tap or download it as .txt or Word.' },
+      ],
+      faq: [
+        ['Does it work with iPhone photos?', 'Yes. HEIC photos open directly, without converting them first.'],
+        ['Does it recognize handwriting?', 'Rarely well. It works with printed or on-screen text.'],
+        ['Can I correct the text before copying it?', 'Yes. The text appears in an editable box: fix whatever you need and then copy or download it.'],
+      ],
+    },
+    'convertir-un-pdf-a-word-para-editarlo': {
+      slug: 'convert-pdf-to-editable-word',
+      title: 'How to convert a PDF to Word to edit it, even a scanned one | DocuSmart',
+      description:
+        'Turn a PDF into an editable Word file (.docx) with headings, bold, tables, images and two columns. With OCR for scanned files, free and without uploading the file.',
+      h1: 'How to convert a PDF to Word to edit it, even if it\'s scanned',
+      lead: 'Someone sent you a PDF and you need to change a date, a name or a paragraph, but you don\'t have the original Word file. Here is how to get it back as an editable document.',
+      sections: [
+        {
+          h2: 'Before converting: what to expect',
+          body: [
+            'A PDF doesn\'t store paragraphs or tables: only letters and their position on the page. That\'s why any conversion to Word **rebuilds** the document, and the result looks very much like the original, but isn\'t identical. [PDF to Word](/pdf-a-word) keeps:',
+            { ul: [
+              'Headings, bold, italics, font sizes and colors.',
+              'Lists, simple tables and images.',
+              'Two-column layouts, like the ones in résumés, with the background of each column.',
+            ] },
+            'Text boxes and complex decorative shapes may come out differently. It works best with PDFs created from Word or a similar program.',
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [PDF to Word](/pdf-a-word) and choose the file. If the PDF is scanned, or has some scanned pages, leave **Recognize text on scanned pages** ticked and pick the document\'s language: those pages are read with OCR in the same step and their text becomes editable.',
+            'Press **Convert**. You will see an approximate preview of the result next to the original, with how many paragraphs and images came out. Download the .docx and open it in Word, Google Docs, LibreOffice, Pages or WPS.',
+            { tip: 'Check the document when you open it, especially tables and page breaks: that\'s where the layout tends to vary most.' },
+          ],
+        },
+        {
+          h2: 'Do you need Word, or is editing the PDF enough?',
+          body: [
+            'If you are only going to change a word, add a date or cover up a detail, you don\'t need to go through Word: with [Edit PDF](/editar-pdf) you write on top of the PDF and it stays just as it was, with its exact layout. Converting to Word makes sense when you are going to rewrite whole paragraphs or reuse the content in another document.',
+          ],
+        },
+        {
+          h2: 'Back to PDF',
+          body: [
+            'When you finish editing, save the document and convert it back with [Word to PDF](/word-a-pdf) to send it. That way whoever receives it sees it the same on any device, regardless of the fonts they have installed.',
+          ],
+        },
+        {
+          h2: 'Your document stays on your device',
+          body: [
+            'The conversion, and the OCR of scanned pages, happen in your browser: the PDF isn\'t uploaded to any server. It works just as well for contracts, résumés or work documents that shouldn\'t be passed around.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open PDF to Word', text: 'Go to docusmart.online/en/pdf-to-word and choose the PDF.' },
+        { name: 'Turn on OCR if needed', text: 'If it has scanned pages, leave the OCR box ticked and pick the language.' },
+        { name: 'Convert', text: 'Press Convert and check the approximate preview.' },
+        { name: 'Download and edit', text: 'Download the .docx and open it in Word, Google Docs or LibreOffice.' },
+      ],
+      faq: [
+        ['Does it come out identical to the PDF?', 'Very close, but not identical: the document is rebuilt from the position of the letters. Headings, formatting, lists, simple tables, images and two columns are kept.'],
+        ['Does it work with scanned PDFs?', 'Yes. With the OCR box ticked, scanned pages are recognized in your browser and their text becomes editable.'],
+        ['Can I convert a password-protected PDF?', 'If it only has restrictions (it opens without a password), yes. If it asks for a password to open, remove it first with Unlock PDF.'],
+      ],
+    },
+    'pasar-un-extracto-bancario-pdf-a-excel': {
+      slug: 'bank-statement-pdf-to-excel',
+      title: 'How to turn a PDF bank statement or invoice into Excel | DocuSmart',
+      description:
+        'Convert the tables in a PDF bank statement, invoice or report into an Excel sheet with the numbers ready to add up. Free and without uploading the file.',
+      h1: 'How to turn a PDF bank statement or invoice into Excel',
+      lead: 'You need to add up the month\'s expenses, reconcile an account or filter a report, and the data is in a PDF. Here is how to move it into a spreadsheet without copying cell by cell.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [PDF to Excel](/pdf-a-excel) and choose the PDF. Choose how you want the **Sheets**:',
+            { ul: [
+              '**One per page**: each page of the PDF on its own sheet. Useful for reports where each page is a different table.',
+              '**All in one sheet**: all the rows one after another on a single sheet. Best for a statement that runs over several pages, because you can filter it and add it up in one go.',
+            ] },
+            'Press **Convert**. You will see an approximate preview with how many rows and numbers came out. Download the .xlsx and open it in Excel, Google Sheets or LibreOffice.',
+          ],
+        },
+        {
+          h2: 'Numbers stay numbers',
+          body: [
+            'This is the detail that saves the most time: values like 1,500,000, $2,000, 3.5 or 45% are saved as Excel numbers with their format, not as text. You can add them up, average them or use them in formulas as soon as you open the file, without cleaning up separators or currency symbols.',
+            { tip: 'If a column of values won\'t add up, check that it doesn\'t mix in text such as "N/A" or dashes: Excel ignores those cells in the sum.' },
+          ],
+        },
+        {
+          h2: 'Which PDFs it works best with',
+          body: [
+            'Columns are built from the position of the text on the page. That\'s why it works very well with PDFs exported by a system: bank statements, e-invoices, accounting reports or listings. With free-form PDFs, where the text doesn\'t follow columns, the result needs more checking.',
+            'If the statement is scanned, or a photo someone turned into a PDF, leave **Recognize text on scanned pages** ticked and pick the language: those pages are read with OCR in the same step and each column ends up in its own cell. The sharper the scan, the better the result.',
+          ],
+        },
+        {
+          h2: 'To hand it back in',
+          body: [
+            'If, after working on the sheet, you have to send it as a document, convert it with [Excel to PDF](/excel-a-pdf). And if you only need the text of the scan, without tables, use [OCR: recognize text](/ocr-pdf).',
+          ],
+        },
+        {
+          h2: 'Your data stays on your device',
+          body: [
+            'A bank statement has your account number, your balance and your transactions. Here the conversion happens in your browser: the PDF isn\'t uploaded to any server or stored anywhere else.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open PDF to Excel', text: 'Go to docusmart.online/en/pdf-to-excel and choose the PDF.' },
+        { name: 'Choose the sheets', text: 'One sheet per page, or everything on a single sheet to add it all up at once.' },
+        { name: 'Convert', text: 'Press Convert and check the approximate preview.' },
+        { name: 'Download', text: 'Download the .xlsx and open it in Excel, Google Sheets or LibreOffice.' },
+      ],
+      faq: [
+        ['Can the numbers be added up?', 'Yes. Values with thousands separators, currency symbols, decimals or percentages are saved as Excel numbers.'],
+        ['Does it work with a scanned statement?', 'Yes. With the OCR box ticked, scanned pages are recognized in your browser and each column ends up in its own cell.'],
+        ['Is my statement uploaded to the internet?', 'No. The conversion happens inside your browser; the file never leaves your device.'],
+      ],
+    },
+    'sacar-el-texto-de-un-pdf': {
+      slug: 'extract-text-from-pdf',
+      title: 'How to extract all the text from a PDF to copy or search it | DocuSmart',
+      description:
+        'Extract the text from a PDF into a .txt file or copy it from the screen with one click, without the page layout. Free, instant and without uploading the file.',
+      h1: 'How to extract all the text from a PDF to copy or search it',
+      lead: 'You want to paste the content of a PDF into an email, a chat or another document, and when you copy it the lines break apart. Here is how to get clean text from every page at once.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [PDF to text](/pdf-a-texto), choose the PDF and press **Convert**. In a moment you will see the text of every page on screen, with how many lines it has. From there you copy it with one click or download the .txt file.',
+            'The .txt opens on any device, even in Notepad or on your phone, and weighs almost nothing: a hundred-page document usually comes to a few hundred KB.',
+          ],
+        },
+        {
+          h2: 'What it\'s for',
+          body: [
+            { ul: [
+              '**Searching**: open the text and look for a word or a number in a long document.',
+              '**Reusing**: paste paragraphs into an email or a chat without the PDF\'s line breaks.',
+              '**Counting or analyzing**: pass the text to another tool, such as the [Word and character counter](/contador-de-palabras).',
+              '**Keeping the essentials**: save a document\'s content without its layout.',
+              '**Translating or listening**: paste the text into a translator, or into your phone\'s read-aloud feature, without the breaks you get when copying straight from the PDF.',
+            ] },
+          ],
+        },
+        {
+          h2: 'What is kept and what isn\'t',
+          body: [
+            'The text and line breaks are kept, in the reading order of each page. The visual layout (columns, tables, colors, images) becomes plain text. If you need the content **with its formatting** to keep editing it, use [PDF to Word](/pdf-a-word).',
+            { tip: 'If a table matters to you, keep in mind that it loses its columns in the .txt. To work with it in cells, [PDF to Excel](/pdf-a-excel) is a better choice.' },
+          ],
+        },
+        {
+          h2: 'If it comes out empty: it\'s a scan',
+          body: [
+            'If DocuSmart tells you it found no text, the PDF is scanned: each page is a photo, and there are no letters to extract. In that case use [OCR: recognize text](/ocr-pdf), which recognizes the text in the image in your browser and gives it to you to copy or download.',
+          ],
+        },
+        {
+          h2: 'Your document stays on your device',
+          body: [
+            'The text is read in your browser: the PDF isn\'t sent to any server. That\'s why you can use it with work or personal documents without leaving copies anywhere else.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open PDF to text', text: 'Go to docusmart.online/en/pdf-to-text and choose the PDF.' },
+        { name: 'Convert', text: 'Press Convert: you will see the text of every page.' },
+        { name: 'Copy or download', text: 'Copy it with one click or download the .txt file.' },
+      ],
+      faq: [
+        ['Why does it come out empty?', 'Because the PDF is scanned: the pages are images. Use OCR: recognize text to get its text.'],
+        ['Are tables kept?', 'Not as tables: they become lines of text. To keep the columns, use PDF to Excel.'],
+        ['Is there a page limit?', 'No. The text is extracted from every page, even if the document is long.'],
+      ],
+    },
+    'convertir-un-pdf-a-jpg-o-sacar-sus-imagenes': {
+      slug: 'pdf-to-jpg-or-extract-images',
+      title: 'How to convert a PDF to JPG or get out the photos inside it | DocuSmart',
+      description:
+        'Turn each page of a PDF into a JPG or PNG at the resolution you choose, or get out the photos inside it at their original quality. Free and without uploading the file.',
+      h1: 'How to convert a PDF to JPG or get out the photos inside it',
+      lead: 'To post a page on social media, send it on WhatsApp as an image or recover a photo you only have inside a PDF. These are two different tools, and it helps to know which one to use.',
+      sections: [
+        {
+          h2: 'Whole page or just the photos?',
+          body: [
+            { ul: [
+              '**[PDF to JPG](/pdf-a-jpg)** turns each **whole page** into an image, with its text, its photos and its layout, like a screenshot but in good quality.',
+              '**[Extract images from a PDF](/extraer-imagenes-pdf)** gets out **only the photos and graphics** inside it, each one separately and at its original size, without the text around them.',
+            ] },
+            'If you want to show a page exactly as it looks, use PDF to JPG. If you want the logo, the product photo or the floor plan that comes inside the document, use Extract images.',
+          ],
+        },
+        {
+          h2: 'PDF to JPG, step by step',
+          body: [
+            'Open [PDF to JPG](/pdf-a-jpg) and choose the PDF. Pick the **Image format** and the **Resolution**:',
+            { ul: [
+              '**PNG** keeps the exact quality and is better for pages with text; **JPG** is lighter and ideal for sharing. With JPG you also choose the quality.',
+              '**72 dpi** for viewing on screen, **150 dpi** for almost everything and **300 dpi** for printing.',
+            ] },
+            'If you only want some pages, type them in **Pages** (for example, 1-3, 5); leaving it empty converts them all. Press **Convert**: you will see each image with its page number, and if there are several they are downloaded together in a ZIP.',
+          ],
+        },
+        {
+          h2: 'Extract images, step by step',
+          body: [
+            'Open [Extract images from a PDF](/extraer-imagenes-pdf), choose the PDF and press **Find images**. All the photos and graphics appear with their page, their size and their format. Choose the ones you want and download them one by one or all in a ZIP.',
+            'JPEG photos come out **identical** to the originals, byte for byte; the rest are saved as PNG, with no loss. Leave **Skip small images** ticked so you don\'t end up with a pile of icons and bullets.',
+            { tip: 'In a scanned PDF each page is a single large image, so Extract images gives you back the pages. In that case either tool will do.' },
+          ],
+        },
+        {
+          h2: 'If the image is too heavy',
+          body: [
+            'At 300 dpi an A4 page is more than 2,400 pixels wide. If you need it lighter for the web or a form, run it through [Compress image](/comprimir-imagen). And everything happens in your browser: the PDF isn\'t uploaded to any server.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choose the tool', text: 'PDF to JPG for whole pages; Extract images for the photos inside it.' },
+        { name: 'Choose the PDF', text: 'Open the tool on docusmart.online and choose the file.' },
+        { name: 'Adjust and convert', text: 'In PDF to JPG choose format, resolution and pages; in Extract images press Find images and choose the ones you want.' },
+        { name: 'Download', text: 'Download each image or all of them together in a ZIP.' },
+      ],
+      faq: [
+        ['Which resolution should I choose?', '150 dpi works for almost everything. 72 dpi if it will only be viewed on screen and 300 dpi if it will be printed.'],
+        ['Do extracted photos lose quality?', 'No. JPEG photos are copied identical to the originals and the rest are saved as PNG, with no loss.'],
+        ['Can I convert just one page?', 'Yes. In PDF to JPG type its number in Pages, for example 3, and only that one is converted.'],
+      ],
+    },
+    'convertir-un-pdf-a-pdfa-para-un-tramite': {
+      slug: 'convert-pdf-to-pdfa',
+      title: 'How to convert a PDF to PDF/A for an official filing or an archive | DocuSmart',
+      description:
+        'Convert a PDF to PDF/A-2b, 1b or 3b, the archival format required by government agencies, courts and universities. Free and without uploading the file.',
+      h1: 'How to convert a PDF to PDF/A for an official filing or for archiving',
+      lead: 'A court, a university or a government agency asks for the document "in PDF/A" and the portal rejects your PDF. Here is how to convert it, and how to know which version to pick.',
+      sections: [
+        {
+          h2: 'What PDF/A is and why they ask for it',
+          body: [
+            'PDF/A is the version of PDF designed for archiving (ISO 19005). The file carries everything it needs to display inside it: its fonts, its color profile and its metadata, and it can\'t depend on anything external, such as scripts, links to fonts or content loaded from somewhere else. That way it looks the same today and many years from now.',
+            'That\'s why courts ask for it when filing briefs and lawsuits, many universities for theses and dissertations, and government agencies for applications and records.',
+          ],
+        },
+        {
+          h2: 'Which version to choose',
+          body: [
+            { ul: [
+              '**PDF/A-2b**: the recommended one, and the one almost every institution asks for. It supports transparency and layers.',
+              '**PDF/A-1b**: the oldest, only for systems that accept nothing else. It doesn\'t support transparency or layers.',
+              '**PDF/A-3b**: like 2b, but it keeps attached files, for example the XML of an e-invoice.',
+            ] },
+            'If the filing doesn\'t say which one, use PDF/A-2b.',
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [PDF to PDF/A](/pdf-a-pdfa), choose the PDF and the **Version**, and press **Convert to PDF/A**. When it finishes you will see the result next to the original and a summary of what was adjusted to meet the standard: for example, the fonts that were embedded in the file or the scripts that were removed.',
+            { tip: 'Files created by DocuSmart are validated with veraPDF, the PDF Association\'s reference validator, the same one many portals use to check what they receive.' },
+          ],
+        },
+        {
+          h2: 'If a page was saved as an image',
+          body: [
+            'Some things can\'t go into PDF/A as they are: print colors (CMYK) without their profile, or fonts that aren\'t inside the file and can\'t be embedded. In that case that page is saved as an image: it looks the same, but its text can no longer be selected. DocuSmart tells you which pages and why. If you need that text to be searchable, run the result through [OCR: recognize text](/ocr-pdf).',
+            'If the portal also sets a size limit, check the file size afterwards and, if needed, use [Compress PDF](/comprimir-pdf).',
+          ],
+        },
+        {
+          h2: 'Your document stays on your device',
+          body: [
+            'The conversion happens in your browser: the PDF isn\'t uploaded to any server. You can convert lawsuits, contracts or ID documents without leaving copies anywhere else.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open PDF to PDF/A', text: 'Go to docusmart.online/en/pdf-to-pdfa and choose the PDF.' },
+        { name: 'Choose the version', text: 'PDF/A-2b if the filing doesn\'t say which; 1b or 3b only if they ask for them.' },
+        { name: 'Convert', text: 'Press Convert to PDF/A and check the summary of what was adjusted.' },
+        { name: 'Download', text: 'Download the PDF/A and upload it to the filing portal.' },
+      ],
+      faq: [
+        ['Which version do courts ask for?', 'Almost always PDF/A-2b, or simply "PDF/A". If the institution names a version, choose that one.'],
+        ['Does the content of my document change?', 'Not the text or the layout. Missing fonts are embedded and things the standard doesn\'t allow are removed, such as scripts or attachments (except in PDF/A-3b).'],
+        ['How do I know it meets the standard?', 'When it finishes, DocuSmart tells you which version it meets. Results are validated with veraPDF, the reference validator.'],
+      ],
+    },
+    'reparar-un-pdf-que-no-abre': {
+      slug: 'repair-pdf-that-wont-open',
+      title: 'How to repair a PDF that won\'t open, shows blank or gives an error | DocuSmart',
+      description:
+        'Recover a damaged PDF or a download that got cut off: DocuSmart rebuilds its structure and rescues the complete pages. Free and without uploading the file.',
+      h1: 'How to repair a PDF that won\'t open, shows blank or gives an error',
+      lead: '"The file is damaged and could not be repaired", a blank screen or a download that got cut off. Before you give the document up for lost, try rebuilding it.',
+      sections: [
+        {
+          h2: 'Why a PDF gets damaged',
+          body: [
+            'At the end of the file, a PDF has an index that says where each page and each image begins. If that index is lost or shifted, the reader can\'t find anything and shows an error, even though the content is still there. It happens mostly with:',
+            { ul: [
+              'Downloads or attachments that were cut off halfway.',
+              'Files copied to a USB drive that was removed too early.',
+              'Programs that saved the PDF badly or only half-edited it.',
+            ] },
+            'The signs are always similar: the reader says the file is damaged, it opens but the pages are blank, or it looks fine on your device and a portal rejects it when you upload it.',
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Repair PDF](/reparar-pdf), choose the damaged file and press **Repair PDF**. The tool reads the file from start to finish, finds the pages even if the index is broken and writes a new, healthy copy.',
+            'When it finishes you will see the repaired copy next to the original and it will tell you what happened: whether it found and fixed problems, whether the file was fine, or, if it was cut off, how many pages were rescued out of how many it had.',
+            { tip: 'Even if the PDF opens, repairing it is sometimes worth it: if a portal rejects it or a tool gives an error, a rewritten copy usually solves it.' },
+          ],
+        },
+        {
+          h2: 'What can and can\'t be recovered',
+          body: [
+            'Whatever arrived complete is recovered. If a download was cut off at 70%, the pages within that 70% are rescued; the ones at the end, which never arrived, can\'t be rebuilt. In that case the best thing is to download the file again or ask for it again, and use the repaired copy in the meantime.',
+            'If the PDF needs a password to open, remove it first with [Unlock PDF](/desbloquear-pdf) and then repair it. And if what you rescued are scanned pages and you need their text, use [OCR: recognize text](/ocr-pdf).',
+          ],
+        },
+        {
+          h2: 'Your document stays on your device',
+          body: [
+            'The repair happens in your browser: the file isn\'t uploaded to any server. You can try it with personal or work documents without leaving copies anywhere else, and the original isn\'t modified.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Repair PDF', text: 'Go to docusmart.online/en/repair-pdf and choose the damaged PDF.' },
+        { name: 'Repair', text: 'Press Repair PDF: its structure is rebuilt.' },
+        { name: 'Check the result', text: 'See what was fixed and how many pages were rescued.' },
+        { name: 'Download', text: 'Download the repaired copy; the original doesn\'t change.' },
+      ],
+      faq: [
+        ['Can it recover a file that was cut off?', 'Yes, the pages that managed to arrive complete. The ones missing from the end of the file can\'t be rebuilt.'],
+        ['Is my original file modified?', 'No. A separate repaired copy is downloaded.'],
+        ['Does it work with password-protected PDFs?', 'First remove the password with Unlock PDF and then repair it.'],
+      ],
+    },
   },
 }
