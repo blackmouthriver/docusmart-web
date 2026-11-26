@@ -19,7 +19,22 @@ async function realJpeg(page: Page): Promise<Uint8Array> {
     for (const b of bytes) s += String.fromCharCode(b)
     return btoa(s)
   })
-  return new Uint8Array(Buffer.from(b64, 'base64'))
+  return stripJpegMeta(new Uint8Array(Buffer.from(b64, 'base64')))
+}
+
+/** Quita los segmentos de metadatos (APP1–APP15 y comentarios) que algunos navegadores agregan al codificar (Safari: perfil de color). */
+function stripJpegMeta(jpg: Uint8Array): Uint8Array {
+  const out: number[] = [0xff, 0xd8]
+  let i = 2
+  while (i + 4 <= jpg.length && jpg[i] === 0xff) {
+    const marker = jpg[i + 1]
+    if (marker === 0xda) break // empieza la imagen: el resto va tal cual
+    const len = (jpg[i + 2] << 8) | jpg[i + 3]
+    const isMeta = (marker >= 0xe1 && marker <= 0xef) || marker === 0xfe
+    if (!isMeta) out.push(...jpg.subarray(i, i + 2 + len))
+    i += 2 + len
+  }
+  return Uint8Array.from([...out, ...jpg.subarray(i)])
 }
 
 async function pdfWithAuthor() {

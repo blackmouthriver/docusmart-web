@@ -184,7 +184,11 @@ export function App() {
     let stopReminders: (() => void) | undefined
     let unsubscribe: (() => void) | undefined
     let alive = true
-    void import('../features/study/infra/agendaStore').then(({ hasReminders, startReminders, subscribeEvents }) => {
+    // Si la carga del módulo falla (versión nueva publicada, red cortada), Vite avisa con vite:preloadError y, como
+    // ofrecemos "Actualizar" en vez de un error, el import llega vacío: los recordatorios esperan a la próxima carga.
+    void import('../features/study/infra/agendaStore').then((mod) => {
+      if (!mod) return
+      const { hasReminders, startReminders, subscribeEvents } = mod
       const begin = () => {
         if (!alive || stopReminders || !hasReminders()) return
         stopReminders = startReminders((event) => {

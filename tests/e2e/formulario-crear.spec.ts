@@ -49,8 +49,9 @@ test('crear campos en un PDF sin campos y llenarlo enseguida @movil', async ({ p
   // Ya en "Llenar campos", con los campos creados.
   await expect(page.locator('.file-item')).toContainText('3 campos')
   await page.getByLabel(/^Nombre completo/).fill('Ana Pérez')
-  await page.getByLabel('Acepto los términos').check()
-  await page.getByLabel('Tarde').check()
+  // Por su rol: en WebKit la etiqueta también encuentra el botón "Ir al campo Acepto los términos".
+  await page.getByRole('checkbox', { name: 'Acepto los términos' }).check()
+  await page.getByRole('radio', { name: 'Tarde' }).check()
   await page.getByRole('button', { name: 'Llenar formulario' }).click()
   const wait = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Descargar', exact: true }).first().click()
