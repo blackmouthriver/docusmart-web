@@ -106,14 +106,14 @@ jobs:
             test-results
           retention-days: 7
 
-  # W-150.3: el motor de Safari (WebKit) en una Mac de verdad, para DocuSmart Desktop en macOS. Por ahora es
-  # informativo (no bloquea el PR) mientras se estabiliza; el reporte queda como artefacto.
+  # W-150.3: el motor de Safari (WebKit) en una Mac de verdad, para DocuSmart Desktop en macOS. Corre en los PR a
+  # producción (main), que llevan el paquete de preproducción: tarda unos 20 minutos y así no demora cada PR.
+  # Lo que Playwright no puede simular en WebKit (la cámara, el salto de la ventana de Drive y Dropbox) se omite ahí.
   safari:
-    name: Safari en Mac (WebKit, informativo)
-    if: github.event_name == 'pull_request'
+    name: Safari en Mac (WebKit)
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
     runs-on: macos-latest
     timeout-minutes: 45
-    continue-on-error: true
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
