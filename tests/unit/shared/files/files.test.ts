@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { baseName, moveItem, cleanBaseName, download, extensionOf, renamed, formatBytes, isOwnBlobUrl, isSvgFile, kindOf, parsePageRanges, safeFilename, safeMimeType, svgDataUrl } from '../../../../src/shared/files/files'
+import { baseName, moveItem, cleanBaseName, download, extensionOf, renamed, formatBytes, formatPageRanges, isOwnBlobUrl, isSvgFile, kindOf, parsePageRanges, safeFilename, safeMimeType, svgDataUrl } from '../../../../src/shared/files/files'
 
 const file = (name: string, type = '') => new File([''], name, { type })
 
@@ -9,6 +9,14 @@ describe('files', () => {
     expect(parsePageRanges('4-', 6)).toEqual([3, 4, 5])
     expect(parsePageRanges('-2', 6)).toEqual([0, 1])
     expect(parsePageRanges('2, 2, 1', 6)).toEqual([0, 1])
+  })
+
+  it('escribe las páginas elegidas como rangos (lo contrario de parsePageRanges)', () => {
+    expect(formatPageRanges([1, 2])).toBe('2-3')
+    expect(formatPageRanges([4, 0, 1, 2, 9])).toBe('1-3, 5, 10')
+    expect(formatPageRanges([3, 3])).toBe('4')
+    expect(formatPageRanges([])).toBe('')
+    expect(parsePageRanges(formatPageRanges([0, 2, 3, 4, 7]), 8)).toEqual([0, 2, 3, 4, 7])
   })
 
   it('rechaza rangos fuera del documento o mal escritos', () => {

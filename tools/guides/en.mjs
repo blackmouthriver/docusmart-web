@@ -404,5 +404,488 @@ export default {
         ['Can I remove the password from someone else\'s PDF?', 'Only if you know the password. DocuSmart doesn\'t crack open passwords.'],
       ],
     },
+    'dividir-pdf-en-varios-archivos': {
+      slug: 'split-pdf-into-multiple-files',
+      title: 'How to split a PDF into several files or extract a few pages | DocuSmart',
+      description:
+        'Split a PDF by pages, by ranges, every N pages, by bookmarks or by size, or pull out just the pages you need. Free, and your file is never uploaded.',
+      h1: 'How to split a PDF into several files or extract just a few pages',
+      lead: 'A portal only wants the signature page, or an 80-page PDF is too big to email. Here is how to break a PDF into parts, or keep only the pages you need, right from your browser.',
+      sections: [
+        {
+          h2: 'Six ways to split',
+          body: [
+            'Before you start, it helps to know what you need, because [Split PDF](/dividir-pdf) has a mode for each case:',
+            { ul: [
+              '**Choose pages**: tap the thumbnails (or type "1-3, 5") and you get a PDF with only those pages.',
+              '**By ranges**: several ranges at once, and each one becomes a separate PDF.',
+              '**Every N pages**: equal parts, for example 10 pages each.',
+              '**By bookmarks**: one PDF per chapter, if the document has a bookmark outline.',
+              '**By size**: parts that stay under a given size, for email or portals with a limit.',
+              '**Each page separately**: one PDF per page.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Split PDF](/dividir-pdf) and choose the file. You will see its pages as thumbnails. In "Choose pages", tap the ones you want to keep: they turn blue and the field above fills in by itself.',
+            'Tap the button at the bottom. When it finishes, you will see the result next to the original so you can check it, and you can download it with any name you like. If the mode creates several files, you can get them one by one or all together in a ZIP.',
+            { tip: 'To take a few pages from several PDFs and put them into one, [Merge PDF](/unir-pdf) is quicker: there you can pick which pages to take from each file.' },
+          ],
+        },
+        {
+          h2: 'If the parts are still too large',
+          body: [
+            'Splitting doesn\'t change the quality: each page is copied as it is. If a part is still over the limit, use the **By size** mode or run it through [Compress PDF](/comprimir-pdf). A single page scanned at a high resolution can be bigger than the limit on its own: in that case, compressing it is what helps.',
+          ],
+        },
+        {
+          h2: 'Common cases',
+          body: [
+            { ul: [
+              'A portal only wants both sides of your ID card: choose those two pages and upload just that PDF.',
+              'A statement covering the whole year: if it has bookmarks for each month, use **By bookmarks**; if not, **Every N pages**.',
+              'An email with a 10 MB limit: use **By size**, enter 10 and every part stays below it.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Your document stays on your device',
+          body: [
+            'The split happens in your browser: the PDF isn\'t uploaded to any server. That is why you can use it with bank statements, medical records or contracts without leaving copies anywhere else.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Split PDF', text: 'Go to docusmart.online/en/split-pdf and choose the file.' },
+        { name: 'Choose the mode', text: 'Choose pages, by ranges, every N pages, by bookmarks, by size or each page separately.' },
+        { name: 'Mark the pages', text: 'Tap the thumbnails or type the numbers (for example, 1-3, 5).' },
+        { name: 'Split and download', text: 'Tap the button and download the result, or all the files in a ZIP.' },
+      ],
+      faq: [
+        ['Do I lose quality when splitting?', 'No. The pages are copied as they are, with their original text and images.'],
+        ['Can I split a password-protected PDF?', 'If it only has restrictions (it opens without a password), yes. If it asks for a password to open, remove it first with Unlock PDF.'],
+        ['What happens to the bookmarks?', 'In By bookmarks mode, each chapter in the outline becomes a PDF named after its bookmark.'],
+      ],
+    },
+    'girar-paginas-de-un-pdf': {
+      slug: 'rotate-pdf-pages',
+      title: 'How to rotate PDF pages and save them that way | DocuSmart',
+      description:
+        'Fix scanned pages that came out sideways or upside down: rotate one page or all of them 90° left or right, and save the PDF the right way up. Free, no upload.',
+      h1: 'How to rotate PDF pages (and keep them that way when you save)',
+      lead: 'It happens a lot with scans: a landscape sheet ends up sideways, or a page comes out upside down. Rotating it in the viewer doesn\'t help, because it looks wrong again once you send it. Here is how to fix it in the file itself.',
+      sections: [
+        {
+          h2: 'Why rotating it in the viewer isn\'t enough',
+          body: [
+            'PDF viewers let you rotate the view, but that rotation isn\'t saved in the file: whoever receives it will see it crooked again. To fix it for good, you have to change the page orientation inside the PDF, which is what [Rotate PDF](/rotar-pdf) does.',
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Rotate PDF](/rotar-pdf) and choose the file. Each page appears as a thumbnail with its current rotation underneath (0°, 90°…). Tap a page to rotate it 90°, or use the arrows on each one to turn it left or right. If the whole document is sideways, use "All to the left" or "All to the right".',
+            'Once every page looks right, tap "Rotate PDF" and download the result. Only the orientation changes: the text, the images and the quality stay the same.',
+            { tip: 'If the pages are also out of order (common when scanning both sides), continue with [Reorder PDF pages](/ordenar-paginas-pdf).' },
+          ],
+        },
+        {
+          h2: 'Scans that come out crooked',
+          body: [
+            'Rotating works for pages that are sideways or upside down, in 90° steps. If the photo is tilted by a few degrees, it is better to scan it again with [Scan document](/escanear-documento), which detects the edges of the sheet and straightens it automatically.',
+          ],
+        },
+        {
+          h2: 'Common cases',
+          body: [
+            'When scanning double-sided, the back of each sheet often comes out upside down: tap those pages twice to rotate them 180°. In a report with landscape tables, rotate only those pages so they can be read without tilting your head; the rest stay as they are.',
+            'If the PDF comes from phone photos, check the orientation when you create it: [Image to PDF](/imagen-a-pdf) has automatic, portrait or landscape orientation, so you won\'t have to rotate anything afterwards.',
+          ],
+        },
+        {
+          h2: 'Private from start to finish',
+          body: [
+            'The PDF is rotated inside your browser. It isn\'t uploaded to any server and isn\'t stored anywhere: when you close the tab, it\'s gone. It works the same on a computer and on a phone, and once the page has loaded it doesn\'t need a good signal.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Rotate PDF', text: 'Go to docusmart.online/en/rotate-pdf and choose the PDF.' },
+        { name: 'Rotate the pages', text: 'Tap each page that is sideways, or use All to the left or All to the right.' },
+        { name: 'Save', text: 'Tap Rotate PDF and download the file, now the right way up.' },
+      ],
+      faq: [
+        ['Can I rotate just one page?', 'Yes. Each page is rotated separately; the others stay as they were.'],
+        ['Do I lose quality?', 'No. Only the page orientation changes; the content isn\'t compressed again.'],
+        ['Does it work on my phone?', 'Yes, in any modern browser, on Android and iPhone.'],
+      ],
+    },
+    'ordenar-paginas-de-un-pdf': {
+      slug: 'reorder-pdf-pages',
+      title: 'How to change the order of the pages in a PDF | DocuSmart',
+      description:
+        'Move PDF pages by dragging them, duplicate a page, add blank pages or remove the ones you don\'t need, then save the new order. Free, and nothing is uploaded.',
+      h1: 'How to change the order of the pages in a PDF',
+      lead: 'A double-sided scan that came out interleaved, an appendix that should have gone first, or a page that appears twice: here is how to put a PDF in order, page by page.',
+      sections: [
+        {
+          h2: 'What you can do with each page',
+          body: [
+            'In [Reorder PDF pages](/ordenar-paginas-pdf) each page is a card, and with it you can:',
+            { ul: [
+              '**Move it**: drag it into place, or use the earlier and later arrows (easier on a phone).',
+              '**Duplicate it**: for example, to repeat a cover page or a signature page.',
+              '**Add a blank page** after it, to leave space or separate sections.',
+              '**Remove it** if you don\'t need it.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Reorder PDF pages](/ordenar-paginas-pdf) and choose the PDF. Move the pages until they are the way you need them: the number on each card ("P. 2", "P. 1"…) reminds you where it came from, so you don\'t lose track.',
+            'When the order is right, tap "Apply new order" and download the PDF. The pages are copied as they are: neither the text nor the quality changes.',
+            { tip: 'If the pages you want to reorder are in several files, merge them first with [Merge PDF](/unir-pdf) and then reorder them here.' },
+          ],
+        },
+        {
+          h2: 'To take pages out, splitting is better',
+          body: [
+            'If you only want to keep some of the pages, [Split PDF](/dividir-pdf) is quicker: you mark the ones you want and you\'re done. Reordering is for when the whole document stays, just in a different order.',
+          ],
+        },
+        {
+          h2: 'Common cases',
+          body: [
+            'When you scan double-sided on a machine that can\'t do it automatically, you get all the fronts first and then all the backs. To interleave them, move the last page after the first one, the second-to-last after the third, and so on to the end: with the arrows it goes quickly.',
+            { ul: [
+              'An appendix that should have gone first: move it before page one.',
+              'A signature page that belongs in two places: duplicate it and move the copy where it\'s needed.',
+              'Chapters that must start on an odd page when printing double-sided: add a blank page before them.',
+            ] },
+          ],
+        },
+        {
+          h2: 'No need to upload your files',
+          body: [
+            'The new order is put together in your browser. The document doesn\'t travel over the internet and no copy stays on any server. That is why you can safely reorder case files, medical records or work documents that shouldn\'t leave your device.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Reorder PDF pages', text: 'Go to docusmart.online/en/reorder-pdf-pages and choose the PDF.' },
+        { name: 'Move the pages', text: 'Drag them or use the arrows; duplicate pages, add blank ones or remove the ones you don\'t need.' },
+        { name: 'Apply and download', text: 'Tap Apply new order and download the reordered PDF.' },
+      ],
+      faq: [
+        ['Can I reorder pages on my phone?', 'Yes. Besides dragging, each page has arrows to move it earlier or later, which are easier to use with your finger.'],
+        ['Are links and forms kept?', 'The pages are copied with their content; check the result if the document has complex forms.'],
+        ['Is there a page limit?', 'There is no fixed number; with very large documents the thumbnails may take a little longer to appear.'],
+      ],
+    },
+    'numerar-paginas-de-un-pdf': {
+      slug: 'add-page-numbers-to-pdf',
+      title: 'How to add page numbers to a PDF | DocuSmart',
+      description:
+        'Add page numbers to a PDF: choose the position, the format ("1", "1 / 10" or "Page 1 of 10"), the starting number and skip the cover. Free, with no upload.',
+      h1: 'How to add page numbers to a PDF',
+      lead: 'A thesis, a report or a case file is much easier to review when its pages are numbered. Here is how to number a PDF that has no page numbers, in whatever format you are asked for.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Add page numbers to PDF](/numerar-paginas-pdf) and choose the PDF. Pick where the number goes (top or bottom; left, center or right) and the format: "1", "1 / 10" or "Page 1 of 10".',
+            'Tap "Number pages". You will see the before and after side by side, page by page, so you can check that the number doesn\'t cover anything. Then download it.',
+          ],
+        },
+        {
+          h2: 'Options for common situations',
+          body: [
+            { ul: [
+              '**No number on the first**: enter 1 to leave the cover unnumbered, or more if there is a table of contents or a dedication.',
+              '**Start at**: so the numbering continues from another document, for example from 25.',
+              '**Text**: write your own, for example "Folio {n}" or "{n} of {total}"; {n} is the page number and {total} is the last one.',
+              '**Size and color**: small, medium or large, in any color you like.',
+            ] },
+            { tip: 'If the document is spread over several files, merge them first with [Merge PDF](/unir-pdf) so the numbering is continuous.' },
+          ],
+        },
+        {
+          h2: 'Keep the number from covering the content',
+          body: [
+            'Many documents already have something in the footer (a logo, an address). If the number lands on top of it, move it to another corner or up to the top: the before and after shows you every page before you download, and you can go from one to the next with the arrows.',
+          ],
+        },
+        {
+          h2: 'Number the pages last',
+          body: [
+            'The number is drawn onto each page. If you reorder or add pages afterwards, the numbers move with them and are no longer consecutive. That is why it is best to number at the end: first merge, reorder and remove what you don\'t need, then number the final version.',
+            'For official documents or case files that use folio numbers, type "Folio {n}" in the text. And if the document continues the numbering of another one, adjust "Start at".',
+          ],
+        },
+        {
+          h2: 'All in your browser',
+          body: [
+            'The numbers are added on your device: the PDF isn\'t uploaded to any server. The document\'s text stays as text: you can search and copy it just as before, and the number is added as text too, so it prints sharply.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Add page numbers to PDF', text: 'Go to docusmart.online/en/add-page-numbers-to-pdf and choose the PDF.' },
+        { name: 'Choose position and format', text: 'For example, bottom right and "Page 1 of 10".' },
+        { name: 'Adjust anything else', text: 'No number on the cover, the starting number, size and color.' },
+        { name: 'Number and download', text: 'Check the before and after and download the numbered PDF.' },
+      ],
+      faq: [
+        ['Can I leave the cover unnumbered?', 'Yes. In "No number on the first", enter 1 (or however many pages you want to skip).'],
+        ['Can I start at a different number?', 'Yes. In "Start at", enter the first number, for example 25.'],
+        ['Can I write "Folio" before the number?', 'Yes. In the text, type "Folio {n}" and each page will show its number in place of {n}.'],
+      ],
+    },
+    'poner-marca-de-agua-a-un-pdf': {
+      slug: 'add-watermark-to-pdf',
+      title: 'How to add a watermark to a PDF (text or logo) | DocuSmart',
+      description:
+        'Add "CONFIDENTIAL", "COPY" or your logo to a PDF: position, tiling, angle, size, opacity and which pages. Free, in your browser and without uploading the file.',
+      h1: 'How to add a watermark to a PDF (text or logo)',
+      lead: 'To send a proposal as a draft, mark a copy of your ID card "Only for application X" or put your logo on a catalog: here is how to add a watermark to a PDF.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Watermark PDF](/marca-de-agua-pdf) and choose the PDF. Type the text ("CONFIDENTIAL" is there as an example) or switch to "Image or logo" to use your own.',
+            'Tap "Apply watermark": you will see the before and after side by side. If you want to change something, adjust it and apply it again; when you like it, download it.',
+          ],
+        },
+        {
+          h2: 'How to adjust it',
+          body: [
+            { ul: [
+              '**Position**: in the center, in a corner or along an edge, or **tiled** so it repeats across the whole page.',
+              '**Rotation**: 0°, 45°, 90° or −45°. The diagonal is the classic choice and the hardest to crop out.',
+              '**Size, opacity and color**: a low opacity (20%) keeps the document readable; a higher one makes the mark stand out more.',
+              '**Over or behind the content**: behind is more discreet on documents with a lot of text.',
+              '**Pages**: all of them, or just some (for example, 1-3, 5).',
+            ] },
+          ],
+        },
+        {
+          h2: 'A watermark for copies of your documents',
+          body: [
+            'If someone asks for a copy of your ID card or a bank statement, add a tiled mark such as "Only for the rental application, January 2026". That way, if the copy ends up somewhere else, it is clear what you handed it over for.',
+            { tip: 'If you also want it to need a password to open, run it through [Protect PDF with a password](/proteger-pdf) afterwards.' },
+          ],
+        },
+        {
+          h2: 'Text ideas',
+          body: [
+            { ul: [
+              '"DRAFT" for versions that aren\'t final yet.',
+              '"COPY" or "CONTROLLED COPY" for documents that get handed out.',
+              '"Only for [application] — [date]" on copies of identity documents.',
+              '"SAMPLE" on catalogs, templates or work that hasn\'t been paid for yet.',
+            ] },
+            'For a mark that can be read without getting in the way of the document, an opacity between 15% and 30% usually works well. When tiled, a small or medium size looks cleaner. Before downloading, check several pages in the before and after.',
+          ],
+        },
+        {
+          h2: 'Without uploading the document',
+          body: [
+            'The mark is added inside your browser. The PDF isn\'t uploaded to any server, which matters precisely for the documents that need a watermark: copies of IDs, sales proposals or internal documents.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Watermark PDF', text: 'Go to docusmart.online/en/add-watermark-to-pdf and choose the PDF.' },
+        { name: 'Type the text or choose your logo', text: 'For example, "CONFIDENTIAL" or "COPY".' },
+        { name: 'Adjust position and style', text: 'Center or tiled, angle, size, opacity, color and pages.' },
+        { name: 'Apply and download', text: 'Check the before and after and download the PDF.' },
+      ],
+      faq: [
+        ['Can I use my logo?', 'Yes. Choose "Image or logo" and upload an image; a PNG with a transparent background looks best.'],
+        ['Can it be removed later?', 'It is drawn into the PDF. Keep the original without the mark in case you need it again.'],
+        ['Can I put it on only some pages?', 'Yes. In "Pages", type which ones, for example 1-3, 5.'],
+      ],
+    },
+    'editar-un-pdf-sin-programas': {
+      slug: 'edit-pdf-without-software',
+      title: 'How to edit a PDF without installing any software | DocuSmart',
+      description:
+        'Add or replace text, highlight, cover, draw, and add arrows, images and links to a PDF from your browser, without installing anything or uploading the file.',
+      h1: 'How to edit a PDF without installing any software',
+      lead: 'Fixing a date, filling in a missing detail, highlighting a clause or crossing something out: you don\'t need paid software for any of that. Here is how to edit a PDF in your browser.',
+      sections: [
+        {
+          h2: 'The editor\'s tools',
+          body: [
+            'At the top of the page there is a toolbar with everything you can add in [Edit PDF](/editar-pdf):',
+            { ul: [
+              '**Text**: tap the page where you want to write and type in the box below; choose the font, size, bold and color.',
+              '**Replace**: tap text that is already in the PDF and change it; the original is deleted from the document, not just covered up.',
+              '**Rectangle, Circle, Highlight and Cover**: to mark, underline or cover with white.',
+              '**Draw, Line and Arrow**: to point things out or make handwritten notes.',
+              '**Image and Link**: to add a stamp or a logo, or link to a website or to another page of the PDF.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Edit PDF](/editar-pdf) and choose the file. Pick "Text" on the toolbar and tap the page where it goes: a box appears that you can move, and you type in the panel below. With "Select" you tap any element to move it, resize it or remove it.',
+            'If you make a mistake, use "Undo". When you are done, tap "Apply changes" and download the edited PDF.',
+            { tip: 'Text can be in any alphabet (Latin, Cyrillic, Greek, Chinese, Japanese or Korean). Emojis aren\'t saved in the PDF.' },
+          ],
+        },
+        {
+          h2: 'Signing and filling in forms have their own tools',
+          body: [
+            'If what you need is to sign, [Sign PDF](/firmar-pdf) lets you draw, type or upload your signature and place it where it goes. And if the PDF has fields to fill in, [Fill in PDF form](/llenar-formulario-pdf) shows them one by one, which is easier than typing on top.',
+          ],
+        },
+        {
+          h2: 'Tips so the change doesn\'t show',
+          body: [
+            'To correct text that is already in the document, use **Replace**: it deletes the original and puts the new text in its place. If you only cover it with a white box, the old text is still in the file.',
+            'Pick the font closest to the document\'s (Sans, Serif or Mono) and adjust the size until it matches. On a phone, move elements carefully: you can also change their position from the keyboard with the arrow keys.',
+          ],
+        },
+        {
+          h2: 'Your file stays with you',
+          body: [
+            'The whole editor runs inside your browser: the PDF isn\'t uploaded to any server, neither while you edit it nor when you save it.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Edit PDF', text: 'Go to docusmart.online/en/edit-pdf and choose the file.' },
+        { name: 'Choose what to add', text: 'Text, replace, shapes, highlight, drawing, arrows, image or link.' },
+        { name: 'Place it on the page', text: 'Tap the page, type or draw, and move it with Select.' },
+        { name: 'Apply and download', text: 'Tap Apply changes and download the edited PDF.' },
+      ],
+      faq: [
+        ['Can I change text that is already in the PDF?', 'Yes, with "Replace": tap the text, type the new one and the original is deleted from the document.'],
+        ['Does it work with scanned PDFs?', 'You can add text, shapes and drawings on top. To replace text, the PDF needs real text; if it is a photo, run it through OCR first.'],
+        ['Do I need to install anything?', 'No. It works in the browser on your computer or phone.'],
+      ],
+    },
+    'comparar-dos-versiones-de-un-pdf': {
+      slug: 'compare-two-pdf-versions',
+      title: 'How to compare two versions of a PDF and see what changed | DocuSmart',
+      description:
+        'Compare two PDFs to see which words were added or removed, or compare them page by page to spot changes in images and layout. Free, and nothing is uploaded.',
+      h1: 'How to compare two versions of a PDF and see what changed',
+      lead: 'A contract comes back "with a few tweaks" and nobody says which. Reading it twice hunting for differences is slow, and things slip through. Here is how to compare two versions in seconds.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Compare PDF](/comparar-pdf). Choose the **Original** first and then the **New version**. If you put them the wrong way round, the "Swap" button switches them.',
+            'Tap "Compare". At the top you will see how many words were added and how many were removed, and below that each change with its page: removed text struck through in red and added text in green, with a few lines of context so you can find it.',
+          ],
+        },
+        {
+          h2: 'Text or visual',
+          body: [
+            { ul: [
+              '**Text**: compares the words. It is the best choice for contracts, letters and reports. You can ignore case and punctuation so they don\'t count as changes.',
+              '**Visual (page by page)**: compares how each page looks. It is useful for plans, designs or scanned documents, where the changes may be images or tables and not just text.',
+            ] },
+            { tip: 'In a contract, pay special attention to changes in amounts, dates and names: the comparison shows them even when only a single digit changed.' },
+          ],
+        },
+        {
+          h2: 'After comparing',
+          body: [
+            'If you found something to fix, you can do it with [Edit PDF](/editar-pdf). And once both parties agree, sign the final version with [Sign PDF](/firmar-pdf).',
+          ],
+        },
+        {
+          h2: 'What it shows and what it doesn\'t',
+          body: [
+            'Each change appears with its page number and the surrounding lines, so you can find it quickly in the document. If a whole paragraph was moved without being changed, it is marked as moved instead of being counted as removed and added.',
+            'If the two files have almost nothing in common (for example, you picked the wrong document), the tool tells you so instead of showing hundreds of changes. And if they are identical, it tells you that too, even when they have a different number of pages.',
+            'It works for contracts, quotes, regulations, proposals that pass through several hands or a thesis that comes back with your supervisor\'s corrections: in all those cases, knowing exactly what changed saves you a full reread.',
+          ],
+        },
+        {
+          h2: 'Your documents aren\'t uploaded',
+          body: [
+            'Both PDFs are compared in your browser: neither is uploaded to a server. You can use it with contracts and confidential documents with peace of mind, because neither version is stored anywhere else.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Compare PDF', text: 'Go to docusmart.online/en/compare-pdf.' },
+        { name: 'Choose the two files', text: 'First the original and then the new version.' },
+        { name: 'Choose how to compare', text: 'Text (words) or Visual (page by page).' },
+        { name: 'Review the changes', text: 'Removed text is struck through in red and added text is in green, with its page.' },
+      ],
+      faq: [
+        ['Does it compare scanned PDFs?', 'In Visual mode, yes, because it compares how each page looks. Text mode needs the PDF to have real text.'],
+        ['Does the order of the files matter?', 'Yes: whatever is in the new version and not in the original shows up as added. If you got it wrong, use Swap.'],
+        ['Can I ignore a changed capital letter or comma?', 'Yes. Check "Ignore case" or "Ignore punctuation".'],
+      ],
+    },
+    'tapar-datos-personales-en-un-pdf': {
+      slug: 'redact-personal-data-in-pdf',
+      title: 'How to black out personal data in a PDF (for real) | DocuSmart',
+      description:
+        'Redact ID numbers, account numbers, emails or names in a PDF: find and mark them on every page, and they are deleted from the file, not just covered up.',
+      h1: 'How to black out personal data in a PDF (for real)',
+      lead: 'Before sharing a bank statement, a contract or a medical record, you often need to hide account or ID numbers. Putting a black box on top isn\'t enough: here is how to do it properly.',
+      sections: [
+        {
+          h2: 'Why a black box isn\'t enough',
+          body: [
+            'If you place a black rectangle over a number in an ordinary editor, the number is still in the file: anyone can select and copy it, or open the PDF in another program, and read it. Real redaction means **deleting** what is underneath, and that is what [Redact PDF](/censurar-pdf) does.',
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Redact PDF](/censurar-pdf) and choose the file. You can search for a name, a number or a word and it gets marked on every page at once. You can also mark all **Emails** or all **Numbers** (IDs, phone numbers, accounts) in one go, or drag over the page to cover an area by hand.',
+            'Check every page: tap an area to move it or remove it. When everything is ready, tap "Redact PDF" and download the result.',
+            { tip: 'Pages with marked areas are turned into images so that what you covered disappears from the file. The rest of the text on those pages can still be searched and copied.' },
+          ],
+        },
+        {
+          h2: 'Check before you send it',
+          body: [
+            'The search finds what is written as text. If part of the document is a photo or a scan, any data in it won\'t show up in the search: mark it by hand by dragging over the page. And keep the original separately, because redacted content can\'t be recovered.',
+            'If the document is going to stay in other people\'s hands, you can also add a password with [Protect PDF with a password](/proteger-pdf) or a [watermark](/marca-de-agua-pdf) saying what you handed it over for.',
+          ],
+        },
+        {
+          h2: 'What usually needs to be covered',
+          body: [
+            { ul: [
+              'ID numbers and bank account numbers.',
+              'Addresses, phone numbers and email addresses.',
+              'Signatures and photos of documents.',
+              'Health data, salaries or information about other people.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Without uploading the document',
+          body: [
+            'The whole process happens in your browser: the document with the uncovered data never leaves your device. That is exactly what you want when redacting: if you uploaded the original to an online service to cover it, the data would already be out of your hands.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Redact PDF', text: 'Go to docusmart.online/en/redact-pdf and choose the file.' },
+        { name: 'Mark what needs hiding', text: 'Search for some text, mark all emails or numbers, or drag over the page.' },
+        { name: 'Check every page', text: 'Tap an area to move it or remove it.' },
+        { name: 'Redact and download', text: 'Tap Redact PDF: what you covered is deleted from the file.' },
+      ],
+      faq: [
+        ['Can redacted content be recovered?', 'No. What you cover is deleted from the file; that is why it is a good idea to keep the original separately.'],
+        ['Does it work with scanned PDFs?', 'Yes, by marking the areas by hand. The automatic search only finds what is written as text.'],
+        ['Can the rest of the document still be searched?', 'Yes. Only the pages with marked areas are turned into images, and their remaining text is kept for searching and copying.'],
+      ],
+    },
   },
 }

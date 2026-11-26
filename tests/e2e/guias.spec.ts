@@ -38,7 +38,8 @@ test('una guía en inglés enlaza a las herramientas en inglés y ofrece las otr
   await expect(page.locator('.gd-article a[href="/unir-pdf"]')).toHaveCount(0)
   await expect(page.locator('link[rel="alternate"][hreflang="pt"]')).toHaveAttribute('href', 'https://docusmart.online/pt/guias/juntar-pdf-no-celular')
   await page.goto('/pt/guias')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(6)
+  // Las 6 de W-19 y las 8 del lote 1 por herramienta (W-101), ya traducidas.
+  await expect(page.locator('.gd-cards > li')).toHaveCount(14)
 })
 
 test('las guías muestran capturas de la herramienta, en su idioma y sin mover la página (W-100) @movil', async ({ page }) => {
@@ -87,7 +88,7 @@ test('en el celular, la lista de unir PDF deja ver el nombre y dice "1 página" 
   expect(meta!.width).toBeGreaterThan(100)
 })
 
-test('una guía por herramienta (W-101): sus capturas, su herramienta y solo en español mientras se traduce', async ({ page }) => {
+test('una guía por herramienta traducida (W-101): sus capturas en el idioma y enlaces entre idiomas', async ({ page }) => {
   await page.goto('/guias/tapar-datos-personales-en-un-pdf')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo tapar datos personales en un PDF (de verdad)')
   const shot = page.locator('.gd-shot img').first()
@@ -95,16 +96,27 @@ test('una guía por herramienta (W-101): sus capturas, su herramienta y solo en 
   await expect(shot).toHaveAttribute('alt', /^Censurar PDF con el buscador/)
   await shot.scrollIntoViewIfNeeded()
   await expect.poll(() => shot.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
-  // Todavía sin traducir: el menú de idioma solo ofrece español y no hay hreflang a otros idiomas.
+  // Traducida: hreflang a los otros idiomas y el menú de idioma los ofrece todos.
+  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', 'https://docusmart.online/en/guides/redact-personal-data-in-pdf')
+  await expect(page.locator('.tp-lang a[hreflang]')).toHaveCount(12)
+  // En inglés: su captura en inglés y la herramienta en inglés, que enlaza a su guía.
+  await page.goto('/en/guides/redact-personal-data-in-pdf')
+  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/en/censurar-pdf/zonas-1280.webp')
+  await expect(page.locator('.gd-article a[href="/en/redact-pdf"]').first()).toBeVisible()
+  await page.goto('/en/redact-pdf')
+  await expect(page.locator('a[href="/en/guides/redact-personal-data-in-pdf"]')).toHaveCount(1)
+})
+
+test('una guía por herramienta sin traducir (lote 2, W-101) solo existe en español', async ({ page }) => {
+  await page.goto('/guias/reparar-un-pdf-que-no-abre')
+  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/es/reparar-pdf/resultado-1280.webp')
   await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(0)
   await expect(page.locator('.tp-lang a[hreflang]')).toHaveCount(1)
-  await expect(page.locator('.gd-article a[href="/censurar-pdf"]').first()).toBeVisible()
-  // La página de la herramienta enlaza a su guía, solo en español.
-  await page.goto('/censurar-pdf')
-  await expect(page.locator('a[href="/guias/tapar-datos-personales-en-un-pdf"]')).toHaveCount(1)
-  await page.goto('/en/redact-pdf')
-  await expect(page.locator('a[href*="tapar-datos-personales"]')).toHaveCount(0)
+  await page.goto('/reparar-pdf')
+  await expect(page.locator('a[href="/guias/reparar-un-pdf-que-no-abre"]')).toHaveCount(1)
+  await page.goto('/en/repair-pdf')
+  await expect(page.locator('a[href*="reparar-un-pdf"]')).toHaveCount(0)
   await page.goto('/en/guides')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(6)
+  await expect(page.locator('.gd-cards > li')).toHaveCount(14)
 })
 
