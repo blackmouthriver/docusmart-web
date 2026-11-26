@@ -872,7 +872,7 @@ export default {
       short: 'Jede Seite als Bild',
       steps: ['Wähle das PDF.', 'Wähle das Format: PNG (maximale Qualität) oder JPG (kleinere Dateien).', 'Lade die Bilder herunter: Bei mehreren Seiten kommen sie zusammen in einem .zip.'],
       faq: [
-        ['Welche Auflösung haben die Bilder?', 'Jede Seite wird mit 1600 Pixel Breite exportiert, genug zum Lesen, Drucken oder Veröffentlichen.'],
+        ['Welche Auflösung haben die Bilder?', 'Du wählst sie: 72 dpi (für den Bildschirm), 150 dpi (Standard, etwa 1240 Pixel Breite bei A4) oder 300 dpi (zum Drucken). Bei JPG wählst du außerdem die Qualität.'],
         ['JPG oder PNG?', 'PNG behält die exakte Qualität und eignet sich besser für Text; JPG ist kleiner und ideal zum Teilen.'],
         ['Wird das PDF auf einen Server hochgeladen?', 'Nein. Die Seiten werden in deinem Browser gezeichnet und umgewandelt.'],
       ],

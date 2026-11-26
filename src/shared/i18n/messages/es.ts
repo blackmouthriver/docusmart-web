@@ -1035,7 +1035,7 @@ export const es = {
   'conv.moveUp': "Subir",
   'conv.moveDown': "Bajar",
   'conv.imageFormat': "Formato de imagen",
-  'conv.wordNote': "Un PDF no guarda párrafos ni tablas: DocuSmart los reconstruye. Funciona mejor con PDF creados desde Word o un programa similar; los escaneados necesitan OCR primero.",
+  'conv.wordNote': "Un PDF no guarda párrafos ni tablas: DocuSmart los reconstruye. Funciona mejor con PDF creados desde Word o un programa similar; las páginas escaneadas se reconocen con OCR en el mismo paso.",
   'conv.sheets': "Hojas",
   'conv.onePerPage': "Una por página",
   'conv.allInOne': "Todo en una hoja",

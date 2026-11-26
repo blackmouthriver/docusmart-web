@@ -77,6 +77,99 @@ async function samplePhoto(page, tilt) {
   return Buffer.from(b64, 'base64')
 }
 
+/** Foto de una hoja impresa con texto de verdad (inventado), para mostrar el OCR. */
+async function textPhoto(page, tilt) {
+  const b64 = await page.evaluate((tilt) => {
+    const c = document.createElement('canvas')
+    c.width = 1200
+    c.height = 1600
+    const g = c.getContext('2d')
+    g.fillStyle = '#7a5636'
+    g.fillRect(0, 0, 1200, 1600)
+    g.translate(600, 800)
+    g.rotate(tilt)
+    g.shadowColor = 'rgba(0,0,0,.4)'
+    g.shadowBlur = 36
+    g.fillStyle = '#fbfbf8'
+    g.fillRect(-470, -640, 940, 1280)
+    g.shadowBlur = 0
+    g.fillStyle = '#1f2937'
+    const lines = [
+      ['bold 44px Arial', 'CONSTANCIA DE ASISTENCIA'],
+      ['', ''],
+      ['30px Arial', 'La Fundación Ejemplo hace constar que'],
+      ['30px Arial', 'Luis Prueba Gómez asistió al taller'],
+      ['30px Arial', '"Finanzas personales para todos", con'],
+      ['30px Arial', 'una intensidad de 12 horas, entre el 3'],
+      ['30px Arial', 'y el 7 de noviembre de 2026.'],
+      ['', ''],
+      ['30px Arial', 'Se expide a solicitud del interesado en'],
+      ['30px Arial', 'Medellín, el 10 de noviembre de 2026.'],
+      ['', ''],
+      ['', ''],
+      ['bold 30px Arial', 'Ana María Ejemplo'],
+      ['30px Arial', 'Coordinadora académica'],
+    ]
+    let y = -520
+    for (const [font, text] of lines) {
+      if (font) g.font = font
+      if (text) g.fillText(text, -400, y)
+      y += 62
+    }
+    return c.toDataURL('image/jpeg', 0.95).split(',')[1]
+  }, tilt)
+  return Buffer.from(b64, 'base64')
+}
+
+/** Extracto de muestra con una tabla (movimientos inventados), para PDF a Excel. */
+async function statementPdf() {
+  const doc = await PDFDocument.create()
+  const regular = await doc.embedFont(StandardFonts.Helvetica)
+  const bold = await doc.embedFont(StandardFonts.HelveticaBold)
+  const page = doc.addPage([595, 842])
+  const ink = rgb(0.1, 0.1, 0.12)
+  page.drawText('BANCO EJEMPLO - EXTRACTO DE CUENTA DE AHORROS', { x: 50, y: 780, size: 13, font: bold, color: ink })
+  page.drawText('Titular: Ana María Ejemplo   Cuenta: 000-123456-00   Periodo: noviembre de 2026', { x: 50, y: 758, size: 9, font: regular, color: ink })
+  const cols = [50, 120, 360, 460]
+  const head = ['Fecha', 'Descripción', 'Valor', 'Saldo']
+  head.forEach((h, i) => page.drawText(h, { x: cols[i], y: 720, size: 10, font: bold, color: ink }))
+  page.drawRectangle({ x: 50, y: 712, width: 495, height: 1, color: rgb(0.6, 0.62, 0.66) })
+  const rows = [
+    ['01/11/2026', 'Saldo anterior', '', '2.450.000'],
+    ['03/11/2026', 'Pago nómina', '3.200.000', '5.650.000'],
+    ['05/11/2026', 'Arriendo apartamento', '-1.200.000', '4.450.000'],
+    ['08/11/2026', 'Supermercado', '-385.400', '4.064.600'],
+    ['12/11/2026', 'Servicios públicos', '-212.350', '3.852.250'],
+    ['15/11/2026', 'Transferencia recibida', '150.000', '4.002.250'],
+    ['20/11/2026', 'Plan de celular', '-65.900', '3.936.350'],
+    ['25/11/2026', 'Retiro cajero', '-300.000', '3.636.350'],
+    ['28/11/2026', 'Cuota de manejo', '-14.990', '3.621.360'],
+  ]
+  let y = 694
+  for (const r of rows) {
+    r.forEach((v, i) => {
+      if (!v) return
+      const x = i >= 2 ? cols[i] + 70 - regular.widthOfTextAtSize(v, 10) : cols[i]
+      page.drawText(v, { x, y, size: 10, font: regular, color: ink })
+    })
+    y -= 20
+  }
+  return Buffer.from(await doc.save())
+}
+
+/** Un PDF de 6 páginas cortado al 70 %, como una descarga que no terminó (para Reparar PDF). */
+async function brokenPdf() {
+  const doc = await PDFDocument.create()
+  const font = await doc.embedFont(StandardFonts.Helvetica)
+  for (let i = 1; i <= 6; i++) {
+    const page = doc.addPage([595, 842])
+    page.drawText(`Informe de actividades - página ${i}`, { x: 60, y: 770, size: 16, font })
+    for (let l = 0; l < 18; l++) page.drawRectangle({ x: 60, y: 720 - l * 24, width: 470 - ((l * 37) % 80), height: 7, color: rgb(0.78, 0.8, 0.84) })
+  }
+  const full = Buffer.from(await doc.save({ useObjectStreams: false }))
+  return full.subarray(0, Math.round(full.length * 0.7))
+}
+
 /** PDF con una foto grande adentro (para que comprimir muestre una reducción real). */
 async function photoPdf(photo) {
   const doc = await PDFDocument.create()
@@ -211,7 +304,11 @@ try {
     photos,
     scanned: await photoPdf(photos[1]),
     contract: [await contractPdf(1), await contractPdf(2)],
+    textPhoto: await textPhoto(helper, 0.03),
+    statement: await statementPdf(),
+    broken: await brokenPdf(),
   }
+  files.textScan = await photoPdf(files.textPhoto)
   for (const [w, width] of Object.entries(SHOT_WIDTHS)) {
     const context = await browser.newContext({
       viewport: { width, height: w === 'movil' ? 844 : 900 },

@@ -872,7 +872,7 @@ export default {
       short: 'Cada página como imagem',
       steps: ['Escolha o PDF.', 'Escolha o formato: PNG (máxima qualidade) ou JPG (arquivos mais leves).', 'Baixe as imagens: se forem várias páginas, vêm juntas em um .zip.'],
       faq: [
-        ['Que resolução têm as imagens?', 'Cada página é exportada com 1600 pixels de largura, o suficiente para ler, imprimir ou publicar.'],
+        ['Que resolução têm as imagens?', 'Você escolhe: 72 ppp (para ver na tela), 150 ppp (a padrão, cerca de 1240 pixels de largura numa folha A4) ou 300 ppp (para imprimir). Em JPG você também escolhe a qualidade.'],
         ['JPG ou PNG?', 'PNG mantém a qualidade exata e é melhor para texto; JPG pesa menos e é ideal para compartilhar.'],
         ['O PDF é enviado a algum servidor?', 'Não. As páginas são desenhadas e convertidas dentro do seu navegador.'],
       ],

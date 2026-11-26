@@ -872,7 +872,7 @@ export default {
       short: 'Cada pàgina com a imatge',
       steps: ['Tria el PDF.', 'Tria el format: PNG (màxima qualitat) o JPG (fitxers més lleugers).', 'Baixa les imatges: si són diverses pàgines, venen juntes en un .zip.'],
       faq: [
-        ['Quina resolució tenen les imatges?', 'Cada pàgina s’exporta a 1600 píxels d’amplada, prou per llegir, imprimir o publicar.'],
+        ['Quina resolució tenen les imatges?', 'La tries tu: 72 ppp (per veure en pantalla), 150 ppp (la de sempre, uns 1240 píxels d’amplada en un full A4) o 300 ppp (per imprimir). En JPG també tries la qualitat.'],
         ['JPG o PNG?', 'El PNG conserva la qualitat exacta i és millor per al text; el JPG pesa menys i és ideal per compartir.'],
         ['El PDF es puja a algun servidor?', 'No. Les pàgines es dibuixen i converteixen dins del teu navegador.'],
       ],

@@ -1031,7 +1031,7 @@ const ca: Messages = {
   'conv.moveUp': "Pujar",
   'conv.moveDown': "Baixar",
   'conv.imageFormat': "Format d'imatge",
-  'conv.wordNote': "Un PDF no desa paràgrafs ni taules: DocuSmart els reconstrueix. Funciona millor amb PDF creats des de Word o un programa similar; els escanejats necessiten OCR primer.",
+  'conv.wordNote': "Un PDF no desa paràgrafs ni taules: DocuSmart els reconstrueix. Funciona millor amb PDF creats des de Word o un programa similar; les pàgines escanejades es reconeixen amb OCR en el mateix pas.",
   'conv.sheets': "Fulls",
   'conv.onePerPage': "Un per pàgina",
   'conv.allInOne': "Tot en un full",

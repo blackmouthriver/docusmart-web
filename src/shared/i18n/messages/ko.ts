@@ -1031,7 +1031,7 @@ const ko: Messages = {
   'conv.moveUp': "위로",
   'conv.moveDown': "아래로",
   'conv.imageFormat': "이미지 형식",
-  'conv.wordNote': "PDF에는 단락이나 표 정보가 없어 DocuSmart가 다시 구성합니다. Word 등으로 만든 PDF에서 가장 잘 작동하며, 스캔한 문서는 먼저 OCR이 필요합니다.",
+  'conv.wordNote': "PDF에는 단락이나 표 정보가 없어 DocuSmart가 다시 구성합니다. Word 등으로 만든 PDF에서 가장 잘 작동하며, 스캔한 페이지는 같은 단계에서 OCR로 인식됩니다.",
   'conv.sheets': "시트",
   'conv.onePerPage': "페이지마다 하나",
   'conv.allInOne': "한 시트에 모두",

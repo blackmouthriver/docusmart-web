@@ -1,17 +1,17 @@
 // Guías (W-19): índice, una guía y sus enlaces a las herramientas.
 import { expect, makePdf, test } from './helpers'
 
-test('el índice de guías muestra las 14 guías en español (6 + 8 por herramienta) @movil', async ({ page }) => {
+test('el índice de guías muestra las 22 guías en español (6 + 16 por herramienta) @movil', async ({ page }) => {
   await page.goto('/guias')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Guías paso a paso')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(14)
+  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
 })
 
 test('una guía lleva a su herramienta y a otras guías', async ({ page }) => {
   await page.goto('/guias/unir-pdf-en-el-celular')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo unir PDF en el celular sin subir tus archivos')
   expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain('"@type": "HowTo"')
-  await expect(page.locator('.tp-related a[href^="/guias/"]')).toHaveCount(13)
+  await expect(page.locator('.tp-related a[href^="/guias/"]')).toHaveCount(21)
   const toTool = page.locator('.gd-article').getByRole('link', { name: 'Unir PDF', exact: true }).first()
   await expect(toTool).toHaveAttribute('href', '/unir-pdf')
   await page.goto('/unir-pdf')
