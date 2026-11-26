@@ -1031,7 +1031,7 @@ const en: Messages = {
   'conv.moveUp': "Move up",
   'conv.moveDown': "Move down",
   'conv.imageFormat': "Image format",
-  'conv.wordNote': "A PDF doesn't store paragraphs or tables: DocuSmart rebuilds them. It works best with PDFs created from Word or a similar program; scanned ones need OCR first.",
+  'conv.wordNote': "A PDF doesn't store paragraphs or tables: DocuSmart rebuilds them. It works best with PDFs created from Word or a similar program; scanned pages are recognized with OCR in the same step.",
   'conv.sheets': "Sheets",
   'conv.onePerPage': "One per page",
   'conv.allInOne': "All in one sheet",

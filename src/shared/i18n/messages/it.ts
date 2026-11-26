@@ -1031,7 +1031,7 @@ const it: Messages = {
   'conv.moveUp': "Sposta su",
   'conv.moveDown': "Sposta giù",
   'conv.imageFormat': "Formato immagine",
-  'conv.wordNote': "Un PDF non conserva paragrafi né tabelle: DocuSmart li ricostruisce. Funziona meglio con PDF creati da Word o un programma simile; quelli scansionati richiedono prima l'OCR.",
+  'conv.wordNote': "Un PDF non conserva paragrafi né tabelle: DocuSmart li ricostruisce. Funziona meglio con PDF creati da Word o un programma simile; le pagine scansionate vengono riconosciute con l'OCR nello stesso passaggio.",
   'conv.sheets': "Fogli",
   'conv.onePerPage': "Uno per pagina",
   'conv.allInOne': "Tutto in un foglio",

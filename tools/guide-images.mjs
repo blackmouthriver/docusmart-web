@@ -247,4 +247,83 @@ export const GUIDE_IMAGES = {
       alt: { es: 'Censurar PDF con el buscador y los botones Correos y Números; en el contrato quedan marcados los números de documento y el valor del canon.' },
     },
   ],
+  'pasar-un-pdf-escaneado-a-texto': [
+    {
+      section: 1,
+      after: 1,
+      shot: 'ocr-pdf/texto',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Texto reconocido de una constancia escaneada, renglón por renglón, con los botones Copiar, .txt y Word.' },
+    },
+  ],
+  'copiar-el-texto-de-una-foto': [
+    {
+      section: 0,
+      after: 1,
+      shot: 'imagen-a-texto/texto',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Imagen a texto con la foto constancia.jpg elegida, el idioma Español y debajo el texto reconocido en un recuadro que se puede corregir.' },
+    },
+  ],
+  'convertir-un-pdf-a-word-para-editarlo': [
+    {
+      section: 1,
+      after: 1,
+      shot: 'pdf-a-word/resultado',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Resultado de PDF a Word: a la izquierda el contrato en PDF y a la derecha la vista aproximada del documento de Word.' },
+    },
+  ],
+  'pasar-un-extracto-bancario-pdf-a-excel': [
+    {
+      section: 0,
+      after: 2,
+      shot: 'pdf-a-excel/resultado',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Resultado de PDF a Excel: a la izquierda el extracto en PDF y a la derecha la hoja de cálculo con las columnas Fecha, Descripción, Valor y Saldo, y el aviso de 13 filas con 17 números.' },
+    },
+  ],
+  'sacar-el-texto-de-un-pdf': [
+    {
+      section: 0,
+      after: 0,
+      shot: 'pdf-a-texto/texto',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'El texto extraído de un contrato en PDF, renglón por renglón, con el botón para copiarlo.' },
+    },
+  ],
+  'convertir-un-pdf-a-jpg-o-sacar-sus-imagenes': [
+    {
+      section: 1,
+      after: 2,
+      shot: 'pdf-a-jpg/resultado',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Resultado de PDF a JPG: a la izquierda el PDF de 3 páginas y a la derecha las imágenes pagina-1.png, pagina-2.png y pagina-3.png, que se guardan juntas en un ZIP.' },
+    },
+    {
+      section: 2,
+      after: 1,
+      shot: 'extraer-imagenes-pdf/imagenes',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Extraer imágenes con la foto encontrada en la página 1, de 1200×1600 en JPG, marcada para descargar.' },
+    },
+  ],
+  'convertir-un-pdf-a-pdfa-para-un-tramite': [
+    {
+      section: 2,
+      after: 0,
+      shot: 'pdf-a-pdfa/resultado',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Resultado de PDF a PDF/A: el contrato antes y después, con el aviso de que cumple PDF/A-2b y de que se incluyeron las fuentes que faltaban.' },
+    },
+  ],
+  'reparar-un-pdf-que-no-abre': [
+    {
+      section: 1,
+      after: 1,
+      shot: 'reparar-pdf/resultado',
+      // Guía solo en español por ahora (W-101): los demás idiomas se suman al traducirla.
+      alt: { es: 'Resultado de Reparar PDF: a la izquierda el original, que no abre, y a la derecha la copia reparada de 6 páginas, con el aviso de que se corrigieron problemas de estructura.' },
+    },
+  ],
 }

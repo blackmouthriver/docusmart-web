@@ -247,6 +247,14 @@
   700,
   1628
  ],
+ "es/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "es/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  596
+ ],
  "es/firmar-pdf/colocar-1280": [
   940,
   760
@@ -271,6 +279,14 @@
   700,
   1540
  ],
+ "es/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "es/imagen-a-texto/texto-390": [
+  700,
+  2190
+ ],
  "es/marca-de-agua-pdf/resultado-1280": [
   896,
   660
@@ -287,6 +303,14 @@
   612,
   1240
  ],
+ "es/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "es/ocr-pdf/texto-390": [
+  700,
+  1054
+ ],
  "es/ordenar-paginas-pdf/paginas-1280": [
   940,
   538
@@ -295,6 +319,46 @@
   700,
   1854
  ],
+ "es/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "es/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "es/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "es/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "es/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "es/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "es/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "es/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "es/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "es/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "es/proteger-pdf/clave-1280": [
   940,
   601
@@ -302,6 +366,14 @@
  "es/proteger-pdf/clave-390": [
   700,
   1368
+ ],
+ "es/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "es/reparar-pdf/resultado-390": [
+  612,
+  1520
  ],
  "es/rotar-pdf/paginas-1280": [
   940,

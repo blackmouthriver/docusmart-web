@@ -1031,7 +1031,7 @@ const ja: Messages = {
   'conv.moveUp': "上へ",
   'conv.moveDown': "下へ",
   'conv.imageFormat': "画像の形式",
-  'conv.wordNote': "PDFには段落や表の情報がないため、DocuSmartが組み立て直します。Wordなどで作ったPDFで最もよく機能します。スキャンしたものは先にOCRが必要です。",
+  'conv.wordNote': "PDFには段落や表の情報がないため、DocuSmartが組み立て直します。Wordなどで作ったPDFで最もよく機能します。スキャンしたページは同じ手順でOCRにより認識されます。",
   'conv.sheets': "シート",
   'conv.onePerPage': "ページごとに1枚",
   'conv.allInOne': "すべて1枚のシートに",

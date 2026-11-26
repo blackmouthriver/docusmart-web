@@ -1031,7 +1031,7 @@ const eu: Messages = {
   'conv.moveUp': "Igo",
   'conv.moveDown': "Jaitsi",
   'conv.imageFormat': "Irudi-formatua",
-  'conv.wordNote': "PDF batek ez ditu paragrafoak eta taulak gordetzen: DocuSmartek berreraikitzen ditu. Hobeto dabil Word-ekin edo antzeko programa batekin sortutako PDFekin; eskaneatuek OCR behar dute lehenik.",
+  'conv.wordNote': "PDF batek ez ditu paragrafoak eta taulak gordetzen: DocuSmartek berreraikitzen ditu. Hobeto dabil Word-ekin edo antzeko programa batekin sortutako PDFekin; orri eskaneatuak OCR bidez ezagutzen dira urrats berean.",
   'conv.sheets': "Orriak",
   'conv.onePerPage': "Bat orriko",
   'conv.allInOne': "Dena orri batean",

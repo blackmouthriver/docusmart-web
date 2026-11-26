@@ -982,7 +982,7 @@ export const pages = [
       'Descarga las imágenes: si son varias páginas, vienen juntas en un .zip.',
     ],
     faq: [
-      ['¿Qué resolución tienen las imágenes?', 'Cada página se exporta a 1600 píxeles de ancho, suficiente para leer, imprimir o publicar.'],
+      ['¿Qué resolución tienen las imágenes?', 'La eliges tú: 72 ppp (para ver en pantalla), 150 ppp (la de siempre, unos 1240 píxeles de ancho en una hoja A4) o 300 ppp (para imprimir). En JPG también eliges la calidad.'],
       ['¿JPG o PNG?', 'PNG conserva la calidad exacta y es mejor para texto; JPG pesa menos y es ideal para compartir.'],
       ['¿El PDF se sube a algún servidor?', 'No. Las páginas se dibujan y convierten dentro de tu navegador.'],
     ],
