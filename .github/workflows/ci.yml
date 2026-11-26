@@ -106,6 +106,45 @@ jobs:
             test-results
           retention-days: 7
 
+  # W-150.3: el motor de Safari (WebKit) en una Mac de verdad, para DocuSmart Desktop en macOS. Por ahora es
+  # informativo (no bloquea el PR) mientras se estabiliza; el reporte queda como artefacto.
+  safari:
+    name: Safari en Mac (WebKit, informativo)
+    if: github.event_name == 'pull_request'
+    runs-on: macos-latest
+    timeout-minutes: 45
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Navegador WebKit de Playwright
+        run: npx playwright install --with-deps webkit
+
+      - name: Pruebas de punta a punta en WebKit
+        run: npx playwright test --project safari
+        env:
+          WEBKIT: '1'
+
+      - name: Reporte de WebKit
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: safari-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
+
   deploy:
     name: Desplegar en Firebase Hosting
     needs: [build, secrets, e2e]
