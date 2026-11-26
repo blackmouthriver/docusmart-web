@@ -404,5 +404,488 @@ export default {
         ["Puis-je retirer le mot de passe du PDF de quelqu'un d'autre ?", "Seulement si vous connaissez le mot de passe. DocuSmart ne casse pas les mots de passe d'ouverture."],
       ],
     },
+    'dividir-pdf-en-varios-archivos': {
+      slug: 'diviser-pdf-en-plusieurs-fichiers',
+      title: 'Comment diviser un PDF en plusieurs fichiers ou en extraire des pages | DocuSmart',
+      description:
+        "Séparez un PDF par pages, par plages, toutes les N pages, par signets ou par taille, ou gardez seulement les pages utiles. Gratuit et sans envoyer le fichier.",
+      h1: 'Comment diviser un PDF en plusieurs fichiers ou en extraire quelques pages',
+      lead: "Un portail ne demande que la page signée, ou un PDF de 80 pages ne passe pas par e-mail. Voici comment découper un PDF en plusieurs parties, ou n'en garder que les pages utiles, depuis le navigateur.",
+      sections: [
+        {
+          h2: 'Six façons de diviser',
+          body: [
+            "Avant de commencer, mieux vaut savoir ce dont vous avez besoin, car [Diviser un PDF](/dividir-pdf) propose un mode pour chaque cas :",
+            { ul: [
+              "**Choisir les pages** : vous touchez les miniatures (ou tapez « 1-3, 5 ») et vous obtenez un PDF avec ces pages seulement.",
+              "**Par plages** : plusieurs plages à la fois, chacune devient un PDF distinct.",
+              "**Toutes les N pages** : des parties égales, par exemple de 10 pages en 10 pages.",
+              "**Par signets** : un PDF par chapitre, si le document contient des signets.",
+              "**Par taille** : des parties qui ne dépassent pas un poids donné, pour les e-mails ou les portails limités.",
+              "**Chaque page séparément** : un PDF par page.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Diviser un PDF](/dividir-pdf) et choisissez le fichier. Ses pages s'affichent en miniatures. Dans « Choisir les pages », touchez celles que vous voulez garder : elles se marquent en bleu et le champ du haut se remplit tout seul.",
+            "Touchez le bouton du bas. Une fois terminé, le résultat s'affiche à côté de l'original pour que vous puissiez le vérifier, puis vous le téléchargez sous le nom de votre choix. Si le mode crée plusieurs fichiers, vous les récupérez un par un ou tous ensemble dans un ZIP.",
+            { tip: "Pour prendre quelques pages dans plusieurs PDF et les réunir en un seul, [Fusionner des PDF](/unir-pdf) est plus rapide : vous pouvez y choisir les pages à garder dans chaque fichier." },
+          ],
+        },
+        {
+          h2: 'Si les parties restent trop lourdes',
+          body: [
+            "Diviser ne change pas la qualité : chaque page est copiée telle quelle. Si une partie dépasse encore la limite, utilisez le mode **Par taille** ou passez-la dans [Compresser un PDF](/comprimir-pdf). Une seule page scannée en haute résolution peut à elle seule dépasser la limite : dans ce cas, c'est la compression qui règle le problème.",
+          ],
+        },
+        {
+          h2: 'Cas fréquents',
+          body: [
+            { ul: [
+              "Un portail ne demande que votre pièce d'identité recto verso : choisissez ces deux pages et envoyez uniquement ce PDF.",
+              "Un relevé de toute l'année : s'il contient un signet par mois, utilisez **Par signets** ; sinon, **Toutes les N pages**.",
+              "Une messagerie limitée à 10 Mo : utilisez **Par taille**, indiquez 10 et chaque partie restera en dessous.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Votre document reste sur votre appareil',
+          body: [
+            "La division se fait dans votre navigateur : le PDF n'est envoyé sur aucun serveur. Vous pouvez donc l'utiliser pour des relevés bancaires, des dossiers médicaux ou des contrats sans en laisser de copie ailleurs.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Diviser un PDF', text: 'Allez sur docusmart.online/fr/diviser-pdf et choisissez le fichier.' },
+        { name: 'Choisissez le mode', text: 'Choisir les pages, par plages, toutes les N pages, par signets, par taille ou chaque page séparément.' },
+        { name: 'Marquez les pages', text: 'Touchez les miniatures ou tapez les numéros (par exemple 1-3, 5).' },
+        { name: 'Divisez et téléchargez', text: 'Touchez le bouton et téléchargez le résultat, ou tous les fichiers dans un ZIP.' },
+      ],
+      faq: [
+        ['Est-ce que je perds en qualité en divisant ?', "Non. Les pages sont copiées telles quelles, avec leur texte et leurs images d'origine."],
+        ['Puis-je diviser un PDF protégé par mot de passe ?', "S'il n'a que des restrictions (il s'ouvre sans mot de passe), oui. S'il demande un mot de passe à l'ouverture, retirez-le d'abord avec Déverrouiller un PDF."],
+        ['Que deviennent les signets ?', 'En mode Par signets, chaque chapitre du sommaire devient un PDF qui porte le nom du signet.'],
+      ],
+    },
+    'girar-paginas-de-un-pdf': {
+      slug: 'faire-pivoter-pages-pdf',
+      title: "Comment faire pivoter les pages d'un PDF et les enregistrer ainsi | DocuSmart",
+      description:
+        "Redressez les pages scannées de travers ou à l'envers : faites pivoter une page ou toutes, de 90° à gauche ou à droite, et enregistrez le PDF. Gratuit et sans envoi.",
+      h1: "Comment faire pivoter les pages d'un PDF (et qu'elles restent ainsi à l'enregistrement)",
+      lead: "C'est fréquent avec les scans : une feuille à l'italienne se retrouve couchée, ou une page sort à l'envers. La faire pivoter dans la visionneuse ne suffit pas : une fois envoyée, elle s'affiche de nouveau mal. Voici comment corriger le fichier lui-même.",
+      sections: [
+        {
+          h2: 'Pourquoi pivoter dans la visionneuse ne suffit pas',
+          body: [
+            "Les visionneuses PDF permettent de faire pivoter l'affichage, mais cette rotation n'est pas enregistrée dans le fichier : votre destinataire le verra de travers. Pour que ce soit définitif, il faut changer l'orientation de la page dans le PDF lui-même, et c'est ce que fait [Faire pivoter un PDF](/rotar-pdf).",
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Faire pivoter un PDF](/rotar-pdf) et choisissez le fichier. Chaque page s'affiche en miniature avec sa rotation actuelle en dessous (0°, 90°…). Touchez une page pour la faire pivoter de 90°, ou utilisez ses flèches pour la tourner vers la gauche ou vers la droite. Si tout le document est couché, utilisez « Toutes vers la gauche » ou « Toutes vers la droite ».",
+            "Quand toutes les pages sont droites, touchez « Faire pivoter le PDF » et téléchargez le résultat. Seule l'orientation change : le texte, les images et la qualité restent identiques.",
+            { tip: "Si en plus les pages sont dans le désordre (c'est courant avec un scan recto verso), continuez avec [Organiser les pages](/ordenar-paginas-pdf)." },
+          ],
+        },
+        {
+          h2: 'Les scans de travers',
+          body: [
+            "La rotation sert pour les feuilles couchées ou à l'envers, par pas de 90°. Si la photo est inclinée de quelques degrés, mieux vaut la scanner de nouveau avec [Scanner un document](/escanear-documento), qui repère les bords de la feuille et la redresse automatiquement.",
+          ],
+        },
+        {
+          h2: 'Cas fréquents',
+          body: [
+            "Avec un scan recto verso, il arrive souvent que le verso sorte à l'envers : touchez ces pages deux fois pour les faire pivoter de 180°. Dans un rapport avec des tableaux à l'horizontale, ne faites pivoter que ces pages pour les lire sans tourner la tête ; les autres restent telles quelles.",
+            "Si le PDF provient de photos prises avec le téléphone, vérifiez l'orientation au moment de le créer : [Image en PDF](/imagen-a-pdf) propose une orientation Automatique, Portrait ou Paysage, ce qui vous évite de faire pivoter les pages ensuite.",
+          ],
+        },
+        {
+          h2: 'Privé du début à la fin',
+          body: [
+            "Le PDF pivote dans votre navigateur. Il n'est envoyé sur aucun serveur et n'est enregistré nulle part : quand vous fermez l'onglet, il disparaît. Cela fonctionne de la même façon sur ordinateur et sur mobile, et une fois la page chargée, pas besoin d'un bon réseau.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Faire pivoter un PDF', text: 'Allez sur docusmart.online/fr/pivoter-pdf et choisissez le PDF.' },
+        { name: 'Faites pivoter les pages', text: 'Touchez chaque page couchée, ou utilisez Toutes vers la gauche ou Toutes vers la droite.' },
+        { name: 'Enregistrez', text: 'Touchez Faire pivoter le PDF et téléchargez le fichier remis droit.' },
+      ],
+      faq: [
+        ['Puis-je faire pivoter une seule page ?', 'Oui. Chaque page pivote séparément ; les autres restent comme elles étaient.'],
+        ['Est-ce que je perds en qualité ?', "Non. Seule l'orientation de la page change ; le contenu n'est pas recompressé."],
+        ['Ça fonctionne sur mobile ?', 'Oui, dans tout navigateur récent, sur Android comme sur iPhone.'],
+      ],
+    },
+    'ordenar-paginas-de-un-pdf': {
+      slug: 'changer-ordre-pages-pdf',
+      title: "Comment changer l'ordre des pages d'un PDF | DocuSmart",
+      description:
+        "Déplacez les pages d'un PDF en les faisant glisser, dupliquez-en une, ajoutez des pages blanches ou retirez celles en trop, puis enregistrez. Gratuit et sans envoi.",
+      h1: "Comment changer l'ordre des pages d'un PDF",
+      lead: "Un scan recto verso dont les pages sont mélangées, une annexe qui devait être au début ou une page en double : voici comment remettre un PDF en ordre, page par page.",
+      sections: [
+        {
+          h2: 'Ce que vous pouvez faire avec chaque page',
+          body: [
+            "Dans [Organiser les pages](/ordenar-paginas-pdf), chaque page est une carte, et vous pouvez :",
+            { ul: [
+              "**La déplacer** : en la faisant glisser à sa place, ou avec les flèches avant et après (plus pratique sur mobile).",
+              "**La dupliquer** : par exemple pour répéter une page de garde ou une page de signatures.",
+              "**Ajouter une page blanche** après elle, pour laisser de l'espace ou séparer des sections.",
+              "**La retirer** si elle est en trop.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Organiser les pages](/ordenar-paginas-pdf) et choisissez le PDF. Déplacez les pages jusqu'à obtenir l'ordre voulu : le numéro de chaque carte (« P. 2 », « P. 1 »…) vous rappelle sa place d'origine, pour ne pas vous perdre.",
+            "Quand l'ordre est bon, touchez « Appliquer le nouvel ordre » et téléchargez le PDF. Les pages sont copiées telles quelles : ni le texte ni la qualité ne changent.",
+            { tip: "Si les pages à remettre en ordre sont réparties dans plusieurs fichiers, fusionnez-les d'abord avec [Fusionner des PDF](/unir-pdf), puis organisez-les ici." },
+          ],
+        },
+        {
+          h2: 'Pour retirer des pages, mieux vaut diviser',
+          body: [
+            "Si vous voulez seulement garder quelques pages, [Diviser un PDF](/dividir-pdf) est plus rapide : vous cochez celles à garder et c'est fait. Organiser sert quand tout le document est conservé, mais dans un autre ordre.",
+          ],
+        },
+        {
+          h2: 'Cas fréquents',
+          body: [
+            "Avec un scanner qui ne gère pas le recto verso, toutes les faces avant sortent d'abord, puis toutes les faces arrière. Pour les intercaler, placez la dernière page après la première, l'avant-dernière après la troisième, et ainsi de suite : avec les flèches, ça va vite.",
+            { ul: [
+              "Une annexe qui devait être au début : placez-la avant la première page.",
+              "Une page de signatures qui doit figurer à deux endroits : dupliquez-la et placez la copie là où il faut.",
+              "Des chapitres qui doivent commencer sur une page impaire en impression recto verso : ajoutez une page blanche avant.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Sans envoyer vos fichiers',
+          body: [
+            "Le nouvel ordre est assemblé dans votre navigateur. Le document ne circule pas sur internet et aucune copie ne reste sur un serveur. Vous pouvez donc réorganiser en toute tranquillité des dossiers administratifs, des dossiers médicaux ou des documents de travail qui ne devraient pas quitter votre appareil.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Organiser les pages', text: 'Allez sur docusmart.online/fr/organiser-pages-pdf et choisissez le PDF.' },
+        { name: 'Déplacez les pages', text: 'Faites-les glisser ou utilisez les flèches ; dupliquez, ajoutez des pages blanches ou retirez celles en trop.' },
+        { name: 'Appliquez et téléchargez', text: 'Touchez Appliquer le nouvel ordre et téléchargez le PDF réorganisé.' },
+      ],
+      faq: [
+        ['Puis-je réorganiser depuis mon téléphone ?', "Oui. En plus du glisser-déposer, chaque page a des flèches pour la déplacer avant ou après, plus faciles à utiliser avec le doigt."],
+        ['Les liens et les formulaires sont-ils conservés ?', 'Les pages sont copiées avec leur contenu ; vérifiez le résultat si le document contient des formulaires complexes.'],
+        ['Y a-t-il une limite de pages ?', "Il n'y a pas de nombre fixe ; avec de très gros documents, l'affichage des miniatures peut prendre un peu plus de temps."],
+      ],
+    },
+    'numerar-paginas-de-un-pdf': {
+      slug: 'mettre-numeros-de-page-pdf',
+      title: 'Comment ajouter des numéros de page à un PDF | DocuSmart',
+      description:
+        "Numérotez les pages d'un PDF : position, format « 1 », « 1 / 10 » ou « Page 1 sur 10 », numéro de départ et page de garde sans numéro. Gratuit et sans envoi.",
+      h1: 'Comment ajouter des numéros de page à un PDF',
+      lead: "Un mémoire, un rapport ou un dossier se relit bien plus facilement avec des pages numérotées. Voici comment numéroter un PDF qui n'en a pas, dans le format qu'on vous demande.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Numéroter les pages](/numerar-paginas-pdf) et choisissez le PDF. Indiquez où placer le numéro (en haut ou en bas, à gauche, au centre ou à droite) et le format : « 1 », « 1 / 10 » ou « Page 1 sur 10 ».",
+            "Touchez « Numéroter les pages ». L'avant et l'après s'affichent côte à côte, page par page, pour vérifier que le numéro ne cache rien. Il ne reste plus qu'à télécharger.",
+          ],
+        },
+        {
+          h2: 'Des options pour les cas courants',
+          body: [
+            { ul: [
+              "**Sans numéro sur les premières** : indiquez 1 pour ne pas numéroter la page de garde, ou plus s'il y a un sommaire ou une dédicace.",
+              "**Commencer à** : pour que la numérotation suive celle d'un autre document, par exemple à partir de 25.",
+              "**Texte** personnalisé : tapez par exemple « Folio {n} » ou « {n} sur {total} » ; {n} est le numéro de la page et {total}, le dernier.",
+              "**Taille** et **Couleur** : petite, moyenne ou grande, et la couleur de votre choix.",
+            ] },
+            { tip: "Si le document est réparti dans plusieurs fichiers, réunissez-les d'abord avec [Fusionner des PDF](/unir-pdf) pour que la numérotation soit continue." },
+          ],
+        },
+        {
+          h2: 'Pour que le numéro ne cache pas le contenu',
+          body: [
+            "Beaucoup de documents ont déjà quelque chose en pied de page (un logo, une adresse). Si le numéro tombe dessus, changez-le de coin ou placez-le en haut : l'avant et l'après vous montrent chaque page avant le téléchargement, et vous passez de l'une à l'autre avec les flèches.",
+          ],
+        },
+        {
+          h2: 'Numérotez en dernier',
+          body: [
+            "Le numéro est dessiné sur chaque page. Si vous réorganisez ou ajoutez des pages ensuite, les numéros suivent leurs pages et ne se suivent plus. Mieux vaut donc numéroter à la fin : fusionnez, organisez et retirez d'abord ce qui est en trop, puis numérotez la version définitive.",
+            "Pour les dossiers destinés à une administration, où l'on parle de folios, tapez « Folio {n} » dans le texte. Et si le document prolonge la numérotation d'un autre, ajustez « Commencer à ».",
+          ],
+        },
+        {
+          h2: 'Tout se passe dans votre navigateur',
+          body: [
+            "La numérotation est ajoutée sur votre appareil : le PDF n'est envoyé sur aucun serveur. Le texte du document reste du texte : on peut le rechercher et le copier comme avant, et le numéro est lui aussi du texte, net à l'impression.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Numéroter les pages', text: 'Allez sur docusmart.online/fr/numeroter-pages-pdf et choisissez le PDF.' },
+        { name: 'Choisissez la position et le format', text: 'Par exemple, en bas à droite et « Page 1 sur 10 ».' },
+        { name: 'Ajustez si besoin', text: 'Page de garde sans numéro, numéro de départ, taille et couleur.' },
+        { name: 'Numérotez et téléchargez', text: "Vérifiez l'avant et l'après et téléchargez le PDF numéroté." },
+      ],
+      faq: [
+        ['Puis-je ne pas numéroter la page de garde ?', 'Oui. Dans « Sans numéro sur les premières », indiquez 1 (ou le nombre de pages à sauter).'],
+        ['Puis-je commencer à un autre numéro ?', 'Oui. Dans « Commencer à », indiquez le premier numéro, par exemple 25.'],
+        ['Peut-on écrire « Folio » avant le numéro ?', 'Oui. Dans le texte, tapez « Folio {n} » et chaque page affichera son numéro à la place de {n}.'],
+      ],
+    },
+    'poner-marca-de-agua-a-un-pdf': {
+      slug: 'ajouter-filigrane-pdf',
+      title: 'Comment ajouter un filigrane à un PDF (texte ou logo) | DocuSmart',
+      description:
+        "Ajoutez « CONFIDENTIEL », « COPIE » ou votre logo à un PDF : position, mosaïque, angle, taille, opacité et pages. Gratuit, dans le navigateur et sans envoi.",
+      h1: 'Comment ajouter un filigrane à un PDF (texte ou logo)',
+      lead: "Pour envoyer une proposition à l'état de brouillon, marquer une copie de votre pièce d'identité « Uniquement pour la démarche X » ou apposer votre logo sur un catalogue : voici comment ajouter un filigrane à un PDF.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Filigrane PDF](/marca-de-agua-pdf) et choisissez le PDF. Tapez le texte (« CONFIDENTIEL » est proposé en exemple) ou passez à « Image ou logo » pour utiliser le vôtre.",
+            "Touchez « Appliquer le filigrane » : l'avant et l'après s'affichent côte à côte. Pour changer quelque chose, ajustez et appliquez de nouveau ; quand le résultat vous plaît, téléchargez-le.",
+          ],
+        },
+        {
+          h2: 'Comment le régler',
+          body: [
+            { ul: [
+              "**Position** : au centre, dans un coin ou sur un bord, ou en **mosaïque** pour le répéter sur toute la page.",
+              "**Rotation** : 0°, 45°, 90° ou −45°. La diagonale est la plus classique et la plus difficile à rogner.",
+              "**Taille, opacité et couleur** : une opacité faible (20 %) laisse lire le document ; plus élevée, elle rend le filigrane plus visible.",
+              "**Au-dessus ou derrière le contenu** : derrière, il reste plus discret sur les documents chargés en texte.",
+              "**Pages** : toutes, ou seulement certaines (par exemple 1-3, 5).",
+            ] },
+          ],
+        },
+        {
+          h2: "Un filigrane pour les copies de documents",
+          body: [
+            "Si on vous demande une copie de votre pièce d'identité ou d'un relevé, ajoutez en mosaïque une mention comme « Uniquement pour le dossier de location, janvier 2026 ». Ainsi, si la copie atterrit ailleurs, on voit tout de suite à quoi elle était destinée.",
+            { tip: "Si vous voulez aussi qu'elle ne puisse pas être ouverte sans mot de passe, passez-la ensuite dans [Protéger un PDF](/proteger-pdf)." },
+          ],
+        },
+        {
+          h2: 'Idées de texte',
+          body: [
+            { ul: [
+              "« BROUILLON » pour les versions qui ne sont pas encore définitives.",
+              "« COPIE » ou « COPIE CONTRÔLÉE » pour les documents diffusés.",
+              "« Uniquement pour [démarche] — [date] » sur les copies de pièces d'identité.",
+              "« SPÉCIMEN » sur les catalogues, les modèles ou les travaux pas encore payés.",
+            ] },
+            "Pour que le filigrane se lise sans gêner la lecture, une opacité entre 15 % et 30 % fonctionne généralement bien. En mosaïque, une taille petite ou moyenne donne un rendu plus propre. Avant de télécharger, vérifiez plusieurs pages dans l'avant et l'après.",
+          ],
+        },
+        {
+          h2: 'Sans envoyer le document',
+          body: [
+            "Le filigrane est ajouté dans votre navigateur. Le PDF n'est envoyé sur aucun serveur, ce qui compte justement pour les documents qu'on filigrane : copies de pièces d'identité, propositions commerciales ou documents internes.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Filigrane PDF', text: 'Allez sur docusmart.online/fr/filigrane-pdf et choisissez le PDF.' },
+        { name: 'Tapez le texte ou choisissez votre logo', text: 'Par exemple « CONFIDENTIEL » ou « COPIE ».' },
+        { name: 'Réglez la position et le style', text: 'Centre ou mosaïque, angle, taille, opacité, couleur et pages.' },
+        { name: 'Appliquez et téléchargez', text: "Vérifiez l'avant et l'après et téléchargez le PDF." },
+      ],
+      faq: [
+        ['Puis-je utiliser mon logo ?', 'Oui. Choisissez « Image ou logo » et ajoutez une image ; un PNG à fond transparent donne le meilleur résultat.'],
+        ['Peut-on le retirer ensuite ?', "Il est dessiné dans le PDF. Gardez l'original sans filigrane au cas où vous en auriez de nouveau besoin."],
+        ['Puis-je le mettre sur certaines pages seulement ?', 'Oui. Dans « Pages », indiquez lesquelles, par exemple 1-3, 5.'],
+      ],
+    },
+    'editar-un-pdf-sin-programas': {
+      slug: 'modifier-pdf-sans-logiciel',
+      title: 'Comment modifier un PDF sans installer de logiciel | DocuSmart',
+      description:
+        "Ajoutez ou remplacez du texte, surlignez, masquez, dessinez, ajoutez des flèches, des images et des liens dans un PDF depuis le navigateur, sans installation ni envoi.",
+      h1: 'Comment modifier un PDF sans installer de logiciel',
+      lead: "Corriger une date, compléter une information oubliée, surligner une clause ou barrer quelque chose : pas besoin d'un logiciel payant pour ça. Voici comment modifier un PDF dans le navigateur.",
+      sections: [
+        {
+          h2: "Les outils de l'éditeur",
+          body: [
+            "Au-dessus de la page, une barre regroupe tout ce que vous pouvez ajouter dans [Modifier un PDF](/editar-pdf) :",
+            { ul: [
+              "**Texte** : vous touchez la page là où vous voulez écrire et tapez dans le cadre du bas ; vous choisissez la police, la taille, le gras et la couleur.",
+              "**Remplacer** : vous touchez un texte déjà présent dans le PDF et le modifiez ; l'original est supprimé du document, pas seulement caché.",
+              "**Rectangle, Cercle, Surligner et Masquer** : pour encadrer, souligner ou recouvrir de blanc.",
+              "**Dessiner, Ligne et Flèche** : pour signaler un passage ou annoter à main levée.",
+              "**Image et Lien** : pour coller un tampon ou un logo, ou créer un lien vers un site web ou une autre page du PDF.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Modifier un PDF](/editar-pdf) et choisissez le fichier. Choisissez « Texte » dans la barre et touchez la page à l'endroit voulu : un cadre déplaçable apparaît, et vous tapez dans le panneau du bas. Avec « Sélectionner », touchez n'importe quel élément pour le déplacer, le redimensionner ou le retirer.",
+            "En cas d'erreur, utilisez « Annuler ». Quand vous avez fini, touchez « Appliquer les modifications » et téléchargez le PDF modifié.",
+            { tip: "Le texte accepte tous les alphabets (latin, cyrillique, grec, chinois, japonais ou coréen). Les emojis ne sont pas enregistrés dans le PDF." },
+          ],
+        },
+        {
+          h2: 'Pour signer ou remplir un formulaire, il existe des outils dédiés',
+          body: [
+            "Si vous devez signer, [Signer un PDF](/firmar-pdf) vous permet de dessiner, taper ou importer votre signature et de la placer au bon endroit. Et si le PDF contient des champs à remplir, [Remplir un formulaire PDF](/llenar-formulario-pdf) les présente un par un, plus pratique que d'écrire par-dessus.",
+          ],
+        },
+        {
+          h2: 'Conseils pour une modification invisible',
+          body: [
+            "Pour corriger un texte déjà présent dans le document, utilisez **Remplacer** : l'original est effacé et le nouveau prend sa place. Si vous vous contentez de le recouvrir d'un cadre blanc, l'ancien texte reste dans le fichier.",
+            "Choisissez la police la plus proche de celle du document (Sans, Serif ou Mono) et ajustez la taille jusqu'à ce qu'elle corresponde. Sur mobile, déplacez les éléments sans vous presser : vous pouvez aussi changer leur position au clavier avec les flèches.",
+          ],
+        },
+        {
+          h2: 'Votre fichier reste chez vous',
+          body: [
+            "Tout l'éditeur fonctionne dans votre navigateur : le PDF n'est envoyé sur aucun serveur, ni pendant la modification ni à l'enregistrement.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Modifier un PDF', text: 'Allez sur docusmart.online/fr/modifier-pdf et choisissez le fichier.' },
+        { name: 'Choisissez quoi ajouter', text: 'Texte, remplacement, formes, surlignage, dessin, flèches, image ou lien.' },
+        { name: 'Placez-le sur la page', text: 'Touchez la page, tapez ou dessinez, puis déplacez-le avec Sélectionner.' },
+        { name: 'Appliquez et téléchargez', text: 'Touchez Appliquer les modifications et téléchargez le PDF modifié.' },
+      ],
+      faq: [
+        ['Puis-je changer un texte déjà présent dans le PDF ?', "Oui, avec « Remplacer » : vous touchez le texte, tapez le nouveau, et l'original est supprimé du document."],
+        ['Ça fonctionne avec des PDF scannés ?', "Vous pouvez ajouter du texte, des formes et des dessins par-dessus. Pour remplacer du texte, le PDF doit contenir du vrai texte ; si c'est une photo, passez-le d'abord par l'OCR."],
+        ["Faut-il installer quelque chose ?", "Non. Ça fonctionne dans le navigateur de l'ordinateur ou du téléphone."],
+      ],
+    },
+    'comparar-dos-versiones-de-un-pdf': {
+      slug: 'comparer-deux-versions-pdf',
+      title: "Comment comparer deux versions d'un PDF et voir ce qui a changé | DocuSmart",
+      description:
+        "Comparez deux PDF pour voir les mots ajoutés ou supprimés, ou page par page pour repérer les changements d'images et de mise en page. Gratuit et sans envoi.",
+      h1: "Comment comparer deux versions d'un PDF et voir ce qui a changé",
+      lead: "On vous renvoie un contrat « avec quelques ajustements » sans préciser lesquels. Le relire deux fois à la recherche des différences prend du temps, et des choses vous échappent. Voici comment comparer deux versions en quelques secondes.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Comparer des PDF](/comparar-pdf). Choisissez d'abord l'**Original**, puis la **Nouvelle version**. Si vous les avez inversés, le bouton « Inverser » les remet à leur place.",
+            "Touchez « Comparer ». En haut, vous voyez combien de mots ont été ajoutés et combien ont été supprimés, et en dessous chaque changement avec sa page : ce qui a été supprimé est barré en rouge et ce qui a été ajouté apparaît en vert, avec quelques lignes de contexte pour le situer.",
+          ],
+        },
+        {
+          h2: 'Texte ou visuel',
+          body: [
+            { ul: [
+              "**Texte** : compare les mots. C'est l'idéal pour les contrats, les courriers et les rapports. Vous pouvez ignorer la casse et la ponctuation pour qu'elles ne comptent pas comme des changements.",
+              "**Visuel (page par page)** : compare l'apparence de chaque page. Utile pour les plans, les maquettes ou les documents scannés, où les changements peuvent porter sur des images ou des tableaux et pas seulement sur le texte.",
+            ] },
+            { tip: "Dans un contrat, regardez surtout les changements de montants, de dates et de noms : la comparaison les signale même s'il ne s'agit que d'un seul chiffre." },
+          ],
+        },
+        {
+          h2: 'Après la comparaison',
+          body: [
+            "Si vous avez trouvé quelque chose à corriger, vous pouvez le faire avec [Modifier un PDF](/editar-pdf). Et quand les deux parties sont d'accord, signez la version finale avec [Signer un PDF](/firmar-pdf).",
+          ],
+        },
+        {
+          h2: "Ce qu'elle montre et ce qu'elle ne montre pas",
+          body: [
+            "Chaque changement s'affiche avec son numéro de page et les lignes qui l'entourent, pour le retrouver vite dans le document. Si un paragraphe entier a été déplacé sans être modifié, il est indiqué comme déplacé au lieu d'être compté comme supprimé puis ajouté.",
+            "Si les deux fichiers n'ont presque rien en commun (par exemple parce que vous vous êtes trompé de document), l'outil vous prévient au lieu d'afficher des centaines de changements. Et s'ils sont identiques, il vous le dit aussi, même quand ils n'ont pas le même nombre de pages.",
+            "C'est utile pour les contrats, les devis, les règlements, les propositions qui passent entre plusieurs mains ou le mémoire qui revient avec les corrections du directeur : dans tous ces cas, savoir exactement ce qui a changé évite une relecture complète.",
+          ],
+        },
+        {
+          h2: "Vos documents ne sont pas envoyés",
+          body: [
+            "Les deux PDF sont comparés dans votre navigateur : aucun n'est envoyé sur un serveur. Vous pouvez l'utiliser sereinement avec des contrats et des documents confidentiels, car aucune des deux versions n'est conservée ailleurs.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Comparer des PDF', text: 'Allez sur docusmart.online/fr/comparer-pdf.' },
+        { name: 'Choisissez les deux fichiers', text: "D'abord l'original, puis la nouvelle version." },
+        { name: 'Choisissez le mode de comparaison', text: 'Texte (les mots) ou Visuel (page par page).' },
+        { name: 'Vérifiez les changements', text: "Ce qui a été supprimé est barré en rouge et ce qui a été ajouté apparaît en vert, avec sa page." },
+      ],
+      faq: [
+        ['Peut-on comparer des PDF scannés ?', "En mode Visuel, oui, car il compare l'apparence de chaque page. Le mode Texte nécessite un PDF contenant du vrai texte."],
+        ["L'ordre des fichiers a-t-il de l'importance ?", "Oui : ce qui figure dans la nouvelle version mais pas dans l'original apparaît comme ajouté. En cas d'erreur, utilisez Inverser."],
+        ['Peut-on ignorer une majuscule ou une virgule modifiée ?', 'Oui. Cochez « Ignorer la casse » ou « Ignorer la ponctuation ».'],
+      ],
+    },
+    'tapar-datos-personales-en-un-pdf': {
+      slug: 'masquer-donnees-personnelles-pdf',
+      title: 'Comment masquer des données personnelles dans un PDF (pour de bon) | DocuSmart',
+      description:
+        "Caviardez numéros d'identité, comptes, e-mails ou noms dans un PDF : recherchez-les, marquez-les sur toutes les pages et ils sont supprimés du fichier, pas juste cachés.",
+      h1: 'Comment masquer des données personnelles dans un PDF (pour de bon)',
+      lead: "Avant de partager un relevé, un contrat ou un dossier médical, il faut souvent cacher des numéros de compte ou de pièce d'identité. Poser un rectangle noir par-dessus ne suffit pas : voici comment bien faire.",
+      sections: [
+        {
+          h2: 'Pourquoi un rectangle noir ne suffit pas',
+          body: [
+            "Si vous placez un rectangle noir sur un numéro dans un éditeur classique, le numéro reste dans le fichier : il suffit de le sélectionner et de le copier, ou d'ouvrir le PDF avec un autre logiciel, pour le lire. Caviarder pour de bon, c'est **supprimer** ce qui se trouve dessous, et c'est ce que fait [Caviarder un PDF](/censurar-pdf).",
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Caviarder un PDF](/censurar-pdf) et choisissez le fichier. Recherchez un nom, un numéro ou un mot : il est marqué sur toutes les pages à la fois. Vous pouvez aussi marquer d'un coup tous les **E-mails** ou tous les **Numéros** (pièces d'identité, téléphones, comptes), ou faire glisser le doigt sur la page pour masquer une zone à la main.",
+            "Vérifiez chaque page : en touchant une zone, vous pouvez la déplacer ou la retirer. Quand tout est prêt, touchez « Caviarder le PDF » et téléchargez le résultat.",
+            { tip: "Les pages qui contiennent des zones marquées sont converties en image pour que ce qui est masqué disparaisse du fichier. Le reste du texte de ces pages peut toujours être recherché et copié." },
+          ],
+        },
+        {
+          h2: 'Vérifiez avant d’envoyer',
+          body: [
+            "La recherche trouve ce qui est écrit sous forme de texte. Si une partie du document est une photo ou un scan, les données qui s'y trouvent n'apparaissent pas dans la recherche : marquez-les à la main en faisant glisser le doigt sur la page. Et gardez l'original de côté, car ce qui est caviardé ne peut pas être récupéré.",
+            "Si le document doit rester entre d'autres mains, vous pouvez aussi lui ajouter un mot de passe avec [Protéger un PDF](/proteger-pdf) ou un [filigrane](/marca-de-agua-pdf) qui indique à quoi il était destiné.",
+          ],
+        },
+        {
+          h2: "Ce qu'il faut souvent masquer",
+          body: [
+            { ul: [
+              "Les numéros de pièce d'identité et de comptes bancaires.",
+              "Les adresses, numéros de téléphone et e-mails.",
+              "Les signatures et les photos d'identité.",
+              "Les données de santé, les salaires ou les informations concernant des tiers.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Sans envoyer le document',
+          body: [
+            "Tout se passe dans votre navigateur : le document avec les données visibles ne quitte jamais votre appareil. C'est précisément ce qu'il faut pour caviarder : si vous envoyiez l'original à un service en ligne pour le masquer, les données seraient déjà sorties de vos mains.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Caviarder un PDF', text: 'Allez sur docusmart.online/fr/caviarder-pdf et choisissez le fichier.' },
+        { name: 'Marquez ce qui doit être caché', text: 'Recherchez un texte, marquez tous les e-mails ou numéros, ou faites glisser le doigt sur la page.' },
+        { name: 'Vérifiez chaque page', text: 'Touchez une zone pour la déplacer ou la retirer.' },
+        { name: 'Caviardez et téléchargez', text: 'Touchez Caviarder le PDF : ce qui est masqué est supprimé du fichier.' },
+      ],
+      faq: [
+        ['Peut-on récupérer ce qui a été caviardé ?', "Non. Ce que vous masquez est supprimé du fichier ; c'est pourquoi il vaut mieux garder l'original de côté."],
+        ['Ça fonctionne avec des PDF scannés ?', 'Oui, en marquant les zones à la main. La recherche automatique ne trouve que ce qui est écrit sous forme de texte.'],
+        ['Peut-on toujours faire des recherches dans le reste du document ?', 'Oui. Seules les pages contenant des zones marquées sont converties en image, et le reste de leur texte est conservé pour la recherche et la copie.'],
+      ],
+    },
   },
 }

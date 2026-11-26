@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Comp
 import { go, useApp } from '../../../app/state'
 import { Icon, type IconName } from '../../../shared/ui/Icon'
 import { BackButton, BusyButton, DropZone, FileRow, HeroCard, Notice, Segmented, errorMessage } from '../../../shared/ui/ui'
-import { baseName, chunkPages, moveItem, parsePageRanges, parseRangeGroups } from '../../../shared/files/files'
+import { baseName, chunkPages, formatPageRanges, moveItem, parsePageRanges, parseRangeGroups } from '../../../shared/files/files'
 import { closePdf, openPdf, renderPage } from '../../../shared/pdf/pdf'
 import { bookmarkGroups, composePages, extractPages, fileSafe, mergePdfs, numberPages, pageCount, rotate, splitBySize, splitEach, splitGroups, topBookmarks, watermarkPdf, NUMBER_POSITIONS, DEFAULT_NUMBER_OPTIONS, type BookmarkGroup, type NumberPosition, type Sheet } from '../core/pdfTools'
 import { useSortable } from '../../../shared/ui/useSortable'
@@ -517,13 +517,19 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
     )
   }
 
-  const toggle = (i: number) =>
-    setSelected((s) => {
-      const n = new Set(s)
-      if (n.has(i)) n.delete(i)
-      else n.add(i)
-      return n
-    })
+  // Miniaturas y campo de páginas van juntos: tocar una miniatura escribe el rango ("2-3, 5") y
+  // escribir un rango marca sus miniaturas.
+  const toggle = (i: number) => {
+    const n = new Set(selected)
+    if (n.has(i)) n.delete(i)
+    else n.add(i)
+    setSelected(n)
+    setRange(formatPageRanges([...n]))
+  }
+  const typeRange = (text: string) => {
+    setRange(text)
+    setSelected(new Set(parsePageRanges(text, count) ?? []))
+  }
   const turn = (pageIdx: number, by: number) => setRotations((r) => r.map((v, i) => (i === pageIdx ? v + by : v)))
   const templates = ['{n}', '{n} / {total}', tr('number.tplPage')]
 
@@ -567,7 +573,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
           {splitMode === 'range' && (
             <label className="field">
               <span>{tr('single.rangeLabel')}</span>
-              <input className="input" value={range} placeholder="1-3, 5, 8-" onChange={(e) => setRange(e.target.value)} />
+              <input className="input" value={range} placeholder="1-3, 5, 8-" onChange={(e) => typeRange(e.target.value)} />
               {range.trim() && !ranges && <small style={{ color: 'var(--danger)' }}>{tr('single.rangeBad', { n: count })}</small>}
             </label>
           )}
@@ -673,7 +679,7 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
         <div className="thumbs">
           {Array.from({ length: count }, (_, pageIdx) =>
             toolId === 'dividir' ? (
-              <button key={pageIdx} type="button" className="thumb" aria-pressed={selected.has(pageIdx)} aria-label={tr('single.pageAlt', { n: pageIdx + 1 })} onClick={() => { setRange(''); toggle(pageIdx) }}>
+              <button key={pageIdx} type="button" className="thumb" aria-pressed={selected.has(pageIdx)} aria-label={tr('single.pageAlt', { n: pageIdx + 1 })} onClick={() => toggle(pageIdx)}>
                 <LazyThumb page={pageIdx} src={thumbs[pageIdx]} request={request} />
                 <span aria-hidden="true">{pageIdx + 1}</span>
               </button>

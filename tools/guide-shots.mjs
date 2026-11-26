@@ -264,8 +264,9 @@ export const SHOTS = [
         run: async ({ host, files }) => {
           await upload(host, [pdf('contrato.pdf', files.contract[0])])
           await host.locator('img').first().waitFor()
-          // "Números (cédulas, teléfonos, cuentas)": el segundo botón de marcado rápido.
-          await host.locator('button.btn-sm').filter({ hasText: '(' }).first().click()
+          // "Números (cédulas, teléfonos, cuentas)": el segundo botón de marcado rápido (en japonés y chino
+          // el paréntesis es de ancho completo).
+          await host.locator('button.btn-sm').filter({ hasText: /[(（]/ }).first().click()
           await host.page().waitForTimeout(1500)
         },
         maxHeight: { escritorio: 640, movil: 900 },

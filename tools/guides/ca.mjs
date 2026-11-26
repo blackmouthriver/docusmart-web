@@ -404,5 +404,488 @@ export default {
         ["Puc treure la contrasenya a un PDF d'una altra persona?", "Només si en coneixes la contrasenya. DocuSmart no trenca contrasenyes d'obertura."],
       ],
     },
+    'dividir-pdf-en-varios-archivos': {
+      slug: 'dividir-pdf-en-diversos-fitxers',
+      title: "Com dividir un PDF en diversos fitxers o extreure'n pàgines | DocuSmart",
+      description:
+        "Separa un PDF per pàgines, per intervals, cada N pàgines, per marcadors o per mida, o extreu només les pàgines que necessites. De franc i sense pujar el fitxer.",
+      h1: "Com dividir un PDF en diversos fitxers o extreure'n només unes pàgines",
+      lead: "Un portal només demana la pàgina de la signatura, o un PDF de 80 pàgines no cap al correu. Així se separa un PDF en parts, o se n'extreuen les pàgines justes, des del navegador.",
+      sections: [
+        {
+          h2: "Sis maneres de dividir",
+          body: [
+            "Abans de començar convé saber què necessites, perquè [Dividir PDF](/dividir-pdf) té un mode per a cada cas:",
+            { ul: [
+              "**Tria pàgines**: toques les miniatures (o escrius «1-3, 5») i en surt un PDF només amb aquestes pàgines.",
+              "**Per intervals**: diversos intervals alhora, i cadascun surt com un PDF a part.",
+              "**Cada N pàgines**: parts iguals, per exemple de 10 en 10.",
+              "**Per marcadors**: un PDF per cada capítol, si el document té índex de marcadors.",
+              "**Per mida**: parts que no passen d'un pes determinat, per a correus o portals amb límit.",
+              "**Cada pàgina per separat**: un PDF per pàgina.",
+            ] },
+          ],
+        },
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Dividir PDF](/dividir-pdf) i tria el fitxer. Veuràs les pàgines en miniatura. A «Tria pàgines», toca les que vols endur-te: queden marcades en blau i el camp de dalt s'omple sol.",
+            "Toca el botó de baix. En acabar veuràs el resultat al costat de l'original per revisar-lo, i el baixes amb el nom que vulguis. Si el mode genera diversos fitxers, els tens un per un o tots junts en un ZIP.",
+            { tip: "Per treure pàgines soltes de diversos PDF i ajuntar-les en un de sol, és més ràpid [Unir PDF](/unir-pdf): allà pots triar quines pàgines agafes de cada fitxer." },
+          ],
+        },
+        {
+          h2: "Si les parts encara pesen massa",
+          body: [
+            "Dividir no canvia la qualitat: cada pàgina es copia tal com és. Si una part continua passant del límit, fes servir el mode **Per mida** o passa-la per [Comprimir PDF](/comprimir-pdf). Una sola pàgina escanejada a molta resolució pot pesar més que el límit per si sola: en aquest cas, el que funciona és comprimir-la.",
+          ],
+        },
+        {
+          h2: "Casos habituals",
+          body: [
+            { ul: [
+              "Un portal només demana el teu DNI per les dues cares: tria aquestes dues pàgines i puja només aquest PDF.",
+              "Un extracte de tot l'any: si té marcadors per mes, fes servir **Per marcadors**; si no, **Cada N pàgines**.",
+              "Un correu amb límit de 10 MB: fes servir **Per mida**, posa-hi 10 i cada part queda per sota.",
+            ] },
+          ],
+        },
+        {
+          h2: "El teu document no surt de l'equip",
+          body: [
+            "La divisió es fa al teu navegador: el PDF no es puja a cap servidor. Per això la pots fer servir amb extractes, historials clínics o contractes sense deixar-ne còpies enlloc.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Dividir PDF", text: "Obre l'eina Dividir PDF de docusmart.online i tria el fitxer." },
+        { name: "Tria el mode", text: "Tria pàgines, per intervals, cada N pàgines, per marcadors, per mida o cada pàgina per separat." },
+        { name: "Marca les pàgines", text: "Toca les miniatures o escriu els números (per exemple, 1-3, 5)." },
+        { name: "Divideix i baixa", text: "Toca el botó i baixa el resultat, o tots els fitxers en un ZIP." },
+      ],
+      faq: [
+        ["Es perd qualitat en dividir?", "No. Les pàgines es copien tal com són, amb el text i les imatges originals."],
+        ["Puc dividir un PDF amb contrasenya?", "Si només té restriccions (s'obre sense contrasenya), sí. Si demana contrasenya per obrir-se, treu-la primer amb Desbloquejar PDF."],
+        ["Què passa amb els marcadors?", "En el mode Per marcadors, cada capítol de l'índex surt com un PDF amb el nom del marcador."],
+      ],
+    },
+    'girar-paginas-de-un-pdf': {
+      slug: 'girar-pagines-pdf',
+      title: "Com girar les pàgines d'un PDF i desar-les així | DocuSmart",
+      description:
+        "Redreça les pàgines escanejades de costat o del revés: gira'n una o totes, 90° a l'esquerra o a la dreta, i desa el PDF ja dret. De franc i sense pujar-lo.",
+      h1: "Com girar les pàgines d'un PDF (i que quedin així en desar-lo)",
+      lead: "Passa molt amb els escanejos: un full horitzontal ha quedat de costat, o una pàgina ha sortit del revés. Girar-la al visor no serveix, perquè quan l'envies es torna a veure malament. Així es corregeix al fitxer.",
+      sections: [
+        {
+          h2: "Per què no n'hi ha prou de girar-lo al visor",
+          body: [
+            "Els visors de PDF permeten girar la vista, però aquest gir no es desa al fitxer: qui el rebi el tornarà a veure tort. Perquè quedi bé cal canviar l'orientació de la pàgina al mateix PDF, que és el que fa [Girar PDF](/rotar-pdf).",
+          ],
+        },
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Girar PDF](/rotar-pdf) i tria el fitxer. Cada pàgina apareix en miniatura amb el gir actual a sota (0°, 90°…). Toca una pàgina per girar-la 90°, o fes servir les fletxes de cadascuna per anar a l'esquerra o a la dreta. Si tot el document està de costat, fes servir «Totes a l'esquerra» o «Totes a la dreta».",
+            "Quan totes es vegin dretes, toca «Gira el PDF» i baixa el resultat. Només canvia l'orientació: el text, les imatges i la qualitat queden igual.",
+            { tip: "Si a més les pàgines han quedat desordenades (passa en escanejar per les dues cares), continua amb [Ordenar pàgines](/ordenar-paginas-pdf)." },
+          ],
+        },
+        {
+          h2: "Escanejos que surten torts",
+          body: [
+            "Girar serveix per a fulls de costat o del revés, en salts de 90°. Si la foto ha quedat inclinada uns quants graus, val més tornar-la a escanejar amb [Escanejar document](/escanear-documento), que detecta les vores del full i el redreça sol.",
+          ],
+        },
+        {
+          h2: "Casos habituals",
+          body: [
+            "En escanejar a doble cara és habitual que el revers surti del revés: toca aquestes pàgines dues vegades per girar-les 180°. En un informe amb taules horitzontals, gira només aquestes pàgines perquè es puguin llegir sense girar el cap; les altres queden com estan.",
+            "Si el PDF ve de fotos del mòbil, revisa l'orientació en crear-lo: [Imatge a PDF](/imagen-a-pdf) té orientació automàtica, vertical o horitzontal, i així no l'hauràs de girar després.",
+          ],
+        },
+        {
+          h2: "Privat de principi a fi",
+          body: [
+            "El PDF es gira dins del teu navegador. No es puja a cap servidor i no queda desat enlloc: quan tanques la pestanya, desapareix. Funciona igual a l'ordinador i al mòbil, i un cop carregada la pàgina no necessita bona cobertura.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Girar PDF", text: "Obre l'eina Girar PDF de docusmart.online i tria el PDF." },
+        { name: "Gira les pàgines", text: "Toca cada pàgina que estigui de costat, o fes servir Totes a l'esquerra o Totes a la dreta." },
+        { name: "Desa", text: "Toca Gira el PDF i baixa el fitxer ja dret." },
+      ],
+      faq: [
+        ["Puc girar només una pàgina?", "Sí. Cada pàgina es gira per separat; les altres queden com estaven."],
+        ["Es perd qualitat?", "No. Només canvia l'orientació de la pàgina; el contingut no es torna a comprimir."],
+        ["Funciona al mòbil?", "Sí, en qualsevol navegador modern, a Android i a iPhone."],
+      ],
+    },
+    'ordenar-paginas-de-un-pdf': {
+      slug: 'canviar-ordre-pagines-pdf',
+      title: "Com canviar l'ordre de les pàgines d'un PDF | DocuSmart",
+      description:
+        "Mou les pàgines d'un PDF arrossegant-les, duplica'n una, afegeix-hi pàgines en blanc o treu les que sobren, i desa el nou ordre. De franc i sense pujar el fitxer.",
+      h1: "Com canviar l'ordre de les pàgines d'un PDF",
+      lead: "Un escaneig a doble cara que ha sortit intercalat, un annex que havia d'anar al principi o una pàgina repetida: així s'ordena un PDF pàgina per pàgina.",
+      sections: [
+        {
+          h2: "Què pots fer amb cada pàgina",
+          body: [
+            "A [Ordenar pàgines](/ordenar-paginas-pdf) cada pàgina és una targeta, i amb ella pots:",
+            { ul: [
+              "**Moure-la**: arrossegant-la al seu lloc, o amb les fletxes d'abans i després (més còmode al mòbil).",
+              "**Duplicar-la**: per exemple, per repetir una portada o un full de signatures.",
+              "**Afegir una pàgina en blanc** al darrere, per deixar espai o separar seccions.",
+              "**Treure-la** si sobra.",
+            ] },
+          ],
+        },
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Ordenar pàgines](/ordenar-paginas-pdf) i tria el PDF. Mou les pàgines fins a deixar-les com les necessites: el número de cada targeta («Pàg. 2», «Pàg. 1»…) et recorda d'on venia, i així no et perds.",
+            "Quan l'ordre sigui correcte, toca «Aplica el nou ordre» i baixa el PDF. Les pàgines es copien tal com són: no canvia ni el text ni la qualitat.",
+            { tip: "Si les pàgines que vols ordenar són en diversos fitxers, primer uneix-los amb [Unir PDF](/unir-pdf) i després ordena'ls aquí." },
+          ],
+        },
+        {
+          h2: "Per treure pàgines, millor dividir",
+          body: [
+            "Si el que vols és quedar-te només amb algunes pàgines, [Dividir PDF](/dividir-pdf) és més ràpid: marques les que t'endús i llestos. Ordenar serveix quan el document sencer es queda, però en un altre ordre.",
+          ],
+        },
+        {
+          h2: "Casos habituals",
+          body: [
+            "En escanejar a doble cara amb un aparell que no ho fa sol, primer surten totes les cares de davant i després les de darrere. Per intercalar-les, mou l'última pàgina darrere de la primera, la penúltima darrere de la tercera i així fins al final: amb les fletxes es fa de pressa.",
+            { ul: [
+              "Un annex que havia d'anar al principi: mou-lo abans de la primera pàgina.",
+              "Un full de signatures que va en dos llocs: duplica'l i porta la còpia on calgui.",
+              "Capítols que han de començar en pàgina senar en imprimir a doble cara: afegeix-hi una pàgina en blanc al davant.",
+            ] },
+          ],
+        },
+        {
+          h2: "Sense pujar els teus fitxers",
+          body: [
+            "El nou ordre es munta al teu navegador. El document no viatja per internet ni en queda cap còpia en cap servidor. Per això pots ordenar amb tranquil·litat expedients, historials clínics o documents de feina que no haurien de sortir del teu equip.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Ordenar pàgines", text: "Obre l'eina Ordenar pàgines de docusmart.online i tria el PDF." },
+        { name: "Mou les pàgines", text: "Arrossega-les o fes servir les fletxes; duplica, afegeix pàgines en blanc o treu les que sobren." },
+        { name: "Aplica i baixa", text: "Toca Aplica el nou ordre i baixa el PDF ordenat." },
+      ],
+      faq: [
+        ["Puc ordenar des del mòbil?", "Sí. A més d'arrossegar, cada pàgina té fletxes per moure-la abans o després, que són més fàcils amb el dit."],
+        ["Es mantenen els enllaços i els formularis?", "Les pàgines es copien amb el seu contingut; revisa el resultat si el document té formularis complexos."],
+        ["Hi ha un límit de pàgines?", "No hi ha un nombre fix; amb documents molt grans pot trigar una mica més a mostrar les miniatures."],
+      ],
+    },
+    'numerar-paginas-de-un-pdf': {
+      slug: 'posar-numeros-pagina-pdf',
+      title: "Com posar números de pàgina a un PDF | DocuSmart",
+      description:
+        "Afegeix números de pàgina a un PDF: posició, format «1», «1 / 10» o «Pàgina 1 de 10», número inicial i portada sense número. De franc i sense pujar-lo.",
+      h1: "Com posar números de pàgina a un PDF",
+      lead: "Una tesi, un informe o un expedient es revisen molt millor amb les pàgines numerades. Així es numera un PDF que no té números, amb el format que et demanin.",
+      sections: [
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Numerar pàgines](/numerar-paginas-pdf) i tria el PDF. Tria on va el número (a dalt o a baix, a l'esquerra, al centre o a la dreta) i el format: «1», «1 / 10» o «Pàgina 1 de 10».",
+            "Toca «Numera pàgines». Veuràs l'abans i el després un al costat de l'altre, pàgina per pàgina, per comprovar que el número no tapa res. Després el baixes.",
+          ],
+        },
+        {
+          h2: "Opcions que resolen casos habituals",
+          body: [
+            { ul: [
+              "**Sense número a les primeres**: posa 1 per no numerar la portada, o més si hi ha índex o dedicatòria.",
+              "**Comença a**: perquè la numeració continuï la d'un altre document, per exemple des de la 25.",
+              "**Text**: escriu-hi el teu, per exemple «Foli {n}» o «{n} de {total}»; {n} és el número de la pàgina i {total}, l'últim.",
+              "**Mida i color**: petita, mitjana o gran, i el color que vulguis.",
+            ] },
+            { tip: "Si el document està repartit en diversos fitxers, uneix-los primer amb [Unir PDF](/unir-pdf) perquè la numeració sigui contínua." },
+          ],
+        },
+        {
+          h2: "Que el número no tapi el contingut",
+          body: [
+            "Molts documents ja porten alguna cosa al peu de pàgina (un logotip, una adreça). Si el número hi cau a sobre, canvia'l de cantonada o puja'l a dalt: l'abans i el després et mostren cada pàgina abans de baixar-la, i pots passar d'una a l'altra amb les fletxes.",
+          ],
+        },
+        {
+          h2: "Numera al final",
+          body: [
+            "El número queda dibuixat a cada pàgina. Si després reordenes o afegeixes pàgines, els números es mouen amb elles i deixen de ser correlatius. Per això convé numerar al final: primer uneix, ordena i treu el que sobra, i numera la versió definitiva.",
+            "En documents per a administracions o expedients, on es parla de folis, escriu «Foli {n}» al text. I si el document continua la numeració d'un altre, ajusta «Comença a».",
+          ],
+        },
+        {
+          h2: "Tot al teu navegador",
+          body: [
+            "La numeració s'afegeix al teu equip: el PDF no es puja a cap servidor. El text del document continua sent text: es pot cercar i copiar igual que abans, i el número també queda com a text, nítid en imprimir.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Numerar pàgines", text: "Obre l'eina Numerar pàgines de docusmart.online i tria el PDF." },
+        { name: "Tria posició i format", text: "Per exemple, a baix a la dreta i «Pàgina 1 de 10»." },
+        { name: "Ajusta el que calgui", text: "Sense número a la portada, des de quin número començar, mida i color." },
+        { name: "Numera i baixa", text: "Revisa l'abans i el després i baixa el PDF numerat." },
+      ],
+      faq: [
+        ["Puc no numerar la portada?", "Sí. A «Sense número a les primeres» posa 1 (o les pàgines que vulguis saltar)."],
+        ["Puc començar per un altre número?", "Sí. A «Comença a» hi poses el primer número, per exemple 25."],
+        ["Es pot escriure «Foli» abans del número?", "Sí. Al text escriu «Foli {n}» i cada pàgina mostrarà el seu número en lloc de {n}."],
+      ],
+    },
+    'poner-marca-de-agua-a-un-pdf': {
+      slug: 'posar-marca-aigua-pdf',
+      title: "Com posar una marca d'aigua a un PDF (text o logotip) | DocuSmart",
+      description:
+        "Afegeix «CONFIDENCIAL», «CÒPIA» o el teu logotip a un PDF: posició, mosaic, angle, mida, opacitat i pàgines. De franc, al navegador i sense pujar el fitxer.",
+      h1: "Com posar una marca d'aigua a un PDF (text o logotip)",
+      lead: "Per enviar una proposta com a esborrany, marcar una còpia del teu DNI amb «Només per al tràmit X» o posar el teu logotip en un catàleg: així s'afegeix una marca d'aigua a un PDF.",
+      sections: [
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Marca d'aigua](/marca-de-agua-pdf) i tria el PDF. Escriu el text (hi ha «CONFIDENCIAL» d'exemple) o canvia a «Imatge o logotip» per fer servir el teu.",
+            "Toca «Aplica la marca d'aigua»: veuràs l'abans i el després un al costat de l'altre. Si vols canviar alguna cosa, ajusta-la i torna-la a aplicar; quan t'agradi, baixa el PDF.",
+          ],
+        },
+        {
+          h2: "Com ajustar-la",
+          body: [
+            { ul: [
+              "**Posició**: al centre, en una cantonada o en una vora, o en **mosaic** perquè es repeteixi per tota la pàgina.",
+              "**Rotació**: 0°, 45°, 90° o −45°. La diagonal és la més clàssica i la més difícil de retallar.",
+              "**Mida, opacitat i color**: una opacitat baixa (20 %) deixa llegir el document; més alta la fa més visible.",
+              "**Damunt o darrere del contingut**: darrere queda més discreta en documents amb molt text.",
+              "**Pàgines**: totes, o només algunes (per exemple, 1-3, 5).",
+            ] },
+          ],
+        },
+        {
+          h2: "Una marca d'aigua per a còpies de documents",
+          body: [
+            "Si et demanen una còpia del teu DNI o d'un extracte, posa-hi una marca com «Només per al tràmit del lloguer, gener 2026» en mosaic. Així, si la còpia acaba en un altre lloc, es veu per a què la vas lliurar.",
+            { tip: "Si a més vols que no la puguin obrir sense una contrasenya, després passa-la per [Protegir PDF](/proteger-pdf)." },
+          ],
+        },
+        {
+          h2: "Idees de text",
+          body: [
+            { ul: [
+              "«ESBORRANY» per a versions que encara no són definitives.",
+              "«CÒPIA» o «CÒPIA CONTROLADA» per a documents que es reparteixen.",
+              "«Només per a [tràmit] — [data]» en còpies de documents d'identitat.",
+              "«MOSTRA» en catàlegs, plantilles o treballs que encara no s'han pagat.",
+            ] },
+            "Perquè la marca es llegeixi sense destorbar el document, una opacitat d'entre el 15 % i el 30 % sol funcionar bé. En mosaic, una mida petita o mitjana queda més neta. Abans de baixar-lo, revisa diverses pàgines a l'abans i el després.",
+          ],
+        },
+        {
+          h2: "Sense pujar el document",
+          body: [
+            "La marca s'afegeix dins del teu navegador. El PDF no es puja a cap servidor, una cosa important precisament amb els documents que necessiten marca d'aigua: còpies de documents d'identitat, propostes comercials o documents interns.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Marca d'aigua", text: "Obre l'eina Marca d'aigua de docusmart.online i tria el PDF." },
+        { name: "Escriu el text o tria el logotip", text: "Per exemple, «CONFIDENCIAL» o «CÒPIA»." },
+        { name: "Ajusta posició i estil", text: "Centre o mosaic, angle, mida, opacitat, color i pàgines." },
+        { name: "Aplica i baixa", text: "Revisa l'abans i el després i baixa el PDF." },
+      ],
+      faq: [
+        ["Puc fer servir el meu logotip?", "Sí. Tria «Imatge o logotip» i puja una imatge; un PNG amb fons transparent queda millor."],
+        ["Es pot treure després?", "Queda dibuixada al PDF. Desa l'original sense marca per si el tornes a necessitar."],
+        ["Puc posar-la només en algunes pàgines?", "Sí. A «Pàgines» escriu quines, per exemple 1-3, 5."],
+      ],
+    },
+    'editar-un-pdf-sin-programas': {
+      slug: 'editar-pdf-sense-programes',
+      title: "Com editar un PDF sense instal·lar programes | DocuSmart",
+      description:
+        "Afegeix o substitueix text, ressalta, tapa, dibuixa, posa fletxes, imatges i enllaços en un PDF des del navegador, sense instal·lar res i sense pujar el fitxer.",
+      h1: "Com editar un PDF sense instal·lar programes",
+      lead: "Corregir una data, completar una dada que faltava, ressaltar una clàusula o ratllar alguna cosa: per a això no cal un programa de pagament. Així s'edita un PDF al navegador.",
+      sections: [
+        {
+          h2: "Les eines de l'editor",
+          body: [
+            "A sobre de la pàgina tens una barra amb tot el que pots afegir a [Editar PDF](/editar-pdf):",
+            { ul: [
+              "**Text**: toques la pàgina on vols escriure i escrius al quadre de sota; tries la lletra, la mida, la negreta i el color.",
+              "**Substitueix**: toques un text que ja té el PDF i el canvies; l'original s'esborra del document, no només es tapa.",
+              "**Rectangle, Cercle, Ressaltar i Tapar**: per marcar, subratllar o cobrir amb blanc.",
+              "**Dibuixar, Línia i Fletxa**: per assenyalar o fer anotacions a mà.",
+              "**Imatge i Enllaç**: per enganxar un segell o un logotip, o enllaçar a una pàgina web o a una altra pàgina del PDF.",
+            ] },
+          ],
+        },
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Editar PDF](/editar-pdf) i tria el fitxer. Tria «Text» a la barra i toca la pàgina on va: apareix un quadre que pots moure, i escrius al tauler de sota. Amb «Seleccionar» toques qualsevol element per moure'l, canviar-ne la mida o treure'l.",
+            "Si t'equivoques, fes servir «Desfés». Quan acabis, toca «Aplicar canvis» i baixa el PDF editat.",
+            { tip: "El text admet qualsevol alfabet (llatí, ciríl·lic, grec, xinès, japonès o coreà). Els emojis no es desen al PDF." },
+          ],
+        },
+        {
+          h2: "Per signar o omplir formularis hi ha eines pròpies",
+          body: [
+            "Si el que necessites és signar, [Signar PDF](/firmar-pdf) et permet dibuixar, escriure o pujar la teva signatura i posar-la on va. I si el PDF té camps per omplir, [Omplir formulari](/llenar-formulario-pdf) te'ls mostra un per un, més còmode que escriure-hi a sobre.",
+          ],
+        },
+        {
+          h2: "Consells perquè el canvi no es noti",
+          body: [
+            "Per corregir un text que ja és al document, fes servir **Substitueix**: esborra l'original i posa el nou al seu lloc. Si només el tapes amb un quadre blanc, el text antic continua al fitxer.",
+            "Tria la lletra més semblant a la del document (Sans, Serif o Mono) i ajusta la mida fins que coincideixi. Al mòbil, mou els elements amb calma: també en pots canviar la posició des del teclat amb les fletxes.",
+          ],
+        },
+        {
+          h2: "El teu fitxer es queda amb tu",
+          body: [
+            "Tot l'editor funciona dins del teu navegador: el PDF no es puja a cap servidor, ni mentre l'edites ni quan el deses.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Editar PDF", text: "Obre l'eina Editar PDF de docusmart.online i tria el fitxer." },
+        { name: "Tria què vols afegir", text: "Text, substituir, formes, ressaltat, dibuix, fletxes, imatge o enllaç." },
+        { name: "Col·loca-ho a la pàgina", text: "Toca la pàgina, escriu o dibuixa, i mou-ho amb Seleccionar." },
+        { name: "Aplica i baixa", text: "Toca Aplicar canvis i baixa el PDF editat." },
+      ],
+      faq: [
+        ["Puc canviar un text que ja té el PDF?", "Sí, amb «Substitueix»: toques el text, escrius el nou i l'original s'esborra del document."],
+        ["Funciona amb PDF escanejats?", "Hi pots afegir text, formes i dibuixos a sobre. Per substituir text, el PDF ha de tenir text real; si és una foto, primer passa'l per OCR."],
+        ["Cal instal·lar res?", "No. Funciona al navegador de l'ordinador o del mòbil."],
+      ],
+    },
+    'comparar-dos-versiones-de-un-pdf': {
+      slug: 'comparar-dues-versions-pdf',
+      title: "Com comparar dues versions d'un PDF i veure què ha canviat | DocuSmart",
+      description:
+        "Compara dos PDF i mira quines paraules s'han afegit o eliminat, o compara'ls pàgina per pàgina per veure canvis en imatges i disseny. De franc i sense pujar-los.",
+      h1: "Com comparar dues versions d'un PDF i veure què ha canviat",
+      lead: "Et tornen un contracte «amb uns quants ajustos» i no et diuen quins. Llegir-lo dues vegades buscant diferències és lent i se t'escapen coses. Així es comparen dues versions en segons.",
+      sections: [
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Comparar PDF](/comparar-pdf). Tria primer l'**Original** i després la **Versió nova**. Si els has posat al revés, el botó «Intercanviar» els canvia de lloc.",
+            "Toca «Comparar». A dalt veuràs quantes paraules s'han afegit i quantes s'han eliminat, i a sota cada canvi amb la seva pàgina: el que s'ha tret, ratllat en vermell, i el que s'ha afegit, en verd, amb unes quantes línies de context per situar-lo.",
+          ],
+        },
+        {
+          h2: "Text o visual",
+          body: [
+            { ul: [
+              "**Text**: compara les paraules. És el millor per a contractes, cartes i informes. Pots ignorar les majúscules i la puntuació perquè no comptin com a canvis.",
+              "**Visual (pàgina per pàgina)**: compara com es veu cada pàgina. Serveix per a plànols, dissenys o documents escanejats, on els canvis poden ser imatges o taules i no només text.",
+            ] },
+            { tip: "En un contracte, revisa sobretot els canvis en imports, dates i noms: la comparació els mostra encara que siguin d'una sola xifra." },
+          ],
+        },
+        {
+          h2: "Després de comparar",
+          body: [
+            "Si has trobat alguna cosa per corregir, ho pots fer amb [Editar PDF](/editar-pdf). I quan les dues parts hi estiguin d'acord, signa la versió final amb [Signar PDF](/firmar-pdf).",
+          ],
+        },
+        {
+          h2: "Què mostra i què no",
+          body: [
+            "Cada canvi apareix amb el número de pàgina i amb les línies del voltant, per situar-lo ràpidament al document. Si un paràgraf sencer s'ha mogut de lloc sense canviar, es marca com a mogut en lloc de comptar-lo com a eliminat i afegit.",
+            "Si els dos fitxers no tenen gairebé res en comú (per exemple, has triat un document equivocat), l'eina t'avisa en lloc de mostrar centenars de canvis. I si són idèntics, també t'ho diu, fins i tot quan tenen un nombre de pàgines diferent.",
+            "Serveix per a contractes, pressupostos, reglaments, propostes que passen per diverses mans o la tesi que torna amb correccions del tutor: en tots aquests casos, saber exactament què ha canviat estalvia haver-ho de rellegir tot.",
+          ],
+        },
+        {
+          h2: "Els teus documents no es pugen",
+          body: [
+            "Els dos PDF es comparen al teu navegador: cap no es puja a un servidor. El pots fer servir amb tranquil·litat amb contractes i documents confidencials, perquè cap de les dues versions queda desada enlloc.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Comparar PDF", text: "Obre l'eina Comparar PDF de docusmart.online." },
+        { name: "Tria els dos fitxers", text: "Primer l'original i després la versió nova." },
+        { name: "Tria com comparar", text: "Text (paraules) o Visual (pàgina per pàgina)." },
+        { name: "Revisa els canvis", text: "El que s'ha tret surt ratllat en vermell i el que s'ha afegit, en verd, amb la seva pàgina." },
+      ],
+      faq: [
+        ["Compara PDF escanejats?", "En el mode Visual sí, perquè compara com es veu cada pàgina. El mode Text necessita que el PDF tingui text real."],
+        ["Importa l'ordre dels fitxers?", "Sí: el que hi ha a la versió nova i no a l'original surt com a afegit. Si t'has equivocat, fes servir Intercanviar."],
+        ["Es pot ignorar si ha canviat una majúscula o una coma?", "Sí. Marca «Ignora majúscules» o «Ignora la puntuació»."],
+      ],
+    },
+    'tapar-datos-personales-en-un-pdf': {
+      slug: 'tapar-dades-personals-pdf',
+      title: "Com tapar dades personals en un PDF (de veritat) | DocuSmart",
+      description:
+        "Tatxa números de document, comptes, correus o noms en un PDF: cerca'ls i marca'ls a totes les pàgines i s'eliminen del fitxer, no només queden tapats.",
+      h1: "Com tapar dades personals en un PDF (de veritat)",
+      lead: "Abans de compartir un extracte, un contracte o un historial clínic, sovint cal amagar números de compte o de document. Posar-hi un quadre negre a sobre no n'hi ha prou: així es fa bé.",
+      sections: [
+        {
+          h2: "Per què no n'hi ha prou amb un quadre negre",
+          body: [
+            "Si en un editor qualsevol poses un rectangle negre sobre un número, el número continua al fitxer: només cal seleccionar-lo i copiar-lo, o obrir el PDF amb un altre programa, per llegir-lo. Tatxar de veritat és **eliminar** el que hi ha a sota, i això és el que fa [Tatxar PDF](/censurar-pdf).",
+          ],
+        },
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Tatxar PDF](/censurar-pdf) i tria el fitxer. Pots cercar un nom, un número o una paraula i es marca a totes les pàgines alhora. També pots marcar d'una vegada tots els **Correus** o tots els **Números** (documents, telèfons, comptes), o arrossegar sobre la pàgina per tapar una zona a mà.",
+            "Revisa cada pàgina: si toques una zona, la mous o la treus. Quan estigui tot, toca «Tatxar PDF» i baixa el resultat.",
+            { tip: "Les pàgines amb zones marcades es converteixen en imatge perquè el que s'ha tapat desaparegui del fitxer. La resta del text d'aquestes pàgines es continua podent cercar i copiar." },
+          ],
+        },
+        {
+          h2: "Revisa-ho abans d'enviar-ho",
+          body: [
+            "La cerca troba el que està escrit com a text. Si una part del document és una foto o un escaneig, les dades que hi apareguin no surten a la cerca: marca-les a mà arrossegant sobre la pàgina. I desa l'original a part, perquè el que s'ha tatxat no es pot recuperar.",
+            "Si el document ha de quedar en mans d'altres, també hi pots posar una contrasenya amb [Protegir PDF](/proteger-pdf) o una [marca d'aigua](/marca-de-agua-pdf) que digui per a què el vas lliurar.",
+          ],
+        },
+        {
+          h2: "Què sol caldre tapar",
+          body: [
+            { ul: [
+              "Números de document d'identitat i de comptes bancaris.",
+              "Adreces, telèfons i correus.",
+              "Signatures i fotos de documents.",
+              "Dades de salut, sous o informació de tercers.",
+            ] },
+          ],
+        },
+        {
+          h2: "Sense pujar el document",
+          body: [
+            "Tot el procés passa al teu navegador: el document amb les dades sense tapar no surt mai del teu equip. És just el que convé en tatxar: si pugessis l'original a un servei en línia per tapar-lo, les dades ja haurien sortit de les teves mans.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Tatxar PDF", text: "Obre l'eina Tatxar PDF de docusmart.online i tria el fitxer." },
+        { name: "Marca el que cal amagar", text: "Cerca un text, marca tots els correus o números, o arrossega sobre la pàgina." },
+        { name: "Revisa cada pàgina", text: "Toca una zona per moure-la o treure-la." },
+        { name: "Tatxa i baixa", text: "Toca Tatxar PDF: el que s'ha tapat s'elimina del fitxer." },
+      ],
+      faq: [
+        ["Es pot recuperar el que s'ha tatxat?", "No. El que tapes s'elimina del fitxer; per això convé desar l'original a part."],
+        ["Serveix amb PDF escanejats?", "Sí, marcant les zones a mà. La cerca automàtica només troba el que està escrit com a text."],
+        ["La resta del document es continua podent cercar?", "Sí. Només les pàgines amb zones marcades es converteixen en imatge, i el text que hi queda es conserva per cercar i copiar."],
+      ],
+    },
   },
 }

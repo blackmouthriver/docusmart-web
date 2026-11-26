@@ -164,6 +164,18 @@ export function parsePageRanges(input: string, pageCount: number): number[] | nu
   return out.size ? [...out].sort((a, b) => a - b) : null
 }
 
+/** Lo contrario de parsePageRanges: índices base 0 → "2-3, 5" (para mostrar las páginas elegidas). */
+export function formatPageRanges(indices: readonly number[]): string {
+  const pages = [...new Set(indices)].sort((a, b) => a - b).map((i) => i + 1)
+  const out: string[] = []
+  for (let i = 0; i < pages.length; i++) {
+    const start = pages[i]
+    while (i + 1 < pages.length && pages[i + 1] === pages[i] + 1) i++
+    out.push(pages[i] === start ? String(start) : `${start}-${pages[i]}`)
+  }
+  return out.join(', ')
+}
+
 /** Copia de la lista con el elemento `from` movido a la posición `to` (arrastrar y soltar). */
 export function moveItem<T>(list: readonly T[], from: number, to: number): T[] {
   const copy = list.slice()
