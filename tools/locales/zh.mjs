@@ -32,7 +32,7 @@ export default {
     footHome: '首页',
     footPrivacy: '隐私政策',
     footConsent: '分析偏好设置',
-    os: '任意（网页浏览器）',
+    os: 'Windows, macOS, Linux, ChromeOS, Android, iOS',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
     cats: { organizar: "整理 PDF", editar: "编辑与签名", documentos: "创建文档", seguridad: "安全", optimizar: "优化与归档", convertir: "转换", imagen: "图片", multimedia: "音频和视频", escanear: "扫描与 OCR", archivos: "压缩文件", qr: "二维码", texto: "文本工具" },
     hubSlug: "tools",
@@ -1151,7 +1151,7 @@ export default {
     },
   },
   landing: [
-    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "在电脑上通过 Chrome 或 Edge 安装桌面版：它会像普通程序一样在独立窗口中打开，并且可以离线使用。"],
+    ["Instálala en Windows, Mac o Linux desde Chrome, Edge o Safari: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "通过 Chrome、Edge 或 Safari 安装到 Windows、Mac 或 Linux：它会像普通程序一样在独立窗口中打开，并且可以离线使用。"],
     ["Instalar DocuSmart Desktop", "安装 DocuSmart Desktop"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — 所有文档，尽在一处'],
     ["Herramientas PDF gratis sin subir archivos | DocuSmart", "免费 PDF 工具，无需上传文件 | DocuSmart"],

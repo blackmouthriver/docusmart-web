@@ -30,6 +30,7 @@ const MetadataScreen = lazy(() => import('../features/metadata/ui/Metadata').the
 const TextScreen = lazy(() => import('../features/text/ui/TextTools').then((m) => ({ default: m.TextScreen })))
 const ArchiveScreen = lazy(() => import('../features/archive/ui/Archive').then((m) => ({ default: m.ArchiveScreen })))
 const ToolsScreen = lazy(() => import('../features/tools/ui/ToolsScreen').then((m) => ({ default: m.ToolsScreen })))
+const OpenWith = lazy(() => import('../features/tools/ui/OpenWith').then((m) => ({ default: m.OpenWith })))
 const CvScreen = lazy(() => import('../features/cv/ui/Cv').then((m) => ({ default: m.CvScreen })))
 const BillingScreen = lazy(() => import('../features/billing/ui/Billing').then((m) => ({ default: m.BillingScreen })))
 const HashScreen = lazy(() => import('../features/integrity/ui/HashTool').then((m) => ({ default: m.HashScreen })))
@@ -167,7 +168,7 @@ export function App() {
     const standalone = isStandalone(window)
     const brand = standalone ? 'DocuSmart Desktop' : 'DocuSmart Web'
     // La vista de una categoría (#/herramientas/seguridad) lleva su nombre en la pestaña.
-    const category = route.section === 'herramientas' && CATEGORIES.some((c) => c.id === route.sub) ? (`cat.${route.sub}` as MessageKey) : null
+    const category = route.section === 'herramientas' && CATEGORIES.some((c) => c.id === route.sub) ? (`cat.${route.sub}` as MessageKey) : route.section === 'abrir' ? 'open.title' : null
     if (route.section !== '') document.title = `${t(category ?? nav?.label ?? 'nav.viewer')} · ${brand}`
     else document.title = standalone || !htmlTitle.current ? brand : htmlTitle.current
   }, [route.section, route.sub, t])
@@ -228,6 +229,9 @@ export function App() {
       break
     case 'herramientas':
       screen = <ToolsScreen sub={route.sub} />
+      break
+    case 'abrir':
+      screen = <OpenWith />
       break
     case 'pdf':
       screen = <PdfTools sub={route.sub} />
