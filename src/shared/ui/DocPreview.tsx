@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Icon } from './Icon'
 import { Notice } from './ui'
-import { baseName, download, extensionOf, formatBytes, isOwnBlobUrl, renamed, safeMimeType } from '../files/files'
+import { baseName, distinctLabels, download, extensionOf, formatBytes, isOwnBlobUrl, renamed, safeMimeType } from '../files/files'
 import { PLAY_URL, appShareLinks, toolShareUrl, canShareFile, docSummary, feedbackMailto, shareFile } from '../files/share'
 import { tr } from '../i18n/translate'
 import { useT } from '../i18n/I18n'
@@ -357,6 +357,7 @@ export function ShareApp({ toolName }: { toolName: string }) {
 /** Miniaturas de varios archivos (los PDF de Unir, las páginas separadas, las imágenes extraídas). */
 function FileTiles({ files, label, max = 12 }: { files: File[]; label: string; max?: number }) {
   const total = files.reduce((n, f) => n + f.size, 0)
+  const labels = distinctLabels(files.slice(0, max).map((f) => f.name))
   return (
     <figure className="doc-preview">
       <figcaption className="doc-preview-meta">
@@ -370,7 +371,8 @@ function FileTiles({ files, label, max = 12 }: { files: File[]; label: string; m
           {files.slice(0, max).map((f, i) => (
             <li key={`${f.name}-${i}`}>
               <FileThumb file={f} />
-              <span title={f.name}>{f.name}</span>
+              {/* Lo que diferencia a cada uno (el nombre entero queda en el título). */}
+              <span title={f.name}>{labels[i]}</span>
             </li>
           ))}
         </ul>

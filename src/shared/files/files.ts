@@ -172,3 +172,32 @@ export function moveItem<T>(list: readonly T[], from: number, to: number): T[] {
   copy.splice(Math.max(0, Math.min(copy.length, to)), 0, item)
   return copy
 }
+
+/** Recorta por el medio, para que se vea el final (lo que suele diferenciar: "-3.pdf"). */
+export function middleEllipsis(name: string, max: number): string {
+  if (name.length <= max) return name
+  // Un comienzo corto (5) y el final lo más largo posible: el número y la extensión.
+  const head = Math.min(5, Math.max(1, Math.floor((max - 1) / 3)))
+  const tail = max - 1 - head
+  return `${name.slice(0, head)}…${name.slice(name.length - tail)}`
+}
+
+/**
+ * Nombres cortos para varios archivos que se muestran juntos (resultados de dividir, de PDF a
+ * imagen…): si comparten el comienzo, se muestra desde la última palabra de lo común
+ * ("pagina-3.pdf" en vez de "contrato-d…" igual en todos), y lo largo se recorta por el medio.
+ */
+export function distinctLabels(names: readonly string[], max = 18): string[] {
+  if (names.length < 2) return names.map((n) => middleEllipsis(n, max))
+  let common = names[0]
+  for (const n of names) {
+    let i = 0
+    while (i < common.length && i < n.length && common[i] === n[i]) i++
+    common = common.slice(0, i)
+  }
+  // Se corta en un separador para no partir una palabra ("contrato-de-…-pagina-" → desde "pagina").
+  const words = common.split(/[-_ .]/)
+  const keep = words.length > 1 ? common.length - words[words.length - 1].length - (words[words.length - 2]?.length ?? 0) - 1 : 0
+  const cut = keep > 3 ? keep : 0
+  return names.map((n) => middleEllipsis(n.slice(cut), max))
+}

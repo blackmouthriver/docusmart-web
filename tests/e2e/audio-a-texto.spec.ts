@@ -67,3 +67,16 @@ test('distingue a dos personas en un diálogo y deja ponerles nombre (W-147.4)',
   expect(vtt).toContain('<v Ana>')
   expect(vtt).toContain('<v Hablante 2>')
 })
+
+test('un audio dañado avisa enseguida, sin descargar el modelo', async ({ page }) => {
+  const modelo: string[] = []
+  page.on('request', (r) => r.url().includes('/models/') && modelo.push(r.url()))
+  await page.goto('/audio-a-texto')
+  const tool = page.locator('#tool')
+  const basura = Buffer.from(Array.from({ length: 4000 }, (_, i) => (i * 37 + 11) % 256))
+  await tool.locator('input[type=file]').first().setInputFiles({ name: 'nota.mp3', mimeType: 'audio/mpeg', buffer: basura })
+  await tool.getByRole('button', { name: 'Transcribir', exact: true }).click()
+  await expect(tool.locator('.notice-error, [role="alert"]').first()).toContainText(/No se pudo (leer|transcribir)|no tiene sonido/, { timeout: 15_000 })
+  expect(modelo).toEqual([])
+  await expect(tool.getByRole('button', { name: 'Transcribir', exact: true })).toBeEnabled()
+})

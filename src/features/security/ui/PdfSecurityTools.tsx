@@ -23,9 +23,9 @@ function friendly(e: unknown): string {
 }
 
 /** Selector de un PDF con la fila del archivo elegido y botón para cambiarlo. */
-function PickPdf({ file, onFile }: { file: File | null; onFile: (f: File | null) => void }) {
+function PickPdf({ file, onFile, check = true }: { file: File | null; onFile: (f: File | null) => void; check?: boolean }) {
   if (!file) {
-    return <DropZone accept={PDF} title={tr('common.pickPdf')} hint={tr('common.dragHere')} onFiles={([f]) => onFile(f)} />
+    return <DropZone accept={PDF} check={check} title={tr('common.pickPdf')} hint={tr('common.dragHere')} onFiles={([f]) => onFile(f)} />
   }
   return (
     <ul className="file-list" style={{ marginTop: 0 }}>
@@ -508,7 +508,8 @@ export function RepairTool() {
 
   return (
     <div className="card stack">
-      <PickPdf file={file} onFile={(f) => { setFile(f); setDone(null); setOutput(null); setRescued(null) }} />
+      {/* Reparar recibe justamente PDF dañados: no se rechazan al elegirlos. */}
+      <PickPdf check={false} file={file} onFile={(f) => { setFile(f); setDone(null); setOutput(null); setRescued(null) }} />
       {file && (
         <BeforeAfter
           original={file}

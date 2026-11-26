@@ -476,3 +476,52 @@ export const prompt = (language: LanguageCode, translate: boolean) => [SOT, LANG
 
 /** ¿La ventana es solo silencio o ruido? (probabilidad de "sin voz" alta y texto poco probable) */
 export const isSilence = (noSpeechProb: number, avgLogProb: number) => noSpeechProb > 0.6 && avgLogProb < -1
+
+/* ───────────── Contra las alucinaciones (como Whisper de OpenAI) ───────────── */
+
+/**
+ * Cuánto se comprime el texto (bytes / bytes comprimidos). Un texto que se repite ("de la crisis
+ * de la crisis…") se comprime mucho: más de 2,4 es señal de que el modelo entró en un bucle.
+ */
+export function compressionRatio(text: string, deflate: (b: Uint8Array) => Uint8Array): number {
+  const bytes = new TextEncoder().encode(text)
+  return bytes.length ? bytes.length / Math.max(1, deflate(bytes).length) : 0
+}
+
+/** Temperaturas que se prueban, en orden, si el resultado es dudoso. */
+export const TEMPERATURES = [0, 0.2, 0.4, 0.6, 0.8, 1] as const
+export const COMPRESSION_LIMIT = 2.4
+export const LOGPROB_LIMIT = -1
+
+export type WindowScore = { compression: number; avgLogProb: number; noSpeech: number }
+
+/** ¿Hay que volver a decodificar la ventana con más temperatura? (bucle o texto poco probable) */
+export const needsFallback = (s: WindowScore) => !isSilence(s.noSpeech, s.avgLogProb) && (s.compression > COMPRESSION_LIMIT || s.avgLogProb < LOGPROB_LIMIT)
+
+/** Elige un token al azar según los logits suavizados por la temperatura (0: el más probable). */
+export function sampleToken(logits: Float32Array, temperature: number, random: () => number): number {
+  if (temperature <= 0) return argmax(logits)
+  let max = -Infinity
+  for (const v of logits) if (v > max) max = v
+  const p = new Float64Array(logits.length)
+  let sum = 0
+  for (let i = 0; i < logits.length; i++) sum += p[i] = logits[i] === -Infinity ? 0 : Math.exp((logits[i] - max) / temperature)
+  let r = random() * sum
+  for (let i = 0; i < p.length; i++) if (p[i] && (r -= p[i]) <= 0) return i
+  return argmax(logits)
+}
+
+/**
+ * Idiomas candidatos para el modo automático: los `k` más probables según el modelo, más el
+ * idioma de la página. El modelo cuantizado se equivoca a veces de idioma (pone español a un
+ * audio en inglés), así que cada candidato se prueba de verdad y gana el texto más probable.
+ */
+export function languageCandidates(logits: Float32Array, k: number, preferred?: LanguageCode): LanguageCode[] {
+  const ranked = [...LANGUAGE_IDS].sort((a, b) => logits[b[1]] - logits[a[1]]).map(([c]) => c)
+  const out = ranked.slice(0, k)
+  if (preferred && !out.includes(preferred)) out.push(preferred)
+  return out
+}
+
+/** Puntaje de un intento: más probable es mejor; un bucle o un texto vacío pierde siempre. */
+export const attemptScore = (s: WindowScore, textLength: number) => (s.compression > COMPRESSION_LIMIT || !textLength ? -Infinity : s.avgLogProb)

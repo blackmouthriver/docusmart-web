@@ -50,7 +50,7 @@ export type MetaKind = 'jpeg' | 'png' | 'webp' | 'pdf' | 'office' | 'tiff' | 'he
 export type StripResult = { bytes: Uint8Array; before: MetaField[]; after: MetaField[] }
 
 export class MetaError extends Error {
-  constructor(readonly reason: 'unsupported' | 'encrypted' | 'damaged') {
+  constructor(readonly reason: 'unsupported' | 'encrypted' | 'damaged' | 'empty') {
     super(reason)
   }
 }

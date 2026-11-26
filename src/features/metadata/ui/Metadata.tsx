@@ -13,7 +13,7 @@ import { HIDDEN_KEYS, META_ACCEPT, MetaError, cleanFileName, isKept, leftovers, 
 type Item = { file: File; fields?: MetaField[]; error?: string }
 type Done = { file: File; before: MetaField[]; after: MetaField[]; hidden: boolean }
 
-const errorText = (e: unknown) => tr(e instanceof MetaError ? (`meta.err.${e.reason}` as MessageKey) : 'meta.err.damaged')
+const errorText = (e: unknown) => tr(e instanceof MetaError ? (e.reason === 'empty' ? 'err.emptyFile' : (`meta.err.${e.reason}` as MessageKey)) : 'meta.err.damaged')
 
 export function MetadataScreen() {
   return (

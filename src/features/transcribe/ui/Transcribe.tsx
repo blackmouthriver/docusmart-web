@@ -99,9 +99,15 @@ export function TranscribeTool() {
     setDetected(null)
     let step = 'model'
     try {
+      const [{ prepareTranscriber, prepareSpeakers, runTranscription }, { decodeAudio }] = await Promise.all([import('../infra/transcriber'), import('../infra/audioDecode')])
+      // Primero el audio: si el archivo está dañado o no tiene sonido, se avisa enseguida, sin
+      // descargar antes el modelo de 77 MB.
+      setStage('audio')
+      setProgress(0)
+      const { audio, duration } = await decodeAudio(file, setProgress)
+      if (ctrl.signal.aborted) return
       setStage('model')
       setProgress(0)
-      const [{ prepareTranscriber, prepareSpeakers, runTranscription }, { decodeAudio }] = await Promise.all([import('../infra/transcriber'), import('../infra/audioDecode')])
       await prepareTranscriber(setProgress)
       setCached(true)
       if (ctrl.signal.aborted) return
@@ -114,16 +120,13 @@ export function TranscribeTool() {
         step = 'model'
         if (ctrl.signal.aborted) return
       }
-      setStage('audio')
-      setProgress(0)
-      const { audio, duration } = await decodeAudio(file, setProgress)
-      if (ctrl.signal.aborted) return
       setStage('transcribing')
       setProgress(0)
       const started = performance.now()
       const r = await runTranscription(
         audio,
-        { language, translate },
+        // El idioma de la página se prueba siempre en automático (el modelo a veces se equivoca).
+        { language, translate, preferred: LANGUAGE_IDS.find(([c]) => c === document.documentElement.lang)?.[0] },
         (p) => {
           if ('speakers' in p) {
             setStage('speakers')

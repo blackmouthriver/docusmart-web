@@ -2,7 +2,6 @@
 // cobertura, como los demás *Sources.ts e imageCanvas.ts).
 import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { MAX_OUTPUT_SIDE, applyFilter, detectDocument, insetQuad, outputSize, rotate90, warpPerspective, type Pixels, type Quad, type ScanFilter } from '../core/scan'
-import { tr } from '../../../shared/i18n/translate'
 
 export type Photo = {
   /** La foto ya derecha (EXIF) y reducida a lo que hace falta para el resultado. */
@@ -32,12 +31,10 @@ function scaled(w: number, h: number, maxSide: number) {
 }
 
 export async function loadPhoto(file: Blob): Promise<Photo> {
-  let bmp: ImageBitmap
-  try {
-    bmp = await createImageBitmap(file, { imageOrientation: 'from-image' })
-  } catch {
-    throw new Error(tr('libErr.photoOpen'))
-  }
+  // El mismo cargador que las herramientas de imagen: además de JPG, PNG y WebP abre las fotos
+  // HEIC del iPhone y los TIFF (con sus decodificadores), girados según su EXIF.
+  const { loadImage } = await import('../../image/infra/imageCanvas')
+  const { bmp } = await loadImage(file)
   try {
     // Un poco más grande que la salida, para que enderezar no pierda nitidez.
     const full = scaled(bmp.width, bmp.height, Math.round(MAX_OUTPUT_SIDE * 1.25))
