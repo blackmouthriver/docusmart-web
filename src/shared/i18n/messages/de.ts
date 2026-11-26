@@ -1031,7 +1031,7 @@ const de: Messages = {
   'conv.moveUp': "Nach oben",
   'conv.moveDown': "Nach unten",
   'conv.imageFormat': "Bildformat",
-  'conv.wordNote': "Ein PDF speichert keine Absätze oder Tabellen: DocuSmart baut sie neu auf. Am besten funktioniert es mit PDFs aus Word oder einem ähnlichen Programm; gescannte brauchen zuerst OCR.",
+  'conv.wordNote': "Ein PDF speichert keine Absätze oder Tabellen: DocuSmart baut sie neu auf. Am besten funktioniert es mit PDFs aus Word oder einem ähnlichen Programm; gescannte Seiten werden im selben Schritt per OCR erkannt.",
   'conv.sheets': "Blätter",
   'conv.onePerPage': "Eins pro Seite",
   'conv.allInOne': "Alles in einem Blatt",

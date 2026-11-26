@@ -1031,7 +1031,7 @@ const zh: Messages = {
   'conv.moveUp': "上移",
   'conv.moveDown': "下移",
   'conv.imageFormat': "图片格式",
-  'conv.wordNote': "PDF 不保存段落和表格：DocuSmart 会重建它们。用 Word 或类似程序生成的 PDF 效果最好；扫描件需要先做 OCR。",
+  'conv.wordNote': "PDF 不保存段落和表格：DocuSmart 会重建它们。用 Word 或类似程序生成的 PDF 效果最好；扫描页面会在同一步骤中通过 OCR 识别。",
   'conv.sheets': "工作表",
   'conv.onePerPage': "每页一个",
   'conv.allInOne': "全部放在一个工作表",

@@ -20,7 +20,7 @@ export type Sheet = { name: string; rows: Cell[][] }
  * 3 cifras indican miles (formato colombiano "1.500" = 1500).
  */
 export function parseNumber(raw: string): { value: number; fmt: NumFmt } | null {
-  let s = raw.trim().replace(/ /g, ' ')
+  let s = raw.trim().replace(/[\u00a0\u202f]/g, ' ')
   if (!s || s.length > 30) return null
   let negative = false
   if (/^\(.*\)$/.test(s)) {
@@ -31,8 +31,9 @@ export function parseNumber(raw: string): { value: number; fmt: NumFmt } | null 
     negative = !negative
     s = s.slice(1).trim()
   }
-  const currency = /^(\$|COP|USD|€)\s?/i.test(s)
-  s = s.replace(/^(\$|COP|USD|€)\s?/i, '').trim()
+  // La moneda delante ("$ 2.000", "COP 1.500") o detrás, como en Europa ("2.000 €", "1.234,56 EUR").
+  const currency = /^(\$|COP|USD|EUR|€)\s?/i.test(s) || /\s?(€|EUR|COP|USD)$/i.test(s)
+  s = s.replace(/^(\$|COP|USD|EUR|€)\s?/i, '').replace(/\s?(€|EUR|COP|USD)$/i, '').trim()
   const percent = s.endsWith('%')
   if (percent) s = s.slice(0, -1).trim()
   if (!/^\d[\d.,\s]*$/.test(s) || /[.,]$/.test(s)) return null

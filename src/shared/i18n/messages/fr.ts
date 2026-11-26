@@ -1031,7 +1031,7 @@ const fr: Messages = {
   'conv.moveUp': "Monter",
   'conv.moveDown': "Descendre",
   'conv.imageFormat': "Format d'image",
-  'conv.wordNote': "Un PDF ne conserve ni paragraphes ni tableaux : DocuSmart les reconstruit. Cela fonctionne mieux avec des PDF créés depuis Word ou un programme similaire ; les documents numérisés ont d'abord besoin de l'OCR.",
+  'conv.wordNote': "Un PDF ne conserve ni paragraphes ni tableaux : DocuSmart les reconstruit. Cela fonctionne mieux avec des PDF créés depuis Word ou un programme similaire ; les pages numérisées sont reconnues par OCR dans la même étape.",
   'conv.sheets': "Feuilles",
   'conv.onePerPage': "Une par page",
   'conv.allInOne': "Tout sur une feuille",

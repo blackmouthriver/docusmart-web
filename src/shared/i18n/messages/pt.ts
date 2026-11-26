@@ -1031,7 +1031,7 @@ const pt: Messages = {
   'conv.moveUp': "Subir",
   'conv.moveDown': "Descer",
   'conv.imageFormat': "Formato da imagem",
-  'conv.wordNote': "Um PDF não guarda parágrafos nem tabelas: o DocuSmart os reconstrói. Funciona melhor com PDFs criados no Word ou programa parecido; os digitalizados precisam de OCR antes.",
+  'conv.wordNote': "Um PDF não guarda parágrafos nem tabelas: o DocuSmart os reconstrói. Funciona melhor com PDFs criados no Word ou programa parecido; as páginas digitalizadas são reconhecidas com OCR na mesma etapa.",
   'conv.sheets': "Planilhas",
   'conv.onePerPage': "Uma por página",
   'conv.allInOne': "Tudo em uma planilha",

@@ -96,6 +96,25 @@ test('dividir por marcadores: un PDF por capítulo con su título', async ({ pag
   expect(await Promise.all(Object.values(zip).map(texts))).toEqual([['P1'], ['P2', 'P3'], ['P4', 'P5', 'P6'], ['P7']])
 })
 
+test('dividir eligiendo páginas: las miniaturas escriben el rango y el rango marca las miniaturas', async ({ page }) => {
+  await page.goto('/app/#/pdf/dividir')
+  await upload(page, [file('informe.pdf', await sample(5, 'E'))])
+  const field = page.getByLabel(/Páginas \(ej\./)
+  await page.getByRole('button', { name: 'Página 2' }).click()
+  await page.getByRole('button', { name: 'Página 3' }).click()
+  await page.getByRole('button', { name: 'Página 5' }).click()
+  await expect(field).toHaveValue('2-3, 5')
+  await page.getByRole('button', { name: 'Página 3' }).click()
+  await expect(field).toHaveValue('2, 5')
+  await field.fill('1-2')
+  await expect(page.getByRole('button', { name: 'Página 1' })).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('button', { name: 'Página 2' })).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('button', { name: 'Página 5' })).toHaveAttribute('aria-pressed', 'false')
+  await page.getByRole('button', { name: 'Extraer páginas' }).click()
+  const pdf = await PDFDocument.load((await save(page)).bytes)
+  expect(pdf.getPageCount()).toBe(2)
+})
+
 test('dividir por marcadores: sin marcadores lo dice', async ({ page }) => {
   await page.goto('/app/#/pdf/dividir')
   await upload(page, [file('plano.pdf', await sample(3, 'P'))])

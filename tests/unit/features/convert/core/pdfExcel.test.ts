@@ -27,6 +27,12 @@ describe('parseNumber', () => {
     ['0.75', 0.75, 'decimal'],
     ['$2.000.000', 2000000, 'currency'],
     ['$ 1.250,50', 1250.5, 'currency2'],
+    // Moneda detrás, como en los extractos europeos, y espacio fino de miles (francés).
+    ['2.000 €', 2000, 'currency'],
+    ['1.234,56 €', 1234.56, 'currency2'],
+    ['1.234,56 EUR', 1234.56, 'currency2'],
+    ['2 000 €', 2000, 'currency'],
+    ['€ 2.000', 2000, 'currency'],
     ['COP 900', 900, 'currency'],
     ['45%', 0.45, 'percent'],
     ['-12', -12, 'integer'],

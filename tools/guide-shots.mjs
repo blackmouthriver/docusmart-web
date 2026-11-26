@@ -264,13 +264,163 @@ export const SHOTS = [
         run: async ({ host, files }) => {
           await upload(host, [pdf('contrato.pdf', files.contract[0])])
           await host.locator('img').first().waitFor()
-          // "Números (cédulas, teléfonos, cuentas)": el segundo botón de marcado rápido.
-          await host.locator('button.btn-sm').filter({ hasText: '(' }).first().click()
+          // "Números (cédulas, teléfonos, cuentas)": el segundo botón de marcado rápido (en japonés y chino
+          // el paréntesis es de ancho completo).
+          await host.locator('button.btn-sm').filter({ hasText: /[(（]/ }).first().click()
           await host.page().waitForTimeout(1500)
         },
         maxHeight: { escritorio: 640, movil: 900 },
       },
     ],
   },
+  // Lote 2 de guías (W-101).
+  {
+    tool: 'ocr-pdf',
+    steps: [
+      {
+        id: 'texto',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('constancia.pdf', files.textScan)])
+          await host.locator('.compare-panel img, .compare-panel canvas').first().waitFor()
+          // La muestra está en español: se elige ese idioma en cualquier idioma de la página.
+          await host.locator('select').first().selectOption('spa')
+          await primary(host).click()
+          await host.locator('pre.text-view').waitFor({ timeout: 120_000 })
+          await host.page().waitForTimeout(800)
+        },
+        // El texto reconocido, con la página de donde sale cada parte.
+        target: (host) => host.locator('pre.text-view').locator('xpath=..'),
+        maxHeight: { escritorio: 560, movil: 760 },
+      },
+    ],
+  },
+  {
+    tool: 'imagen-a-texto',
+    steps: [
+      {
+        id: 'texto',
+        run: async ({ host, files }) => {
+          await upload(host, [jpg('constancia.jpg', files.textPhoto)])
+          await host.locator('.file-item').first().waitFor()
+          await host.locator('select').first().selectOption('spa')
+          await primary(host).click()
+          await host.page().waitForFunction(() => (document.querySelector('#tool textarea')?.value ?? '').length > 40, null, { timeout: 120_000 })
+          await host.page().waitForTimeout(500)
+        },
+        maxHeight: { escritorio: 900, movil: 1300 },
+      },
+    ],
+  },
+  {
+    tool: 'pdf-a-word',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('contrato.pdf', files.contract[0])])
+          await host.locator('.compare-panel img, .compare-panel canvas').first().waitFor()
+          await runAndWait(host)
+        },
+        target: panel,
+        maxHeight: { escritorio: 700, movil: 640 },
+      },
+    ],
+  },
+  {
+    tool: 'pdf-a-excel',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('extracto.pdf', files.statement)])
+          await host.locator('.compare-panel img, .compare-panel canvas').first().waitFor()
+          await runAndWait(host)
+        },
+        target: panel,
+        maxHeight: { escritorio: 700, movil: 640 },
+      },
+    ],
+  },
+  {
+    tool: 'pdf-a-texto',
+    steps: [
+      {
+        id: 'texto',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('contrato.pdf', files.contract[0])])
+          await host.locator('.compare-panel img, .compare-panel canvas').first().waitFor()
+          await primary(host).click()
+          await host.locator('pre.text-view').last().waitFor({ timeout: 60_000 })
+          await host.page().waitForTimeout(500)
+        },
+        // La tarjeta del texto (el "Después" de la vista previa también lo muestra, más chico).
+        target: (host) => host.locator('pre.text-view').last().locator('xpath=..'),
+        maxHeight: { escritorio: 520, movil: 700 },
+      },
+    ],
+  },
+  {
+    tool: 'pdf-a-jpg',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('informe.pdf', files.pdfs[0])])
+          await host.locator('.compare-panel img, .compare-panel canvas').first().waitFor()
+          await runAndWait(host)
+        },
+        target: panel,
+        maxHeight: { escritorio: 700, movil: 700 },
+      },
+    ],
+  },
+  {
+    tool: 'extraer-imagenes-pdf',
+    steps: [
+      {
+        id: 'imagenes',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('catalogo.pdf', files.scanned)])
+          await host.locator('.compare-panel img, .compare-panel canvas').first().waitFor()
+          await primary(host).click()
+          await host.locator('.img-grid img').first().waitFor({ timeout: 60_000 })
+          await host.page().waitForTimeout(500)
+        },
+        target: (host) => host.locator('.img-grid').locator('xpath=..'),
+        maxHeight: { escritorio: 560, movil: 760 },
+      },
+    ],
+  },
+  {
+    tool: 'pdf-a-pdfa',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('demanda.pdf', files.contract[0])])
+          await host.locator('.compare-panel img, .compare-panel canvas').first().waitFor()
+          await runAndWait(host)
+        },
+        target: panel,
+        maxHeight: { escritorio: 720, movil: 700 },
+      },
+    ],
+  },
+  {
+    tool: 'reparar-pdf',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('informe.pdf', files.broken)])
+          await host.page().waitForTimeout(1500)
+          await primary(host).click()
+          await host.locator('.compare-panel .notice').first().waitFor({ timeout: 60_000 })
+          await host.page().waitForTimeout(800)
+        },
+        target: panel,
+        maxHeight: { escritorio: 720, movil: 760 },
+      },
+    ],
+  },
 ]
-

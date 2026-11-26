@@ -877,7 +877,7 @@ export default {
       short: 'Orri bakoitza irudi gisa',
       steps: ['Aukeratu PDFa.', 'Aukeratu formatua: PNG (kalitate handiena) edo JPG (fitxategi arinagoak).', 'Deskargatu irudiak: hainbat orri badira, .zip batean datoz batera.'],
       faq: [
-        ['Zein bereizmen dute irudiek?', 'Orri bakoitza 1600 pixeleko zabaleran esportatzen da, irakurtzeko, inprimatzeko edo argitaratzeko nahikoa.'],
+        ['Zein bereizmen dute irudiek?', 'Zuk aukeratzen duzu: 72 ppp (pantailan ikusteko), 150 ppp (ohikoa, 1240 pixel inguru zabalean A4 orri batean) edo 300 ppp (inprimatzeko). JPGn kalitatea ere aukeratzen duzu.'],
         ['JPG edo PNG?', 'PNGk kalitate zehatza gordetzen du eta hobea da testurako; JPGk gutxiago pisatzen du eta partekatzeko aproposa da.'],
         ['PDFa zerbitzariren batera igotzen da?', 'Ez. Orriak zure nabigatzailean marraztu eta bihurtzen dira.'],
       ],

@@ -1,4 +1,20 @@
 {
+ "ca/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "ca/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "ca/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "ca/comparar-pdf/diferencias-390": [
+  700,
+  1594
+ ],
  "ca/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -7,6 +23,30 @@
   612,
   1120
  ],
+ "ca/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "ca/dividir-pdf/elegir-390": [
+  700,
+  1800
+ ],
+ "ca/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ca/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "ca/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "ca/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "ca/escanear-documento/bordes-1280": [
   940,
   935
@@ -14,6 +54,14 @@
  "ca/escanear-documento/bordes-390": [
   700,
   1628
+ ],
+ "ca/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "ca/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  596
  ],
  "ca/firmar-pdf/colocar-1280": [
   940,
@@ -39,6 +87,86 @@
   700,
   1540
  ],
+ "ca/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "ca/imagen-a-texto/texto-390": [
+  700,
+  2144
+ ],
+ "ca/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ca/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "ca/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ca/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "ca/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "ca/ocr-pdf/texto-390": [
+  700,
+  1052
+ ],
+ "ca/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "ca/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1814
+ ],
+ "ca/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "ca/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "ca/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "ca/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "ca/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "ca/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "ca/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "ca/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "ca/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "ca/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "ca/proteger-pdf/clave-1280": [
   940,
   601
@@ -46,6 +174,22 @@
  "ca/proteger-pdf/clave-390": [
   700,
   1368
+ ],
+ "ca/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "ca/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "ca/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "ca/rotar-pdf/paginas-390": [
+  700,
+  1780
  ],
  "ca/unir-pdf/lista-1280": [
   940,
@@ -63,6 +207,22 @@
   612,
   1080
  ],
+ "de/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "de/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "de/comparar-pdf/diferencias-1280": [
+  940,
+  496
+ ],
+ "de/comparar-pdf/diferencias-390": [
+  700,
+  1516
+ ],
  "de/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -71,6 +231,30 @@
   612,
   1120
  ],
+ "de/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "de/dividir-pdf/elegir-390": [
+  700,
+  1800
+ ],
+ "de/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "de/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "de/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "de/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "de/escanear-documento/bordes-1280": [
   940,
   935
@@ -78,6 +262,14 @@
  "de/escanear-documento/bordes-390": [
   700,
   1628
+ ],
+ "de/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "de/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  594
  ],
  "de/firmar-pdf/colocar-1280": [
   940,
@@ -103,6 +295,86 @@
   700,
   1540
  ],
+ "de/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "de/imagen-a-texto/texto-390": [
+  700,
+  2190
+ ],
+ "de/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "de/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "de/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "de/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "de/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "de/ocr-pdf/texto-390": [
+  700,
+  1052
+ ],
+ "de/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "de/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1854
+ ],
+ "de/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "de/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "de/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "de/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "de/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "de/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "de/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "de/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "de/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "de/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "de/proteger-pdf/clave-1280": [
   940,
   601
@@ -110,6 +382,22 @@
  "de/proteger-pdf/clave-390": [
   700,
   1412
+ ],
+ "de/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "de/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "de/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "de/rotar-pdf/paginas-390": [
+  700,
+  1690
  ],
  "de/unir-pdf/lista-1280": [
   940,
@@ -127,6 +415,22 @@
   612,
   1080
  ],
+ "en/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "en/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "en/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "en/comparar-pdf/diferencias-390": [
+  700,
+  1514
+ ],
  "en/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -135,6 +439,30 @@
   612,
   1120
  ],
+ "en/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "en/dividir-pdf/elegir-390": [
+  700,
+  1802
+ ],
+ "en/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "en/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "en/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "en/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "en/escanear-documento/bordes-1280": [
   940,
   935
@@ -142,6 +470,14 @@
  "en/escanear-documento/bordes-390": [
   700,
   1628
+ ],
+ "en/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "en/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  596
  ],
  "en/firmar-pdf/colocar-1280": [
   940,
@@ -167,6 +503,86 @@
   700,
   1540
  ],
+ "en/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "en/imagen-a-texto/texto-390": [
+  700,
+  2144
+ ],
+ "en/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "en/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "en/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "en/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "en/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "en/ocr-pdf/texto-390": [
+  700,
+  1052
+ ],
+ "en/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "en/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1814
+ ],
+ "en/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "en/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "en/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "en/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "en/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "en/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "en/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "en/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "en/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "en/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "en/proteger-pdf/clave-1280": [
   940,
   601
@@ -174,6 +590,22 @@
  "en/proteger-pdf/clave-390": [
   700,
   1288
+ ],
+ "en/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "en/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "en/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "en/rotar-pdf/paginas-390": [
+  700,
+  1722
  ],
  "en/unir-pdf/lista-1280": [
   940,
@@ -247,6 +679,14 @@
   700,
   1628
  ],
+ "es/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "es/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  596
+ ],
  "es/firmar-pdf/colocar-1280": [
   940,
   760
@@ -271,6 +711,14 @@
   700,
   1540
  ],
+ "es/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "es/imagen-a-texto/texto-390": [
+  700,
+  2190
+ ],
  "es/marca-de-agua-pdf/resultado-1280": [
   896,
   660
@@ -287,6 +735,14 @@
   612,
   1240
  ],
+ "es/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "es/ocr-pdf/texto-390": [
+  700,
+  1054
+ ],
  "es/ordenar-paginas-pdf/paginas-1280": [
   940,
   538
@@ -295,6 +751,46 @@
   700,
   1854
  ],
+ "es/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "es/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "es/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "es/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "es/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "es/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "es/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "es/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "es/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "es/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "es/proteger-pdf/clave-1280": [
   940,
   601
@@ -302,6 +798,14 @@
  "es/proteger-pdf/clave-390": [
   700,
   1368
+ ],
+ "es/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "es/reparar-pdf/resultado-390": [
+  612,
+  1520
  ],
  "es/rotar-pdf/paginas-1280": [
   940,
@@ -327,6 +831,22 @@
   612,
   1080
  ],
+ "eu/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "eu/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "eu/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "eu/comparar-pdf/diferencias-390": [
+  700,
+  1514
+ ],
  "eu/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -335,6 +855,30 @@
   612,
   1120
  ],
+ "eu/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "eu/dividir-pdf/elegir-390": [
+  700,
+  1880
+ ],
+ "eu/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "eu/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "eu/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "eu/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "eu/escanear-documento/bordes-1280": [
   940,
   935
@@ -342,6 +886,14 @@
  "eu/escanear-documento/bordes-390": [
   700,
   1708
+ ],
+ "eu/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "eu/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  594
  ],
  "eu/firmar-pdf/colocar-1280": [
   940,
@@ -367,6 +919,86 @@
   700,
   1540
  ],
+ "eu/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "eu/imagen-a-texto/texto-390": [
+  700,
+  2190
+ ],
+ "eu/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "eu/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "eu/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "eu/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "eu/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "eu/ocr-pdf/texto-390": [
+  700,
+  1054
+ ],
+ "eu/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "eu/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1814
+ ],
+ "eu/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "eu/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "eu/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "eu/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "eu/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "eu/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "eu/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "eu/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "eu/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "eu/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "eu/proteger-pdf/clave-1280": [
   940,
   601
@@ -374,6 +1006,22 @@
  "eu/proteger-pdf/clave-390": [
   700,
   1370
+ ],
+ "eu/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "eu/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "eu/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "eu/rotar-pdf/paginas-390": [
+  700,
+  1780
  ],
  "eu/unir-pdf/lista-1280": [
   940,
@@ -391,6 +1039,22 @@
   612,
   1080
  ],
+ "fr/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "fr/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "fr/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "fr/comparar-pdf/diferencias-390": [
+  700,
+  1514
+ ],
  "fr/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -399,6 +1063,30 @@
   612,
   1120
  ],
+ "fr/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "fr/dividir-pdf/elegir-390": [
+  700,
+  1800
+ ],
+ "fr/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "fr/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "fr/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "fr/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "fr/escanear-documento/bordes-1280": [
   940,
   935
@@ -406,6 +1094,14 @@
  "fr/escanear-documento/bordes-390": [
   700,
   1748
+ ],
+ "fr/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "fr/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  594
  ],
  "fr/firmar-pdf/colocar-1280": [
   940,
@@ -431,6 +1127,86 @@
   700,
   1540
  ],
+ "fr/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "fr/imagen-a-texto/texto-390": [
+  700,
+  2240
+ ],
+ "fr/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "fr/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "fr/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "fr/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "fr/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "fr/ocr-pdf/texto-390": [
+  700,
+  1052
+ ],
+ "fr/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "fr/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1854
+ ],
+ "fr/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "fr/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "fr/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "fr/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "fr/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "fr/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "fr/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "fr/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "fr/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "fr/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "fr/proteger-pdf/clave-1280": [
   940,
   601
@@ -438,6 +1214,22 @@
  "fr/proteger-pdf/clave-390": [
   700,
   1370
+ ],
+ "fr/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "fr/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "fr/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "fr/rotar-pdf/paginas-390": [
+  700,
+  1782
  ],
  "fr/unir-pdf/lista-1280": [
   940,
@@ -455,6 +1247,22 @@
   612,
   1080
  ],
+ "it/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "it/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "it/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "it/comparar-pdf/diferencias-390": [
+  700,
+  1514
+ ],
  "it/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -463,6 +1271,30 @@
   612,
   1120
  ],
+ "it/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "it/dividir-pdf/elegir-390": [
+  700,
+  1880
+ ],
+ "it/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "it/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "it/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "it/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "it/escanear-documento/bordes-1280": [
   940,
   935
@@ -470,6 +1302,14 @@
  "it/escanear-documento/bordes-390": [
   700,
   1708
+ ],
+ "it/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "it/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  596
  ],
  "it/firmar-pdf/colocar-1280": [
   940,
@@ -495,6 +1335,86 @@
   700,
   1540
  ],
+ "it/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "it/imagen-a-texto/texto-390": [
+  700,
+  2190
+ ],
+ "it/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "it/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "it/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "it/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "it/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "it/ocr-pdf/texto-390": [
+  700,
+  1052
+ ],
+ "it/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "it/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1812
+ ],
+ "it/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "it/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "it/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "it/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "it/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "it/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "it/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "it/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "it/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "it/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "it/proteger-pdf/clave-1280": [
   940,
   601
@@ -502,6 +1422,22 @@
  "it/proteger-pdf/clave-390": [
   700,
   1290
+ ],
+ "it/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "it/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "it/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "it/rotar-pdf/paginas-390": [
+  700,
+  1690
  ],
  "it/unir-pdf/lista-1280": [
   940,
@@ -519,6 +1455,22 @@
   612,
   1080
  ],
+ "ja/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "ja/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "ja/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "ja/comparar-pdf/diferencias-390": [
+  700,
+  1516
+ ],
  "ja/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -527,6 +1479,30 @@
   612,
   1120
  ],
+ "ja/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "ja/dividir-pdf/elegir-390": [
+  700,
+  1720
+ ],
+ "ja/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ja/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "ja/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "ja/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "ja/escanear-documento/bordes-1280": [
   940,
   935
@@ -534,6 +1510,14 @@
  "ja/escanear-documento/bordes-390": [
   700,
   1628
+ ],
+ "ja/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "ja/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  594
  ],
  "ja/firmar-pdf/colocar-1280": [
   940,
@@ -559,6 +1543,86 @@
   700,
   1540
  ],
+ "ja/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "ja/imagen-a-texto/texto-390": [
+  700,
+  2186
+ ],
+ "ja/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ja/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "ja/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ja/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "ja/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "ja/ocr-pdf/texto-390": [
+  700,
+  1052
+ ],
+ "ja/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "ja/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1814
+ ],
+ "ja/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "ja/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "ja/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "ja/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "ja/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "ja/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "ja/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "ja/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "ja/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "ja/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "ja/proteger-pdf/clave-1280": [
   940,
   600
@@ -566,6 +1630,22 @@
  "ja/proteger-pdf/clave-390": [
   700,
   1288
+ ],
+ "ja/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "ja/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "ja/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "ja/rotar-pdf/paginas-390": [
+  700,
+  1690
  ],
  "ja/unir-pdf/lista-1280": [
   940,
@@ -583,6 +1663,22 @@
   612,
   1080
  ],
+ "ko/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "ko/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "ko/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "ko/comparar-pdf/diferencias-390": [
+  700,
+  1514
+ ],
  "ko/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -591,6 +1687,30 @@
   612,
   1120
  ],
+ "ko/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "ko/dividir-pdf/elegir-390": [
+  700,
+  1722
+ ],
+ "ko/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ko/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "ko/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "ko/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "ko/escanear-documento/bordes-1280": [
   940,
   935
@@ -598,6 +1718,14 @@
  "ko/escanear-documento/bordes-390": [
   700,
   1628
+ ],
+ "ko/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "ko/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  596
  ],
  "ko/firmar-pdf/colocar-1280": [
   940,
@@ -623,6 +1751,86 @@
   700,
   1540
  ],
+ "ko/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "ko/imagen-a-texto/texto-390": [
+  700,
+  2060
+ ],
+ "ko/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ko/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "ko/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ko/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "ko/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "ko/ocr-pdf/texto-390": [
+  700,
+  1054
+ ],
+ "ko/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "ko/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1814
+ ],
+ "ko/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "ko/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "ko/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "ko/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "ko/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "ko/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "ko/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "ko/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "ko/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "ko/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "ko/proteger-pdf/clave-1280": [
   940,
   600
@@ -630,6 +1838,22 @@
  "ko/proteger-pdf/clave-390": [
   700,
   1288
+ ],
+ "ko/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "ko/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "ko/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "ko/rotar-pdf/paginas-390": [
+  700,
+  1690
  ],
  "ko/unir-pdf/lista-1280": [
   940,
@@ -647,6 +1871,22 @@
   612,
   1080
  ],
+ "pt/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "pt/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "pt/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "pt/comparar-pdf/diferencias-390": [
+  700,
+  1596
+ ],
  "pt/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -655,6 +1895,30 @@
   612,
   1120
  ],
+ "pt/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "pt/dividir-pdf/elegir-390": [
+  700,
+  1800
+ ],
+ "pt/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "pt/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "pt/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "pt/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "pt/escanear-documento/bordes-1280": [
   940,
   935
@@ -662,6 +1926,14 @@
  "pt/escanear-documento/bordes-390": [
   700,
   1630
+ ],
+ "pt/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  291
+ ],
+ "pt/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  594
  ],
  "pt/firmar-pdf/colocar-1280": [
   940,
@@ -687,6 +1959,86 @@
   700,
   1540
  ],
+ "pt/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "pt/imagen-a-texto/texto-390": [
+  700,
+  2192
+ ],
+ "pt/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "pt/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "pt/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "pt/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "pt/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "pt/ocr-pdf/texto-390": [
+  700,
+  1054
+ ],
+ "pt/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "pt/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1854
+ ],
+ "pt/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "pt/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "pt/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "pt/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "pt/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "pt/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "pt/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "pt/pdf-a-texto/texto-390": [
+  700,
+  1396
+ ],
+ "pt/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "pt/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "pt/proteger-pdf/clave-1280": [
   940,
   600
@@ -694,6 +2046,22 @@
  "pt/proteger-pdf/clave-390": [
   700,
   1288
+ ],
+ "pt/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "pt/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "pt/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "pt/rotar-pdf/paginas-390": [
+  700,
+  1780
  ],
  "pt/unir-pdf/lista-1280": [
   940,
@@ -711,6 +2079,22 @@
   612,
   1080
  ],
+ "ru/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "ru/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "ru/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "ru/comparar-pdf/diferencias-390": [
+  700,
+  1516
+ ],
  "ru/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -719,6 +2103,30 @@
   612,
   1120
  ],
+ "ru/dividir-pdf/elegir-1280": [
+  940,
+  612
+ ],
+ "ru/dividir-pdf/elegir-390": [
+  700,
+  1922
+ ],
+ "ru/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ru/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "ru/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "ru/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "ru/escanear-documento/bordes-1280": [
   940,
   935
@@ -726,6 +2134,14 @@
  "ru/escanear-documento/bordes-390": [
   700,
   1628
+ ],
+ "ru/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "ru/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  654
  ],
  "ru/firmar-pdf/colocar-1280": [
   940,
@@ -751,6 +2167,86 @@
   700,
   1540
  ],
+ "ru/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "ru/imagen-a-texto/texto-390": [
+  700,
+  2240
+ ],
+ "ru/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ru/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "ru/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "ru/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "ru/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "ru/ocr-pdf/texto-390": [
+  700,
+  1052
+ ],
+ "ru/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  539
+ ],
+ "ru/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1854
+ ],
+ "ru/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "ru/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "ru/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "ru/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "ru/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "ru/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "ru/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "ru/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "ru/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "ru/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "ru/proteger-pdf/clave-1280": [
   940,
   600
@@ -758,6 +2254,22 @@
  "ru/proteger-pdf/clave-390": [
   700,
   1412
+ ],
+ "ru/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "ru/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "ru/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "ru/rotar-pdf/paginas-390": [
+  700,
+  1730
  ],
  "ru/unir-pdf/lista-1280": [
   940,
@@ -775,6 +2287,22 @@
   612,
   1080
  ],
+ "zh/censurar-pdf/zonas-1280": [
+  940,
+  640
+ ],
+ "zh/censurar-pdf/zonas-390": [
+  700,
+  1800
+ ],
+ "zh/comparar-pdf/diferencias-1280": [
+  940,
+  497
+ ],
+ "zh/comparar-pdf/diferencias-390": [
+  700,
+  1516
+ ],
  "zh/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -783,6 +2311,30 @@
   612,
   1120
  ],
+ "zh/dividir-pdf/elegir-1280": [
+  940,
+  572
+ ],
+ "zh/dividir-pdf/elegir-390": [
+  700,
+  1722
+ ],
+ "zh/dividir-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "zh/dividir-pdf/resultado-390": [
+  612,
+  1120
+ ],
+ "zh/editar-pdf/texto-1280": [
+  940,
+  760
+ ],
+ "zh/editar-pdf/texto-390": [
+  700,
+  2000
+ ],
  "zh/escanear-documento/bordes-1280": [
   940,
   935
@@ -790,6 +2342,14 @@
  "zh/escanear-documento/bordes-390": [
   700,
   1588
+ ],
+ "zh/extraer-imagenes-pdf/imagenes-1280": [
+  940,
+  290
+ ],
+ "zh/extraer-imagenes-pdf/imagenes-390": [
+  700,
+  594
  ],
  "zh/firmar-pdf/colocar-1280": [
   940,
@@ -815,6 +2375,86 @@
   700,
   1540
  ],
+ "zh/imagen-a-texto/texto-1280": [
+  940,
+  900
+ ],
+ "zh/imagen-a-texto/texto-390": [
+  700,
+  1980
+ ],
+ "zh/marca-de-agua-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "zh/marca-de-agua-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "zh/numerar-paginas-pdf/resultado-1280": [
+  896,
+  660
+ ],
+ "zh/numerar-paginas-pdf/resultado-390": [
+  612,
+  1240
+ ],
+ "zh/ocr-pdf/texto-1280": [
+  940,
+  371
+ ],
+ "zh/ocr-pdf/texto-390": [
+  700,
+  1052
+ ],
+ "zh/ordenar-paginas-pdf/paginas-1280": [
+  940,
+  538
+ ],
+ "zh/ordenar-paginas-pdf/paginas-390": [
+  700,
+  1814
+ ],
+ "zh/pdf-a-excel/resultado-1280": [
+  896,
+  700
+ ],
+ "zh/pdf-a-excel/resultado-390": [
+  612,
+  1280
+ ],
+ "zh/pdf-a-jpg/resultado-1280": [
+  896,
+  700
+ ],
+ "zh/pdf-a-jpg/resultado-390": [
+  612,
+  1400
+ ],
+ "zh/pdf-a-pdfa/resultado-1280": [
+  896,
+  720
+ ],
+ "zh/pdf-a-pdfa/resultado-390": [
+  612,
+  1400
+ ],
+ "zh/pdf-a-texto/texto-1280": [
+  940,
+  520
+ ],
+ "zh/pdf-a-texto/texto-390": [
+  700,
+  1398
+ ],
+ "zh/pdf-a-word/resultado-1280": [
+  896,
+  700
+ ],
+ "zh/pdf-a-word/resultado-390": [
+  612,
+  1280
+ ],
  "zh/proteger-pdf/clave-1280": [
   940,
   600
@@ -822,6 +2462,22 @@
  "zh/proteger-pdf/clave-390": [
   700,
   1246
+ ],
+ "zh/reparar-pdf/resultado-1280": [
+  896,
+  720
+ ],
+ "zh/reparar-pdf/resultado-390": [
+  612,
+  1520
+ ],
+ "zh/rotar-pdf/paginas-1280": [
+  940,
+  515
+ ],
+ "zh/rotar-pdf/paginas-390": [
+  700,
+  1722
  ],
  "zh/unir-pdf/lista-1280": [
   940,
