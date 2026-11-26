@@ -120,7 +120,7 @@ export default {
       faq: [
         ['Do I need to install an app?', "No. It works in your phone's or computer's browser. If you scan often, the DocuSmart Android app also does it offline."],
         ["What if it doesn't find the edges well?", 'Drag each corner to the tip of the page, or use "Whole photo". It works best when the paper contrasts with the background (a dark table).'],
-        ['What is a searchable PDF?', 'One where, besides the image, the text is recognised (OCR): you can search for words, select them and copy them.'],
+        ['What is a searchable PDF?', 'One where, besides the image, the text is recognized (OCR): you can search for words, select them and copy them.'],
         ['Are my photos uploaded to the internet?', 'No. Detection, straightening, filters and OCR all happen inside your browser.'],
       ],
     },
@@ -156,7 +156,7 @@ export default {
       steps: [
         'Choose the PDF.',
         'Use the toolbar: Text, Image, Rectangle, Circle, Highlight or Cover. Tap or drag on the page to add them.',
-        'Adjust size, colour and position, and press "Apply changes".',
+        'Adjust size, color and position, and press "Apply changes".',
       ],
       faq: [
         ['Can I change the text already in the PDF?', 'Yes. With "Replace" you tap a paragraph or line and type the new text: the original is removed from the document (it can no longer be selected or searched) and the new one stays in the same place, size and color, reflowed to the same width.'],
@@ -268,9 +268,9 @@ export default {
         'Press "Compress PDF": you\'ll see how much it shrank and the file is downloaded.',
       ],
       faq: [
-        ['Which compression level should I choose?', '"Lossless" optimises the file without touching the quality and the text stays selectable. If the PDF is a scan or has many photos, "Medium" or "High" shrink it much more, at the cost of turning the text into an image.'],
+        ['Which compression level should I choose?', '"Lossless" optimizes the file without touching the quality and the text stays selectable. If the PDF is a scan or has many photos, "Medium" or "High" shrink it much more, at the cost of turning the text into an image.'],
         ['Is my PDF uploaded to the internet?', 'No. Compression happens inside your browser: the file never leaves your device.'],
-        ["Why doesn't it shrink sometimes?", "Some PDFs are already optimised. In that case DocuSmart tells you and doesn't download an identical or larger file."],
+        ["Why doesn't it shrink sometimes?", "Some PDFs are already optimized. In that case DocuSmart tells you and doesn't download an identical or larger file."],
         ['Is there a size limit?', "There's no fixed limit; it depends on your device's memory. Very large PDFs may take a little longer."],
       ],
     },
@@ -331,7 +331,7 @@ export default {
       howTo: 'How to calculate or verify a file hash in 3 steps',
       lead: "Check that a document hasn't been modified: calculate its digital fingerprint, verify it against the one you were given or compare two files, without them leaving your device.",
       short: 'Digital fingerprint of files',
-      steps: ['Choose "Calculate", "Verify" or "Compare" and add the file (any type: PDF, photos, ZIP…).', "Pick the algorithm (SHA-256 recommended) or paste the hash you were given; DocuSmart recognises whether it's SHA-256, SHA-512, SHA-1 or MD5.", 'Copy the hash, download the list or a PDF integrity certificate, or see whether it matches.'],
+      steps: ['Choose "Calculate", "Verify" or "Compare" and add the file (any type: PDF, photos, ZIP…).', "Pick the algorithm (SHA-256 recommended) or paste the hash you were given; DocuSmart recognizes whether it's SHA-256, SHA-512, SHA-1 or MD5.", 'Copy the hash, download the list or a PDF integrity certificate, or see whether it matches.'],
       faq: [
         ['What is a hash?', "It's a digital fingerprint of the file: a string of letters and numbers calculated from its content. If the file changes, even by a single byte, the hash is completely different."],
         ['What is it for?', 'To check that a document you were sent is the same as the original (contracts, tenders, evidence, downloads), to keep a record of what a file looked like on a given date, or to know whether two files are identical without opening them.'],
@@ -344,16 +344,16 @@ export default {
       slug: 'pdf-to-pdfa',
       title: 'Convert PDF to PDF/A for free (PDF/A-1b, 2b, 3b) | DocuSmart',
       description:
-        'Convert a PDF to the PDF/A-2b archival format required by public bodies, courts and universities: fonts and colours included. Free, no sign-up and without uploading the file.',
+        'Convert a PDF to the PDF/A-2b archival format required by public bodies, courts and universities: fonts and colors included. Free, no sign-up and without uploading the file.',
       h1: 'PDF to PDF/A',
       howTo: 'How to convert a PDF to PDF/A in 3 steps',
       lead: 'Convert your documents to the standard archival format so they look the same many years from now, without depending on external fonts or software.',
       short: 'Long-term archival format',
       steps: ['Choose the PDF.', 'Press "Convert to PDF/A".', 'The PDF/A is downloaded and we tell you what was adjusted to meet the standard.'],
       faq: [
-        ['What is PDF/A?', "It's the version of PDF designed for archiving (ISO 19005): the file contains its fonts, colour profile and metadata, and can't depend on anything external. Many procedures with public bodies, courts and universities require it."],
+        ['What is PDF/A?', "It's the version of PDF designed for archiving (ISO 19005): the file contains its fonts, color profile and metadata, and can't depend on anything external. Many procedures with public bodies, courts and universities require it."],
         ['What level of PDF/A does it create?', 'PDF/A-2b, the most widely used level: it guarantees the document will look the same in the future. We validate it with veraPDF, the PDF Association\'s reference validator. You can also choose PDF/A-1b (the oldest, for systems that only accept it) or PDF/A-3b (keeps attachments, such as the XML of an e-invoice).'],
-        ['Does anything in my document change?', "Missing fonts are embedded and things the standard doesn't allow are removed, such as scripts, attachments or sounds. If a page uses print colours (CMYK) or fonts that aren't in the file, that page is saved as an image."],
+        ['Does anything in my document change?', "Missing fonts are embedded and things the standard doesn't allow are removed, such as scripts, attachments or sounds. If a page uses print colors (CMYK) or fonts that aren't in the file, that page is saved as an image."],
         ['Is the file uploaded?', 'No. The conversion happens in your browser.'],
       ],
     },
@@ -371,7 +371,7 @@ export default {
         "Press \"Compress\" and download each image or all of them in a ZIP; you'll see how much space you saved.",
       ],
       faq: [
-        ['How much smaller do they get?', "It depends on the photo: with the recommended level, a phone photo usually shrinks by 60% to 90%. If an image was already optimised and can't be reduced, DocuSmart gives you back the original."],
+        ['How much smaller do they get?', "It depends on the photo: with the recommended level, a phone photo usually shrinks by 60% to 90%. If an image was already optimized and can't be reduced, DocuSmart gives you back the original."],
         ['Is the difference noticeable?', 'With the low and recommended levels, hardly at a glance. The maximum level also scales the image down to 1600 px per side, ideal for messaging and email.'],
         ['What about images with a transparent background?', "They're saved as WebP, which keeps the transparency and is much smaller than PNG."],
         ['Are my photos uploaded to the internet?', "No. Compression happens inside your browser. The photo's hidden data (EXIF), such as GPS location, is also removed."],
@@ -829,21 +829,21 @@ export default {
     'ocr-pdf': {
       slug: 'ocr-pdf',
       title: 'Free online OCR: text from scanned PDFs and images | DocuSmart',
-      description: 'Recognise the text in a scanned PDF or a photo and turn it into editable text or a searchable PDF. In 12 languages, free and without uploading the file.',
-      h1: 'OCR: recognise text',
-      howTo: 'How to recognise text with OCR in 3 steps',
+      description: 'Recognize the text in a scanned PDF or a photo and turn it into editable text or a searchable PDF. In 12 languages, free and without uploading the file.',
+      h1: 'OCR: recognize text',
+      howTo: 'How to recognize text with OCR in 3 steps',
       lead: 'Turn a scan or a photo of a document into text you can copy, edit or search, without retyping it.',
       short: 'Text from scans and photos',
       steps: [
         'Choose a scanned PDF or an image (JPG, PNG or WebP).',
         "Pick the document's language (and tick whether it also has English text).",
-        'Press "Recognise text": copy the result or download it as .txt or as a searchable PDF.',
+        'Press "Recognize text": copy the result or download it as .txt or as a searchable PDF.',
       ],
       faq: [
         ['What is a searchable PDF?', "It's the same scanned document with an invisible layer of text on top: it looks the same, but you can select, copy and search for words."],
         ['Are my documents uploaded to the internet?', "No. Recognition is done with Tesseract inside your browser. The first time, the language model is downloaded from docusmart.online and stays saved in your browser for next time."],
         ['How accurate is it?', 'With sharp, straight scans, very accurate. Blurry, crooked or poorly lit photos lower the quality: DocuSmart warns you if the result is doubtful.'],
-        ['Does it recognise handwriting?', 'It works with printed text. Handwriting is usually recognised poorly.'],
+        ['Does it recognize handwriting?', 'It works with printed text. Handwriting is usually recognized poorly.'],
       ],
     },
     'imagen-a-pdf': {
@@ -940,7 +940,7 @@ export default {
       steps: ['Choose the Excel workbook (.xlsx).', 'Press "Convert".', 'Each sheet becomes a table in the PDF, with its header on every page.'],
       faq: [
         ['What if the sheet is very wide?', 'With more than 6 columns the PDF uses landscape pages, and with more than 10 a smaller font, so everything fits.'],
-        ['Are colours and formulas kept?', "The values (the results of the formulas) are kept, with numbers aligned to the right. Excel's colours, borders and charts are not included."],
+        ['Are colors and formulas kept?', "The values (the results of the formulas) are kept, with numbers aligned to the right. Excel's colors, borders and charts are not included."],
         ['Are my files uploaded to the internet?', 'No. The conversion happens inside your browser.'],
       ],
     },
@@ -954,7 +954,7 @@ export default {
       short: 'Extract the text from a PDF',
       steps: ['Choose the PDF.', 'Press "Convert": a .txt file is created.', 'You can also see the text on screen and copy it with one click.'],
       faq: [
-        ['Does it work with scanned PDFs?', "Only if the PDF already has text. For photos or scans without text, use DocuSmart's OCR tool, which recognises the text in the image."],
+        ['Does it work with scanned PDFs?', "Only if the PDF already has text. For photos or scans without text, use DocuSmart's OCR tool, which recognizes the text in the image."],
         ['Is the formatting kept?', 'The text and line breaks are kept; the visual layout (columns, tables) becomes plain text.'],
         ['Is it private?', 'Yes. The file is read in your browser and is not sent to any server.'],
       ],
@@ -975,7 +975,7 @@ export default {
       faq: [
         ['What is a protected QR?', 'A QR whose content is encrypted with AES-256: whoever scans it needs the password to see it.'],
         ['Can I open it in the DocuSmart app?', 'Yes. Protected QR codes from the web and the app use the same format, so they work in both.'],
-        ['Is what I scan stored?', "No. The camera image is analysed in your browser and isn't recorded or sent anywhere."],
+        ['Is what I scan stored?', "No. The camera image is analyzed in your browser and isn't recorded or sent anywhere."],
       ],
     },
     'ordenar-paginas-pdf': {
@@ -1240,7 +1240,7 @@ export default {
     ],
     [
       'Abre, convierte y organiza PDFs, Word, Excel, PowerPoint e imágenes desde tu teléfono. Tus archivos se procesan ahí mismo, sin subirlos a ningún servidor.',
-      'Open, convert and organise PDFs, Word, Excel, PowerPoint and images from your phone. Your files are processed right there, without uploading them to any server.',
+      'Open, convert and organize PDFs, Word, Excel, PowerPoint and images from your phone. Your files are processed right there, without uploading them to any server.',
     ],
     ['<small>Disponible en</small>', '<small>Get it on</small>'],
     ['Probar en el navegador', 'Try it in your browser'],

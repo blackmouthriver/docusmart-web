@@ -887,5 +887,471 @@ export default {
         ["Dokumentuaren gainerakoa bilatu daiteke oraindik?", "Bai. Eremu markatuak dituzten orriak bakarrik bihurtzen dira irudi, eta haien gainerako testua gordetzen da bilatzeko eta kopiatzeko."],
       ],
     },
+    'pasar-un-pdf-escaneado-a-texto': {
+      slug: 'pdf-eskaneatua-testu-bihurtu',
+      title: "Nola pasa PDF eskaneatu bat testu kopiagarri eta bilagarrira | DocuSmart",
+      description:
+        "Ezagutu PDF eskaneatu baten testua OCRrekin: kopiatu, deskargatu .txt edo Word formatuan, edo sortu PDF bilagarri bat. 12 hizkuntzatan, doan eta fitxategia igo gabe.",
+      h1: "Nola pasa PDF eskaneatu bat testu kopiagarri eta bilagarrira",
+      lead: "Eskaneatu bat orri bakoitzaren argazki bat da: irakur daiteke, baina ezin da kopiatu, ezta hitz bat bilatu ere. OCRrekin testua testu bihurtzen da berriro, berriz idatzi beharrik gabe.",
+      sections: [
+        {
+          h2: "Zer egiten duen OCRk",
+          body: [
+            "OCR karaktere-ezagutze optikoa da: programak orri bakoitzaren irudia aztertzen du eta letrak ezagutzen ditu. [OCR: ezagutu testua](/ocr-pdf) tresnak bi gauza ematen dizkizu aldi berean:",
+            { ul: [
+              "**Ezagututako testua**, kopiatzeko edo .txt edo Word formatuan deskargatzeko, zati bakoitza zein orritatik datorren adierazita.",
+              "**PDF bilagarri bat**: eskaneatu bera, itxuraz berdin-berdina, gainean testu-geruza ikusezin batekin. Testua hautatu eta kopiatu dezakezu, eta hitzak bilatu Ctrl+F sakatuta.",
+            ] },
+          ],
+        },
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [OCR: ezagutu testua](/ocr-pdf) eta aukeratu PDF eskaneatua (JPG, PNG edo WebP argazki batek ere balio du). Aukeratu **Dokumentuaren hizkuntza**: ezagutzeak askoz hobeto asmatzen du zer hizkuntza espero duen badaki. Dokumentuak bere hizkuntza ingelesarekin nahasten badu, markatu lauki hori ere.",
+            "Utzi markatuta **Sortu PDF bilagarri bat ere** PDFa nahi baduzu, eta sakatu **Ezagutu testua**. Aurrerapena orriz orri ikusiko duzu. Amaitzean, PDFa deskargatzeko prest izango duzu eta, azpian, testua, kopiatu edo .txt edo Word formatuan jaitsi dezakezuna.",
+            { tip: "Lehen aldian hizkuntzaren eredua deskargatzen da (segundo batzuk) eta zure nabigatzailean gordeta geratzen da: hurrengoetan berehala hasten da." },
+          ],
+        },
+        {
+          h2: "Nola lortu emaitza hobea",
+          body: [
+            "OCRk ikusten duena irakurtzen du. Eskaneatu garbi, zuzen eta argi onarekin egindako bat ia akatsik gabe ezagutzen da; argazki lauso bat, itzalekin edo oso txikia, ez. Ezagutzea zalantzazkoa bada, DocuSmart-ek konfiantza-ehunekoarekin abisatzen dizu, testua berrikus dezazun.",
+            { ul: [
+              "Biratuta datozen orriak berez detektatzen dira eta zuzen irakurtzen dira.",
+              "Dagoeneko testua duten orriak (PDF misto bat) dauden bezala uzten dira, **Testua duten orriak ere ezagutu** markatzen ez baduzu.",
+              "Letra inprimatuarekin dabil. Eskuz idatzitako letra ia inoiz ez da ondo ezagutzen.",
+            ] },
+          ],
+        },
+        {
+          h2: "Word-en editatu nahi baduzu",
+          body: [
+            "Zure helburua dokumentua zuzentzea bada, eta ez testua kopiatzea bakarrik, erabili zuzenean [PDFtik Wordera](/pdf-a-word) OCR laukiarekin: orri eskaneatuak urrats berean ezagutzen ditu eta .docx editagarri bat osatzen du. Eta PDF bilagarria astunegia geratu bada bidaltzeko, pasa ezazu [Konprimitu PDFa](/comprimir-pdf) tresnatik.",
+          ],
+        },
+        {
+          h2: "Zure dokumentua ez da gailutik irteten",
+          body: [
+            "Ezagutzea zure nabigatzailean egiten da Tesseract-ekin, kode irekiko OCR motor batekin. PDFa ez da inongo zerbitzaritara igotzen; beraz, NANekin, historia klinikoekin edo banku-laburpenekin erabil dezakezu, beste inon kopiarik utzi gabe.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki OCR", text: "Ireki docusmart.online webguneko OCR: ezagutu testua tresna eta aukeratu PDF eskaneatua edo argazki bat." },
+        { name: "Aukeratu hizkuntza", text: "Aukeratu dokumentuaren hizkuntza eta markatu ingelesezko testua ere baduen." },
+        { name: "Ezagutu testua", text: "Sakatu «Ezagutu testua» eta itxaron orri bakoitza amaitu arte." },
+        { name: "Deskargatu", text: "Deskargatu PDF bilagarria edo kopiatu testua, edo jaitsi .txt edo Word formatuan." },
+      ],
+      faq: [
+        ["Zer da PDF bilagarri bat?", "Zure eskaneatu bera da, gainean testu-geruza ikusezin batekin: berdin ikusten da, baina testua hautatu eta kopiatu dezakezu, eta hitzak bilatu."],
+        ["Zenbat orri ezagut ditzaket?", "Behar dituzunak: banan-banan ezagutzen dira zure nabigatzailean. Dokumentu luze batek denbora gehiago behar du, baina ez dago orri-mugarik."],
+        ["Hainbat hizkuntza ezagutzen ditu?", "Hamabi: gaztelania, ingelesa, portugesa, frantsesa, italiera, alemana, katalana, euskara, errusiera, japoniera, koreera eta txinera. Dokumentuak bere hizkuntza ingelesarekin nahasten badu, markatu lauki hori."],
+      ],
+    },
+    'copiar-el-texto-de-una-foto': {
+      slug: 'argazki-bateko-testua-kopiatu',
+      title: "Nola kopiatu argazki edo pantaila-argazki bateko testua | DocuSmart",
+      description:
+        "Atera argazki, pantaila-argazki edo argazkian ateratako dokumentu bateko testua, eta kopiatu, zuzendu edo pasa Wordera. Doan, 12 hizkuntzatan eta irudia igo gabe.",
+      h1: "Nola kopiatu argazki edo pantaila-argazki bateko testua",
+      lead: "Ordainagiri baten argazkia, txat baten pantaila-argazkia edo kartel bat: testua aurrean duzu, baina ezin duzu kopiatu. Hona hemen nola atera segundo gutxitan, eskuz idatzi gabe.",
+      sections: [
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [Iruditik testura (OCR)](/imagen-a-texto) eta aukeratu argazkia. JPG, PNG eta WebP balio dute, baita iPhoneko HEIC argazkiek ere. Pantaila-argazki bat bada, ez duzu gorde beharrik ere: kopiatu eta itsatsi orrian **Ctrl+V** sakatuta.",
+            "Aukeratu **Dokumentuaren hizkuntza** eta sakatu **Testua ezagutu**. Segundo gutxitan, testua zuzen dezakezun lauki batean agertzen da. Handik ukitu bakarrarekin kopiatzen duzu, edo .txt edo Word (.docx) formatuan deskargatzen duzu.",
+            { tip: "Testuak zure hizkuntza ingelesezko hitzekin nahasten badu (produktu-izenak, termino teknikoak), markatu «Dokumentuak ingelesezko testua ere badu»: hitz horiekin hobeto asmatzen du." },
+          ],
+        },
+        {
+          h2: "Hainbat argazki dokumentu bakar batera",
+          body: [
+            "Hainbat orriko dokumentu bati argazkiak atera badizkiozu, aukeratu argazki guztiak batera. Guztien testua batera ateratzen da, ordenan, eta Word bakar batean jaisten duzu. Utzi dizkizuten orri inprimatu batzuk digitalera pasatzeko modurik azkarrena da.",
+          ],
+        },
+        {
+          h2: "Nola atera argazkia ondo irakur dadin",
+          body: [
+            "Ezagutzea argazkiaren araberakoa da. Xehetasun batzuek alde handia egiten dute:",
+            { ul: [
+              "**Argi ona eta itzalik gabe**: mugikorraren itzala paperaren gainean da akatsen kausarik ohikoena.",
+              "**Aurrez aurre eta zuzen**: zenbat eta gutxiago okertuta, hobe.",
+              "**Testua handi ikus dadila**: hurbildu orriak argazki osoa bete arte.",
+              "**Garbia**: argazkia mugituta atera bada, atera berriro.",
+            ] },
+            "Emaitza zalantzazkoa bada, DocuSmart-ek konfiantza-ehunekoarekin abisatzen dizu, testua erabili aurretik berrikus dezazun. Eskuz idatzitako letra ia inoiz ez da ondo ezagutzen: tresna testu inprimaturako edo pantailako testurako pentsatuta dago.",
+          ],
+        },
+        {
+          h2: "Argazkia ala PDF eskaneatua?",
+          body: [
+            "Hainbat orriko PDF eskaneatu bat baduzu, edo dokumentua bere itxurarekin gorde eta, gainera, hitzak bilatu nahi badituzu, erabili [OCR: ezagutu testua](/ocr-pdf), PDF bilagarri bat sortzen baitu. Eta argazkiak dokumentu gisa entregatu behar badituzu, bildu lehenago [Iruditik PDFra](/imagen-a-pdf) tresnarekin.",
+          ],
+        },
+        {
+          h2: "Zure argazkiak ez dira gailutik irteten",
+          body: [
+            "Testua zure nabigatzailean ezagutzen da: irudiak ez dira inongo zerbitzaritara igotzen. Dokumentuen, ordainagirien edo elkarrizketen argazkiekin erabil dezakezu, beste inon kopiarik utzi gabe.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki Iruditik testura", text: "Ireki docusmart.online webguneko Iruditik testura (OCR) tresna eta aukeratu argazkia, edo itsatsi pantaila-argazki bat Ctrl+V sakatuta." },
+        { name: "Aukeratu hizkuntza", text: "Aukeratu irudiko testuaren hizkuntza." },
+        { name: "Ezagutu testua", text: "Sakatu «Testua ezagutu» eta berrikusi emaitza laukian." },
+        { name: "Kopiatu edo deskargatu", text: "Kopiatu ukitu batekin edo deskargatu .txt edo Word formatuan." },
+      ],
+      faq: [
+        ["iPhoneko argazkiekin dabil?", "Bai. HEIC argazkiak zuzenean irekitzen dira, aurretik bihurtu gabe."],
+        ["Eskuz idatzitako letra ezagutzen du?", "Ia inoiz ez ondo. Testu inprimatuarekin edo pantailako testuarekin dabil."],
+        ["Testua zuzen dezaket kopiatu aurretik?", "Bai. Testua lauki editagarri batean agertzen da: zuzendu behar dena eta gero kopiatu edo deskargatu."],
+      ],
+    },
+    'convertir-un-pdf-a-word-para-editarlo': {
+      slug: 'pdf-bat-wordera-bihurtu-editatzeko',
+      title: "Nola bihurtu PDF bat Wordera editatzeko, baita eskaneatua ere | DocuSmart",
+      description:
+        "Pasa PDF bat Word (.docx) editagarri batera izenburu, letra lodi, taula, irudi eta bi zutaberekin. Eskaneatuentzat OCRrekin, doan eta fitxategia igo gabe.",
+      h1: "Nola bihurtu PDF bat Wordera editatzeko, baita eskaneatuta badago ere",
+      lead: "PDF bat bidali dizute eta data bat, izen bat edo paragrafo bat aldatu behar diozu, baina ez duzu jatorrizko Worda. Hona hemen nola berreskuratu dokumentu editagarri gisa.",
+      sections: [
+        {
+          h2: "Bihurtu aurretik: zer espero",
+          body: [
+            "PDF batek ez ditu paragrafoak ezta taulak gordetzen: letrak eta orrian duten kokapena bakarrik. Horregatik, Wordera egiten den edozein bihurketak dokumentua **berreraikitzen** du, eta emaitza jatorrizkoaren oso antzekoa da, baina ez berdin-berdina. [PDFtik Wordera](/pdf-a-word) tresnak hau gordetzen du:",
+            { ul: [
+              "Izenburuak, letra lodia, letra etzana, letren tamainak eta koloreak.",
+              "Zerrendak, taula sinpleak eta irudiak.",
+              "Bi zutabeko diseinuak, curriculumetakoak bezala, zutabe bakoitzaren atzeko planoarekin.",
+            ] },
+            "Testu-koadroak eta forma apaingarri konplexuak desberdin gera daitezke. Hobeto dabil Word-etik edo antzeko programa batetik sortutako PDFekin.",
+          ],
+        },
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [PDFtik Wordera](/pdf-a-word) eta aukeratu fitxategia. PDFa eskaneatua bada, edo orri eskaneatu batzuk baditu, utzi markatuta **Ezagutu orri eskaneatuen testua** laukia eta aukeratu dokumentuaren hizkuntza: orri horiek OCRrekin irakurtzen dira urrats berean, eta haien testua editagarri geratzen da.",
+            "Sakatu **Bihurtu**. Emaitzaren gutxi gorabeherako aurrebista ikusiko duzu jatorrizkoaren ondoan, zenbat paragrafo eta irudi atera diren adierazita. Deskargatu .docx fitxategia eta ireki Word, Google Docs, LibreOffice, Pages edo WPS-en.",
+            { tip: "Berrikusi dokumentua irekitzean, batez ere taulak eta orri-jauziak: hor aldatzen da gehien diseinua." },
+          ],
+        },
+        {
+          h2: "Word behar duzu ala nahikoa da PDFa editatzea?",
+          body: [
+            "Hitz bat aldatu, data bat jarri edo datu bat estali besterik ez baduzu egin behar, ez duzu Word-etik pasatu beharrik: [Editatu PDFa](/editar-pdf) tresnarekin PDFaren gainean idazten duzu eta lehen bezala geratzen da, bere diseinu zehatzarekin. Wordera bihurtzea komeni da paragrafo osoak berridatziko dituzunean edo edukia beste dokumentu batean berrerabiliko duzunean.",
+          ],
+        },
+        {
+          h2: "Berriro PDFra",
+          body: [
+            "Editatzen amaitzean, gorde dokumentua eta bihurtu berriro [Wordetik PDFra](/word-a-pdf) tresnarekin bidaltzeko. Horrela, jasotzen duenak berdin ikusiko du edozein gailutan, instalatuta dituen letra-tipoen menpe egon gabe.",
+          ],
+        },
+        {
+          h2: "Zure dokumentua ez da gailutik irteten",
+          body: [
+            "Bihurketa, eta orri eskaneatuen OCRa, zure nabigatzailean egiten dira: PDFa ez da inongo zerbitzaritara igotzen. Berdin balio du kontratuetarako, curriculumetarako edo zabaldu behar ez diren lan-dokumentuetarako.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki PDFtik Wordera", text: "Ireki docusmart.online webguneko PDFtik Wordera tresna eta aukeratu PDFa." },
+        { name: "Aktibatu OCRa behar bada", text: "Orri eskaneatuak baditu, utzi markatuta OCR laukia eta aukeratu hizkuntza." },
+        { name: "Bihurtu", text: "Sakatu «Bihurtu» eta berrikusi gutxi gorabeherako aurrebista." },
+        { name: "Deskargatu eta editatu", text: "Deskargatu .docx fitxategia eta ireki Word, Google Docs edo LibreOffice-n." },
+      ],
+      faq: [
+        ["PDFaren berdin-berdina geratzen da?", "Oso antzekoa, baina ez berdina: dokumentua letren kokapenetik abiatuta berreraikitzen da. Izenburuak, formatua, zerrendak, taula sinpleak, irudiak eta bi zutabeak gordetzen dira."],
+        ["PDF eskaneatuekin dabil?", "Bai. OCR laukia markatuta, orri eskaneatuak zure nabigatzailean ezagutzen dira eta haien testua editagarri geratzen da."],
+        ["Pasahitza duen PDF bat bihur daiteke?", "Murrizketak bakarrik baditu (pasahitzik gabe irekitzen da), bai. Irekitzeko pasahitza eskatzen badu, kendu lehenik Desblokeatu PDFa tresnarekin."],
+      ],
+    },
+    'pasar-un-extracto-bancario-pdf-a-excel': {
+      slug: 'banku-laburpena-pdftik-excelera-pasa',
+      title: "Nola pasa PDF formatuko banku-laburpen edo faktura bat Excelera | DocuSmart",
+      description:
+        "Bihurtu banku-laburpen, faktura edo txosten baten PDF taulak Excel kalkulu-orri batera, zenbakiak batzeko prest dituela. Doan eta fitxategia igo gabe.",
+      h1: "Nola pasa PDF formatuko banku-laburpen edo faktura bat Excelera",
+      lead: "Hilabeteko gastuak batu, kontu bat bateratu edo txosten bat iragazi behar duzu, eta datuak PDF batean daude. Hona hemen nola pasa kalkulu-orri batera, gelaxkaz gelaxka kopiatu gabe.",
+      sections: [
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [PDFtik Excelera](/pdf-a-excel) eta aukeratu PDFa. Aukeratu nola nahi dituzun **Orriak**:",
+            { ul: [
+              "**Bat orriko**: PDFko orri bakoitza bere kalkulu-orrian. Erabilgarria orri bakoitza taula desberdin bat den txostenetarako.",
+              "**Dena orri batean**: errenkada guztiak jarraian, kalkulu-orri bakar batean. Onena hainbat orriko banku-laburpen baterako, horrela behin batean iragazi eta batzen baituzu.",
+            ] },
+            "Sakatu **Bihurtu**. Gutxi gorabeherako aurrebista ikusiko duzu, zenbat errenkada eta zenbaki atera diren adierazita. Deskargatu .xlsx fitxategia eta ireki Excel, Google Sheets edo LibreOffice-n.",
+          ],
+        },
+        {
+          h2: "Zenbakiak zenbaki gisa geratzen dira",
+          body: [
+            "Hau da denbora gehien aurrezten duen xehetasuna: 1.500.000, $ 2.000, 3,5 edo 45 % bezalako balioak Excel zenbaki gisa gordetzen dira, beren formatuarekin, eta ez testu gisa. Fitxategia ireki bezain laster batu, batez bestekoak atera edo formuletan erabil ditzakezu, puntuak edo txanpon-ikurrak garbitu gabe.",
+            { tip: "Balio-zutabe batek ez badu batzen, egiaztatu zutabe horretan ez dagoela «N/A» bezalako testurik edo marratxorik nahastuta: Excelek gelaxka horiek ez ditu kontuan hartzen batuketan." },
+          ],
+        },
+        {
+          h2: "Zer PDFekin dabilen hobeto",
+          body: [
+            "Zutabeak orriko testuaren kokapenaren arabera osatzen dira. Horregatik oso ondo dabil sistema batek esportatzen dituen PDFekin: banku-laburpenak, faktura elektronikoak, kontabilitate-txostenak edo zerrendak. Diseinu libreko PDFekin, testuak zutaberik jarraitzen ez duenean, emaitzak berrikuspen gehiago behar du.",
+            "Laburpena eskaneatua bada, edo norbaitek PDFra pasatutako argazki bat, utzi markatuta **Ezagutu orri eskaneatuen testua** laukia eta aukeratu hizkuntza: orri horiek OCRrekin irakurtzen dira urrats berean, eta zutabe bakoitza bere gelaxkan geratzen da. Zenbat eta garbiagoa izan eskaneatua, orduan eta emaitza hobea.",
+          ],
+        },
+        {
+          h2: "Berriro entregatzeko",
+          body: [
+            "Kalkulu-orria landu ondoren dokumentu gisa bidali behar baduzu, bihurtu [Exceletik PDFra](/excel-a-pdf) tresnarekin. Eta eskaneatuaren testua bakarrik behar baduzu, taularik gabe, erabili [OCR: ezagutu testua](/ocr-pdf).",
+          ],
+        },
+        {
+          h2: "Zure datuak ez dira gailutik irteten",
+          body: [
+            "Banku-laburpen batek zure kontu-zenbakia, saldoa eta mugimenduak ditu. Hemen bihurketa zure nabigatzailean egiten da: PDFa ez da inongo zerbitzaritara igotzen, ezta beste inon gordetzen ere.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki PDFtik Excelera", text: "Ireki docusmart.online webguneko PDFtik Excelera tresna eta aukeratu PDFa." },
+        { name: "Aukeratu orriak", text: "Kalkulu-orri bat PDFko orri bakoitzeko, edo dena orri bakar batean, behin batean batzeko." },
+        { name: "Bihurtu", text: "Sakatu «Bihurtu» eta berrikusi gutxi gorabeherako aurrebista." },
+        { name: "Deskargatu", text: "Deskargatu .xlsx fitxategia eta ireki Excel, Google Sheets edo LibreOffice-n." },
+      ],
+      faq: [
+        ["Zenbakiak batu daitezke?", "Bai. Milakoen puntuak, txanpon-ikurra, koma hamartarrak edo ehunekoak dituzten balioak Excel zenbaki gisa gordetzen dira."],
+        ["Banku-laburpen eskaneatu batekin dabil?", "Bai. OCR laukia markatuta, orri eskaneatuak zure nabigatzailean ezagutzen dira eta zutabe bakoitza bere gelaxkan geratzen da."],
+        ["Nire laburpena Internetera igotzen da?", "Ez. Bihurketa zure nabigatzailearen barruan gertatzen da; fitxategia ez da zure gailutik irteten."],
+      ],
+    },
+    'sacar-el-texto-de-un-pdf': {
+      slug: 'pdf-bateko-testua-atera',
+      title: "Nola atera PDF bateko testu guztia kopiatzeko edo bilatzeko | DocuSmart",
+      description:
+        "Atera PDF bateko testua .txt fitxategi batera edo kopiatu pantailatik klik batekin, orriaren diseinurik gabe. Doan, berehala eta fitxategia igo gabe.",
+      h1: "Nola atera PDF bateko testu guztia kopiatzeko edo bilatzeko",
+      lead: "PDF baten edukia mezu elektroniko batean, txat batean edo beste dokumentu batean itsatsi nahi duzu, eta kopiatzean lerroak hautsi egiten dira. Hona hemen nola atera testu garbia, orri guztietakoa aldi berean.",
+      sections: [
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [PDFtik testura](/pdf-a-texto), aukeratu PDFa eta sakatu **Bihurtu**. Une batean orri guztietako testua ikusiko duzu pantailan, zenbat lerro dituen adierazita. Handik klik batekin kopiatzen duzu edo .txt fitxategia deskargatzen duzu.",
+            ".txt fitxategia edozein gailutan irekitzen da, baita Oharren blokean edo mugikorrean ere, eta ia ezer ez du pisatzen: ehun orriko dokumentu bat ehunka KB gutxitan geratu ohi da.",
+          ],
+        },
+        {
+          h2: "Zertarako balio du",
+          body: [
+            { ul: [
+              "**Bilatu**: testua ireki eta hitz edo zenbaki bat bilatu dokumentu luze batean.",
+              "**Berrerabili**: paragrafoak mezu elektroniko batean edo txat batean itsatsi, PDFaren lerro-jauzirik gabe.",
+              "**Zenbatu edo aztertu**: testua beste tresna batera pasatu, adibidez [Hitz eta karaktere kontagailua](/contador-de-palabras) tresnara.",
+              "**Funtsezkoa gorde**: dokumentu baten edukia gorde, bere diseinurik gabe.",
+              "**Itzuli edo entzun**: testua itzultzaile batean itsatsi, edo mugikorraren ozen irakurtzeko funtzioan, PDFtik zuzenean kopiatzean geratzen diren jauzirik gabe.",
+            ] },
+          ],
+        },
+        {
+          h2: "Zer gordetzen den eta zer ez",
+          body: [
+            "Testua eta lerro-jauziak gordetzen dira, orri bakoitzaren irakurketa-ordenan. Diseinu bisuala (zutabeak, taulak, koloreak, irudiak) testu arrunt bihurtzen da. Edukia **bere formatuarekin** behar baduzu editatzen jarraitzeko, erabili [PDFtik Wordera](/pdf-a-word).",
+            { tip: "Taula bat garrantzitsua bada zuretzat, kontuan izan .txt fitxategian bere zutabeak galtzen dituela. Gelaxketan lantzeko, hobe da [PDFtik Excelera](/pdf-a-excel)." },
+          ],
+        },
+        {
+          h2: "Hutsik ateratzen bada: eskaneatu bat da",
+          body: [
+            "DocuSmart-ek testurik aurkitu ez duela esaten badizu, PDFa eskaneatua da: orri bakoitza argazki bat da, eta ez dago ateratzeko letrarik. Kasu horretan, erabili [OCR: ezagutu testua](/ocr-pdf); irudiko testua zure nabigatzailean ezagutzen du eta kopiatzeko edo deskargatzeko ematen dizu.",
+          ],
+        },
+        {
+          h2: "Zure dokumentua ez da gailutik irteten",
+          body: [
+            "Testua zure nabigatzailean irakurtzen da: PDFa ez da inongo zerbitzaritara bidaltzen. Horregatik lan-dokumentuekin edo dokumentu pertsonalekin erabil dezakezu, beste inon kopiarik utzi gabe.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki PDFtik testura", text: "Ireki docusmart.online webguneko PDFtik testura tresna eta aukeratu PDFa." },
+        { name: "Bihurtu", text: "Sakatu «Bihurtu»: orri guztietako testua ikusiko duzu." },
+        { name: "Kopiatu edo deskargatu", text: "Kopiatu klik batekin edo deskargatu .txt fitxategia." },
+      ],
+      faq: [
+        ["Zergatik ateratzen da hutsik?", "PDFa eskaneatua delako: orriak irudiak dira. Erabili OCR: ezagutu testua haien testua ateratzeko."],
+        ["Taulak mantentzen dira?", "Ez taula gisa: testu-lerro bihurtzen dira. Zutabeak gordetzeko, erabili PDFtik Excelera."],
+        ["Orri-mugarik ba al dago?", "Ez. Orri guztietako testua ateratzen da, dokumentua luzea izan arren."],
+      ],
+    },
+    'convertir-un-pdf-a-jpg-o-sacar-sus-imagenes': {
+      slug: 'pdf-bat-jpg-bihurtu-edo-irudiak-atera',
+      title: "Nola bihurtu PDF bat JPGra edo atera barruan dituen argazkiak | DocuSmart",
+      description:
+        "Pasa PDF bateko orri bakoitza JPG edo PNG formatura nahi duzun bereizmenarekin, edo atera barruko argazkiak jatorrizko kalitatean. Doan eta fitxategia igo gabe.",
+      h1: "Nola bihurtu PDF bat JPGra edo atera barruan dituen argazkiak",
+      lead: "Orri bat sare sozialetan argitaratzeko, WhatsAppez irudi gisa bidaltzeko edo PDF baten barruan bakarrik duzun argazki bat berreskuratzeko. Bi tresna desberdin dira, eta komeni da jakitea zein erabili.",
+      sections: [
+        {
+          h2: "Orri osoa ala argazkiak bakarrik?",
+          body: [
+            { ul: [
+              "**[PDFtik JPGra](/pdf-a-jpg)** tresnak **orri oso** bakoitza irudi bihurtzen du, bere testu, argazki eta diseinuarekin, pantaila-argazki bat bezala baina kalitate onean.",
+              "**[Atera PDF bateko irudiak](/extraer-imagenes-pdf)** tresnak barruan dauden **argazkiak eta grafikoak bakarrik** ateratzen ditu, bakoitza bere aldetik eta jatorrizko tamainarekin, inguruko testurik gabe.",
+            ] },
+            "Orri bat ikusten den bezala erakutsi nahi baduzu, erabili PDFtik JPGra. Dokumentuaren barruan datorren logoa, produktuaren argazkia edo planoa nahi baduzu, erabili Atera irudiak.",
+          ],
+        },
+        {
+          h2: "PDFtik JPGra, urratsez urrats",
+          body: [
+            "Ireki [PDFtik JPGra](/pdf-a-jpg) eta aukeratu PDFa. Aukeratu **Irudi-formatua** eta **Bereizmena**:",
+            { ul: [
+              "**PNG** formatuak kalitate zehatza gordetzen du eta hobea da testua duten orrietarako; **JPG** arinagoa da eta partekatzeko aproposa. JPG formatuan kalitatea ere aukeratzen duzu.",
+              "**72 ppp** pantailan ikusteko, **150 ppp** ia guztirako eta **300 ppp** inprimatzeko.",
+            ] },
+            "Orri batzuk bakarrik nahi badituzu, idatzi **Orriak** eremuan (adibidez, 1-3, 5); hutsik utzita, guztiak bihurtzen dira. Sakatu **Bihurtu**: irudi bakoitza bere orri-zenbakiarekin ikusiko duzu, eta hainbat badira, ZIP batean deskargatzen dira batera.",
+          ],
+        },
+        {
+          h2: "Atera irudiak, urratsez urrats",
+          body: [
+            "Ireki [Atera PDF bateko irudiak](/extraer-imagenes-pdf), aukeratu PDFa eta sakatu **Bilatu irudiak**. Argazki eta grafiko guztiak agertzen dira, bakoitza bere orri, tamaina eta formatuarekin. Aukeratu nahi dituzunak eta deskargatu banan-banan edo guztiak ZIP batean.",
+            "JPEG argazkiak jatorrizkoen **berdin-berdinak** ateratzen dira, bytez byte; gainerakoak PNG gisa gordetzen dira, galerarik gabe. Utzi markatuta **Saltatu irudi txikiak**, ikonoz eta buletez ez betetzeko.",
+            { tip: "PDF eskaneatu batean orri bakoitza irudi handi bakar bat da; beraz, Atera irudiak tresnak orriak itzultzen dizkizu. Kasu horretan berdin dio bi tresnetako zein erabili." },
+          ],
+        },
+        {
+          h2: "Irudiak gehiegi pisatzen badu",
+          body: [
+            "300 ppp-tan, A4 orri batek 2.400 pixel baino gehiago ditu zabaleran. Webgunerako edo inprimaki baterako arinagoa behar baduzu, pasa ezazu [Konprimitu irudia](/comprimir-imagen) tresnatik. Eta dena zure nabigatzailean egiten da: PDFa ez da inongo zerbitzaritara igotzen.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Aukeratu tresna", text: "PDFtik JPGra orri osoetarako; Atera irudiak barruan dituen argazkietarako." },
+        { name: "Aukeratu PDFa", text: "Ireki tresna docusmart.online webgunean eta aukeratu fitxategia." },
+        { name: "Doitu eta bihurtu", text: "PDFtik JPGra tresnan, aukeratu formatua, bereizmena eta orriak; Atera irudiak tresnan, sakatu «Bilatu irudiak» eta aukeratu nahi dituzunak." },
+        { name: "Deskargatu", text: "Deskargatu irudi bakoitza, edo guztiak batera ZIP batean." },
+      ],
+      faq: [
+        ["Zer bereizmen aukeratu?", "150 ppp-k ia guztirako balio du. 72 ppp pantailan bakarrik ikusiko bada, eta 300 ppp inprimatuko bada."],
+        ["Ateratako argazkiek kalitatea galtzen dute?", "Ez. JPEG argazkiak jatorrizkoen berdin-berdinak kopiatzen dira, eta gainerakoak PNG gisa gordetzen dira, galerarik gabe."],
+        ["Orri bakar bat bihur dezaket?", "Bai. PDFtik JPGra tresnan, idatzi haren zenbakia Orriak eremuan, adibidez 3, eta hori bakarrik bihurtzen da."],
+      ],
+    },
+    'convertir-un-pdf-a-pdfa-para-un-tramite': {
+      slug: 'pdf-bat-pdf-a-bihurtu-izapideetarako',
+      title: "Nola bihurtu PDF bat PDF/A formatura izapide edo artxibo baterako | DocuSmart",
+      description:
+        "Bihurtu PDF bat PDF/A-2b, 1b edo 3b formatura, erakunde publikoek, epaitegiek eta unibertsitateek eskatzen duten artxibo-formatura. Doan eta fitxategia igo gabe.",
+      h1: "Nola bihurtu PDF bat PDF/A formatura izapide baterako edo artxibatzeko",
+      lead: "Epaitegi batek, unibertsitate batek edo erakunde publiko batek dokumentua «PDF/A formatuan» eskatzen dizu, eta atariak zure PDFa baztertzen du. Hona hemen nola bihurtu, eta nola jakin zer bertsio aukeratu.",
+      sections: [
+        {
+          h2: "Zer den PDF/A eta zergatik eskatzen duten",
+          body: [
+            "PDF/A artxibatzeko pentsatutako PDF bertsioa da (ISO 19005 araua). Fitxategiak ikusteko behar duen guztia darama barruan: letra-tipoak, kolore-profila eta metadatuak, eta ezin du kanpoko ezeren menpe egon, hala nola scripten, letra-tipoetarako esteken edo beste toki batetik kargatzen den edukiaren menpe. Horrela, gaur eta hemendik urte askotara berdin ikusten da.",
+            "Horregatik eskatzen dute epaitegiek idazkiak eta demandak aurkezteko, unibertsitate askok tesi eta gradu amaierako lanetarako, eta erakunde publikoek izapide eta artxiboetarako.",
+          ],
+        },
+        {
+          h2: "Zer bertsio aukeratu",
+          body: [
+            { ul: [
+              "**PDF/A-2b**: gomendatua, eta ia erakunde guztiek eskatzen dutena. Gardentasunak eta geruzak onartzen ditu.",
+              "**PDF/A-1b**: zaharrena, beste bat onartzen ez duten sistemetarako bakarrik. Ez ditu gardentasunak ezta geruzak onartzen.",
+              "**PDF/A-3b**: 2b bezalakoa, baina fitxategi erantsiak gordetzen ditu, adibidez faktura elektroniko baten XMLa.",
+            ] },
+            "Izapideak zein bertsio den esaten ez badu, erabili PDF/A-2b.",
+          ],
+        },
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [PDFtik PDF/Ara](/pdf-a-pdfa), aukeratu PDFa eta **Bertsioa**, eta sakatu **Bihurtu PDF/A-ra**. Amaitzean emaitza ikusiko duzu jatorrizkoaren ondoan, araua betetzeko doitu denaren laburpenarekin: adibidez, fitxategiaren barruan sartu diren letra-tipoak edo kendu diren scriptak.",
+            { tip: "DocuSmart-ek sortzen dituen fitxategiak veraPDF-rekin balidatzen dira, PDF Association-en erreferentziazko balidatzailearekin; atari askok jasotzen dutena berrikusteko erabiltzen duten bera da." },
+          ],
+        },
+        {
+          h2: "Orri bat irudi gisa gorde bada",
+          body: [
+            "Gauza batzuk ezin dira PDF/A-ra pasatu dauden bezala: inprenta-koloreak (CMYK) beren profilik gabe, edo fitxategiaren barruan ez datozen eta sartu ezin diren letra-tipoak. Kasu horretan orri hori irudi gisa gordetzen da: berdin ikusten da, baina bere testua ezin da gehiago hautatu. DocuSmart-ek esaten dizu zein orri diren eta zergatik. Testu hori bilagarria izatea behar baduzu, pasa emaitza [OCR: ezagutu testua](/ocr-pdf) tresnatik.",
+            "Atariak pisu-muga ere jartzen badu, berrikusi gero tamaina eta, behar izanez gero, erabili [Konprimitu PDFa](/comprimir-pdf).",
+          ],
+        },
+        {
+          h2: "Zure dokumentua ez da gailutik irteten",
+          body: [
+            "Bihurketa zure nabigatzailean egiten da: PDFa ez da inongo zerbitzaritara igotzen. Demandak, kontratuak edo nortasun-agiriak bihur ditzakezu, beste inon kopiarik utzi gabe.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki PDFtik PDF/Ara", text: "Ireki docusmart.online webguneko PDFtik PDF/Ara tresna eta aukeratu PDFa." },
+        { name: "Aukeratu bertsioa", text: "PDF/A-2b, izapideak zein den esaten ez badu; 1b edo 3b, eskatzen badizkizute bakarrik." },
+        { name: "Bihurtu", text: "Sakatu «Bihurtu PDF/A-ra» eta berrikusi doitu denaren laburpena." },
+        { name: "Deskargatu", text: "Deskargatu PDF/A fitxategia eta igo izapidearen atarira." },
+      ],
+      faq: [
+        ["Zer bertsio eskatzen dute epaitegiek?", "Ia beti PDF/A-2b, edo «PDF/A» besterik ez. Erakundeak bertsio bat aipatzen badu, aukeratu hori."],
+        ["Nire dokumentuaren edukia aldatzen da?", "Ez testua, ezta diseinua ere. Falta ziren letra-tipoak sartzen dira eta arauak onartzen ez dituen gauzak kentzen dira, hala nola scriptak edo eranskinak (PDF/A-3b-n izan ezik)."],
+        ["Nola jakin araua betetzen duen?", "Amaitzean, DocuSmart-ek esaten dizu zer bertsio betetzen duen. Emaitzak veraPDF-rekin balidatzen dira, erreferentziazko balidatzailearekin."],
+      ],
+    },
+    'reparar-un-pdf-que-no-abre': {
+      slug: 'irekitzen-ez-den-pdf-bat-konpondu',
+      title: "Nola konpondu irekitzen ez den edo errorea ematen duen PDF bat | DocuSmart",
+      description:
+        "Berreskuratu PDF hondatu bat edo erdian eten zen deskarga bat: DocuSmart-ek bere egitura berreraikitzen du eta orri osoak erreskatatzen ditu. Doan eta fitxategia igo gabe.",
+      h1: "Nola konpondu irekitzen ez den, zuri agertzen den edo errorea ematen duen PDF bat",
+      lead: "«Fitxategia hondatuta dago eta ezin izan da konpondu», pantaila zuri bat edo erdian eten zen deskarga bat. Dokumentua galdutzat eman aurretik, saiatu berreraikitzen.",
+      sections: [
+        {
+          h2: "Zergatik hondatzen den PDF bat",
+          body: [
+            "PDF batek, fitxategiaren amaieran, orri eta irudi bakoitza non hasten den adierazten duen aurkibide bat du. Aurkibide hori galtzen edo lekuz mugitzen bada, irakurgailuak ez du ezer aurkitzen eta errore bat erakusten du, edukia hor egon arren. Batez ere kasu hauetan gertatzen da:",
+            { ul: [
+              "Erdian eten ziren deskargak edo eranskinak.",
+              "Garaiz aurretik atera zen USB memoria batera kopiatutako fitxategiak.",
+              "PDFa gaizki gorde zuten edo erdizka editatu zuten programak.",
+            ] },
+            "Seinaleak beti antzekoak dira: irakurgailuak fitxategia hondatuta dagoela dio, ireki egiten da baina orriak zuri agertzen dira, edo zure gailuan ondo ikusten da eta atari batek baztertu egiten du igotzean.",
+          ],
+        },
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [Konpondu PDFa](/reparar-pdf), aukeratu fitxategi hondatua eta sakatu **Konpondu PDFa**. Tresnak fitxategia hasieratik amaierara irakurtzen du, orriak aurkitzen ditu aurkibidea hautsita egon arren, eta kopia berri eta osasuntsu bat idazten du.",
+            "Amaitzean kopia konpondua ikusiko duzu jatorrizkoaren ondoan, eta zer gertatu den esango dizu: arazoak aurkitu eta zuzendu dituen, fitxategia ondo zegoen, edo, etenda bazegoen, zituen orrietatik zenbat erreskatatu diren.",
+            { tip: "PDFa ireki arren, batzuetan komeni da konpontzea: atari batek baztertzen badu edo tresna batek errorea ematen badu, berridatzitako kopia batek konpondu ohi du." },
+          ],
+        },
+        {
+          h2: "Zer berreskura daitekeen eta zer ez",
+          body: [
+            "Osorik iritsi zena berreskuratzen da. Deskarga bat % 70ean eten bazen, % 70 horretan zeuden orriak erreskatatzen dira; amaierakoak, inoiz iritsi ez zirenak, ezin dira berreraiki. Kasu horretan, onena fitxategia berriro deskargatzea edo berriro eskatzea da, eta bitartean kopia konpondua erabiltzea.",
+            "PDFak irekitzeko pasahitza badu, kendu lehenik [Desblokeatu PDFa](/desbloquear-pdf) tresnarekin eta gero konpondu. Eta erreskatatu duzuna orri eskaneatuak badira eta haien testua behar baduzu, erabili [OCR: ezagutu testua](/ocr-pdf).",
+          ],
+        },
+        {
+          h2: "Zure dokumentua ez da gailutik irteten",
+          body: [
+            "Konponketa zure nabigatzailean egiten da: fitxategia ez da inongo zerbitzaritara igotzen. Dokumentu pertsonalekin edo lanekoekin saia zaitezke, beste inon kopiarik utzi gabe, eta jatorrizkoa ez da aldatzen.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki Konpondu PDFa", text: "Ireki docusmart.online webguneko Konpondu PDFa tresna eta aukeratu PDF hondatua." },
+        { name: "Konpondu", text: "Sakatu «Konpondu PDFa»: bere egitura berreraikitzen da." },
+        { name: "Berrikusi emaitza", text: "Begiratu zer zuzendu den eta zenbat orri erreskatatu diren." },
+        { name: "Deskargatu", text: "Deskargatu kopia konpondua; jatorrizkoa ez da aldatzen." },
+      ],
+      faq: [
+        ["Eten zen fitxategi bat berreskura dezake?", "Bai, osorik iristea lortu zuten orriak. Fitxategiaren amaieran falta direnak ezin dira berreraiki."],
+        ["Nire jatorrizko fitxategia aldatzen da?", "Ez. Kopia konpondu bat deskargatzen da, aparte."],
+        ["Pasahitza duten PDFekin dabil?", "Kendu lehenik pasahitza Desblokeatu PDFa tresnarekin, eta gero konpondu."],
+      ],
+    },
   },
 }
