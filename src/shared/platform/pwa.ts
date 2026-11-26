@@ -33,6 +33,31 @@ export function desktopBrowser(userAgent: string): DesktopBrowser {
   return 'other'
 }
 
+export type DesktopOS = 'windows' | 'mac' | 'linux' | 'chromeos' | 'other'
+
+/**
+ * Sistema de la computadora (W-150), para explicar dónde queda la app instalada y los atajos (⌘ en Mac). Usa
+ * `navigator.userAgentData.platform` cuando el navegador lo da (Chrome, Edge) y, si no, el agente de usuario.
+ */
+export function desktopOS(userAgent: string, platform?: string): DesktopOS {
+  const p = (platform ?? '').toLowerCase()
+  if (p === 'windows') return 'windows'
+  if (p === 'macos') return 'mac'
+  if (p === 'chrome os' || p === 'chromeos') return 'chromeos'
+  if (p === 'linux') return 'linux'
+  if (/CrOS/.test(userAgent)) return 'chromeos'
+  if (/Windows/.test(userAgent)) return 'windows'
+  if (/Macintosh|Mac OS X/.test(userAgent) && !/iPhone|iPad/.test(userAgent)) return 'mac'
+  if (/Linux|X11/.test(userAgent) && !/Android/.test(userAgent)) return 'linux'
+  return 'other'
+}
+
+/** El sistema de esta computadora. */
+export function currentOS(win: Window = window): DesktopOS {
+  const nav = win.navigator as Navigator & { userAgentData?: { platform?: string } }
+  return desktopOS(nav.userAgent, nav.userAgentData?.platform)
+}
+
 /**
  * Qué explica la ayuda de DocuSmart Desktop: cómo instalarla (en el navegador de la
  * computadora), atajos de la versión instalada, o que en el celular conviene la app de Play.
@@ -66,16 +91,27 @@ export function urlsToCache(loaded: string[], origin: string): string[] {
 /** ¿Corre como app instalada (ventana propia)? */
 export const isStandalone = (win: Window): boolean => win.matchMedia?.('(display-mode: standalone)').matches ?? false
 
-type LaunchQueue = { setConsumer: (consumer: (params: { targetURL?: string }) => void) => void }
+type LaunchParams = { targetURL?: string; files?: ReadonlyArray<{ getFile: () => Promise<File> }> }
+type LaunchQueue = { setConsumer: (consumer: (params: LaunchParams) => void) => void }
 
 /**
  * Una sola ventana de DocuSmart Desktop: el manifest pide enfocar la que ya está abierta
  * ("launch_handler": focus-existing). Al abrirla desde el ícono se queda donde estaba (no se
  * pierde lo que el usuario hacía); desde un acceso directo (#/pdf/unir…) va a esa herramienta.
+ *
+ * Abrir archivos con DocuSmart Desktop (W-150.4): el manifest declara los tipos (`file_handlers`); al
+ * abrir un PDF o una imagen desde el Explorador, el Finder o el gestor de archivos, llegan aquí y
+ * `onFiles` los recibe (la pantalla "Abrir con" ofrece las herramientas que sirven para ese tipo).
  */
-export function handleLaunches(win: Window = window): void {
+export function handleLaunches(win: Window = window, onFiles?: (files: File[]) => void): void {
   const queue = (win as Window & { launchQueue?: LaunchQueue }).launchQueue
-  queue?.setConsumer(({ targetURL }) => {
+  queue?.setConsumer(({ targetURL, files }) => {
+    if (files?.length && onFiles) {
+      void Promise.all(files.map((f) => f.getFile()))
+        .then(onFiles)
+        .catch(() => undefined)
+      return
+    }
     if (!targetURL) return
     let url: URL
     try {

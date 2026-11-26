@@ -33,7 +33,7 @@ export default {
     footHome: '홈',
     footPrivacy: '개인정보 처리방침',
     footConsent: '분석 설정',
-    os: '모든 OS(웹 브라우저)',
+    os: 'Windows, macOS, Linux, ChromeOS, Android, iOS',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
     cats: { organizar: "PDF 정리", editar: "편집 및 서명", documentos: "문서 만들기", seguridad: "보안", optimizar: "최적화 및 보관", convertir: "변환", imagen: "이미지", multimedia: "오디오 및 동영상", escanear: "스캔 및 OCR", archivos: "압축 파일", qr: "QR 코드", texto: "텍스트 도구" },
     hubSlug: "tools",
@@ -1192,7 +1192,7 @@ export default {
     },
   },
   landing: [
-    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "컴퓨터의 Chrome 또는 Edge에서 데스크톱 버전을 설치하세요. 일반 프로그램처럼 별도 창에서 열리고 인터넷 없이도 작동합니다."],
+    ["Instálala en Windows, Mac o Linux desde Chrome, Edge o Safari: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Chrome, Edge 또는 Safari에서 Windows, Mac, Linux에 설치하세요. 일반 프로그램처럼 자체 창으로 열리고 오프라인에서도 작동합니다."],
     ["Instalar DocuSmart Desktop", "DocuSmart Desktop 설치"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — 모든 문서를 한곳에'],
     ["Herramientas PDF gratis sin subir archivos | DocuSmart", "무료 PDF 도구, 파일 업로드 없이 | DocuSmart"],
