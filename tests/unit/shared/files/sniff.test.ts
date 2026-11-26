@@ -28,6 +28,13 @@ describe('sniff', () => {
     expect(sniff(pad(b(0x50, 0x4b, 0x03, 0x04)))).toBe('zip')
     expect(sniff(s('﻿<?xml version="1.0"?>\n<!-- logo -->\n<svg xmlns="http://www.w3.org/2000/svg">'))).toBe('svg')
     expect(sniff(s('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "x"><svg>'))).toBe('svg')
+    expect(sniff(s('<!-- a --><!-- b --> <svg>'))).toBe('svg')
+    expect(sniff(s('<!-- sin cerrar <svg>'))).toBeNull()
+    expect(sniff(s('<?xml version="1.0"?><html>'))).toBeNull()
+    // Muchos comentarios seguidos no traban la revisión (CodeQL: retroceso exponencial).
+    const t0 = Date.now()
+    expect(sniff(s('<!--' + '--><!--'.repeat(5000)))).toBeNull()
+    expect(Date.now() - t0).toBeLessThan(500)
   })
 
   it('lo que no es nada conocido, o casi vacío, es null', () => {
