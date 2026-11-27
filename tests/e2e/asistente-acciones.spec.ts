@@ -72,3 +72,18 @@ test('PDF a imagen a 300 ppp en PNG', async ({ page }) => {
   await upload(page, [{ name: 'informe.pdf', mimeType: 'application/pdf', buffer: makePdf(2) }])
   await expect(page.getByRole('button', { name: '300 ppp (imprimir)' })).toHaveAttribute('aria-pressed', 'true')
 })
+
+test('contexto de la pantalla (W-151.6): tras un PDF dañado, el asistente explica el aviso y ofrece Reparar PDF', async ({ page }) => {
+  await page.goto('/app/#/pdf/dividir')
+  await upload(page, [{ name: 'roto.pdf', mimeType: 'application/pdf', buffer: Buffer.from('esto no es un pdf') }])
+  await expect(page.locator('main')).toContainText('roto.pdf')
+  await page.getByRole('button', { name: 'Asistente de DocuSmart' }).click()
+  await expect(page.locator('.assistant-screen-error')).toContainText('Vi que salió este aviso')
+  await expect(page.locator('.assistant-screen-error')).toContainText('roto.pdf')
+  await expect(page.getByRole('link', { name: /Reparar PDF/ }).first()).toBeVisible()
+  // Y si escribe «¿por qué no me deja?», responde con ese aviso.
+  const input = page.getByPlaceholder('Escribe tu pregunta…')
+  await input.fill('por que no me deja')
+  await input.press('Enter')
+  await expect(page.locator('.assistant-screen-error')).toHaveCount(2)
+})

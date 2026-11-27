@@ -21,6 +21,9 @@ export default {
     optHeight: 'Höhe',
     optPercent: 'Größe',
     optGrayscale: 'Schwarz-Weiß',
+    // Error de la pantalla (W-151.6).
+    screenError: 'Ich habe diese Meldung gesehen: „{error}“. So löst du das:',
+    screenErrorGeneric: 'Ich habe diese Meldung gesehen: „{error}“. Wenn es wieder passiert, schreib uns:',
     optQuality: 'Qualität',
     optFormat: 'Format',
     optDpi: 'Auflösung',
@@ -40,6 +43,8 @@ export default {
   },
   // Lexikon zum Verstehen von Anfragen (W-151.4): die Wörter für jede Angabe, kleingeschrieben und ohne Akzente.
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['warum nicht', 'warum geht', 'geht nicht', 'funktioniert nicht', 'klappt nicht', 'was ist passiert', 'was tun'],
     numbers: { null: 0, eins: 1, ein: 1, eine: 1, zwei: 2, drei: 3, vier: 4, funf: 5, sechs: 6, sieben: 7, acht: 8, neun: 9, zehn: 10, elf: 11, zwolf: 12, funfzehn: 15, zwanzig: 20, dreißig: 30, dreissig: 30, vierzig: 40, funfzig: 50, hundert: 100, tausend: 1000, halb: 0.5 },
     units: { kb: 'kb', k: 'kb', kilobyte: 'kb', mb: 'mb', mega: 'mb', megabyte: 'mb', gb: 'gb', giga: 'gb', gigabyte: 'gb' },
     pages: ['seite', 'seiten', 'blatt'],

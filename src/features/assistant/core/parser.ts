@@ -41,6 +41,8 @@ export type Lexicon = {
   then: string[]
   languages: Record<string, string>
   positions: Record<string, (typeof POSITIONS)[number]>
+  /** «¿Por qué no me deja?», «no funciona» (W-151.6). */
+  why: string[]
 }
 
 export type ParseResult = { action: AssistantAction; dropped: OptionKey[] }
@@ -311,4 +313,9 @@ function splitSteps(text: string, lex: Lexicon): string[] {
   }
   out.push(flat.slice(from))
   return out.map((p) => p.trim()).filter(Boolean)
+}
+
+/** true si el texto pregunta por un problema («¿por qué no me deja?», «no funciona»), según el léxico (W-151.6). */
+export function asksWhy(lex: Lexicon | undefined, text: string): boolean {
+  return !!lex?.why?.length && has(normalizeForSearch(text), lex.why)
 }

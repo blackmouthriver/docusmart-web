@@ -21,6 +21,9 @@ export default {
     optHeight: '높이',
     optPercent: '크기',
     optGrayscale: '흑백',
+    // Error de la pantalla (W-151.6).
+    screenError: '“{error}” 안내가 나왔네요. 이렇게 해결할 수 있어요:',
+    screenErrorGeneric: '“{error}” 안내가 나왔네요. 다시 생기면 알려 주세요:',
     optQuality: '품질',
     optFormat: '형식',
     optDpi: '해상도',
@@ -40,6 +43,8 @@ export default {
   },
   // 요청 분석에 쓰는 어휘(W-151.4): 영문은 소문자, 악센트 없이 비교한다(한글은 그대로).
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['왜 안', '안 돼', '안돼요', '안 되', '오류', '에러', '어떻게 해야'],
     // 한, 세, 열, 반은 넣지 않는다: 한국어, 세로, 열어, 반시계처럼 다른 단어 안에 들어 있다.
     numbers: { 하나: 1, 둘: 2, 두: 2, 셋: 3, 넷: 4, 다섯: 5, 여섯: 6, 일곱: 7, 여덟: 8, 아홉: 9 },
     // 2MB 이하처럼 숫자와 단위가 붙어 쓰이므로 뒤에 오는 말이 붙은 형태도 넣는다.

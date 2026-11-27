@@ -21,6 +21,9 @@ export default {
     optHeight: '高さ',
     optPercent: 'サイズ',
     optGrayscale: '白黒',
+    // Error de la pantalla (W-151.6).
+    screenError: '「{error}」というメッセージが出ていました。こちらで解決できます：',
+    screenErrorGeneric: '「{error}」というメッセージが出ていました。また起きる場合はご連絡ください：',
     optQuality: '画質',
     optFormat: '形式',
     optDpi: '解像度',
@@ -40,6 +43,8 @@ export default {
   },
   // 依頼の解析に使う語彙（W-151.4）。英字は小文字・アクセントなしで比較する（日本語はそのまま）。
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['なぜ', 'どうして', '動かない', 'エラー', 'うまくいかない', 'どうすれば'],
     numbers: { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10, ひとつ: 1, ふたつ: 2, みっつ: 3 },
     // 「2MB以下」のように数字と単位がくっつくので、後ろに続く語つきの形も入れる。
     units: {

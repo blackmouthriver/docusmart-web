@@ -55,6 +55,9 @@ export default {
     optHeight: 'Alto',
     optPercent: 'Tamaño',
     optGrayscale: 'Blanco y negro',
+    // Error de la pantalla (W-151.6).
+    screenError: 'Vi que salió este aviso: «{error}». Esto lo resuelve:',
+    screenErrorGeneric: 'Vi que salió este aviso: «{error}». Si vuelve a pasar, escríbenos:',
     optQuality: 'Calidad',
     optFormat: 'Formato',
     optDpi: 'Resolución',
@@ -76,6 +79,8 @@ export default {
   // como se dice coloquialmente. Se suman a las preguntas de su entrada principal.
   // Léxico para entender pedidos (W-151.4): palabras de cada dato, ya en minúsculas y sin tildes.
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['por que no', 'no me deja', 'no funciona', 'no sirve', 'que paso', 'que hago', 'sale un error', 'me sale error', 'da error', 'fallo', 'falla'],
     numbers: { cero: 0, uno: 1, una: 1, un: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6, siete: 7, ocho: 8, nueve: 9, diez: 10, once: 11, doce: 12, quince: 15, veinte: 20, treinta: 30, cuarenta: 40, cincuenta: 50, sesenta: 60, setenta: 70, ochenta: 80, noventa: 90, cien: 100, ciento: 100, doscientos: 200, trescientos: 300, quinientos: 500, mil: 1000, medio: 0.5, media: 0.5 },
     units: { kb: 'kb', k: 'kb', kilo: 'kb', kilos: 'kb', kilobytes: 'kb', mb: 'mb', mega: 'mb', megas: 'mb', megabyte: 'mb', megabytes: 'mb', gb: 'gb', giga: 'gb', gigas: 'gb', gigabytes: 'gb' },
     pages: ['pagina', 'paginas', 'pag', 'pags', 'hoja', 'hojas'],

@@ -255,3 +255,15 @@ Las opciones nunca van en la URL (no quedan en el historial): se guardan en `ses
 se toman una sola vez y nunca incluyen la contraseña. Cada herramienta las aplica con `useAssistantOptions`;
 las que ya lo hacen están en `TOOLS_RECEIVING_OPTIONS`, y el asistente no promete opciones a las demás.
 
+## Contexto de la pantalla (W-151.6)
+
+`src/shared/files/screenContext.ts` recuerda, para la pantalla actual y solo en la memoria de la pestaña, los
+archivos elegidos (nombre, tipo y tamaño, nunca el contenido) y el último error mostrado (vale 10 minutos).
+`DropZone` informa los archivos (y los rechazados por vacíos o dañados) y `errorMessage` el error ya
+clasificado: contraseña → respuesta `pdf-protegido` (Desbloquear PDF), dañado o vacío → `pdf-danado` (Reparar
+PDF), otro → `contacto`.
+
+El panel lo usa al abrirse («Vi que salió este aviso: «…». Esto lo resuelve:» + la respuesta y su botón) y cuando
+la persona pregunta por el problema («¿por qué no me deja?», «no funciona»: lista `why` del léxico de cada
+idioma) o el buscador no encuentra respuesta. Nada de esto se guarda ni se envía, tampoco a la analítica.
+

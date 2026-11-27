@@ -21,6 +21,9 @@ export default {
     optHeight: 'Altuera',
     optPercent: 'Tamaina',
     optGrayscale: 'Zuri-beltzean',
+    // Error de la pantalla (W-151.6).
+    screenError: 'Ohar hau agertu dela ikusi dut: «{error}». Honek konpontzen du:',
+    screenErrorGeneric: 'Ohar hau agertu dela ikusi dut: «{error}». Berriro gertatzen bada, idatzi iezaguzu:',
     optQuality: 'Kalitatea',
     optFormat: 'Formatua',
     optDpi: 'Bereizmena',
@@ -40,6 +43,8 @@ export default {
   },
   // Eskaerak aztertzeko lexikoa (W-151.4): minuskulaz eta azenturik gabe.
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['zergatik ez', 'ez du funtzionatzen', 'ez dit uzten', 'zer gertatu da', 'zer egin'],
     // «bat» ez da sartzen: artikulu gisa ere erabiltzen da («PDF bat»).
     numbers: { zero: 0, bi: 2, hiru: 3, lau: 4, bost: 5, sei: 6, zazpi: 7, zortzi: 8, bederatzi: 9, hamar: 10, hamabi: 12, hogei: 20, berrogei: 40, ehun: 100, berrehun: 200, hirurehun: 300, bostehun: 500, mila: 1000, erdi: 0.5, lehenengo: 1, bigarren: 2, bigarrena: 2, hirugarren: 3, hirugarrena: 3 },
     units: {
