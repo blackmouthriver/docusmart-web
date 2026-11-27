@@ -26,6 +26,10 @@ export default {
     screenErrorGeneric: 'Ohar hau agertu dela ikusi dut: «{error}». Berriro gertatzen bada, idatzi iezaguzu:',
     // Siguiente paso (W-151.7).
     nextTitle: 'Normalean ondoren datorrena:',
+    // De dónde salió la respuesta (W-151.16).
+    sourceKb: 'DocuSmart-en oinarriko erantzuna',
+    sourcePlan: 'Zure eskaera ulertu dut: berrikusi «Egin» sakatu aurretik',
+    sourceScreen: 'Pantaila honetan gertatutakoaren arabera',
     optQuality: 'Kalitatea',
     optFormat: 'Formatua',
     optDpi: 'Bereizmena',

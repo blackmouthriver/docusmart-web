@@ -26,6 +26,10 @@ export default {
     screenErrorGeneric: '我看到出现了这个提示：“{error}”。如果再次出现，请联系我们：',
     // Siguiente paso (W-151.7).
     nextTitle: '接下来常用的：',
+    // De dónde salió la respuesta (W-151.16).
+    sourceKb: '来自 DocuSmart 知识库的回答',
+    sourcePlan: '我理解了你的请求：点“执行”前请先确认',
+    sourceScreen: '根据此页面上发生的情况',
     optQuality: '质量',
     optFormat: '格式',
     optDpi: '分辨率',
