@@ -55,7 +55,7 @@ body:has(.ds-consent) .assistant-root { display: none; }
 .assistant-fab.is-open .fab-halo, .assistant-fab.is-open .fab-spark { display: none; }
 
 /* ── Burbuja de bienvenida ── */
-.assistant-teaser { position: absolute; right: 70px; bottom: 8px; display: flex; align-items: center; gap: 2px; max-width: min(280px, calc(100vw - 110px)); padding: 4px 4px 4px 14px; border-radius: 18px 18px 6px 18px; background: var(--as-surface); color: var(--as-ink); box-shadow: 0 0 0 1px var(--as-line), 0 16px 32px -14px rgba(11, 16, 32, .45); transform-origin: bottom right; animation: teaser-in 420ms var(--as-spring); }
+.assistant-teaser { position: absolute; right: 70px; bottom: 8px; display: flex; width: max-content; align-items: center; gap: 2px; max-width: min(280px, calc(100vw - 110px)); padding: 4px 4px 4px 14px; border-radius: 18px 18px 6px 18px; background: var(--as-surface); color: var(--as-ink); box-shadow: 0 0 0 1px var(--as-line), 0 16px 32px -14px rgba(11, 16, 32, .45); transform-origin: bottom right; animation: teaser-in 420ms var(--as-spring); }
 .assistant-teaser[hidden] { display: none; }
 .assistant-teaser.is-leaving { animation: teaser-out 240ms ease forwards; }
 @keyframes teaser-in { from { opacity: 0; transform: translateX(12px) scale(.85); } }

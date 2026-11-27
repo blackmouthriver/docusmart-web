@@ -59,12 +59,16 @@ export async function recordVideo(page: Page, seconds: number, noise = 12, width
       for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
       return { type: type.split(';')[0], b64: btoa(s) }
     }, { secs: seconds, noise, w: width, h: height }).catch((e: Error) => {
-      if (attempt < 3 && /audio device/i.test(e.message)) return null
+      if (attempt < 5 && /audio device/i.test(e.message)) return null
       throw e
     })
-    if (!out) continue
+    if (!out) {
+      // Darle un respiro al audio de la Mac antes de volver a intentar.
+      await page.waitForTimeout(1500)
+      continue
+    }
     const buffer = Buffer.from(out.b64, 'base64')
-    if (buffer.length > 20_000 || attempt === 3) {
+    if (buffer.length > 20_000 || attempt >= 3) {
       expect(buffer.length, 'el video de prueba salió vacío').toBeGreaterThan(20_000)
       return { buffer, type: out.type }
     }
