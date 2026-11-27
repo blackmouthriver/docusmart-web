@@ -153,30 +153,33 @@ Historial (acierto total de los 12 idiomas · grupo de control es / en):
 - 2026-11-27, W-151.1, línea base: **70,8 %** · control 45 % / 40 %.
 - 2026-11-27, W-151.2, `toolQ` (formas de pedir cada herramienta, en los 12 idiomas) y sinónimos: **85,3 %** · control 75 % / 73,3 %.
 - 2026-11-27, W-151.2 (segunda parte): `toolQ` de las 66 herramientas en los 12 idiomas; en ruso, formatos en cirílico (пдф, ворд) y terminaciones; en chino, japonés y coreano, palabras vacías y cobertura que no castiga los pares de relleno: **89,3 %** · control es 75 %, en 73,3 %, pt 70 %, ru 100 %, zh 100 %, de 100 %.
+- 2026-11-27, W-151.2 (tercera parte): errores frecuentes y preguntas generales (sitio lento, no descarga, cuenta, app, sin conexión, voz, tamaño, PDF dañado o con clave, iPhone) en los 12 idiomas: **91,2 %** · control de errores es 37,5 % → 75 %, en 37,5 % → 50 %.
 
 <!-- medicion:inicio -->
 
 | Idioma | Preguntas | Acierto | Entre las 3 primeras | Sin respuesta | Equivocada |
 |---|---:|---:|---:|---:|---:|
 | es | 90 | 97.8 % | 98.9 % | 0 % | 2.2 % |
-| en | 66 | 90.9 % | 95.5 % | 4.5 % | 4.5 % |
-| pt | 30 | 73.3 % | 93.3 % | 13.3 % | 13.3 % |
-| fr | 30 | 96.7 % | 96.7 % | 0 % | 3.3 % |
-| it | 30 | 90 % | 96.7 % | 0 % | 10 % |
-| de | 30 | 83.3 % | 93.3 % | 0 % | 16.7 % |
-| ca | 30 | 90 % | 100 % | 0 % | 10 % |
-| eu | 30 | 83.3 % | 100 % | 3.3 % | 13.3 % |
-| ru | 30 | 86.7 % | 93.3 % | 3.3 % | 10 % |
+| en | 66 | 93.9 % | 95.5 % | 3 % | 3 % |
+| pt | 30 | 76.7 % | 93.3 % | 10 % | 13.3 % |
+| fr | 30 | 96.7 % | 100 % | 0 % | 3.3 % |
+| it | 30 | 93.3 % | 100 % | 0 % | 6.7 % |
+| de | 30 | 90 % | 96.7 % | 0 % | 10 % |
+| ca | 30 | 96.7 % | 100 % | 0 % | 3.3 % |
+| eu | 30 | 86.7 % | 100 % | 3.3 % | 10 % |
+| ru | 30 | 86.7 % | 96.7 % | 3.3 % | 10 % |
 | ja | 30 | 86.7 % | 100 % | 3.3 % | 10 % |
-| ko | 30 | 90 % | 100 % | 3.3 % | 6.7 % |
+| ko | 30 | 90 % | 100 % | 6.7 % | 3.3 % |
 | zh | 30 | 83.3 % | 96.7 % | 10 % | 6.7 % |
 | control-es | 20 | 75 % | 95 % | 15 % | 10 % |
-| control-en | 15 | 73.3 % | 73.3 % | 6.7 % | 20 % |
+| control-en | 15 | 80 % | 80 % | 6.7 % | 13.3 % |
 | control-pt | 10 | 70 % | 80 % | 10 % | 20 % |
 | control-ru | 10 | 100 % | 100 % | 0 % | 0 % |
 | control-zh | 10 | 100 % | 100 % | 0 % | 0 % |
 | control-de | 10 | 100 % | 100 % | 0 % | 0 % |
-| **Total** | 456 | **89.3 %** | 97.2 % | 3.1 % | 7.7 % |
+| control-errores-es | 8 | 75 % | 87.5 % | 12.5 % | 12.5 % |
+| control-errores-en | 8 | 50 % | 62.5 % | 12.5 % | 37.5 % |
+| **Total** | 456 | **91.2 %** | 98 % | 2.8 % | 5.9 % |
 
 Acierto por categoría (español e inglés):
 
@@ -184,7 +187,7 @@ Acierto por categoría (español e inglés):
 |---|---:|---:|
 | Herramientas | 97.5 % | 90 % |
 | Trámites | 91.7 % | 87.5 % |
-| Errores | 100 % | 71.4 % |
+| Errores | 100 % | 100 % |
 | Herramientas nuevas | 100 % | 100 % |
 | Sobre DocuSmart | 100 % | 100 % |
 | Fuera de tema | 100 % | 100 % |
@@ -202,8 +205,6 @@ Acierto por categoría (español e inglés):
 - [herramienta] make a pdf file smaller → tool:comprimir-video
 - [herramienta] change a word in a pdf → tool:comparar-pdf
 - [tramite] they want both sides of my id card in a single pdf → tool:foto-tamano-documento (sin confianza)
-- [error] the site is very slow → lento (sin confianza)
-- [error] the file does not download → renombrar
 
 </details>
 
