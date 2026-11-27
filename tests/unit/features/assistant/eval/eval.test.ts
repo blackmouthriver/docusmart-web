@@ -8,7 +8,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
 import { buildIndex, search, type Kb } from '../../../../../src/features/assistant/core/engine'
-import { EVAL_EN, EVAL_ES, type Category, type EvalCase } from './cases'
+import { CONTROL_EN, CONTROL_ES, EVAL_EN, EVAL_ES, type Category, type EvalCase } from './cases'
 import { EVAL_OTHER } from './cases-otros'
 
 const root = process.cwd()
@@ -51,20 +51,23 @@ function measure(lang: string, cases: EvalCase[]): Result {
   return { ...rates(all), byCategory: Object.fromEntries(Object.entries(byCategory).map(([k, v]) => [k, rates(v)])), misses }
 }
 
-const SETS: Record<string, EvalCase[]> = { es: EVAL_ES, en: EVAL_EN, ...EVAL_OTHER }
+const SETS: Record<string, EvalCase[]> = { es: EVAL_ES, en: EVAL_EN, ...EVAL_OTHER, 'control-es': CONTROL_ES, 'control-en': CONTROL_EN }
+/** Idioma de la base para cada conjunto (los de control usan la de su idioma). */
+const langOf = (set: string) => set.replace(/^control-/, '')
 const results: Record<string, Result> = {}
 const baseline = JSON.parse(readFileSync(BASELINE_FILE, 'utf-8')) as Record<string, Metrics>
 
 describe('conjunto de evaluación del asistente (W-151.1)', () => {
   it('cada respuesta aceptada existe en la base de su idioma', () => {
     for (const [lang, cases] of Object.entries(SETS)) {
-      const ids = new Set(load(lang).entries.map((e) => e.id))
+      const ids = new Set(load(langOf(lang)).entries.map((e) => e.id))
       for (const [q, accepted] of cases) expect(accepted.some((id) => ids.has(id)) || !accepted.length, `${lang}: ${q}`).toBe(true)
     }
   })
 
   it('hay preguntas de todas las categorías en cada idioma', () => {
     for (const [lang, cases] of Object.entries(SETS)) {
+      if (lang.startsWith('control-')) continue
       expect(cases.length, lang).toBeGreaterThanOrEqual(lang === 'es' || lang === 'en' ? 60 : 30)
       expect(new Set(cases.map((c) => c[2])).size, lang).toBe(6)
     }
@@ -72,7 +75,7 @@ describe('conjunto de evaluación del asistente (W-151.1)', () => {
 
   for (const [lang, cases] of Object.entries(SETS)) {
     it(`${lang}: el acierto no baja de la línea base`, () => {
-      const r = (results[lang] = measure(lang, cases))
+      const r = (results[lang] = measure(langOf(lang), cases))
       if (update) return
       const base = baseline[lang]
       expect(base, `${lang}: falta en baseline.json (corre con UPDATE_ASSISTANT_BASELINE=1)`).toBeTruthy()
@@ -102,14 +105,16 @@ function writeReport(langs: string[]) {
   const src = readFileSync(REPORT_FILE, 'utf-8')
   const start = '<!-- medicion:inicio -->'
   const end = '<!-- medicion:fin -->'
-  const total = (k: keyof Metrics) => pct(langs.reduce((s, l) => s + (results[l][k] * results[l].n) / 100, 0) / langs.reduce((s, l) => s + results[l].n, 0))
+  // El total es de los 12 idiomas; los grupos de control van aparte.
+  const main = langs.filter((l) => !l.startsWith('control-'))
+  const total = (k: keyof Metrics) => pct(main.reduce((s, l) => s + (results[l][k] * results[l].n) / 100, 0) / main.reduce((s, l) => s + results[l].n, 0))
   const lines = [
     start,
     '',
     '| Idioma | Preguntas | Acierto | Entre las 3 primeras | Sin respuesta | Equivocada |',
     '|---|---:|---:|---:|---:|---:|',
     ...langs.map((l) => `| ${l} | ${results[l].n} | ${results[l].top1} % | ${results[l].top3} % | ${results[l].none} % | ${results[l].wrong} % |`),
-    `| **Total** | ${langs.reduce((s, l) => s + results[l].n, 0)} | **${total('top1')} %** | ${total('top3')} % | ${total('none')} % | ${total('wrong')} % |`,
+    `| **Total** | ${main.reduce((s, l) => s + results[l].n, 0)} | **${total('top1')} %** | ${total('top3')} % | ${total('none')} % | ${total('wrong')} % |`,
     '',
     'Acierto por categoría (español e inglés):',
     '',

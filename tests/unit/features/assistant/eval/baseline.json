@@ -82,5 +82,19 @@
     "top3": 73.3,
     "none": 36.7,
     "wrong": 10
+  },
+  "control-es": {
+    "n": 20,
+    "top1": 45,
+    "top3": 60,
+    "none": 25,
+    "wrong": 30
+  },
+  "control-en": {
+    "n": 15,
+    "top1": 40,
+    "top3": 46.7,
+    "none": 13.3,
+    "wrong": 46.7
   }
 }

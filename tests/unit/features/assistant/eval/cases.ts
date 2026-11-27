@@ -192,3 +192,49 @@ export const EVAL_EN: EvalCase[] = [
   ['recommend me a movie', [], 'fuera'],
   ['who is the president of the united states', [], 'fuera'],
 ]
+
+/**
+ * Grupo de control (W-151.2): preguntas escritas ANTES de mejorar la base y que no se usan para
+ * ajustarla. Si mejoran junto con el resto, la mejora generaliza y no está hecha a la medida de
+ * EVAL_ES/EVAL_EN. No agregues aquí preguntas que ya fallaron y se corrigieron.
+ */
+export const CONTROL_ES: EvalCase[] = [
+  ['unir el pdf del rut con el de la camara de comercio', t('unir-pdf'), 'tramite'],
+  ['el correo no me deja adjuntar el pdf porque es muy pesado', t('comprimir-pdf'), 'tramite'],
+  ['la plataforma del colegio solo deja subir archivos de 1 mega', t('comprimir-pdf'), 'tramite'],
+  ['me pidieron el pasaporte y la visa en un solo archivo', t('unir-pdf'), 'tramite'],
+  ['escanear el carnet de vacunas', t('escanear-documento'), 'tramite'],
+  ['el pdf se ve todo negro', [...t('reparar-pdf'), 'pdf-danado'], 'error'],
+  ['el archivo pdf aparece corrupto', [...t('reparar-pdf'), 'pdf-danado'], 'error'],
+  ['no me deja abrir el documento sin clave', [...t('desbloquear-pdf'), 'pdf-protegido'], 'error'],
+  ['la foto quedo acostada', t('rotar-imagen'), 'herramienta'],
+  ['pasar varias fotos a un solo pdf', t('imagen-a-pdf'), 'herramienta'],
+  ['sacar una hoja de un pdf', t('dividir-pdf'), 'herramienta'],
+  ['bajar la calidad de un pdf para que pese menos', t('comprimir-pdf'), 'herramienta'],
+  ['quiero cambiar un dato en un pdf', t('editar-pdf'), 'herramienta'],
+  ['convertir un pdf a imagenes jpg', t('pdf-a-jpg'), 'herramienta'],
+  ['firmar con el dedo un pdf', t('firmar-pdf'), 'herramienta'],
+  ['hacer un recibo de pago', [...t('cuenta-de-cobro'), 'cuenta-de-cobro'], 'tramite'],
+  ['grabacion de voz a texto', [...t('audio-a-texto'), 'audio-a-texto'], 'nueva'],
+  ['necesito pagar algo para usarlo', ['precio', 'premium'], 'general'],
+  ['traduce este texto al ingles', [], 'fuera'],
+  ['cuales son los mejores restaurantes de bogota', [], 'fuera'],
+]
+
+export const CONTROL_EN: EvalCase[] = [
+  ['the email won\'t let me attach the pdf, it is too heavy', t('comprimir-pdf'), 'tramite'],
+  ['the school portal only allows 1 mb uploads', t('comprimir-pdf'), 'tramite'],
+  ['put my passport and visa in one file', t('unir-pdf'), 'tramite'],
+  ['the pdf is all black', [...t('reparar-pdf'), 'pdf-danado'], 'error'],
+  ['the pdf file seems corrupted', [...t('reparar-pdf'), 'pdf-danado'], 'error'],
+  ['it asks for a password to open the document', [...t('desbloquear-pdf'), 'pdf-protegido'], 'error'],
+  ['the photo is sideways', t('rotar-imagen'), 'herramienta'],
+  ['turn several photos into one pdf', t('imagen-a-pdf'), 'herramienta'],
+  ['remove one page from a pdf', t('dividir-pdf'), 'herramienta'],
+  ['lower the quality of a pdf so it weighs less', t('comprimir-pdf'), 'herramienta'],
+  ['convert a pdf into jpg images', t('pdf-a-jpg'), 'herramienta'],
+  ['make a payment receipt', [...t('cuenta-de-cobro'), 'cuenta-de-cobro'], 'tramite'],
+  ['voice recording to text', [...t('audio-a-texto'), 'audio-a-texto'], 'nueva'],
+  ['do i have to pay to use it', ['precio', 'premium'], 'general'],
+  ['translate this text into french', [], 'fuera'],
+]
