@@ -134,3 +134,85 @@ que **cada arreglo deja una pregunta de prueba**, así una mejora nunca rompe ot
 5. **Más adelante (W-70f):** con la IA local del navegador, las respuestas se redactan con más naturalidad, pero
    siempre a partir de esta misma base: mejorarla sigue siendo el camino.
 
+## Medición del asistente (W-151.1)
+
+Línea base contra la que se comparan las capas nuevas (W-151). Sale de `tests/unit/features/assistant/eval`:
+preguntas como las escribe la gente (con errores, sin tildes, describiendo el problema en vez de nombrar la
+herramienta), en seis categorías. **Acierto** = la primera respuesta es correcta y el motor está seguro;
+**sin respuesta** = no está seguro (ofrece sugerencias y «Enviar esta pregunta»); **equivocada** = responde
+con seguridad algo que no es. El CI falla si el acierto de un idioma baja de `baseline.json`. Para actualizar
+esta tabla y la línea base después de mejorar el asistente:
+
+    UPDATE_ASSISTANT_BASELINE=1 npx vitest run tests/unit/features/assistant/eval
+
+Las preguntas reales que llegan por «Enviar esta pregunta» (W-70g) se suman a `cases.ts` a mano, sin el correo
+de quien la mandó (W-151.13).
+
+<!-- medicion:inicio -->
+
+| Idioma | Preguntas | Acierto | Entre las 3 primeras | Sin respuesta | Equivocada |
+|---|---:|---:|---:|---:|---:|
+| es | 90 | 87.8 % | 93.3 % | 4.4 % | 7.8 % |
+| en | 66 | 74.2 % | 84.8 % | 10.6 % | 15.2 % |
+| pt | 30 | 50 % | 83.3 % | 26.7 % | 23.3 % |
+| fr | 30 | 73.3 % | 86.7 % | 13.3 % | 13.3 % |
+| it | 30 | 80 % | 86.7 % | 13.3 % | 6.7 % |
+| de | 30 | 66.7 % | 83.3 % | 13.3 % | 20 % |
+| ca | 30 | 73.3 % | 90 % | 10 % | 16.7 % |
+| eu | 30 | 70 % | 83.3 % | 13.3 % | 16.7 % |
+| ru | 30 | 50 % | 73.3 % | 20 % | 30 % |
+| ja | 30 | 70 % | 83.3 % | 30 % | 0 % |
+| ko | 30 | 63.3 % | 86.7 % | 23.3 % | 13.3 % |
+| zh | 30 | 53.3 % | 73.3 % | 36.7 % | 10 % |
+| **Total** | 456 | **70.8 %** | 85.3 % | 15.6 % | 13.6 % |
+
+Acierto por categoría (español e inglés):
+
+| Categoría | es | en |
+|---|---:|---:|
+| Herramientas | 87.5 % | 63.3 % |
+| Trámites | 58.3 % | 62.5 % |
+| Errores | 90 % | 57.1 % |
+| Herramientas nuevas | 100 % | 100 % |
+| Sobre DocuSmart | 100 % | 100 % |
+| Fuera de tema | 100 % | 100 % |
+
+<details><summary>Preguntas que hoy fallan (español e inglés)</summary>
+
+**es**
+
+- [herramienta] el escaneo quedo al reves → descarga (sin confianza)
+- [herramienta] el pdf pesa 20 megas y necesito mandarlo por correo → compartir (sin confianza)
+- [herramienta] me mandaron un pdf con contraseña y la se, como se la quito → tool:comparar-pdf
+- [herramienta] convertir cada pagina del pdf en imagen → tool:powerpoint-a-pdf
+- [herramienta] achicar el tamaño de una foto → tool:comprimir-video
+- [tramite] el secop no me deja subir el pdf porque pesa mucho → comprimir-video
+- [tramite] la dian me pide el pdf de menos de 2 mb → tool:png-a-jpg (sin confianza)
+- [tramite] me piden la cedula por ambas caras en un solo pdf → tool:censurar-pdf
+- [tramite] el formulario de la universidad pide una foto de maximo 200 kb → tool:redimensionar-imagen (sin confianza)
+- [tramite] subir la foto al portal de empleo y dice que es muy grande → tool:hoja-de-vida:faq2
+- [error] el pdf sale en blanco → tool:recortar-pdf
+
+**en**
+
+- [herramienta] i need to put my id and a receipt into one pdf → tool:cuenta-de-cobro
+- [herramienta] stick two pdfs together → lento (sin confianza)
+- [herramienta] take just page 3 out of a pdf → tool:recortar-pdf:faq3
+- [herramienta] the scan came out upside down → tool:rotar-pdf (sin confianza)
+- [herramienta] my pdf is 20 mb and i need to email it → tool:censurar-pdf
+- [herramienta] make a pdf file smaller → tool:comprimir-archivos
+- [herramienta] sign a contract on my phone → sin-cuenta
+- [herramienta] change a word in a pdf → tool:comparar-pdf
+- [herramienta] make a pdf from phone photos → tool:foto-tamano-documento
+- [herramienta] scan a document without a scanner → tool:ocr-pdf
+- [herramienta] black out my social security number in a pdf → tool:numerar-paginas-pdf (sin confianza)
+- [tramite] the portal says my pdf is too big to upload → tamano (sin confianza)
+- [tramite] they want both sides of my id card in a single pdf → tool:foto-tamano-documento (sin confianza)
+- [tramite] the form wants a photo under 200 kb → tool:redimensionar-imagen:faq2 (sin confianza)
+- [error] the site is very slow → lento (sin confianza)
+- [error] the file does not download → renombrar
+- [error] the video is too big for whatsapp → tamano
+
+</details>
+
+<!-- medicion:fin -->
