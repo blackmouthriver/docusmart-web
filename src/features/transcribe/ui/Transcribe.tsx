@@ -11,6 +11,7 @@ import { tr } from '../../../shared/i18n/translate'
 import { MEDIA_ACCEPT } from '../../media/core/media'
 import { LANGUAGE_IDS, WHISPER_BYTES, formatTimestamp, segmentsToText, toSrt, toVtt, type LanguageCode, type Segment } from '../core/whisper'
 import { DIARIZE_BYTES, assignSpeakers, renumber, speakerCount, speakerSrt, speakerText, speakerVtt } from '../core/diarize'
+import { useAssistantOptions } from '../../../shared/files/toolOptions'
 
 type Stage = 'idle' | 'model' | 'speakerModel' | 'audio' | 'transcribing' | 'speakers' | 'done'
 const COUNTS = [2, 3, 4, 5, 6] as const
@@ -54,6 +55,11 @@ export function TranscribeTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
   const [language, setLanguage] = useState<LanguageCode | 'auto'>('auto')
+  // Desde el asistente (W-151.5): «pasa este audio en portugués a texto».
+  useAssistantOptions('audio-a-texto', (o) => {
+    const code = LANGUAGE_IDS.find(([c]) => c === o.language)?.[0]
+    if (code) setLanguage(code)
+  })
   const [translate, setTranslate] = useState(false)
   const [stage, setStage] = useState<Stage>('idle')
   const [progress, setProgress] = useState(0)

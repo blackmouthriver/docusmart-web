@@ -52,3 +52,23 @@ test('una pregunta normal sigue dando la respuesta de siempre (sin tarjeta)', as
   await expect(page.locator('.assistant-bubble.bot').last()).toBeVisible()
   await expect(page.locator('.assistant-plan')).toHaveCount(0)
 })
+
+test('marca de agua en el PDF: el texto y la posición quedan puestos', async ({ page }) => {
+  await page.goto('/app/')
+  await ask(page, 'marca de agua "Borrador" abajo a la derecha en el pdf')
+  await expect(page.locator('.assistant-plan')).toContainText('Posición: Abajo a la derecha')
+  await page.getByRole('button', { name: 'Hacer' }).click()
+  await expect(page).toHaveURL(/#\/pdf\/marca$/)
+  await upload(page, [{ name: 'informe.pdf', mimeType: 'application/pdf', buffer: makePdf(2) }])
+  await expect(page.getByRole('textbox', { name: 'Texto' })).toHaveValue('Borrador')
+  await expect(page.getByRole('radio', { name: 'Abajo a la derecha' })).toHaveAttribute('aria-checked', 'true')
+})
+
+test('PDF a imagen a 300 ppp en PNG', async ({ page }) => {
+  await page.goto('/app/')
+  await ask(page, 'convierte el pdf a png a 300 ppp')
+  await expect(page.locator('.assistant-plan')).toContainText('Resolución: 300 ppp')
+  await page.getByRole('button', { name: 'Hacer' }).click()
+  await upload(page, [{ name: 'informe.pdf', mimeType: 'application/pdf', buffer: makePdf(2) }])
+  await expect(page.getByRole('button', { name: '300 ppp (imprimir)' })).toHaveAttribute('aria-pressed', 'true')
+})

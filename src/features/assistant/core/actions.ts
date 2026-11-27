@@ -69,13 +69,13 @@ export type Options = Partial<Record<OptionKey, OptionValue>>
  */
 export const TOOL_OPTIONS: Readonly<Record<string, Partial<Record<OptionKey, readonly string[] | true>>>> = {
   'comprimir-pdf': { targetSize: true, grayscale: true },
-  'comprimir-imagen': { targetSize: true, quality: true, format: ['jpg', 'png', 'webp'] },
+  'comprimir-imagen': { targetSize: true, quality: true, format: ['jpg', 'webp'] },
   'comprimir-video': { targetSize: true },
   'dividir-pdf': { pages: true },
   'rotar-pdf': { angle: true, pages: true },
   'rotar-imagen': { angle: true },
   'pdf-a-jpg': { pages: true, dpi: true, format: ['jpg', 'png'] },
-  'ocr-pdf': { language: true, pages: true },
+  'ocr-pdf': { language: true },
   'imagen-a-texto': { language: true },
   'audio-a-texto': { language: true },
   'redimensionar-imagen': { width: true, height: true, percent: true },
@@ -87,7 +87,8 @@ export const TOOL_OPTIONS: Readonly<Record<string, Partial<Record<OptionKey, rea
   'desbloquear-pdf': { password: true },
   'marca-de-agua-pdf': { text: true, position: true },
   'marca-de-agua-imagen': { text: true, position: true },
-  'numerar-paginas-pdf': { position: true },
+  // La numeración no va al medio de la página.
+  'numerar-paginas-pdf': { position: ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'] },
   'ajustar-imagen': { grayscale: true },
 }
 

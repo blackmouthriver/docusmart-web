@@ -38,7 +38,7 @@ export function cjkBigrams(run: string): string[] {
 const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
   es: {
     // Imperativos de los pedidos (W-151.4): «une», «comprime», «gira», «separa»…
-    une: 'unir', unan: 'unir', comprime: 'comprimir', comprima: 'comprimir', gira: 'rotar', gire: 'rotar', separa: 'dividir', divide: 'dividir', rota: 'rotar', convierte: 'convertir',
+    une: 'unir', unan: 'unir', comprime: 'comprimir', comprima: 'comprimir', gira: 'rotar', gire: 'rotar', separa: 'dividir', divide: 'dividir', rota: 'rotar', convierte: 'convertir', pasa: 'pasar', pasame: 'pasar',
     juntar: 'unir', junto: 'unir', junta: 'unir', combinar: 'unir', combino: 'unir', fusionar: 'unir', pegar: 'unir', unificar: 'unir', uno: 'unir',
     separar: 'dividir', separo: 'dividir', partir: 'dividir', parto: 'dividir', cortar: 'dividir',
     girar: 'rotar', giro: 'rotar', voltear: 'rotar', enderezar: 'rotar',

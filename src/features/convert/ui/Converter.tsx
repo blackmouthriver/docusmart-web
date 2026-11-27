@@ -19,6 +19,7 @@ import { canvasToBlob } from '../../../shared/pdf/pdf'
 import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
+import { useAssistantOptions } from '../../../shared/files/toolOptions'
 
 
 type Conv = {
@@ -143,6 +144,21 @@ export function ConvertJob({ conv, embedded = false }: { conv: Conv; embedded?: 
   const [ocrDone, setOcrDone] = useState(0)
   const [heicFormat, setHeicFormat] = useState<HeicTarget>('jpg')
   const [heicQuality, setHeicQuality] = useState(90)
+  // Desde el asistente (W-151.5): «pasa el pdf a png a 300 ppp», «fotos heic a jpg calidad 90».
+  useAssistantOptions(conv.id === 'pdf-img' ? 'pdf-a-jpg' : conv.id === 'heic-jpg' ? 'heic-a-jpg' : '', (o) => {
+    if (conv.id === 'pdf-img') {
+      if (typeof o.pages === 'string') setPdfPages(o.pages)
+      if (typeof o.dpi === 'number') {
+        const dpi = o.dpi
+        // La resolución más cercana de las que ofrece (72, 150 o 300).
+        setPdfDpi([...PDF_IMAGE_DPIS].sort((a, b) => Math.abs(a - dpi) - Math.abs(b - dpi))[0])
+      }
+      if (o.format === 'jpg' || o.format === 'png') setPdfImgFormat(o.format)
+    } else {
+      if (typeof o.quality === 'number') setHeicQuality(o.quality)
+      if (o.format === 'jpg' || o.format === 'png') setHeicFormat(o.format)
+    }
+  })
   const [text, setText] = useState<string | null>(null)
   const [wordInfo, setWordInfo] = useState<{ paragraphs: number; tables: number; images: number; headings: number } | null>(null)
   const [excelInfo, setExcelInfo] = useState<{ sheets: number; rows: number; numbers: number } | null>(null)
