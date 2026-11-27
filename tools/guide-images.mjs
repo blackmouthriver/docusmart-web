@@ -110,6 +110,7 @@ export const GUIDE_IMAGES = {
       section: 1,
       after: 1,
       shot: 'firmar-pdf/colocar',
+      og: true,
       alt: {
         es: 'La firma colocada abajo a la derecha de la primera página del PDF, con su marco para moverla, cambiarle el tamaño o quitarla.',
         en: "The signature placed at the bottom right of the PDF's first page, with a frame to move it, resize it or remove it.",
@@ -542,4 +543,13 @@ export const GUIDE_IMAGES = {
       },
     },
   ],
+}
+
+/**
+ * La captura que representa la guía al compartirla (og:image, W-102): la marcada con `og`; si no hay,
+ * la del resultado; si tampoco, la primera. scripts/og-guides.py arma con ella la imagen de 1200x630.
+ */
+export function ogShot(slug) {
+  const imgs = GUIDE_IMAGES[slug] ?? []
+  return (imgs.find((i) => i.og) ?? imgs.find((i) => i.shot.endsWith('/resultado')) ?? imgs[0])?.shot
 }

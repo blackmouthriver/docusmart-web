@@ -9,12 +9,12 @@
 // monta encima con src/entries/tool-page.tsx.
 // Se ejecuta antes de `dev` y `build`; los archivos generados se versionan y el
 // CI verifica que estén al día (`npm run pages:check`).
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { CATEGORIES, FACEBOOK_URL, INSTAGRAM_URL, PAGES_UPDATED, PRIVACY_UPDATED, SITE, TIKTOK_URL, pages } from '../tools/pages.mjs'
 import { KB_OWN, buildKb, kbJson } from '../tools/assistant/build.mjs'
 import { GUIDES_UPDATED } from '../tools/guides.mjs'
-import { GUIDE_IMAGES } from '../tools/guide-images.mjs'
+import { GUIDE_IMAGES, ogShot } from '../tools/guide-images.mjs'
 import { SHOT_WIDTHS } from '../tools/guide-shots.mjs'
 import { GUIDE_LANGS, guideFile, guideLangs, guidePath, guideUi, guides, guidesIn, guidesIndexFile, guidesIndexPath, hasGuideIn, hasGuides, localizedGuide } from '../tools/guides/index.mjs'
 import { ES, LANGS, LOCALES, filePath, homePath, hubFile, hubPath, localized, pagePath, toolCount } from '../tools/locales/index.mjs'
@@ -545,7 +545,17 @@ function guideLangMenu(lang, pathFor, langs = GUIDE_LANGS) {
   ].join('\n')
 }
 
-function guideHead({ lang, title, description, url, pathFor, structured, langs = GUIDE_LANGS }) {
+/**
+ * Imagen para compartir una guía (W-102): la suya, de scripts/og-guides.py, con el título y su mejor
+ * captura. Se guarda en el repo, así que si falta (guía nueva o traducida) se avisa como con las capturas.
+ */
+function guideOgImage(guide, lang, where) {
+  const rel = `img/og/guias/${lang}/${guide.slug}.jpg`
+  if (!existsSync(join(root, 'public', rel))) throw new Error(`guías (${where}): falta la imagen para compartir ${rel} (corre python scripts/og-guides.py ${lang})`)
+  return `${SITE}/${rel}`
+}
+
+function guideHead({ lang, title, description, url, pathFor, structured, langs = GUIDE_LANGS, image, imageAlt }) {
   const loc = LOC_BY_LANG[lang]
   return `<!doctype html>
 <!-- Generado por scripts/generate-tool-pages.mjs desde tools/guides. No editar a mano. -->
@@ -565,10 +575,11 @@ ${guideAlternates(pathFor, langs)}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITE}/img/og/${lang}.jpg">
+<meta property="og:image" content="${image ?? `${SITE}/img/og/${lang}.jpg`}">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:height" content="630">${imageAlt ? `
+<meta property="og:image:alt" content="${esc(imageAlt)}">` : ''}
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 ${jsonLd(structured)}
@@ -650,6 +661,10 @@ function renderGuide(guide, lang) {
   const where = `${lang}/${g.slug}`
   const others = guidesIn(lang).filter((x) => x.slug !== guide.slug)
   const org = { '@type': 'Organization', name: 'DocuSmart', url: SITE }
+  const ogImage = guideOgImage(guide, lang, where)
+  // La captura elegida, tal cual (más ancha que alta): Google usa la proporción que mejor le quede.
+  const shot = ogShot(guide.slug)
+  const shotImage = shot && `${SITE}/img/guides/${shotFiles(shot, lang, where).l}/${shot}-${WIDE}.webp`
   const structured = [
     {
       '@context': 'https://schema.org',
@@ -660,7 +675,7 @@ function renderGuide(guide, lang) {
       inLanguage: lang,
       datePublished: guide.updated ?? GUIDES_UPDATED,
       dateModified: guide.updated ?? GUIDES_UPDATED,
-      image: `${SITE}/img/og/${lang}.jpg`,
+      image: shotImage ? [ogImage, shotImage] : ogImage,
       author: org,
       publisher: { ...org, logo: { '@type': 'ImageObject', url: `${SITE}/img/pwa/icon-512.png` } },
       mainEntityOfPage: url,
@@ -688,7 +703,7 @@ function renderGuide(guide, lang) {
     },
   ]
   const [before, after = ''] = gui.updated.split('{date}')
-  return `${guideHead({ lang, title: g.title, description: g.description, url, pathFor: (l) => guidePath(guide, l), structured, langs: guideLangs(guide) })}
+  return `${guideHead({ lang, title: g.title, description: g.description, url, pathFor: (l) => guidePath(guide, l), structured, langs: guideLangs(guide), image: ogImage, imageAlt: g.h1 })}
 <body class="tool-page guide-page">
 ${guideNav(lang, (l) => guidePath(guide, l), guideLangs(guide))}
 
