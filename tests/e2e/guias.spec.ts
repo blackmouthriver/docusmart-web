@@ -119,3 +119,13 @@ test('una guía del lote 2 en ruso: captura en ruso y enlaces en ruso (W-101)', 
   await expect(page.locator('.gd-cards > li')).toHaveCount(22)
 })
 
+
+test('al compartir una guía se ve su propia imagen, servida como JPEG (W-102)', async ({ page, request }) => {
+  await page.goto('/guias/firmar-pdf-sin-imprimir')
+  const url = await page.locator('meta[property="og:image"]').getAttribute('content')
+  expect(url).toBe('https://docusmart.online/img/og/guias/es/firmar-pdf-sin-imprimir.jpg')
+  const res = await request.get(new URL(url!).pathname)
+  expect(res.status()).toBe(200)
+  expect(res.headers()['content-type']).toContain('image/jpeg')
+  await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', 'Cómo firmar un PDF sin imprimirlo')
+})
