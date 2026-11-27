@@ -3,6 +3,11 @@
 import type { Page } from '@playwright/test'
 import { expect, makePdf, test, upload } from './helpers'
 
+/** La herramienta se carga después de navegar: hasta que no aparece su título, el archivo iría a la pantalla anterior. */
+async function toolReady(page: Page, title: string) {
+  await expect(page.getByRole('heading', { name: title, exact: true }).first()).toBeVisible()
+}
+
 async function ask(page: Page, text: string) {
   await page.getByRole('button', { name: 'Asistente de DocuSmart' }).click()
   const input = page.getByPlaceholder('Escribe tu pregunta…')
@@ -21,6 +26,7 @@ test('«comprime este pdf a menos de 2 megas»: tarjeta, «Hacer» y Comprimir P
   await expect(page).toHaveURL(/#\/pdf\/comprimir$/)
   // Nada de las opciones en la URL.
   expect(page.url()).not.toMatch(/2097152|targetSize/)
+  await toolReady(page, 'Comprimir PDF')
   await upload(page, [{ name: 'informe.pdf', mimeType: 'application/pdf', buffer: makePdf(2) }])
   await expect(page.getByRole('combobox', { name: /Tamaño máximo/ })).toHaveValue('2')
 })
@@ -59,6 +65,7 @@ test('marca de agua en el PDF: el texto y la posición quedan puestos', async ({
   await expect(page.locator('.assistant-plan')).toContainText('Posición: Abajo a la derecha')
   await page.getByRole('button', { name: 'Hacer' }).click()
   await expect(page).toHaveURL(/#\/pdf\/marca$/)
+  await toolReady(page, 'Marca de agua')
   await upload(page, [{ name: 'informe.pdf', mimeType: 'application/pdf', buffer: makePdf(2) }])
   await expect(page.getByRole('textbox', { name: 'Texto' })).toHaveValue('Borrador')
   await expect(page.getByRole('radio', { name: 'Abajo a la derecha' })).toHaveAttribute('aria-checked', 'true')
@@ -69,6 +76,8 @@ test('PDF a imagen a 300 ppp en PNG', async ({ page }) => {
   await ask(page, 'convierte el pdf a png a 300 ppp')
   await expect(page.locator('.assistant-plan')).toContainText('Resolución: 300 ppp')
   await page.getByRole('button', { name: 'Hacer' }).click()
+  await expect(page).toHaveURL(/#\/convertir\/pdf-img$/)
+  await toolReady(page, 'PDF → Imagen')
   await upload(page, [{ name: 'informe.pdf', mimeType: 'application/pdf', buffer: makePdf(2) }])
   await expect(page.getByRole('button', { name: '300 ppp (imprimir)' })).toHaveAttribute('aria-pressed', 'true')
 })
@@ -91,6 +100,8 @@ test('contexto de la pantalla (W-151.6): tras un PDF dañado, el asistente expli
 test('siguiente paso (W-151.7): tras unir, el asistente sugiere el siguiente y lleva el resultado; se apaga en Ajustes', async ({ page }) => {
   const pdf = (name: string) => ({ name, mimeType: 'application/pdf', buffer: makePdf(1) })
   await page.goto('/app/#/pdf/unir')
+  // Unir acepta varios archivos: se espera su selector (el de la pantalla anterior podía seguir montado).
+  await page.locator('input[type=file][multiple]').first().waitFor({ state: 'attached' })
   await upload(page, [pdf('a.pdf'), pdf('b.pdf')])
   await page.getByRole('button', { name: 'Unir 2 PDFs' }).click()
   await expect(page.getByRole('heading', { name: '¿Y ahora?' })).toBeVisible({ timeout: 30_000 })
@@ -106,6 +117,8 @@ test('siguiente paso (W-151.7): tras unir, el asistente sugiere el siguiente y l
 
   // Apagado en Ajustes: después de unir, el asistente ya no lo sugiere.
   await page.goto('/app/#/pdf/unir')
+  // Unir acepta varios archivos: se espera su selector (el de la pantalla anterior podía seguir montado).
+  await page.locator('input[type=file][multiple]').first().waitFor({ state: 'attached' })
   await page.getByRole('button', { name: 'Idioma y apariencia' }).first().click()
   await page.getByRole('switch', { name: /Sugerencias del asistente/ }).uncheck()
   await page.keyboard.press('Escape')

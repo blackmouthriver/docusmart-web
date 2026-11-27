@@ -269,7 +269,7 @@ capa falla, tarda o duda, responde la de abajo.
 
 | ID | Ítem | Quién | Estado |
 |---|---|---|---|
-| W-151.17 | **Accesibilidad y celular**: las tarjetas de acción y los planes de varios pasos se usan con teclado y lector de pantalla y caben a 375 px. Pruebas de Playwright: «comprime este PDF a 1 MB» termina con el archivo comprimido, en escritorio y celular | 🤖 | Pendiente |
+| W-151.17 | **Accesibilidad y celular**: las tarjetas de acción y los planes de varios pasos se usan con teclado y lector de pantalla y caben a 375 px. Pruebas de Playwright: «comprime este PDF a 1 MB» termina con el archivo comprimido, en escritorio y celular | 🤖 | **Hecho** (2026-11-27): `tests/e2e/asistente-accesible.spec.ts`, en escritorio y celular: axe (WCAG 2.2 AA) sobre el panel con la tarjeta «Hacer / Cambiar», el aviso de error y el siguiente paso, sin problemas; el panel y sus tarjetas caben en la pantalla sin desbordes; y solo con el teclado, «comprime este pdf a 1 mega» → Tab hasta «Hacer» (el foco queda en el diálogo) → Enter → Comprimir PDF con 1 MB → PDF comprimido listo para descargar |
 | W-151.18 | **Analítica con consentimiento (solo IDs)**: qué capa respondió, qué acción se propuso, si se confirmó y si terminó bien. **Nunca** el texto escrito ni nombres de archivo. Con eso se decide qué mejorar | 🤖 | Pendiente |
 | W-151.19 | **Llevarlo a la app Android** cuando llegue la paridad: el catálogo de acciones y el modelo de la capa 3 (ONNX corre también en Android con ONNX Runtime Mobile) se reutilizan, así el asistente entiende lo mismo en la web y en la app | 🤖 | Pendiente (después de la paridad) |
 
