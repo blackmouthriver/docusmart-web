@@ -96,5 +96,33 @@
     "top3": 73.3,
     "none": 6.7,
     "wrong": 20
+  },
+  "control-pt": {
+    "n": 10,
+    "top1": 70,
+    "top3": 70,
+    "none": 10,
+    "wrong": 20
+  },
+  "control-ru": {
+    "n": 10,
+    "top1": 90,
+    "top3": 90,
+    "none": 10,
+    "wrong": 0
+  },
+  "control-zh": {
+    "n": 10,
+    "top1": 80,
+    "top3": 100,
+    "none": 10,
+    "wrong": 10
+  },
+  "control-de": {
+    "n": 10,
+    "top1": 100,
+    "top3": 100,
+    "none": 0,
+    "wrong": 0
   }
 }

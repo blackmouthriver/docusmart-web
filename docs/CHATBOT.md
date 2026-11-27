@@ -171,6 +171,10 @@ Historial (acierto total de los 12 idiomas · grupo de control es / en):
 | zh | 30 | 66.7 % | 96.7 % | 23.3 % | 10 % |
 | control-es | 20 | 75 % | 95 % | 15 % | 10 % |
 | control-en | 15 | 73.3 % | 73.3 % | 6.7 % | 20 % |
+| control-pt | 10 | 70 % | 70 % | 10 % | 20 % |
+| control-ru | 10 | 90 % | 90 % | 10 % | 0 % |
+| control-zh | 10 | 80 % | 100 % | 10 % | 10 % |
+| control-de | 10 | 100 % | 100 % | 0 % | 0 % |
 | **Total** | 456 | **85.3 %** | 95.8 % | 5.3 % | 9.4 % |
 
 Acierto por categoría (español e inglés):
