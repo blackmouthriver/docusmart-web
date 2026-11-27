@@ -116,3 +116,15 @@ test('siguiente paso (W-151.7): tras unir, el asistente sugiere el siguiente y l
   await expect(page.locator('.assistant-bubble.bot').first()).toBeVisible()
   await expect(page.getByText('Lo que suele venir después:')).toHaveCount(0)
 })
+
+test('aviso honesto (W-151.16): cada respuesta dice de dónde salió', async ({ page }) => {
+  await page.goto('/app/')
+  await ask(page, 'es gratis?')
+  await expect(page.locator('.assistant-ai-badge').last()).toHaveText('Respuesta de la base de DocuSmart')
+  const input = page.getByPlaceholder('Escribe tu pregunta…')
+  await input.fill('comprime este pdf a 2 megas')
+  await input.press('Enter')
+  await expect(page.locator('.assistant-ai-badge').last()).toHaveText('Entendí tu pedido: revisa antes de tocar «Hacer»')
+  // Y la nota de privacidad sigue en la cabecera del panel.
+  await expect(page.locator('.assistant-head')).toContainText('Todo ocurre en tu navegador')
+})

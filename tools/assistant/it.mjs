@@ -26,6 +26,10 @@ export default {
     screenErrorGeneric: 'Ho visto questo avviso: «{error}». Se succede di nuovo, scrivici:',
     // Siguiente paso (W-151.7).
     nextTitle: 'Cosa viene di solito dopo:',
+    // De dónde salió la respuesta (W-151.16).
+    sourceKb: 'Risposta dalla base di DocuSmart',
+    sourcePlan: 'Ho capito la richiesta: controlla prima di toccare «Fai»',
+    sourceScreen: 'In base a quello che è successo in questa schermata',
     optQuality: 'Qualità',
     optFormat: 'Formato',
     optDpi: 'Risoluzione',

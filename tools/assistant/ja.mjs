@@ -26,6 +26,10 @@ export default {
     screenErrorGeneric: '「{error}」というメッセージが出ていました。また起きる場合はご連絡ください：',
     // Siguiente paso (W-151.7).
     nextTitle: '次によく使われるもの：',
+    // De dónde salió la respuesta (W-151.16).
+    sourceKb: 'DocuSmart のナレッジベースからの回答',
+    sourcePlan: 'ご依頼を理解しました。「実行」を押す前に確認してください',
+    sourceScreen: 'この画面で起きたことにもとづく回答',
     optQuality: '画質',
     optFormat: '形式',
     optDpi: '解像度',
