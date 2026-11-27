@@ -2,6 +2,7 @@
 // tools/guides.mjs. Se publican primero en español; cada idioma las suma al traducirlas.
 
 import { TOOL_GUIDES_2 } from './guides-herramientas-2.mjs'
+import { TOOL_GUIDES_3 } from './guides-herramientas-3.mjs'
 
 const UPDATED = '2026-11-25'
 
@@ -525,3 +526,5 @@ export const TOOL_GUIDES = [
 
 // Lote 2 (tools/guides-herramientas-2.mjs).
 TOOL_GUIDES.push(...TOOL_GUIDES_2)
+// Lote 3 (tools/guides-herramientas-3.mjs).
+TOOL_GUIDES.push(...TOOL_GUIDES_3)

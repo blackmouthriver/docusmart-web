@@ -543,6 +543,94 @@ export const GUIDE_IMAGES = {
       },
     },
   ],
+  'hacer-una-cuenta-de-cobro': [
+    {
+      section: 2,
+      after: 0,
+      shot: 'cuenta-de-cobro/conceptos',
+      alt: {
+        es: 'Conceptos de la cuenta de cobro: diseño de logo y manual de marca por 1.800.000, retención del 10 % y total de 1.620.000 con el valor en letras.',
+      },
+    },
+    {
+      section: 3,
+      after: 1,
+      shot: 'cuenta-de-cobro/resultado',
+      alt: {
+        es: 'La cuenta de cobro terminada en PDF: número, fecha y ciudad, quién debe a quién, la suma en letras, la tabla de conceptos, los datos para el pago y la firma.',
+      },
+    },
+  ],
+  'hacer-una-hoja-de-vida': [
+    {
+      section: 1,
+      after: 2,
+      shot: 'hoja-de-vida/resultado',
+      alt: {
+        es: 'La hoja de vida terminada con la plantilla clásica: nombre y cargo, datos de contacto, perfil profesional, experiencia con logros, educación y habilidades.',
+      },
+    },
+  ],
+  'crear-un-codigo-qr': [
+    {
+      section: 0,
+      after: 1,
+      shot: 'crear-codigo-qr/resultado',
+      alt: {
+        es: 'Crear QR con el tipo URL y la dirección docusmart.online: el código generado y los botones para descargarlo en SVG o en PDF de 10 cm, copiarlo o imprimirlo.',
+      },
+    },
+  ],
+  'cambiar-el-tamano-de-una-foto': [
+    {
+      section: 0,
+      after: 1,
+      shot: 'redimensionar-imagen/opciones',
+      alt: {
+        es: 'Redimensionar imagen con una foto elegida, el modo Por pixeles, 1080 de ancho, el alto automático y la casilla Conservar la proporción marcada.',
+      },
+    },
+  ],
+  'comprimir-archivos-en-zip': [
+    {
+      section: 0,
+      after: 1,
+      shot: 'comprimir-archivos/resultado',
+      alt: {
+        es: 'Así quedó el ZIP: tres archivos (contrato.pdf, informe.pdf y foto.jpg) a un lado y archivos.zip al otro, de 193 KB a 157 KB.',
+      },
+    },
+  ],
+  'recortar-los-margenes-de-un-pdf': [
+    {
+      section: 0,
+      after: 1,
+      shot: 'recortar-pdf/recorte',
+      alt: {
+        es: 'Recortar PDF después de Quitar márgenes en blanco: el recuadro rodea solo el texto del contrato, el resto de la página queda oscurecido y abajo se lee el tamaño que queda.',
+      },
+    },
+  ],
+  'cambiar-el-formato-de-una-imagen': [
+    {
+      section: 0,
+      after: 0,
+      shot: 'imagen-a-webp/resultado',
+      alt: {
+        es: 'Imagen a WebP: la foto antes, en JPG de 189 KB, y después, en WebP de 50 KB, con el mismo aspecto.',
+      },
+    },
+  ],
+  'borrar-la-ubicacion-y-los-datos-ocultos-de-una-foto': [
+    {
+      section: 1,
+      after: 0,
+      shot: 'quitar-metadatos/datos',
+      alt: {
+        es: 'Datos ocultos encontrados en una foto: cámara Apple iPhone 15, fecha de la foto y la ubicación GPS marcada en rojo, con el aviso de que la foto guarda el lugar exacto donde se tomó.',
+      },
+    },
+  ],
 }
 
 /**

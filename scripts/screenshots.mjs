@@ -18,6 +18,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { LANGS, pagePath } from '../tools/locales/index.mjs'
 import { pages } from '../tools/pages.mjs'
 import { SHOT_WIDTHS, SHOTS } from '../tools/guide-shots.mjs'
+import { buildExif, jpegWithMeta } from '../tests/shared/metaFixtures.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = join(root, 'public', 'img', 'guides')
@@ -309,6 +310,8 @@ try {
     broken: await brokenPdf(),
   }
   files.textScan = await photoPdf(files.textPhoto)
+  // Una foto de celular con cámara, fecha y GPS (para Quitar metadatos): datos inventados.
+  files.metaPhoto = Buffer.from(jpegWithMeta(photos[0], buildExif({ make: 'Apple', model: 'iPhone 15', date: '2026:11:20 09:41:00', gps: [4.6097, -74.0817] }), false))
   for (const [w, width] of Object.entries(SHOT_WIDTHS)) {
     const context = await browser.newContext({
       viewport: { width, height: w === 'movil' ? 844 : 900 },
