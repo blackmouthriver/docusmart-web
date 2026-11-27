@@ -1428,7 +1428,7 @@ export default {
             'Abra o [Currículo em PDF ou Word](/hoja-de-vida). No topo, você escolhe como ele vai ficar:',
             { ul: [
               '**Clássico (ATS)**: uma coluna e sem foto. É o que os sistemas que filtram currículos nos sites de vagas leem melhor; use-o para se candidatar on-line.',
-              '**Compacta**: igualmente claro, com letra e margens menores para caber mais em uma página.',
+              '**Compacto**: igualmente claro, com letra e margens menores para caber mais em uma página.',
               '**Com foto**: sua foto no topo, como pedem muitas empresas da América Latina.',
             ] },
             'Você também escolhe o tamanho da folha (Carta ou A4), a fonte (moderna ou clássica) e a cor dos títulos.',
@@ -1465,7 +1465,7 @@ export default {
         },
       ],
       steps: [
-        { name: 'Escolha o modelo', text: 'Acesse docusmart.online/pt/curriculo e escolha Clássico (ATS), Compacta ou Com foto.' },
+        { name: 'Escolha o modelo', text: 'Acesse docusmart.online/pt/curriculo e escolha Clássico (ATS), Compacto ou Com foto.' },
         { name: 'Preencha as seções', text: 'Escreva seus dados, seu resumo, sua experiência, sua formação e suas habilidades.' },
         { name: 'Compare com a vaga', text: 'Cole o anúncio da vaga para ver quais palavras-chave estão faltando.' },
         { name: 'Baixe', text: 'Toque em Criar PDF ou Criar Word e baixe seu currículo.' },
@@ -1671,7 +1671,7 @@ export default {
           body: [
             'Abra o [Cortar PDF](/recortar-pdf) e escolha o arquivo. Você verá a primeira página com um retângulo por cima: a parte escurecida é a que vai ser cortada.',
             'Toque em **Remover margens em branco** e o retângulo se ajusta sozinho ao conteúdo da página, como na imagem. Se preferir fazer à mão, arraste as bordas ou os cantos do retângulo. Embaixo você vê o tamanho que vai ficar, em milímetros.',
-            'Escolha se o corte vale para **Todas as páginas** ou **Só a página** que você está vendo, toque em **Recortar PDF** e baixe o resultado.',
+            'Escolha se o corte vale para **Todas as páginas** ou **Só a página** que você está vendo, toque em **Cortar PDF** e baixe o resultado.',
             { tip: 'Se as páginas tiverem margens diferentes, confira várias com as setas antes de cortar: o retângulo de "Todas as páginas" é o mesmo para cada uma.' },
           ],
         },
@@ -1710,7 +1710,7 @@ export default {
         { name: 'Abra o Cortar PDF', text: 'Acesse docusmart.online/pt/cortar-pdf e escolha o PDF.' },
         { name: 'Ajuste o retângulo', text: 'Toque em Remover margens em branco ou arraste as bordas à mão.' },
         { name: 'Escolha as páginas', text: 'Aplique o corte a todas as páginas ou só à que você está vendo.' },
-        { name: 'Baixe', text: 'Toque em Recortar PDF e baixe o resultado.' },
+        { name: 'Baixe', text: 'Toque em Cortar PDF e baixe o resultado.' },
       ],
       faq: [
         ['Um PDF perde qualidade ao ser cortado?', 'Não. Só muda a área visível da página; o texto e as imagens continuam iguais.'],
