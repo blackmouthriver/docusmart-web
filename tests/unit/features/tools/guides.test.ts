@@ -6,7 +6,7 @@ import { pages } from '../../../../tools/pages.mjs'
 import { generatedHtml } from '../../../../tools/locales/index.mjs'
 import { GUIDE_LANGS, guideFile, guideLangs, guidePath, guideUi, guidesIn, guidesIndexPath, localizedGuide } from '../../../../tools/guides/index.mjs'
 import { TOOL_GUIDES } from '../../../../tools/guides-herramientas.mjs'
-import { GUIDE_IMAGES } from '../../../../tools/guide-images.mjs'
+import { GUIDE_IMAGES, ogShot } from '../../../../tools/guide-images.mjs'
 
 const root = resolve(__dirname, '../../../..')
 const toolSlugs = new Set(pages.map((p) => p.slug))
@@ -137,8 +137,8 @@ describe('guías ilustradas por herramienta (W-101)', () => {
         }
   })
 
-  it('los lotes 1 y 2 están en los 12 idiomas', () => {
-    for (const g of TOOL_GUIDES.slice(0, 16)) expect(guideLangs(g), g.slug).toEqual(GUIDE_LANGS)
+  it('los lotes 1, 2 y 3 están en los 12 idiomas', () => {
+    for (const g of TOOL_GUIDES.slice(0, 24)) expect(guideLangs(g), g.slug).toEqual(GUIDE_LANGS)
   })
 
   it('una guía todavía sin traducir solo existe en español (sin hreflang ni páginas en otros idiomas)', () => {
@@ -156,3 +156,43 @@ describe('guías ilustradas por herramienta (W-101)', () => {
   })
 })
 
+describe('imagen para compartir cada guía (W-102)', () => {
+  /** Ancho y alto de un JPEG (marcador SOF0/SOF2). */
+  function jpegSize(bytes: Buffer): [number, number] {
+    let i = 2
+    while (i < bytes.length) {
+      const marker = bytes[i + 1]
+      const len = bytes.readUInt16BE(i + 2)
+      if (marker === 0xc0 || marker === 0xc2) return [bytes.readUInt16BE(i + 7), bytes.readUInt16BE(i + 5)]
+      i += 2 + len
+    }
+    throw new Error('no es un JPEG')
+  }
+
+  it('la captura elegida es la marcada, si no la del resultado, si no la primera', () => {
+    expect(ogShot('firmar-pdf-sin-imprimir')).toBe('firmar-pdf/colocar')
+    expect(ogShot('unir-pdf-en-el-celular')).toBe('unir-pdf/resultado')
+    expect(ogShot('girar-paginas-de-un-pdf')).toBe('rotar-pdf/paginas')
+    expect(ogShot('no-existe')).toBeUndefined()
+  })
+
+  it('cada guía en cada idioma tiene su imagen de 1200x630 en og:image y en el Article', () => {
+    for (const lang of GUIDE_LANGS)
+      for (const g of guidesIn(lang)) {
+        const rel = `img/og/guias/${lang}/${g.slug}.jpg`
+        const where = `${lang}/${g.slug}`
+        expect(jpegSize(readFileSync(resolve(root, 'public', rel))), where).toEqual([1200, 630])
+        const page = readFileSync(resolve(root, 'site', guideFile(g, lang)), 'utf8')
+        expect(page, where).toContain(`<meta property="og:image" content="https://docusmart.online/${rel}">`)
+        expect(page, where).toContain(`<meta property="og:image:alt" content="`)
+        const article = JSON.parse(page.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)![1]).find((x: { '@type': string }) => x['@type'] === 'Article')
+        expect(article.image[0], where).toBe(`https://docusmart.online/${rel}`)
+        expect(article.image[1], where).toMatch(new RegExp(`/img/guides/(${lang}|es)/${ogShot(g.slug)}-1280\.webp$`))
+      }
+  })
+
+  it('el índice de guías sigue con la imagen general del idioma', () => {
+    const page = readFileSync(resolve(root, 'site/guias.html'), 'utf8')
+    expect(page).toContain('<meta property="og:image" content="https://docusmart.online/img/og/es.jpg">')
+  })
+})

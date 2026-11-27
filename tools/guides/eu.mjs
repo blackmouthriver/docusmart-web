@@ -1353,5 +1353,484 @@ export default {
         ["Pasahitza duten PDFekin dabil?", "Kendu lehenik pasahitza Desblokeatu PDFa tresnarekin, eta gero konpondu."],
       ],
     },
+    'hacer-una-cuenta-de-cobro': {
+      slug: 'kobrantza-agiri-bat-egin',
+      title: "Nola egin kobrantza-agiri bat PDFn, doan eta minutu gutxitan | DocuSmart",
+      description:
+        "Bete zure datuak, bezeroarenak eta kobratzen duzuna: totala, atxikipena eta zenbatekoa hitzez bakarrik ateratzen dira. Deskargatu PDFn, doan eta datuak igo gabe.",
+      h1: "Nola egin kobrantza-agiri bat PDFn",
+      lead: "Kobrantza-agiri batek esaten du nork zor dion nori, zenbat eta zergatik. DocuSmart-en txantiloiarekin nabigatzailean betetzen duzu, eta PDF txukun bat ateratzen da, bidaltzeko prest.",
+      sections: [
+        {
+          h2: "Zer den kobrantza-agiri bat eta nork erabiltzen duen",
+          body: [
+            "Pertsona batek lan edo zerbitzu bat kobratzeko erabiltzen duen agiria da, fakturarik egiten ez duenean: diseinatzaile autonomo batek, eskola partikularrak ematen dituen irakasle batek, enpresa bati zerbitzuak ematen dizkion kontratista batek edo higiezin bat alokatzen duenak. Esan behar du nork kobratzen duen, nori, data, kontzeptua, zenbatekoa (zenbakiz eta hitzez) eta nola ordaintzen den.",
+            { tip: "Kobrantza-agiri batek ez du faktura elektronikoa ordezkatzen. Zure jardueragatik edo diru-sarrerengatik fakturatu behar baduzu, galdetu aholkulari fiskal bati edo zure herrialdeko zerga-agintaritzari." },
+          ],
+        },
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [Kobrantza-agiria](/cuenta-de-cobro) eta utzi aukeratuta **Kobrantza-agiria** mota. Bilatu zure **herrialdea**: horrela doitzen dira moneta, zergaren izena eta dokumentu motak (NAN, IFZ, NIT, RFC, RUC…). Dokumentuaren zenbakia bakarrik proposatzen da (CC-0001) eta data gaurkoa da; gehitu hiria eta, nahi baduzu, **ordaintzeko azken eguna**.",
+            "**Zure datuak** atalean idatzi zure izena eta zure dokumentua; **Bezeroa** atalean, ordaintzen dizunarenak. Helbidea, telefonoa eta posta elektronikoa aukerakoak dira.",
+            "**Kontzeptuak** atalean deskribatu kobratzen duzuna, kantitatea eta unitateko prezioa. Hainbat gauza badira, erabili **Gehitu kontzeptua**. Subtotala, zerga, atxikipena eta totala idatzi ahala kalkulatzen dira, eta azpian zenbatekoa hitzez agertzen da.",
+          ],
+        },
+        {
+          h2: "Zerga, atxikipena eta deskontua",
+          body: [
+            "Zerga bat kobratzen baduzu (BEZa, adibidez), idatzi haren ehunekoa; zure herrialdea aukeratzean, tasa orokorra erabiltzeko botoi bat agertzen da. Bezeroak **atxikipena** egiten badizu, idatzi ehunekoa eta totaletik kentzen da, irudian bezala: 1.800.000 subtotala, % 10eko atxikipena eta 1.620.000 ordaintzeko. **Deskontua** zergen aurretik kentzen da.",
+            { tip: "Atxikipenaren ehunekoa zure herrialdearen, zerbitzu motaren eta zure egoera fiskalaren araberakoa da. Ez badakizu, galdetu bezeroari: ia beti esaten dizu zenbat atxikiko dizun." },
+          ],
+        },
+        {
+          h2: "Ordainketarako datuak, sinadura eta PDFa",
+          body: [
+            "**Ordainketarako datuak** atalean jarri bankua, kontu mota eta zenbakia eta noren izenean dagoen: horrela bezeroak badaki non egin ordainketa. **Oharrak** atalean epeak edo baldintzak idatz ditzakezu. **Gehitu sinadura** aukerarekin hatzarekin edo saguarekin marrazten duzu, eta **Gehitu logoa** aukerarekin zurea jartzen duzu goian.",
+            "Sakatu **Sortu PDFa**: kobrantza-agiria amaituta ikusiko duzu, zenbatekoa hitzez eta sinadura-lerroa dituela, deskargatzeko, WhatsApp bidez partekatzeko edo Driven gordetzeko prest.",
+            { ul: [
+              "Zenbakia bakarrik jarraitzen du dokumentu berri bakoitzean (CC-0002, CC-0003…). Eta **Gogoratu nabigatzaile honetan** markatzen baduzu, hurrengoan zure datuak, logoa eta bezeroak jarrita egongo dira; bankuko kontua ez da inoiz gordetzen.",
+              "**Emandako dokumentuak** atalean aurreko agiri bat ireki dezakezu zuzentzeko, edo onartutako **aurrekontu** bat kobrantza-agiri bihurtu dena berriro idatzi gabe.",
+              "Tresna berarekin **aurrekontu** bat (balio-datarekin) edo ordainketa baten **ordainagiria** egin dezakezu.",
+            ] },
+          ],
+        },
+        {
+          h2: "Zure datuak eta bezeroarenak ez dira igotzen",
+          body: [
+            "Dena zure nabigatzailean prestatzen da: izenak, dokumentuak eta zenbatekoak ez dira inongo zerbitzaritara bidaltzen. Bezeroak lehendik duzun PDF batean sinatutako agiria eskatzen badizu, erabili [Sinatu PDFa](/firmar-pdf); eta hainbat batera bidali behar badituzu posta elektronikoz, [Konprimitu PDFa](/comprimir-pdf) tresnak arinago uzten ditu.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki txantiloia", text: "Ireki docusmart.online/eu/kobrantza-agiria eta aukeratu zure herrialdea." },
+        { name: "Idatzi datuak", text: "Bete zure datuak, bezeroarenak, hiria eta data." },
+        { name: "Gehitu kobratzen duzuna", text: "Deskribatu kontzeptu bakoitza bere zenbatekoarekin; totala, atxikipena eta zenbatekoa hitzez bakarrik ateratzen dira." },
+        { name: "Sortu PDFa", text: "Gehitu ordainketarako datuak eta zure sinadura, sakatu «Sortu PDFa» eta deskargatu." },
+      ],
+      faq: [
+        ["Kobrantza-agiri bat eta faktura bat gauza bera dira?", "Ez. Kobrantza-agiria fakturatu beharrik ez duenak erabiltzen du; ez du faktura elektronikoa ordezkatzen. DocuSmart-ek ez du faktura elektronikorik egiten."],
+        ["Nola kalkulatzen da atxikipena?", "Idatzi bezeroak esaten dizun ehunekoa eta DocuSmart-ek subtotaletik kentzen du. Ordaintzeko totala atxikipena kenduta ateratzen da."],
+        ["Kobrantza-agiri bat beste moneta batean egin dezaket?", "Bai. Zure herrialdea aukeratzean haren moneta jartzen da, eta beste batengatik alda dezakezu (dolarrak, euroak…) Moneta eremuan."],
+      ],
+    },
+    'hacer-una-hoja-de-vida': {
+      slug: 'curriculum-bat-egin',
+      title: "Nola egin curriculum bat PDFn edo Worden, doan eta erregistratu gabe | DocuSmart",
+      description:
+        "Prestatu zure curriculuma txantiloi argi batekin, lan-atarietarako egokia (ATS), argazkiarekin edo gabe. Deskargatu PDFn edo Worden, doan eta konturik sortu gabe.",
+      h1: "Nola egin curriculum bat PDFn edo Worden",
+      lead: "Curriculum on bat segundo gutxitan ulertzen da eta lan-atarietako iragazki automatikoak gainditzen ditu. Hemen ataletan betetzen duzu eta ordenatuta ateratzen da, formatuarekin borrokatu gabe.",
+      sections: [
+        {
+          h2: "Aukeratu txantiloia",
+          body: [
+            "Ireki [Curriculuma](/hoja-de-vida). Goian aukeratzen duzu nola ikusiko den:",
+            { ul: [
+              "**Klasikoa (ATS)**: zutabe bakarra eta argazkirik gabe. Lan-atarietan curriculumak iragazten dituzten sistemek ondoen irakurtzen dutena da; erabili sarean izena emateko.",
+              "**Trinkoa**: bezain argia, letra eta marjina txikiagoekin, orri batean gehiago sar dadin.",
+              "**Argazkiarekin**: zure argazkia goian, Latinoamerikako enpresa askok eskatzen duten bezala.",
+            ] },
+            "Orriaren tamaina (Gutuna edo A4), letra (modernoa edo klasikoa) eta tituluen kolorea ere aukeratzen dituzu.",
+          ],
+        },
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Bete zure **datu pertsonalak**: izena, kargua edo lanbidea, hiria, telefonoa eta posta elektronikoa. LinkedIn edo portfolio bat baduzu, jarri **Estekak** atalean. Gero idatzi zure **profil profesionala** bizpahiru esalditan: nor zaren, zer dakizun egiten eta zer bilatzen duzun.",
+            "**Lan-esperientzia** atalean gehitu lan bakoitza karguarekin, enpresarekin eta datekin; markatu **Gaur egun hemen lan egiten dut** oraindik han bazaude. **Lorpenak eta eginkizunak** atalean idatzi lorpen bat lerro bakoitzeko: lerro bakoitza puntu gisa ateratzen da. Egin gauza bera **Prestakuntza**, **Trebetasunak**, **Hizkuntzak**, **Ikastaroak eta ziurtagiriak** eta **Erreferentziak** ataletan; atal hutsak ez dira agertzen.",
+            "Sakatu **Sortu PDFa** edo **Sortu Worda (.docx)**. Curriculuma amaituta ikusiko duzu, deskargatzeko edo partekatzeko prest.",
+            { tip: "Hasi lorpen bakoitza aditz batekin eta erabili zifrak ahal duzunean: «Entrega-denborak % 30 murriztu nituen» esaldiak «entregen arduraduna» baino gehiago esaten du." },
+          ],
+        },
+        {
+          h2: "Alderatu eskaintzarekin eta idatzi gutuna",
+          body: [
+            "**Lan-eskaintza batekin alderatu** atalean lanpostuaren iragarkia itsasten duzu eta ikusten duzu zure curriculumak zer gako-hitz dituen jada eta zein falta zaizkion, bat-etortzearen ehunekoarekin. Iragazki automatikoek hitz horiek bilatzen dituzte; gehitu benetan dituzunak bakarrik.",
+            "**Aurkezpen-gutuna** atalean enpresa eta kargua idazten dituzu, eta DocuSmart-ek zirriborro bat prestatzen du zure esperientziarekin eta indarguneekin. Berrikusi, egokitu zure erara eta deskargatu PDFn edo Worden.",
+          ],
+        },
+        {
+          h2: "Ez galdu idatzitakoa",
+          body: [
+            "**Gorde automatikoki nabigatzaile honetan** aukerarekin, idatzitakoa nabigatzaile honetan geratzen da orria ixten baduzu ere (argazkia ez). Beste ordenagailu batean jarraitzeko, erabili **Gorde zirriborroa**: .json fitxategi bat deskargatzen duzu, eta gero han irekitzen duzu **Ireki zirriborroa** aukerarekin.",
+            "Enpresak argazkia atzealde zuriarekin eskatzen badizu, presta ezazu aurretik [Pasaporte eta nortasun-agiriaren argazkia](/foto-tamano-documento) tresnarekin. Eta curriculuma ziurtagiriekin batera fitxategi bakar batean bidali behar baduzu, batu itzazu [Batu PDFak](/unir-pdf) tresnarekin.",
+          ],
+        },
+        {
+          h2: "Zure informazioa ez da gailutik irteten",
+          body: [
+            "Curriculuma zure nabigatzailean prestatzen da: zure datuak, zure esperientzia eta zure argazkia ez dira inongo zerbitzaritara igotzen, ezta beste ezertarako erabiltzen ere. Ez duzu konturik sortu behar, ezta zure posta elektronikoa utzi ere.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Aukeratu txantiloia", text: "Ireki docusmart.online/eu/curriculuma eta aukeratu Klasikoa (ATS), Trinkoa edo Argazkiarekin." },
+        { name: "Bete atalak", text: "Idatzi zure datuak, zure profila, zure esperientzia, zure prestakuntza eta zure trebetasunak." },
+        { name: "Alderatu eskaintzarekin", text: "Itsatsi lanpostuaren iragarkia zer gako-hitz falta zaizkizun ikusteko." },
+        { name: "Deskargatu", text: "Sakatu «Sortu PDFa» edo «Sortu Worda» eta deskargatu zure curriculuma." },
+      ],
+      faq: [
+        ["Zer da ATS curriculum bat?", "Zutabe bakarreko curriculum bat, taularik eta irudirik gabea, lan-atarietako hautaketa-sistemek akatsik gabe irakur dezaketena. Txantiloi Klasikoa da."],
+        ["Worden deskarga dezaket?", "Bai. «Sortu Worda (.docx)» aukerarekin Worden, Google Docs-en edo LibreOffice-n ireki eta editatzen duzu."],
+        ["Erregistratu behar dut?", "Ez. Doakoa da, ez du konturik ezta posta elektronikorik eskatzen, eta idazten duzuna zure gailuan geratzen da."],
+      ],
+    },
+    'crear-un-codigo-qr': {
+      slug: 'qr-kode-bat-sortu',
+      title: "Nola sortu QR kode bat doan esteka, WhatsApp edo Wi-Firako | DocuSmart",
+      description:
+        "Sortu QR kode bat esteka, WhatsApp, zure Wi-Fi edo zure kontakturako, zure kolorearekin eta logoarekin. Deskargatu PNG, SVG edo PDFn. Doan, erregistrorik gabe, iraungi gabe.",
+      h1: "Nola sortu QR kode bat doan",
+      lead: "QR batek jendea zure orrira eramaten du, WhatsApp txat bat irekitzen du edo Wi-Fira konektatzen du ezer idatzi gabe. Sortu segundo gutxitan; ez da iraungitzen eta ez dago inongo zerbitzariren menpe.",
+      sections: [
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [Sortu eta irakurri QR kodeak](/crear-codigo-qr) eta aukeratu zer gordeko duen: **URLa**, **Testua**, **Posta**, **Telefonoa**, **WhatsApp**, **SMS**, **Kokapena**, **Wi-Fi**, **Kontaktua** edo **Gertaera**. Idatzi datuak (esteka baterako, helbide osoa https:// eta guzti).",
+            "Sakatu **Sortu QR**. Kodea berehala agertzen da, eta PNGn, **SVGn** (bektoriala, edozein tamainatan garbi inprimatzen da) edo **10 cm-ko PDFn** deskarga dezakezu, irudi gisa kopiatu edo inprimatu.",
+            { tip: "Ehun esku-orri inprimatu aurretik, eskaneatu QRa zure mugikorrarekin espero duzuna irekitzen duela egiaztatzeko." },
+          ],
+        },
+        {
+          h2: "Zer egin dezakeen mota bakoitzak",
+          body: [
+            { ul: [
+              "**WhatsApp**: idatzi zenbakia herrialdearen aurrezenbakiarekin (34 Espainiarako, adibidez) eta, nahi baduzu, mezu bat. Eskaneatzean txata irekitzen da mezua idatzita duela.",
+              "**Wi-Fi**: sarearen izena, segurtasuna eta pasahitza. Zure bisitariak konektatzen dira zuk pasahitza esan beharrik gabe.",
+              "**Kontaktua**: izena, telefonoa, posta elektronikoa eta enpresa. Eskaneatzean, mugikorrak agendan gordetzea eskaintzen du.",
+              "**Kokapena**: mapan irekitzen den helbide bat edo koordenatu batzuk.",
+              "**Gertaera**: izenburua, lekua eta hasiera eta amaiera, egutegira gehitzeko.",
+            ] },
+          ],
+        },
+        {
+          h2: "Eman zure estiloa",
+          body: [
+            "**Pertsonalizatu diseinua** atalean kodearen eta atzealdearen kolorea aldatzen duzu (edo gardena uzten duzu zure diseinuaren gainean jartzeko), zure **logotipoa** jartzen duzu erdian eta irudiaren tamaina aukeratzen duzu. Koloreek kontraste txikia badute, DocuSmart-ek abisatzen dizu, kamera batek agian ez lukeelako irakurriko.",
+            "**Babestua** aukerarekin, QRaren edukia pasahitz batekin zifratuta geratzen da (AES-256): pasahitza duenak bakarrik irekitzen du, DocuSmart-en. Eta **Hainbat QR zerrenda batetik** aukerarekin asko sortzen dituzu batera, lerro bakoitzeko bat edo CSV batetik, adibidez jatetxe bateko mahaietarako edo inbentario bateko etiketetarako.",
+          ],
+        },
+        {
+          h2: "QR bat irakurtzeko",
+          body: [
+            "Behar duzuna bat irakurtzea bada, erabili [QR kodea irakurri](/leer-codigo-qr): kamerarekin, argazki edo pantaila-argazki batetik, edo PDF batetik. Esteka bat ireki aurretik nora daraman erakusten dizu eta engainagarria dirudien abisatzen dizu.",
+          ],
+        },
+        {
+          h2: "Zure QRa ez da iraungitzen",
+          body: [
+            "Kodea zure nabigatzailean sortzen da eta datuak zuzenean gordetzen ditu, tarteko estekarik gabe. Horregatik ez da iraungitzen, ez du eskaneatze-mugarik eta beste inork ez du ikusten zer jarri duzun. Sortzen dituzun QRak **Historia** atalean geratzen dira, zure nabigatzailean bakarrik.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Aukeratu mota", text: "Ireki docusmart.online/eu/qr-kodea-sortu eta aukeratu URLa, WhatsApp, Wi-Fi edo beste mota bat." },
+        { name: "Idatzi datuak", text: "Jarri esteka, zenbakia edo sarearen datuak." },
+        { name: "Sortu QRa", text: "Sakatu «Sortu QR» eta, nahi baduzu, aldatu kolorea edo gehitu zure logotipoa." },
+        { name: "Deskargatu", text: "Deskargatu PNG, SVG edo PDFn, edo inprimatu." },
+      ],
+      faq: [
+        ["QR kodea iraungitzen da?", "Ez. Datuak kodearen barruan doaz, tarteko estekarik gabe; beraz, betiko dabil eta eskaneatze-mugarik gabe."],
+        ["Zer formatu erabili inprimatzeko?", "SVGa: bektoriala da eta edozein tamainatan garbi ikusten da, txartel batetik kartel bateraino. 10 cm-ko PDF bat ere badago."],
+        ["Nire logotipoa jar dezaket QRan?", "Bai, «Pertsonalizatu diseinua» atalean. Logotipoa erdiko zirkulu batean geratzen da eta kodea irakurtzen jarraitzen da."],
+      ],
+    },
+    'cambiar-el-tamano-de-una-foto': {
+      slug: 'argazki-baten-tamaina-aldatu',
+      title: "Nola aldatu argazki baten tamaina pixeletan, %-tan edo zentimetrotan | DocuSmart",
+      description:
+        "Aldatu argazki baten edo batzuen tamaina pixeletan, ehunekotan, zentimetrotan edo Instagram, WhatsApp edo YouTuberen neurri zehatzera. Doan eta igo gabe.",
+      h1: "Nola aldatu argazki baten tamaina",
+      lead: "Mugikorreko argazki batek milaka pixel ditu: gehiegi inprimaki, web orri edo azal baterako. Hemen behar duzun neurrira eramaten duzu, deformatu gabe.",
+      sections: [
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [Aldatu irudiaren tamaina](/redimensionar-imagen) eta aukeratu argazki bat edo batzuk (JPG, PNG, WebP, HEIC, GIF edo BMP). Gero aukeratu **nola aldatu tamaina**:",
+            { ul: [
+              "**Ehunekoaren arabera**: adibidez, % 50ek argazkia zabaleran eta altueran erdira uzten du.",
+              "**Pixelen arabera**: idatzi zabalera, altuera edo biak. **Mantendu proportzioa** aktibatuta, alde bat nahikoa da: bestea bakarrik kalkulatzen da.",
+              "**Sare sozialak**: Instagram, WhatsApp egoerak, Facebook edo LinkedIn azalak eta YouTube miniaturetarako neurri zehatzak.",
+              "**Zentimetrotan**: inprimatzeko, aukeratzen duzun bereizmenarekin.",
+            ] },
+            "Sakatu **Tamaina aldatu** eta argazkia lehen eta ondoren ikusiko duzu, bere pisuarekin. Batzuk aukeratu badituzu, ZIP batean gordetzen dira batera.",
+          ],
+        },
+        {
+          h2: "Deformatu ez dadin",
+          body: [
+            "Argazki bat luzatuta ikusten da zabalera eta altuera proportzio desberdinean aldatzen dituzunean. Horregatik **Mantendu proportzioa** aktibatuta dator: bi aldeak idazten badituzu, argazkia tamaina horren barruan sartzen da luzatu gabe. **Sare sozialak** aukeran, irudiak neurri zehatza betetzen du eta soberan dagoena erditik berdin mozten da.",
+            { tip: "Argazki bat txikitzeak ez dio inoiz garbitasunik kentzen begi-bistan, baina handitzeak ez dio xehetasunik gehitzen: bikoitzera handitutako argazki txiki bat lausotuta ikusten da." },
+          ],
+        },
+        {
+          h2: "Moztu edo pisu gutxiago izatea nahi baduzu",
+          body: [
+            "Tamaina aldatzea ez da moztea bezala. Ertz bat kentzeko, pertsona bat enkoadratzeko edo argazkia karratu uzteko, erabili [Moztu irudia](/recortar-imagen): moztu librea edo proportzio finkoetan, hala nola 1:1, 4:3 edo 16:9.",
+            "Eta inprimaki batek argazkiak tamaina jakin bat baino gutxiago pisatzea eskatzen badu (adibidez, 200 KB), [Konprimitu irudia](/comprimir-imagen) tresnak kalitatea behar adina jaisten du sar dadin, eta pixelak murrizten ditu nahikoa ez bada bakarrik.",
+          ],
+        },
+        {
+          h2: "Sarri eskatzen diren neurriak",
+          body: [
+            { ul: [
+              "**Web orri edo blog baterako**: 1200 eta 1920 pixel arteko zabalera nahikoa baino gehiago da; handiagoak orria motel kargatzea besterik ez dakar.",
+              "**Inprimaki edo izapide baterako**: gehienezko zabalera bat (adibidez, 800 pixel) eta gehienezko pisu bat eskatu ohi dituzte. Doitu lehenik tamaina hemen eta, oraindik asko pisatzen badu, konprimitu.",
+              "**Inprimatzeko**: erabili Zentimetrotan; 300 ppp-tan, 10 × 15 cm-ko argazki batek 1181 × 1772 pixel inguru behar ditu garbi ikusteko.",
+            ] },
+          ],
+        },
+        {
+          h2: "Zure argazkiak ez dira igotzen",
+          body: [
+            "Dena zure nabigatzailean gertatzen da, baita dozenaka argazkirekin batera ere. Gainera, gordetzean argazkiaren datu ezkutuak (EXIF) kentzen dira, hala nola atera zen GPS kokapena.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Aukeratu argazkiak", text: "Ireki docusmart.online/eu/irudiaren-tamaina-aldatu eta aukeratu argazki bat edo batzuk." },
+        { name: "Aukeratu neurria", text: "Ehunekoaren arabera, pixelen arabera, sare sozialetako neurri bat edo zentimetrotan." },
+        { name: "Aldatu tamaina", text: "Sakatu «Tamaina aldatu» eta alderatu lehena eta ondorena." },
+        { name: "Deskargatu", text: "Deskargatu argazkia, edo ZIPa batzuk baziren." },
+      ],
+      faq: [
+        ["Argazkiak kalitatea galtzen du txikitzean?", "Begi-bistan ez: bezain garbi ikusten da, txikiagoa besterik ez. Ezin dena da handitzea nabaritu gabe."],
+        ["Hainbat argazkiren tamaina alda dezaket batera?", "Bai. Aukeratu denak batera: neurri berarekin aldatzen dira eta ZIP batean deskargatzen dira."],
+        ["Zer neurri erabili Instagramerako?", "Sare sozialak aukeran Instagram karratua eta bertikala, eta istorioak dituzu. Argazkiak neurria betetzen du eta soberan dagoena erditik mozten da."],
+      ],
+    },
+    'comprimir-archivos-en-zip': {
+      slug: 'fitxategiak-zip-batean-konprimitu',
+      title: "Nola konprimitu fitxategiak ZIPean eta ireki ZIP edo RAR bat programarik gabe | DocuSmart",
+      description:
+        "Batu hainbat fitxategi edo karpeta bat ZIP batean, nahi baduzu pasahitzarekin, eta ireki ZIP, RAR edo 7Z nabigatzailetik. Doan, ezer instalatu gabe eta igo gabe.",
+      h1: "Nola konprimitu fitxategiak ZIPean eta ireki ZIP edo RAR bat",
+      lead: "ZIP batek fitxategi asko bakar batean biltzen ditu: posta elektronikoz bidaltzeko errazagoa eta, batzuetan, arinagoa. Hemen nabigatzailetik sortzen eta irekitzen duzu, programarik instalatu gabe.",
+      sections: [
+        {
+          h2: "ZIP bat sortu, urratsez urrats",
+          body: [
+            "Ireki [Konprimitu fitxategiak (ZIP eta 7Z)](/comprimir-archivos) eta gehitu fitxategiak (edozein motatakoak) edo karpeta oso bat **Gehitu karpeta bat** aukerarekin. Idatzi ZIParen izena eta aukeratu konpresioa: **Azkarra**, **Arrunta** edo **Handiena**.",
+            "Sakatu **Sortu ZIP**. Zure fitxategiak alde batean eta ZIPa bestean ikusiko dituzu, lehen guztiak zenbat pisatzen zuen eta orain zenbat pisatzen duen.",
+            { tip: "Argazkiak, bideoak eta PDFak konprimituta datoz jada, beraz ZIP batean ia ez dute pisurik galtzen. Asko murrizten direnak Word dokumentuak, kalkulu-orriak eta testuak dira." },
+          ],
+        },
+        {
+          h2: "Pasahitzarekin edo zatitan",
+          body: [
+            { ul: [
+              "**Babestu pasahitzarekin (AES-256)**: inork ez du ZIPa irekitzen gakorik gabe. ZIPean pasahitzak ezin du azenturik ezta ñ-rik izan; behar badituzu, aukeratu 7Z formatua.",
+              "**Zatitan banatu**: posta elektronikoak hain fitxategi handirik onartzen ez badu, hainbatetan zatitzen duzu (.001, .002…). Irekitzeko zati guztiak behar dira, DocuSmart, 7-Zip edo WinRAR erabiliz.",
+              "**7Z**: ZIPek baino gehiago konprimitzen du, baina ordenagailu batzuetan programa bat instalatu behar da irekitzeko. ZIPa edozein ordenagailu eta mugikorretan irekitzen da ezer instalatu gabe.",
+            ] },
+          ],
+        },
+        {
+          h2: "ZIP, RAR edo 7Z bat ireki",
+          body: [
+            "Konprimitu baten barruan dagoena ateratzeko, erabili [Deskonprimitu RAR, ZIP eta 7Z](/descomprimir-archivos). ZIP, RAR, 7Z, TAR, GZ, BZ2 eta XZ irekitzen ditu, baita pasahitza dutenak edo zatitan banatuta datozenak ere.",
+            "Barruan dagoenaren zerrenda ikusiko duzu, bere karpetekin. Fitxategi baten aurrebista ireki dezakezu deskargatu aurretik, aukeratzen dituzunak bakarrik atera edo denak batera deskargatu.",
+          ],
+        },
+        {
+          h2: "PDF batek pisu gutxiago izatea nahi baduzu",
+          body: [
+            "PDF bat ZIP batean sartzeak ia ez du txikitzen. PDF batek benetan pisu gutxiago izan dezan, pasa ezazu [Konprimitu PDFa](/comprimir-pdf) tresnatik, barruan dituen irudiak murrizten baititu.",
+          ],
+        },
+        {
+          h2: "Zure fitxategiak ez dira gailutik irteten",
+          body: [
+            "Konprimitzea eta deskonprimitzea zure nabigatzailearen memorian gertatzen da: ezer ez da internetera igotzen. Oso fitxategi handiekin (hainbat GB) denbora behar dezake edo memoriarik gabe gera daiteke; kasu horretan, banatu hainbat ZIPetan.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Gehitu fitxategiak", text: "Ireki docusmart.online/eu/fitxategiak-konprimitu eta gehitu fitxategiak edo karpeta bat." },
+        { name: "Aukeratu aukerak", text: "Idatzi izena, konpresioa eta, nahi baduzu, pasahitz bat." },
+        { name: "Sortu ZIPa", text: "Sakatu «Sortu ZIP» eta begiratu zenbat jaitsi den pisua." },
+        { name: "Deskargatu", text: "Deskargatu ZIPa edo partekatu." },
+      ],
+      faq: [
+        ["RAR bat ireki dezaket WinRAR gabe?", "Bai. «Deskonprimitu RAR, ZIP eta 7Z» tresnak RAR, ZIP, 7Z eta beste formatu batzuk irekitzen ditu nabigatzailean, ezer instalatu gabe. Berri bat sortzeko erabili ZIP edo 7Z."],
+        ["Zergatik pisatzen du nire ZIPak ia gauza bera?", "Argazkiak, bideoak eta PDFak konprimituta datozelako jada. ZIPak fitxategi bakar batean biltzeko balio du, ez hainbeste txikitzeko."],
+        ["Segurua da pasahitza jartzea?", "Bai. AES-256rekin zifratzen da eta pasahitza ez da inon gordetzen: ahazten baduzu, ez dago berreskuratzeko modurik."],
+      ],
+    },
+    'recortar-los-margenes-de-un-pdf': {
+      slug: 'pdf-baten-marjinak-moztu',
+      title: "Nola moztu PDF baten marjinak edo zati bat | DocuSmart",
+      description:
+        "Kendu PDF baten marjina zuriak ukitu batekin edo moztu eskuz gorde nahi duzun zatia, orri guztietan edo bakar batean. Doan eta fitxategia igo gabe.",
+      h1: "Nola moztu PDF baten marjinak edo zati bat",
+      lead: "Marjina erraldoiak dituen PDF bat txiki irakurtzen da mugikorrean eta paper zuri askorekin inprimatzen da. Mozteak garrantzitsua dena bakarrik uzten du, edukia ukitu gabe.",
+      sections: [
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [Moztu PDFa](/recortar-pdf) eta aukeratu fitxategia. Lehen orria ikusiko duzu laukitxo bat gainean duela: ilundutakoa da moztuko dena.",
+            "Sakatu **Kendu marjina zuriak** eta laukitxoa bakarrik doitzen da orriaren edukira, irudian bezala. Eskuz egin nahiago baduzu, arrastatu laukitxoaren ertzak edo izkinak. Azpian geratuko den tamaina ikusten duzu, milimetrotan.",
+            "Aukeratu moztea **Orri guztiak** aukerari aplikatuko zaion edo ikusten ari zaren orriari bakarrik (adibidez, **1. orria soilik**), sakatu **Moztu PDFa** eta deskargatu emaitza.",
+            { tip: "Orriek marjina desberdinak badituzte, berrikusi batzuk geziekin moztu aurretik: «Orri guztiak» aukeraren laukitxoa bera da bakoitzarentzat." },
+          ],
+        },
+        {
+          h2: "Zertarako balio duen",
+          body: [
+            { ul: [
+              "**Mugikorrean irakurtzeko**: marjinarik gabe, testuak pantaila osoa hartzen du eta handiago irakurtzen da.",
+              "**Zati bat ateratzeko**: taula bat, grafiko bat edo dokumentu eskaneatu baten argazkia, aparte erabiltzeko.",
+              "**Eskaneatze bati soberan dagoena kentzeko**: eskanerraren estalkiaren ertz beltza edo orriaren inguruko mahaia.",
+            ] },
+          ],
+        },
+        {
+          h2: "Zer gertatzen den edukiarekin",
+          body: [
+            "Mozteak orri bakoitzaren eremu ikusgaia aldatzen du, testua eta irudiak berregin gabe: geratzen dena bezain garbi ikusten da eta testua kopiatu eta bilatu daiteke oraindik.",
+            "Gero orri batzuk bakarrik behar badituzu, bereizi [Zatitu PDFa](/dividir-pdf) tresnarekin; eta orriren bat alboz geratu bada, zuzendu [Biratu PDFa](/rotar-pdf) tresnarekin.",
+          ],
+        },
+        {
+          h2: "Inprimatu aurretik",
+          body: [
+            "Moztutako PDF bat inprimatzean, orria paper-orria baino txikiagoa geratzen da. Paper osoa har dezan, aukeratu **Doitu orriaren tamainara** (edo antzeko aukera) zure nabigatzailearen edo PDF irakurgailuaren inprimatze-leihoan.",
+            "Eskaneatze bat moztu baduzu dokumentu baten argazkiarekin geratzeko (nortasun-agiri bat, txartel bat), egiaztatu dokumentuaren ertzik ez duzula moztu: izapide askok lau izkinak ikustea eskatzen dute.",
+          ],
+        },
+        {
+          h2: "Zure PDFa ez da gailutik irteten",
+          body: [
+            "Moztu osoa zure nabigatzailean gertatzen da. PDFa ez da inongo zerbitzaritara igotzen; beraz, lasai erabil dezakezu kontratuekin edo dokumentu pertsonalekin.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki Moztu PDFa", text: "Ireki docusmart.online/eu/pdfa-moztu eta aukeratu PDFa." },
+        { name: "Doitu laukitxoa", text: "Sakatu «Kendu marjina zuriak» edo arrastatu ertzak eskuz." },
+        { name: "Aukeratu orriak", text: "Aplikatu moztea orri guztiei edo ikusten ari zarenari bakarrik." },
+        { name: "Deskargatu", text: "Sakatu «Moztu PDFa» eta deskargatu emaitza." },
+      ],
+      faq: [
+        ["PDF bat moztean kalitatea galtzen da?", "Ez. Orriaren eremu ikusgaia bakarrik aldatzen da; testua eta irudiak berdin geratzen dira."],
+        ["Orri bakar bat moztu dezaket?", "Bai. Moztu aurretik aukeratu ikusten ari zaren orria soilik."],
+        ["Moztutakoa fitxategitik ezabatzen da?", "Bistatik eta inprimaketatik kanpo geratzen da. Datu pribatu bat ezabatu nahi baduzu, erabili «Ezabatu PDFko datuak», benetan ezabatzen baitu."],
+      ],
+    },
+    'cambiar-el-formato-de-una-imagen': {
+      slug: 'irudi-baten-formatua-aldatu',
+      title: "Nola aldatu irudi baten formatua: HEIC, JPG, PNG edo WebP | DocuSmart",
+      description:
+        "Pasa iPhoneko HEIC argazkiak JPGra, JPG bat PNGra edo edozein irudi WebPra, bat edo asko batera. Doan, nabigatzailean eta zure argazkiak igo gabe.",
+      h1: "Nola aldatu irudi baten formatua: HEIC, JPG, PNG edo WebP",
+      lead: "Formatu bakoitzak gauza desberdin baterako balio du, eta batzuetan orri edo programa batek bat bakarrik onartzen du. Hemen zure argazkien formatua segundo gutxitan aldatzen duzu, ezer instalatu gabe.",
+      sections: [
+        {
+          h2: "Zer formatu komeni zaizun",
+          body: [
+            { ul: [
+              "**JPG**: argazkiena. Gutxi pisatzen du eta edozein gailuk, orrik edo inprimakik irekitzen du. Ez du atzealde gardenik onartzen.",
+              "**PNG**: kalitate-galerarik gabe eta atzealde gardenarekin. Logotipoetarako, pantaila-argazkietarako eta marrazkietarako aproposa; argazkiekin askoz gehiago pisatzen du.",
+              "**WebP**: webeko formatu modernoa. JPG baten berdina ikusten da pisu dezente gutxiagorekin, irudian bezala: 189 KBtik 50 KBra.",
+              "**HEIC**: iPhoneek erabiltzen dutena. Gutxi hartzen du, baina ordenagailu, orri eta programa askok ez dute irekitzen.",
+            ] },
+          ],
+        },
+        {
+          h2: "iPhoneko argazkiak (HEIC) JPGra",
+          body: [
+            "Ireki [HEICtik JPGra](/heic-a-jpg) eta aukeratu zure HEIC argazkiak, bat edo asko. Doitu **JPGren kalitatea** nahi baduzu (markatuta datorrena jatorrizkoaren berdina ikusten da) eta sakatu **Bihurtu**. Batzuk baziren, ZIP batean deskargatzen dira batera.",
+            { tip: "Lehen aldian HEIC deskodetzailea deskargatzen da (1,4 MB) eta gordeta geratzen da: hurrengo bihurketak berehala hasten dira." },
+            "iPhoneak argazkiak zuzenean JPGn ateratzea nahiago baduzu, **Ezarpenak → Kamera → Formatuak** atalean aukeratu **Bateragarriena**.",
+          ],
+        },
+        {
+          h2: "JPGtik PNGra, edo edozein irudi WebPra",
+          body: [
+            "[JPGtik PNGra](/jpg-a-png) tresnarekin argazki bat PNG bihurtzen duzu programa batek eskatzen duenean edo kalitaterik galdu gabe hainbat aldiz editatuko duzunean. [Iruditik WebPra](/imagen-a-webp) tresnarekin web orri bateko edo lineako denda bateko argazkien pisua jaisten duzu, nabaritu gabe.",
+            "Biek berdin funtzionatzen dute: irudi bat edo batzuk aukeratzen dituzu, botoia sakatzen duzu eta lehena eta ondorena ikusten dituzu bertsio bakoitzaren pisuarekin, deskargatzeko prest.",
+          ],
+        },
+        {
+          h2: "Gainera pisu gutxiago izatea edo tamaina aldatzea behar baduzu",
+          body: [
+            "Formatua aldatzeak ez ditu argazkiaren neurriak aldatzen. Inprimaki batek pisu jakin bat ez gainditzeko eskatzen badizu, erabili [Konprimitu irudia](/comprimir-imagen), HEIC argazkiak ere onartzen dituena eta JPGn ematen dituena; eta zabalera edo altuera zehatz bat eskatzen badizute, [Aldatu irudiaren tamaina](/redimensionar-imagen).",
+          ],
+        },
+        {
+          h2: "Zure argazkiak igo gabe",
+          body: [
+            "Bihurketa zure nabigatzailean gertatzen da: zure argazkiak ez dira inongo zerbitzaritara igotzen. Gordetzean, gainera, datu ezkutuak (EXIF) kentzen dira, hala nola atera ziren kokapena.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Aukeratu bihurketa", text: "Ireki docusmart.online webguneko HEICtik JPGra, JPGtik PNGra edo Iruditik WebPra tresna." },
+        { name: "Aukeratu argazkiak", text: "Gehitu irudi bat edo batzuk." },
+        { name: "Bihurtu", text: "Sakatu botoia eta alderatu lehena eta ondorena." },
+        { name: "Deskargatu", text: "Deskargatu irudia, edo ZIPa batzuk baziren." },
+      ],
+      faq: [
+        ["Zergatik ezin ditut nire iPhoneko argazkiak ordenagailuan ireki?", "HEIC formatuan daudelako, gailu eta orri askok ezagutzen ez duten formatu batean. Pasa itzazu JPGra eta edonon irekiko dira."],
+        ["Argazki batek kalitatea galtzen du PNGra pasatzean?", "Ez: PNGk ez du kalitaterik galtzen. Baina ez du berreskuratzen ere; argazkia jatorrizko JPGren berdina geratzen da eta gehiago pisatzen du."],
+        ["WebP nabigatzaile guztietan ikusten da?", "Bai, gaur egungo nabigatzaile guztietan. Mahaigaineko programa zahar batzuek oraindik ez dute irekitzen."],
+      ],
+    },
+    'borrar-la-ubicacion-y-los-datos-ocultos-de-una-foto': {
+      slug: 'argazki-baten-kokapena-eta-datu-ezkutuak-ezabatu',
+      title: "Nola ezabatu argazki edo PDF baten kokapena eta datu ezkutuak | DocuSmart",
+      description:
+        "Ikusi argazki edo dokumentu batek zer datu ezkutu gordetzen dituen (GPS kokapena, kamera, data, egilea) eta ezabatu partekatu aurretik. Doan eta fitxategia igo gabe.",
+      h1: "Nola ezabatu argazki baten kokapena eta datu ezkutuak",
+      lead: "Mugikorreko argazki batek atera zen leku zehatza gorde dezake, eta dokumentu batek, idatzi zuenaren izena. Argitaratu edo bidali aurretik, begiratu zer daramaten eta ezabatu.",
+      sections: [
+        {
+          h2: "Zer diren datu ezkutuak (metadatuak)",
+          body: [
+            "Fitxategiaren barruan doazen baina irudian edo orrietan ikusten ez diren datuak dira. Argazki batek **GPS kokapena**, mugikorraren marka eta modeloa, kameraren serie-zenbakia eta data eta ordu zehatzak gorde ditzake. PDF batek edo Word dokumentu batek **egilea**, enpresa, egiteko erabili zen programa eta sortze- eta aldatze-datak gorde ditzake.",
+            "Fitxategia jasotzen duenak edozein irakurgailurekin ikus ditzake. Zure etxeko argazki batekin, adibidez, kokapenak zure helbidera darama.",
+          ],
+        },
+        {
+          h2: "Urratsez urrats",
+          body: [
+            "Ireki [Metadatuak kendu](/quitar-metadatos) eta aukeratu zure argazkiak edo dokumentuak: JPG, PNG, WebP, HEIC, TIFF, MP4 eta MOV bideoak, PDF, Word, Excel edo PowerPoint. Berehala ikusiko duzu bakoitzean **aurkitutako datu ezkutuen** zerrenda, irudian bezala; argazki batek kokapena gordetzen badu, gorriz agertzen da abisu batekin.",
+            "Sakatu **Metadatuak kendu**. Fitxategi bakoitzak lehen zenbat datu zituen eta ondoren zenbat geratzen diren ikusiko duzu, eta kopia garbia deskargatzen duzu (edo ZIP bat, batzuk baziren).",
+            { tip: "Argazkien orientazioa bakarrik gordetzen da, biratuta ager ez daitezen. Irudia ez da berriro konprimitzen: ez du kalitaterik galtzen." },
+          ],
+        },
+        {
+          h2: "PDFetan eta Office dokumentuetan",
+          body: [
+            "PDFetan, **Kendu iruzkinak, eranskinak eta JavaScripta ere** aukerak, gainera, egilearen izena duten oharrak, erantsitako fitxategiak eta irekitzean exekutatzen den kodea ezabatzen ditu. Desaktibatu iruzkinak gorde behar badituzu.",
+            "Word, Excel eta PowerPoint-en egilea, enpresa eta datak kentzen dira. Iruzkinetan eta aldaketen kontrolean agertzen diren izenak programatik bertatik ezabatzen dira.",
+          ],
+        },
+        {
+          h2: "Datu pribatua bistan badago",
+          body: [
+            "Metadatuak kentzeak ez du ikusten dena aldatzen. Ezkutatu nahi duzuna PDF baten orrietan agertzen den nortasun-agiriaren zenbaki bat, sinadura bat edo helbide bat bada, erabili [Ezabatu PDFko datuak](/censurar-pdf), estali eta fitxategitik ezabatzen baitu.",
+          ],
+        },
+        {
+          h2: "Zure gailuan egiten da",
+          body: [
+            "Dena zure nabigatzailean gertatzen da: zure argazkiak eta dokumentuak ez dira inongo zerbitzaritara igotzen. Horrela ez duzu fitxategi pribatu baten kopiarik uzten, hain zuzen babesten saiatzen ari zarenean.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Ireki Metadatuak kendu", text: "Ireki docusmart.online/eu/metadatuak-kendu eta aukeratu argazkiak edo dokumentuak." },
+        { name: "Berrikusi zer gordetzen duten", text: "Begiratu fitxategi bakoitzaren datu ezkutuen zerrenda, hala nola GPS kokapena." },
+        { name: "Ezabatu", text: "Sakatu «Metadatuak kendu» eta egiaztatu bat ere ez dela geratu." },
+        { name: "Deskargatu", text: "Deskargatu kopia garbia, partekatzeko prest." },
+      ],
+      faq: [
+        ["WhatsAppek argazkien kokapena ezabatzen du?", "Argazki gisa bidaltzean, WhatsAppek berriro konprimitzen ditu eta datu gehienak kentzen ditu. Baina dokumentu gisa, posta elektronikoz bidaltzen badituzu edo beste orri batzuetara igotzen badituzu, kokapenarekin irits daitezke."],
+        ["Argazkiak kalitatea galtzen du?", "Ez. Datu ezkutuak bakarrik kentzen dira; irudia zehazki berdin geratzen da."],
+        ["Zer datu gordetzen dira?", "Argazkien orientazioa bakarrik, biratuta ager ez daitezen. Gainerako guztia ezabatzen da."],
+      ],
+    },
   },
 }

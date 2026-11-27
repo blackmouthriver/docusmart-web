@@ -1353,5 +1353,484 @@ export default {
         ['Does it work with password-protected PDFs?', 'First remove the password with Unlock PDF and then repair it.'],
       ],
     },
+    'hacer-una-cuenta-de-cobro': {
+      slug: 'make-an-invoice-for-your-services',
+      title: 'How to make an invoice for your services in PDF, free and in minutes | DocuSmart',
+      description:
+        'Fill in your details, your client\'s and what you charge: the total, withholding and amount in words are calculated for you. Download it as a free PDF, no uploads.',
+      h1: 'How to make an invoice for your services in PDF',
+      lead: 'A bill for services states who owes whom, how much and for what. With the DocuSmart template you fill it in your browser and get a tidy PDF, ready to send.',
+      sections: [
+        {
+          h2: 'What a bill for services is and who uses it',
+          body: [
+            'It\'s the document a person uses to charge for a job or a service when they don\'t issue a formal invoice: a freelance designer, a private tutor, a contractor who provides services to a company or someone who rents out a property. It must state who is charging, whom, the date, the description, the amount (in figures and in words) and how it\'s paid.',
+            { tip: 'A bill for services doesn\'t replace an electronic invoice. If your activity or your income requires you to issue invoices, check with an accountant or with your country\'s tax authority.' },
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Invoice, quote and receipt maker](/cuenta-de-cobro) and keep the **Bill for services** type selected. Search for your **Country**: this sets the currency, the name of the tax and the types of ID (national ID, tax IDs such as NIT, RFC or RUC…). The document number is suggested for you (CC-0001) and the date is today\'s; add the city and, if you want, a **Payment due date**.',
+            'In **Your details** enter your name and your ID number; in **Client**, those of the person paying you. The address, phone and email are optional.',
+            'In **Items** describe what you\'re charging for, the quantity and the unit price. If there are several things, use **Add item**. The subtotal, tax, withholding and total are calculated as you type, and the amount in words appears below.',
+          ],
+        },
+        {
+          h2: 'Tax, withholding and discount',
+          body: [
+            'If you charge a tax (such as VAT), enter its percentage; when you choose your country, a button appears to use the standard rate. If the client applies **withholding**, enter the percentage and it\'s subtracted from the total, as in the image: a subtotal of 1,800,000, 10% withholding and 1,620,000 to pay. The **discount** is subtracted before taxes.',
+            { tip: 'The withholding percentage depends on your country, the type of service and your tax situation. If you don\'t know it, ask the client: they almost always tell you how much they\'ll withhold.' },
+          ],
+        },
+        {
+          h2: 'Payment details, signature and PDF',
+          body: [
+            'In **Payment details** enter the bank, the account type and number and the account holder\'s name, so the client knows where to pay. In **Notes** you can write deadlines or terms. With **Add signature** you draw it with your finger or the mouse, and with **Add logo** you put yours at the top.',
+            'Press **Create PDF**: you\'ll see the finished bill, with the amount in words and the signature line, ready to download, share on WhatsApp or save to Drive.',
+            { ul: [
+              'The number continues on its own with each new document (CC-0002, CC-0003…). And if you check **Remember my details, logo, clients, items and history in this browser**, next time your details, logo and clients are already filled in; the bank account is never saved.',
+              'In **Issued documents** you can open an earlier bill to correct it, or turn an approved **quote** into a bill for services without typing everything again.',
+              'With the same tool you can make a **quote** (with an expiry date) or a payment **receipt**.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Your data and your client\'s aren\'t uploaded',
+          body: [
+            'Everything is put together in your browser: names, ID numbers and amounts aren\'t sent to any server. If the client asks for the bill signed on a PDF you already have, use [Sign PDF](/firmar-pdf); and if you\'re sending several together by email, [Compress PDF](/comprimir-pdf) makes them lighter.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open the template', text: 'Go to docusmart.online/en/invoice-generator and choose your country.' },
+        { name: 'Enter the details', text: 'Fill in your details, the client\'s, the city and the date.' },
+        { name: 'Add what you charge', text: 'Describe each item with its amount; the total, the withholding and the amount in words are calculated for you.' },
+        { name: 'Create the PDF', text: 'Add the payment details and your signature, press Create PDF and download it.' },
+      ],
+      faq: [
+        ['Is a bill for services the same as a formal invoice?', 'No. A bill for services is used by people who aren\'t required to issue invoices; it doesn\'t replace an electronic invoice. DocuSmart doesn\'t issue electronic invoices.'],
+        ['How is withholding calculated?', 'Enter the percentage your client gives you and DocuSmart subtracts it from the subtotal. The total to pay already has the withholding deducted.'],
+        ['Can I make a bill in another currency?', 'Yes. Choosing your country sets its currency, and you can change it to another one (dollars, euros…) in the Currency field.'],
+      ],
+    },
+    'hacer-una-hoja-de-vida': {
+      slug: 'make-a-resume',
+      title: 'How to make a resume in PDF or Word, free and without signing up | DocuSmart',
+      description:
+        'Build your resume with a clear, ATS-friendly template for job portals, with or without a photo. Download it as PDF or Word, free and without creating an account.',
+      h1: 'How to make a resume in PDF or Word',
+      lead: 'A good resume can be understood in seconds and gets past the automatic filters of job portals. Here you fill it in section by section and it comes out neatly organized, without fighting the formatting.',
+      sections: [
+        {
+          h2: 'Choose the template',
+          body: [
+            'Open [Resume builder](/hoja-de-vida). At the top you choose how it will look:',
+            { ul: [
+              '**Classic (ATS)**: one column and no photo. It\'s the one best read by the systems that filter resumes on job portals; use it to apply online.',
+              '**Compact**: just as clear, with smaller text and margins so more fits on one page.',
+              '**With photo**: your photo at the top, as many companies in Latin America ask for.',
+            ] },
+            'You also choose the paper size (Letter or A4), the font (modern or classic) and the color of the headings.',
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Fill in your **Personal details**: name, job title or profession, city, phone and email. If you have LinkedIn or a portfolio, add it under **Links**. Then write your **Professional summary** in two or three sentences: who you are, what you can do and what you\'re looking for.',
+            'In **Work experience** add each job with the title, the company and the dates; check **I currently work here** if you\'re still there. In **Achievements and duties** write one achievement per line: each line becomes a bullet point. Do the same with **Education**, **Skills**, **Languages**, **Courses and certifications** and **References**; empty sections don\'t appear.',
+            'Press **Create PDF** or **Create Word (.docx)**. You\'ll see the finished resume, ready to download or share.',
+            { tip: 'Start each achievement with a verb and use numbers when you can: “Cut delivery times by 30%” says more than “in charge of deliveries.”' },
+          ],
+        },
+        {
+          h2: 'Compare it with the job posting and write the cover letter',
+          body: [
+            'In **Compare with a job posting** you paste the job ad and see which keywords your resume already has and which are missing, with the match percentage. Automatic filters look for those words; add only the ones you really have.',
+            'In **Cover letter** you enter the company and the position, and DocuSmart puts together a draft with your experience and strengths. Review it, adjust it your way and download it as PDF or Word.',
+          ],
+        },
+        {
+          h2: 'Don\'t lose what you wrote',
+          body: [
+            'With **Save automatically in this browser**, what you write stays in this browser even if you close the page (the photo doesn\'t). To continue on another computer, use **Save draft**: you download a .json file that you then open there with **Open draft**.',
+            'If the company asks for a photo with a white background, prepare it first in [Passport and ID photo](/foto-tamano-documento). And if you have to send the resume together with certificates in a single file, combine them with [Merge PDF](/unir-pdf).',
+          ],
+        },
+        {
+          h2: 'Your information doesn\'t leave your device',
+          body: [
+            'The resume is put together in your browser: your details, your experience and your photo aren\'t uploaded to any server or used for anything else. You don\'t need to create an account or leave your email.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choose the template', text: 'Go to docusmart.online/en/resume-builder and choose Classic (ATS), Compact or With photo.' },
+        { name: 'Fill in the sections', text: 'Enter your details, your summary, your experience, your education and your skills.' },
+        { name: 'Compare it with the posting', text: 'Paste the job ad to see which keywords you\'re missing.' },
+        { name: 'Download it', text: 'Press Create PDF or Create Word and download your resume.' },
+      ],
+      faq: [
+        ['What is an ATS resume?', 'A single-column resume, without tables or images, that the applicant tracking systems of job portals can read without errors. It\'s the Classic template.'],
+        ['Can I download it in Word?', 'Yes. With Create Word (.docx) you can open and edit it in Word, Google Docs or LibreOffice.'],
+        ['Do I need to sign up?', 'No. It\'s free, it doesn\'t ask for an account or an email, and what you write stays on your device.'],
+      ],
+    },
+    'crear-un-codigo-qr': {
+      slug: 'create-a-qr-code',
+      title: 'How to create a free QR code for a link, WhatsApp or Wi-Fi | DocuSmart',
+      description:
+        'Create a QR code for a link, WhatsApp, your Wi-Fi or your contact details, with your color and logo. Download it as PNG, SVG or PDF. Free, no sign-up, no expiry.',
+      h1: 'How to create a QR code for free',
+      lead: 'A QR code takes people to your page, opens a WhatsApp chat or connects them to the Wi-Fi without typing anything. Create it in seconds; it doesn\'t expire or depend on any server.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Create and read QR codes](/crear-codigo-qr) and choose what it will store: **URL**, **Text**, **Email**, **Phone**, **WhatsApp**, **SMS**, **Location**, **Wi-Fi**, **Contact** or **Event**. Enter the details (for a link, the full address with https://).',
+            'Press **Generate QR**. The code appears right away and you can download it as PNG, as **SVG** (vector, prints sharp at any size), as **PDF (10 cm)**, copy it as an image or print it.',
+            { tip: 'Before printing a hundred flyers, scan the QR code with your phone to check that it opens what you expect.' },
+          ],
+        },
+        {
+          h2: 'What each type can do',
+          body: [
+            { ul: [
+              '**WhatsApp**: enter the number with the country code (for example, 1 for the US or 57 for Colombia) and, if you want, a message. When scanned, the chat opens with the message already written.',
+              '**Wi-Fi**: the network name, the security type and the password. Your guests connect without you having to read it out.',
+              '**Contact**: name, phone, email and company. When scanned, the phone offers to save it to the contacts.',
+              '**Location**: an address or coordinates that open in the map.',
+              '**Event**: title, place, start and end, to add it to the calendar.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Give it your style',
+          body: [
+            'In **Customize design** you change the color of the code and the background (or make it transparent to place it on your design), put your **logo** in the center and choose the image size. If the colors have low contrast, DocuSmart warns you, because a camera might not be able to read it.',
+            'With **Protected**, the content of the QR code is encrypted with a password (AES-256): only someone who has it can open it, in DocuSmart. And with **Several QR codes from a list** you generate many at once, one per line or from a CSV, for example for a restaurant\'s tables or inventory labels.',
+          ],
+        },
+        {
+          h2: 'To read a QR code',
+          body: [
+            'If what you need is to read one, use [QR code reader](/leer-codigo-qr): with the camera, from a photo or a screenshot, or from a PDF. Before opening a link it shows you where it leads and warns you if it looks deceptive.',
+          ],
+        },
+        {
+          h2: 'Your QR code doesn\'t expire',
+          body: [
+            'The code is generated in your browser and stores the data directly, without going through an intermediate link. That\'s why it doesn\'t expire, has no scan limit and nobody else sees what you put in it. The QR codes you create stay in **History**, only in your browser.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choose the type', text: 'Go to docusmart.online/en/qr-code-generator and choose URL, WhatsApp, Wi-Fi or another type.' },
+        { name: 'Enter the details', text: 'Add the link, the number or the network details.' },
+        { name: 'Generate the QR code', text: 'Press Generate QR and, if you want, change the color or add your logo.' },
+        { name: 'Download it', text: 'Download it as PNG, SVG or PDF, or print it.' },
+      ],
+      faq: [
+        ['Does the QR code expire?', 'No. The data goes inside the code itself, without an intermediate link, so it works forever and with no scan limit.'],
+        ['Which format should I use for printing?', 'SVG: it\'s vector and looks sharp at any size, from a business card to a poster. There\'s also a 10 cm PDF.'],
+        ['Can I put my logo on the QR code?', 'Yes, in Customize design. The logo sits in a circle in the center and the code can still be read.'],
+      ],
+    },
+    'cambiar-el-tamano-de-una-foto': {
+      slug: 'resize-a-photo',
+      title: 'How to resize a photo in pixels, percent or centimeters | DocuSmart',
+      description:
+        'Resize one or several photos in pixels, by percentage, in centimeters or to the exact size for Instagram, WhatsApp or YouTube. Free and without uploading them.',
+      h1: 'How to resize a photo',
+      lead: 'A phone photo is thousands of pixels across: too much for a form, a web page or a cover image. Here you bring it to the size you need, without distorting it.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Resize image](/redimensionar-imagen) and choose one or several photos (JPG, PNG, WebP, HEIC, GIF or BMP). Then pick **How to resize**:',
+            { ul: [
+              '**By percentage**: for example, 50% makes the photo half as wide and half as tall.',
+              '**By pixels**: enter the width, the height or both. With **Keep the aspect ratio** on, one side is enough: the other is calculated automatically.',
+              '**Social media**: exact sizes for Instagram, WhatsApp stories, Facebook or LinkedIn covers and YouTube thumbnails.',
+              '**In centimeters**: for printing, at the resolution you choose.',
+            ] },
+            'Press **Resize** and you\'ll see the photo before and after, with its file size. If you chose several, they\'re saved together in a ZIP.',
+          ],
+        },
+        {
+          h2: 'Keep it from getting distorted',
+          body: [
+            'A photo looks stretched when you change the width and the height in different proportions. That\'s why **Keep the aspect ratio** is on by default: if you enter both sides, the photo fits inside that size without stretching. In **Social media**, the image fills the exact size and whatever is left over is trimmed evenly from the center.',
+            { tip: 'Making a photo smaller never makes it look less sharp, but making it bigger doesn\'t add detail: a small photo enlarged to twice its size looks blurry.' },
+          ],
+        },
+        {
+          h2: 'If what you want is to crop it or make it lighter',
+          body: [
+            'Resizing isn\'t the same as cropping. To remove an edge, frame a person or make the photo square, use [Crop image](/recortar-imagen): free cropping or fixed ratios such as 1:1, 4:3 or 16:9.',
+            'And if a form requires the photo to be under a certain size (for example, 200 KB), [Compress image](/comprimir-imagen) lowers the quality just enough for it to fit, and only reduces the pixels if that\'s not enough.',
+          ],
+        },
+        {
+          h2: 'Commonly requested sizes',
+          body: [
+            { ul: [
+              '**For a web page or a blog**: between 1200 and 1920 pixels wide is more than enough; anything larger just makes the page load slowly.',
+              '**For a form or an application**: they usually ask for a maximum width (for example, 800 pixels) and a maximum file size. First adjust the size here and, if it\'s still too heavy, compress it.',
+              '**For printing**: use In centimeters; at 300 dpi, a 10 × 15 cm photo needs about 1181 × 1772 pixels to look sharp.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Your photos aren\'t uploaded',
+          body: [
+            'Everything happens in your browser, even with dozens of photos at once. Also, when saving, the photo\'s hidden data (EXIF) is removed, such as the GPS location where it was taken.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choose the photos', text: 'Go to docusmart.online/en/resize-image and choose one or several photos.' },
+        { name: 'Pick the size', text: 'By percentage, by pixels, a social media size or in centimeters.' },
+        { name: 'Resize', text: 'Press Resize and compare the before and after.' },
+        { name: 'Download', text: 'Download the photo, or the ZIP if there were several.' },
+      ],
+      faq: [
+        ['Does a photo lose quality when you make it smaller?', 'Not to the eye: it looks just as sharp, only smaller. What you can\'t do is enlarge it without it showing.'],
+        ['Can I resize several photos at once?', 'Yes. Choose them all together: they\'re resized to the same size and downloaded in a ZIP.'],
+        ['What size should I use for Instagram?', 'In Social media you have Instagram square and portrait, and stories. The photo fills the size and whatever is left over is trimmed from the center.'],
+      ],
+    },
+    'comprimir-archivos-en-zip': {
+      slug: 'zip-files-and-open-rar',
+      title: 'How to zip files and open a ZIP or RAR without software | DocuSmart',
+      description:
+        'Combine several files or a folder into a ZIP, with a password if you like, and open ZIP, RAR or 7Z files in your browser. Free, nothing to install, no uploads.',
+      h1: 'How to zip files and open a ZIP or RAR',
+      lead: 'A ZIP combines many files into one: easier to send by email and sometimes lighter. Here you create and open them in your browser, without installing any software.',
+      sections: [
+        {
+          h2: 'Creating a ZIP, step by step',
+          body: [
+            'Open [Compress files (ZIP and 7Z)](/comprimir-archivos) and add the files (of any type) or a whole folder with **Add a folder**. Enter the name of the ZIP and choose the compression: **Fast**, **Normal** or **Maximum**.',
+            'Press **Create ZIP**. You\'ll see your files on one side and the ZIP on the other, with how much everything weighed before and how much it weighs now.',
+            { tip: 'Photos, videos and PDFs are already compressed, so they barely get smaller in a ZIP. What does shrink a lot are Word documents, spreadsheets and text files.' },
+          ],
+        },
+        {
+          h2: 'With a password or in parts',
+          body: [
+            { ul: [
+              '**Protect with a password (AES-256)**: nobody can open the ZIP without the password. In ZIP the password can\'t contain accented letters or ñ; if you need them, choose the 7Z format.',
+              '**Split into parts**: if your email won\'t accept such a large file, you split it into several (.001, .002…). To open it you need all the parts, with DocuSmart, 7-Zip or WinRAR.',
+              '**7Z**: compresses more than ZIP, but on some computers you have to install a program to open it. ZIP opens on any computer and phone without installing anything.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Opening a ZIP, RAR or 7Z',
+          body: [
+            'To get out what a compressed file contains, use [Extract RAR, ZIP and 7Z](/descomprimir-archivos). It opens ZIP, RAR, 7Z, TAR, GZ, BZ2 and XZ, including password-protected ones and ones split into parts.',
+            'You\'ll see the list of what\'s inside, with its folders. You can preview a file before downloading it, extract only the ones you choose or download them all together.',
+          ],
+        },
+        {
+          h2: 'If what you want is a smaller PDF',
+          body: [
+            'Putting a PDF in a ZIP barely shrinks it. To really make a PDF smaller, run it through [Compress PDF](/comprimir-pdf), which reduces the images inside it.',
+          ],
+        },
+        {
+          h2: 'Your files don\'t leave your device',
+          body: [
+            'Compressing and extracting happen in your browser\'s memory: nothing is uploaded to the internet. With very large files (several GB) it may take a while or run out of memory; in that case, split them into several ZIPs.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Add the files', text: 'Go to docusmart.online/en/zip-files and add files or a folder.' },
+        { name: 'Choose the options', text: 'Enter the name, the compression and, if you want, a password.' },
+        { name: 'Create the ZIP', text: 'Press Create ZIP and see how much the size went down.' },
+        { name: 'Download', text: 'Download the ZIP or share it.' },
+      ],
+      faq: [
+        ['Can I open a RAR without WinRAR?', 'Yes. Extract RAR, ZIP and 7Z opens RAR, ZIP, 7Z and other formats in the browser, without installing anything. To create a new one, use ZIP or 7Z.'],
+        ['Why is my ZIP almost the same size?', 'Because photos, videos and PDFs are already compressed. A ZIP is for combining them into a single file, not so much for shrinking them.'],
+        ['Is it safe to add a password?', 'Yes. It\'s encrypted with AES-256 and the password isn\'t stored anywhere: if you forget it, there\'s no way to recover it.'],
+      ],
+    },
+    'recortar-los-margenes-de-un-pdf': {
+      slug: 'crop-pdf-margins',
+      title: 'How to crop the margins or part of a PDF | DocuSmart',
+      description:
+        'Remove the blank margins from a PDF with one tap or crop by hand the part you want to keep, on every page or on just one. Free and without uploading it.',
+      h1: 'How to crop the margins or part of a PDF',
+      lead: 'A PDF with huge margins reads small on your phone and prints with lots of blank paper. Cropping it leaves only what matters, without touching the content.',
+      sections: [
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Crop PDF](/recortar-pdf) and choose the file. You\'ll see the first page with a box on top of it: the darkened area is what will be cropped.',
+            'Press **Remove blank margins** and the box automatically fits the content of the page, as in the image. If you\'d rather do it by hand, drag the edges or corners of the box. Below it you see the size that will remain, in millimeters.',
+            'Choose whether the crop applies to **All pages** or only to the one you\'re viewing (**Only page 1**, for example), press **Crop PDF** and download the result.',
+            { tip: 'If the pages have different margins, check several with the arrows before cropping: the box for “All pages” is the same for each one.' },
+          ],
+        },
+        {
+          h2: 'What it\'s for',
+          body: [
+            { ul: [
+              '**Reading on your phone**: without margins, the text fills the whole screen and reads larger.',
+              '**Pulling out a part**: a table, a chart or the photo in a scanned document, to use it separately.',
+              '**Removing leftovers from a scan**: the black edge of the scanner lid or the table around the page.',
+            ] },
+          ],
+        },
+        {
+          h2: 'What happens to the content',
+          body: [
+            'Cropping changes the visible area of each page, without redoing the text or the images: what remains looks just as sharp and the text can still be copied and searched.',
+            'If you then need only some pages, separate them with [Split PDF](/dividir-pdf); and if one ended up sideways, straighten it with [Rotate PDF](/rotar-pdf).',
+          ],
+        },
+        {
+          h2: 'Before printing',
+          body: [
+            'When you print a cropped PDF, the page comes out smaller than the sheet. To make it fill the whole paper, choose **Fit to page** in the print dialog of your browser or PDF viewer.',
+            'If you cropped a scan to keep the photo of a document (an ID card, a badge), check that you didn\'t cut off any edge of the document: many applications require all four corners to be visible.',
+          ],
+        },
+        {
+          h2: 'Your PDF doesn\'t leave your device',
+          body: [
+            'All the cropping happens in your browser. The PDF isn\'t uploaded to any server, so you can use it with contracts or personal documents with peace of mind.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Crop PDF', text: 'Go to docusmart.online/en/crop-pdf and choose the PDF.' },
+        { name: 'Adjust the box', text: 'Press Remove blank margins or drag the edges by hand.' },
+        { name: 'Choose the pages', text: 'Apply the crop to all pages or only to the one you\'re viewing.' },
+        { name: 'Download', text: 'Press Crop PDF and download the result.' },
+      ],
+      faq: [
+        ['Does cropping a PDF reduce its quality?', 'No. Only the visible area of the page changes; the text and images stay the same.'],
+        ['Can I crop just one page?', 'Yes. Before cropping, choose the Only page option for the page you\'re viewing.'],
+        ['Is the cropped part deleted from the file?', 'It\'s left out of view and out of printing. If what you want is to delete private data, use Redact PDF, which really removes it.'],
+      ],
+    },
+    'cambiar-el-formato-de-una-imagen': {
+      slug: 'change-image-format',
+      title: 'How to change an image format: HEIC, JPG, PNG or WebP | DocuSmart',
+      description:
+        'Convert iPhone HEIC photos to JPG, a JPG to PNG or any image to WebP, one or many at a time. Free, in your browser and without uploading your photos.',
+      h1: 'How to change an image format: HEIC, JPG, PNG or WebP',
+      lead: 'Each format is good for something different, and sometimes a website or a program only accepts one. Here you change the format of your photos in seconds, without installing anything.',
+      sections: [
+        {
+          h2: 'Which format suits you',
+          body: [
+            { ul: [
+              '**JPG**: the format for photos. It\'s small and opens on any device, website or form. It doesn\'t support transparent backgrounds.',
+              '**PNG**: no quality loss and with a transparent background. Ideal for logos, screenshots and drawings; with photos it\'s much larger.',
+              '**WebP**: the modern format of the web. It looks the same as a JPG at a much smaller size, as in the image: from 189 KB to 50 KB.',
+              '**HEIC**: the one iPhones use. It takes up little space, but many computers, websites and programs can\'t open it.',
+            ] },
+          ],
+        },
+        {
+          h2: 'iPhone photos (HEIC) to JPG',
+          body: [
+            'Open [HEIC to JPG](/heic-a-jpg) and choose your HEIC photos, one or many. Adjust the **JPG quality** if you want (the preset value looks the same as the original) and press convert. If there were several, they\'re downloaded together in a ZIP.',
+            { tip: 'The first time, the HEIC decoder (1.4 MB) is downloaded and saved: after that, conversions start right away.' },
+            'If you\'d rather your iPhone take photos directly in JPG, go to **Settings → Camera → Formats** and choose **Most Compatible**.',
+          ],
+        },
+        {
+          h2: 'JPG to PNG, or any image to WebP',
+          body: [
+            'With [JPG to PNG](/jpg-a-png) you convert a photo to PNG when a program requires it or when you\'re going to edit it several times without losing quality. With [Image to WebP](/imagen-a-webp) you reduce the size of the photos on a website or an online store without it showing.',
+            'Both work the same way: you choose one or several images, press the button and see the before and after with the size of each version, ready to download.',
+          ],
+        },
+        {
+          h2: 'If you also need it smaller or a different size',
+          body: [
+            'Changing the format doesn\'t change the dimensions of the photo. If a form says it can\'t exceed a certain file size, use [Compress image](/comprimir-imagen), which also accepts HEIC photos and delivers them as JPG; and if they ask for an exact width or height, [Resize image](/redimensionar-imagen).',
+          ],
+        },
+        {
+          h2: 'Without uploading your photos',
+          body: [
+            'The conversion happens in your browser: your photos aren\'t uploaded to any server. When saving, hidden data (EXIF) is also removed, such as the location where they were taken.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choose the conversion', text: 'Open HEIC to JPG, JPG to PNG or Image to WebP on docusmart.online.' },
+        { name: 'Choose the photos', text: 'Add one or several images.' },
+        { name: 'Convert', text: 'Press the button and compare the before and after.' },
+        { name: 'Download', text: 'Download the image, or the ZIP if there were several.' },
+      ],
+      faq: [
+        ['Why can\'t I open my iPhone photos on my computer?', 'Because they\'re in HEIC, a format that many computers and websites don\'t recognize. Convert them to JPG and they open anywhere.'],
+        ['Does a photo lose quality when converted to PNG?', 'No: PNG doesn\'t lose quality. But it doesn\'t recover any either; the photo stays the same as the original JPG and is larger.'],
+        ['Does WebP display in all browsers?', 'Yes, in all current browsers. Some old desktop programs still can\'t open it.'],
+      ],
+    },
+    'borrar-la-ubicacion-y-los-datos-ocultos-de-una-foto': {
+      slug: 'remove-location-and-hidden-data-from-a-photo',
+      title: 'How to remove the location and hidden data from a photo or PDF | DocuSmart',
+      description:
+        'See what hidden data a photo or document stores (GPS location, camera, date, author) and erase it before sharing. Free and without uploading the file.',
+      h1: 'How to remove the location and hidden data from a photo',
+      lead: 'A phone photo can store the exact place where it was taken, and a document, the name of whoever wrote it. Before posting or sending them, see what they carry and erase it.',
+      sections: [
+        {
+          h2: 'What hidden data (metadata) is',
+          body: [
+            'It\'s data stored inside the file that you can\'t see in the image or on the pages. A photo can store the **GPS location**, the make and model of the phone, the serial number of the camera and the exact date and time. A PDF or a Word document can store the **author**, the company, the program it was made with and the creation and modification dates.',
+            'Anyone who receives the file can see it with any viewer. With a photo of your home, for example, the location leads to your address.',
+          ],
+        },
+        {
+          h2: 'Step by step',
+          body: [
+            'Open [Remove metadata](/quitar-metadatos) and choose your photos or documents: JPG, PNG, WebP, HEIC, TIFF, MP4 and MOV videos, PDF, Word, Excel or PowerPoint. You\'ll instantly see the list of **Hidden data found** in each one, as in the image; if a photo stores the location, it appears in red with a warning.',
+            'Press **Remove metadata**. You\'ll see how much data each file had before and how much remains after, and you download the clean copy (or a ZIP, if there were several).',
+            { tip: 'Only the orientation of the photos is kept, so they don\'t appear rotated. The image isn\'t recompressed: it doesn\'t lose quality.' },
+          ],
+        },
+        {
+          h2: 'In PDFs and Office documents',
+          body: [
+            'In PDFs, the **Also remove comments, attachments and JavaScript** option also deletes notes with their author\'s name, attached files and code that runs when the file is opened. Turn it off if you need to keep the comments.',
+            'In Word, Excel and PowerPoint, the author, the company and the dates are removed. Names that appear in comments and tracked changes have to be removed in the program itself.',
+          ],
+        },
+        {
+          h2: 'If the private data is visible',
+          body: [
+            'Removing metadata doesn\'t change what you see. If what you want to hide is an ID number, a signature or an address that appears on the pages of a PDF, use [Redact PDF](/censurar-pdf), which covers it and removes it from the file.',
+          ],
+        },
+        {
+          h2: 'It\'s done on your device',
+          body: [
+            'Everything happens in your browser: your photos and documents aren\'t uploaded to any server. That way you don\'t leave copies of a private file just when you\'re trying to protect it.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Open Remove metadata', text: 'Go to docusmart.online/en/remove-metadata and choose photos or documents.' },
+        { name: 'Check what they store', text: 'Look at the list of hidden data in each file, such as the GPS location.' },
+        { name: 'Erase it', text: 'Press Remove metadata and check that none is left.' },
+        { name: 'Download', text: 'Download the clean copy, ready to share.' },
+      ],
+      faq: [
+        ['Does WhatsApp remove the location from photos?', 'When you send them as photos, WhatsApp recompresses them and removes most of the data. But if you send them as documents, by email or upload them to other sites, they can arrive with the location.'],
+        ['Does the photo lose quality?', 'No. Only the hidden data is removed; the image stays exactly the same.'],
+        ['What data is kept?', 'Only the orientation of the photos, so they don\'t appear rotated. Everything else is erased.'],
+      ],
+    },
   },
 }

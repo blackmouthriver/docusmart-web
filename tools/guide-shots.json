@@ -15,6 +15,14 @@
   700,
   1594
  ],
+ "ca/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "ca/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "ca/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -22,6 +30,30 @@
  "ca/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "ca/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "ca/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "ca/cuenta-de-cobro/conceptos-1280": [
+  940,
+  384
+ ],
+ "ca/cuenta-de-cobro/conceptos-390": [
+  700,
+  1188
+ ],
+ "ca/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "ca/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "ca/dividir-pdf/elegir-1280": [
   940,
@@ -79,6 +111,14 @@
   700,
   1070
  ],
+ "ca/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "ca/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "ca/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -94,6 +134,14 @@
  "ca/imagen-a-texto/texto-390": [
   700,
   2144
+ ],
+ "ca/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "ca/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "ca/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -175,6 +223,30 @@
   700,
   1368
  ],
+ "ca/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "ca/quitar-metadatos/datos-390": [
+  612,
+  606
+ ],
+ "ca/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "ca/recortar-pdf/recorte-390": [
+  700,
+  1800
+ ],
+ "ca/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "ca/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "ca/reparar-pdf/resultado-1280": [
   896,
   720
@@ -223,6 +295,14 @@
   700,
   1516
  ],
+ "de/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "de/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "de/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -230,6 +310,30 @@
  "de/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "de/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "de/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "de/cuenta-de-cobro/conceptos-1280": [
+  940,
+  384
+ ],
+ "de/cuenta-de-cobro/conceptos-390": [
+  700,
+  1186
+ ],
+ "de/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "de/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "de/dividir-pdf/elegir-1280": [
   940,
@@ -287,6 +391,14 @@
   700,
   1070
  ],
+ "de/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "de/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "de/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -302,6 +414,14 @@
  "de/imagen-a-texto/texto-390": [
   700,
   2190
+ ],
+ "de/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "de/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "de/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -383,6 +503,30 @@
   700,
   1412
  ],
+ "de/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "de/quitar-metadatos/datos-390": [
+  612,
+  694
+ ],
+ "de/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "de/recortar-pdf/recorte-390": [
+  700,
+  1800
+ ],
+ "de/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "de/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "de/reparar-pdf/resultado-1280": [
   896,
   720
@@ -431,6 +575,14 @@
   700,
   1514
  ],
+ "en/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "en/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "en/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -438,6 +590,30 @@
  "en/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "en/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "en/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "en/cuenta-de-cobro/conceptos-1280": [
+  940,
+  417
+ ],
+ "en/cuenta-de-cobro/conceptos-390": [
+  700,
+  1256
+ ],
+ "en/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "en/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "en/dividir-pdf/elegir-1280": [
   940,
@@ -495,6 +671,14 @@
   700,
   1070
  ],
+ "en/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "en/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "en/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -510,6 +694,14 @@
  "en/imagen-a-texto/texto-390": [
   700,
   2144
+ ],
+ "en/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "en/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "en/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -591,6 +783,30 @@
   700,
   1288
  ],
+ "en/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "en/quitar-metadatos/datos-390": [
+  612,
+  650
+ ],
+ "en/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "en/recortar-pdf/recorte-390": [
+  700,
+  1784
+ ],
+ "en/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "en/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "en/reparar-pdf/resultado-1280": [
   896,
   720
@@ -639,6 +855,14 @@
   700,
   1596
  ],
+ "es/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "es/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "es/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -646,6 +870,30 @@
  "es/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "es/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "es/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "es/cuenta-de-cobro/conceptos-1280": [
+  940,
+  417
+ ],
+ "es/cuenta-de-cobro/conceptos-390": [
+  700,
+  1256
+ ],
+ "es/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "es/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "es/dividir-pdf/elegir-1280": [
   940,
@@ -703,6 +951,14 @@
   700,
   1070
  ],
+ "es/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "es/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "es/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -718,6 +974,14 @@
  "es/imagen-a-texto/texto-390": [
   700,
   2190
+ ],
+ "es/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "es/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "es/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -799,6 +1063,30 @@
   700,
   1368
  ],
+ "es/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "es/quitar-metadatos/datos-390": [
+  612,
+  692
+ ],
+ "es/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "es/recortar-pdf/recorte-390": [
+  700,
+  1800
+ ],
+ "es/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "es/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "es/reparar-pdf/resultado-1280": [
   896,
   720
@@ -847,6 +1135,14 @@
   700,
   1514
  ],
+ "eu/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "eu/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "eu/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -854,6 +1150,30 @@
  "eu/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "eu/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "eu/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "eu/cuenta-de-cobro/conceptos-1280": [
+  940,
+  384
+ ],
+ "eu/cuenta-de-cobro/conceptos-390": [
+  700,
+  1188
+ ],
+ "eu/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "eu/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "eu/dividir-pdf/elegir-1280": [
   940,
@@ -911,6 +1231,14 @@
   700,
   1070
  ],
+ "eu/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "eu/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "eu/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -926,6 +1254,14 @@
  "eu/imagen-a-texto/texto-390": [
   700,
   2190
+ ],
+ "eu/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "eu/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "eu/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -1007,6 +1343,30 @@
   700,
   1370
  ],
+ "eu/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "eu/quitar-metadatos/datos-390": [
+  612,
+  692
+ ],
+ "eu/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "eu/recortar-pdf/recorte-390": [
+  700,
+  1786
+ ],
+ "eu/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "eu/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "eu/reparar-pdf/resultado-1280": [
   896,
   720
@@ -1055,6 +1415,14 @@
   700,
   1514
  ],
+ "fr/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "fr/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "fr/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -1062,6 +1430,30 @@
  "fr/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "fr/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "fr/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "fr/cuenta-de-cobro/conceptos-1280": [
+  940,
+  383
+ ],
+ "fr/cuenta-de-cobro/conceptos-390": [
+  700,
+  1188
+ ],
+ "fr/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "fr/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "fr/dividir-pdf/elegir-1280": [
   940,
@@ -1119,6 +1511,14 @@
   700,
   1070
  ],
+ "fr/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "fr/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "fr/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -1134,6 +1534,14 @@
  "fr/imagen-a-texto/texto-390": [
   700,
   2240
+ ],
+ "fr/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "fr/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "fr/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -1215,6 +1623,30 @@
   700,
   1370
  ],
+ "fr/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "fr/quitar-metadatos/datos-390": [
+  612,
+  692
+ ],
+ "fr/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "fr/recortar-pdf/recorte-390": [
+  700,
+  1800
+ ],
+ "fr/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "fr/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "fr/reparar-pdf/resultado-1280": [
   896,
   720
@@ -1263,6 +1695,14 @@
   700,
   1514
  ],
+ "it/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "it/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "it/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -1270,6 +1710,30 @@
  "it/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "it/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "it/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "it/cuenta-de-cobro/conceptos-1280": [
+  940,
+  383
+ ],
+ "it/cuenta-de-cobro/conceptos-390": [
+  700,
+  1186
+ ],
+ "it/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "it/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "it/dividir-pdf/elegir-1280": [
   940,
@@ -1327,6 +1791,14 @@
   700,
   1070
  ],
+ "it/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "it/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "it/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -1342,6 +1814,14 @@
  "it/imagen-a-texto/texto-390": [
   700,
   2190
+ ],
+ "it/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "it/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "it/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -1423,6 +1903,30 @@
   700,
   1290
  ],
+ "it/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "it/quitar-metadatos/datos-390": [
+  612,
+  694
+ ],
+ "it/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "it/recortar-pdf/recorte-390": [
+  700,
+  1800
+ ],
+ "it/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "it/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "it/reparar-pdf/resultado-1280": [
   896,
   720
@@ -1471,6 +1975,14 @@
   700,
   1516
  ],
+ "ja/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "ja/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "ja/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -1478,6 +1990,30 @@
  "ja/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "ja/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "ja/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "ja/cuenta-de-cobro/conceptos-1280": [
+  940,
+  384
+ ],
+ "ja/cuenta-de-cobro/conceptos-390": [
+  700,
+  1186
+ ],
+ "ja/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "ja/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "ja/dividir-pdf/elegir-1280": [
   940,
@@ -1535,6 +2071,14 @@
   700,
   1010
  ],
+ "ja/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "ja/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "ja/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -1550,6 +2094,14 @@
  "ja/imagen-a-texto/texto-390": [
   700,
   2186
+ ],
+ "ja/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "ja/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "ja/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -1631,6 +2183,30 @@
   700,
   1288
  ],
+ "ja/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "ja/quitar-metadatos/datos-390": [
+  612,
+  650
+ ],
+ "ja/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "ja/recortar-pdf/recorte-390": [
+  700,
+  1784
+ ],
+ "ja/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "ja/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "ja/reparar-pdf/resultado-1280": [
   896,
   720
@@ -1679,6 +2255,14 @@
   700,
   1514
  ],
+ "ko/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "ko/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "ko/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -1686,6 +2270,30 @@
  "ko/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "ko/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "ko/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "ko/cuenta-de-cobro/conceptos-1280": [
+  940,
+  384
+ ],
+ "ko/cuenta-de-cobro/conceptos-390": [
+  700,
+  1188
+ ],
+ "ko/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "ko/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "ko/dividir-pdf/elegir-1280": [
   940,
@@ -1743,6 +2351,14 @@
   700,
   1010
  ],
+ "ko/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "ko/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "ko/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -1758,6 +2374,14 @@
  "ko/imagen-a-texto/texto-390": [
   700,
   2060
+ ],
+ "ko/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "ko/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "ko/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -1839,6 +2463,30 @@
   700,
   1288
  ],
+ "ko/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "ko/quitar-metadatos/datos-390": [
+  612,
+  650
+ ],
+ "ko/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "ko/recortar-pdf/recorte-390": [
+  700,
+  1784
+ ],
+ "ko/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "ko/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "ko/reparar-pdf/resultado-1280": [
   896,
   720
@@ -1887,6 +2535,14 @@
   700,
   1596
  ],
+ "pt/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "pt/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "pt/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -1894,6 +2550,30 @@
  "pt/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "pt/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "pt/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "pt/cuenta-de-cobro/conceptos-1280": [
+  940,
+  418
+ ],
+ "pt/cuenta-de-cobro/conceptos-390": [
+  700,
+  1256
+ ],
+ "pt/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "pt/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "pt/dividir-pdf/elegir-1280": [
   940,
@@ -1951,6 +2631,14 @@
   700,
   1070
  ],
+ "pt/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "pt/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "pt/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -1966,6 +2654,14 @@
  "pt/imagen-a-texto/texto-390": [
   700,
   2192
+ ],
+ "pt/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "pt/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "pt/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -2047,6 +2743,30 @@
   700,
   1288
  ],
+ "pt/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "pt/quitar-metadatos/datos-390": [
+  612,
+  650
+ ],
+ "pt/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "pt/recortar-pdf/recorte-390": [
+  700,
+  1800
+ ],
+ "pt/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "pt/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "pt/reparar-pdf/resultado-1280": [
   896,
   720
@@ -2095,6 +2815,14 @@
   700,
   1516
  ],
+ "ru/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "ru/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "ru/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -2102,6 +2830,30 @@
  "ru/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "ru/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "ru/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "ru/cuenta-de-cobro/conceptos-1280": [
+  940,
+  383
+ ],
+ "ru/cuenta-de-cobro/conceptos-390": [
+  700,
+  1186
+ ],
+ "ru/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "ru/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "ru/dividir-pdf/elegir-1280": [
   940,
@@ -2159,6 +2911,14 @@
   700,
   1150
  ],
+ "ru/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "ru/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "ru/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -2174,6 +2934,14 @@
  "ru/imagen-a-texto/texto-390": [
   700,
   2240
+ ],
+ "ru/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "ru/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "ru/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -2255,6 +3023,30 @@
   700,
   1412
  ],
+ "ru/quitar-metadatos/datos-1280": [
+  896,
+  281
+ ],
+ "ru/quitar-metadatos/datos-390": [
+  612,
+  694
+ ],
+ "ru/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "ru/recortar-pdf/recorte-390": [
+  700,
+  1800
+ ],
+ "ru/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "ru/redimensionar-imagen/opciones-390": [
+  700,
+  1800
+ ],
  "ru/reparar-pdf/resultado-1280": [
   896,
   720
@@ -2303,6 +3095,14 @@
   700,
   1516
  ],
+ "zh/comprimir-archivos/resultado-1280": [
+  896,
+  640
+ ],
+ "zh/comprimir-archivos/resultado-390": [
+  612,
+  1520
+ ],
  "zh/comprimir-pdf/resultado-1280": [
   896,
   660
@@ -2310,6 +3110,30 @@
  "zh/comprimir-pdf/resultado-390": [
   612,
   1120
+ ],
+ "zh/crear-codigo-qr/resultado-1280": [
+  463,
+  900
+ ],
+ "zh/crear-codigo-qr/resultado-390": [
+  700,
+  1600
+ ],
+ "zh/cuenta-de-cobro/conceptos-1280": [
+  940,
+  383
+ ],
+ "zh/cuenta-de-cobro/conceptos-390": [
+  700,
+  1186
+ ],
+ "zh/cuenta-de-cobro/resultado-1280": [
+  940,
+  760
+ ],
+ "zh/cuenta-de-cobro/resultado-390": [
+  700,
+  1520
  ],
  "zh/dividir-pdf/elegir-1280": [
   940,
@@ -2367,6 +3191,14 @@
   700,
   1010
  ],
+ "zh/hoja-de-vida/resultado-1280": [
+  940,
+  760
+ ],
+ "zh/hoja-de-vida/resultado-390": [
+  700,
+  1520
+ ],
  "zh/imagen-a-pdf/fotos-1280": [
   940,
   760
@@ -2382,6 +3214,14 @@
  "zh/imagen-a-texto/texto-390": [
   700,
   1980
+ ],
+ "zh/imagen-a-webp/resultado-1280": [
+  896,
+  700
+ ],
+ "zh/imagen-a-webp/resultado-390": [
+  612,
+  1520
  ],
  "zh/marca-de-agua-pdf/resultado-1280": [
   896,
@@ -2462,6 +3302,30 @@
  "zh/proteger-pdf/clave-390": [
   700,
   1246
+ ],
+ "zh/quitar-metadatos/datos-1280": [
+  896,
+  282
+ ],
+ "zh/quitar-metadatos/datos-390": [
+  612,
+  606
+ ],
+ "zh/recortar-pdf/recorte-1280": [
+  940,
+  900
+ ],
+ "zh/recortar-pdf/recorte-390": [
+  700,
+  1686
+ ],
+ "zh/redimensionar-imagen/opciones-1280": [
+  940,
+  640
+ ],
+ "zh/redimensionar-imagen/opciones-390": [
+  700,
+  1800
  ],
  "zh/reparar-pdf/resultado-1280": [
   896,

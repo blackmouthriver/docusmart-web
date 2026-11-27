@@ -1,17 +1,17 @@
 // Guías (W-19): índice, una guía y sus enlaces a las herramientas.
 import { expect, makePdf, test } from './helpers'
 
-test('el índice de guías muestra las 22 guías en español (6 + 16 por herramienta) @movil', async ({ page }) => {
+test('el índice de guías muestra las 30 guías en español (6 + 24 por herramienta) @movil', async ({ page }) => {
   await page.goto('/guias')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Guías paso a paso')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
+  await expect(page.locator('.gd-cards > li')).toHaveCount(30)
 })
 
 test('una guía lleva a su herramienta y a otras guías', async ({ page }) => {
   await page.goto('/guias/unir-pdf-en-el-celular')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo unir PDF en el celular sin subir tus archivos')
   expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain('"@type": "HowTo"')
-  await expect(page.locator('.tp-related a[href^="/guias/"]')).toHaveCount(21)
+  await expect(page.locator('.tp-related a[href^="/guias/"]')).toHaveCount(29)
   const toTool = page.locator('.gd-article').getByRole('link', { name: 'Unir PDF', exact: true }).first()
   await expect(toTool).toHaveAttribute('href', '/unir-pdf')
   await page.goto('/unir-pdf')
@@ -38,8 +38,8 @@ test('una guía en inglés enlaza a las herramientas en inglés y ofrece las otr
   await expect(page.locator('.gd-article a[href="/unir-pdf"]')).toHaveCount(0)
   await expect(page.locator('link[rel="alternate"][hreflang="pt"]')).toHaveAttribute('href', 'https://docusmart.online/pt/guias/juntar-pdf-no-celular')
   await page.goto('/pt/guias')
-  // Las 6 de W-19 y las 16 por herramienta (W-101), ya traducidas.
-  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
+  // Las 6 de W-19 y las 24 por herramienta (W-101), ya traducidas.
+  await expect(page.locator('.gd-cards > li')).toHaveCount(30)
 })
 
 test('las guías muestran capturas de la herramienta, en su idioma y sin mover la página (W-100) @movil', async ({ page }) => {
@@ -116,6 +116,30 @@ test('una guía del lote 2 en ruso: captura en ruso y enlaces en ruso (W-101)', 
   await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/ru/reparar-pdf/resultado-1280.webp')
   await expect(page.locator('.gd-article a[href="/reparar-pdf"]')).toHaveCount(0)
   await page.goto('/en/guides')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
+  await expect(page.locator('.gd-cards > li')).toHaveCount(30)
 })
 
+
+test('al compartir una guía se ve su propia imagen, servida como JPEG (W-102)', async ({ page, request }) => {
+  await page.goto('/guias/firmar-pdf-sin-imprimir')
+  const url = await page.locator('meta[property="og:image"]').getAttribute('content')
+  expect(url).toBe('https://docusmart.online/img/og/guias/es/firmar-pdf-sin-imprimir.jpg')
+  const res = await request.get(new URL(url!).pathname)
+  expect(res.status()).toBe(200)
+  expect(res.headers()['content-type']).toContain('image/jpeg')
+  await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', 'Cómo firmar un PDF sin imprimirlo')
+})
+
+test('una guía del lote 3 (W-101): captura y enlaces en cada idioma', async ({ page }) => {
+  await page.goto('/guias/hacer-una-cuenta-de-cobro')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo hacer una cuenta de cobro en PDF')
+  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/es/cuenta-de-cobro/conceptos-1280.webp')
+  await expect(page.locator('.gd-article a[href="/cuenta-de-cobro"]').first()).toBeVisible()
+  // En inglés: su captura en inglés y el enlace a la herramienta con la ruta inglesa.
+  const en = await page.locator('link[rel="alternate"][hreflang="en"]').getAttribute('href')
+  await page.goto(en!.replace('https://docusmart.online', ''))
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/en/cuenta-de-cobro/conceptos-1280.webp')
+  await expect(page.locator('.gd-article a[href="/en/invoice-generator"]').first()).toBeVisible()
+  await expect(page.locator('.gd-article a[href="/cuenta-de-cobro"]')).toHaveCount(0)
+})

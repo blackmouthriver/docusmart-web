@@ -1353,5 +1353,484 @@ export default {
         ['Funktioniert es mit passwortgeschützten PDFs?', 'Entferne zuerst das Passwort mit PDF entsperren und repariere es dann.'],
       ],
     },
+    'hacer-una-cuenta-de-cobro': {
+      slug: 'rechnung-als-pdf-erstellen',
+      title: 'Rechnung als PDF erstellen: kostenlos und in wenigen Minuten | DocuSmart',
+      description:
+        'Trag deine Angaben, die des Kunden und deine Leistungen ein: Summe, Einbehalt und Betrag in Worten entstehen von selbst. Als PDF laden, kostenlos und ohne Upload.',
+      h1: 'Eine Rechnung als PDF erstellen',
+      lead: 'Eine Rechnung sagt, wer wem wie viel wofür schuldet. Mit der Vorlage von DocuSmart füllst du sie im Browser aus und erhältst ein übersichtliches PDF, bereit zum Versenden.',
+      sections: [
+        {
+          h2: 'Was diese Rechnung ist und wer sie nutzt',
+          body: [
+            'Es ist das Dokument, mit dem jemand eine Arbeit oder eine Leistung abrechnet, ohne eine elektronische Rechnung über ein offizielles System auszustellen: eine freiberufliche Designerin, ein Nachhilfelehrer, jemand, der als Auftragnehmer für ein Unternehmen arbeitet, oder wer eine Immobilie vermietet. Darauf gehören, wer abrechnet, an wen, das Datum, die Leistung, der Betrag (in Ziffern und in Worten) und wie bezahlt wird.',
+            { tip: 'Diese Rechnung ersetzt keine E-Rechnung. Bist du wegen deiner Tätigkeit oder deiner Einnahmen verpflichtet, elektronische Rechnungen auszustellen, frag einen Steuerberater oder die Steuerbehörde deines Landes.' },
+          ],
+        },
+        {
+          h2: 'Schritt für Schritt',
+          body: [
+            'Öffne [Rechnung, Angebot und Quittung](/cuenta-de-cobro) und lass die Art **Rechnung** ausgewählt. Such dein **Land**: Damit werden Währung, Name der Steuer und Ausweisarten (USt-IdNr., Steuernummer, NIT, RFC …) eingestellt. Die Dokumentnummer wird automatisch vorgeschlagen (CC-0001), und als Datum steht das heutige; ergänze den Ort und, wenn du willst, eine **Zahlungsfrist**.',
+            'Unter **Deine Angaben** trägst du deinen Namen und deine Ausweis- oder Steuernummer ein, unter **Kunde** die Angaben der Person oder Firma, die dich bezahlt. Adresse, Telefon und E-Mail sind optional.',
+            'Unter **Positionen** beschreibst du, was du abrechnest, mit Menge und Einzelpreis. Sind es mehrere Dinge, nimm **Position hinzufügen**. Zwischensumme, Steuer, Einbehalt und Gesamtbetrag werden schon beim Tippen berechnet, und darunter erscheint der Betrag in Worten.',
+          ],
+        },
+        {
+          h2: 'Steuer, Einbehalt und Rabatt',
+          body: [
+            'Berechnest du eine Steuer (etwa die Mehrwertsteuer), gib ihren Prozentsatz ein; wenn du dein Land wählst, erscheint eine Schaltfläche für den Regelsatz. Behält der Kunde einen Teil ein (**Einbehalt**), gib den Prozentsatz ein, und er wird vom Gesamtbetrag abgezogen, wie im Bild: 1.800.000 Zwischensumme, 10 % Einbehalt und 1.620.000 zu zahlen. Der **Rabatt** wird vor den Steuern abgezogen.',
+            { tip: 'Wie hoch der Einbehalt ist, hängt von deinem Land, der Art der Leistung und deiner steuerlichen Situation ab. Wenn du es nicht weißt, frag den Kunden: Meist sagt er dir, wie viel er einbehält.' },
+          ],
+        },
+        {
+          h2: 'Zahlungsdaten, Unterschrift und PDF',
+          body: [
+            'Unter **Zahlungsdaten** gibst du Bank, Kontoart, Kontonummer und Kontoinhaber an: So weiß der Kunde, wohin er überweisen soll. Unter **Hinweise** kannst du Fristen oder Bedingungen notieren. Mit **Unterschrift hinzufügen** zeichnest du sie mit dem Finger oder der Maus, und mit **Logo hinzufügen** setzt du dein Logo oben hin.',
+            'Tippe auf **PDF erstellen**: Du siehst die fertige Rechnung mit dem Betrag in Worten und der Unterschriftszeile, bereit zum Herunterladen, zum Teilen per WhatsApp oder zum Speichern in Drive.',
+            { ul: [
+              'Die Nummer zählt bei jedem neuen Dokument automatisch weiter (CC-0002, CC-0003 …). Und wenn du **In diesem Browser merken** ankreuzt, sind deine Angaben, das Logo und deine Kunden beim nächsten Mal schon eingetragen; die Bankverbindung wird nie gespeichert.',
+              'Unter **Ausgestellte Dokumente** kannst du eine frühere Rechnung öffnen, um sie zu korrigieren, oder ein angenommenes **Angebot** in eine Rechnung umwandeln, ohne alles neu einzugeben.',
+              'Mit demselben Werkzeug erstellst du auch ein **Angebot** (mit Gültigkeitsdatum) oder eine **Quittung** über eine Zahlung.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Deine Daten und die deines Kunden werden nicht hochgeladen',
+          body: [
+            'Alles entsteht in deinem Browser: Namen, Ausweisnummern und Beträge werden an keinen Server gesendet. Will der Kunde die Rechnung unterschrieben in einem PDF, das du schon hast, nimm [PDF unterschreiben](/firmar-pdf); und wenn du mehrere zusammen per E-Mail schickst, macht [PDF komprimieren](/comprimir-pdf) sie kleiner.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Vorlage öffnen', text: 'Öffne docusmart.online/de/rechnung-erstellen und wähle dein Land.' },
+        { name: 'Angaben eintragen', text: 'Trag deine Angaben, die des Kunden, den Ort und das Datum ein.' },
+        { name: 'Leistungen hinzufügen', text: 'Beschreib jede Position mit ihrem Betrag; Gesamtbetrag, Einbehalt und Betrag in Worten entstehen von selbst.' },
+        { name: 'PDF erstellen', text: 'Füge die Zahlungsdaten und deine Unterschrift hinzu, tippe auf PDF erstellen und lade es herunter.' },
+      ],
+      faq: [
+        ['Ist das dasselbe wie eine E-Rechnung?', 'Nein. Diese Rechnung nutzt, wer nicht verpflichtet ist, elektronische Rechnungen auszustellen; sie ersetzt keine E-Rechnung. DocuSmart stellt keine E-Rechnungen aus.'],
+        ['Wie wird der Einbehalt berechnet?', 'Gib den Prozentsatz ein, den dein Kunde dir nennt, und DocuSmart zieht ihn von der Zwischensumme ab. Der zu zahlende Betrag erscheint bereits mit abgezogenem Einbehalt.'],
+        ['Kann ich eine Rechnung in einer anderen Währung erstellen?', 'Ja. Wenn du dein Land wählst, wird seine Währung eingestellt, und im Feld Währung kannst du sie durch eine andere ersetzen (Dollar, Euro …).'],
+      ],
+    },
+    'hacer-una-hoja-de-vida': {
+      slug: 'lebenslauf-erstellen',
+      title: 'Lebenslauf als PDF oder Word erstellen, kostenlos und ohne Anmeldung | DocuSmart',
+      description:
+        'Erstelle deinen Lebenslauf mit einer klaren, ATS-tauglichen Vorlage für Jobportale, mit oder ohne Foto. Als PDF oder Word laden, kostenlos und ohne Konto.',
+      h1: 'Einen Lebenslauf als PDF oder Word erstellen',
+      lead: 'Ein guter Lebenslauf ist in Sekunden erfasst und kommt durch die automatischen Filter der Jobportale. Hier füllst du ihn Abschnitt für Abschnitt aus, und er wird ordentlich, ohne Kampf mit der Formatierung.',
+      sections: [
+        {
+          h2: 'Wähle die Vorlage',
+          body: [
+            'Öffne [Lebenslauf als PDF oder Word](/hoja-de-vida). Oben wählst du, wie er aussehen soll:',
+            { ul: [
+              '**Klassisch (ATS)**: einspaltig und ohne Foto. Diese Vorlage lesen die Systeme, die in Jobportalen Lebensläufe filtern, am besten; nimm sie für Online-Bewerbungen.',
+              '**Kompakt**: genauso klar, mit kleinerer Schrift und schmaleren Rändern, damit mehr auf eine Seite passt.',
+              '**Mit Foto**: dein Foto oben, wie es viele Unternehmen verlangen.',
+            ] },
+            'Außerdem wählst du das Papierformat (Letter oder A4), die Schrift (modern oder klassisch) und die Farbe der Überschriften.',
+          ],
+        },
+        {
+          h2: 'Schritt für Schritt',
+          body: [
+            'Fülle deine **persönlichen Angaben** aus: Name, Position oder Beruf, Ort, Telefon und E-Mail. Hast du LinkedIn oder ein Portfolio, trag es unter **Links** ein. Schreib dann dein **Kurzprofil** in zwei oder drei Sätzen: wer du bist, was du kannst und was du suchst.',
+            'Unter **Berufserfahrung** fügst du jede Stelle mit Position, Firma und Zeitraum hinzu; kreuz **Ich arbeite derzeit hier** an, wenn du noch dort bist. Unter **Erfolge und Aufgaben** schreibst du einen Erfolg pro Zeile: Jede Zeile wird ein Aufzählungspunkt. Genauso machst du es mit **Ausbildung**, **Kenntnisse**, **Sprachen**, **Weiterbildungen und Zertifikate** und **Referenzen**; leere Abschnitte erscheinen nicht.',
+            'Tippe auf **PDF erstellen** oder **Word erstellen (.docx)**. Du siehst den fertigen Lebenslauf, bereit zum Herunterladen oder Teilen.',
+            { tip: 'Beginne jeden Erfolg mit einem Verb und nenne Zahlen, wo es geht: „Lieferzeiten um 30 % verkürzt“ sagt mehr als „zuständig für Lieferungen“.' },
+          ],
+        },
+        {
+          h2: 'Mit der Stellenanzeige vergleichen und das Anschreiben verfassen',
+          body: [
+            'Unter **Mit einer Stellenanzeige vergleichen** fügst du die Anzeige ein und siehst, welche Schlüsselwörter dein Lebenslauf schon enthält und welche fehlen, samt Übereinstimmung in Prozent. Die automatischen Filter suchen nach diesen Wörtern; ergänze nur die, die wirklich auf dich zutreffen.',
+            'Unter **Anschreiben** gibst du Firma und Position ein, und DocuSmart erstellt einen Entwurf mit deiner Erfahrung und deinen Stärken. Prüfe ihn, pass ihn an deine Art an und lade ihn als PDF oder Word herunter.',
+          ],
+        },
+        {
+          h2: 'Verlier nicht, was du geschrieben hast',
+          body: [
+            'Mit **Automatisch in diesem Browser speichern** bleibt das Geschriebene in diesem Browser, auch wenn du die Seite schließt (das Foto nicht). Um auf einem anderen Gerät weiterzumachen, nimm **Entwurf speichern**: Du lädst eine .json-Datei herunter, die du dort mit **Entwurf öffnen** öffnest.',
+            'Verlangt das Unternehmen ein Foto mit weißem Hintergrund, bereite es vorher mit [Passbild](/foto-tamano-documento) vor. Und musst du den Lebenslauf zusammen mit Zeugnissen in einer einzigen Datei schicken, füge sie mit [PDF zusammenfügen](/unir-pdf) zusammen.',
+          ],
+        },
+        {
+          h2: 'Deine Informationen verlassen dein Gerät nicht',
+          body: [
+            'Der Lebenslauf entsteht in deinem Browser: Deine Daten, deine Erfahrung und dein Foto werden auf keinen Server hochgeladen und für nichts anderes verwendet. Du brauchst weder ein Konto noch musst du deine E-Mail-Adresse angeben.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Vorlage wählen', text: 'Öffne docusmart.online/de/lebenslauf-erstellen und wähle Klassisch (ATS), Kompakt oder Mit Foto.' },
+        { name: 'Abschnitte ausfüllen', text: 'Trag deine Angaben, dein Profil, deine Erfahrung, deine Ausbildung und deine Kenntnisse ein.' },
+        { name: 'Mit der Anzeige vergleichen', text: 'Füge die Stellenanzeige ein, um zu sehen, welche Schlüsselwörter dir fehlen.' },
+        { name: 'Herunterladen', text: 'Tippe auf PDF erstellen oder Word erstellen und lade deinen Lebenslauf herunter.' },
+      ],
+      faq: [
+        ['Was ist ein ATS-Lebenslauf?', 'Ein einspaltiger Lebenslauf ohne Tabellen und Bilder, den die Bewerbermanagementsysteme der Jobportale fehlerfrei lesen können. Das ist die Vorlage Klassisch.'],
+        ['Kann ich ihn als Word herunterladen?', 'Ja. Mit Word erstellen (.docx) öffnest und bearbeitest du ihn in Word, Google Docs oder LibreOffice.'],
+        ['Muss ich mich registrieren?', 'Nein. Es ist kostenlos, verlangt weder Konto noch E-Mail-Adresse, und was du schreibst, bleibt auf deinem Gerät.'],
+      ],
+    },
+    'crear-un-codigo-qr': {
+      slug: 'qr-code-erstellen',
+      title: 'QR-Code kostenlos erstellen: für Link, WhatsApp oder WLAN | DocuSmart',
+      description:
+        'Erstelle einen QR-Code für einen Link, WhatsApp, dein WLAN oder deinen Kontakt, mit deiner Farbe und deinem Logo. Als PNG, SVG oder PDF. Kostenlos und unbegrenzt gültig.',
+      h1: 'Einen QR-Code kostenlos erstellen',
+      lead: 'Ein QR-Code führt Leute auf deine Seite, öffnet einen WhatsApp-Chat oder verbindet mit dem WLAN, ohne dass jemand etwas tippt. Erstell ihn in Sekunden; er läuft nicht ab und hängt von keinem Server ab.',
+      sections: [
+        {
+          h2: 'Schritt für Schritt',
+          body: [
+            'Öffne [QR-Codes erstellen und lesen](/crear-codigo-qr) und wähle, was er enthalten soll: **URL**, **Text**, **E-Mail**, **Telefon**, **WhatsApp**, **SMS**, **Standort**, **WLAN**, **Kontakt** oder **Termin**. Gib die Daten ein (bei einem Link die vollständige Adresse mit https://).',
+            'Tippe auf **QR erzeugen**. Der Code erscheint sofort, und du kannst ihn als PNG, als **SVG** (Vektorgrafik, wird in jeder Größe scharf gedruckt) oder als **PDF mit 10 cm** herunterladen, als Bild kopieren oder drucken.',
+            { tip: 'Bevor du hundert Flyer druckst, scanne den QR-Code mit deinem Handy, um zu prüfen, ob er öffnet, was du erwartest.' },
+          ],
+        },
+        {
+          h2: 'Was jeder Typ kann',
+          body: [
+            { ul: [
+              '**WhatsApp**: Gib die Nummer mit Ländervorwahl ein (zum Beispiel 49 für Deutschland) und, wenn du willst, eine Nachricht. Beim Scannen öffnet sich der Chat mit der fertigen Nachricht.',
+              '**WLAN**: Netzwerkname, Verschlüsselung und Passwort. Deine Gäste verbinden sich, ohne dass du es diktieren musst.',
+              '**Kontakt**: Name, Telefon, E-Mail und Firma. Beim Scannen bietet das Handy an, ihn im Adressbuch zu speichern.',
+              '**Standort**: eine Adresse oder Koordinaten, die sich in der Karte öffnen.',
+              '**Termin**: Titel, Ort, Beginn und Ende, um ihn in den Kalender einzutragen.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Gib ihm deinen Stil',
+          body: [
+            'Unter **Design anpassen** änderst du die Farbe des Codes und des Hintergrunds (oder machst ihn transparent, um ihn auf dein Design zu legen), setzt dein **Logo** in die Mitte und wählst die Bildgröße. Haben die Farben zu wenig Kontrast, warnt dich DocuSmart, weil eine Kamera ihn dann vielleicht nicht liest.',
+            'Mit **Geschützt** wird der Inhalt des QR-Codes mit einem Passwort verschlüsselt (AES-256): Nur wer es kennt, kann ihn öffnen, und zwar in DocuSmart. Und mit **Mehrere QR aus einer Liste** erzeugst du viele auf einmal, einen pro Zeile oder aus einer CSV-Datei, etwa für die Tische eines Restaurants oder die Etiketten eines Inventars.',
+          ],
+        },
+        {
+          h2: 'Einen QR-Code lesen',
+          body: [
+            'Willst du einen lesen, nimm [QR-Code lesen](/leer-codigo-qr): mit der Kamera, aus einem Foto oder Screenshot oder aus einem PDF. Bevor du einen Link öffnest, zeigt es dir, wohin er führt, und warnt dich, wenn er irreführend wirkt.',
+          ],
+        },
+        {
+          h2: 'Dein QR-Code läuft nicht ab',
+          body: [
+            'Der Code wird in deinem Browser erzeugt und speichert die Daten direkt, ohne Umweg über einen Zwischenlink. Deshalb läuft er nicht ab, kann unbegrenzt oft gescannt werden, und niemand sonst sieht, was du hineingeschrieben hast. Die QR-Codes, die du erstellst, landen im **Verlauf**, nur in deinem Browser.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Typ wählen', text: 'Öffne docusmart.online/de/qr-code-generator und wähle URL, WhatsApp, WLAN oder einen anderen Typ.' },
+        { name: 'Daten eingeben', text: 'Gib den Link, die Nummer oder die Netzwerkdaten ein.' },
+        { name: 'QR-Code erzeugen', text: 'Tippe auf QR erzeugen und ändere, wenn du willst, die Farbe oder füge dein Logo hinzu.' },
+        { name: 'Herunterladen', text: 'Lade ihn als PNG, SVG oder PDF herunter oder drucke ihn.' },
+      ],
+      faq: [
+        ['Läuft der QR-Code ab?', 'Nein. Die Daten stecken im Code selbst, ohne Zwischenlink, daher funktioniert er für immer und ohne Begrenzung der Scans.'],
+        ['Welches Format nehme ich zum Drucken?', 'SVG: Es ist eine Vektorgrafik und bleibt in jeder Größe scharf, von der Visitenkarte bis zum Plakat. Es gibt auch ein PDF mit 10 cm.'],
+        ['Kann ich mein Logo in den QR-Code setzen?', 'Ja, unter Design anpassen. Das Logo sitzt in einem Kreis in der Mitte, und der Code bleibt lesbar.'],
+      ],
+    },
+    'cambiar-el-tamano-de-una-foto': {
+      slug: 'fotogroesse-aendern',
+      title: 'Fotogröße ändern: in Pixeln, Prozent oder Zentimetern | DocuSmart',
+      description:
+        'Ändere die Größe eines oder mehrerer Fotos in Pixeln, Prozent, Zentimetern oder auf das genaue Maß für Instagram, WhatsApp oder YouTube. Kostenlos und ohne Upload.',
+      h1: 'Die Größe eines Fotos ändern',
+      lead: 'Ein Handyfoto misst Tausende Pixel: zu viel für ein Formular, eine Webseite oder ein Titelbild. Hier bringst du es auf das Maß, das du brauchst, ohne es zu verzerren.',
+      sections: [
+        {
+          h2: 'Schritt für Schritt',
+          body: [
+            'Öffne [Bildgröße ändern](/redimensionar-imagen) und wähle ein oder mehrere Fotos (JPG, PNG, WebP, HEIC, GIF oder BMP). Dann legst du unter **Wie skalieren** fest, wie:',
+            { ul: [
+              '**Nach Prozent**: 50 % zum Beispiel halbiert Breite und Höhe des Fotos.',
+              '**Nach Pixeln**: Gib die Breite, die Höhe oder beides ein. Ist **Seitenverhältnis beibehalten** aktiv, reicht eine Seite: Die andere wird automatisch berechnet.',
+              '**Soziale Netzwerke**: genaue Maße für Instagram, WhatsApp-Status, Titelbilder für Facebook oder LinkedIn und YouTube-Miniaturbilder.',
+              '**In Zentimetern**: zum Drucken, mit der Auflösung, die du wählst.',
+            ] },
+            'Tippe auf **Größe ändern**, und du siehst das Foto vorher und nachher, mit Dateigröße. Hast du mehrere gewählt, werden sie zusammen in einer ZIP-Datei gespeichert.',
+          ],
+        },
+        {
+          h2: 'Damit nichts verzerrt wird',
+          body: [
+            'Ein Foto wirkt gestreckt, wenn du Breite und Höhe in unterschiedlichem Verhältnis änderst. Deshalb ist **Seitenverhältnis beibehalten** schon aktiv: Gibst du beide Seiten an, passt das Foto in diese Größe, ohne gestreckt zu werden. Bei **Soziale Netzwerke** füllt das Bild das genaue Maß aus, und was übersteht, wird gleichmäßig von der Mitte aus abgeschnitten.',
+            { tip: 'Ein Foto zu verkleinern macht es fürs Auge nie unschärfer, doch beim Vergrößern kommen keine Details hinzu: Ein kleines Foto, auf das Doppelte vergrößert, wirkt verschwommen.' },
+          ],
+        },
+        {
+          h2: 'Wenn du zuschneiden oder die Datei verkleinern willst',
+          body: [
+            'Die Größe ändern ist nicht dasselbe wie zuschneiden. Um einen Rand zu entfernen, eine Person ins Bild zu rücken oder das Foto quadratisch zu machen, nimm [Bild zuschneiden](/recortar-imagen): freier Zuschnitt oder feste Verhältnisse wie 1:1, 4:3 oder 16:9.',
+            'Und verlangt ein Formular, dass das Foto unter einer bestimmten Dateigröße bleibt (zum Beispiel 200 KB), senkt [Bild komprimieren](/comprimir-imagen) die Qualität gerade so weit, dass es passt, und verringert die Pixel nur, wenn das nicht reicht.',
+          ],
+        },
+        {
+          h2: 'Häufig verlangte Maße',
+          body: [
+            { ul: [
+              '**Für eine Webseite oder einen Blog**: 1200 bis 1920 Pixel Breite sind mehr als genug; größer macht die Seite nur langsamer.',
+              '**Für ein Formular oder einen Antrag**: Oft werden eine maximale Breite (zum Beispiel 800 Pixel) und eine maximale Dateigröße verlangt. Pass zuerst hier die Größe an und komprimiere das Foto, falls es dann noch zu groß ist.',
+              '**Zum Drucken**: Nimm In Zentimetern; bei 300 dpi braucht ein Foto von 10 × 15 cm etwa 1181 × 1772 Pixel, um scharf zu wirken.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Deine Fotos werden nicht hochgeladen',
+          body: [
+            'Alles passiert in deinem Browser, auch mit Dutzenden Fotos auf einmal. Außerdem werden beim Speichern die versteckten Fotodaten (EXIF) entfernt, etwa der GPS-Standort, an dem es aufgenommen wurde.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Fotos wählen', text: 'Öffne docusmart.online/de/bildgroesse-aendern und wähle ein oder mehrere Fotos.' },
+        { name: 'Maß festlegen', text: 'Nach Prozent, nach Pixeln, ein Maß für soziale Netzwerke oder in Zentimetern.' },
+        { name: 'Größe ändern', text: 'Tippe auf Größe ändern und vergleiche vorher und nachher.' },
+        { name: 'Herunterladen', text: 'Lade das Foto herunter oder die ZIP-Datei, wenn es mehrere waren.' },
+      ],
+      faq: [
+        ['Verliert das Foto beim Verkleinern an Qualität?', 'Fürs Auge nicht: Es wirkt genauso scharf, nur kleiner. Was nicht geht, ist es zu vergrößern, ohne dass man es merkt.'],
+        ['Kann ich die Größe mehrerer Fotos auf einmal ändern?', 'Ja. Wähle alle zusammen: Sie bekommen dasselbe Maß und werden als ZIP-Datei heruntergeladen.'],
+        ['Welches Maß nehme ich für Instagram?', 'Unter Soziale Netzwerke findest du Instagram quadratisch und hochkant sowie Storys. Das Foto füllt das Maß aus, und was übersteht, wird von der Mitte aus abgeschnitten.'],
+      ],
+    },
+    'comprimir-archivos-en-zip': {
+      slug: 'dateien-als-zip-komprimieren',
+      title: 'Dateien als ZIP komprimieren und ZIP oder RAR ohne Programm öffnen | DocuSmart',
+      description:
+        'Pack mehrere Dateien oder einen Ordner in eine ZIP-Datei, auf Wunsch mit Passwort, und öffne ZIP, RAR oder 7Z im Browser. Kostenlos, ohne Installation und ohne Upload.',
+      h1: 'Dateien als ZIP komprimieren und eine ZIP- oder RAR-Datei öffnen',
+      lead: 'Eine ZIP-Datei fasst viele Dateien zu einer zusammen: leichter per E-Mail zu verschicken und manchmal kleiner. Hier erstellst und öffnest du sie im Browser, ohne Programme zu installieren.',
+      sections: [
+        {
+          h2: 'Eine ZIP-Datei erstellen, Schritt für Schritt',
+          body: [
+            'Öffne [Dateien komprimieren (ZIP und 7Z)](/comprimir-archivos) und füge die Dateien (beliebigen Typs) oder mit **Ordner hinzufügen** einen ganzen Ordner hinzu. Gib den Namen der ZIP-Datei ein und wähle die Kompression: **Schnell**, **Normal** oder **Maximal**.',
+            'Tippe auf **ZIP erstellen**. Du siehst deine Dateien auf der einen Seite und die ZIP-Datei auf der anderen, mit der Größe vorher und nachher.',
+            { tip: 'Fotos, Videos und PDFs sind schon komprimiert, deshalb werden sie in einer ZIP-Datei kaum kleiner. Stark schrumpfen dagegen Word-Dokumente, Tabellen und Texte.' },
+          ],
+        },
+        {
+          h2: 'Mit Passwort oder in Teilen',
+          body: [
+            { ul: [
+              '**Mit Passwort schützen (AES-256)**: Ohne das Passwort öffnet niemand die ZIP-Datei. Bei ZIP darf das Passwort keine Akzente oder Umlaute enthalten; brauchst du sie, wähle das Format 7Z.',
+              '**In Teile aufteilen**: Nimmt dein E-Mail-Dienst eine so große Datei nicht an, teilst du sie in mehrere auf (.001, .002 …). Zum Öffnen braucht man alle Teile, mit DocuSmart, 7-Zip oder WinRAR.',
+              '**7Z**: komprimiert stärker als ZIP, doch auf manchen Geräten muss man zum Öffnen ein Programm installieren. ZIP öffnet sich auf jedem Computer und Handy ohne Installation.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Eine ZIP-, RAR- oder 7Z-Datei öffnen',
+          body: [
+            'Um den Inhalt eines Archivs herauszuholen, nimm [RAR, ZIP und 7Z entpacken](/descomprimir-archivos). Es öffnet ZIP, RAR, 7Z, TAR, GZ, BZ2 und XZ, auch passwortgeschützte oder in Teile aufgeteilte Archive.',
+            'Du siehst die Liste des Inhalts mit seinen Ordnern. Du kannst eine Datei vor dem Herunterladen in der Vorschau öffnen, nur die ausgewählten entpacken oder alle zusammen herunterladen.',
+          ],
+        },
+        {
+          h2: 'Wenn ein PDF kleiner werden soll',
+          body: [
+            'Ein PDF in eine ZIP-Datei zu packen, macht es kaum kleiner. Damit ein PDF wirklich weniger Platz braucht, nimm [PDF komprimieren](/comprimir-pdf): Es verkleinert die Bilder darin.',
+          ],
+        },
+        {
+          h2: 'Deine Dateien verlassen dein Gerät nicht',
+          body: [
+            'Komprimieren und Entpacken passiert im Arbeitsspeicher deines Browsers: Nichts wird ins Internet hochgeladen. Bei sehr großen Dateien (mehrere GB) kann es dauern oder der Speicher kann knapp werden; teile sie dann auf mehrere ZIP-Dateien auf.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Dateien hinzufügen', text: 'Öffne docusmart.online/de/dateien-komprimieren und füge Dateien oder einen Ordner hinzu.' },
+        { name: 'Optionen wählen', text: 'Gib den Namen und die Kompression ein und, wenn du willst, ein Passwort.' },
+        { name: 'ZIP erstellen', text: 'Tippe auf ZIP erstellen und sieh nach, wie viel kleiner es wurde.' },
+        { name: 'Herunterladen', text: 'Lade die ZIP-Datei herunter oder teile sie.' },
+      ],
+      faq: [
+        ['Kann ich eine RAR-Datei ohne WinRAR öffnen?', 'Ja. RAR, ZIP und 7Z entpacken öffnet RAR, ZIP, 7Z und weitere Formate im Browser, ohne Installation. Für ein neues Archiv nimm ZIP oder 7Z.'],
+        ['Warum ist meine ZIP-Datei fast genauso groß?', 'Weil Fotos, Videos und PDFs schon komprimiert sind. Die ZIP-Datei fasst sie zu einer zusammen, macht sie aber kaum kleiner.'],
+        ['Ist ein Passwort sicher?', 'Ja. Es wird mit AES-256 verschlüsselt, und das Passwort wird nirgends gespeichert: Vergisst du es, lässt es sich nicht wiederherstellen.'],
+      ],
+    },
+    'recortar-los-margenes-de-un-pdf': {
+      slug: 'pdf-raender-zuschneiden',
+      title: 'Ränder oder einen Bereich eines PDFs zuschneiden | DocuSmart',
+      description:
+        'Entferne leere Ränder aus einem PDF mit einem Tipp oder schneide den Bereich, den du behalten willst, von Hand zu, auf allen Seiten oder einer. Kostenlos, ohne Upload.',
+      h1: 'Die Ränder oder einen Bereich eines PDFs zuschneiden',
+      lead: 'Ein PDF mit riesigen Rändern wirkt auf dem Handy klein und verbraucht beim Drucken viel leeres Papier. Zuschneiden lässt nur das Wichtige übrig, ohne den Inhalt anzutasten.',
+      sections: [
+        {
+          h2: 'Schritt für Schritt',
+          body: [
+            'Öffne [PDF zuschneiden](/recortar-pdf) und wähle die Datei. Du siehst die erste Seite mit einem Rahmen darüber: Der abgedunkelte Bereich wird abgeschnitten.',
+            'Tippe auf **Leere Ränder entfernen**, und der Rahmen passt sich automatisch an den Inhalt der Seite an, wie im Bild. Willst du es lieber von Hand machen, zieh die Kanten oder Ecken des Rahmens. Darunter siehst du die verbleibende Größe in Millimetern.',
+            'Wähle, ob der Zuschnitt für **Alle Seiten** gilt oder nur für die angezeigte (**Nur Seite …**), tippe auf **PDF zuschneiden** und lade das Ergebnis herunter.',
+            { tip: 'Haben die Seiten unterschiedliche Ränder, sieh dir vor dem Zuschneiden mit den Pfeilen mehrere an: Der Rahmen für „Alle Seiten“ ist für jede gleich.' },
+          ],
+        },
+        {
+          h2: 'Wofür es gut ist',
+          body: [
+            { ul: [
+              '**Auf dem Handy lesen**: Ohne Ränder füllt der Text den ganzen Bildschirm und wird größer.',
+              '**Einen Ausschnitt herauslösen**: eine Tabelle, ein Diagramm oder das Foto eines gescannten Dokuments, um es separat zu verwenden.',
+              '**Überflüssiges aus einem Scan entfernen**: den schwarzen Rand vom Scannerdeckel oder den Tisch um das Blatt herum.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Was mit dem Inhalt passiert',
+          body: [
+            'Der Zuschnitt ändert den sichtbaren Bereich jeder Seite, ohne Text oder Bilder neu zu erzeugen: Was übrig bleibt, ist genauso scharf, und der Text lässt sich weiterhin kopieren und durchsuchen.',
+            'Brauchst du danach nur einige Seiten, trenne sie mit [PDF teilen](/dividir-pdf); und liegt eine quer, richte sie mit [PDF drehen](/rotar-pdf) aus.',
+          ],
+        },
+        {
+          h2: 'Vor dem Drucken',
+          body: [
+            'Druckst du ein zugeschnittenes PDF, ist die Seite kleiner als das Blatt. Damit sie das ganze Papier füllt, wähle im Druckfenster deines Browsers oder PDF-Readers **An Seite anpassen**.',
+            'Hast du einen Scan zugeschnitten, um nur das Foto eines Dokuments zu behalten (einen Personalausweis, einen Mitgliedsausweis), prüfe, dass kein Rand des Dokuments abgeschnitten ist: Bei vielen Anträgen müssen alle vier Ecken zu sehen sein.',
+          ],
+        },
+        {
+          h2: 'Dein PDF verlässt dein Gerät nicht',
+          body: [
+            'Der gesamte Zuschnitt passiert in deinem Browser. Das PDF wird auf keinen Server hochgeladen, du kannst es also unbesorgt mit Verträgen oder persönlichen Dokumenten verwenden.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'PDF zuschneiden öffnen', text: 'Öffne docusmart.online/de/pdf-zuschneiden und wähle das PDF.' },
+        { name: 'Rahmen anpassen', text: 'Tippe auf Leere Ränder entfernen oder zieh die Kanten von Hand.' },
+        { name: 'Seiten wählen', text: 'Wende den Zuschnitt auf alle Seiten an oder nur auf die, die du gerade siehst.' },
+        { name: 'Herunterladen', text: 'Tippe auf PDF zuschneiden und lade das Ergebnis herunter.' },
+      ],
+      faq: [
+        ['Verliert ein PDF beim Zuschneiden an Qualität?', 'Nein. Nur der sichtbare Bereich der Seite ändert sich; Text und Bilder bleiben gleich.'],
+        ['Kann ich nur eine Seite zuschneiden?', 'Ja. Wähle vor dem Zuschneiden nur die Seite, die du gerade siehst.'],
+        ['Wird der abgeschnittene Teil aus der Datei gelöscht?', 'Er ist weder in der Ansicht noch im Druck zu sehen. Willst du private Daten wirklich löschen, nimm PDF schwärzen: Damit werden sie tatsächlich entfernt.'],
+      ],
+    },
+    'cambiar-el-formato-de-una-imagen': {
+      slug: 'bildformat-aendern',
+      title: 'Bildformat ändern: HEIC, JPG, PNG oder WebP | DocuSmart',
+      description:
+        'Wandle HEIC-Fotos vom iPhone in JPG um, ein JPG in PNG oder jedes Bild in WebP, eines oder viele auf einmal. Kostenlos, im Browser und ohne deine Fotos hochzuladen.',
+      h1: 'Das Format eines Bildes ändern: HEIC, JPG, PNG oder WebP',
+      lead: 'Jedes Format hat seinen Zweck, und manchmal akzeptiert eine Webseite oder ein Programm nur eines. Hier änderst du das Format deiner Fotos in Sekunden, ohne etwas zu installieren.',
+      sections: [
+        {
+          h2: 'Welches Format passt zu dir',
+          body: [
+            { ul: [
+              '**JPG**: das Format für Fotos. Es ist klein und lässt sich auf jedem Gerät, jeder Webseite und in jedem Formular öffnen. Transparente Hintergründe sind nicht möglich.',
+              '**PNG**: ohne Qualitätsverlust und mit transparentem Hintergrund. Ideal für Logos, Screenshots und Zeichnungen; bei Fotos ist die Datei deutlich größer.',
+              '**WebP**: das moderne Format des Webs. Es sieht aus wie ein JPG, ist aber deutlich kleiner, wie im Bild: von 189 KB auf 50 KB.',
+              '**HEIC**: das Format der iPhones. Es braucht wenig Platz, aber viele Computer, Webseiten und Programme öffnen es nicht.',
+            ] },
+          ],
+        },
+        {
+          h2: 'iPhone-Fotos (HEIC) in JPG',
+          body: [
+            'Öffne [HEIC in JPG](/heic-a-jpg) und wähle deine HEIC-Fotos, eines oder viele. Pass auf Wunsch die **JPG-Qualität** an (die voreingestellte sieht aus wie das Original) und starte die Umwandlung. Waren es mehrere, werden sie zusammen als ZIP-Datei heruntergeladen.',
+            { tip: 'Beim ersten Mal wird der HEIC-Decoder heruntergeladen (1,4 MB) und gespeichert: Die nächsten Umwandlungen starten sofort.' },
+            'Soll das iPhone Fotos gleich als JPG aufnehmen, wähle unter **Einstellungen → Kamera → Formate** die Option **Maximale Kompatibilität**.',
+          ],
+        },
+        {
+          h2: 'JPG in PNG oder jedes Bild in WebP',
+          body: [
+            'Mit [JPG in PNG](/jpg-a-png) wandelst du ein Foto in PNG um, wenn ein Programm das verlangt oder wenn du es mehrmals bearbeiten willst, ohne dass es an Qualität verliert. Mit [Bild in WebP](/imagen-a-webp) machst du die Fotos einer Webseite oder eines Onlineshops kleiner, ohne dass man es sieht.',
+            'Beide funktionieren gleich: Du wählst ein oder mehrere Bilder, tippst auf die Schaltfläche und siehst vorher und nachher mit der Dateigröße jeder Version, bereit zum Herunterladen.',
+          ],
+        },
+        {
+          h2: 'Wenn das Bild außerdem kleiner werden oder andere Maße haben soll',
+          body: [
+            'Das Format zu ändern ändert nicht die Maße des Fotos. Verlangt ein Formular, dass es eine bestimmte Dateigröße nicht überschreitet, nimm [Bild komprimieren](/comprimir-imagen), das auch HEIC-Fotos annimmt und als JPG ausgibt; und wird eine genaue Breite oder Höhe verlangt, [Bildgröße ändern](/redimensionar-imagen).',
+          ],
+        },
+        {
+          h2: 'Ohne deine Fotos hochzuladen',
+          body: [
+            'Die Umwandlung passiert in deinem Browser: Deine Fotos werden auf keinen Server hochgeladen. Beim Speichern werden außerdem die versteckten Daten (EXIF) entfernt, etwa der Ort, an dem sie aufgenommen wurden.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Umwandlung wählen', text: 'Öffne HEIC in JPG, JPG in PNG oder Bild in WebP auf docusmart.online.' },
+        { name: 'Fotos wählen', text: 'Füge ein oder mehrere Bilder hinzu.' },
+        { name: 'Umwandeln', text: 'Tippe auf die Schaltfläche und vergleiche vorher und nachher.' },
+        { name: 'Herunterladen', text: 'Lade das Bild herunter oder die ZIP-Datei, wenn es mehrere waren.' },
+      ],
+      faq: [
+        ['Warum kann ich die Fotos meines iPhones nicht am Computer öffnen?', 'Weil sie im HEIC-Format sind, das viele Geräte und Webseiten nicht erkennen. Wandle sie in JPG um, dann öffnen sie sich überall.'],
+        ['Verliert ein Foto an Qualität, wenn ich es in PNG umwandle?', 'Nein: PNG verliert keine Qualität. Es holt aber auch keine zurück; das Foto bleibt wie das ursprüngliche JPG und ist größer.'],
+        ['Wird WebP in allen Browsern angezeigt?', 'Ja, in allen aktuellen Browsern. Manche ältere Desktop-Programme öffnen es noch nicht.'],
+      ],
+    },
+    'borrar-la-ubicacion-y-los-datos-ocultos-de-una-foto': {
+      slug: 'standort-und-metadaten-aus-foto-loeschen',
+      title: 'Standort und versteckte Daten aus Foto oder PDF löschen | DocuSmart',
+      description:
+        'Sieh nach, welche versteckten Daten ein Foto oder Dokument enthält (GPS-Standort, Kamera, Datum, Autor), und lösch sie vor dem Teilen. Kostenlos und ohne Upload.',
+      h1: 'Standort und versteckte Daten aus einem Foto löschen',
+      lead: 'Ein Handyfoto kann den genauen Aufnahmeort speichern, ein Dokument den Namen der Person, die es geschrieben hat. Bevor du sie veröffentlichst oder verschickst, sieh nach, was drinsteckt, und lösch es.',
+      sections: [
+        {
+          h2: 'Was versteckte Daten (Metadaten) sind',
+          body: [
+            'Das sind Daten, die in der Datei stecken, aber weder im Bild noch auf den Seiten zu sehen sind. Ein Foto kann den **GPS-Standort**, Marke und Modell des Handys, die Seriennummer der Kamera sowie das genaue Datum und die Uhrzeit speichern. Ein PDF oder Word-Dokument kann den **Autor**, die Firma, das Programm, mit dem es erstellt wurde, und die Erstellungs- und Änderungsdaten enthalten.',
+            'Wer die Datei bekommt, kann sie mit jedem Viewer sehen. Bei einem Foto von deinem Zuhause zum Beispiel führt der Standort zu deiner Adresse.',
+          ],
+        },
+        {
+          h2: 'Schritt für Schritt',
+          body: [
+            'Öffne [Metadaten entfernen (EXIF, GPS und Autor)](/quitar-metadatos) und wähle deine Fotos oder Dokumente: JPG, PNG, WebP, HEIC, TIFF, MP4- und MOV-Videos, PDF, Word, Excel oder PowerPoint. Sofort siehst du für jede Datei die Liste der **gefundenen versteckten Daten**, wie im Bild; speichert ein Foto den Standort, erscheint er rot mit einem Hinweis.',
+            'Tippe auf **Metadaten entfernen**. Du siehst, wie viele Daten jede Datei vorher hatte und wie viele danach übrig sind, und lädst die bereinigte Kopie herunter (oder eine ZIP-Datei, wenn es mehrere waren).',
+            { tip: 'Erhalten bleibt nur die Ausrichtung der Fotos, damit sie nicht gedreht erscheinen. Das Bild wird nicht neu komprimiert: Es verliert keine Qualität.' },
+          ],
+        },
+        {
+          h2: 'Bei PDFs und Office-Dokumenten',
+          body: [
+            'Bei PDFs löscht die Option **Auch Kommentare, Anhänge und JavaScript entfernen** zusätzlich die Notizen mit dem Namen ihres Autors, angehängte Dateien und Code, der beim Öffnen ausgeführt wird. Schalte sie aus, wenn du die Kommentare behalten musst.',
+            'Bei Word, Excel und PowerPoint werden Autor, Firma und Datumsangaben entfernt. Die Namen in Kommentaren und in der Änderungsverfolgung löschst du im jeweiligen Programm selbst.',
+          ],
+        },
+        {
+          h2: 'Wenn die privaten Daten sichtbar sind',
+          body: [
+            'Metadaten zu entfernen ändert nichts an dem, was zu sehen ist. Willst du eine Ausweisnummer, eine Unterschrift oder eine Adresse verbergen, die auf den Seiten eines PDFs steht, nimm [PDF schwärzen](/censurar-pdf): Es deckt sie ab und entfernt sie aus der Datei.',
+          ],
+        },
+        {
+          h2: 'Es passiert auf deinem Gerät',
+          body: [
+            'Alles passiert in deinem Browser: Deine Fotos und Dokumente werden auf keinen Server hochgeladen. So hinterlässt du keine Kopien einer privaten Datei, gerade wenn du sie schützen willst.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Metadaten entfernen öffnen', text: 'Öffne docusmart.online/de/metadaten-entfernen und wähle Fotos oder Dokumente.' },
+        { name: 'Prüfen, was gespeichert ist', text: 'Sieh dir die Liste der versteckten Daten jeder Datei an, etwa den GPS-Standort.' },
+        { name: 'Löschen', text: 'Tippe auf Metadaten entfernen und prüfe, dass keine übrig sind.' },
+        { name: 'Herunterladen', text: 'Lade die bereinigte Kopie herunter, bereit zum Teilen.' },
+      ],
+      faq: [
+        ['Löscht WhatsApp den Standort aus Fotos?', 'Wenn du sie als Foto sendest, komprimiert WhatsApp sie neu und entfernt die meisten Daten. Schickst du sie aber als Dokument, per E-Mail oder lädst sie auf andere Seiten hoch, können sie den Standort noch enthalten.'],
+        ['Verliert das Foto an Qualität?', 'Nein. Nur die versteckten Daten werden entfernt; das Bild bleibt genau gleich.'],
+        ['Welche Daten bleiben erhalten?', 'Nur die Ausrichtung der Fotos, damit sie nicht gedreht erscheinen. Alles andere wird gelöscht.'],
+      ],
+    },
   },
 }

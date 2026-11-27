@@ -1353,5 +1353,484 @@ export default {
         ['Ça fonctionne avec un PDF protégé par mot de passe ?', "Retirez d'abord le mot de passe avec Déverrouiller un PDF, puis réparez-le."],
       ],
     },
+    'hacer-una-cuenta-de-cobro': {
+      slug: 'note-d-honoraires-pdf',
+      title: "Comment faire une note d'honoraires en PDF, gratuite et en quelques minutes | DocuSmart",
+      description:
+        "Saisissez vos coordonnées, celles du client et ce que vous facturez : le total, la retenue et le montant en lettres se calculent seuls. PDF gratuit, sans rien envoyer.",
+      h1: "Comment faire une note d'honoraires en PDF",
+      lead: "Une note d'honoraires indique qui doit quoi à qui, combien et pourquoi. Avec le modèle de DocuSmart, vous la remplissez dans le navigateur et obtenez un PDF soigné, prêt à envoyer.",
+      sections: [
+        {
+          h2: "Qu'est-ce qu'une note d'honoraires et qui l'utilise",
+          body: [
+            "C'est le document avec lequel une personne se fait payer un travail ou un service lorsqu'elle n'émet pas de facture : un graphiste indépendant, un professeur particulier, un prestataire qui travaille pour une entreprise ou quelqu'un qui loue un logement. Il doit indiquer qui facture, à qui, la date, l'objet, le montant (en chiffres et en lettres) et le mode de paiement.",
+            { tip: "Une note d'honoraires ne remplace pas la facture électronique. Si votre activité ou vos revenus vous obligent à facturer, renseignez-vous auprès d'un comptable ou de l'administration fiscale de votre pays." },
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Facture, devis et reçu](/cuenta-de-cobro) et laissez sélectionné le type **Note d'honoraires**. Cherchez votre **pays** : la devise, le nom de la taxe et les types de pièce d'identité ou d'identifiant fiscal s'ajustent en conséquence. Le numéro du document est proposé automatiquement (CC-0001) et la date est celle du jour ; ajoutez la ville et, si vous voulez, une **date d'échéance**.",
+            "Dans **Vos coordonnées**, saisissez votre nom et votre numéro d'identification ; dans **Client**, ceux de la personne qui vous paie. L'adresse, le téléphone et l'e-mail sont facultatifs.",
+            "Dans **Prestations**, décrivez ce que vous facturez, la quantité et le prix unitaire. S'il y a plusieurs éléments, utilisez **Ajouter une ligne**. Le sous-total, la taxe, la retenue et le total se calculent pendant que vous écrivez, et le montant en lettres apparaît en dessous.",
+          ],
+        },
+        {
+          h2: 'Taxe, retenue et remise',
+          body: [
+            "Si vous facturez une taxe (comme la TVA), saisissez son pourcentage ; quand vous choisissez votre pays, un bouton apparaît pour appliquer le taux normal. Si le client pratique une **retenue** à la source, saisissez le pourcentage et il est déduit du total, comme sur l'image : 1 800 000 de sous-total, 10 % de retenue et 1 620 000 à payer. La **remise** est déduite avant les taxes.",
+            { tip: "Le pourcentage de retenue dépend de votre pays, du type de service et de votre situation fiscale. Si vous ne le connaissez pas, demandez-le au client : il vous dit presque toujours combien il va retenir." },
+          ],
+        },
+        {
+          h2: 'Coordonnées de paiement, signature et PDF',
+          body: [
+            "Dans **Coordonnées de paiement**, indiquez la banque, le type et le numéro de compte et le nom du titulaire : le client sait ainsi où effectuer le virement. Dans **Notes**, vous pouvez préciser des délais ou des conditions. Avec **Ajouter une signature**, vous la dessinez au doigt ou à la souris, et avec **Ajouter un logo**, vous placez le vôtre en haut.",
+            "Appuyez sur **Créer le PDF** : vous verrez la note d'honoraires terminée, avec le montant en lettres et la ligne de signature, prête à télécharger, à partager sur WhatsApp ou à enregistrer dans Drive.",
+            { ul: [
+              "Le numéro s'incrémente tout seul à chaque nouveau document (CC-0002, CC-0003…). Et si vous cochez **Mémoriser dans ce navigateur**, la prochaine fois vos coordonnées, le logo et vos clients sont déjà remplis ; le compte bancaire n'est jamais enregistré.",
+              "Dans **Documents émis**, vous pouvez rouvrir une note précédente pour la corriger, ou transformer un **devis** accepté en note d'honoraires sans tout ressaisir.",
+              'Avec le même outil, vous pouvez faire un **devis** (avec une date de validité) ou un **reçu** de paiement.',
+            ] },
+          ],
+        },
+        {
+          h2: "Vos données et celles de votre client ne sont pas envoyées",
+          body: [
+            "Tout est préparé dans votre navigateur : les noms, les numéros d'identification et les montants ne sont envoyés à aucun serveur. Si le client vous demande la note signée dans un PDF que vous avez déjà, utilisez [Signer un PDF](/firmar-pdf) ; et si vous devez en envoyer plusieurs ensemble par e-mail, [Compresser un PDF](/comprimir-pdf) les allège.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez le modèle', text: 'Allez sur docusmart.online/fr/facture-et-devis et choisissez votre pays.' },
+        { name: 'Saisissez les informations', text: 'Remplissez vos coordonnées, celles du client, la ville et la date.' },
+        { name: 'Ajoutez ce que vous facturez', text: 'Décrivez chaque prestation avec son prix ; le total, la retenue et le montant en lettres se calculent seuls.' },
+        { name: 'Créez le PDF', text: 'Ajoutez les coordonnées de paiement et votre signature, appuyez sur Créer le PDF et téléchargez-le.' },
+      ],
+      faq: [
+        ["Une note d'honoraires, est-ce la même chose qu'une facture ?", "Non. La note d'honoraires sert à ceux qui ne sont pas obligés de facturer ; elle ne remplace pas la facture électronique. DocuSmart n'émet pas de factures électroniques."],
+        ['Comment la retenue est-elle calculée ?', 'Saisissez le pourcentage indiqué par votre client et DocuSmart le déduit du sous-total. Le total à payer tient déjà compte de la retenue.'],
+        ["Puis-je faire une note d'honoraires dans une autre devise ?", 'Oui. Quand vous choisissez votre pays, sa devise est appliquée, et vous pouvez la remplacer par une autre (dollars, euros…) dans le champ Devise.'],
+      ],
+    },
+    'hacer-una-hoja-de-vida': {
+      slug: 'creer-cv-pdf-word',
+      title: 'Comment faire un CV en PDF ou Word, gratuitement et sans inscription | DocuSmart',
+      description:
+        "Créez votre CV avec un modèle clair et compatible avec les sites d'emploi (ATS), avec ou sans photo. Téléchargez-le en PDF ou Word, gratuitement et sans créer de compte.",
+      h1: 'Comment faire un CV en PDF ou Word',
+      lead: "Un bon CV se comprend en quelques secondes et passe les filtres automatiques des sites d'emploi. Ici, vous le remplissez section par section et il sort bien mis en page, sans vous battre avec la mise en forme.",
+      sections: [
+        {
+          h2: 'Choisissez le modèle',
+          body: [
+            "Ouvrez [Créer un CV en PDF ou Word](/hoja-de-vida). En haut, vous choisissez son apparence :",
+            { ul: [
+              "**Classique (ATS)** : une colonne, sans photo. C'est celui que lisent le mieux les systèmes qui trient les CV sur les sites d'emploi ; utilisez-le pour postuler en ligne.",
+              '**Compacte** : tout aussi claire, avec un texte et des marges plus petits pour en mettre plus sur une page.',
+              '**Avec photo** : votre photo en haut, comme beaucoup d’employeurs la demandent.',
+            ] },
+            'Vous choisissez aussi le format du papier (Lettre ou A4), la police (moderne ou classique) et la couleur des titres.',
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Remplissez vos **informations personnelles** : nom, poste ou métier, ville, téléphone et e-mail. Si vous avez un profil LinkedIn ou un portfolio, ajoutez-le dans **Liens**. Écrivez ensuite votre **profil** en deux ou trois phrases : qui vous êtes, ce que vous savez faire et ce que vous recherchez.",
+            "Dans **Expérience professionnelle**, ajoutez chaque emploi avec le poste, l'entreprise et les dates ; cochez **J'occupe ce poste actuellement** si vous y êtes encore. Dans **Réalisations et missions**, écrivez une réalisation par ligne : chaque ligne devient une puce. Faites de même pour **Formation**, **Compétences**, **Langues**, **Formations et certifications** et **Références** ; les sections vides n'apparaissent pas.",
+            'Appuyez sur **Créer le PDF** ou **Créer le Word (.docx)**. Vous verrez le CV terminé, prêt à télécharger ou à partager.',
+            { tip: "Commencez chaque réalisation par un verbe et chiffrez quand c'est possible : « J'ai réduit de 30 % les délais de livraison » en dit plus que « chargée des livraisons »." },
+          ],
+        },
+        {
+          h2: "Comparez-le à l'offre et rédigez la lettre",
+          body: [
+            "Dans **Comparer avec une offre d’emploi**, vous collez l'annonce du poste et vous voyez quels mots-clés votre CV contient déjà et lesquels lui manquent, avec le pourcentage de correspondance. Les filtres automatiques cherchent ces mots ; n'ajoutez que ceux qui vous correspondent vraiment.",
+            "Dans **Lettre de motivation**, vous indiquez l'entreprise et le poste, et DocuSmart prépare un brouillon avec votre expérience et vos points forts. Relisez-le, adaptez-le à votre façon et téléchargez-le en PDF ou Word.",
+          ],
+        },
+        {
+          h2: 'Ne perdez pas ce que vous avez écrit',
+          body: [
+            "Avec **Enregistrer automatiquement dans ce navigateur**, ce que vous avez écrit reste dans ce navigateur même si vous fermez la page (pas la photo). Pour continuer sur un autre appareil, utilisez **Enregistrer le brouillon** : vous téléchargez un fichier .json que vous ouvrez ensuite là-bas avec **Ouvrir un brouillon**.",
+            "Si l'entreprise demande une photo sur fond blanc, préparez-la avant dans [Photo d'identité](/foto-tamano-documento). Et si vous devez envoyer le CV avec des diplômes ou des attestations dans un seul fichier, réunissez-les avec [Fusionner des PDF](/unir-pdf).",
+          ],
+        },
+        {
+          h2: 'Vos informations restent sur votre appareil',
+          body: [
+            "Le CV est préparé dans votre navigateur : vos données, votre expérience et votre photo ne sont envoyées à aucun serveur ni utilisées à d'autres fins. Pas besoin de créer un compte ni de laisser votre e-mail.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choisissez le modèle', text: 'Allez sur docusmart.online/fr/creer-cv et choisissez Classique (ATS), Compacte ou Avec photo.' },
+        { name: 'Remplissez les sections', text: 'Saisissez vos informations, votre profil, votre expérience, votre formation et vos compétences.' },
+        { name: "Comparez-le à l'offre", text: "Collez l'annonce du poste pour voir quels mots-clés vous manquent." },
+        { name: 'Téléchargez-le', text: 'Appuyez sur Créer le PDF ou Créer le Word et téléchargez votre CV.' },
+      ],
+      faq: [
+        ["Qu'est-ce qu'un CV ATS ?", "Un CV sur une seule colonne, sans tableaux ni images, que les logiciels de recrutement des sites d'emploi peuvent lire sans erreur. C'est le modèle Classique."],
+        ['Puis-je le télécharger en Word ?', "Oui. Avec Créer le Word (.docx), vous l'ouvrez et le modifiez dans Word, Google Docs ou LibreOffice."],
+        ["Faut-il s'inscrire ?", "Non. C'est gratuit, aucun compte ni e-mail n'est demandé et ce que vous écrivez reste sur votre appareil."],
+      ],
+    },
+    'crear-un-codigo-qr': {
+      slug: 'creer-code-qr-gratuit',
+      title: 'Comment créer un code QR gratuit pour un lien, WhatsApp ou le Wi-Fi | DocuSmart',
+      description:
+        "Créez un code QR pour un lien, WhatsApp, votre Wi-Fi ou votre contact, avec votre couleur et votre logo. En PNG, SVG ou PDF, gratuit, sans inscription ni expiration.",
+      h1: 'Comment créer un code QR gratuit',
+      lead: "Un QR envoie les gens vers votre page, ouvre une discussion WhatsApp ou connecte au Wi-Fi sans rien taper. Créez-le en quelques secondes ; il n'expire pas et ne dépend d'aucun serveur.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Créer et lire des codes QR](/crear-codigo-qr) et choisissez ce qu'il va contenir : **URL**, **Texte**, **E-mail**, **Téléphone**, **WhatsApp**, **SMS**, **Lieu**, **Wi-Fi**, **Contact** ou **Événement**. Saisissez les informations (pour un lien, l'adresse complète avec https://).",
+            "Appuyez sur **Générer le QR**. Le code apparaît aussitôt et vous pouvez le télécharger en PNG, en **SVG** (vectoriel, net à l'impression quelle que soit la taille), en **PDF (10 cm)**, le copier comme image ou l'imprimer.",
+            { tip: 'Avant d’imprimer cent prospectus, scannez le QR avec votre téléphone pour vérifier qu’il ouvre bien ce que vous attendez.' },
+          ],
+        },
+        {
+          h2: 'Ce que permet chaque type',
+          body: [
+            { ul: [
+              "**WhatsApp** : saisissez le numéro avec l'indicatif du pays (33 pour la France, par exemple) et, si vous voulez, un message. En le scannant, la discussion s'ouvre avec le message déjà écrit.",
+              '**Wi-Fi** : le nom du réseau, la sécurité et le mot de passe. Vos invités se connectent sans que vous ayez à le dicter.',
+              "**Contact** : nom, téléphone, e-mail et entreprise. En le scannant, le téléphone propose de l'enregistrer dans les contacts.",
+              "**Lieu** : une adresse ou des coordonnées qui s'ouvrent dans la carte.",
+              "**Événement** : titre, lieu, début et fin, pour l'ajouter à l'agenda.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Donnez-lui votre style',
+          body: [
+            "Dans **Personnaliser le design**, vous changez la couleur du code et du fond (ou vous le laissez transparent pour le poser sur votre visuel), vous placez votre **logo** au centre et vous choisissez la taille de l'image. Si les couleurs manquent de contraste, DocuSmart vous prévient, car un appareil photo pourrait ne pas le lire.",
+            "Avec **Protégé**, le contenu du QR est chiffré par un mot de passe (AES-256) : seule la personne qui le connaît peut l'ouvrir, dans DocuSmart. Et avec **Plusieurs QR depuis une liste**, vous en générez beaucoup d'un coup, un par ligne ou à partir d'un CSV, par exemple pour les tables d'un restaurant ou les étiquettes d'un inventaire.",
+          ],
+        },
+        {
+          h2: 'Pour lire un QR',
+          body: [
+            "Si vous devez en lire un, utilisez [Lire un code QR](/leer-codigo-qr) : avec la caméra, depuis une photo ou une capture d'écran, ou depuis un PDF. Avant d'ouvrir un lien, il vous montre où il mène et vous avertit s'il semble trompeur.",
+          ],
+        },
+        {
+          h2: "Votre QR n'expire pas",
+          body: [
+            "Le code est généré dans votre navigateur et contient directement les données, sans passer par un lien intermédiaire. C'est pourquoi il n'expire pas, n'a pas de limite de scans et personne d'autre ne voit ce que vous y avez mis. Les QR que vous créez sont conservés dans l'**Historique**, uniquement dans votre navigateur.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choisissez le type', text: 'Allez sur docusmart.online/fr/generateur-code-qr et choisissez URL, WhatsApp, Wi-Fi ou un autre type.' },
+        { name: 'Saisissez les informations', text: 'Indiquez le lien, le numéro ou les informations du réseau.' },
+        { name: 'Générez le QR', text: 'Appuyez sur Générer le QR et, si vous voulez, changez la couleur ou ajoutez votre logo.' },
+        { name: 'Téléchargez-le', text: 'Téléchargez-le en PNG, SVG ou PDF, ou imprimez-le.' },
+      ],
+      faq: [
+        ['Le code QR expire-t-il ?', "Non. Les données sont dans le code lui-même, sans lien intermédiaire : il fonctionne pour toujours et sans limite de scans."],
+        ["Quel format utiliser pour l'impression ?", "Le SVG : il est vectoriel et reste net à n'importe quelle taille, d'une carte de visite à une affiche. Il existe aussi un PDF de 10 cm."],
+        ['Puis-je mettre mon logo dans le QR ?', 'Oui, dans Personnaliser le design. Le logo se place dans un cercle au centre et le code reste lisible.'],
+      ],
+    },
+    'cambiar-el-tamano-de-una-foto': {
+      slug: 'redimensionner-photo',
+      title: 'Comment redimensionner une photo en pixels, en % ou en centimètres | DocuSmart',
+      description:
+        "Redimensionnez une ou plusieurs photos en pixels, en pourcentage, en centimètres ou aux dimensions exactes d'Instagram, WhatsApp ou YouTube. Gratuit et sans les envoyer.",
+      h1: 'Comment redimensionner une photo',
+      lead: "Une photo de téléphone fait des milliers de pixels : trop pour un formulaire, une page web ou une bannière. Ici, vous la mettez à la taille dont vous avez besoin, sans la déformer.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            'Ouvrez [Redimensionner une image](/redimensionar-imagen) et choisissez une ou plusieurs photos (JPG, PNG, WebP, HEIC, GIF ou BMP). Choisissez ensuite **comment redimensionner** :',
+            { ul: [
+              '**En pourcentage** : par exemple, 50 % réduit la photo de moitié en largeur et en hauteur.',
+              "**En pixels** : saisissez la largeur, la hauteur ou les deux. Avec **Conserver les proportions** activé, un seul côté suffit : l'autre se calcule tout seul.",
+              '**Réseaux sociaux** : des dimensions exactes pour Instagram, les statuts WhatsApp, les couvertures Facebook ou LinkedIn et les miniatures YouTube.',
+              '**En centimètres** : pour imprimer, avec la résolution de votre choix.',
+            ] },
+            "Appuyez sur **Redimensionner** et vous verrez la photo avant et après, avec son poids. Si vous en avez choisi plusieurs, elles sont enregistrées ensemble dans un ZIP.",
+          ],
+        },
+        {
+          h2: "Pour qu'elle ne soit pas déformée",
+          body: [
+            "Une photo paraît étirée quand on change la largeur et la hauteur dans des proportions différentes. C'est pourquoi **Conserver les proportions** est activé par défaut : si vous saisissez les deux côtés, la photo tient dans cette taille sans être étirée. Dans **Réseaux sociaux**, l'image remplit exactement le format et l'excédent est rogné de façon égale à partir du centre.",
+            { tip: "Réduire une photo ne lui fait jamais perdre de netteté à l'œil, mais l'agrandir n'ajoute pas de détails : une petite photo agrandie deux fois paraît floue." },
+          ],
+        },
+        {
+          h2: 'Si vous voulez la rogner ou l’alléger',
+          body: [
+            "Redimensionner, ce n'est pas rogner. Pour retirer un bord, cadrer une personne ou rendre la photo carrée, utilisez [Rogner une image](/recortar-imagen) : rognage libre ou selon des proportions fixes comme 1:1, 4:3 ou 16:9.",
+            "Et si un formulaire exige une photo de moins d'un certain poids (par exemple 200 Ko), [Compresser une image](/comprimir-imagen) baisse la qualité juste ce qu'il faut pour passer, et ne réduit les pixels que si cela ne suffit pas.",
+          ],
+        },
+        {
+          h2: 'Les dimensions souvent demandées',
+          body: [
+            { ul: [
+              "**Pour une page web ou un blog** : entre 1200 et 1920 pixels de large, c'est largement suffisant ; plus grand, la page charge seulement plus lentement.",
+              "**Pour un formulaire ou une démarche** : on demande souvent une largeur maximale (par exemple 800 pixels) et un poids maximal. Ajustez d'abord la taille ici et, si elle pèse encore trop, compressez-la.",
+              '**Pour imprimer** : utilisez En centimètres ; à 300 ppp, une photo de 10 × 15 cm a besoin d’environ 1181 × 1772 pixels pour être nette.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Vos photos ne sont pas envoyées',
+          body: [
+            "Tout se passe dans votre navigateur, même avec des dizaines de photos à la fois. En plus, à l'enregistrement, les données cachées de la photo (EXIF) sont supprimées, comme la position GPS de la prise de vue.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choisissez les photos', text: 'Allez sur docusmart.online/fr/redimensionner-image et choisissez une ou plusieurs photos.' },
+        { name: 'Choisissez la taille', text: 'En pourcentage, en pixels, un format de réseau social ou en centimètres.' },
+        { name: 'Redimensionnez', text: "Appuyez sur Redimensionner et comparez l'avant et l'après." },
+        { name: 'Téléchargez', text: "Téléchargez la photo, ou le ZIP s'il y en avait plusieurs." },
+      ],
+      faq: [
+        ['La photo perd-elle en qualité quand on la réduit ?', "Pas à l'œil : elle reste aussi nette, simplement plus petite. Ce qui est impossible, c'est de l'agrandir sans que ça se voie."],
+        ['Puis-je redimensionner plusieurs photos à la fois ?', 'Oui. Choisissez-les toutes ensemble : elles sont redimensionnées avec la même taille et téléchargées dans un ZIP.'],
+        ['Quelle taille utiliser pour Instagram ?', "Dans Réseaux sociaux, vous avez Instagram carré et vertical, ainsi que les stories. La photo remplit le format et l'excédent est rogné à partir du centre."],
+      ],
+    },
+    'comprimir-archivos-en-zip': {
+      slug: 'compresser-fichiers-zip',
+      title: 'Comment compresser des fichiers en ZIP et ouvrir un ZIP ou RAR sans logiciel | DocuSmart',
+      description:
+        "Réunissez plusieurs fichiers ou un dossier dans un ZIP, avec mot de passe si vous voulez, et ouvrez ZIP, RAR ou 7Z dans le navigateur. Gratuit, sans installation ni envoi.",
+      h1: 'Comment compresser des fichiers en ZIP et ouvrir un ZIP ou RAR',
+      lead: "Un ZIP réunit de nombreux fichiers en un seul : plus facile à envoyer par e-mail et parfois plus léger. Ici, vous le créez et l'ouvrez dans le navigateur, sans installer de logiciel.",
+      sections: [
+        {
+          h2: 'Créer un ZIP, pas à pas',
+          body: [
+            "Ouvrez [Compresser des fichiers (ZIP et 7Z)](/comprimir-archivos) et ajoutez les fichiers (de n'importe quel type) ou un dossier entier avec **Ajouter un dossier**. Saisissez le nom du ZIP et choisissez la compression : **Rapide**, **Normale** ou **Maximale**.",
+            "Appuyez sur **Créer le ZIP**. Vous verrez vos fichiers d'un côté et le ZIP de l'autre, avec le poids total avant et le poids actuel.",
+            { tip: "Les photos, les vidéos et les PDF sont déjà compressés : dans un ZIP, ils ne s'allègent presque pas. Ce qui se réduit beaucoup, ce sont les documents Word, les tableurs et les textes." },
+          ],
+        },
+        {
+          h2: 'Avec mot de passe ou en plusieurs parties',
+          body: [
+            { ul: [
+              "**Protéger par mot de passe (AES-256)** : personne n'ouvre le ZIP sans la clé. En ZIP, le mot de passe ne peut pas contenir d'accents ni de ñ ; si vous en avez besoin, choisissez le format 7Z.",
+              "**Diviser en parties** : si votre messagerie refuse un fichier aussi gros, vous le découpez en plusieurs (.001, .002…). Pour l'ouvrir, il faut toutes les parties, avec DocuSmart, 7-Zip ou WinRAR.",
+              "**7Z** : compresse davantage que le ZIP, mais sur certains appareils il faut installer un logiciel pour l'ouvrir. Le ZIP s'ouvre sur n'importe quel ordinateur ou téléphone sans rien installer.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Ouvrir un ZIP, RAR ou 7Z',
+          body: [
+            "Pour extraire le contenu d'une archive, utilisez [Décompresser des RAR, ZIP et 7Z](/descomprimir-archivos). Il ouvre les ZIP, RAR, 7Z, TAR, GZ, BZ2 et XZ, y compris ceux protégés par mot de passe ou divisés en plusieurs parties.",
+            "Vous verrez la liste de ce qu'elle contient, avec ses dossiers. Vous pouvez prévisualiser un fichier avant de le télécharger, extraire seulement ceux que vous choisissez ou tout télécharger d'un coup.",
+          ],
+        },
+        {
+          h2: "Si vous voulez qu'un PDF pèse moins",
+          body: [
+            "Mettre un PDF dans un ZIP ne le réduit presque pas. Pour alléger vraiment un PDF, passez-le dans [Compresser un PDF](/comprimir-pdf), qui réduit les images qu'il contient.",
+          ],
+        },
+        {
+          h2: 'Vos fichiers restent sur votre appareil',
+          body: [
+            "La compression et la décompression se font dans la mémoire de votre navigateur : rien n'est envoyé sur internet. Avec de très gros fichiers (plusieurs Go), cela peut prendre du temps ou manquer de mémoire ; dans ce cas, répartissez-les dans plusieurs ZIP.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ajoutez les fichiers', text: 'Allez sur docusmart.online/fr/compresser-fichiers et ajoutez des fichiers ou un dossier.' },
+        { name: 'Choisissez les options', text: 'Saisissez le nom, la compression et, si vous voulez, un mot de passe.' },
+        { name: 'Créez le ZIP', text: 'Appuyez sur Créer le ZIP et regardez de combien le poids a baissé.' },
+        { name: 'Téléchargez', text: 'Téléchargez le ZIP ou partagez-le.' },
+      ],
+      faq: [
+        ['Puis-je ouvrir un RAR sans WinRAR ?', 'Oui. Décompresser des RAR, ZIP et 7Z ouvre ces formats et d’autres dans le navigateur, sans rien installer. Pour en créer un nouveau, utilisez ZIP ou 7Z.'],
+        ['Pourquoi mon ZIP pèse-t-il presque autant ?', "Parce que les photos, les vidéos et les PDF sont déjà compressés. Le ZIP sert à les réunir dans un seul fichier, pas tant à les alléger."],
+        ['Est-ce sûr de lui mettre un mot de passe ?', "Oui. Il est chiffré en AES-256 et le mot de passe n'est enregistré nulle part : si vous l'oubliez, il n'y a aucun moyen de le récupérer."],
+      ],
+    },
+    'recortar-los-margenes-de-un-pdf': {
+      slug: 'rogner-marges-pdf',
+      title: "Comment rogner les marges ou une partie d'un PDF | DocuSmart",
+      description:
+        "Supprimez les marges blanches d'un PDF d'un seul geste ou rognez à la main la zone à conserver, sur toutes les pages ou une seule. Gratuit et sans envoyer le fichier.",
+      h1: "Comment rogner les marges ou une partie d'un PDF",
+      lead: "Un PDF aux marges énormes se lit en tout petit sur un téléphone et s'imprime avec beaucoup de papier blanc. Le rogner ne garde que l'essentiel, sans toucher au contenu.",
+      sections: [
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Rogner un PDF](/recortar-pdf) et choisissez le fichier. Vous verrez la première page avec un cadre par-dessus : la partie assombrie est celle qui sera rognée.",
+            "Appuyez sur **Supprimer les marges blanches** et le cadre s'ajuste tout seul au contenu de la page, comme sur l'image. Si vous préférez le faire à la main, faites glisser les bords ou les coins du cadre. En dessous, vous voyez la taille finale, en millimètres.",
+            "Choisissez si le rognage s'applique à **Toutes les pages** ou **Seulement la page** affichée, appuyez sur **Rogner le PDF** et téléchargez le résultat.",
+            { tip: "Si les pages ont des marges différentes, parcourez-en plusieurs avec les flèches avant de rogner : le cadre de « Toutes les pages » est le même pour chacune." },
+          ],
+        },
+        {
+          h2: 'À quoi ça sert',
+          body: [
+            { ul: [
+              "**Lire sur téléphone** : sans marges, le texte occupe tout l'écran et se lit plus gros.",
+              "**Extraire une partie** : un tableau, un graphique ou la photo d'un document scanné, pour l'utiliser à part.",
+              "**Retirer le superflu d'un scan** : la bordure noire du couvercle du scanner ou la table autour de la feuille.",
+            ] },
+          ],
+        },
+        {
+          h2: 'Ce qui arrive au contenu',
+          body: [
+            "Le rognage modifie la zone visible de chaque page, sans recréer le texte ni les images : ce qui reste est tout aussi net et le texte peut toujours être copié et recherché.",
+            "Si vous n'avez ensuite besoin que de certaines pages, séparez-les avec [Diviser un PDF](/dividir-pdf) ; et si l'une d'elles est de travers, redressez-la avec [Faire pivoter un PDF](/rotar-pdf).",
+          ],
+        },
+        {
+          h2: "Avant d'imprimer",
+          body: [
+            "Quand vous imprimez un PDF rogné, la page est plus petite que la feuille. Pour qu'elle occupe tout le papier, choisissez **Ajuster à la page** dans la fenêtre d'impression de votre navigateur ou de votre lecteur PDF.",
+            "Si vous avez rogné un scan pour ne garder que la photo d'un document (une carte d'identité, une carte d'étudiant), vérifiez que vous n'avez coupé aucun bord du document : beaucoup de démarches exigent que les quatre coins soient visibles.",
+          ],
+        },
+        {
+          h2: 'Votre PDF reste sur votre appareil',
+          body: [
+            "Tout le rognage se fait dans votre navigateur. Le PDF n'est envoyé à aucun serveur : vous pouvez l'utiliser en toute tranquillité avec des contrats ou des documents personnels.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Rogner un PDF', text: 'Allez sur docusmart.online/fr/rogner-pdf et choisissez le PDF.' },
+        { name: 'Ajustez le cadre', text: 'Appuyez sur Supprimer les marges blanches ou faites glisser les bords à la main.' },
+        { name: 'Choisissez les pages', text: 'Appliquez le rognage à toutes les pages ou seulement à celle que vous voyez.' },
+        { name: 'Téléchargez', text: 'Appuyez sur Rogner le PDF et téléchargez le résultat.' },
+      ],
+      faq: [
+        ['Rogner un PDF fait-il perdre de la qualité ?', 'Non. Seule la zone visible de la page change ; le texte et les images restent identiques.'],
+        ['Puis-je rogner une seule page ?', 'Oui. Avant de rogner, choisissez Seulement la page que vous êtes en train de voir.'],
+        ['La partie rognée est-elle effacée du fichier ?', "Elle n'est plus visible ni imprimée. Si vous voulez effacer une donnée privée, utilisez Caviarder un PDF, qui la supprime réellement."],
+      ],
+    },
+    'cambiar-el-formato-de-una-imagen': {
+      slug: 'changer-format-image',
+      title: "Comment changer le format d'une image : HEIC, JPG, PNG ou WebP | DocuSmart",
+      description:
+        "Convertissez les photos HEIC de l'iPhone en JPG, un JPG en PNG ou n'importe quelle image en WebP, une ou plusieurs à la fois. Gratuit, dans le navigateur, sans envoi.",
+      h1: "Comment changer le format d'une image : HEIC, JPG, PNG ou WebP",
+      lead: "Chaque format a son usage, et parfois un site ou un logiciel n'en accepte qu'un. Ici, vous changez le format de vos photos en quelques secondes, sans rien installer.",
+      sections: [
+        {
+          h2: 'Quel format choisir',
+          body: [
+            { ul: [
+              "**JPG** : celui des photos. Il est léger et s'ouvre sur n'importe quel appareil, site ou formulaire. Il ne gère pas la transparence.",
+              "**PNG** : sans perte de qualité et avec fond transparent. Idéal pour les logos, les captures d'écran et les dessins ; avec des photos, il pèse beaucoup plus lourd.",
+              "**WebP** : le format moderne du web. Il a le même rendu qu'un JPG pour un poids bien moindre, comme sur l'image : de 189 Ko à 50 Ko.",
+              "**HEIC** : celui qu'utilisent les iPhone. Il prend peu de place, mais beaucoup d'ordinateurs, de sites et de logiciels ne l'ouvrent pas.",
+            ] },
+          ],
+        },
+        {
+          h2: "Photos d'iPhone (HEIC) en JPG",
+          body: [
+            "Ouvrez [HEIC en JPG](/heic-a-jpg) et choisissez vos photos HEIC, une ou plusieurs. Réglez la **qualité du JPG** si vous voulez (celle proposée par défaut a le même rendu que l'original) et lancez la conversion. S'il y en a plusieurs, elles sont téléchargées ensemble dans un ZIP.",
+            { tip: "La première fois, le décodeur HEIC (1,4 Mo) est téléchargé puis conservé : les conversions suivantes démarrent aussitôt." },
+            "Si vous préférez que l'iPhone prenne directement les photos en JPG, allez dans **Réglages → Appareil photo → Formats** et choisissez **Le plus compatible**.",
+          ],
+        },
+        {
+          h2: "JPG en PNG, ou n'importe quelle image en WebP",
+          body: [
+            "Avec [JPG en PNG](/jpg-a-png), vous convertissez une photo en PNG quand un logiciel l'exige ou quand vous allez la modifier plusieurs fois sans perte de qualité. Avec [Image en WebP](/imagen-a-webp), vous allégez les photos d'un site web ou d'une boutique en ligne sans que ça se voie.",
+            "Les deux fonctionnent de la même façon : vous choisissez une ou plusieurs images, vous appuyez sur le bouton et vous voyez l'avant et l'après avec le poids de chaque version, prêt à télécharger.",
+          ],
+        },
+        {
+          h2: "Si vous devez aussi l'alléger ou la redimensionner",
+          body: [
+            "Changer de format ne change pas les dimensions de la photo. Si un formulaire vous impose un poids maximal, utilisez [Compresser une image](/comprimir-imagen), qui accepte aussi les photos HEIC et les rend en JPG ; et si on vous demande une largeur ou une hauteur exactes, [Redimensionner une image](/redimensionar-imagen).",
+          ],
+        },
+        {
+          h2: 'Sans envoyer vos photos',
+          body: [
+            "La conversion se fait dans votre navigateur : vos photos ne sont envoyées à aucun serveur. À l'enregistrement, les données cachées (EXIF) sont en plus supprimées, comme le lieu de la prise de vue.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Choisissez la conversion', text: 'Ouvrez HEIC en JPG, JPG en PNG ou Image en WebP sur docusmart.online.' },
+        { name: 'Choisissez les photos', text: 'Ajoutez une ou plusieurs images.' },
+        { name: 'Convertissez', text: "Appuyez sur le bouton et comparez l'avant et l'après." },
+        { name: 'Téléchargez', text: "Téléchargez l'image, ou le ZIP s'il y en avait plusieurs." },
+      ],
+      faq: [
+        ["Pourquoi je n'arrive pas à ouvrir les photos de mon iPhone sur l'ordinateur ?", "Parce qu'elles sont en HEIC, un format que beaucoup d'appareils et de sites ne reconnaissent pas. Convertissez-les en JPG et elles s'ouvriront partout."],
+        ['Une photo perd-elle en qualité en passant en PNG ?', "Non : le PNG ne perd pas de qualité. Mais il ne la récupère pas non plus ; la photo reste identique au JPG d'origine et pèse plus lourd."],
+        ['Le WebP s’affiche-t-il dans tous les navigateurs ?', 'Oui, dans tous les navigateurs actuels. Certains anciens logiciels de bureau ne l’ouvrent pas encore.'],
+      ],
+    },
+    'borrar-la-ubicacion-y-los-datos-ocultos-de-una-foto': {
+      slug: 'supprimer-localisation-donnees-cachees-photo',
+      title: "Supprimer la localisation et les données cachées d'une photo ou d'un PDF | DocuSmart",
+      description:
+        "Voyez quelles données cachées contient une photo ou un document (position GPS, appareil, date, auteur) et effacez-les avant de le partager. Gratuit et sans envoi.",
+      h1: "Comment supprimer la localisation et les données cachées d'une photo",
+      lead: "Une photo de téléphone peut enregistrer l'endroit exact où elle a été prise, et un document, le nom de la personne qui l'a écrit. Avant de les publier ou de les envoyer, regardez ce qu'ils contiennent et effacez-le.",
+      sections: [
+        {
+          h2: 'Que sont les données cachées (métadonnées)',
+          body: [
+            "Ce sont des informations stockées dans le fichier mais invisibles dans l'image ou sur les pages. Une photo peut contenir la **position GPS**, la marque et le modèle du téléphone, le numéro de série de l'appareil photo, ainsi que la date et l'heure exactes. Un PDF ou un document Word peut contenir l'**auteur**, l'entreprise, le logiciel utilisé et les dates de création et de modification.",
+            "Toute personne qui reçoit le fichier peut les voir avec n'importe quelle visionneuse. Avec une photo prise chez vous, par exemple, la localisation mène à votre adresse.",
+          ],
+        },
+        {
+          h2: 'Pas à pas',
+          body: [
+            "Ouvrez [Supprimer les métadonnées (EXIF, GPS et auteur)](/quitar-metadatos) et choisissez vos photos ou documents : JPG, PNG, WebP, HEIC, TIFF, vidéos MP4 et MOV, PDF, Word, Excel ou PowerPoint. Vous verrez aussitôt la liste des **Données cachées trouvées** dans chacun, comme sur l'image ; si une photo contient la localisation, elle apparaît en rouge avec un avertissement.",
+            "Appuyez sur **Supprimer les métadonnées**. Vous verrez combien de données chaque fichier contenait avant et combien il en reste après, et vous téléchargez la copie nettoyée (ou un ZIP s'il y en avait plusieurs).",
+            { tip: "Seule l'orientation des photos est conservée, pour qu'elles ne s'affichent pas de travers. L'image n'est pas recompressée : elle ne perd pas en qualité." },
+          ],
+        },
+        {
+          h2: 'Dans les PDF et les documents Office',
+          body: [
+            "Dans les PDF, l'option **Supprimer aussi les commentaires, pièces jointes et JavaScript** efface en plus les annotations portant le nom de leur auteur, les fichiers joints et le code qui s'exécute à l'ouverture. Désactivez-la si vous devez garder les commentaires.",
+            "Dans Word, Excel et PowerPoint, l'auteur, l'entreprise et les dates sont supprimés. Les noms qui apparaissent dans les commentaires et le suivi des modifications s'effacent depuis le logiciel lui-même.",
+          ],
+        },
+        {
+          h2: "Si l'information privée est visible",
+          body: [
+            "Supprimer les métadonnées ne change pas ce qui est affiché. Si vous voulez masquer un numéro de carte d'identité, une signature ou une adresse visible sur les pages d'un PDF, utilisez [Caviarder un PDF](/censurar-pdf), qui la recouvre et la supprime du fichier.",
+          ],
+        },
+        {
+          h2: 'Tout se fait sur votre appareil',
+          body: [
+            "Tout se passe dans votre navigateur : vos photos et documents ne sont envoyés à aucun serveur. Vous ne laissez donc pas de copie d'un fichier privé au moment même où vous essayez de le protéger.",
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Ouvrez Supprimer les métadonnées', text: 'Allez sur docusmart.online/fr/supprimer-metadonnees et choisissez des photos ou des documents.' },
+        { name: "Regardez ce qu'ils contiennent", text: 'Consultez la liste des données cachées de chaque fichier, comme la position GPS.' },
+        { name: 'Effacez-les', text: "Appuyez sur Supprimer les métadonnées et vérifiez qu'il n'en reste aucune." },
+        { name: 'Téléchargez', text: 'Téléchargez la copie nettoyée, prête à partager.' },
+      ],
+      faq: [
+        ['WhatsApp efface-t-il la localisation des photos ?', "Quand vous les envoyez comme photo, WhatsApp les recompresse et retire la plupart des données. Mais si vous les envoyez comme document, par e-mail ou les mettez en ligne sur d'autres sites, elles peuvent arriver avec la localisation."],
+        ['La photo perd-elle en qualité ?', "Non. Seules les données cachées sont supprimées ; l'image reste exactement la même."],
+        ['Quelles données sont conservées ?', "Seulement l'orientation des photos, pour qu'elles ne s'affichent pas de travers. Tout le reste est effacé."],
+      ],
+    },
   },
 }
