@@ -150,7 +150,8 @@ function extract(t: string, lex: Lexicon): { options: Options; spans: string[] }
   else if (turn) (o.angle = turn.value), spans.push(turn.span)
   take(new RegExp(`(\\d+)\\s*(?:${alt(lex.dpi)})`, 'u').exec(t), (m) => (o.dpi = Number(m[1])))
   // Medidas: «1920x1080», «1080 px de ancho», «de alto 600», «ancho 800», «800 píxeles».
-  const box = take(/(\d+)\s*[x×]\s*(\d+)/u.exec(t), (m) => ((o.width = Number(m[1])), (o.height = Number(m[2]))))
+  // El texto ya viene normalizado (un solo espacio): « ?» en vez de «\s*» evita retrocesos.
+  const box = take(/(\d+) ?[x×] ?(\d+)/u.exec(t), (m) => ((o.width = Number(m[1])), (o.height = Number(m[2]))))
   if (box === undefined) {
     const near = (words: string[]) => new RegExp(`(\\d+)\\s*(?:(?:${alt(lex.pixels)})\\s*)?(?:${alt(words)})|(?:${alt(words)})\\s*(?:(?:${alt(lex.fillers)})\\s*)?(\\d+)`, 'u').exec(t)
     const w = take(near(lex.width), (m) => (o.width = Number(m[1] ?? m[2])))
@@ -189,9 +190,17 @@ function textOf(original: string, lex: Lexicon): { value: string; span: string }
   if (flat.length !== t.length) return
   const rest = flat.slice(t.length - m[1].length).split(' ')
   const upper = (w: string) => /\p{Lu}/u.test(w) && w === w.toLocaleUpperCase()
-  const words = upper(rest[0]) ? rest.slice(0, rest.findIndex((w) => !upper(w)) >>> 0 || rest.length) : rest.slice(0, 1)
-  const value = words.join(' ').replace(/[.,;:!?¡¿]+$/u, '')
+  const firstLower = rest.findIndex((w) => !upper(w))
+  const words = upper(rest[0]) ? rest.slice(0, firstLower < 0 ? rest.length : firstLower) : rest.slice(0, 1)
+  const value = trimPunctuation(words.join(' '))
   return value ? { value, span: normalizeForSearch(m[0].slice(0, m[0].length - m[1].length) + words.join(' ')) } : undefined
+}
+
+/** Quita la puntuación del final («CONFIDENCIAL.» → «CONFIDENCIAL»), sin expresiones regulares con retroceso. */
+function trimPunctuation(s: string): string {
+  let end = s.length
+  while (end > 0 && '.,;:!?¡¿'.includes(s[end - 1])) end--
+  return s.slice(0, end)
 }
 
 /**
@@ -238,7 +247,10 @@ function parseStep(index: Index, lex: Lexicon, segment: string, carry: boolean):
   if (!tool) return { step: { kind: 'explain', entry: top.id }, dropped: [] }
   const accepted = TOOL_OPTIONS[tool] ?? {}
   // «al 80 %» es porcentaje para redimensionar, pero calidad para las que tienen calidad y no porcentaje.
-  if (found.percent !== undefined && !accepted.percent && accepted.quality) (found.quality = found.percent), delete found.percent
+  if (found.percent !== undefined && !accepted.percent && accepted.quality) {
+    found.quality = found.percent
+    delete found.percent
+  }
   const options: Options = {}
   const dropped: OptionKey[] = []
   for (const [k, v] of Object.entries(found) as Array<[OptionKey, Options[OptionKey]]>) {
