@@ -8,7 +8,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
 import { buildIndex, search, type Kb } from '../../../../../src/features/assistant/core/engine'
-import { CONTROL_EN, CONTROL_ES, EVAL_EN, EVAL_ES, type Category, type EvalCase } from './cases'
+import { CONTROL_EN, CONTROL_ES, CONTROL_OTHER, EVAL_EN, EVAL_ES, type Category, type EvalCase } from './cases'
 import { EVAL_OTHER } from './cases-otros'
 
 const root = process.cwd()
@@ -51,7 +51,7 @@ function measure(lang: string, cases: EvalCase[]): Result {
   return { ...rates(all), byCategory: Object.fromEntries(Object.entries(byCategory).map(([k, v]) => [k, rates(v)])), misses }
 }
 
-const SETS: Record<string, EvalCase[]> = { es: EVAL_ES, en: EVAL_EN, ...EVAL_OTHER, 'control-es': CONTROL_ES, 'control-en': CONTROL_EN }
+const SETS: Record<string, EvalCase[]> = { es: EVAL_ES, en: EVAL_EN, ...EVAL_OTHER, 'control-es': CONTROL_ES, 'control-en': CONTROL_EN, ...Object.fromEntries(Object.entries(CONTROL_OTHER).map(([l, c]) => [`control-${l}`, c])) }
 /** Idioma de la base para cada conjunto (los de control usan la de su idioma). */
 const langOf = (set: string) => set.replace(/^control-/, '')
 const results: Record<string, Result> = {}
