@@ -8,6 +8,11 @@ updates:
       dependencias:
         patterns: ["*"]
     open-pull-requests-limit: 5
+    ignore:
+      # Audio a texto erraba algo más y pesaba ~3 MB más con la 1.31 (W-29 en docs/BACKLOG.md): se vuelve a
+      # probar con la siguiente versión, que Dependabot sí propondrá.
+      - dependency-name: onnxruntime-web
+        versions: ["1.31.x"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

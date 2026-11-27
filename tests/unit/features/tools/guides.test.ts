@@ -189,7 +189,8 @@ describe('imagen para compartir cada guía (W-102)', () => {
         expect(article.image[0], where).toBe(`https://docusmart.online/${rel}`)
         expect(article.image[1], where).toMatch(new RegExp(`/img/guides/(${lang}|es)/${ogShot(g.slug)}-1280\.webp$`))
       }
-  })
+    // Lee 360 imágenes y páginas: con el equipo cargado (justo tras instalar o compilar) pasaba de 5 s.
+  }, 30_000)
 
   it('el índice de guías sigue con la imagen general del idioma', () => {
     const page = readFileSync(resolve(root, 'site/guias.html'), 'utf8')
