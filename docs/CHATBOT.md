@@ -148,25 +148,30 @@ esta tabla y la línea base después de mejorar el asistente:
 Las preguntas reales que llegan por «Enviar esta pregunta» (W-70g) se suman a `cases.ts` a mano, sin el correo
 de quien la mandó (W-151.13).
 
+Historial (acierto total de los 12 idiomas · grupo de control es / en):
+
+- 2026-11-27, W-151.1, línea base: **70,8 %** · control 45 % / 40 %.
+- 2026-11-27, W-151.2, `toolQ` (formas de pedir cada herramienta, en los 12 idiomas) y sinónimos: **85,3 %** · control 75 % / 73,3 %.
+
 <!-- medicion:inicio -->
 
 | Idioma | Preguntas | Acierto | Entre las 3 primeras | Sin respuesta | Equivocada |
 |---|---:|---:|---:|---:|---:|
 | es | 90 | 97.8 % | 100 % | 0 % | 2.2 % |
 | en | 66 | 90.9 % | 95.5 % | 4.5 % | 4.5 % |
-| pt | 30 | 50 % | 83.3 % | 26.7 % | 23.3 % |
-| fr | 30 | 73.3 % | 86.7 % | 13.3 % | 13.3 % |
-| it | 30 | 80 % | 86.7 % | 13.3 % | 6.7 % |
-| de | 30 | 66.7 % | 83.3 % | 13.3 % | 20 % |
-| ca | 30 | 73.3 % | 90 % | 10 % | 16.7 % |
-| eu | 30 | 70 % | 83.3 % | 13.3 % | 16.7 % |
-| ru | 30 | 50 % | 73.3 % | 20 % | 30 % |
-| ja | 30 | 70 % | 83.3 % | 30 % | 0 % |
-| ko | 30 | 63.3 % | 86.7 % | 23.3 % | 13.3 % |
-| zh | 30 | 53.3 % | 73.3 % | 36.7 % | 10 % |
+| pt | 30 | 66.7 % | 90 % | 13.3 % | 20 % |
+| fr | 30 | 96.7 % | 96.7 % | 0 % | 3.3 % |
+| it | 30 | 90 % | 93.3 % | 0 % | 10 % |
+| de | 30 | 80 % | 93.3 % | 0 % | 20 % |
+| ca | 30 | 90 % | 100 % | 0 % | 10 % |
+| eu | 30 | 80 % | 93.3 % | 6.7 % | 13.3 % |
+| ru | 30 | 66.7 % | 86.7 % | 13.3 % | 20 % |
+| ja | 30 | 83.3 % | 96.7 % | 6.7 % | 10 % |
+| ko | 30 | 83.3 % | 100 % | 6.7 % | 10 % |
+| zh | 30 | 66.7 % | 96.7 % | 23.3 % | 10 % |
 | control-es | 20 | 75 % | 95 % | 15 % | 10 % |
 | control-en | 15 | 73.3 % | 73.3 % | 6.7 % | 20 % |
-| **Total** | 456 | **75.2 %** | 88.2 % | 13.8 % | 11 % |
+| **Total** | 456 | **85.3 %** | 95.8 % | 5.3 % | 9.4 % |
 
 Acierto por categoría (español e inglés):
 
