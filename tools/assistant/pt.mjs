@@ -24,6 +24,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: 'Vi que apareceu este aviso: “{error}”. Isto resolve:',
     screenErrorGeneric: 'Vi que apareceu este aviso: “{error}”. Se acontecer de novo, escreva para nós:',
+    // Siguiente paso (W-151.7).
+    nextTitle: 'O que costuma vir depois:',
     optQuality: 'Qualidade',
     optFormat: 'Formato',
     optDpi: 'Resolução',

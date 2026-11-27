@@ -30,6 +30,6 @@ describe('contexto de la pantalla (W-151.6)', () => {
   it('vale solo para la pantalla donde ocurrió', () => {
     reportError('pdf-danado', 'Dañado')
     loc.hash = '#/pdf/unir'
-    expect(screenSnapshot()).toEqual({ files: [], error: null })
+    expect(screenSnapshot()).toEqual({ files: [], error: null, result: null })
   })
 })

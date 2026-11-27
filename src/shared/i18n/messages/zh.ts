@@ -96,6 +96,8 @@ const zh: Messages = {
   'settings.sidebar.accent': "强调色",
   'settings.animatedBg': "动态背景",
   'settings.animatedBg.sub': "以强调色移动的图形",
+  'settings.assistantNext': "助手建议",
+  'settings.assistantNext.sub': "工具完成后，助手会建议下一步，比如压缩或签名。",
   'settings.font': "文字大小",
   'settings.font.normal': "标准",
   'settings.font.large': "大",

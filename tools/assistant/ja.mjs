@@ -24,6 +24,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: '「{error}」というメッセージが出ていました。こちらで解決できます：',
     screenErrorGeneric: '「{error}」というメッセージが出ていました。また起きる場合はご連絡ください：',
+    // Siguiente paso (W-151.7).
+    nextTitle: '次によく使われるもの：',
     optQuality: '画質',
     optFormat: '形式',
     optDpi: '解像度',

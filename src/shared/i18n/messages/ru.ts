@@ -96,6 +96,8 @@ const ru: Messages = {
   'settings.sidebar.accent': "Цвет акцента",
   'settings.animatedBg': "Анимированный фон",
   'settings.animatedBg.sub': "Фигуры в цвете акцента в движении",
+  'settings.assistantNext': "Подсказки ассистента",
+  'settings.assistantNext.sub': "Когда инструмент закончит, ассистент предложит следующий шаг, например сжать или подписать.",
   'settings.font': "Размер текста",
   'settings.font.normal': "Обычный",
   'settings.font.large': "Крупный",

@@ -24,6 +24,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: '我看到出现了这个提示：“{error}”。可以这样解决：',
     screenErrorGeneric: '我看到出现了这个提示：“{error}”。如果再次出现，请联系我们：',
+    // Siguiente paso (W-151.7).
+    nextTitle: '接下来常用的：',
     optQuality: '质量',
     optFormat: '格式',
     optDpi: '分辨率',

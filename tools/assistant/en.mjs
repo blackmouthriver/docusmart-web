@@ -52,6 +52,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: 'I saw this message come up: "{error}". This fixes it:',
     screenErrorGeneric: 'I saw this message come up: "{error}". If it happens again, write to us:',
+    // Siguiente paso (W-151.7).
+    nextTitle: 'What usually comes next:',
     optQuality: 'Quality',
     optFormat: 'Format',
     optDpi: 'Resolution',

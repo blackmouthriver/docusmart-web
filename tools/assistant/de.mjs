@@ -24,6 +24,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: 'Ich habe diese Meldung gesehen: „{error}“. So löst du das:',
     screenErrorGeneric: 'Ich habe diese Meldung gesehen: „{error}“. Wenn es wieder passiert, schreib uns:',
+    // Siguiente paso (W-151.7).
+    nextTitle: 'Was meistens als Nächstes kommt:',
     optQuality: 'Qualität',
     optFormat: 'Format',
     optDpi: 'Auflösung',
