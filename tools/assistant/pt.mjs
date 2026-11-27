@@ -10,6 +10,31 @@ export default {
     sendIntro: "Olá, o assistente não soube responder a esta pergunta:",
     sendNote: "Seu app de e-mail abre com a pergunta escrita; você decide se envia.",
   },
+  // Léxico para entender pedidos (W-151.4): palavras de cada dado, em minúsculas e sem acentos.
+  parse: {
+    numbers: { zero: 0, um: 1, uma: 1, dois: 2, duas: 2, tres: 3, quatro: 4, cinco: 5, seis: 6, sete: 7, oito: 8, nove: 9, dez: 10, onze: 11, doze: 12, quinze: 15, vinte: 20, trinta: 30, quarenta: 40, cinquenta: 50, sessenta: 60, setenta: 70, oitenta: 80, noventa: 90, cem: 100, cento: 100, duzentos: 200, trezentos: 300, quinhentos: 500, mil: 1000 },
+    units: { kb: 'kb', k: 'kb', kilo: 'kb', quilo: 'kb', kilobytes: 'kb', quilobytes: 'kb', mb: 'mb', mega: 'mb', megas: 'mb', megabyte: 'mb', megabytes: 'mb', gb: 'gb', giga: 'gb', gigas: 'gb', gigabytes: 'gb' },
+    pages: ['pagina', 'paginas', 'pag', 'pags', 'folha', 'folhas'],
+    range: ['a', 'ao', 'ate', '-'],
+    and: ['e', ','],
+    fillers: ['de', 'da', 'das', 'do', 'dos', 'numero'],
+    current: ['este', 'esta', 'estes', 'estas', 'deste', 'desta', 'destes', 'destas', 'neste', 'nesta', 'nestes', 'nestas', 'esse', 'essa', 'esses', 'essas', 'meu', 'minha', 'meus', 'minhas'],
+    degrees: ['graus', 'grau', '°'],
+    angles: { 'para a direita': '90', 'a direita': '90', 'sentido horario': '90', 'para a esquerda': '270', 'a esquerda': '270', 'sentido anti-horario': '270', 'de cabeca para baixo': '180', 'de ponta-cabeca': '180', 'de ponta cabeca': '180', 'meia volta': '180' },
+    dpi: ['dpi', 'ppp', 'ppi', 'pontos por polegada'],
+    pixels: ['px', 'pixels', 'pixel', 'pixeis'],
+    width: ['largura', 'de largura', 'de largo'],
+    height: ['altura', 'de altura', 'de alto'],
+    percent: ['%', 'por cento', 'porcento'],
+    quality: ['qualidade'],
+    grayscale: ['preto e branco', 'escala de cinza', 'tons de cinza', 'em cinza', 'p&b'],
+    says: ['que diga', 'que diz', 'com o texto', 'com a palavra', 'dizendo', 'escrito'],
+    // Pronomes depois do hífen («comprimi-los», «assiná-lo»): separam-se antes de buscar a ferramenta.
+    suffixes: ['-los', '-las', '-lo', '-la', '-os', '-as', '-o', '-a'],
+    then: ['e depois', 'depois', 'e em seguida', 'em seguida', 'e entao', 'e por fim', 'por fim', 'e no final'],
+    languages: { espanhol: 'es', castelhano: 'es', ingles: 'en', portugues: 'pt', frances: 'fr', italiano: 'it', alemao: 'de', catalao: 'ca', basco: 'eu', euskera: 'eu', russo: 'ru', japones: 'ja', coreano: 'ko', chines: 'zh' },
+    positions: { 'canto superior esquerdo': 'top-left', 'superior esquerdo': 'top-left', 'em cima a esquerda': 'top-left', 'em cima no centro': 'top-center', 'superior central': 'top-center', 'canto superior direito': 'top-right', 'superior direito': 'top-right', 'em cima a direita': 'top-right', 'no centro': 'center', 'ao centro': 'center', 'no meio': 'center', 'centralizado': 'center', 'canto inferior esquerdo': 'bottom-left', 'inferior esquerdo': 'bottom-left', 'embaixo a esquerda': 'bottom-left', 'embaixo no centro': 'bottom-center', 'inferior central': 'bottom-center', 'canto inferior direito': 'bottom-right', 'inferior direito': 'bottom-right', 'embaixo a direita': 'bottom-right', 'em cima': 'top-center', 'no topo': 'top-center', 'embaixo': 'bottom-center', 'em baixo': 'bottom-center', 'no rodape': 'bottom-center' },
+  },
   // Mais formas de pedir cada ferramenta (W-151.2): descrevendo o problema, citando o trâmite ou
   // do jeito que se fala no dia a dia. Somam-se às perguntas da entrada principal.
   toolQ: {

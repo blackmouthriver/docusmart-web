@@ -225,3 +225,20 @@ Toda acción pasa por `validateAction` venga de donde venga; lo que no cumple se
 ejecuta a medias. La contraseña nunca se guarda ni se registra (`redactAction`), y el esquema para la IA no la
 incluye: la persona la escribe en la herramienta.
 
+## Analizador de pedidos (W-151.4)
+
+`src/features/assistant/core/parser.ts` convierte un pedido («comprime este pdf a menos de 2 megas y luego
+fírmalo») en una acción del catálogo, ya validada:
+
+1. Reconoce los datos con el **léxico `parse`** del idioma (en `tools/assistant/<idioma>.mjs`, en minúsculas y
+   sin tildes): números en letras, tamaños, páginas, giro, ppp, ancho/alto, calidad o porcentaje, blanco y
+   negro, idioma, posición, texto de la marca de agua (entre comillas o tras «que diga»), «este archivo» y los
+   conectores de pasos encadenados («y luego»).
+2. Busca la herramienta con el buscador del asistente usando el pedido **sin** esos datos («gira el pdf 90
+   grados» → «gira el pdf»). Si un dato es justamente lo que indica la herramienta («pon la foto en blanco y
+   negro»), gana la búsqueda con el dato cuando saca al menos 1,5 veces el puntaje.
+3. Se queda con las opciones que esa herramienta acepta (`TOOL_OPTIONS`); las demás se informan en `dropped`.
+
+La contraseña nunca se toma del chat. Pruebas: 50 pedidos en español y 50 en inglés (49 y 49 entendidos) y 20
+en cada uno de los otros 10 idiomas (`tests/unit/features/assistant/parser*.ts`).
+

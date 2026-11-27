@@ -47,8 +47,16 @@ export type ParseResult = { action: AssistantAction; dropped: OptionKey[] }
 
 const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-/** Patrón de una palabra o frase: con límites de palabra, salvo en chino, japonés y coreano (sin espacios). */
-const word = (w: string) => (CJK.test(w) || !/[\p{L}\p{N}]/u.test(w) ? esc(w) : `(?<![\\p{L}\\p{N}])${esc(w)}(?![\\p{L}\\p{N}])`)
+/**
+ * Patrón de una palabra o frase: con límites de palabra, salvo en chino, japonés y coreano (sin espacios).
+ * Las siglas latinas (mb, dpi, px, webm…) pueden ir pegadas a un número o a texto CJK («2mb», «300dpi»,
+ * «webmに», «转成webm»), pero no a otras letras latinas («mp3» no contiene la «p» de página).
+ */
+const word = (w: string) => {
+  if (CJK.test(w) || !/[\p{L}\p{N}]/u.test(w)) return esc(w)
+  if (/^[a-z0-9]+$/.test(w)) return `(?<![\\p{Script=Latin}])${esc(w)}(?![\\p{Script=Latin}])`
+  return `(?<![\\p{L}\\p{N}])${esc(w)}(?![\\p{L}\\p{N}])`
+}
 /** Alternativas, de la más larga a la más corta (para que «de alto» gane a «alto»). */
 const alt = (list: readonly string[]) => [...list].sort((a, b) => b.length - a.length).map(word).join('|')
 const NUM = '(\\d+(?:[.,]\\d+)?)'
@@ -170,8 +178,10 @@ function extract(t: string, lex: Lexicon): { options: Options; spans: string[] }
  * siguiente, o todas las seguidas en mayúsculas («que diga MUY CONFIDENCIAL al pdf» → «MUY CONFIDENCIAL»).
  */
 function textOf(original: string, lex: Lexicon): { value: string; span: string } | undefined {
-  const quoted = /["“«']([^"”»']{1,200})["”»']/u.exec(original)
-  if (quoted) return { value: quoted[1].trim(), span: normalizeForSearch(quoted[0]) }
+  // Comillas de todos los idiomas: "…", “…”, „…“, «…», »…« y '…' (la simple solo fuera de una palabra:
+  // en «marca d'água» es un apóstrofo, no una comilla).
+  const quoted = /"([^"]{1,200})"|“([^”]{1,200})”|„([^“”]{1,200})[“”]|«([^»]{1,200})»|»([^«]{1,200})«|(?<![\p{L}\p{N}])'([^']{1,200})'(?![\p{L}\p{N}])/u.exec(original)
+  if (quoted) return { value: quoted.slice(1).find((g) => g !== undefined)!.trim(), span: normalizeForSearch(quoted[0]) }
   const t = normalizeForSearch(original)
   const m = new RegExp(`(?:${alt(lex.says)})\\s+(.+)$`, 'u').exec(t)
   if (!m) return

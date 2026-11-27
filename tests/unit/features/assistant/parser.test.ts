@@ -182,6 +182,17 @@ describe('analizador de pedidos (W-151.4)', () => {
     expect(r?.dropped).toEqual(['dpi'])
   })
 
+  it('siglas pegadas al número y comillas de cada idioma', () => {
+    const es = load('es')
+    expect(parseRequest(es.index, es.lex, 'comprime este pdf a 2mb')?.action).toMatchObject({ tool: 'comprimir-pdf', options: { targetSize: 2 * MB } })
+    expect(parseRequest(es.index, es.lex, 'pasa el pdf a jpg a 300dpi')?.action).toMatchObject({ tool: 'pdf-a-jpg', options: { dpi: 300 } })
+    const pt = load('pt')
+    // En «marca d'água» el apóstrofo no es una comilla.
+    expect(parseRequest(pt.index, pt.lex, `põe a marca d'água "Rascunho" no pdf`)?.action).toMatchObject({ options: { text: 'Rascunho' } })
+    const de = load('de')
+    expect(parseRequest(de.index, de.lex, 'Wasserzeichen „ENTWURF“ auf das PDF')?.action).toMatchObject({ tool: 'marca-de-agua-pdf', options: { text: 'ENTWURF' } })
+  })
+
   it('sin léxico (idioma todavía sin él) no intenta entender pedidos', () => {
     const { index } = load('es')
     expect(parseRequest(index, undefined, 'comprime este pdf')).toBeNull()

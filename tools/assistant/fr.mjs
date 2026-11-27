@@ -10,12 +10,37 @@ export default {
     sendIntro: "Bonjour, l’assistant n’a pas su répondre à cette question :",
     sendNote: "Ton application de messagerie s’ouvre avec la question écrite ; c’est toi qui décides de l’envoyer.",
   },
+  // Lexique pour comprendre les demandes (W-151.4) : les mots de chaque donnée, en minuscules et sans accents.
+  parse: {
+    numbers: { zero: 0, un: 1, une: 1, deux: 2, trois: 3, quatre: 4, cinq: 5, six: 6, sept: 7, huit: 8, dix: 10, onze: 11, douze: 12, quinze: 15, vingt: 20, trente: 30, quarante: 40, cinquante: 50, soixante: 60, cent: 100, mille: 1000 },
+    units: { ko: 'kb', kb: 'kb', k: 'kb', kilo: 'kb', kilos: 'kb', kilooctets: 'kb', mo: 'mb', mb: 'mb', mega: 'mb', megas: 'mb', megaoctet: 'mb', megaoctets: 'mb', go: 'gb', gb: 'gb', giga: 'gb', gigas: 'gb', gigaoctets: 'gb' },
+    pages: ['page', 'pages', 'p'],
+    range: ['a', 'au', "jusqu'a", '-'],
+    and: ['et', ','],
+    fillers: ['de', 'la', 'les', 'du', 'des', 'numero', 'no'],
+    current: ['ce', 'cet', 'cette', 'ces', 'mon', 'ma', 'mes'],
+    degrees: ['degres', 'degre', '°'],
+    angles: { 'vers la droite': '90', 'a droite': '90', 'sens horaire': '90', 'dans le sens horaire': '90', 'vers la gauche': '270', 'a gauche': '270', 'sens antihoraire': '270', 'sens anti-horaire': '270', "a l'envers": '180', 'tete en bas': '180', 'demi-tour': '180' },
+    dpi: ['ppp', 'dpi', 'ppi', 'points par pouce'],
+    pixels: ['px', 'pixels', 'pixel'],
+    width: ['largeur', 'de large', 'de largeur'],
+    height: ['hauteur', 'de haut', 'de hauteur'],
+    percent: ['%', 'pour cent', 'pourcent'],
+    quality: ['qualite'],
+    grayscale: ['noir et blanc', 'niveaux de gris', 'en gris', 'n&b'],
+    says: ['qui dit', 'avec le texte', 'avec le mot', 'disant', 'avec la mention'],
+    // Pronoms après le trait d'union («compresse-les», «signe-le») : on les sépare avant de chercher l'outil.
+    suffixes: ['-les', '-le', '-la', '-moi', '-lui', '-en'],
+    then: ['et ensuite', 'ensuite', 'et puis', 'puis', 'et apres', 'apres ca', 'et enfin', 'enfin'],
+    languages: { espagnol: 'es', castillan: 'es', anglais: 'en', portugais: 'pt', francais: 'fr', italien: 'it', allemand: 'de', catalan: 'ca', basque: 'eu', russe: 'ru', japonais: 'ja', coreen: 'ko', chinois: 'zh' },
+    positions: { 'en haut a gauche': 'top-left', 'en haut au centre': 'top-center', 'en haut a droite': 'top-right', 'au centre': 'center', 'au milieu': 'center', 'centre': 'center', 'en bas a gauche': 'bottom-left', 'en bas au centre': 'bottom-center', 'en bas a droite': 'bottom-right', 'en haut': 'top-center', 'en bas': 'bottom-center' },
+  },
   // Autres façons de demander chaque outil (W-151.2) : en décrivant le problème, la démarche ou avec
   // des mots de tous les jours. Elles s'ajoutent aux questions de l'entrée principale.
   toolQ: {
     'unir-pdf': ["mettre plusieurs documents dans un seul fichier", "regrouper ma carte d'identité et un justificatif dans un pdf", "tout envoyer en un seul pdf", "on me demande tous les documents en un seul fichier"],
     'dividir-pdf': ["enlever une page d'un pdf", "garder seulement quelques pages", "séparer les pages d'un pdf", "supprimer des pages d'un pdf"],
-    'rotar-pdf': ["le pdf est à l'envers", "le scan est sorti de travers", "pages du pdf tournées dans le mauvais sens"],
+    'rotar-pdf': ["le pdf est à l'envers", "le scan est sorti de travers", "pages du pdf tournées dans le mauvais sens", "tourner un pdf", "faire pivoter les pages d'un pdf"],
     'comprimir-pdf': ["mon pdf est trop lourd pour l'envoyer", "le site dit que le fichier est trop volumineux", "impossible de déposer le pdf à cause de sa taille", "faire passer un pdf sous 2 mo", "alléger un pdf", "la pièce jointe est trop grosse pour le mail"],
     'proteger-pdf': ["empêcher qu'on ouvre mon pdf sans code"],
     'desbloquear-pdf': ["le pdf demande un mot de passe et je le connais", "enlever le code d'un pdf qu'on m'a envoyé"],
