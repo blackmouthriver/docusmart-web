@@ -49,6 +49,9 @@ export default {
     optHeight: 'Height',
     optPercent: 'Size',
     optGrayscale: 'Black and white',
+    // Error de la pantalla (W-151.6).
+    screenError: 'I saw this message come up: "{error}". This fixes it:',
+    screenErrorGeneric: 'I saw this message come up: "{error}". If it happens again, write to us:',
     optQuality: 'Quality',
     optFormat: 'Format',
     optDpi: 'Resolution',
@@ -70,6 +73,8 @@ export default {
   // words. They are added to the questions of the tool's main entry.
   // Lexicon to understand requests (W-151.4): words for each detail, lower case and without accents.
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['why not', 'why can\'t', 'why cant', 'it won\'t', 'it wont', 'doesn\'t work', 'doesnt work', 'not working', 'what happened', 'what do i do', 'failed'],
     numbers: { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, fifteen: 15, twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90, hundred: 100, thousand: 1000, half: 0.5 },
     units: { kb: 'kb', k: 'kb', kilobyte: 'kb', kilobytes: 'kb', mb: 'mb', meg: 'mb', megs: 'mb', megabyte: 'mb', megabytes: 'mb', gb: 'gb', gig: 'gb', gigs: 'gb', gigabyte: 'gb', gigabytes: 'gb' },
     pages: ['page', 'pages', 'pg', 'pgs', 'p'],

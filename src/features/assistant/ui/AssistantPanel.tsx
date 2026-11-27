@@ -17,6 +17,8 @@ import { questionMail } from '../core/sendQuestion'
 import { FEEDBACK_EMAIL } from '../../../shared/files/share'
 import { setToolOptions } from '../../../shared/files/toolOptions'
 import { planFor, planLines, type Plan } from '../core/plan'
+import { asksWhy, type Lexicon } from '../core/parser'
+import { screenSnapshot } from '../../../shared/files/screenContext'
 
 /** Primera letra en mayúscula (las preguntas de la base se escriben como las escribe la gente). */
 const capitalize = (s: string) => s.charAt(0).toLocaleUpperCase() + s.slice(1)
@@ -26,7 +28,7 @@ const CLOSE_MS = 200
 /** text/ai: respuesta redactada por la IA del navegador (W-70f), mientras se escribe ('writing') y al terminar ('done'). */
 type Msg =
   | { id: number; role: 'user'; text: string }
-  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done'; question?: string; plan?: Plan }
+  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done'; question?: string; plan?: Plan; lead?: ScreenLead }
 
 export type PanelProps = {
   lang: string
@@ -75,6 +77,12 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
   }, [lang, screen])
 
   useEffect(() => input.current?.focus(), [data])
+  // W-151.6: si en esta pantalla acaba de salir un error, el asistente lo explica primero, con la solución.
+  useEffect(() => {
+    if (!data) return
+    const r = errorReply(data.index)
+    if (r) setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', ...r }])
+  }, [data])
   useEffect(() => {
     let alive = true
     void localAiFor(kbLangFor(lang)).then((a) => alive && setAi(a))
@@ -149,8 +157,14 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
     if (!q || !data || typing || writing) return
     setText('')
     const plan = planFor(data.index, data.kb, q)
-    if (plan) pushPlan(q, plan)
-    else push(q, reply(data.index, q, context))
+    if (plan) return pushPlan(q, plan)
+    const r = reply(data.index, q, context)
+    // «¿Por qué no me deja?» (o algo que el buscador no sabe) con un error reciente en esta pantalla: se explica ese error.
+    const err = r.kind === 'fallback' || asksWhy((data.kb as { parse?: Lexicon }).parse, q) ? errorReply(data.index) : null
+    if (err) {
+      setMsgs((m) => [...m, { id: nextId.current++, role: 'user', text: q }, { id: nextId.current++, role: 'bot', ...err }])
+      track('assistant_screen_error', { answer_id: err.reply.entry.id })
+    } else push(q, r)
   }
   /** «Hacer» deja las opciones puestas; «Cambiar» abre la herramienta sin ellas, para elegirlas a mano. */
   const runPlan = (plan: Plan, withOptions: boolean) => {
@@ -298,6 +312,18 @@ function PlanCard({ plan, ui, lang, onRun }: { plan: Plan; ui: Record<string, st
   )
 }
 
+/** Aviso del error de la pantalla: con solución (`screenError`) o sin una específica (`screenErrorGeneric`). */
+type ScreenLead = { key: 'screenError' | 'screenErrorGeneric'; error: string }
+
+/** El último error de esta pantalla, explicado con la respuesta de la base que lo resuelve (W-151.6). */
+function errorReply(index: Index): { reply: Extract<Reply, { kind: 'answer' }>; lead: ScreenLead } | null {
+  const { error } = screenSnapshot()
+  if (!error) return null
+  const entry = index.byId.get(error.entry ?? 'contacto')
+  if (!entry) return null
+  return { reply: { kind: 'answer', entry, related: [] }, lead: { key: error.entry ? 'screenError' : 'screenErrorGeneric', error: error.message } }
+}
+
 function Typing() {
   return (
     <div className="assistant-typing" aria-hidden="true">
@@ -349,8 +375,11 @@ function BotMessage({
       </div>
     )
   }
+  // Aviso del error de la pantalla (W-151.6): «Vi que salió este aviso: …».
+  const lead = msg.lead ? ui[msg.lead.key].replace('{error}', msg.lead.error) : null
   return (
     <div className="assistant-bot">
+      {lead && <p className="assistant-bubble bot assistant-screen-error">{lead}</p>}
       <p className={'assistant-bubble bot' + (msg.ai === 'writing' ? ' is-writing' : '')}>{msg.text ?? r.entry.a}</p>
       {msg.ai === 'done' && <small className="assistant-ai-badge">{ui.aiBadge}</small>}
       {msg.ai === 'writing' ? null : (

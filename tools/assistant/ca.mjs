@@ -21,6 +21,9 @@ export default {
     optHeight: 'Alçada',
     optPercent: 'Mida',
     optGrayscale: 'Blanc i negre',
+    // Error de la pantalla (W-151.6).
+    screenError: 'He vist aquest avís: «{error}». Això ho resol:',
+    screenErrorGeneric: 'He vist aquest avís: «{error}». Si torna a passar, escriu-nos:',
     optQuality: 'Qualitat',
     optFormat: 'Format',
     optDpi: 'Resolució',
@@ -40,6 +43,8 @@ export default {
   },
   // Lèxic per entendre les peticions (W-151.4): les paraules de cada dada, en minúscules i sense accents.
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['per que no', 'no em deixa', 'no funciona', 'que ha passat', 'que faig', 'surt un error'],
     numbers: { zero: 0, un: 1, una: 1, dos: 2, dues: 2, tres: 3, quatre: 4, cinc: 5, sis: 6, vuit: 8, onze: 11, dotze: 12, quinze: 15, vint: 20, trenta: 30, quaranta: 40, cinquanta: 50, seixanta: 60, cent: 100, mil: 1000 },
     units: { kb: 'kb', k: 'kb', kilo: 'kb', kilos: 'kb', kilobytes: 'kb', mb: 'mb', mega: 'mb', megues: 'mb', megas: 'mb', megabytes: 'mb', gb: 'gb', giga: 'gb', gigues: 'gb', gigabytes: 'gb' },
     pages: ['pagina', 'pagines', 'pag', 'full', 'fulls'],

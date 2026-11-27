@@ -21,6 +21,9 @@ export default {
     optHeight: '高度',
     optPercent: '尺寸',
     optGrayscale: '黑白',
+    // Error de la pantalla (W-151.6).
+    screenError: '我看到出现了这个提示：“{error}”。可以这样解决：',
+    screenErrorGeneric: '我看到出现了这个提示：“{error}”。如果再次出现，请联系我们：',
     optQuality: '质量',
     optFormat: '格式',
     optDpi: '分辨率',
@@ -40,6 +43,8 @@ export default {
   },
   // 请求解析用的词汇（W-151.4）：英文字母小写、去掉重音后比较（中文保持原样）。
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['为什么', '不行', '用不了', '打不开', '出错', '报错', '怎么办'],
     // 不放“百”“半”：会破坏“百分之”“半透明”等词。
     numbers: { 一: 1, 二: 2, 两: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10 },
     // “2MB以内”数字和单位连着写，所以也放带后缀的形式。

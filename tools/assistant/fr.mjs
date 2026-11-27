@@ -21,6 +21,9 @@ export default {
     optHeight: 'Hauteur',
     optPercent: 'Taille',
     optGrayscale: 'Noir et blanc',
+    // Error de la pantalla (W-151.6).
+    screenError: 'J’ai vu ce message : « {error} ». Voici la solution :',
+    screenErrorGeneric: 'J’ai vu ce message : « {error} ». Si ça se reproduit, écris-nous :',
     optQuality: 'Qualité',
     optFormat: 'Format',
     optDpi: 'Résolution',
@@ -40,6 +43,8 @@ export default {
   },
   // Lexique pour comprendre les demandes (W-151.4) : les mots de chaque donnée, en minuscules et sans accents.
   parse: {
+    // «¿Por qué no me deja?» (W-151.6): con un error reciente en la pantalla, el asistente lo explica.
+    why: ['pourquoi', 'ca ne marche pas', 'ne fonctionne pas', 'qu\'est-ce qui se passe', 'que faire', 'ca bloque'],
     numbers: { zero: 0, un: 1, une: 1, deux: 2, trois: 3, quatre: 4, cinq: 5, six: 6, sept: 7, huit: 8, dix: 10, onze: 11, douze: 12, quinze: 15, vingt: 20, trente: 30, quarante: 40, cinquante: 50, soixante: 60, cent: 100, mille: 1000 },
     units: { ko: 'kb', kb: 'kb', k: 'kb', kilo: 'kb', kilos: 'kb', kilooctets: 'kb', mo: 'mb', mb: 'mb', mega: 'mb', megas: 'mb', megaoctet: 'mb', megaoctets: 'mb', go: 'gb', gb: 'gb', giga: 'gb', gigas: 'gb', gigaoctets: 'gb' },
     pages: ['page', 'pages', 'p'],
