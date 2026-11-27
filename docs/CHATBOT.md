@@ -209,3 +209,19 @@ Acierto por categoría (español e inglés):
 </details>
 
 <!-- medicion:fin -->
+
+## Catálogo de acciones (W-151.3)
+
+`src/features/assistant/core/actions.ts` define lo que el asistente puede **proponer** hacer, para las capas
+siguientes: el analizador de pedidos (W-151.4), la tarjeta «Hacer / Cambiar» (W-151.5), el encadenado (W-151.8)
+y la IA del navegador con salida estructurada (W-151.14).
+
+- `openTool`: abre una herramienta con opciones ya puestas (`TOOL_OPTIONS` dice cuáles acepta cada una) y,
+  si se pide, con el archivo que la persona tiene abierto.
+- `chain`: de 2 a 5 pasos; el resultado de cada uno pasa al siguiente, y solo el primero usa el archivo abierto.
+- `explain`: muestra una respuesta de la base.
+
+Toda acción pasa por `validateAction` venga de donde venga; lo que no cumple se rechaza entero, nunca se
+ejecuta a medias. La contraseña nunca se guarda ni se registra (`redactAction`), y el esquema para la IA no la
+incluye: la persona la escribe en la herramienta.
+
