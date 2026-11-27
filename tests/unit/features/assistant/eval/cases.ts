@@ -290,3 +290,27 @@ export const CONTROL_OTHER: Record<string, EvalCase[]> = {
     ['wie wird das wetter morgen', [], 'fuera'],
   ],
 }
+
+/** Grupo de control de errores frecuentes y preguntas generales (W-151.2, tercera parte): escrito antes de esa mejora. */
+export const CONTROL_ERRORES: Record<string, EvalCase[]> = {
+  es: [
+    ['la pagina se queda cargando y no avanza', ['lento'], 'error'],
+    ['se demora muchisimo en convertir', ['lento'], 'error'],
+    ['le di descargar y no aparece el archivo', ['descarga'], 'error'],
+    ['donde quedo guardado el pdf', ['descarga'], 'error'],
+    ['hay que crear usuario', ['sin-cuenta'], 'general'],
+    ['tienen aplicacion para celular android', ['app-android'], 'general'],
+    ['puedo usarlo sin conexion a internet', ['offline'], 'general'],
+    ['no se escucha la voz cuando lee', ['voz-no-funciona'], 'error'],
+  ],
+  en: [
+    ['the page keeps loading forever', ['lento'], 'error'],
+    ['converting takes ages', ['lento'], 'error'],
+    ['i clicked download and nothing happened', ['descarga'], 'error'],
+    ['where did my pdf get saved', ['descarga'], 'error'],
+    ['do i need to create a user', ['sin-cuenta'], 'general'],
+    ['do you have an app for android phones', ['app-android'], 'general'],
+    ['can i use it with no internet connection', ['offline'], 'general'],
+    ['there is no voice when it reads', ['voz-no-funciona'], 'error'],
+  ],
+}

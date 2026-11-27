@@ -124,5 +124,19 @@
     "top3": 100,
     "none": 0,
     "wrong": 0
+  },
+  "control-errores-es": {
+    "n": 8,
+    "top1": 37.5,
+    "top3": 62.5,
+    "none": 25,
+    "wrong": 37.5
+  },
+  "control-errores-en": {
+    "n": 8,
+    "top1": 37.5,
+    "top3": 62.5,
+    "none": 12.5,
+    "wrong": 50
   }
 }
