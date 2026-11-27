@@ -606,3 +606,4 @@ gratis para personas.
 | W-26 | Seguimiento de HSTS preload: de *pending* a *preloaded* en hstspreload.org. **Nunca quitar** la cabecera HSTS de `firebase.json` | 👤 | revisar en diciembre de 2026 |
 | W-27 | Renovar `public/.well-known/security.txt` (campo `Expires`) | 🛠️ | antes del 2027-10-16 |
 | W-28 | Certificados de Firebase (vencen el 2027-02-11): se renuevan solos; confirmar que siguen válidos. Los CAA ya permiten `pki.goog` y `letsencrypt.org` | 👤 | enero de 2027 |
+| W-29 | **onnxruntime-web 1.31 aplazado** (2026-11-26): el motor de IA pasó las pruebas, pero en el arnés de Audio a texto (`tests/calidad-audio/`) erró un poco más que la 1.23 (español largo 4,4 % → 6,3 %; dos palabras) y pesa 3 MB más, sin arreglos de seguridad que necesitemos. Volver a medir con la próxima versión antes de actualizar | 🤖 | con la próxima versión de onnxruntime-web |
