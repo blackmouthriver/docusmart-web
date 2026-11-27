@@ -57,30 +57,30 @@
   },
   "ru": {
     "n": 30,
-    "top1": 66.7,
-    "top3": 86.7,
-    "none": 13.3,
-    "wrong": 20
+    "top1": 80,
+    "top3": 93.3,
+    "none": 3.3,
+    "wrong": 16.7
   },
   "ja": {
     "n": 30,
     "top1": 83.3,
     "top3": 96.7,
-    "none": 6.7,
-    "wrong": 10
+    "none": 10,
+    "wrong": 6.7
   },
   "ko": {
     "n": 30,
-    "top1": 83.3,
+    "top1": 86.7,
     "top3": 100,
-    "none": 6.7,
+    "none": 3.3,
     "wrong": 10
   },
   "zh": {
     "n": 30,
-    "top1": 66.7,
+    "top1": 80,
     "top3": 96.7,
-    "none": 23.3,
+    "none": 10,
     "wrong": 10
   },
   "control-es": {
@@ -107,16 +107,16 @@
   "control-ru": {
     "n": 10,
     "top1": 90,
-    "top3": 90,
-    "none": 10,
-    "wrong": 0
+    "top3": 100,
+    "none": 0,
+    "wrong": 10
   },
   "control-zh": {
     "n": 10,
-    "top1": 80,
+    "top1": 100,
     "top3": 100,
-    "none": 10,
-    "wrong": 10
+    "none": 0,
+    "wrong": 0
   },
   "control-de": {
     "n": 10,

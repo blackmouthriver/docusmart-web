@@ -17,6 +17,9 @@ export type Kb = { lang: string; ui: Record<string, string>; entries: KbEntry[] 
 type Doc = { entry: KbEntry; tf: Map<string, number>; len: number; qTerms: Set<string>; qSeqs: string[][] }
 export type Index = { lang: string; docs: Doc[]; df: Map<string, number>; avgLen: number; vocab: string[]; byId: Map<string, KbEntry>; exact: Map<string, KbEntry> }
 
+/** Letras de chino, japonés y coreano (se indexan por pares de caracteres). */
+const CJK_WORD = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u
+
 /** Peso de las preguntas frente a la respuesta. */
 const QUESTION_WEIGHT = 3
 const K1 = 1.2
@@ -132,7 +135,11 @@ export function search(index: Index, query: string, opts: { context?: string; li
   }
   scored.sort((a, b) => b.score - a.score)
   const top = scored[0]
-  const coverage = top ? top.matched.size / Math.max(1, asked.size) : 0
+  // En chino, japonés y coreano cada par de caracteres es una «palabra»: los pares que no están en ninguna parte
+  // de la base (de relleno, como 了发 o 发不) cuentan la mitad para la cobertura; las palabras latinas, siempre entero.
+  const weightOf = (w: string) => (CJK_WORD.test(w) && !index.df.has(w) ? 0.5 : 1)
+  const total = [...asked].reduce((n, w) => n + weightOf(w), 0)
+  const coverage = top ? [...top.matched].reduce((n, w) => n + weightOf(w), 0) / Math.max(1, total) : 0
   return {
     results: scored.slice(0, opts.limit ?? 5).map(({ entry, score }) => ({ entry, score })),
     confident: !!top && top.score >= MIN_SCORE && coverage >= MIN_COVERAGE,
