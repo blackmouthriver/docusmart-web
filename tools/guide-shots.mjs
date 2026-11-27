@@ -38,6 +38,9 @@ async function drawSignature(page, pad) {
   await page.mouse.up()
 }
 
+/** La tarjeta de Crear QR (la de al lado, Leer QR, también tiene un botón principal). */
+const qrCard = (host) => host.locator('input[type=url]').first().locator('xpath=ancestor::*[contains(@class,"card")][1]')
+
 const pdfButton = (host, name) => host.getByRole('button', { name, exact: true })
 
 export const SHOTS = [
@@ -420,6 +423,170 @@ export const SHOTS = [
         },
         target: panel,
         maxHeight: { escritorio: 720, movil: 760 },
+      },
+    ],
+  },
+  // Lote 3 (W-101): documentos que se llenan, imágenes, ZIP y QR.
+  {
+    tool: 'cuenta-de-cobro',
+    steps: [
+      {
+        id: 'conceptos',
+        run: async ({ host }) => {
+          const parties = host.locator('.bill-party')
+          const fill = async (box, values) => {
+            const inputs = box.locator('input.input')
+            for (const [i, v] of values) await inputs.nth(i).fill(v)
+          }
+          await host.locator('.bill-meta input').nth(2).fill('Bogotá')
+          await fill(parties.nth(0), [[0, 'Laura Gómez Ruiz'], [1, '1.020.456.789'], [3, '300 123 4567'], [4, 'laura@correo.co']])
+          await fill(parties.nth(1), [[0, 'Estudio Creativo Andes S.A.S.'], [1, '901.234.567-8']])
+          await host.locator('.bill-item .bill-desc input').first().fill('Diseño de logo y manual de marca')
+          await host.locator('.bill-item .bill-price input').first().fill('1800000')
+          await host.locator('.bill-taxes input').nth(3).fill('10')
+          await host.locator('textarea').first().fill('Cuenta de ahorros 123-456789-00, a nombre de Laura Gómez Ruiz')
+          await host.page().waitForTimeout(300)
+        },
+        target: (host) => host.locator('.bill-items').locator('xpath=ancestor::div[contains(@class,"card")][1]'),
+        maxHeight: { escritorio: 520, movil: 900 },
+      },
+      {
+        id: 'resultado',
+        run: async ({ host }) => {
+          await primary(host).click()
+          await host.locator('.card[aria-live] canvas, .card[aria-live] img').first().waitFor({ timeout: 60_000 })
+          await host.page().waitForTimeout(800)
+        },
+        target: (host) => host.locator('.card[aria-live]').first(),
+        maxHeight: { escritorio: 760, movil: 760 },
+      },
+    ],
+  },
+  {
+    tool: 'hoja-de-vida',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host }) => {
+          const personal = host.locator('.card').nth(1).locator('input.input')
+          await personal.nth(0).fill('Laura Gómez Ruiz')
+          await personal.nth(1).fill('Diseñadora gráfica')
+          await personal.nth(2).fill('Bogotá')
+          await personal.nth(3).fill('300 123 4567')
+          await personal.nth(4).fill('laura@correo.co')
+          await host.locator('textarea').nth(1).fill('Diseñadora gráfica con 6 años de experiencia en identidad de marca y piezas digitales para pequeñas empresas.')
+          // Experiencia (tarjeta 3), educación (4) y habilidades.
+          const job = host.locator('.card').nth(3).locator('input.input')
+          for (const [i, v] of [[0, 'Diseñadora gráfica'], [1, 'Estudio Creativo Andes'], [2, 'Bogotá'], [3, '2021']]) await job.nth(i).fill(v)
+          await host.locator('.card').nth(3).locator('input[type=checkbox]').first().check()
+          await host.locator('textarea').nth(2).fill('Creé la identidad de marca de más de 40 pequeñas empresas.\nReduje en 30 % los tiempos de entrega con plantillas reutilizables.')
+          const study = host.locator('.card').nth(4).locator('input.input')
+          for (const [i, v] of [[0, 'Diseño gráfico'], [1, 'Universidad Nacional de Colombia'], [2, 'Bogotá'], [3, '2015'], [4, '2020']]) await study.nth(i).fill(v)
+          await host.locator('textarea').nth(3).fill('Illustrator, Photoshop, Figma, identidad de marca, diseño editorial')
+          await primary(host).click()
+          await host.locator('.card[aria-live] canvas, .card[aria-live] img').first().waitFor({ timeout: 60_000 })
+          await host.page().waitForTimeout(800)
+        },
+        target: (host) => host.locator('.card[aria-live]').first(),
+        maxHeight: { escritorio: 760, movil: 760 },
+      },
+    ],
+  },
+  {
+    tool: 'crear-codigo-qr',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host }) => {
+          const card = qrCard(host)
+          await card.locator('input[type=url]').fill('https://docusmart.online')
+          await card.locator('.btn-primary').first().click()
+          await card.locator('.qr-preview img').waitFor({ timeout: 30_000 })
+          await host.page().waitForTimeout(500)
+        },
+        target: (host) => qrCard(host),
+        maxHeight: { escritorio: 900, movil: 800 },
+      },
+    ],
+  },
+  {
+    tool: 'redimensionar-imagen',
+    steps: [
+      {
+        id: 'opciones',
+        run: async ({ host, files }) => {
+          await upload(host, [jpg('foto.jpg', files.photos[0])])
+          await host.page().waitForTimeout(800)
+          // «Por pixeles» (el segundo modo) con 1080 de ancho: el alto se calcula solo.
+          await host.locator('.segmented button').nth(1).click()
+          await host.locator('input[type=number]').first().fill('1080')
+          await host.page().waitForTimeout(300)
+        },
+        maxHeight: { escritorio: 640, movil: 900 },
+      },
+    ],
+  },
+  {
+    tool: 'comprimir-archivos',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('contrato.pdf', files.contract[0]), pdf('informe.pdf', files.pdfs[0]), jpg('foto.jpg', files.photos[0])])
+          await host.locator('.file-item').nth(2).waitFor()
+          await primary(host).click()
+          await host.locator('.compare-panel').first().waitFor({ timeout: 60_000 })
+          await host.page().waitForTimeout(800)
+        },
+        target: panel,
+        maxHeight: { escritorio: 640, movil: 760 },
+      },
+    ],
+  },
+  {
+    tool: 'recortar-pdf',
+    steps: [
+      {
+        id: 'recorte',
+        run: async ({ host, files }) => {
+          await upload(host, [pdf('contrato.pdf', files.contract[0])])
+          await host.locator('canvas, img').first().waitFor({ timeout: 30_000 })
+          await host.page().waitForTimeout(800)
+          // «Quitar márgenes en blanco»: el recuadro se ajusta al contenido.
+          await host.locator('.btn-soft.btn-sm').first().click()
+          await host.page().waitForTimeout(800)
+        },
+        maxHeight: { escritorio: 900, movil: 900 },
+      },
+    ],
+  },
+  {
+    tool: 'imagen-a-webp',
+    steps: [
+      {
+        id: 'resultado',
+        run: async ({ host, files }) => {
+          await upload(host, [jpg('foto.jpg', files.photos[0])])
+          await host.page().waitForTimeout(800)
+          await runAndWait(host)
+        },
+        target: panel,
+        maxHeight: { escritorio: 700, movil: 760 },
+      },
+    ],
+  },
+  {
+    tool: 'quitar-metadatos',
+    steps: [
+      {
+        id: 'datos',
+        run: async ({ host, files }) => {
+          await upload(host, [jpg('IMG_2041.jpg', files.metaPhoto)])
+          await host.locator('.meta-list').first().waitFor({ timeout: 30_000 })
+          await host.page().waitForTimeout(500)
+        },
+        target: (host) => host.locator('.meta-item').first(),
+        maxHeight: { escritorio: 700, movil: 900 },
       },
     ],
   },

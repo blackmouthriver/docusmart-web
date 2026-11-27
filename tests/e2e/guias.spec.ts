@@ -1,17 +1,17 @@
 // Guías (W-19): índice, una guía y sus enlaces a las herramientas.
 import { expect, makePdf, test } from './helpers'
 
-test('el índice de guías muestra las 22 guías en español (6 + 16 por herramienta) @movil', async ({ page }) => {
+test('el índice de guías muestra las 30 guías en español (6 + 24 por herramienta) @movil', async ({ page }) => {
   await page.goto('/guias')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Guías paso a paso')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
+  await expect(page.locator('.gd-cards > li')).toHaveCount(30)
 })
 
 test('una guía lleva a su herramienta y a otras guías', async ({ page }) => {
   await page.goto('/guias/unir-pdf-en-el-celular')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo unir PDF en el celular sin subir tus archivos')
   expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain('"@type": "HowTo"')
-  await expect(page.locator('.tp-related a[href^="/guias/"]')).toHaveCount(21)
+  await expect(page.locator('.tp-related a[href^="/guias/"]')).toHaveCount(29)
   const toTool = page.locator('.gd-article').getByRole('link', { name: 'Unir PDF', exact: true }).first()
   await expect(toTool).toHaveAttribute('href', '/unir-pdf')
   await page.goto('/unir-pdf')
@@ -128,4 +128,13 @@ test('al compartir una guía se ve su propia imagen, servida como JPEG (W-102)',
   expect(res.status()).toBe(200)
   expect(res.headers()['content-type']).toContain('image/jpeg')
   await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', 'Cómo firmar un PDF sin imprimirlo')
+})
+
+test('una guía del lote 3 (W-101): en español, con su captura y enlace a la herramienta', async ({ page }) => {
+  await page.goto('/guias/hacer-una-cuenta-de-cobro')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo hacer una cuenta de cobro en PDF')
+  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/es/cuenta-de-cobro/conceptos-1280.webp')
+  await expect(page.locator('.gd-article a[href="/cuenta-de-cobro"]').first()).toBeVisible()
+  // Todavía solo en español: sin enlaces a otros idiomas.
+  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(0)
 })
