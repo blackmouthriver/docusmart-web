@@ -124,8 +124,9 @@ describe('dividir por tamaño', () => {
     expect(r.oversize).toEqual([])
     r.files.forEach((f) => expect(f.length).toBeLessThanOrEqual(max))
     for (const [i, f] of r.files.entries()) expect((await PDFDocument.load(f)).getPageCount()).toBe(r.groups[i].length)
-    // Cada parte es la más grande posible: con una página más se pasaría.
-    const one = await splitBySize(bytes, r.files[0].length)
+    // Cada parte es la más grande posible: con una página más se pasaría. El margen de 32 bytes es porque la
+    // fecha de guardado va comprimida y el tamaño puede cambiar un byte de un segundo a otro; una página pesa cientos.
+    const one = await splitBySize(bytes, r.files[0].length + 32)
     expect(one.groups[0]).toEqual(r.groups[0])
     expect(progress.at(-1)).toBe(12)
   })
