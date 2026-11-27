@@ -225,3 +225,33 @@ Toda acción pasa por `validateAction` venga de donde venga; lo que no cumple se
 ejecuta a medias. La contraseña nunca se guarda ni se registra (`redactAction`), y el esquema para la IA no la
 incluye: la persona la escribe en la herramienta.
 
+## Analizador de pedidos (W-151.4)
+
+`src/features/assistant/core/parser.ts` convierte un pedido («comprime este pdf a menos de 2 megas y luego
+fírmalo») en una acción del catálogo, ya validada:
+
+1. Reconoce los datos con el **léxico `parse`** del idioma (en `tools/assistant/<idioma>.mjs`, en minúsculas y
+   sin tildes): números en letras, tamaños, páginas, giro, ppp, ancho/alto, calidad o porcentaje, blanco y
+   negro, idioma, posición, texto de la marca de agua (entre comillas o tras «que diga»), «este archivo» y los
+   conectores de pasos encadenados («y luego»).
+2. Busca la herramienta con el buscador del asistente usando el pedido **sin** esos datos («gira el pdf 90
+   grados» → «gira el pdf»). Si un dato es justamente lo que indica la herramienta («pon la foto en blanco y
+   negro»), gana la búsqueda con el dato cuando saca al menos 1,5 veces el puntaje.
+3. Se queda con las opciones que esa herramienta acepta (`TOOL_OPTIONS`); las demás se informan en `dropped`.
+
+La contraseña nunca se toma del chat. Pruebas: 50 pedidos en español y 50 en inglés (49 y 49 entendidos) y 20
+en cada uno de los otros 10 idiomas (`tests/unit/features/assistant/parser*.ts`).
+
+## Tarjeta «Hacer / Cambiar» (W-151.5)
+
+Cuando un pedido trae opciones para una herramienta que ya sabe recibirlas, el panel muestra una tarjeta con
+la herramienta y sus opciones («Tamaño máximo: 2 MB») en vez de la respuesta de texto:
+
+- **Hacer** deja las opciones con `setToolOptions` (`src/shared/files/toolOptions.ts`) y abre la herramienta.
+  Si ya está abierta en esa página, le llegan por un evento y el archivo elegido sigue ahí.
+- **Cambiar** abre la herramienta sin opciones, para elegirlas a mano.
+
+Las opciones nunca van en la URL (no quedan en el historial): se guardan en `sessionStorage` por 60 segundos,
+se toman una sola vez y nunca incluyen la contraseña. Cada herramienta las aplica con `useAssistantOptions`;
+las que ya lo hacen están en `TOOLS_RECEIVING_OPTIONS`, y el asistente no promete opciones a las demás.
+

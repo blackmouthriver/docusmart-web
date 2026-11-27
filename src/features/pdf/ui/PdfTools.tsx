@@ -27,6 +27,8 @@ export const toolName = (id: string) => tr(`tool.${id}` as MessageKey)
 export const toolDesc = (id: string) => tr(`tool.${id}.desc` as MessageKey)
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { bundleFiles, resultFile } from '../../../shared/files/share'
+import { useAssistantOptions } from '../../../shared/files/toolOptions'
+import type { Options } from '../../assistant/core/actions'
 
 /** "1 página" o "N páginas". */
 const pagesLabel = (n: number) => (n === 1 ? tr('common.onePage') : tr('single.pagesN', { n }))
@@ -508,6 +510,29 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
       go: async () => setOutput(resultFile(await watermarkPdf(await bytes(), await toWatermarkOptions(wm, wmPages ?? undefined)), `${name}-${tr('file.watermark')}.pdf`, PDF_TYPE)),
     }
   }
+
+  // Desde el asistente (W-151.5): «separa las páginas 3 a 5», «gira el pdf 90 grados». Se aplican cuando el
+  // PDF ya está abierto: antes no se sabe cuántas páginas tiene. (Hooks antes del «return» de abajo.)
+  const fromAssistant = useRef<Options | null>(null)
+  const applyAssistant = () => {
+    const o = fromAssistant.current
+    if (!o || !count) return
+    fromAssistant.current = null
+    if (toolId === 'dividir' && typeof o.pages === 'string') {
+      setSplitMode('range')
+      setRange(o.pages)
+      setSelected(new Set(parsePageRanges(o.pages, count) ?? []))
+    }
+    if (toolId === 'rotar' && typeof o.angle === 'string') {
+      const only = typeof o.pages === 'string' ? new Set(parsePageRanges(o.pages, count) ?? []) : null
+      setRotations(Array.from({ length: count }, (_, i) => (!only || only.has(i) ? Number(o.angle) : 0)))
+    }
+  }
+  useAssistantOptions(toolId === 'dividir' ? 'dividir-pdf' : toolId === 'rotar' ? 'rotar-pdf' : '', (o) => {
+    fromAssistant.current = o
+    applyAssistant()
+  })
+  useEffect(applyAssistant, [count])
 
   if (!file) {
     return (

@@ -104,6 +104,8 @@ export function buildKb(lang) {
   if (missing.length || extra.length || mine.length !== ids.size) throw new Error(`tools/assistant/${lang}.mjs: faltan ${missing.join(', ') || '-'}; sobran o repetidos ${extra.join(', ') || '-'}`)
   for (const k of Object.keys(es.ui)) if (!own.ui[k]) throw new Error(`tools/assistant/${lang}.mjs: falta ui.${k}`)
   for (const k of Object.keys(es.labels)) if (!own.labels[k]) throw new Error(`tools/assistant/${lang}.mjs: falta labels.${k}`)
+  // Léxico de pedidos (W-151.4): obligatorio en los 12 idiomas, con las mismas claves que el español.
+  for (const k of Object.keys(es.parse)) if (!own.parse?.[k]) throw new Error(`tools/assistant/${lang}.mjs: falta parse.${k}`)
   for (const slug of Object.keys(own.toolQ ?? {})) if (!pages.some((p) => p.slug === slug)) throw new Error(`tools/assistant/${lang}.mjs: toolQ de una herramienta que no existe: ${slug}`)
 
   const entries = [
@@ -119,10 +121,10 @@ export function buildKb(lang) {
   const all = new Set(entries.map((e) => e.id))
   if (all.size !== entries.length) throw new Error(`Base del asistente (${lang}): ids repetidos`)
   for (const e of entries) for (const r of e.related ?? []) if (!all.has(r)) throw new Error(`Base del asistente (${lang}): ${e.id} relaciona "${r}", que no existe`)
-  return { lang, ui: own.ui, entries }
+  return { lang, ui: own.ui, parse: own.parse, entries }
 }
 
 /** JSON con una entrada por línea (diferencias legibles en git). */
 export function kbJson(kb) {
-  return `{"lang":${JSON.stringify(kb.lang)},"ui":${JSON.stringify(kb.ui)},"entries":[\n${kb.entries.map((e) => JSON.stringify(e)).join(',\n')}\n]}\n`
+  return `{"lang":${JSON.stringify(kb.lang)},"ui":${JSON.stringify(kb.ui)},${kb.parse ? `"parse":${JSON.stringify(kb.parse)},` : ''}"entries":[\n${kb.entries.map((e) => JSON.stringify(e)).join(',\n')}\n]}\n`
 }

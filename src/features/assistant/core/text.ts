@@ -22,7 +22,7 @@ const STOPWORDS: Record<string, ReadonlySet<string>> = {
   zh: new Set('怎么 怎样 么样 什么 如何 可以 一个 我的 我想 想要 需要 能不 不能 吗 呢 的话 一下'.split(' ')),
   ja: new Set('です すか ます した たい たいで ですか でき きる 方法 どう うす すれ れば ください'.split(' ')),
   ko: new Set('하고 싶어 어요 해요 있나 나요 습니 니다 방법 어떻 떻게 하는 는법'.split(' ')),
-  ru: new Set('и в во не что как на с со а но или по к ко у о об от для из за мой моя мои я ты это этот эта мне меня можно нужно хочу могу ли два три несколько'.split(' ')),
+  ru: new Set('который которая которое какой какая и в во не что как на с со а но или по к ко у о об от для из за мой моя мои я ты это этот эта мне меня можно нужно хочу могу ли два три несколько'.split(' ')),
 }
 /** Idiomas sin espacios entre palabras (o con partículas pegadas): se indexan por pares de caracteres. */
 const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+|[^\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+/gu
@@ -37,6 +37,8 @@ export function cjkBigrams(run: string): string[] {
 /** Sinónimos → palabra de la base (después de normalizar y quitar plurales). */
 const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
   es: {
+    // Imperativos de los pedidos (W-151.4): «une», «comprime», «gira», «separa»…
+    une: 'unir', unan: 'unir', comprime: 'comprimir', comprima: 'comprimir', gira: 'rotar', gire: 'rotar', separa: 'dividir', divide: 'dividir', rota: 'rotar', convierte: 'convertir',
     juntar: 'unir', junto: 'unir', junta: 'unir', combinar: 'unir', combino: 'unir', fusionar: 'unir', pegar: 'unir', unificar: 'unir', uno: 'unir',
     separar: 'dividir', separo: 'dividir', partir: 'dividir', parto: 'dividir', cortar: 'dividir',
     girar: 'rotar', giro: 'rotar', voltear: 'rotar', enderezar: 'rotar',

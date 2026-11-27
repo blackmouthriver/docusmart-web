@@ -15,6 +15,8 @@ import { kbLangFor } from '../core/reply'
 import { localAiFor, type LocalAi } from '../infra/browserAi'
 import { questionMail } from '../core/sendQuestion'
 import { FEEDBACK_EMAIL } from '../../../shared/files/share'
+import { setToolOptions } from '../../../shared/files/toolOptions'
+import { planFor, planLines, type Plan } from '../core/plan'
 
 /** Primera letra en mayúscula (las preguntas de la base se escriben como las escribe la gente). */
 const capitalize = (s: string) => s.charAt(0).toLocaleUpperCase() + s.slice(1)
@@ -24,7 +26,7 @@ const CLOSE_MS = 200
 /** text/ai: respuesta redactada por la IA del navegador (W-70f), mientras se escribe ('writing') y al terminar ('done'). */
 type Msg =
   | { id: number; role: 'user'; text: string }
-  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done'; question?: string }
+  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done'; question?: string; plan?: Plan }
 
 export type PanelProps = {
   lang: string
@@ -129,11 +131,36 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
       prefersReducedMotion() ? 0 : typingDelay(length),
     )
   }
+  /** Pedido que se puede dejar listo (W-151.5): tarjeta con la herramienta, sus opciones y «Hacer / Cambiar». */
+  const pushPlan = (user: string, plan: Plan) => {
+    setMsgs((m) => [...m, { id: nextId.current++, role: 'user', text: user }])
+    track('assistant_plan', { tool: plan.action.tool })
+    setTyping(true)
+    window.setTimeout(
+      () => {
+        setTyping(false)
+        setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', reply: { kind: 'answer', entry: plan.entry, related: [] }, plan }])
+      },
+      prefersReducedMotion() ? 0 : typingDelay(80),
+    )
+  }
   const ask = () => {
     const q = text.trim()
     if (!q || !data || typing || writing) return
     setText('')
-    push(q, reply(data.index, q, context))
+    const plan = planFor(data.index, data.kb, q)
+    if (plan) pushPlan(q, plan)
+    else push(q, reply(data.index, q, context))
+  }
+  /** «Hacer» deja las opciones puestas; «Cambiar» abre la herramienta sin ellas, para elegirlas a mano. */
+  const runPlan = (plan: Plan, withOptions: boolean) => {
+    track(withOptions ? 'assistant_plan_do' : 'assistant_plan_change', { tool: plan.action.tool })
+    if (withOptions && plan.action.options) setToolOptions(plan.action.tool, plan.action.options)
+    const open = plan.entry.actions?.[0]
+    // Ya en la herramienta: las opciones le llegan con un evento; basta con cerrar el panel.
+    if (context === plan.action.tool || !open) return onClose()
+    if (inApp && open.kind === 'tool') return onAction(open)
+    location.href = open.href
   }
   const choose = (e: KbEntry) => data && !typing && !writing && push(capitalize(e.q[0]), answerFor(data.index, e))
   const feedback = (id: number, answerId: string, value: 'up' | 'down') => {
@@ -205,7 +232,11 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
                 {m.text}
               </p>
             ) : (
-              <BotMessage key={m.id} msg={m} kb={data.kb} index={data.index} context={context} onChoose={choose} onAction={onAction} onFeedback={feedback} />
+              m.plan ? (
+                <PlanCard key={m.id} plan={m.plan} ui={data.kb.ui} lang={data.kb.lang} onRun={runPlan} />
+              ) : (
+                <BotMessage key={m.id} msg={m} kb={data.kb} index={data.index} context={context} onChoose={choose} onAction={onAction} onFeedback={feedback} />
+              )
             ),
           )}
         {typing && <Typing />}
@@ -235,6 +266,34 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
           <Icon name="send" />
         </button>
       </form>
+    </div>
+  )
+}
+
+/** Tarjeta de un pedido listo para hacer (W-151.5). */
+function PlanCard({ plan, ui, lang, onRun }: { plan: Plan; ui: Record<string, string>; lang: string; onRun: (p: Plan, withOptions: boolean) => void }) {
+  return (
+    <div className="assistant-bot">
+      <div className="assistant-bubble bot assistant-plan">
+        <span>{ui.planIntro}</span>
+        <b>{plan.entry.q[0]}</b>
+        <ul>
+          {planLines(plan.action, ui, lang).map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+        {plan.action.useCurrentFile && <small>{ui.planCurrentFile}</small>}
+      </div>
+      <div className="assistant-actions">
+        <button type="button" className="as-action is-primary" onClick={() => onRun(plan, true)}>
+          {ui.planDo}
+          <Icon name="check" />
+        </button>
+        <button type="button" className="as-action" onClick={() => onRun(plan, false)}>
+          {ui.planChange}
+          <Icon name="edit" />
+        </button>
+      </div>
     </div>
   )
 }
