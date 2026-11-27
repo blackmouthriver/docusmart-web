@@ -46,6 +46,31 @@ export default {
   },
   // Más formas de pedir cada herramienta (W-151.2): describiendo el problema, nombrando el trámite o
   // como se dice coloquialmente. Se suman a las preguntas de su entrada principal.
+  // Léxico para entender pedidos (W-151.4): palabras de cada dato, ya en minúsculas y sin tildes.
+  parse: {
+    numbers: { cero: 0, uno: 1, una: 1, un: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6, siete: 7, ocho: 8, nueve: 9, diez: 10, once: 11, doce: 12, quince: 15, veinte: 20, treinta: 30, cuarenta: 40, cincuenta: 50, sesenta: 60, setenta: 70, ochenta: 80, noventa: 90, cien: 100, ciento: 100, doscientos: 200, trescientos: 300, quinientos: 500, mil: 1000, medio: 0.5, media: 0.5 },
+    units: { kb: 'kb', k: 'kb', kilo: 'kb', kilos: 'kb', kilobytes: 'kb', mb: 'mb', mega: 'mb', megas: 'mb', megabyte: 'mb', megabytes: 'mb', gb: 'gb', giga: 'gb', gigas: 'gb', gigabytes: 'gb' },
+    pages: ['pagina', 'paginas', 'pag', 'pags', 'hoja', 'hojas'],
+    range: ['a', 'al', 'hasta', '-'],
+    and: ['y', 'e', ','],
+    fillers: ['de', 'la', 'las', 'desde', 'del', 'numero'],
+    current: ['este', 'esta', 'estos', 'estas', 'mi', 'mis', 'ese', 'esa'],
+    degrees: ['grados', 'grado', '°'],
+    angles: { 'a la derecha': '90', 'hacia la derecha': '90', 'a la izquierda': '270', 'hacia la izquierda': '270', 'de cabeza': '180', 'al reves': '180', 'boca abajo': '180', 'media vuelta': '180' },
+    dpi: ['ppp', 'dpi', 'puntos por pulgada'],
+    pixels: ['px', 'pixeles', 'pixel', 'pixels'],
+    width: ['ancho', 'de ancho', 'anchura'],
+    height: ['alto', 'de alto', 'altura'],
+    percent: ['%', 'por ciento', 'porciento'],
+    quality: ['calidad'],
+    grayscale: ['blanco y negro', 'escala de grises', 'en grises', 'byn'],
+    says: ['que diga', 'que dice', 'con el texto', 'con la palabra', 'diciendo'],
+    // Pronombres pegados al verbo («comprímelos», «únelo», «fírmalo»): se separan antes de buscar la herramienta.
+    suffixes: ['melos', 'melas', 'selos', 'selas', 'los', 'las', 'lo', 'la', 'le', 'les', 'me'],
+    then: ['y luego', 'y despues', 'despues', 'luego', 'y finalmente', 'y por ultimo', 'y al final'],
+    languages: { espanol: 'es', castellano: 'es', ingles: 'en', portugues: 'pt', frances: 'fr', italiano: 'it', aleman: 'de', catalan: 'ca', euskera: 'eu', vasco: 'eu', ruso: 'ru', japones: 'ja', coreano: 'ko', chino: 'zh' },
+    positions: { 'arriba a la izquierda': 'top-left', 'arriba al centro': 'top-center', 'arriba a la derecha': 'top-right', 'en el centro': 'center', 'al centro': 'center', 'centrado': 'center', 'abajo a la izquierda': 'bottom-left', 'abajo al centro': 'bottom-center', 'abajo a la derecha': 'bottom-right', 'arriba': 'top-center', 'abajo': 'bottom-center' },
+  },
   toolQ: {
     'unir-pdf': ['poner varios documentos en un solo archivo', 'juntar la cédula y el recibo en un pdf', 'mandar todo en un solo pdf', 'me piden todos los documentos en un archivo'],
     'dividir-pdf': ['sacar una página de un pdf', 'quedarme solo con algunas páginas', 'separar las hojas de un pdf', 'quitar páginas de un pdf'],

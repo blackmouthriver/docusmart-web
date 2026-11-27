@@ -119,10 +119,11 @@ export function buildKb(lang) {
   const all = new Set(entries.map((e) => e.id))
   if (all.size !== entries.length) throw new Error(`Base del asistente (${lang}): ids repetidos`)
   for (const e of entries) for (const r of e.related ?? []) if (!all.has(r)) throw new Error(`Base del asistente (${lang}): ${e.id} relaciona "${r}", que no existe`)
-  return { lang, ui: own.ui, entries }
+  // Léxico para entender pedidos (W-151.4), si el idioma ya lo tiene.
+  return { lang, ui: own.ui, ...(own.parse ? { parse: own.parse } : {}), entries }
 }
 
 /** JSON con una entrada por línea (diferencias legibles en git). */
 export function kbJson(kb) {
-  return `{"lang":${JSON.stringify(kb.lang)},"ui":${JSON.stringify(kb.ui)},"entries":[\n${kb.entries.map((e) => JSON.stringify(e)).join(',\n')}\n]}\n`
+  return `{"lang":${JSON.stringify(kb.lang)},"ui":${JSON.stringify(kb.ui)},${kb.parse ? `"parse":${JSON.stringify(kb.parse)},` : ''}"entries":[\n${kb.entries.map((e) => JSON.stringify(e)).join(',\n')}\n]}\n`
 }
