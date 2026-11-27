@@ -134,3 +134,72 @@ que **cada arreglo deja una pregunta de prueba**, así una mejora nunca rompe ot
 5. **Más adelante (W-70f):** con la IA local del navegador, las respuestas se redactan con más naturalidad, pero
    siempre a partir de esta misma base: mejorarla sigue siendo el camino.
 
+## Medición del asistente (W-151.1)
+
+Línea base contra la que se comparan las capas nuevas (W-151). Sale de `tests/unit/features/assistant/eval`:
+preguntas como las escribe la gente (con errores, sin tildes, describiendo el problema en vez de nombrar la
+herramienta), en seis categorías. **Acierto** = la primera respuesta es correcta y el motor está seguro;
+**sin respuesta** = no está seguro (ofrece sugerencias y «Enviar esta pregunta»); **equivocada** = responde
+con seguridad algo que no es. El CI falla si el acierto de un idioma baja de `baseline.json`. Para actualizar
+esta tabla y la línea base después de mejorar el asistente:
+
+    UPDATE_ASSISTANT_BASELINE=1 npx vitest run tests/unit/features/assistant/eval
+
+Las preguntas reales que llegan por «Enviar esta pregunta» (W-70g) se suman a `cases.ts` a mano, sin el correo
+de quien la mandó (W-151.13).
+
+Historial (acierto total de los 12 idiomas · grupo de control es / en):
+
+- 2026-11-27, W-151.1, línea base: **70,8 %** · control 45 % / 40 %.
+- 2026-11-27, W-151.2, `toolQ` (formas de pedir cada herramienta, en los 12 idiomas) y sinónimos: **85,3 %** · control 75 % / 73,3 %.
+
+<!-- medicion:inicio -->
+
+| Idioma | Preguntas | Acierto | Entre las 3 primeras | Sin respuesta | Equivocada |
+|---|---:|---:|---:|---:|---:|
+| es | 90 | 97.8 % | 100 % | 0 % | 2.2 % |
+| en | 66 | 90.9 % | 95.5 % | 4.5 % | 4.5 % |
+| pt | 30 | 66.7 % | 90 % | 13.3 % | 20 % |
+| fr | 30 | 96.7 % | 96.7 % | 0 % | 3.3 % |
+| it | 30 | 90 % | 93.3 % | 0 % | 10 % |
+| de | 30 | 80 % | 93.3 % | 0 % | 20 % |
+| ca | 30 | 90 % | 100 % | 0 % | 10 % |
+| eu | 30 | 80 % | 93.3 % | 6.7 % | 13.3 % |
+| ru | 30 | 66.7 % | 86.7 % | 13.3 % | 20 % |
+| ja | 30 | 83.3 % | 96.7 % | 6.7 % | 10 % |
+| ko | 30 | 83.3 % | 100 % | 6.7 % | 10 % |
+| zh | 30 | 66.7 % | 96.7 % | 23.3 % | 10 % |
+| control-es | 20 | 75 % | 95 % | 15 % | 10 % |
+| control-en | 15 | 73.3 % | 73.3 % | 6.7 % | 20 % |
+| **Total** | 456 | **85.3 %** | 95.8 % | 5.3 % | 9.4 % |
+
+Acierto por categoría (español e inglés):
+
+| Categoría | es | en |
+|---|---:|---:|
+| Herramientas | 97.5 % | 90 % |
+| Trámites | 91.7 % | 87.5 % |
+| Errores | 100 % | 71.4 % |
+| Herramientas nuevas | 100 % | 100 % |
+| Sobre DocuSmart | 100 % | 100 % |
+| Fuera de tema | 100 % | 100 % |
+
+<details><summary>Preguntas que hoy fallan (español e inglés)</summary>
+
+**es**
+
+- [herramienta] achicar el tamaño de una foto → tool:comprimir-video
+- [tramite] subir la foto al portal de empleo y dice que es muy grande → tool:comprimir-pdf
+
+**en**
+
+- [herramienta] stick two pdfs together → lento (sin confianza)
+- [herramienta] make a pdf file smaller → tool:comprimir-video
+- [herramienta] change a word in a pdf → tool:comparar-pdf
+- [tramite] they want both sides of my id card in a single pdf → tool:foto-tamano-documento (sin confianza)
+- [error] the site is very slow → lento (sin confianza)
+- [error] the file does not download → renombrar
+
+</details>
+
+<!-- medicion:fin -->

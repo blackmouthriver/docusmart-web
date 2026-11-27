@@ -38,7 +38,7 @@ const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
     girar: 'rotar', giro: 'rotar', voltear: 'rotar', enderezar: 'rotar',
     reducir: 'comprimir', reduzco: 'comprimir', achicar: 'comprimir', aligerar: 'comprimir', peso: 'comprimir', pesa: 'comprimir', liviano: 'comprimir', comprimo: 'comprimir',
     clave: 'contrasena', password: 'contrasena', bloquear: 'proteger', protejo: 'proteger', candado: 'proteger',
-    quitar: 'desbloquear', sacar: 'extraer', extrae: 'extraer', extraigo: 'extraer',
+    quitar: 'desbloquear', quito: 'desbloquear', sacar: 'extraer', extrae: 'extraer', extraigo: 'extraer',
     cambia: 'cambiar', cambio: 'cambiar', cambiarlo: 'cambiar', ponerle: 'proteger',
     firma: 'firmar', firmo: 'firmar',
     foto: 'imagen', fotografia: 'imagen', jpeg: 'jpg', imagenes: 'imagen',
