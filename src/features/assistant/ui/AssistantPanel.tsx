@@ -326,6 +326,7 @@ function PlanCard({ plan, ui, lang, onRun }: { plan: Plan; ui: Record<string, st
         </ul>
         {plan.action.useCurrentFile && <small>{ui.planCurrentFile}</small>}
       </div>
+      <small className="assistant-ai-badge">{ui.sourcePlan}</small>
       <div className="assistant-actions">
         <button type="button" className="as-action is-primary" onClick={() => onRun(plan, true)}>
           {ui.planDo}
@@ -409,7 +410,10 @@ function BotMessage({
     <div className="assistant-bot">
       {lead && <p className="assistant-bubble bot assistant-screen-error">{lead}</p>}
       <p className={'assistant-bubble bot' + (msg.ai === 'writing' ? ' is-writing' : '')}>{msg.text ?? r.entry.a}</p>
-      {msg.ai === 'done' && <small className="assistant-ai-badge">{ui.aiBadge}</small>}
+      {/* De dónde salió la respuesta (W-151.16): la IA del navegador, el error de la pantalla o la base. */}
+      {msg.ai !== 'writing' && r.entry.id !== 'gracias' && r.entry.id !== 'hola' && (
+        <small className="assistant-ai-badge">{msg.ai === 'done' ? ui.aiBadge : lead ? ui.sourceScreen : ui.sourceKb}</small>
+      )}
       {msg.ai === 'writing' ? null : (
         <>
       {r.entry.actions && <Actions actions={r.entry.actions} onAction={onAction} />}

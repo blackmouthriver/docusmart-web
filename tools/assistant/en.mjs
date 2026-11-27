@@ -54,6 +54,10 @@ export default {
     screenErrorGeneric: 'I saw this message come up: "{error}". If it happens again, write to us:',
     // Siguiente paso (W-151.7).
     nextTitle: 'What usually comes next:',
+    // De dónde salió la respuesta (W-151.16).
+    sourceKb: 'Answer from the DocuSmart knowledge base',
+    sourcePlan: 'I understood your request: check it before tapping “Do it”',
+    sourceScreen: 'Based on what happened on this screen',
     optQuality: 'Quality',
     optFormat: 'Format',
     optDpi: 'Resolution',

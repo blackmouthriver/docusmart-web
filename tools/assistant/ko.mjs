@@ -26,6 +26,10 @@ export default {
     screenErrorGeneric: '“{error}” 안내가 나왔네요. 다시 생기면 알려 주세요:',
     // Siguiente paso (W-151.7).
     nextTitle: '다음에 자주 하는 작업:',
+    // De dónde salió la respuesta (W-151.16).
+    sourceKb: 'DocuSmart 지식 베이스의 답변',
+    sourcePlan: '요청을 이해했어요. ‘실행’을 누르기 전에 확인해 주세요',
+    sourceScreen: '이 화면에서 일어난 일을 바탕으로 한 답변',
     optQuality: '품질',
     optFormat: '형식',
     optDpi: '해상도',

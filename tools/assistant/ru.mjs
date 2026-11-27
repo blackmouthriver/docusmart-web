@@ -26,6 +26,10 @@ export default {
     screenErrorGeneric: 'Я вижу это сообщение: «{error}». Если повторится, напишите нам:',
     // Siguiente paso (W-151.7).
     nextTitle: 'Что обычно делают дальше:',
+    // De dónde salió la respuesta (W-151.16).
+    sourceKb: 'Ответ из базы знаний DocuSmart',
+    sourcePlan: 'Я понял запрос: проверьте, прежде чем нажать «Сделать»',
+    sourceScreen: 'По тому, что произошло на этом экране',
     optQuality: 'Качество',
     optFormat: 'Формат',
     optDpi: 'Разрешение',

@@ -263,7 +263,7 @@ capa falla, tarda o duda, responde la de abajo.
 |---|---|---|---|
 | W-151.14 | **Pedidos complejos con salida estructurada**: cuando las capas 2 y 3 no están seguras, se le pide a Gemini Nano (Prompt API) que devuelva **solo JSON** con una acción del catálogo, usando `responseConstraint` con el esquema de W-151.3. Lo que no cumpla el esquema se descarta y se usa la capa de abajo. Mismos límites de tiempo que W-70f | 🤖 | Pendiente (depende de W-151.3) |
 | W-151.15 | **Otros motores del navegador**: revisar la Prompt API de Edge (Phi-4-mini) y la de otros navegadores cuando salgan, con la misma interfaz (`browserAi.ts`). Ampliar `AI_LANGS` cuando Chrome soporte más idiomas | 🤖 | Pendiente |
-| W-151.16 | **Aviso honesto en el panel**: mostrar qué capa respondió («Respuesta de la base», «Entendí tu pedido», «Redactada por la IA de tu navegador») y mantener la nota de privacidad: «todo ocurre en tu navegador» | 🤖 | Pendiente |
+| W-151.16 | **Aviso honesto en el panel**: mostrar qué capa respondió («Respuesta de la base», «Entendí tu pedido», «Redactada por la IA de tu navegador») y mantener la nota de privacidad: «todo ocurre en tu navegador» | 🤖 | **Hecho** (2026-11-27): cada respuesta lleva una etiqueta discreta con su origen: «Respuesta de la base de DocuSmart», «Entendí tu pedido: revisa antes de tocar «Hacer»» (tarjeta de W-151.5), «Por lo que pasó en esta pantalla» (aviso de W-151.6) o «Redactada por la IA de tu navegador» (W-70f), en los 12 idiomas; la nota de privacidad sigue en la cabecera. El clasificador entrenado (capa 3) agregará la suya cuando exista |
 
 #### Transversal
 
