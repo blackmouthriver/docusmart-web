@@ -140,7 +140,7 @@ export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
               <b>{t('settings.assistantNext')}</b>
               <small>{t('settings.assistantNext.sub')}</small>
             </span>
-            <input type="checkbox" role="switch" className="switch" checked={assistantNext} onChange={(e) => { setAssistantNext(e.target.checked); setNextStepsEnabled(e.target.checked) }} />
+            <input type="checkbox" role="switch" className="switch" aria-label={t('settings.assistantNext')} checked={assistantNext} onChange={(e) => { setAssistantNext(e.target.checked); setNextStepsEnabled(e.target.checked) }} />
           </label>
         </section>
 
