@@ -47,6 +47,8 @@ test('aviso de error y siguiente paso: sin problemas de accesibilidad y caben en
   await expect(page.locator('.assistant-panel')).toHaveCount(0)
 
   await page.goto('/app/#/pdf/unir')
+  // Unir acepta varios archivos: se espera su selector (el de la pantalla anterior podía seguir montado).
+  await page.locator('input[type=file][multiple]').first().waitFor({ state: 'attached' })
   await upload(page, [{ name: 'a.pdf', mimeType: 'application/pdf', buffer: makePdf(1) }, { name: 'b.pdf', mimeType: 'application/pdf', buffer: makePdf(1) }])
   await page.getByRole('button', { name: 'Unir 2 PDFs' }).click()
   await expect(page.getByRole('heading', { name: '¿Y ahora?' })).toBeVisible({ timeout: 30_000 })
@@ -71,6 +73,8 @@ test('solo con el teclado: «comprime este pdf a 1 mega» termina con el PDF com
   await expect(doIt).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL(/#\/pdf\/comprimir$/)
+  // La herramienta se carga después de navegar: se espera su título antes de elegir el archivo.
+  await expect(page.getByRole('heading', { name: 'Comprimir PDF', exact: true }).first()).toBeVisible()
   await upload(page, [{ name: 'informe.pdf', mimeType: 'application/pdf', buffer: makePdf(3) }])
   await expect(page.getByRole('combobox', { name: /Tamaño máximo/ })).toHaveValue('1')
   await page.getByRole('button', { name: /^Comprimir/ }).last().click()
