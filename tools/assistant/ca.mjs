@@ -9,6 +9,18 @@ export default {
     sendSubject: "Pregunta per a l’assistent de DocuSmart",
     sendIntro: "Hola, l’assistent no ha sabut respondre aquesta pregunta:",
     sendNote: "S’obre la teva app de correu amb la pregunta escrita; tu decideixes si l’envies.",
+    // Tarjeta «Hacer / Cambiar» (W-151.5).
+    planIntro: 'Ho puc deixar a punt:',
+    planDo: 'Fes-ho',
+    planChange: 'Canvia',
+    planCurrentFile: 'Amb el fitxer que tens obert.',
+    optTargetSize: 'Mida màxima',
+    optPages: 'Pàgines',
+    optAngle: 'Gir',
+    optWidth: 'Amplada',
+    optHeight: 'Alçada',
+    optPercent: 'Mida',
+    optGrayscale: 'Blanc i negre',
   },
   // Lèxic per entendre les peticions (W-151.4): les paraules de cada dada, en minúscules i sense accents.
   parse: {

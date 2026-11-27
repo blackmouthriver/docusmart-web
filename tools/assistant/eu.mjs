@@ -9,6 +9,18 @@ export default {
     sendSubject: "Galdera DocuSmart-en laguntzailearentzat",
     sendIntro: "Kaixo, laguntzaileak ez du galdera honi erantzuten jakin:",
     sendNote: "Zure posta-aplikazioa irekiko da galdera idatzita; zuk erabakitzen duzu bidali ala ez.",
+    // Tarjeta «Hacer / Cambiar» (W-151.5).
+    planIntro: 'Prest utz dezaket:',
+    planDo: 'Egin',
+    planChange: 'Aldatu',
+    planCurrentFile: 'Irekita duzun fitxategiarekin.',
+    optTargetSize: 'Gehienezko tamaina',
+    optPages: 'Orriak',
+    optAngle: 'Biraketa',
+    optWidth: 'Zabalera',
+    optHeight: 'Altuera',
+    optPercent: 'Tamaina',
+    optGrayscale: 'Zuri-beltzean',
   },
   // Eskaerak aztertzeko lexikoa (W-151.4): minuskulaz eta azenturik gabe.
   parse: {

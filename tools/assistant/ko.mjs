@@ -9,6 +9,18 @@ export default {
     sendSubject: "DocuSmart 도우미에게 질문",
     sendIntro: "안녕하세요, 도우미가 다음 질문에 답하지 못했습니다:",
     sendNote: "질문이 입력된 상태로 메일 앱이 열립니다. 보낼지는 직접 결정하세요.",
+    // Tarjeta «Hacer / Cambiar» (W-151.5).
+    planIntro: '이렇게 준비해 드릴게요:',
+    planDo: '실행',
+    planChange: '변경',
+    planCurrentFile: '열려 있는 파일로 진행해요.',
+    optTargetSize: '최대 크기',
+    optPages: '페이지',
+    optAngle: '회전',
+    optWidth: '너비',
+    optHeight: '높이',
+    optPercent: '크기',
+    optGrayscale: '흑백',
   },
   // 요청 분석에 쓰는 어휘(W-151.4): 영문은 소문자, 악센트 없이 비교한다(한글은 그대로).
   parse: {

@@ -40,6 +40,7 @@ import { CropStage } from '../../pdf/ui/CropTool'
 import { ImageToTextTool } from '../../ocr/ui/ImageToText'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
+import { useAssistantOptions } from '../../../shared/files/toolOptions'
 
 const TOOLS: Array<{ id: string; name: MessageKey; desc: MessageKey; icon: IconName; cls: string }> = [
   { id: 'comprimir', name: 'imgt.compress', desc: 'imgt.compress.desc', icon: 'compress', cls: 'ico-green' },
@@ -392,6 +393,17 @@ function ResizeImageTool() {
   const [percent, setPercent] = useState(50)
   const [width, setWidth] = useState('')
   const [height, setHeight] = useState('')
+  // Desde el asistente (W-151.5): «redimensiona la foto a 1080 px de ancho», «al 50 %».
+  useAssistantOptions('redimensionar-imagen', (o) => {
+    if (typeof o.percent === 'number') {
+      setMode('percent')
+      setPercent(o.percent)
+    } else if (typeof o.width === 'number' || typeof o.height === 'number') {
+      setMode('pixels')
+      setWidth(typeof o.width === 'number' ? String(o.width) : '')
+      setHeight(typeof o.height === 'number' ? String(o.height) : '')
+    }
+  })
   const [keepRatio, setKeepRatio] = useState(true)
   const [preset, setPreset] = useState<ResizePresetId>('igSquare')
   const [dpi, setDpi] = useState(300)

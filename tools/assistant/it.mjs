@@ -9,6 +9,18 @@ export default {
     sendSubject: "Domanda per l’assistente di DocuSmart",
     sendIntro: "Ciao, l’assistente non ha saputo rispondere a questa domanda:",
     sendNote: "Si apre la tua app di posta con la domanda già scritta; decidi tu se inviarla.",
+    // Tarjeta «Hacer / Cambiar» (W-151.5).
+    planIntro: 'Posso preparare tutto:',
+    planDo: 'Fai',
+    planChange: 'Cambia',
+    planCurrentFile: 'Con il file che hai aperto.',
+    optTargetSize: 'Dimensione massima',
+    optPages: 'Pagine',
+    optAngle: 'Rotazione',
+    optWidth: 'Larghezza',
+    optHeight: 'Altezza',
+    optPercent: 'Dimensione',
+    optGrayscale: 'Bianco e nero',
   },
   // Lessico per capire le richieste (W-151.4): le parole di ogni dato, in minuscolo e senza accenti.
   parse: {

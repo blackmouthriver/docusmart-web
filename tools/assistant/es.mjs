@@ -43,6 +43,18 @@ export default {
     sendSubject: "Pregunta para el asistente de DocuSmart",
     sendIntro: "Hola, el asistente no supo responder esta pregunta:",
     sendNote: "Se abre tu app de correo con la pregunta escrita; tú decides si la envías.",
+    // Tarjeta «Hacer / Cambiar» (W-151.5).
+    planIntro: 'Puedo dejarlo listo:',
+    planDo: 'Hacer',
+    planChange: 'Cambiar',
+    planCurrentFile: 'Con el archivo que tienes abierto.',
+    optTargetSize: 'Tamaño máximo',
+    optPages: 'Páginas',
+    optAngle: 'Giro',
+    optWidth: 'Ancho',
+    optHeight: 'Alto',
+    optPercent: 'Tamaño',
+    optGrayscale: 'Blanco y negro',
   },
   // Más formas de pedir cada herramienta (W-151.2): describiendo el problema, nombrando el trámite o
   // como se dice coloquialmente. Se suman a las preguntas de su entrada principal.

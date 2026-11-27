@@ -37,6 +37,18 @@ export default {
     sendSubject: "Question for the DocuSmart assistant",
     sendIntro: "Hi, the assistant couldn't answer this question:",
     sendNote: "Your email app opens with the question written in; you decide whether to send it.",
+    // Tarjeta «Hacer / Cambiar» (W-151.5).
+    planIntro: 'I can set it up for you:',
+    planDo: 'Do it',
+    planChange: 'Change',
+    planCurrentFile: 'With the file you have open.',
+    optTargetSize: 'Maximum size',
+    optPages: 'Pages',
+    optAngle: 'Rotation',
+    optWidth: 'Width',
+    optHeight: 'Height',
+    optPercent: 'Size',
+    optGrayscale: 'Black and white',
   },
   // More ways people ask for each tool (W-151.2): describing the problem, naming the task or in everyday
   // words. They are added to the questions of the tool's main entry.

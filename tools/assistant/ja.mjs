@@ -9,6 +9,18 @@ export default {
     sendSubject: "DocuSmart アシスタントへの質問",
     sendIntro: "こんにちは。アシスタントが次の質問に答えられませんでした：",
     sendNote: "質問が入力された状態でメールアプリが開きます。送信するかどうかはあなたが決めます。",
+    // Tarjeta «Hacer / Cambiar» (W-151.5).
+    planIntro: 'この設定で準備できます：',
+    planDo: '実行',
+    planChange: '変更',
+    planCurrentFile: '開いているファイルで行います。',
+    optTargetSize: '最大サイズ',
+    optPages: 'ページ',
+    optAngle: '回転',
+    optWidth: '幅',
+    optHeight: '高さ',
+    optPercent: 'サイズ',
+    optGrayscale: '白黒',
   },
   // 依頼の解析に使う語彙（W-151.4）。英字は小文字・アクセントなしで比較する（日本語はそのまま）。
   parse: {

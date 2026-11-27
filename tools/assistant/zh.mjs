@@ -9,6 +9,18 @@ export default {
     sendSubject: "向 DocuSmart 助手提问",
     sendIntro: "你好，助手无法回答这个问题：",
     sendNote: "将打开你的邮件应用并填好问题；是否发送由你决定。",
+    // Tarjeta «Hacer / Cambiar» (W-151.5).
+    planIntro: '我可以帮你设置好：',
+    planDo: '执行',
+    planChange: '修改',
+    planCurrentFile: '使用你已打开的文件。',
+    optTargetSize: '最大大小',
+    optPages: '页面',
+    optAngle: '旋转',
+    optWidth: '宽度',
+    optHeight: '高度',
+    optPercent: '尺寸',
+    optGrayscale: '黑白',
   },
   // 请求解析用的词汇（W-151.4）：英文字母小写、去掉重音后比较（中文保持原样）。
   parse: {

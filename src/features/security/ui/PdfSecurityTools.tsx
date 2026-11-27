@@ -10,6 +10,7 @@ import { track } from '../../../shared/platform/analytics'
 import { tr } from '../../../shared/i18n/translate'
 import type { MessageKey } from '../../../shared/i18n/messages/es'
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
+import { useAssistantOptions } from '../../../shared/files/toolOptions'
 import { bundleFiles, resultFile } from '../../../shared/files/share'
 
 const PDF = 'application/pdf'
@@ -79,6 +80,13 @@ export function CompressTool() {
   const [batchOut, setBatchOut] = useState<File[]>([])
   const [bundle, setBundle] = useState<File | null>(null)
   const { busy, error, run } = useJob('compress')
+  // Desde el asistente (W-151.5): «comprime este pdf a 2 MB», «en blanco y negro».
+  useAssistantOptions('comprimir-pdf', (o) => {
+    if (typeof o.targetSize === 'number') setMaxMb(String(Math.round((o.targetSize / 1024 / 1024) * 100) / 100))
+    if (o.grayscale === true) setGray(true)
+  })
+  /** Tamaños del menú, más el que pidió el asistente si no es uno de ellos (p. ej. 1,5 MB). */
+  const sizes = [...new Set(['0.5', '1', '2', '5', '10', maxMb].filter(Boolean))].sort((a, b) => Number(a) - Number(b))
   const many = files.length > 1
   const file = many ? null : (files[0] ?? null)
 
@@ -254,7 +262,7 @@ export function CompressTool() {
         <span>{tr('compress.maxSize')}</span>
         <select className="input" value={maxMb} onChange={(e) => { setMaxMb(e.target.value); reset() }}>
           <option value="">{tr('compress.noLimit')}</option>
-          {['0.5', '1', '2', '5', '10'].map((mb) => <option key={mb} value={mb}>{tr('compress.underMb', { mb: mb.replace('.', ',') })}</option>)}
+          {sizes.map((mb) => <option key={mb} value={mb}>{tr('compress.underMb', { mb: mb.replace('.', ',') })}</option>)}
         </select>
         <small className="faint">{tr('compress.maxSizeHint')}</small>
       </label>

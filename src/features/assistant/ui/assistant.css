@@ -109,9 +109,16 @@ body:has(.ds-consent) .assistant-root { display: none; }
 .assistant-send-note { margin-top: -2px; color: var(--as-faint); font-size: 11.5px; }
 .assistant-ai-badge { margin-top: -2px; color: var(--as-faint); font-size: 11.5px; }
 .assistant-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Tarjeta «Hacer / Cambiar» (W-151.5). */
+.assistant-plan { display: grid; gap: 4px; white-space: normal; }
+.assistant-plan ul { margin: 2px 0 0; padding-left: 18px; }
+.assistant-plan small { color: var(--as-faint); }
+button.as-action { border: 0; font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
 .as-action { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 12px; background: var(--as-soft); color: var(--as-ink); font-size: 13.5px; font-weight: 600; text-decoration: none; box-shadow: 0 0 0 1px var(--as-line) inset; transition: transform 150ms var(--as-ease), background-color 150ms ease; }
 .as-action svg { width: 14px; height: 14px; }
 .as-action:not(:has(svg[class])) svg { transform: rotate(180deg); }
+/* Los botones de la tarjeta usan íconos propios (check, lápiz): sin el giro de la flecha. */
+.assistant-actions button.as-action svg { transform: none; }
 .as-action.is-primary { background: var(--as-accent); color: #fff; box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--as-accent) 90%, transparent); }
 .as-action:active { transform: scale(.96); }
 @media (hover: hover) and (pointer: fine) { .as-action:hover { transform: translateY(-1px); } }
