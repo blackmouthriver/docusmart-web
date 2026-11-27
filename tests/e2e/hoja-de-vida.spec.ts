@@ -72,7 +72,8 @@ test('hoja de vida clásica en PDF y Word, y el borrador se guarda y se vuelve a
 
   // Word.
   await tool.getByRole('button', { name: 'Crear Word (.docx)' }).click()
-  await expect(tool.getByRole('heading', { name: 'Así quedó tu hoja de vida' })).toBeVisible({ timeout: 30_000 })
+  // El título ya se ve desde el PDF: hay que esperar a que el resultado sea el Word (en Safari tarda más).
+  await expect(tool.getByText('hoja-de-vida-ana-maria-perez.docx').first()).toBeVisible({ timeout: 30_000 })
   wait = page.waitForEvent('download')
   await tool.getByRole('button', { name: 'Descargar', exact: true }).click()
   file = await wait
