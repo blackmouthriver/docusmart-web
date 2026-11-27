@@ -24,6 +24,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: '“{error}” 안내가 나왔네요. 이렇게 해결할 수 있어요:',
     screenErrorGeneric: '“{error}” 안내가 나왔네요. 다시 생기면 알려 주세요:',
+    // Siguiente paso (W-151.7).
+    nextTitle: '다음에 자주 하는 작업:',
     optQuality: '품질',
     optFormat: '형식',
     optDpi: '해상도',

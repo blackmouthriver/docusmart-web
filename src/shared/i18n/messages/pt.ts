@@ -96,6 +96,8 @@ const pt: Messages = {
   'settings.sidebar.accent': "Cor de destaque",
   'settings.animatedBg': "Fundo animado",
   'settings.animatedBg.sub': "Formas com a cor de destaque em movimento",
+  'settings.assistantNext': "Sugestões do assistente",
+  'settings.assistantNext.sub': "Ao terminar uma ferramenta, o assistente sugere o próximo passo, como compactar ou assinar.",
   'settings.font': "Tamanho do texto",
   'settings.font.normal': "Normal",
   'settings.font.large': "Grande",

@@ -87,3 +87,32 @@ test('contexto de la pantalla (W-151.6): tras un PDF dañado, el asistente expli
   await input.press('Enter')
   await expect(page.locator('.assistant-screen-error')).toHaveCount(2)
 })
+
+test('siguiente paso (W-151.7): tras unir, el asistente sugiere el siguiente y lleva el resultado; se apaga en Ajustes', async ({ page }) => {
+  const pdf = (name: string) => ({ name, mimeType: 'application/pdf', buffer: makePdf(1) })
+  await page.goto('/app/#/pdf/unir')
+  await upload(page, [pdf('a.pdf'), pdf('b.pdf')])
+  await page.getByRole('button', { name: 'Unir 2 PDFs' }).click()
+  await expect(page.getByRole('heading', { name: '¿Y ahora?' })).toBeVisible({ timeout: 30_000 })
+  await page.getByRole('button', { name: 'Asistente de DocuSmart' }).click()
+  await expect(page.locator('.assistant-bubble.bot').last()).toContainText('Lo que suele venir después:')
+  const first = page.locator('.assistant-panel .assistant-actions button').first()
+  const name = (await first.textContent())!.trim()
+  await first.click()
+  await expect(page).not.toHaveURL(/#\/pdf\/unir$/)
+  // La herramienta siguiente recibe el resultado de unir, sin volver a elegirlo.
+  await expect(page.locator('main')).toContainText('unido.pdf')
+  expect(name.length).toBeGreaterThan(0)
+
+  // Apagado en Ajustes: después de unir, el asistente ya no lo sugiere.
+  await page.goto('/app/#/pdf/unir')
+  await page.getByRole('button', { name: 'Idioma y apariencia' }).first().click()
+  await page.getByRole('switch', { name: /Sugerencias del asistente/ }).uncheck()
+  await page.keyboard.press('Escape')
+  await upload(page, [pdf('a.pdf'), pdf('b.pdf')])
+  await page.getByRole('button', { name: 'Unir 2 PDFs' }).click()
+  await expect(page.getByRole('heading', { name: '¿Y ahora?' })).toBeVisible({ timeout: 30_000 })
+  await page.getByRole('button', { name: 'Asistente de DocuSmart' }).click()
+  await expect(page.locator('.assistant-bubble.bot').first()).toBeVisible()
+  await expect(page.getByText('Lo que suele venir después:')).toHaveCount(0)
+})

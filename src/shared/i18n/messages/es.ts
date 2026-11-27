@@ -98,6 +98,8 @@ export const es = {
   'settings.sidebar.accent': "Color de acento",
   'settings.animatedBg': "Fondo animado",
   'settings.animatedBg.sub': "Formas con el color de acento en movimiento",
+  'settings.assistantNext': "Sugerencias del asistente",
+  'settings.assistantNext.sub': "Al terminar una herramienta, el asistente propone el siguiente paso, como comprimir o firmar.",
   'settings.font': 'Tamaño de letra',
   'settings.font.normal': 'Normal',
   'settings.font.large': 'Grande',

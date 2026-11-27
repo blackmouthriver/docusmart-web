@@ -24,6 +24,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: 'Я вижу это сообщение: «{error}». Вот решение:',
     screenErrorGeneric: 'Я вижу это сообщение: «{error}». Если повторится, напишите нам:',
+    // Siguiente paso (W-151.7).
+    nextTitle: 'Что обычно делают дальше:',
     optQuality: 'Качество',
     optFormat: 'Формат',
     optDpi: 'Разрешение',

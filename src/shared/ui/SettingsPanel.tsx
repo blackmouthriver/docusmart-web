@@ -7,10 +7,12 @@ import { LANGS } from '../i18n/languages'
 import { useT } from '../i18n/I18n'
 import { GRADIENT_ACCENTS, SIDEBAR_STYLES, SOLID_ACCENTS, accentSwatch, applyAppearance, systemDark, loadAppearance, saveAppearance, type Appearance, type FontScale, type SidebarStyle, type ThemeMode } from '../../app/appearance'
 import { track } from '../platform/analytics'
+import { nextStepsEnabled, setNextStepsEnabled } from '../../features/assistant/core/prefs'
 
 export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
   const { t, lang, setLang } = useT()
   const [look, setLook] = useState<Appearance>(loadAppearance)
+  const [assistantNext, setAssistantNext] = useState(nextStepsEnabled)
   // Sale animado al cerrar (W-74); Esc cierra y el foco entra a la opción marcada.
   const { panel, closing, onClose } = useDialog(close, '[aria-checked="true"]')
 
@@ -128,6 +130,17 @@ export function SettingsPanel({ onClose: close }: { onClose: () => void }) {
               <small>{t('settings.animatedBg.sub')}</small>
             </span>
             <input type="checkbox" role="switch" className="switch" checked={look.animatedBg} onChange={(e) => update({ animatedBg: e.target.checked })} />
+          </label>
+        </section>
+
+        <section>
+          {/* W-151.7: el asistente sugiere el siguiente paso al terminar una herramienta. */}
+          <label className="switch-row">
+            <span>
+              <b>{t('settings.assistantNext')}</b>
+              <small>{t('settings.assistantNext.sub')}</small>
+            </span>
+            <input type="checkbox" role="switch" className="switch" aria-label={t('settings.assistantNext')} checked={assistantNext} onChange={(e) => { setAssistantNext(e.target.checked); setNextStepsEnabled(e.target.checked) }} />
           </label>
         </section>
 

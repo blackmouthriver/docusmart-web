@@ -19,6 +19,10 @@ import { setToolOptions } from '../../../shared/files/toolOptions'
 import { planFor, planLines, type Plan } from '../core/plan'
 import { asksWhy, type Lexicon } from '../core/parser'
 import { screenSnapshot } from '../../../shared/files/screenContext'
+import { suggestNextSteps, type ResultKind } from '../../tools/core/nextSteps'
+import type { CatalogTool } from '../../tools/core/catalog'
+import { nextStepsEnabled } from '../core/prefs'
+import { tr } from '../../../shared/i18n/translate'
 
 /** Primera letra en mayúscula (las preguntas de la base se escriben como las escribe la gente). */
 const capitalize = (s: string) => s.charAt(0).toLocaleUpperCase() + s.slice(1)
@@ -29,6 +33,7 @@ const CLOSE_MS = 200
 type Msg =
   | { id: number; role: 'user'; text: string }
   | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done'; question?: string; plan?: Plan; lead?: ScreenLead }
+  | { id: number; role: 'next'; tools: CatalogTool[] }
 
 export type PanelProps = {
   lang: string
@@ -81,7 +86,11 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
   useEffect(() => {
     if (!data) return
     const r = errorReply(data.index)
-    if (r) setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', ...r }])
+    if (r) return setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', ...r }])
+    // W-151.7: con un resultado a la vista, lo que suele venir después (se puede apagar en Ajustes).
+    const { result } = screenSnapshot()
+    const tools = result && nextStepsEnabled() ? suggestNextSteps(result.kind as ResultKind, result.toolName) : []
+    if (tools.length) setMsgs((m) => [...m, { id: nextId.current++, role: 'next', tools }])
   }, [data])
   useEffect(() => {
     let alive = true
@@ -241,7 +250,9 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
         {failed && <p className="assistant-bubble bot">⚠️ {lang === 'es' ? 'Sin conexión: no se pudo cargar el asistente.' : 'Offline: the assistant could not load.'}</p>}
         {data &&
           msgs.map((m) =>
-            m.role === 'user' ? (
+            m.role === 'next' ? (
+              <NextCard key={m.id} tools={m.tools} title={data.kb.ui.nextTitle} onPick={(key) => (screenSnapshot().result?.open(key), onClose())} />
+            ) : m.role === 'user' ? (
               <p key={m.id} className="assistant-bubble user">
                 {m.text}
               </p>
@@ -280,6 +291,23 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
           <Icon name="send" />
         </button>
       </form>
+    </div>
+  )
+}
+
+/** Lo que suele venir después de la herramienta que acaba de terminar (W-151.7). */
+function NextCard({ tools, title, onPick }: { tools: CatalogTool[]; title: string; onPick: (key: string) => void }) {
+  return (
+    <div className="assistant-bot">
+      <p className="assistant-bubble bot">{title}</p>
+      <div className="assistant-actions">
+        {tools.map((tool, i) => (
+          <button key={tool.key} type="button" className={'as-action' + (i === 0 ? ' is-primary' : '')} onClick={() => onPick(tool.key)}>
+            {tr(tool.name)}
+            <Icon name={tool.icon} />
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

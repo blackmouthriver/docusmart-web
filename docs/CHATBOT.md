@@ -267,3 +267,11 @@ El panel lo usa al abrirse («Vi que salió este aviso: «…». Esto lo resuelv
 la persona pregunta por el problema («¿por qué no me deja?», «no funciona»: lista `why` del léxico de cada
 idioma) o el buscador no encuentra respuesta. Nada de esto se guarda ni se envía, tampoco a la analítica.
 
+## Siguiente paso sugerido (W-151.7)
+
+Se apoya en «¿Y ahora?» (W-110), que ya sugiere herramientas debajo de cada resultado. `NextSteps` le avisa al
+contexto de la pantalla que hay un resultado a la vista y le pasa cómo abrir cada siguiente herramienta con ese
+archivo (el archivo no se copia: es la misma acción de W-110). Al abrir el asistente aparece «Lo que suele venir
+después:» con esos botones; si hubo un error reciente, primero se explica el error. Sin ventanas emergentes:
+solo dentro del panel. Se apaga en Ajustes → «Sugerencias del asistente».
+

@@ -96,6 +96,8 @@ const en: Messages = {
   'settings.sidebar.accent': "Accent color",
   'settings.animatedBg': "Animated background",
   'settings.animatedBg.sub': "Shapes in your accent color, in motion",
+  'settings.assistantNext': "Assistant suggestions",
+  'settings.assistantNext.sub': "When a tool finishes, the assistant suggests the next step, like compressing or signing.",
   'settings.font': "Text size",
   'settings.font.normal': "Normal",
   'settings.font.large': "Large",

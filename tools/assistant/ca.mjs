@@ -24,6 +24,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: 'He vist aquest avís: «{error}». Això ho resol:',
     screenErrorGeneric: 'He vist aquest avís: «{error}». Si torna a passar, escriu-nos:',
+    // Siguiente paso (W-151.7).
+    nextTitle: 'El que sol venir després:',
     optQuality: 'Qualitat',
     optFormat: 'Format',
     optDpi: 'Resolució',

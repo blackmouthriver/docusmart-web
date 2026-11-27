@@ -24,6 +24,8 @@ export default {
     // Error de la pantalla (W-151.6).
     screenError: 'Ohar hau agertu dela ikusi dut: «{error}». Honek konpontzen du:',
     screenErrorGeneric: 'Ohar hau agertu dela ikusi dut: «{error}». Berriro gertatzen bada, idatzi iezaguzu:',
+    // Siguiente paso (W-151.7).
+    nextTitle: 'Normalean ondoren datorrena:',
     optQuality: 'Kalitatea',
     optFormat: 'Formatua',
     optDpi: 'Bereizmena',

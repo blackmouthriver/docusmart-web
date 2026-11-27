@@ -96,6 +96,8 @@ const ko: Messages = {
   'settings.sidebar.accent': "강조 색상",
   'settings.animatedBg': "애니메이션 배경",
   'settings.animatedBg.sub': "강조 색상의 도형이 움직입니다",
+  'settings.assistantNext': "도우미 제안",
+  'settings.assistantNext.sub': "도구 작업이 끝나면 압축이나 서명처럼 다음 단계를 도우미가 제안해요.",
   'settings.font': "글자 크기",
   'settings.font.normal': "보통",
   'settings.font.large': "크게",
