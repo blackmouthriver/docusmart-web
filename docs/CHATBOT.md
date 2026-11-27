@@ -152,8 +152,8 @@ de quien la mandó (W-151.13).
 
 | Idioma | Preguntas | Acierto | Entre las 3 primeras | Sin respuesta | Equivocada |
 |---|---:|---:|---:|---:|---:|
-| es | 90 | 87.8 % | 93.3 % | 4.4 % | 7.8 % |
-| en | 66 | 74.2 % | 84.8 % | 10.6 % | 15.2 % |
+| es | 90 | 97.8 % | 100 % | 0 % | 2.2 % |
+| en | 66 | 90.9 % | 95.5 % | 4.5 % | 4.5 % |
 | pt | 30 | 50 % | 83.3 % | 26.7 % | 23.3 % |
 | fr | 30 | 73.3 % | 86.7 % | 13.3 % | 13.3 % |
 | it | 30 | 80 % | 86.7 % | 13.3 % | 6.7 % |
@@ -164,17 +164,17 @@ de quien la mandó (W-151.13).
 | ja | 30 | 70 % | 83.3 % | 30 % | 0 % |
 | ko | 30 | 63.3 % | 86.7 % | 23.3 % | 13.3 % |
 | zh | 30 | 53.3 % | 73.3 % | 36.7 % | 10 % |
-| control-es | 20 | 45 % | 60 % | 25 % | 30 % |
-| control-en | 15 | 40 % | 46.7 % | 13.3 % | 46.7 % |
-| **Total** | 456 | **70.8 %** | 85.3 % | 15.6 % | 13.6 % |
+| control-es | 20 | 75 % | 95 % | 15 % | 10 % |
+| control-en | 15 | 73.3 % | 73.3 % | 6.7 % | 20 % |
+| **Total** | 456 | **75.2 %** | 88.2 % | 13.8 % | 11 % |
 
 Acierto por categoría (español e inglés):
 
 | Categoría | es | en |
 |---|---:|---:|
-| Herramientas | 87.5 % | 63.3 % |
-| Trámites | 58.3 % | 62.5 % |
-| Errores | 90 % | 57.1 % |
+| Herramientas | 97.5 % | 90 % |
+| Trámites | 91.7 % | 87.5 % |
+| Errores | 100 % | 71.4 % |
 | Herramientas nuevas | 100 % | 100 % |
 | Sobre DocuSmart | 100 % | 100 % |
 | Fuera de tema | 100 % | 100 % |
@@ -183,37 +183,17 @@ Acierto por categoría (español e inglés):
 
 **es**
 
-- [herramienta] el escaneo quedo al reves → descarga (sin confianza)
-- [herramienta] el pdf pesa 20 megas y necesito mandarlo por correo → compartir (sin confianza)
-- [herramienta] me mandaron un pdf con contraseña y la se, como se la quito → tool:comparar-pdf
-- [herramienta] convertir cada pagina del pdf en imagen → tool:powerpoint-a-pdf
 - [herramienta] achicar el tamaño de una foto → tool:comprimir-video
-- [tramite] el secop no me deja subir el pdf porque pesa mucho → comprimir-video
-- [tramite] la dian me pide el pdf de menos de 2 mb → tool:png-a-jpg (sin confianza)
-- [tramite] me piden la cedula por ambas caras en un solo pdf → tool:censurar-pdf
-- [tramite] el formulario de la universidad pide una foto de maximo 200 kb → tool:redimensionar-imagen (sin confianza)
-- [tramite] subir la foto al portal de empleo y dice que es muy grande → tool:hoja-de-vida:faq2
-- [error] el pdf sale en blanco → tool:recortar-pdf
+- [tramite] subir la foto al portal de empleo y dice que es muy grande → tool:comprimir-pdf
 
 **en**
 
-- [herramienta] i need to put my id and a receipt into one pdf → tool:cuenta-de-cobro
 - [herramienta] stick two pdfs together → lento (sin confianza)
-- [herramienta] take just page 3 out of a pdf → tool:recortar-pdf:faq3
-- [herramienta] the scan came out upside down → tool:rotar-pdf (sin confianza)
-- [herramienta] my pdf is 20 mb and i need to email it → tool:censurar-pdf
-- [herramienta] make a pdf file smaller → tool:comprimir-archivos
-- [herramienta] sign a contract on my phone → sin-cuenta
+- [herramienta] make a pdf file smaller → tool:comprimir-video
 - [herramienta] change a word in a pdf → tool:comparar-pdf
-- [herramienta] make a pdf from phone photos → tool:foto-tamano-documento
-- [herramienta] scan a document without a scanner → tool:ocr-pdf
-- [herramienta] black out my social security number in a pdf → tool:numerar-paginas-pdf (sin confianza)
-- [tramite] the portal says my pdf is too big to upload → tamano (sin confianza)
 - [tramite] they want both sides of my id card in a single pdf → tool:foto-tamano-documento (sin confianza)
-- [tramite] the form wants a photo under 200 kb → tool:redimensionar-imagen:faq2 (sin confianza)
 - [error] the site is very slow → lento (sin confianza)
 - [error] the file does not download → renombrar
-- [error] the video is too big for whatsapp → tamano
 
 </details>
 
