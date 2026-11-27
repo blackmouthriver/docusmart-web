@@ -29,8 +29,9 @@ async function convertAndDownload(page: Page) {
   return { name: file.suggestedFilename(), data: await readFile((await file.path())!) }
 }
 
-test('convierte una foto HEIC a JPG con sus colores y del mismo tamaño', async ({ page }) => {
-  const wasm = page.waitForRequest((r) => r.url().endsWith('/heic/libheif.wasm'))
+test('convierte una foto HEIC a JPG con sus colores y del mismo tamaño', async ({ page, browserName }) => {
+  // Safari (WebKit) abre HEIC por sí mismo: ahí no hace falta el decodificador en wasm.
+  const wasm = browserName === 'webkit' ? Promise.resolve() : page.waitForRequest((r) => r.url().endsWith('/heic/libheif.wasm'))
   await page.goto('/heic-a-jpg')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('HEIC a JPG')
   await upload(page, [{ name: 'IMG_0001.HEIC', mimeType: 'image/heic', buffer: HEIC_SQUARES }])

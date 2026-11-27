@@ -1,5 +1,6 @@
 import '../shared/platform/trustedTypes'
 import { captureInstallPrompt, handleLaunches, registerServiceWorker } from '../shared/platform/pwa'
+import { setOpenedFiles } from '../shared/files/handoff'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from '../app/App'
@@ -17,7 +18,11 @@ import '../app/app.css'
 // interfaz se monte; si nadie lo escucha, el botón "Instalar" no aparece (W-16).
 captureInstallPrompt()
 // Una sola ventana de DocuSmart Desktop: si ya está abierta se enfoca (y los accesos directos llevan a su herramienta).
-handleLaunches()
+// Los archivos abiertos con DocuSmart Desktop (W-150.4) van a la pantalla "Abrir con".
+handleLaunches(window, (files) => {
+  setOpenedFiles(files)
+  if (location.hash !== '#/abrir') location.hash = '#/abrir'
+})
 
 // Apariencia e idioma antes de pintar: sin destellos de otro tema u otro idioma.
 applyAppearance(loadAppearance())

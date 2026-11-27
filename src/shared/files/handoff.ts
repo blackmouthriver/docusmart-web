@@ -74,3 +74,23 @@ export function takeChainedFiles(accept: string, multiple: boolean, now = Date.n
 export function clearChainedFiles(): void {
   chained = null
 }
+
+/*
+ * Abrir con DocuSmart Desktop (W-150.4): los archivos que el sistema le pasa a la app instalada esperan en la
+ * pantalla "Abrir con" hasta que el usuario elige una herramienta (sin plazo: puede tardar en decidir).
+ */
+let opened: File[] = []
+
+/** Avisa a la pantalla "Abrir con" si llegan archivos nuevos mientras ya está a la vista. */
+export const OPENED_FILES_EVENT = 'ds-opened-files'
+
+export function setOpenedFiles(files: File[], win: Window | undefined = typeof window === 'undefined' ? undefined : window): void {
+  opened = files
+  win?.dispatchEvent(new Event(OPENED_FILES_EVENT))
+}
+
+export const peekOpenedFiles = (): File[] => opened
+
+export function clearOpenedFiles(): void {
+  opened = []
+}

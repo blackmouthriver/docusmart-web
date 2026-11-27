@@ -35,10 +35,20 @@ const LOADERS: Record<Lang, () => Promise<{ default: Dict }>> = {
   eu: () => import('./messages/eu'),
 }
 
+/** En Mac los atajos se escriben con ⌘ (W-150): "Ctrl+V" o "Strg+V" pasan a "⌘+V". El código ya acepta ⌘. */
+export function withMacKeys(dict: Dict): Dict {
+  const out: Dict = {}
+  for (const [k, v] of Object.entries(dict) as Array<[MessageKey, string]>) out[k] = v.replace(/\b(?:Ctrl|Strg)(\s?\+\s?)/g, '⌘$1')
+  return out
+}
+
+const isMac = () => typeof navigator !== 'undefined' && /Macintosh|Mac OS X/.test(navigator.userAgent) && !/iPhone|iPad/.test(navigator.userAgent)
+
 /** Diccionario del idioma. Sin conexión al cambiar de idioma, se sigue con el actual. */
 export async function loadMessages(lang: Lang): Promise<Dict> {
   try {
-    return (await LOADERS[lang]()).default
+    const dict = (await LOADERS[lang]()).default
+    return isMac() ? withMacKeys(dict) : dict
   } catch {
     return current
   }

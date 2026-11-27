@@ -23,5 +23,24 @@
     { "name": "Convertir", "url": "/app/#/convertir", "icons": [{ "src": "/img/pwa/icon-192.png", "sizes": "192x192" }] },
     { "name": "Códigos QR", "url": "/app/#/qr", "icons": [{ "src": "/img/pwa/icon-192.png", "sizes": "192x192" }] },
     { "name": "Modo Estudio", "url": "/app/#/estudio", "icons": [{ "src": "/img/pwa/icon-192.png", "sizes": "192x192" }] }
+  ],
+  "file_handlers": [
+    {
+      "action": "/app/",
+      "accept": {
+        "application/pdf": [".pdf"],
+        "image/jpeg": [".jpg", ".jpeg"],
+        "image/png": [".png"],
+        "image/webp": [".webp"],
+        "image/gif": [".gif"],
+        "image/bmp": [".bmp"],
+        "image/tiff": [".tif", ".tiff"],
+        "image/heic": [".heic", ".heif"],
+        "image/avif": [".avif"],
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"]
+      },
+      "launch_type": "single-client"
+    }
   ]
 }

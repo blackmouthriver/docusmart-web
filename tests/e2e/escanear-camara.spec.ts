@@ -6,6 +6,9 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, test } from './helpers'
 
+// Playwright no puede simular una cámara en WebKit (sí en Chromium): estas pruebas corren en Chrome.
+test.skip(({ browserName }) => browserName === 'webkit', 'WebKit no permite simular la cámara en Playwright')
+
 const W = 640
 const H = 480
 

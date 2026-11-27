@@ -25,12 +25,14 @@ export default defineConfig({
     locale: 'es-ES',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    ...(CI ? {} : { channel: 'chrome' }),
+    // El Chrome instalado se elige en cada proyecto (no aquí: WebKit no acepta ese canal).
   },
   projects: [
     { name: 'escritorio', use: { ...devices['Desktop Chrome'], ...(CI ? {} : { channel: 'chrome' }) } },
     // En el celular solo las pruebas marcadas @movil (portada, menú y herramientas).
     { name: 'movil', grep: /@movil/, use: { ...devices['Pixel 7'], ...(CI ? {} : { channel: 'chrome' }) } },
+    // W-150.3: el motor de Safari (WebKit), para DocuSmart Desktop en Mac. Solo si se pide: WEBKIT=1.
+    ...(process.env.WEBKIT ? [{ name: 'safari', use: { ...devices['Desktop Safari'] } }] : []),
   ],
   webServer: {
     command: `npx vite preview --port ${PORT} --strictPort`,

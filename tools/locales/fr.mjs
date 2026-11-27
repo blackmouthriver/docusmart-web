@@ -30,7 +30,7 @@ export default {
     footHome: 'Accueil',
     footPrivacy: 'Politique de confidentialité',
     footConsent: "Préférences d'analyse",
-    os: 'Tous (navigateur web)',
+    os: 'Windows, macOS, Linux, ChromeOS, Android, iOS',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
     cats: { organizar: "Organiser les PDF", editar: "Modifier et signer", documentos: "Créer des documents", seguridad: "Sécurité", optimizar: "Optimiser et archiver", convertir: "Convertir", imagen: "Image", multimedia: "Audio et vidéo", escanear: "Numériser et OCR", archivos: "Fichiers compressés", qr: "Codes QR", texto: "Outils de texte" },
     hubSlug: "outils",
@@ -1197,7 +1197,7 @@ export default {
     },
   },
   landing: [
-    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Installez la version de bureau depuis Chrome ou Edge sur votre ordinateur : elle s’ouvre dans sa propre fenêtre, comme un logiciel, et fonctionne hors connexion."],
+    ["Instálala en Windows, Mac o Linux desde Chrome, Edge o Safari: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Installez-la sur Windows, Mac ou Linux depuis Chrome, Edge ou Safari : elle s’ouvre dans sa propre fenêtre, comme n’importe quel programme, et fonctionne hors connexion."],
     ["Instalar DocuSmart Desktop", "Installer DocuSmart Desktop"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — Tous vos documents au même endroit'],
     ["Herramientas PDF gratis sin subir archivos | DocuSmart", "Outils PDF gratuits, sans envoyer vos fichiers | DocuSmart"],

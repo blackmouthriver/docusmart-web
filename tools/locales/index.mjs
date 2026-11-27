@@ -46,7 +46,7 @@ export const ES_UI = {
   footHome: 'Inicio',
   footPrivacy: 'Política de privacidad',
   footConsent: 'Preferencias de analítica',
-  os: 'Cualquiera (navegador web)',
+  os: 'Windows, macOS, Linux, ChromeOS, Android, iOS',
   // Categorías y página "Todas las herramientas" (W-76/W-78)
   cats: { organizar: "Organizar PDF", editar: "Editar y firmar", documentos: "Crear documentos", seguridad: "Seguridad", optimizar: "Optimizar y archivar", convertir: "Convertir", imagen: "Imagen", multimedia: "Audio y video", escanear: "Escanear y OCR", archivos: "Archivos comprimidos", qr: "Códigos QR", texto: "Herramientas de texto" },
   hubSlug: "herramientas",

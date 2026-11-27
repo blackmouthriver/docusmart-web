@@ -10,6 +10,8 @@ import { expect } from './helpers'
 export async function recordVideo(page: Page, seconds: number, noise = 12, width = 640, height = 360): Promise<{ buffer: Buffer; type: string }> {
   for (let attempt = 1; ; attempt++) {
     await page.bringToFront()
+    // En una Mac del CI el dispositivo de audio a veces no arranca a la primera ("Failed to start the audio device"):
+    // se reintenta como cuando el video sale vacío.
     const out = await page.evaluate(async ({ secs, noise, w, h }) => {
       const c = document.createElement('canvas')
       c.width = w
@@ -56,7 +58,11 @@ export async function recordVideo(page: Page, seconds: number, noise = 12, width
       let s = ''
       for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
       return { type: type.split(';')[0], b64: btoa(s) }
-    }, { secs: seconds, noise, w: width, h: height })
+    }, { secs: seconds, noise, w: width, h: height }).catch((e: Error) => {
+      if (attempt < 3 && /audio device/i.test(e.message)) return null
+      throw e
+    })
+    if (!out) continue
     const buffer = Buffer.from(out.b64, 'base64')
     if (buffer.length > 20_000 || attempt === 3) {
       expect(buffer.length, 'el video de prueba salió vacío').toBeGreaterThan(20_000)

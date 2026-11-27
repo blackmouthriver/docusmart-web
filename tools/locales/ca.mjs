@@ -30,7 +30,7 @@ export default {
     footHome: 'Inici',
     footPrivacy: 'Política de privacitat',
     footConsent: "Preferències d'analítica",
-    os: 'Qualsevol (navegador web)',
+    os: 'Windows, macOS, Linux, ChromeOS, Android, iOS',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
     cats: { organizar: "Organitzar PDF", editar: "Editar i signar", documentos: "Crear documents", seguridad: "Seguretat", optimizar: "Optimitzar i arxivar", convertir: "Convertir", imagen: "Imatge", multimedia: "Àudio i vídeo", escanear: "Escanejar i OCR", archivos: "Fitxers comprimits", qr: "Codis QR", texto: "Eines de text" },
     hubSlug: "eines",
@@ -1197,7 +1197,7 @@ export default {
     },
   },
   landing: [
-    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Instal·la la versió d’escriptori des de Chrome o Edge a l’ordinador: s’obre en una finestra pròpia, com un programa més, i funciona sense connexió."],
+    ["Instálala en Windows, Mac o Linux desde Chrome, Edge o Safari: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Instal·la-la a Windows, Mac o Linux des de Chrome, Edge o Safari: s’obre en una finestra pròpia, com qualsevol altre programa, i funciona sense connexió."],
     ["Instalar DocuSmart Desktop", "Instal·la DocuSmart Desktop"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — Els teus documents en un sol lloc'],
     ["Herramientas PDF gratis sin subir archivos | DocuSmart", "Eines PDF gratuïtes, sense pujar fitxers | DocuSmart"],

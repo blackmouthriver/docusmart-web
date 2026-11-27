@@ -33,7 +33,7 @@ export default {
     footHome: 'ホーム',
     footPrivacy: 'プライバシーポリシー',
     footConsent: 'アナリティクスの設定',
-    os: '任意（Webブラウザ）',
+    os: 'Windows, macOS, Linux, ChromeOS, Android, iOS',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
     cats: { organizar: "PDF の整理", editar: "編集と署名", documentos: "書類を作成", seguridad: "セキュリティ", optimizar: "最適化と保存", convertir: "変換", imagen: "画像", multimedia: "音声と動画", escanear: "スキャンと OCR", archivos: "圧縮ファイル", qr: "QR コード", texto: "テキストツール" },
     hubSlug: "tools",
@@ -1192,7 +1192,7 @@ export default {
     },
   },
   landing: [
-    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "パソコンのChromeまたはEdgeからデスクトップ版をインストールできます。専用のウィンドウで普通のアプリのように開き、オフラインでも使えます。"],
+    ["Instálala en Windows, Mac o Linux desde Chrome, Edge o Safari: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Chrome、Edge、Safari から Windows・Mac・Linux にインストールできます。ふつうのアプリのように専用ウィンドウで開き、オフラインでも使えます。"],
     ["Instalar DocuSmart Desktop", "DocuSmart Desktop をインストール"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — 書類をひとつの場所に'],
     ["Herramientas PDF gratis sin subir archivos | DocuSmart", "無料のPDFツール、ファイルのアップロード不要 | DocuSmart"],

@@ -91,3 +91,24 @@ export function suggestNextSteps(kind: ResultKind, toolName: string, limit = 3, 
     .filter((c): c is CatalogTool => !!c)
     .slice(0, limit)
 }
+
+/** Abrir con DocuSmart Desktop (W-150.4): lo que más se hace con cada tipo de archivo, en ese orden. */
+const OPEN_WITH: Record<ResultKind, string[]> = {
+  pdf: ['pdf/comprimir', 'pdf/unir', 'pdf/editar', 'pdf/firmar', 'pdf/dividir', 'convertir/pdf-word', 'pdf/ocr', 'pdf/proteger', 'pdf/rotar', 'convertir/pdf-img', 'convertir/pdf-excel', 'pdf/reparar'],
+  image: ['convertir/img-pdf', 'imagen/comprimir', 'imagen/redimensionar', 'imagen/recortar', 'imagen/texto', 'imagen/fondo', 'imagen/rotar', 'imagen/marca', 'convertir/img-jpg', 'convertir/img-png'],
+  word: ['convertir/word-pdf'],
+  excel: ['convertir/excel-pdf', 'convertir/excel-csv'],
+  other: [],
+}
+
+/**
+ * Herramientas para los archivos abiertos con DocuSmart Desktop. Varios PDF empiezan por Unir y varias imágenes
+ * por Imagen a PDF; con tipos mezclados, solo lo que sirve para todos (si nada sirve, la lista queda vacía).
+ */
+export function openWithTools(files: ReadonlyArray<Pick<File, 'name' | 'type'>>, catalog: readonly CatalogTool[] = CATALOG): CatalogTool[] {
+  const kinds = [...new Set(files.map(resultKind))]
+  if (kinds.length !== 1) return []
+  let keys = OPEN_WITH[kinds[0]]
+  if (files.length > 1 && kinds[0] === 'pdf') keys = ['pdf/unir', ...keys.filter((k) => k !== 'pdf/unir')]
+  return keys.map((key) => catalog.find((c) => c.key === key)).filter((c): c is CatalogTool => !!c)
+}

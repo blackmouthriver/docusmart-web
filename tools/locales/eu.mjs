@@ -30,7 +30,7 @@ export default {
     footHome: 'Hasiera',
     footPrivacy: 'Pribatutasun-politika',
     footConsent: 'Analitika-hobespenak',
-    os: 'Edozein (web nabigatzailea)',
+    os: 'Windows, macOS, Linux, ChromeOS, Android, iOS',
     // Categorías y página "Todas las herramientas" (W-76/W-78)
     cats: { organizar: "PDFak antolatu", editar: "Editatu eta sinatu", documentos: "Dokumentuak sortu", seguridad: "Segurtasuna", optimizar: "Optimizatu eta artxibatu", convertir: "Bihurtu", imagen: "Irudia", multimedia: "Audioa eta bideoa", escanear: "Eskaneatu eta OCR", archivos: "Fitxategi konprimituak", qr: "QR kodeak", texto: "Testu-tresnak" },
     hubSlug: "tresnak",
@@ -1206,7 +1206,7 @@ export default {
     },
   },
   landing: [
-    ["Instala la versión de escritorio desde Chrome o Edge en tu computadora: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Instalatu mahaigaineko bertsioa Chrome edo Edge bidez ordenagailuan: bere leihoan irekitzen da, beste programa bat bezala, eta konexiorik gabe dabil."],
+    ["Instálala en Windows, Mac o Linux desde Chrome, Edge o Safari: se abre en su propia ventana, como un programa más, y funciona sin conexión.", "Instalatu Windows, Mac edo Linuxen Chrome, Edge edo Safaritik: bere leihoan irekitzen da, beste edozein programa bezala, eta konexiorik gabe dabil."],
     ["Instalar DocuSmart Desktop", "Instalatu DocuSmart Desktop"],
     ['DocuSmart — Tus documentos en un solo lugar', 'DocuSmart — Zure dokumentuak leku bakarrean'],
     ["Herramientas PDF gratis sin subir archivos | DocuSmart", "Doako PDF tresnak, fitxategiak igo gabe | DocuSmart"],
