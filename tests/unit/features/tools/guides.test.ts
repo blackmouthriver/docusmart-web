@@ -137,14 +137,13 @@ describe('guías ilustradas por herramienta (W-101)', () => {
         }
   })
 
-  it('los lotes 1 y 2 están en los 12 idiomas', () => {
-    for (const g of TOOL_GUIDES.slice(0, 16)) expect(guideLangs(g), g.slug).toEqual(GUIDE_LANGS)
+  it('los lotes 1, 2 y 3 están en los 12 idiomas', () => {
+    for (const g of TOOL_GUIDES.slice(0, 24)) expect(guideLangs(g), g.slug).toEqual(GUIDE_LANGS)
   })
 
   it('una guía todavía sin traducir solo existe en español (sin hreflang ni páginas en otros idiomas)', () => {
-    // Las guías nuevas se publican primero en español (hoy, las 8 del lote 3).
+    // Las guías nuevas se publican primero en español (hoy no hay ninguna pendiente).
     const pending = TOOL_GUIDES.filter((g) => guideLangs(g).length === 1)
-    expect(pending.map((g) => g.slug)).toEqual(TOOL_GUIDES.slice(16).map((g) => g.slug))
     const html = generatedHtml()
     for (const g of pending) {
       expect(guideLangs(g)).toEqual(['es'])

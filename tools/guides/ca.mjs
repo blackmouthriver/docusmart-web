@@ -1353,5 +1353,484 @@ export default {
         ["Funciona amb PDF amb contrasenya?", "Primer treu-li la contrasenya amb Desbloquejar PDF i després repara'l."],
       ],
     },
+    'hacer-una-cuenta-de-cobro': {
+      slug: 'fer-un-compte-de-cobrament',
+      title: "Com fer un compte de cobrament en PDF, gratis i en minuts | DocuSmart",
+      description:
+        "Omple les teves dades, les del client i el que cobres: el total, la retenció i l'import en lletres surten sols. Baixa'l en PDF, gratis i sense pujar dades.",
+      h1: "Com fer un compte de cobrament en PDF",
+      lead: "Un compte de cobrament diu qui deu a qui, quant i per què. Amb la plantilla de DocuSmart l'omples al navegador i en surt un PDF endreçat, a punt per enviar.",
+      sections: [
+        {
+          h2: "Què és un compte de cobrament i qui el fa servir",
+          body: [
+            "És el document amb què una persona cobra una feina o un servei quan no emet factura: un dissenyador autònom, un professor particular, un contractista que presta serveis a una empresa o qui lloga un immoble. Ha de dir qui cobra, a qui, la data, el concepte, l'import (en xifres i en lletres) i com es paga.",
+            { tip: "Un compte de cobrament no substitueix la factura electrònica. Si per la teva activitat o els teus ingressos estàs obligat a facturar, consulta-ho amb un gestor o amb l'autoritat fiscal del teu país." },
+          ],
+        },
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Compte de cobrament](/cuenta-de-cobro) i deixa triat el tipus **Compte de cobrament**. Cerca el teu **país**: així s'ajusten la moneda, el nom de l'impost i els tipus de document (DNI, NIF, NIT, RFC…). El número del document es proposa sol (CC-0001) i la data és la d'avui; afegeix-hi la ciutat i, si vols, una **data límit de pagament**.",
+            "A **Les teves dades** escriu el teu nom i el teu document; a **Client**, els de qui et paga. L'adreça, el telèfon i el correu són opcionals.",
+            "A **Conceptes** descriu el que cobres, la quantitat i el preu unitari. Si són diverses coses, fes servir **Afegeix un concepte**. El subtotal, l'impost, la retenció i el total es calculen mentre escrius, i a sota apareix l'import en lletres.",
+          ],
+        },
+        {
+          h2: "Impost, retenció i descompte",
+          body: [
+            "Si cobres un impost (com l'IVA), escriu-ne el percentatge; en triar el teu país apareix un botó per aplicar el tipus general. Si el client et fa **retenció**, escriu el percentatge i es resta del total, com a la imatge: 1.800.000 de subtotal, 10 % de retenció i 1.620.000 a pagar. El **descompte** es resta abans dels impostos.",
+            { tip: "El percentatge de retenció depèn del teu país, del tipus de servei i de la teva situació fiscal. Si no el saps, pregunta-ho al client: gairebé sempre et diu quant et retindrà." },
+          ],
+        },
+        {
+          h2: "Dades per al pagament, signatura i PDF",
+          body: [
+            "A **Dades per al pagament** posa el banc, el tipus i el número de compte i a nom de qui està: així el client sap on ha de fer l'ingrés. A **Notes** pots escriure terminis o condicions. Amb **Afegeix la signatura** la dibuixes amb el dit o el ratolí, i amb **Afegeix el logotip** hi poses el teu a dalt.",
+            "Toca **Crea el PDF**: veuràs el compte de cobrament acabat, amb l'import en lletres i la línia de signatura, a punt per baixar, compartir per WhatsApp o desar a Drive.",
+            { ul: [
+              "El número continua sol a cada document nou (CC-0002, CC-0003…). I si marques **Recorda en aquest navegador**, la pròxima vegada les teves dades, el logotip i els teus clients ja hi seran; el compte bancari no es desa mai.",
+              "A **Documents emesos** pots obrir un compte anterior per corregir-lo, o passar un **pressupost** aprovat a compte de cobrament sense tornar-ho a escriure tot.",
+              "Amb la mateixa eina pots fer un **pressupost** (amb data de validesa) o un **rebut** de pagament.",
+            ] },
+          ],
+        },
+        {
+          h2: "Les teves dades i les del client no es pugen",
+          body: [
+            "Tot es prepara al teu navegador: els noms, els documents i els imports no s'envien a cap servidor. Si el client et demana el compte signat en un PDF que ja tens, fes servir [Signar PDF](/firmar-pdf); i si n'has d'enviar diversos junts per correu, [Comprimir PDF](/comprimir-pdf) els fa més lleugers.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre la plantilla", text: "Entra a docusmart.online/ca/compte-de-cobrament i tria el teu país." },
+        { name: "Escriu les dades", text: "Omple les teves dades, les del client, la ciutat i la data." },
+        { name: "Afegeix el que cobres", text: "Descriu cada concepte amb el seu import; el total, la retenció i l'import en lletres surten sols." },
+        { name: "Crea el PDF", text: "Afegeix les dades per al pagament i la signatura, toca Crea el PDF i baixa'l." },
+      ],
+      faq: [
+        ["Un compte de cobrament és el mateix que una factura?", "No. El compte de cobrament el fa servir qui no està obligat a facturar; no substitueix la factura electrònica. DocuSmart no emet factures electròniques."],
+        ["Com es calcula la retenció?", "Escriu el percentatge que t'indiqui el client i DocuSmart el resta del subtotal. El total a pagar ja surt amb la retenció descomptada."],
+        ["Puc fer un compte de cobrament en una altra moneda?", "Sí. En triar el teu país s'hi posa la seva moneda, i la pots canviar per una altra (dòlars, euros…) al camp Moneda."],
+      ],
+    },
+    'hacer-una-hoja-de-vida': {
+      slug: 'fer-un-curriculum',
+      title: "Com fer un currículum en PDF o Word, gratis i sense registrar-te | DocuSmart",
+      description:
+        "Fes el teu currículum amb una plantilla clara i apta per als portals d'ocupació (ATS), amb foto o sense. Baixa'l en PDF o Word, gratis i sense crear cap compte.",
+      h1: "Com fer un currículum en PDF o Word",
+      lead: "Un bon currículum s'entén en segons i passa els filtres automàtics dels portals d'ocupació. Aquí l'omples per seccions i surt endreçat, sense barallar-te amb el format.",
+      sections: [
+        {
+          h2: "Tria la plantilla",
+          body: [
+            "Obre [Currículum](/hoja-de-vida). A dalt tries com es veurà:",
+            { ul: [
+              "**Clàssica (ATS)**: una columna i sense foto. És la que millor llegeixen els sistemes que filtren currículums als portals d'ocupació; fes-la servir per presentar-te a ofertes en línia.",
+              "**Compacta**: igual de clara, amb lletra i marges més petits perquè hi càpiga més en una pàgina.",
+              "**Amb foto**: la teva foto a dalt, com la demanen moltes empreses de Llatinoamèrica.",
+            ] },
+            "També tries la mida del full (Carta o A4), la lletra (moderna o clàssica) i el color dels títols.",
+          ],
+        },
+        {
+          h2: "Pas a pas",
+          body: [
+            "Omple les teves **dades personals**: nom, càrrec o professió, ciutat, telèfon i correu. Si tens LinkedIn o un portafolis, posa'l a **Enllaços**. Després escriu el teu **perfil professional** en dues o tres frases: qui ets, què saps fer i què busques.",
+            "A **Experiència laboral** afegeix cada feina amb el càrrec, l'empresa i les dates; marca **Hi treballo actualment** si encara hi ets. A **Assoliments i funcions** escriu un assoliment per línia: cada línia surt com un punt. Fes el mateix amb **Formació**, **Habilitats**, **Idiomes**, **Cursos** i **Referències**; les seccions buides no apareixen.",
+            "Toca **Crea el PDF** o **Crea el Word (.docx)**. Veuràs el currículum acabat, a punt per baixar o compartir.",
+            { tip: "Comença cada assoliment amb un verb i fes servir xifres sempre que puguis: «He reduït un 30 % els temps de lliurament» diu més que «encarregada de lliuraments»." },
+          ],
+        },
+        {
+          h2: "Compara'l amb l'oferta i escriu la carta",
+          body: [
+            "A **Comparar amb una oferta de feina** enganxes l'anunci de la vacant i veus quines paraules clau ja té el teu currículum i quines li falten, amb el percentatge de coincidència. Els filtres automàtics busquen aquestes paraules; afegeix-hi només les que tinguis de debò.",
+            "A **Carta de presentació** escrius l'empresa i el càrrec, i DocuSmart prepara un esborrany amb la teva experiència i els teus punts forts. Revisa'l, ajusta'l a la teva manera i baixa'l en PDF o Word.",
+          ],
+        },
+        {
+          h2: "No perdis el que has escrit",
+          body: [
+            "Amb **Desa automàticament** el que escrius es queda en aquest navegador encara que tanquis la pàgina (la foto no). Per continuar en un altre equip, fes servir **Desa l'esborrany**: baixes un fitxer .json que després obres allà amb **Obre l'esborrany**.",
+            "Si l'empresa et demana la foto amb fons blanc, prepara-la abans a [Foto carnet](/foto-tamano-documento). I si has d'enviar el currículum juntament amb certificats en un sol fitxer, ajunta'ls amb [Unir PDF](/unir-pdf).",
+          ],
+        },
+        {
+          h2: "La teva informació no surt de l'equip",
+          body: [
+            "El currículum es prepara al teu navegador: les teves dades, la teva experiència i la teva foto no es pugen a cap servidor ni es fan servir per a res més. No cal crear cap compte ni deixar el correu.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Tria la plantilla", text: "Entra a docusmart.online/ca/curriculum i tria Clàssica (ATS), Compacta o Amb foto." },
+        { name: "Omple les seccions", text: "Escriu les teves dades, el perfil, l'experiència, la formació i les habilitats." },
+        { name: "Compara'l amb l'oferta", text: "Enganxa l'anunci de la vacant per veure quines paraules clau et falten." },
+        { name: "Baixa'l", text: "Toca Crea el PDF o Crea el Word i baixa el teu currículum." },
+      ],
+      faq: [
+        ["Què és un currículum ATS?", "Un currículum d'una sola columna, sense taules ni imatges, que els sistemes de selecció dels portals d'ocupació poden llegir sense errors. És la plantilla Clàssica."],
+        ["El puc baixar en Word?", "Sí. Amb Crea el Word (.docx) l'obres i l'edites a Word, Google Docs o LibreOffice."],
+        ["M'he de registrar?", "No. És gratis, no demana cap compte ni correu i el que escrius es queda al teu equip."],
+      ],
+    },
+    'crear-un-codigo-qr': {
+      slug: 'crear-un-codi-qr',
+      title: "Com crear un codi QR gratis per a un enllaç, WhatsApp o Wi-Fi | DocuSmart",
+      description:
+        "Crea un codi QR per a un enllaç, WhatsApp, la teva wifi o el teu contacte, amb el teu color i logotip. Baixa'l en PNG, SVG o PDF. Gratis, sense registre i sense caducitat.",
+      h1: "Com crear un codi QR gratis",
+      lead: "Un QR porta la gent a la teva pàgina, obre un xat de WhatsApp o connecta a la wifi sense escriure res. Crea'l en segons; no caduca ni depèn de cap servidor.",
+      sections: [
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Crear i llegir codis QR](/crear-codigo-qr) i tria què guardarà: **URL**, **Text**, **Correu**, **Telèfon**, **WhatsApp**, **SMS**, **Ubicació**, **Wi-Fi**, **Contacte** o **Esdeveniment**. Escriu les dades (per a un enllaç, l'adreça completa amb https://).",
+            "Toca **Generar QR**. El codi apareix de seguida i el pots baixar en PNG, en **SVG** (vectorial, s'imprimeix nítid a qualsevol mida), en **PDF (10 cm)**, copiar-lo com a imatge o imprimir-lo.",
+            { tip: "Abans d'imprimir cent fullets, escaneja el QR amb el mòbil per comprovar que obre el que esperes." },
+          ],
+        },
+        {
+          h2: "Què pot fer cada tipus",
+          body: [
+            { ul: [
+              "**WhatsApp**: escriu el número amb el prefix del país (per exemple, 34 per a Espanya) i, si vols, un missatge. En escanejar-lo s'obre el xat amb el missatge ja escrit.",
+              "**Wi-Fi**: el nom de la xarxa, la seguretat i la contrasenya. Les teves visites es connecten sense que l'hagis de dictar.",
+              "**Contacte**: nom, telèfon, correu i empresa. En escanejar-lo, el mòbil ofereix desar-lo a l'agenda.",
+              "**Ubicació**: una adreça o unes coordenades que s'obren al mapa.",
+              "**Esdeveniment**: títol, lloc, inici i final, per afegir-lo al calendari.",
+            ] },
+          ],
+        },
+        {
+          h2: "Dona-li el teu estil",
+          body: [
+            "A **Personalitza el disseny** canvies el color del codi i del fons (o el deixes transparent per posar-lo sobre el teu disseny), hi poses el teu **logotip** al centre i tries la mida de la imatge. Si els colors tenen poc contrast, DocuSmart t'avisa, perquè una càmera podria no llegir-lo.",
+            "Amb **Protegit**, el contingut del QR queda xifrat amb una contrasenya (AES-256): només l'obre qui la tingui, a DocuSmart. I amb **Diversos QR des d’una llista** en generes molts alhora, un per línia o des d'un CSV, per exemple per a les taules d'un restaurant o les etiquetes d'un inventari.",
+          ],
+        },
+        {
+          h2: "Per llegir un QR",
+          body: [
+            "Si el que necessites és llegir-ne un, fes servir [Llegir codi QR](/leer-codigo-qr): amb la càmera, des d'una foto o una captura de pantalla, o des d'un PDF. Abans d'obrir un enllaç et mostra on porta i t'avisa si sembla enganyós.",
+          ],
+        },
+        {
+          h2: "El teu QR no caduca",
+          body: [
+            "El codi es genera al teu navegador i guarda les dades directament, sense passar per un enllaç intermedi. Per això no caduca, no té límit d'escanejos i ningú més no veu el que hi has posat. Els QR que creïs queden a l'**Historial**, només al teu navegador.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Tria el tipus", text: "Entra a docusmart.online/ca/crear-codi-qr i tria URL, WhatsApp, Wi-Fi o un altre tipus." },
+        { name: "Escriu les dades", text: "Posa l'enllaç, el número o les dades de la xarxa." },
+        { name: "Genera el QR", text: "Toca Generar QR i, si vols, canvia el color o afegeix-hi el teu logotip." },
+        { name: "Baixa'l", text: "Baixa'l en PNG, SVG o PDF, o imprimeix-lo." },
+      ],
+      faq: [
+        ["El codi QR caduca?", "No. Les dades van dins del mateix codi, sense cap enllaç intermedi, així que funciona per sempre i sense límit d'escanejos."],
+        ["Quin format faig servir per imprimir?", "L'SVG: és vectorial i es veu nítid a qualsevol mida, des d'una targeta fins a un cartell. També hi ha un PDF de 10 cm."],
+        ["Puc posar el meu logotip al QR?", "Sí, a Personalitza el disseny. El logotip queda en un cercle al centre i el codi es continua llegint."],
+      ],
+    },
+    'cambiar-el-tamano-de-una-foto': {
+      slug: 'canviar-la-mida-duna-foto',
+      title: "Com canviar la mida d'una foto en píxels, % o centímetres | DocuSmart",
+      description:
+        "Canvia la mida d'una o diverses fotos en píxels, en percentatge, en centímetres o a la mida exacta d'Instagram, WhatsApp o YouTube. Gratis i sense pujar-les.",
+      h1: "Com canviar la mida d'una foto",
+      lead: "Una foto del mòbil fa milers de píxels: massa per a un formulari, una pàgina web o una portada. Aquí la deixes a la mida que necessites, sense deformar-la.",
+      sections: [
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Redimensionar imatge](/redimensionar-imagen) i tria una o diverses fotos (JPG, PNG, WebP, HEIC, GIF o BMP). Després tria **Com redimensionar**:",
+            { ul: [
+              "**Per percentatge**: per exemple, 50 % deixa la foto a la meitat d'amplada i d'alçada.",
+              "**Per píxels**: escriu l'amplada, l'alçada o totes dues. Amb **Conservar la proporció** activat, n'hi ha prou amb un costat: l'altre es calcula sol.",
+              "**Xarxes socials**: mides exactes per a Instagram, estats de WhatsApp, portades de Facebook o LinkedIn i miniatures de YouTube.",
+              "**En centímetres**: per imprimir, amb la resolució que triïs.",
+            ] },
+            "Toca **Redimensionar** i veuràs la foto abans i després, amb el seu pes. Si n'has triat diverses, es desen juntes en un ZIP.",
+          ],
+        },
+        {
+          h2: "Que no es deformi",
+          body: [
+            "Una foto es veu estirada quan canvies l'amplada i l'alçada en una proporció diferent. Per això **Conservar la proporció** ve activat: si escrius els dos costats, la foto cap dins d'aquesta mida sense estirar-se. A **Xarxes socials**, la imatge omple la mida exacta i el que sobra es retalla per igual des del centre.",
+            { tip: "Fer petita una foto mai no li treu nitidesa a la vista, però fer-la gran no hi afegeix detall: una foto petita ampliada al doble es veu borrosa." },
+          ],
+        },
+        {
+          h2: "Si el que vols és retallar-la o que pesi menys",
+          body: [
+            "Canviar la mida no és el mateix que retallar. Per treure una vora, enquadrar una persona o deixar la foto quadrada, fes servir [Retallar imatge](/recortar-imagen): retall lliure o en proporcions fixes com 1:1, 4:3 o 16:9.",
+            "I si un formulari et demana que la foto pesi menys d'una certa mida (per exemple, 200 KB), [Comprimir imatge](/comprimir-imagen) baixa la qualitat just el necessari perquè hi càpiga, i només redueix els píxels si no n'hi ha prou.",
+          ],
+        },
+        {
+          h2: "Mides que es demanen sovint",
+          body: [
+            { ul: [
+              "**Per a una pàgina web o un blog**: entre 1200 i 1920 píxels d'amplada és més que suficient; més gran només fa que la pàgina carregui lenta.",
+              "**Per a un formulari o un tràmit**: solen demanar una amplada màxima (per exemple, 800 píxels) i un pes màxim. Primer ajusta la mida aquí i, si encara pesa massa, comprimeix-la.",
+              "**Per imprimir**: fes servir En centímetres; a 300 ppp, una foto de 10 × 15 cm necessita uns 1181 × 1772 píxels per veure's nítida.",
+            ] },
+          ],
+        },
+        {
+          h2: "Les teves fotos no es pugen",
+          body: [
+            "Tot passa al teu navegador, també amb desenes de fotos alhora. A més, en desar-les se'n treuen les dades ocultes (EXIF), com la ubicació GPS on es van fer.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Tria les fotos", text: "Entra a docusmart.online/ca/redimensionar-imatge i tria una o diverses fotos." },
+        { name: "Tria la mida", text: "Per percentatge, per píxels, una mida de xarxes socials o en centímetres." },
+        { name: "Redimensiona", text: "Toca Redimensionar i compara l'abans i el després." },
+        { name: "Baixa", text: "Baixa la foto, o el ZIP si n'eren diverses." },
+      ],
+      faq: [
+        ["La foto perd qualitat si la faig més petita?", "A la vista no: es veu igual de nítida, només que més petita. El que no es pot fer és ampliar-la sense que es noti."],
+        ["Puc canviar la mida de diverses fotos alhora?", "Sí. Tria-les totes juntes: es redimensionen amb la mateixa mida i es baixen en un ZIP."],
+        ["Quina mida faig servir per a Instagram?", "A Xarxes socials tens Instagram quadrada i vertical, i històries. La foto omple la mida i el que sobra es retalla des del centre."],
+      ],
+    },
+    'comprimir-archivos-en-zip': {
+      slug: 'comprimir-fitxers-en-zip',
+      title: "Com comprimir fitxers en ZIP i obrir un ZIP o RAR sense programes | DocuSmart",
+      description:
+        "Ajunta diversos fitxers o una carpeta en un ZIP, amb contrasenya si vols, i obre ZIP, RAR o 7Z des del navegador. Gratis, sense instal·lar res i sense pujar-los.",
+      h1: "Com comprimir fitxers en ZIP i obrir un ZIP o RAR",
+      lead: "Un ZIP ajunta molts fitxers en un de sol: més fàcil d'enviar per correu i, de vegades, més lleuger. Aquí el crees i l'obres des del navegador, sense instal·lar programes.",
+      sections: [
+        {
+          h2: "Crear un ZIP, pas a pas",
+          body: [
+            "Obre [Comprimir fitxers](/comprimir-archivos) i afegeix-hi els fitxers (de qualsevol tipus) o una carpeta sencera amb **Afegir una carpeta**. Escriu el nom del ZIP i tria la compressió: **Ràpida**, **Normal** o **Màxima**.",
+            "Toca **Crear ZIP**. Veuràs els teus fitxers a un costat i el ZIP a l'altre, amb quant pesava tot abans i quant pesa ara.",
+            { tip: "Les fotos, els vídeos i els PDF ja venen comprimits, així que en un ZIP gairebé no baixen de pes. El que sí que es redueix molt són els documents de Word, els fulls de càlcul i els textos." },
+          ],
+        },
+        {
+          h2: "Amb contrasenya o en parts",
+          body: [
+            { ul: [
+              "**Protegir amb contrasenya (AES-256)**: ningú no obre el ZIP sense la clau. En ZIP la contrasenya no pot portar accents ni ñ; si els necessites, tria el format 7Z.",
+              "**Dividir en parts**: si el correu no accepta un fitxer tan gran, el parteixes en diversos (.001, .002…). Per obrir-lo calen totes les parts, amb DocuSmart, 7-Zip o WinRAR.",
+              "**7Z**: comprimeix més que ZIP, però en alguns equips cal instal·lar un programa per obrir-lo. ZIP s'obre a qualsevol ordinador i mòbil sense instal·lar res.",
+            ] },
+          ],
+        },
+        {
+          h2: "Obrir un ZIP, RAR o 7Z",
+          body: [
+            "Per treure el que porta un fitxer comprimit, fes servir [Descomprimir RAR, ZIP i 7Z](/descomprimir-archivos). Obre ZIP, RAR, 7Z, TAR, GZ, BZ2 i XZ, també els que tenen contrasenya o estan dividits en parts.",
+            "Veuràs la llista del que hi ha a dins, amb les carpetes. Pots obrir la previsualització d'un fitxer abans de baixar-lo, extreure només els que triïs o baixar-los tots junts.",
+          ],
+        },
+        {
+          h2: "Si el que vols és que un PDF pesi menys",
+          body: [
+            "Ficar un PDF en un ZIP gairebé no el fa més petit. Perquè un PDF pesi menys de debò, passa'l per [Comprimir PDF](/comprimir-pdf), que redueix les imatges que porta a dins.",
+          ],
+        },
+        {
+          h2: "Els teus fitxers no surten de l'equip",
+          body: [
+            "Comprimir i descomprimir passa a la memòria del teu navegador: no es puja res a internet. Amb fitxers molt grans (diversos GB) pot trigar o quedar-se sense memòria; en aquest cas, divideix-los en diversos ZIP.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Afegeix els fitxers", text: "Entra a docusmart.online/ca/comprimir-fitxers i afegeix-hi fitxers o una carpeta." },
+        { name: "Tria les opcions", text: "Escriu el nom, la compressió i, si vols, una contrasenya." },
+        { name: "Crea el ZIP", text: "Toca Crear ZIP i mira quant ha baixat el pes." },
+        { name: "Baixa", text: "Baixa el ZIP o comparteix-lo." },
+      ],
+      faq: [
+        ["Puc obrir un RAR sense WinRAR?", "Sí. Descomprimir RAR, ZIP i 7Z obre RAR, ZIP, 7Z i altres formats al navegador, sense instal·lar res. Per crear-ne un de nou, fes servir ZIP o 7Z."],
+        ["Per què el meu ZIP pesa gairebé el mateix?", "Perquè les fotos, els vídeos i els PDF ja venen comprimits. El ZIP serveix per ajuntar-los en un sol fitxer, no tant per fer-los més petits."],
+        ["És segur posar-hi contrasenya?", "Sí. Es xifra amb AES-256 i la contrasenya no es desa enlloc: si l'oblides, no hi ha manera de recuperar-la."],
+      ],
+    },
+    'recortar-los-margenes-de-un-pdf': {
+      slug: 'retallar-marges-pdf',
+      title: "Com retallar els marges o una part d'un PDF | DocuSmart",
+      description:
+        "Treu els marges en blanc d'un PDF amb un toc o retalla a mà la part que vols conservar, a totes les pàgines o només en una. Gratis i sense pujar-lo.",
+      h1: "Com retallar els marges o una part d'un PDF",
+      lead: "Un PDF amb marges enormes es llegeix petit al mòbil i s'imprimeix amb molt de paper en blanc. Retallar-lo deixa només el que importa, sense tocar el contingut.",
+      sections: [
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Retallar PDF](/recortar-pdf) i tria el fitxer. Veuràs la primera pàgina amb un requadre a sobre: la zona enfosquida és la que es retallarà.",
+            "Toca **Treure marges en blanc** i el requadre s'ajusta sol al contingut de la pàgina, com a la imatge. Si ho prefereixes fer a mà, arrossega les vores o les cantonades del requadre. A sota veus la mida que quedarà, en mil·límetres.",
+            "Tria si el retall s'aplica a **Totes les pàgines** o **Només la pàgina** que estàs veient, toca **Retallar PDF** i baixa el resultat.",
+            { tip: "Si les pàgines tenen marges diferents, revisa'n unes quantes amb les fletxes abans de retallar: el requadre de «Totes les pàgines» és el mateix per a cadascuna." },
+          ],
+        },
+        {
+          h2: "Per a què serveix",
+          body: [
+            { ul: [
+              "**Llegir al mòbil**: sense marges, el text ocupa tota la pantalla i es llegeix més gran.",
+              "**Treure'n una part**: una taula, un gràfic o la foto d'un document escanejat, per fer-la servir a part.",
+              "**Treure el que sobra d'un escaneig**: la vora negra de la tapa de l'escàner o la taula al voltant del full.",
+            ] },
+          ],
+        },
+        {
+          h2: "Què passa amb el contingut",
+          body: [
+            "El retall canvia l'àrea visible de cada pàgina, sense refer el text ni les imatges: el que queda es veu igual de nítid i el text es continua podent copiar i cercar.",
+            "Si després només necessites algunes pàgines, separa-les amb [Dividir PDF](/dividir-pdf); i si alguna ha quedat de costat, endreça-la amb [Girar PDF](/rotar-pdf).",
+          ],
+        },
+        {
+          h2: "Abans d'imprimir",
+          body: [
+            "En imprimir un PDF retallat, la pàgina queda més petita que el full. Perquè ocupi tot el paper, tria **Ajusta a la mida de la pàgina** a la finestra d'impressió del navegador o del visor de PDF.",
+            "Si has retallat un escaneig per quedar-te amb la foto d'un document (un DNI, un carnet), revisa que no n'hagis tallat cap vora: molts tràmits demanen que se'n vegin les quatre cantonades.",
+          ],
+        },
+        {
+          h2: "El teu PDF no surt de l'equip",
+          body: [
+            "Tot el retall passa al teu navegador. El PDF no es puja a cap servidor, així que el pots fer servir amb tranquil·litat amb contractes o documents personals.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Retallar PDF", text: "Entra a docusmart.online/ca/retallar-pdf i tria el PDF." },
+        { name: "Ajusta el requadre", text: "Toca Treure marges en blanc o arrossega les vores a mà." },
+        { name: "Tria les pàgines", text: "Aplica el retall a totes les pàgines o només a la que estàs veient." },
+        { name: "Baixa", text: "Toca Retallar PDF i baixa el resultat." },
+      ],
+      faq: [
+        ["Es perd qualitat en retallar un PDF?", "No. Només canvia l'àrea visible de la pàgina; el text i les imatges queden iguals."],
+        ["Puc retallar només una pàgina?", "Sí. Abans de retallar, tria Només la pàgina que estàs veient."],
+        ["El que es retalla s'esborra del fitxer?", "Queda fora de la vista i de la impressió. Si el que vols és esborrar una dada privada, fes servir Tatxar PDF, que l'elimina de debò."],
+      ],
+    },
+    'cambiar-el-formato-de-una-imagen': {
+      slug: 'canviar-el-format-duna-imatge',
+      title: "Com canviar el format d'una imatge: HEIC, JPG, PNG o WebP | DocuSmart",
+      description:
+        "Passa fotos HEIC de l'iPhone a JPG, un JPG a PNG o qualsevol imatge a WebP, una o moltes alhora. Gratis, al navegador i sense pujar les teves fotos.",
+      h1: "Com canviar el format d'una imatge: HEIC, JPG, PNG o WebP",
+      lead: "Cada format serveix per a una cosa diferent, i de vegades una pàgina o un programa només n'accepta un. Aquí canvies el format de les teves fotos en segons, sense instal·lar res.",
+      sections: [
+        {
+          h2: "Quin format et convé",
+          body: [
+            { ul: [
+              "**JPG**: el de les fotos. Pesa poc i l'obre qualsevol equip, pàgina o formulari. No admet fons transparent.",
+              "**PNG**: sense pèrdua de qualitat i amb fons transparent. Ideal per a logotips, captures de pantalla i dibuixos; amb fotos pesa molt més.",
+              "**WebP**: el format modern del web. Es veu igual que un JPG amb força menys pes, com a la imatge: de 189 KB a 50 KB.",
+              "**HEIC**: el que fan servir els iPhone. Ocupa poc, però molts ordinadors, pàgines i programes no l'obren.",
+            ] },
+          ],
+        },
+        {
+          h2: "Fotos de l'iPhone (HEIC) a JPG",
+          body: [
+            "Obre [HEIC a JPG](/heic-a-jpg) i tria les teves fotos HEIC, una o moltes. Ajusta la **Qualitat del JPG** si vols (la que ve marcada es veu igual que l'original) i toca convertir. Si n'eren diverses, es baixen juntes en un ZIP.",
+            { tip: "La primera vegada es baixa el descodificador d'HEIC (1,4 MB) i queda desat: les conversions següents comencen de seguida." },
+            "Si prefereixes que l'iPhone faci les fotos directament en JPG, a **Configuració → Càmera → Formats** tria **Més compatible**.",
+          ],
+        },
+        {
+          h2: "JPG a PNG, o qualsevol imatge a WebP",
+          body: [
+            "Amb [JPG a PNG](/jpg-a-png) converteixes una foto a PNG quan un programa ho demana o quan l'has d'editar diverses vegades sense que perdi qualitat. Amb [Imatge a WebP](/imagen-a-webp) redueixes el pes de les fotos d'una pàgina web o d'una botiga en línia sense que es noti.",
+            "Totes dues funcionen igual: tries una o diverses imatges, toques el botó i veus l'abans i el després amb el pes de cada versió, a punt per baixar.",
+          ],
+        },
+        {
+          h2: "Si a més necessites que pesi menys o canviar-ne la mida",
+          body: [
+            "Canviar el format no canvia les mides de la foto. Si un formulari et demana que no passi d'un cert pes, fes servir [Comprimir imatge](/comprimir-imagen), que també accepta fotos HEIC i les lliura en JPG; i si et demanen una amplada o una alçada exactes, [Redimensionar imatge](/redimensionar-imagen).",
+          ],
+        },
+        {
+          h2: "Sense pujar les teves fotos",
+          body: [
+            "La conversió passa al teu navegador: les teves fotos no es pugen a cap servidor. En desar-les, a més, se'n treuen les dades ocultes (EXIF), com la ubicació on es van fer.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Tria la conversió", text: "Entra a HEIC a JPG, JPG a PNG o Imatge a WebP a docusmart.online." },
+        { name: "Tria les fotos", text: "Afegeix una o diverses imatges." },
+        { name: "Converteix", text: "Toca el botó i compara l'abans i el després." },
+        { name: "Baixa", text: "Baixa la imatge, o el ZIP si n'eren diverses." },
+      ],
+      faq: [
+        ["Per què no puc obrir les fotos del meu iPhone a l'ordinador?", "Perquè estan en HEIC, un format que molts equips i pàgines no reconeixen. Passa-les a JPG i s'obriran a qualsevol lloc."],
+        ["Una foto perd qualitat en passar-la a PNG?", "No: PNG no perd qualitat. Però tampoc no la recupera; la foto queda igual que el JPG original i pesa més."],
+        ["WebP es veu a tots els navegadors?", "Sí, a tots els navegadors actuals. Alguns programes d'escriptori antics encara no l'obren."],
+      ],
+    },
+    'borrar-la-ubicacion-y-los-datos-ocultos-de-una-foto': {
+      slug: 'esborrar-ubicacio-i-dades-ocultes-duna-foto',
+      title: "Com esborrar la ubicació i les dades ocultes d'una foto o un PDF | DocuSmart",
+      description:
+        "Mira quines dades ocultes guarda una foto o un document (ubicació GPS, càmera, data, autor) i esborra-les abans de compartir-lo. Gratis i sense pujar el fitxer.",
+      h1: "Com esborrar la ubicació i les dades ocultes d'una foto",
+      lead: "Una foto del mòbil pot guardar el lloc exacte on es va fer, i un document, el nom de qui el va escriure. Abans de publicar-los o enviar-los, mira què porten i esborra-ho.",
+      sections: [
+        {
+          h2: "Què són les dades ocultes (metadades)",
+          body: [
+            "Són dades que van dins del fitxer però no es veuen a la imatge ni a les pàgines. Una foto pot guardar la **ubicació GPS**, la marca i el model del mòbil, el número de sèrie de la càmera i la data i l'hora exactes. Un PDF o un document de Word pot guardar l'**autor**, l'empresa, el programa amb què es va fer i les dates de creació i modificació.",
+            "Qui rebi el fitxer les pot veure amb qualsevol visor. Amb una foto de casa teva, per exemple, la ubicació porta a la teva adreça.",
+          ],
+        },
+        {
+          h2: "Pas a pas",
+          body: [
+            "Obre [Treure metadades](/quitar-metadatos) i tria les teves fotos o documents: JPG, PNG, WebP, HEIC, TIFF, vídeos MP4 i MOV, PDF, Word, Excel o PowerPoint. A l'instant veuràs la llista de **Dades ocultes trobades** a cadascun, com a la imatge; si una foto guarda la ubicació, apareix en vermell amb un avís.",
+            "Toca **Treure metadades**. Veuràs quantes dades tenia cada fitxer abans i quantes en queden després, i baixes la còpia neta (o un ZIP, si n'eren diversos).",
+            { tip: "Només es conserva l'orientació de les fotos, perquè no apareguin girades. La imatge no es torna a comprimir: no perd qualitat." },
+          ],
+        },
+        {
+          h2: "En PDF i documents d'Office",
+          body: [
+            "En els PDF, l'opció **Treu també comentaris, adjunts i JavaScript** esborra, a més, les notes amb el nom del seu autor, els fitxers adjunts i el codi que s'executa en obrir-los. Desactiva-la si has de conservar els comentaris.",
+            "A Word, Excel i PowerPoint es treuen l'autor, l'empresa i les dates. Els noms que apareixen als comentaris i al control de canvis s'esborren des del mateix programa.",
+          ],
+        },
+        {
+          h2: "Si la dada privada està a la vista",
+          body: [
+            "Treure metadades no canvia el que es veu. Si el que vols amagar és un número de DNI, una signatura o una adreça que apareix a les pàgines d'un PDF, fes servir [Tatxar PDF](/censurar-pdf), que la cobreix i l'elimina del fitxer.",
+          ],
+        },
+        {
+          h2: "Es fa al teu equip",
+          body: [
+            "Tot passa al teu navegador: les teves fotos i documents no es pugen a cap servidor. Així no deixes còpies d'un fitxer privat just quan intentes protegir-lo.",
+          ],
+        },
+      ],
+      steps: [
+        { name: "Obre Treure metadades", text: "Entra a docusmart.online/ca/treure-metadades i tria fotos o documents." },
+        { name: "Revisa què guarden", text: "Mira la llista de dades ocultes de cada fitxer, com la ubicació GPS." },
+        { name: "Esborra-les", text: "Toca Treure metadades i comprova que no n'ha quedat cap." },
+        { name: "Baixa", text: "Baixa la còpia neta, a punt per compartir." },
+      ],
+      faq: [
+        ["WhatsApp esborra la ubicació de les fotos?", "Quan les envies com a foto, WhatsApp les torna a comprimir i en treu la majoria de dades. Però si les envies com a document, per correu o les puges a altres pàgines, poden arribar amb la ubicació."],
+        ["La foto perd qualitat?", "No. Només es treuen les dades ocultes; la imatge queda exactament igual."],
+        ["Quines dades es conserven?", "Només l'orientació de les fotos, perquè no apareguin girades. Tota la resta s'esborra."],
+      ],
+    },
   },
 }

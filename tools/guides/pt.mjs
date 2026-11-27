@@ -1353,5 +1353,484 @@ export default {
         ['Funciona com PDF com senha?', 'Primeiro remova a senha com o Desbloquear PDF e depois repare-o.'],
       ],
     },
+    'hacer-una-cuenta-de-cobro': {
+      slug: 'fazer-uma-cobranca-de-servicos',
+      title: 'Como fazer uma cobrança de serviços em PDF, grátis e em minutos | DocuSmart',
+      description:
+        'Preencha seus dados, os do cliente e o que você cobra: o total, a retenção e o valor por extenso saem sozinhos. Baixe em PDF, grátis e sem enviar seus dados.',
+      h1: 'Como fazer uma cobrança de serviços em PDF',
+      lead: 'Uma cobrança de serviços diz quem deve a quem, quanto e por quê. Com o modelo do DocuSmart, você a preenche no navegador e sai um PDF organizado, pronto para enviar.',
+      sections: [
+        {
+          h2: 'O que é uma cobrança de serviços e quem a usa',
+          body: [
+            'É o documento com que uma pessoa cobra um trabalho ou um serviço quando não emite nota fiscal: um designer autônomo, um professor particular, um prestador de serviços para uma empresa ou quem aluga um imóvel. Ele deve dizer quem cobra, de quem, a data, a descrição, o valor (em números e por extenso) e como pagar.',
+            { tip: 'Uma cobrança de serviços não substitui a nota fiscal eletrônica. Se pela sua atividade ou pela sua renda você é obrigado a emitir nota, consulte um contador ou a autoridade tributária do seu país.' },
+          ],
+        },
+        {
+          h2: 'Passo a passo',
+          body: [
+            'Abra o [Recibo, orçamento e cobrança](/cuenta-de-cobro) e deixe escolhido o tipo **Cobrança de serviços**. Procure seu **País**: assim se ajustam a moeda, o nome do imposto e os tipos de documento (CPF, CNPJ, NIF…). O número do documento é sugerido sozinho (CC-0001) e a data é a de hoje; adicione a cidade e, se quiser, uma **Data de vencimento**.',
+            'Em **Seus dados**, escreva seu nome e seu documento; em **Cliente**, os de quem vai pagar. O endereço, o telefone e o e-mail são opcionais.',
+            'Em **Itens**, descreva o que você cobra, a quantidade e o valor unitário. Se forem várias coisas, use **Adicionar item**. O subtotal, o imposto, a retenção e o total são calculados enquanto você digita, e embaixo aparece o valor por extenso.',
+          ],
+        },
+        {
+          h2: 'Imposto, retenção e desconto',
+          body: [
+            'Se você cobra um imposto (como o ISS ou o IVA), escreva a porcentagem dele; ao escolher seu país, aparece um botão para usar a alíquota geral. Se o cliente faz **Retenção**, escreva a porcentagem e ela é descontada do total, como na imagem: 1.800.000 de subtotal, 10% de retenção e 1.620.000 a pagar. O **Desconto** é aplicado antes dos impostos.',
+            { tip: 'A porcentagem de retenção depende do seu país, do tipo de serviço e da sua situação tributária. Se não souber, pergunte ao cliente: quase sempre ele diz quanto vai reter.' },
+          ],
+        },
+        {
+          h2: 'Dados para pagamento, assinatura e PDF',
+          body: [
+            'Em **Dados para pagamento**, coloque o banco, o tipo e o número da conta e o nome do titular: assim o cliente sabe onde depositar. Em **Observações**, você pode escrever prazos ou condições. Com **Adicionar assinatura**, você a desenha com o dedo ou o mouse, e com **Adicionar logo** coloca o seu no topo.',
+            'Toque em **Criar PDF**: você verá a cobrança pronta, com o valor por extenso e a linha de assinatura, pronta para baixar, compartilhar pelo WhatsApp ou salvar no Drive.',
+            { ul: [
+              'O número avança sozinho a cada documento novo (CC-0002, CC-0003…). E se você marcar **Lembrar neste navegador**, da próxima vez seus dados, o logo e seus clientes já estarão preenchidos; os dados da conta bancária nunca são salvos.',
+              'Em **Documentos emitidos**, você pode abrir uma cobrança anterior para corrigi-la, ou transformar um **Orçamento** aprovado em cobrança sem digitar tudo de novo.',
+              'Com a mesma ferramenta, você pode fazer um **Orçamento** (com data de validade) ou um **Recibo** de pagamento.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Seus dados e os do cliente não são enviados',
+          body: [
+            'Tudo é montado no seu navegador: os nomes, os documentos e os valores não são enviados a nenhum servidor. Se o cliente pedir a cobrança assinada em um PDF que você já tem, use o [Assinar PDF](/firmar-pdf); e se for mandar várias juntas por e-mail, o [Comprimir PDF](/comprimir-pdf) as deixa mais leves.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Abra o modelo', text: 'Acesse docusmart.online/pt/recibo-e-orcamento e escolha seu país.' },
+        { name: 'Escreva os dados', text: 'Preencha seus dados, os do cliente, a cidade e a data.' },
+        { name: 'Adicione o que você cobra', text: 'Descreva cada item com seu valor; o total, a retenção e o valor por extenso saem sozinhos.' },
+        { name: 'Crie o PDF', text: 'Adicione os dados para pagamento e sua assinatura, toque em Criar PDF e baixe.' },
+      ],
+      faq: [
+        ['Uma cobrança de serviços é o mesmo que uma nota fiscal?', 'Não. A cobrança de serviços é usada por quem não é obrigado a emitir nota; ela não substitui a nota fiscal eletrônica. O DocuSmart não emite notas fiscais eletrônicas.'],
+        ['Como a retenção é calculada?', 'Escreva a porcentagem que o seu cliente indicar e o DocuSmart a desconta do subtotal. O total a pagar já sai com a retenção descontada.'],
+        ['Posso fazer uma cobrança em outra moeda?', 'Sim. Ao escolher seu país, a moeda dele é preenchida, e você pode trocá-la por outra (dólares, euros…) no campo Moeda.'],
+      ],
+    },
+    'hacer-una-hoja-de-vida': {
+      slug: 'fazer-um-curriculo',
+      title: 'Como fazer um currículo em PDF ou Word, grátis e sem cadastro | DocuSmart',
+      description:
+        'Monte seu currículo com um modelo claro e compatível com os sites de vagas (ATS), com ou sem foto. Baixe em PDF ou Word, de graça e sem criar uma conta.',
+      h1: 'Como fazer um currículo em PDF ou Word',
+      lead: 'Um bom currículo é entendido em segundos e passa pelos filtros automáticos dos sites de vagas. Aqui você o preenche por seções e ele sai organizado, sem brigar com a formatação.',
+      sections: [
+        {
+          h2: 'Escolha o modelo',
+          body: [
+            'Abra o [Currículo em PDF ou Word](/hoja-de-vida). No topo, você escolhe como ele vai ficar:',
+            { ul: [
+              '**Clássico (ATS)**: uma coluna e sem foto. É o que os sistemas que filtram currículos nos sites de vagas leem melhor; use-o para se candidatar on-line.',
+              '**Compacta**: igualmente claro, com letra e margens menores para caber mais em uma página.',
+              '**Com foto**: sua foto no topo, como pedem muitas empresas da América Latina.',
+            ] },
+            'Você também escolhe o tamanho da folha (Carta ou A4), a fonte (moderna ou clássica) e a cor dos títulos.',
+          ],
+        },
+        {
+          h2: 'Passo a passo',
+          body: [
+            'Preencha seus **Dados pessoais**: nome, cargo ou profissão, cidade, telefone e e-mail. Se você tem LinkedIn ou um portfólio, coloque em **Links**. Depois, escreva seu **Resumo profissional** em duas ou três frases: quem você é, o que sabe fazer e o que procura.',
+            'Em **Experiência profissional**, adicione cada emprego com o cargo, a empresa e as datas; marque **Trabalho aqui atualmente** se ainda estiver lá. Em **Conquistas e funções**, escreva uma conquista por linha: cada linha sai como um tópico. Faça o mesmo com **Formação**, **Habilidades**, **Idiomas**, **Cursos e certificações** e **Referências**; as seções vazias não aparecem.',
+            'Toque em **Criar PDF** ou **Criar Word (.docx)**. Você verá o currículo pronto para baixar ou compartilhar.',
+            { tip: 'Comece cada conquista com um verbo e use números quando puder: "Reduzi em 30% os prazos de entrega" diz mais que "responsável pelas entregas".' },
+          ],
+        },
+        {
+          h2: 'Compare com a vaga e escreva a carta',
+          body: [
+            'Em **Comparar com uma vaga**, você cola o anúncio da vaga e vê quais palavras-chave seu currículo já tem e quais faltam, com a porcentagem de correspondência. Os filtros automáticos procuram essas palavras; adicione só as que você realmente tem.',
+            'Em **Carta de apresentação**, você escreve a empresa e o cargo, e o DocuSmart monta um rascunho com sua experiência e seus pontos fortes. Revise, ajuste do seu jeito e baixe em PDF ou Word.',
+          ],
+        },
+        {
+          h2: 'Não perca o que você escreveu',
+          body: [
+            'Com **Salvar automaticamente neste navegador**, o que você escreveu fica guardado mesmo que você feche a página (a foto, não). Para continuar em outro computador, use **Salvar rascunho**: você baixa um arquivo .json que depois abre lá com **Abrir rascunho**.',
+            'Se a empresa pedir a foto com fundo branco, prepare-a antes na [Foto para documento](/foto-tamano-documento). E se precisar enviar o currículo junto com certificados em um único arquivo, junte-os com o [Juntar PDF](/unir-pdf).',
+          ],
+        },
+        {
+          h2: 'Suas informações não saem do aparelho',
+          body: [
+            'O currículo é montado no seu navegador: seus dados, sua experiência e sua foto não são enviados a nenhum servidor nem usados para mais nada. Você não precisa criar uma conta nem deixar seu e-mail.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Escolha o modelo', text: 'Acesse docusmart.online/pt/curriculo e escolha Clássico (ATS), Compacta ou Com foto.' },
+        { name: 'Preencha as seções', text: 'Escreva seus dados, seu resumo, sua experiência, sua formação e suas habilidades.' },
+        { name: 'Compare com a vaga', text: 'Cole o anúncio da vaga para ver quais palavras-chave estão faltando.' },
+        { name: 'Baixe', text: 'Toque em Criar PDF ou Criar Word e baixe seu currículo.' },
+      ],
+      faq: [
+        ['O que é um currículo ATS?', 'Um currículo em uma só coluna, sem tabelas nem imagens, que os sistemas de seleção dos sites de vagas conseguem ler sem erros. É o modelo Clássico.'],
+        ['Posso baixar em Word?', 'Sim. Com Criar Word (.docx), você o abre e edita no Word, no Google Docs ou no LibreOffice.'],
+        ['Preciso me cadastrar?', 'Não. É grátis, não pede conta nem e-mail e o que você escreve fica no seu aparelho.'],
+      ],
+    },
+    'crear-un-codigo-qr': {
+      slug: 'criar-um-codigo-qr',
+      title: 'Como criar um código QR grátis para um link, WhatsApp ou Wi-Fi | DocuSmart',
+      description:
+        'Crie um código QR para um link, WhatsApp, seu Wi-Fi ou seu contato, com sua cor e seu logo. Baixe em PNG, SVG ou PDF. Grátis, sem cadastro e sem prazo de validade.',
+      h1: 'Como criar um código QR grátis',
+      lead: 'Um QR leva as pessoas à sua página, abre uma conversa no WhatsApp ou conecta ao Wi-Fi sem digitar nada. Crie o seu em segundos; ele não expira nem depende de nenhum servidor.',
+      sections: [
+        {
+          h2: 'Passo a passo',
+          body: [
+            'Abra o [Criar e ler códigos QR](/crear-codigo-qr) e escolha o que ele vai guardar: **URL**, **Texto**, **E-mail**, **Telefone**, **WhatsApp**, **SMS**, **Localização**, **Wi-Fi**, **Contato** ou **Evento**. Escreva os dados (para um link, o endereço completo com https://).',
+            'Toque em **Gerar QR**. O código aparece na hora e você pode baixá-lo em PNG, em **SVG** (vetorial, imprime nítido em qualquer tamanho), em **PDF (10 cm)**, copiá-lo como imagem ou imprimi-lo.',
+            { tip: 'Antes de imprimir cem panfletos, escaneie o QR com o celular para conferir se ele abre o que você espera.' },
+          ],
+        },
+        {
+          h2: 'O que cada tipo pode fazer',
+          body: [
+            { ul: [
+              '**WhatsApp**: escreva o número com o código do país (55 para o Brasil) e, se quiser, uma mensagem. Ao escanear, a conversa abre com a mensagem já escrita.',
+              '**Wi-Fi**: o nome da rede, a segurança e a senha. Suas visitas se conectam sem você precisar ditá-la.',
+              '**Contato**: nome, telefone, e-mail e empresa. Ao escanear, o celular oferece salvá-lo nos contatos.',
+              '**Localização**: um endereço ou coordenadas que abrem no mapa.',
+              '**Evento**: título, local, início e fim, para adicioná-lo à agenda.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Dê o seu estilo',
+          body: [
+            'Em **Personalizar design**, você muda a cor do código e do fundo (ou deixa transparente para colocá-lo sobre a sua arte), coloca seu **Logo** no centro e escolhe o tamanho da imagem. Se as cores tiverem pouco contraste, o DocuSmart avisa, porque uma câmera poderia não conseguir lê-lo.',
+            'Com **Protegido**, o conteúdo do QR fica criptografado com uma senha (AES-256): só quem a tiver consegue abri-lo, no DocuSmart. E com **Vários QR a partir de uma lista**, você gera muitos de uma vez, um por linha ou a partir de um CSV, por exemplo para as mesas de um restaurante ou as etiquetas de um inventário.',
+          ],
+        },
+        {
+          h2: 'Para ler um QR',
+          body: [
+            'Se o que você precisa é ler um, use o [Ler código QR](/leer-codigo-qr): com a câmera, a partir de uma foto ou de uma captura de tela, ou de um PDF. Antes de abrir um link, ele mostra para onde leva e avisa se parecer enganoso.',
+          ],
+        },
+        {
+          h2: 'Seu QR não expira',
+          body: [
+            'O código é gerado no seu navegador e guarda os dados diretamente, sem passar por um link intermediário. Por isso ele não expira, não tem limite de leituras e ninguém mais vê o que você colocou nele. Os QR que você cria ficam no **Histórico**, só no seu navegador.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Escolha o tipo', text: 'Acesse docusmart.online/pt/gerar-codigo-qr e escolha URL, WhatsApp, Wi-Fi ou outro tipo.' },
+        { name: 'Escreva os dados', text: 'Coloque o link, o número ou os dados da rede.' },
+        { name: 'Gere o QR', text: 'Toque em Gerar QR e, se quiser, mude a cor ou adicione seu logo.' },
+        { name: 'Baixe', text: 'Baixe em PNG, SVG ou PDF, ou imprima.' },
+      ],
+      faq: [
+        ['O código QR expira?', 'Não. Os dados vão dentro do próprio código, sem um link intermediário, então ele funciona para sempre e sem limite de leituras.'],
+        ['Que formato uso para imprimir?', 'O SVG: é vetorial e fica nítido em qualquer tamanho, de um cartão a um cartaz. Também há um PDF de 10 cm.'],
+        ['Posso colocar meu logo no QR?', 'Sim, em Personalizar design. O logo fica em um círculo no centro e o código continua sendo lido.'],
+      ],
+    },
+    'cambiar-el-tamano-de-una-foto': {
+      slug: 'mudar-o-tamanho-de-uma-foto',
+      title: 'Como mudar o tamanho de uma foto em pixels, % ou centímetros | DocuSmart',
+      description:
+        'Mude o tamanho de uma ou várias fotos em pixels, em porcentagem, em centímetros ou na medida exata do Instagram, WhatsApp ou YouTube. Grátis e sem enviá-las.',
+      h1: 'Como mudar o tamanho de uma foto',
+      lead: 'Uma foto do celular tem milhares de pixels: demais para um formulário, uma página web ou uma capa. Aqui você a deixa na medida de que precisa, sem deformá-la.',
+      sections: [
+        {
+          h2: 'Passo a passo',
+          body: [
+            'Abra o [Redimensionar imagem](/redimensionar-imagen) e escolha uma ou várias fotos (JPG, PNG, WebP, HEIC, GIF ou BMP). Depois, escolha **Como redimensionar**:',
+            { ul: [
+              '**Por porcentagem**: por exemplo, 50% deixa a foto com metade da largura e da altura.',
+              '**Por pixels**: escreva a largura, a altura ou as duas. Com **Manter a proporção** ativado, basta um lado: o outro é calculado sozinho.',
+              '**Redes sociais**: medidas exatas para Instagram, status do WhatsApp, capas do Facebook ou do LinkedIn e miniaturas do YouTube.',
+              '**Em centímetros**: para imprimir, com a resolução que você escolher.',
+            ] },
+            'Toque em **Redimensionar** e você verá a foto antes e depois, com o tamanho do arquivo. Se escolheu várias, elas são salvas juntas em um ZIP.',
+          ],
+        },
+        {
+          h2: 'Para não deformar',
+          body: [
+            'Uma foto fica esticada quando você muda a largura e a altura em proporções diferentes. Por isso, **Manter a proporção** já vem ativado: se você escrever os dois lados, a foto cabe dentro desse tamanho sem esticar. Em **Redes sociais**, a imagem preenche a medida exata e o que sobra é cortado por igual a partir do centro.',
+            { tip: 'Diminuir uma foto nunca tira a nitidez visível, mas aumentá-la não acrescenta detalhes: uma foto pequena ampliada ao dobro fica borrada.' },
+          ],
+        },
+        {
+          h2: 'Se o que você quer é cortar ou deixar mais leve',
+          body: [
+            'Mudar o tamanho não é o mesmo que cortar. Para tirar uma borda, enquadrar uma pessoa ou deixar a foto quadrada, use o [Cortar imagem](/recortar-imagen): corte livre ou em proporções fixas como 1:1, 4:3 ou 16:9.',
+            'E se um formulário pedir que a foto tenha menos de certo tamanho (por exemplo, 200 KB), o [Comprimir imagem](/comprimir-imagen) reduz a qualidade só o necessário para caber, e só diminui os pixels se não for suficiente.',
+          ],
+        },
+        {
+          h2: 'Medidas pedidas com frequência',
+          body: [
+            { ul: [
+              '**Para uma página web ou um blog**: entre 1200 e 1920 pixels de largura é mais que suficiente; maior que isso só deixa a página lenta.',
+              '**Para um formulário ou um cadastro**: costumam pedir uma largura máxima (por exemplo, 800 pixels) e um tamanho máximo de arquivo. Primeiro ajuste as medidas aqui e, se ainda ficar pesada, comprima.',
+              '**Para imprimir**: use Em centímetros; a 300 ppp, uma foto de 10 × 15 cm precisa de uns 1181 × 1772 pixels para ficar nítida.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Suas fotos não são enviadas',
+          body: [
+            'Tudo acontece no seu navegador, mesmo com dezenas de fotos de uma vez. Além disso, ao salvar, os dados ocultos da foto (EXIF) são removidos, como a localização GPS de onde ela foi tirada.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Escolha as fotos', text: 'Acesse docusmart.online/pt/redimensionar-imagem e escolha uma ou várias fotos.' },
+        { name: 'Escolha a medida', text: 'Por porcentagem, por pixels, uma medida de redes sociais ou em centímetros.' },
+        { name: 'Redimensione', text: 'Toque em Redimensionar e compare o antes e o depois.' },
+        { name: 'Baixe', text: 'Baixe a foto, ou o ZIP se forem várias.' },
+      ],
+      faq: [
+        ['A foto perde qualidade ao diminuir?', 'Visualmente, não: ela fica igualmente nítida, só que menor. O que não dá é aumentá-la sem que se note.'],
+        ['Posso mudar o tamanho de várias fotos de uma vez?', 'Sim. Escolha todas juntas: elas são redimensionadas com a mesma medida e baixadas em um ZIP.'],
+        ['Que medida uso para o Instagram?', 'Em Redes sociais você tem Instagram quadrado e vertical, e stories. A foto preenche a medida e o que sobra é cortado a partir do centro.'],
+      ],
+    },
+    'comprimir-archivos-en-zip': {
+      slug: 'compactar-arquivos-em-zip',
+      title: 'Como compactar arquivos em ZIP e abrir um ZIP ou RAR sem programas | DocuSmart',
+      description:
+        'Junte vários arquivos ou uma pasta em um ZIP, com senha se quiser, e abra ZIP, RAR ou 7Z pelo navegador. Grátis, sem instalar nada e sem enviar seus arquivos.',
+      h1: 'Como compactar arquivos em ZIP e abrir um ZIP ou RAR',
+      lead: 'Um ZIP junta muitos arquivos em um só: mais fácil de mandar por e-mail e, às vezes, mais leve. Aqui você o cria e o abre pelo navegador, sem instalar programas.',
+      sections: [
+        {
+          h2: 'Criar um ZIP, passo a passo',
+          body: [
+            'Abra o [Compactar arquivos (ZIP e 7Z)](/comprimir-archivos) e adicione os arquivos (de qualquer tipo) ou uma pasta inteira com **Adicionar uma pasta**. Escreva o nome do ZIP e escolha a compressão: **Rápida**, **Normal** ou **Máxima**.',
+            'Toque em **Criar ZIP**. Você verá seus arquivos de um lado e o ZIP do outro, com quanto tudo pesava antes e quanto pesa agora.',
+            { tip: 'Fotos, vídeos e PDFs já vêm comprimidos, então em um ZIP quase não ficam mais leves. O que diminui bastante são documentos do Word, planilhas e textos.' },
+          ],
+        },
+        {
+          h2: 'Com senha ou em partes',
+          body: [
+            { ul: [
+              '**Proteger com senha (AES-256)**: ninguém abre o ZIP sem a senha. No ZIP, a senha não pode ter acentos nem ç; se precisar deles, escolha o formato 7Z.',
+              '**Dividir em partes**: se o e-mail não aceita um arquivo tão grande, você o divide em vários (.001, .002…). Para abri-lo, são necessárias todas as partes, com o DocuSmart, o 7-Zip ou o WinRAR.',
+              '**7Z**: comprime mais que o ZIP, mas em alguns aparelhos é preciso instalar um programa para abri-lo. O ZIP abre em qualquer computador e celular sem instalar nada.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Abrir um ZIP, RAR ou 7Z',
+          body: [
+            'Para tirar o que tem dentro de um arquivo compactado, use o [Descompactar RAR, ZIP e 7Z](/descomprimir-archivos). Ele abre ZIP, RAR, 7Z, TAR, GZ, BZ2 e XZ, inclusive os que têm senha ou vêm divididos em partes.',
+            'Você verá a lista do que há dentro, com as pastas. Pode abrir a pré-visualização de um arquivo antes de baixá-lo, extrair só os que escolher ou baixar todos juntos.',
+          ],
+        },
+        {
+          h2: 'Se o que você quer é um PDF mais leve',
+          body: [
+            'Colocar um PDF em um ZIP quase não o diminui. Para que um PDF fique realmente mais leve, passe-o pelo [Comprimir PDF](/comprimir-pdf), que reduz as imagens que ele tem dentro.',
+          ],
+        },
+        {
+          h2: 'Seus arquivos não saem do aparelho',
+          body: [
+            'Compactar e descompactar acontece na memória do seu navegador: nada é enviado para a internet. Com arquivos muito grandes (vários GB), pode demorar ou faltar memória; nesse caso, divida-os em vários ZIP.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Adicione os arquivos', text: 'Acesse docusmart.online/pt/compactar-arquivos e adicione arquivos ou uma pasta.' },
+        { name: 'Escolha as opções', text: 'Escreva o nome, escolha a compressão e, se quiser, uma senha.' },
+        { name: 'Crie o ZIP', text: 'Toque em Criar ZIP e veja quanto o tamanho diminuiu.' },
+        { name: 'Baixe', text: 'Baixe o ZIP ou compartilhe.' },
+      ],
+      faq: [
+        ['Posso abrir um RAR sem o WinRAR?', 'Sim. O Descompactar RAR, ZIP e 7Z abre RAR, ZIP, 7Z e outros formatos no navegador, sem instalar nada. Para criar um novo, use ZIP ou 7Z.'],
+        ['Por que meu ZIP pesa quase o mesmo?', 'Porque fotos, vídeos e PDFs já vêm comprimidos. O ZIP serve para juntá-los em um único arquivo, não tanto para diminuí-los.'],
+        ['É seguro colocar senha?', 'Sim. Ele é criptografado com AES-256 e a senha não fica salva em lugar nenhum: se você a esquecer, não há como recuperá-la.'],
+      ],
+    },
+    'recortar-los-margenes-de-un-pdf': {
+      slug: 'cortar-as-margens-de-um-pdf',
+      title: 'Como cortar as margens ou uma parte de um PDF | DocuSmart',
+      description:
+        'Remova as margens em branco de um PDF com um toque ou corte à mão a parte que quer manter, em todas as páginas ou em uma só. Grátis e sem enviar o arquivo.',
+      h1: 'Como cortar as margens ou uma parte de um PDF',
+      lead: 'Um PDF com margens enormes fica pequeno para ler no celular e é impresso com muito papel em branco. Cortá-lo deixa só o que importa, sem mexer no conteúdo.',
+      sections: [
+        {
+          h2: 'Passo a passo',
+          body: [
+            'Abra o [Cortar PDF](/recortar-pdf) e escolha o arquivo. Você verá a primeira página com um retângulo por cima: a parte escurecida é a que vai ser cortada.',
+            'Toque em **Remover margens em branco** e o retângulo se ajusta sozinho ao conteúdo da página, como na imagem. Se preferir fazer à mão, arraste as bordas ou os cantos do retângulo. Embaixo você vê o tamanho que vai ficar, em milímetros.',
+            'Escolha se o corte vale para **Todas as páginas** ou **Só a página** que você está vendo, toque em **Recortar PDF** e baixe o resultado.',
+            { tip: 'Se as páginas tiverem margens diferentes, confira várias com as setas antes de cortar: o retângulo de "Todas as páginas" é o mesmo para cada uma.' },
+          ],
+        },
+        {
+          h2: 'Para que serve',
+          body: [
+            { ul: [
+              '**Ler no celular**: sem margens, o texto ocupa a tela toda e fica maior.',
+              '**Tirar uma parte**: uma tabela, um gráfico ou a foto de um documento digitalizado, para usar separadamente.',
+              '**Remover o que sobra de uma digitalização**: a borda preta da tampa do scanner ou a mesa em volta da folha.',
+            ] },
+          ],
+        },
+        {
+          h2: 'O que acontece com o conteúdo',
+          body: [
+            'O corte muda a área visível de cada página, sem refazer o texto nem as imagens: o que fica continua igualmente nítido e o texto ainda pode ser copiado e pesquisado.',
+            'Se depois você precisar só de algumas páginas, separe-as com o [Dividir PDF](/dividir-pdf); e se alguma ficou de lado, endireite-a com o [Girar PDF](/rotar-pdf).',
+          ],
+        },
+        {
+          h2: 'Antes de imprimir',
+          body: [
+            'Ao imprimir um PDF cortado, a página fica menor que a folha. Para que ocupe o papel todo, escolha **Ajustar ao tamanho da página** na janela de impressão do seu navegador ou do seu leitor de PDF.',
+            'Se você cortou uma digitalização para ficar com a foto de um documento (um RG, uma carteirinha), confira se não cortou nenhuma borda do documento: muitos processos pedem que os quatro cantos apareçam.',
+          ],
+        },
+        {
+          h2: 'Seu PDF não sai do aparelho',
+          body: [
+            'Todo o corte acontece no seu navegador. O PDF não é enviado a nenhum servidor, então você pode usá-lo com contratos ou documentos pessoais com tranquilidade.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Abra o Cortar PDF', text: 'Acesse docusmart.online/pt/cortar-pdf e escolha o PDF.' },
+        { name: 'Ajuste o retângulo', text: 'Toque em Remover margens em branco ou arraste as bordas à mão.' },
+        { name: 'Escolha as páginas', text: 'Aplique o corte a todas as páginas ou só à que você está vendo.' },
+        { name: 'Baixe', text: 'Toque em Recortar PDF e baixe o resultado.' },
+      ],
+      faq: [
+        ['Um PDF perde qualidade ao ser cortado?', 'Não. Só muda a área visível da página; o texto e as imagens continuam iguais.'],
+        ['Posso cortar só uma página?', 'Sim. Antes de cortar, escolha só a página que você está vendo.'],
+        ['O que foi cortado é apagado do arquivo?', 'Fica fora da visualização e da impressão. Se o que você quer é apagar um dado privado, use o Ocultar dados do PDF, que o elimina de verdade.'],
+      ],
+    },
+    'cambiar-el-formato-de-una-imagen': {
+      slug: 'mudar-o-formato-de-uma-imagem',
+      title: 'Como mudar o formato de uma imagem: HEIC, JPG, PNG ou WebP | DocuSmart',
+      description:
+        'Converta fotos HEIC do iPhone para JPG, um JPG para PNG ou qualquer imagem para WebP, uma ou muitas de uma vez. Grátis, no navegador e sem enviar suas fotos.',
+      h1: 'Como mudar o formato de uma imagem: HEIC, JPG, PNG ou WebP',
+      lead: 'Cada formato serve para uma coisa, e às vezes um site ou um programa só aceita um deles. Aqui você muda o formato das suas fotos em segundos, sem instalar nada.',
+      sections: [
+        {
+          h2: 'Qual formato é melhor para você',
+          body: [
+            { ul: [
+              '**JPG**: o das fotos. É leve e abre em qualquer aparelho, site ou formulário. Não aceita fundo transparente.',
+              '**PNG**: sem perda de qualidade e com fundo transparente. Ideal para logos, capturas de tela e desenhos; com fotos, pesa muito mais.',
+              '**WebP**: o formato moderno da web. Fica igual a um JPG com bem menos peso, como na imagem: de 189 KB para 50 KB.',
+              '**HEIC**: o que os iPhones usam. Ocupa pouco, mas muitos computadores, sites e programas não o abrem.',
+            ] },
+          ],
+        },
+        {
+          h2: 'Fotos do iPhone (HEIC) para JPG',
+          body: [
+            'Abra o [HEIC para JPG](/heic-a-jpg) e escolha suas fotos HEIC, uma ou muitas. Ajuste a **Qualidade do JPG** se quiser (a que vem marcada fica igual à original) e toque em converter. Se forem várias, elas são baixadas juntas em um ZIP.',
+            { tip: 'Na primeira vez, o decodificador de HEIC (1,4 MB) é baixado e fica salvo: as próximas conversões começam na hora.' },
+            'Se preferir que o iPhone tire as fotos direto em JPG, em **Ajustes → Câmera → Formatos** escolha **Mais Compatível**.',
+          ],
+        },
+        {
+          h2: 'JPG para PNG, ou qualquer imagem para WebP',
+          body: [
+            'Com o [JPG para PNG](/jpg-a-png), você converte uma foto para PNG quando um programa pede ou quando vai editá-la várias vezes sem perder qualidade. Com o [Imagem para WebP](/imagen-a-webp), você deixa mais leves as fotos de um site ou de uma loja virtual sem que se note.',
+            'Os dois funcionam igual: você escolhe uma ou várias imagens, toca no botão e vê o antes e o depois com o tamanho de cada versão, pronto para baixar.',
+          ],
+        },
+        {
+          h2: 'Se também precisa que fique mais leve ou mudar o tamanho',
+          body: [
+            'Mudar o formato não muda as medidas da foto. Se um formulário pede que ela não passe de certo tamanho de arquivo, use o [Comprimir imagem](/comprimir-imagen), que também aceita fotos HEIC e as entrega em JPG; e se pedirem uma largura ou uma altura exatas, o [Redimensionar imagem](/redimensionar-imagen).',
+          ],
+        },
+        {
+          h2: 'Sem enviar suas fotos',
+          body: [
+            'A conversão acontece no seu navegador: suas fotos não são enviadas a nenhum servidor. Ao salvá-las, os dados ocultos (EXIF) também são removidos, como a localização de onde foram tiradas.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Escolha a conversão', text: 'Abra o HEIC para JPG, o JPG para PNG ou o Imagem para WebP no docusmart.online.' },
+        { name: 'Escolha as fotos', text: 'Adicione uma ou várias imagens.' },
+        { name: 'Converta', text: 'Toque no botão e compare o antes e o depois.' },
+        { name: 'Baixe', text: 'Baixe a imagem, ou o ZIP se forem várias.' },
+      ],
+      faq: [
+        ['Por que não consigo abrir as fotos do meu iPhone no computador?', 'Porque elas estão em HEIC, um formato que muitos aparelhos e sites não reconhecem. Converta-as para JPG e elas abrem em qualquer lugar.'],
+        ['Uma foto perde qualidade ao ser convertida para PNG?', 'Não: o PNG não perde qualidade. Mas também não a recupera; a foto fica igual ao JPG original e pesa mais.'],
+        ['O WebP aparece em todos os navegadores?', 'Sim, em todos os navegadores atuais. Alguns programas de computador antigos ainda não o abrem.'],
+      ],
+    },
+    'borrar-la-ubicacion-y-los-datos-ocultos-de-una-foto': {
+      slug: 'apagar-a-localizacao-e-os-dados-ocultos-de-uma-foto',
+      title: 'Como apagar a localização e os dados ocultos de uma foto ou PDF | DocuSmart',
+      description:
+        'Veja quais dados ocultos uma foto ou um documento guarda (localização GPS, câmera, data, autor) e apague-os antes de compartilhar. Grátis e sem enviar o arquivo.',
+      h1: 'Como apagar a localização e os dados ocultos de uma foto',
+      lead: 'Uma foto do celular pode guardar o lugar exato onde foi tirada, e um documento, o nome de quem o escreveu. Antes de publicá-los ou enviá-los, veja o que eles levam e apague.',
+      sections: [
+        {
+          h2: 'O que são os dados ocultos (metadados)',
+          body: [
+            'São dados que vão dentro do arquivo, mas não aparecem na imagem nem nas páginas. Uma foto pode guardar a **Localização GPS**, a marca e o modelo do celular, o número de série da câmera e a data e a hora exatas. Um PDF ou um documento do Word pode guardar o **Autor**, a empresa, o programa com que foi feito e as datas de criação e de modificação.',
+            'Quem receber o arquivo pode vê-los com qualquer visualizador. Com uma foto da sua casa, por exemplo, a localização leva ao seu endereço.',
+          ],
+        },
+        {
+          h2: 'Passo a passo',
+          body: [
+            'Abra o [Remover metadados (EXIF, GPS e autor)](/quitar-metadatos) e escolha suas fotos ou documentos: JPG, PNG, WebP, HEIC, TIFF, vídeos MP4 e MOV, PDF, Word, Excel ou PowerPoint. Na hora, você verá a lista de **Dados ocultos encontrados** em cada um, como na imagem; se uma foto guarda a localização, ela aparece em vermelho com um aviso.',
+            'Toque em **Remover metadados**. Você verá quantos dados cada arquivo tinha antes e quantos restam depois, e baixa a cópia limpa (ou um ZIP, se forem vários).',
+            { tip: 'Só a orientação das fotos é mantida, para que não apareçam giradas. A imagem não é comprimida de novo: não perde qualidade.' },
+          ],
+        },
+        {
+          h2: 'Em PDFs e documentos do Office',
+          body: [
+            'Nos PDFs, a opção **Remover também comentários, anexos e JavaScript** apaga ainda as notas com o nome do autor, os arquivos anexados e o código que é executado ao abri-los. Desative-a se precisar manter os comentários.',
+            'No Word, no Excel e no PowerPoint, são removidos o autor, a empresa e as datas. Os nomes que aparecem nos comentários e no controle de alterações são apagados pelo próprio programa.',
+          ],
+        },
+        {
+          h2: 'Se o dado privado está à vista',
+          body: [
+            'Remover metadados não muda o que se vê. Se o que você quer esconder é um número de documento, uma assinatura ou um endereço que aparece nas páginas de um PDF, use o [Ocultar dados do PDF](/censurar-pdf), que o cobre e o elimina do arquivo.',
+          ],
+        },
+        {
+          h2: 'Tudo é feito no seu aparelho',
+          body: [
+            'Tudo acontece no seu navegador: suas fotos e documentos não são enviados a nenhum servidor. Assim você não deixa cópias de um arquivo privado justamente quando tenta protegê-lo.',
+          ],
+        },
+      ],
+      steps: [
+        { name: 'Abra o Remover metadados', text: 'Acesse docusmart.online/pt/remover-metadados e escolha fotos ou documentos.' },
+        { name: 'Veja o que eles guardam', text: 'Confira a lista de dados ocultos de cada arquivo, como a localização GPS.' },
+        { name: 'Apague', text: 'Toque em Remover metadados e confirme que não sobrou nenhum.' },
+        { name: 'Baixe', text: 'Baixe a cópia limpa, pronta para compartilhar.' },
+      ],
+      faq: [
+        ['O WhatsApp apaga a localização das fotos?', 'Ao enviá-las como foto, o WhatsApp as comprime de novo e remove a maioria dos dados. Mas se você as manda como documento, por e-mail ou as publica em outros sites, elas podem chegar com a localização.'],
+        ['A foto perde qualidade?', 'Não. Só os dados ocultos são removidos; a imagem fica exatamente igual.'],
+        ['Quais dados são mantidos?', 'Só a orientação das fotos, para que não apareçam giradas. Todo o resto é apagado.'],
+      ],
+    },
   },
 }

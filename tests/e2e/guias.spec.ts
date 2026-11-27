@@ -38,8 +38,8 @@ test('una guía en inglés enlaza a las herramientas en inglés y ofrece las otr
   await expect(page.locator('.gd-article a[href="/unir-pdf"]')).toHaveCount(0)
   await expect(page.locator('link[rel="alternate"][hreflang="pt"]')).toHaveAttribute('href', 'https://docusmart.online/pt/guias/juntar-pdf-no-celular')
   await page.goto('/pt/guias')
-  // Las 6 de W-19 y las 16 por herramienta (W-101), ya traducidas.
-  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
+  // Las 6 de W-19 y las 24 por herramienta (W-101), ya traducidas.
+  await expect(page.locator('.gd-cards > li')).toHaveCount(30)
 })
 
 test('las guías muestran capturas de la herramienta, en su idioma y sin mover la página (W-100) @movil', async ({ page }) => {
@@ -116,7 +116,7 @@ test('una guía del lote 2 en ruso: captura en ruso y enlaces en ruso (W-101)', 
   await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/ru/reparar-pdf/resultado-1280.webp')
   await expect(page.locator('.gd-article a[href="/reparar-pdf"]')).toHaveCount(0)
   await page.goto('/en/guides')
-  await expect(page.locator('.gd-cards > li')).toHaveCount(22)
+  await expect(page.locator('.gd-cards > li')).toHaveCount(30)
 })
 
 
@@ -130,11 +130,16 @@ test('al compartir una guía se ve su propia imagen, servida como JPEG (W-102)',
   await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', 'Cómo firmar un PDF sin imprimirlo')
 })
 
-test('una guía del lote 3 (W-101): en español, con su captura y enlace a la herramienta', async ({ page }) => {
+test('una guía del lote 3 (W-101): captura y enlaces en cada idioma', async ({ page }) => {
   await page.goto('/guias/hacer-una-cuenta-de-cobro')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cómo hacer una cuenta de cobro en PDF')
   await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/es/cuenta-de-cobro/conceptos-1280.webp')
   await expect(page.locator('.gd-article a[href="/cuenta-de-cobro"]').first()).toBeVisible()
-  // Todavía solo en español: sin enlaces a otros idiomas.
-  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(0)
+  // En inglés: su captura en inglés y el enlace a la herramienta con la ruta inglesa.
+  const en = await page.locator('link[rel="alternate"][hreflang="en"]').getAttribute('href')
+  await page.goto(en!.replace('https://docusmart.online', ''))
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.locator('.gd-shot img').first()).toHaveAttribute('src', '/img/guides/en/cuenta-de-cobro/conceptos-1280.webp')
+  await expect(page.locator('.gd-article a[href="/en/invoice-generator"]').first()).toBeVisible()
+  await expect(page.locator('.gd-article a[href="/cuenta-de-cobro"]')).toHaveCount(0)
 })
