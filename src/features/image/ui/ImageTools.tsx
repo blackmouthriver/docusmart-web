@@ -299,6 +299,20 @@ function CompressImageTool() {
   const [otherKb, setOtherKb] = useState('300')
   const [missed, setMissed] = useState<string[]>([])
   const targetKb = limit === 'other' ? Math.max(5, Number(otherKb) || 0) : Number(limit) || 0
+  // Desde el asistente (W-151.5): «deja la foto en menos de 200 kb», «calidad 70», «a webp».
+  useAssistantOptions('comprimir-imagen', (o) => {
+    if (typeof o.targetSize === 'number') {
+      const kb = Math.round(o.targetSize / 1024)
+      const preset = ['50', '100', '200', '500', '1000'].find((v) => Number(v) === kb)
+      setLimit(preset ?? 'other')
+      if (!preset) setOtherKb(String(kb))
+    }
+    if (typeof o.quality === 'number') {
+      setLevel('custom')
+      setQuality(o.quality)
+    }
+    if (o.format === 'jpg' || o.format === 'webp') setFormat(o.format)
+  })
   const reset = <T,>(set: (v: T) => void) => (v: T) => {
     set(v)
     b.setResults(null)
@@ -508,6 +522,10 @@ function ResizeImageTool() {
 function RotateImageTool() {
   const b = useBatch('rotate')
   const [t, setT] = useState<Transform>(IDENTITY)
+  // Desde el asistente (W-151.5): «gira esta foto 90 grados».
+  useAssistantOptions('rotar-imagen', (o) => {
+    if (o.angle === '90' || o.angle === '180' || o.angle === '270') setT({ ...IDENTITY, rotate: Number(o.angle) as Transform['rotate'] })
+  })
   const first = useObjectUrl(b.files[0] ?? null)
   // Actualización funcional: dos clics seguidos (girar y voltear) no se pisan.
   const change = (fn: (t: Transform) => Transform) => {
@@ -1199,6 +1217,9 @@ function IdPhotoTool() {
 
 /* ───────────── Marca de agua (W-123) ───────────── */
 
+/** Posiciones del asistente → las de la marca de agua de imagen. */
+const IMAGE_WM_POSITION: Record<string, WatermarkPosition> = { 'top-left': 'tl', 'top-center': 'tc', 'top-right': 'tr', 'middle-left': 'ml', center: 'c', 'middle-right': 'mr', 'bottom-left': 'bl', 'bottom-center': 'bc', 'bottom-right': 'br' }
+
 function WatermarkImageTool() {
   const b = useBatch('watermark_image')
   const [kind, setKind] = useState<'text' | 'logo'>('text')
@@ -1211,6 +1232,15 @@ function WatermarkImageTool() {
   const [position, setPosition] = useState<WatermarkPosition>('br')
   const [error, setError] = useState<string | null>(null)
   const logoInput = useRef<HTMLInputElement>(null)
+  // Desde el asistente (W-151.5): «marca de agua "Borrador" abajo a la derecha».
+  useAssistantOptions('marca-de-agua-imagen', (o) => {
+    if (typeof o.text === 'string') {
+      setKind('text')
+      setText(o.text)
+    }
+    const pos = typeof o.position === 'string' ? IMAGE_WM_POSITION[o.position] : undefined
+    if (pos) setPosition(pos)
+  })
   const canvas = useRef<HTMLCanvasElement>(null)
 
   // El logo se abre una vez (y se libera al cambiarlo).
@@ -1358,6 +1388,8 @@ function usePreviewBitmap(file: File | null) {
 function AdjustImageTool() {
   const b = useBatch('adjust_image')
   const [adj, setAdj] = useState<Adjustments>(NEUTRAL)
+  // Desde el asistente (W-151.5): «pon la foto en blanco y negro».
+  useAssistantOptions('ajustar-imagen', (o) => o.grayscale === true && setAdj((a) => ({ ...a, grayscale: true })))
   const [original, setOriginal] = useState(false)
   const canvas = useRef<HTMLCanvasElement>(null)
   const preview = usePreviewBitmap(b.files[0] ?? null)

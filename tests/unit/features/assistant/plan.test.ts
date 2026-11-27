@@ -58,8 +58,23 @@ describe('tarjeta «Hacer / Cambiar»', () => {
   it('no se ofrece sin opciones ni para herramientas que todavía no las reciben', () => {
     const { kb, index } = load('es')
     expect(planFor(index, kb, 'une estos pdf')).toBeNull()
-    expect(planFor(index, kb, 'pasa el pdf a jpg a 300 ppp')).toBeNull()
     expect(planFor(index, kb, 'es gratis?')).toBeNull()
+  })
+
+  it('las herramientas conectadas después: PDF a JPG, OCR, marcas de agua, numerar, imagen', () => {
+    const { kb, index } = load('es')
+    const lines = (q: string) => {
+      const p = planFor(index, kb, q)
+      return p ? [p.action.tool, ...planLines(p.action, kb.ui, 'es')] : null
+    }
+    expect(lines('pasa el pdf a png a 300 ppp')).toEqual(['pdf-a-jpg', 'Formato: PNG', 'Resolución: 300 ppp'])
+    expect(lines('reconoce el texto de este pdf escaneado en ingles')).toEqual(['ocr-pdf', 'Idioma: inglés'])
+    expect(lines('marca de agua "Borrador" abajo a la derecha en el pdf')).toEqual(['marca-de-agua-pdf', 'Texto: "Borrador"', 'Posición: Abajo a la derecha'])
+    expect(lines('numerar las paginas del pdf abajo al centro')).toEqual(['numerar-paginas-pdf', 'Posición: Abajo al centro'])
+    expect(lines('comprime esta foto a calidad 70')).toEqual(['comprimir-imagen', 'Calidad: 70 %'])
+    expect(lines('girar esta foto 180 grados')).toEqual(['rotar-imagen', 'Giro: 180°'])
+    // La numeración no va al centro: esa posición se descarta y, sin opciones, no hay tarjeta.
+    expect(lines('numerar las paginas del pdf en el centro')).toBeNull()
   })
 
   it('en inglés también, con el formato de números del idioma', () => {

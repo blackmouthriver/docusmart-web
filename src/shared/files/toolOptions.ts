@@ -21,7 +21,23 @@ export const TOOL_OPTIONS_MAX_AGE_MS = 60_000
  * Herramientas que ya aplican opciones del asistente. Para las demás el asistente no muestra la tarjeta
  * «Hacer»: abre la herramienta como siempre (y nunca promete algo que no va a hacer).
  */
-export const TOOLS_RECEIVING_OPTIONS: ReadonlySet<string> = new Set(['comprimir-pdf', 'dividir-pdf', 'rotar-pdf', 'redimensionar-imagen'])
+export const TOOLS_RECEIVING_OPTIONS: ReadonlySet<string> = new Set([
+  'comprimir-pdf',
+  'dividir-pdf',
+  'rotar-pdf',
+  'marca-de-agua-pdf',
+  'numerar-paginas-pdf',
+  'pdf-a-jpg',
+  'ocr-pdf',
+  'redimensionar-imagen',
+  'comprimir-imagen',
+  'rotar-imagen',
+  'marca-de-agua-imagen',
+  'ajustar-imagen',
+  'heic-a-jpg',
+  'imagen-a-texto',
+  'audio-a-texto',
+])
 
 type Stored = { tool: string; options: Options; at: number }
 

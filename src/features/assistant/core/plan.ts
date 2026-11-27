@@ -29,7 +29,35 @@ const SHOWN: Array<[OptionKey, string]> = [
   ['height', 'optHeight'],
   ['percent', 'optPercent'],
   ['grayscale', 'optGrayscale'],
+  ['quality', 'optQuality'],
+  ['format', 'optFormat'],
+  ['dpi', 'optDpi'],
+  ['language', 'optLanguage'],
+  ['text', 'optText'],
+  ['position', 'optPosition'],
 ]
+
+/** Clave en `ui` del nombre de cada posición («Abajo a la derecha»). */
+const POSITION_UI: Record<string, string> = {
+  'top-left': 'posTopLeft',
+  'top-center': 'posTopCenter',
+  'top-right': 'posTopRight',
+  'middle-left': 'posMiddleLeft',
+  center: 'posCenter',
+  'middle-right': 'posMiddleRight',
+  'bottom-left': 'posBottomLeft',
+  'bottom-center': 'posBottomCenter',
+  'bottom-right': 'posBottomRight',
+}
+
+/** Nombre de un idioma en el idioma del asistente («en» → «inglés»). */
+function languageName(code: string, lang: string): string {
+  try {
+    return new Intl.DisplayNames([lang], { type: 'language' }).of(code) ?? code
+  } catch {
+    return code
+  }
+}
 
 /** «2 MB», «1,5 MB», «500 KB», con la coma o el punto decimal del idioma. */
 export function formatSize(bytes: number, lang: string): string {
@@ -46,8 +74,13 @@ export function planLines(action: OpenToolAction, ui: Record<string, string>, la
     if (k === 'targetSize') return formatSize(Number(v), lang)
     if (k === 'angle') return `${v}°`
     if (k === 'width' || k === 'height') return `${v} px`
-    if (k === 'percent') return `${v} %`
+    if (k === 'percent' || k === 'quality') return `${v} %`
     if (k === 'grayscale') return ui.yes
+    if (k === 'format') return String(v).toUpperCase()
+    if (k === 'dpi') return `${v} ${ui.unitDpi}`
+    if (k === 'language') return languageName(String(v), lang)
+    if (k === 'text') return `"${v}"`
+    if (k === 'position') return ui[POSITION_UI[String(v)]] ?? String(v)
     return String(v)
   }
   return SHOWN.filter(([k]) => o[k] !== undefined).map(([k, label]) => `${ui[label]}: ${value(k)}`)

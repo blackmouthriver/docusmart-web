@@ -255,8 +255,9 @@ function parseStep(index: Index, lex: Lexicon, segment: string, carry: boolean):
   const dropped: OptionKey[] = []
   for (const [k, v] of Object.entries(found) as Array<[OptionKey, Options[OptionKey]]>) {
     const allowed = accepted[k]
-    const okFormat = k !== 'format' || allowed === true || (Array.isArray(allowed) && allowed.includes(String(v)))
-    if (allowed && okFormat && v !== undefined) options[k] = v
+    // Si la herramienta acepta solo algunos valores (formatos, posiciones), el valor tiene que ser uno de ellos.
+    const okValue = allowed === true || (Array.isArray(allowed) && allowed.includes(String(v)))
+    if (allowed && okValue && v !== undefined) options[k] = v
     // El formato de entrada («pdf a word») no es una opción que falte: solo se informa si la herramienta tiene formatos.
     else if (k !== 'format' || allowed) dropped.push(k)
   }

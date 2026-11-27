@@ -28,7 +28,7 @@ export const toolDesc = (id: string) => tr(`tool.${id}.desc` as MessageKey)
 import { BeforeAfter } from '../../../shared/ui/DocPreview'
 import { bundleFiles, resultFile } from '../../../shared/files/share'
 import { useAssistantOptions } from '../../../shared/files/toolOptions'
-import type { Options } from '../../assistant/core/actions'
+import { POSITIONS, type Options } from '../../assistant/core/actions'
 
 /** "1 página" o "N páginas". */
 const pagesLabel = (n: number) => (n === 1 ? tr('common.onePage') : tr('single.pagesN', { n }))
@@ -528,7 +528,18 @@ export function SingleFileTool({ toolId }: { toolId: string }) {
       setRotations(Array.from({ length: count }, (_, i) => (!only || only.has(i) ? Number(o.angle) : 0)))
     }
   }
-  useAssistantOptions(toolId === 'dividir' ? 'dividir-pdf' : toolId === 'rotar' ? 'rotar-pdf' : '', (o) => {
+  const assistantTool = { dividir: 'dividir-pdf', rotar: 'rotar-pdf', marca: 'marca-de-agua-pdf', numerar: 'numerar-paginas-pdf' }[toolId] ?? ''
+  useAssistantOptions(assistantTool, (o) => {
+    // Marca de agua y numeración no dependen de las páginas: se aplican enseguida.
+    if (toolId === 'marca') {
+      const pos = typeof o.position === 'string' && (POSITIONS as readonly string[]).includes(o.position) ? (o.position as WatermarkUi['position']) : undefined
+      setWm((w) => ({ ...w, ...(typeof o.text === 'string' ? { mode: 'text' as const, text: o.text } : {}), ...(pos ? { position: pos } : {}) }))
+      return
+    }
+    if (toolId === 'numerar') {
+      if (typeof o.position === 'string' && (NUMBER_POSITIONS as readonly string[]).includes(o.position)) setPosition(o.position as NumberPosition)
+      return
+    }
     fromAssistant.current = o
     applyAssistant()
   })
