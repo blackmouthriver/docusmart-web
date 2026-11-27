@@ -157,7 +157,7 @@ Historial (acierto total de los 12 idiomas · grupo de control es / en):
 
 | Idioma | Preguntas | Acierto | Entre las 3 primeras | Sin respuesta | Equivocada |
 |---|---:|---:|---:|---:|---:|
-| es | 90 | 97.8 % | 100 % | 0 % | 2.2 % |
+| es | 90 | 97.8 % | 98.9 % | 0 % | 2.2 % |
 | en | 66 | 90.9 % | 95.5 % | 4.5 % | 4.5 % |
 | pt | 30 | 66.7 % | 90 % | 13.3 % | 20 % |
 | fr | 30 | 96.7 % | 96.7 % | 0 % | 3.3 % |
@@ -175,7 +175,7 @@ Historial (acierto total de los 12 idiomas · grupo de control es / en):
 | control-ru | 10 | 90 % | 100 % | 0 % | 10 % |
 | control-zh | 10 | 100 % | 100 % | 0 % | 0 % |
 | control-de | 10 | 100 % | 100 % | 0 % | 0 % |
-| **Total** | 456 | **87.3 %** | 96.3 % | 3.7 % | 9 % |
+| **Total** | 456 | **87.3 %** | 96.1 % | 3.7 % | 9 % |
 
 Acierto por categoría (español e inglés):
 
