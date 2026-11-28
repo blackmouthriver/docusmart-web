@@ -8,6 +8,16 @@ import { tr } from '../i18n/translate'
 import { PrivacySeal } from './PrivacySeal'
 import { takeChainedFiles } from '../files/handoff'
 import { reportError, reportFiles } from '../files/screenContext'
+import { signalMood } from '../platform/mood'
+
+/** Smarthy (W-153) se pone a «trabajar» mientras haya un proceso en marcha en la pantalla. */
+function useBusySignal(active: boolean) {
+  useEffect(() => {
+    if (!active) return
+    signalMood('busy-start')
+    return () => signalMood('busy-end')
+  }, [active])
+}
 
 /** `privacySeal` (por defecto sí): sello "tu archivo no sale de tu dispositivo"; se apaga en el inicio y el menú de herramientas. */
 export function HeroCard({ title, subtitle, privacySeal = true }: { title: string; subtitle: string; privacySeal?: boolean }) {
@@ -205,6 +215,7 @@ export function BusyButton({
   icon?: IconName
   variant?: 'primary' | 'outline' | 'soft'
 }) {
+  useBusySignal(busy)
   return (
     <button type="button" className={'btn btn-' + variant} disabled={busy || disabled} onClick={onClick} aria-busy={busy}>
       {busy ? <span className="spinner" aria-hidden="true" /> : icon ? <Icon name={icon} /> : null}
@@ -245,6 +256,7 @@ export function BackButton({ onClick, label }: { onClick: () => void; label: str
 }
 
 export function Progress({ value }: { value: number }) {
+  useBusySignal(value < 1)
   return (
     <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(value * 100)}>
       <i style={{ width: `${Math.max(2, value * 100)}%` }} />

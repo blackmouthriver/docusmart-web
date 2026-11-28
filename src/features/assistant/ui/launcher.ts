@@ -5,6 +5,7 @@
 // una vez por visita; al abrirlo por primera vez, halo y destellos pasan a un modo tranquilo.
 import './assistant.css'
 import { TEASER_DELAY_MS, TEASER_VISIBLE_MS, attentionState, launcherText, markSeen } from '../core/launcher'
+import { mountSmarthy } from './smarthy'
 
 /** Trazos de los íconos (los mismos de src/shared/ui/Icon.tsx). */
 const CHAT = 'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z'
@@ -64,6 +65,8 @@ export function mountAssistantLauncher(opts: LauncherOptions): () => void {
   fab.setAttribute('aria-expanded', 'false')
   fab.title = text.label
   fab.append(el('span', 'fab-halo'), el('span', 'fab-halo fab-halo-2'), icon(CHAT, 'fab-icon fab-chat'), icon(CLOSE, 'fab-icon fab-close'), el('i', 'fab-spark s1'), el('i', 'fab-spark s2'), el('i', 'fab-spark s3'))
+  // W-153: Smarthy reemplaza el ícono de chat (si sus imágenes no cargan, vuelve el ícono).
+  const smarthy = mountSmarthy(fab, { tool: () => opts.context ?? (opts.inApp ? location.hash : '') })
 
   // Burbuja de bienvenida (una vez por visita).
   const teaser = el('div', 'assistant-teaser')
@@ -137,6 +140,7 @@ export function mountAssistantLauncher(opts: LauncherOptions): () => void {
   addEventListener('hashchange', sync)
 
   return () => {
+    smarthy()
     timers.forEach(clearTimeout)
     removeEventListener('hashchange', sync)
     unmountPanel?.()

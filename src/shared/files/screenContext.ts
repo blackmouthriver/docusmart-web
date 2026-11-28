@@ -8,6 +8,8 @@
  * donde ocurrió.
  */
 
+import { signalMood } from '../platform/mood'
+
 export type ScreenFile = { name: string; type: string; size: number }
 /** `entry`: respuesta de la base que explica y resuelve el error (null si no hay una específica). */
 export type ScreenError = { entry: string | null; message: string }
@@ -35,6 +37,7 @@ export function reportFiles(files: readonly File[]): void {
 export function reportError(entry: string | null, message: string, now = Date.now()): void {
   const where = here()
   state = { where, files: state.where === where ? state.files : [], error: { entry, message, at: now }, result: null }
+  signalMood('error')
 }
 
 /** Lo que se sabe de la pantalla actual (vacío si cambió de pantalla). */
@@ -48,6 +51,7 @@ export function screenSnapshot(now = Date.now()): ScreenSnapshot {
 export function reportResult(result: ScreenResult | null): void {
   const where = here()
   state = { ...state, where, files: state.where === where ? state.files : [], result }
+  if (result) signalMood('success')
 }
 
 /** Solo para pruebas. */
