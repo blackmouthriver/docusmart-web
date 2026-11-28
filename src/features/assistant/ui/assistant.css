@@ -111,7 +111,8 @@ body:has(.ds-consent) .assistant-root { display: none; }
 .assistant-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 /* Tarjeta «Hacer / Cambiar» (W-151.5). */
 .assistant-plan { display: grid; gap: 4px; white-space: normal; }
-.assistant-plan ul { margin: 2px 0 0; padding-left: 18px; }
+.assistant-plan ul, .assistant-plan ol { margin: 2px 0 0; padding-left: 18px; }
+.assistant-plan ol li + li { margin-top: 2px; }
 .assistant-plan small { color: var(--as-faint); }
 button.as-action { border: 0; font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
 .as-action { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 12px; background: var(--as-soft); color: var(--as-ink); font-size: 13.5px; font-weight: 600; text-decoration: none; box-shadow: 0 0 0 1px var(--as-line) inset; transition: transform 150ms var(--as-ease), background-color 150ms ease; }

@@ -26,6 +26,9 @@ export default {
     screenErrorGeneric: '「{error}」というメッセージが出ていました。また起きる場合はご連絡ください：',
     // Siguiente paso (W-151.7).
     nextTitle: '次によく使われるもの：',
+    // Varios pasos (W-151.8).
+    planSteps: '{n} ステップでできます：',
+    chainStopped: 'このステップでプランが止まりました。',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: 'DocuSmart のナレッジベースからの回答',
     sourcePlan: 'ご依頼を理解しました。「実行」を押す前に確認してください',

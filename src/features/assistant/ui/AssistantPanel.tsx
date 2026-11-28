@@ -16,6 +16,7 @@ import { localAiFor, type LocalAi } from '../infra/browserAi'
 import { questionMail } from '../core/sendQuestion'
 import { FEEDBACK_EMAIL } from '../../../shared/files/share'
 import { setToolOptions } from '../../../shared/files/toolOptions'
+import { startChain } from '../../../shared/files/assistantChain'
 import { planFor, planLines, type Plan } from '../core/plan'
 import { asksWhy, type Lexicon } from '../core/parser'
 import { screenSnapshot } from '../../../shared/files/screenContext'
@@ -177,9 +178,16 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
   }
   /** «Hacer» deja las opciones puestas; «Cambiar» abre la herramienta sin ellas, para elegirlas a mano. */
   const runPlan = (plan: Plan, withOptions: boolean) => {
-    track(withOptions ? 'assistant_plan_do' : 'assistant_plan_change', { tool: plan.action.tool })
+    track(withOptions ? 'assistant_plan_do' : 'assistant_plan_change', { tool: plan.action.tool, steps: plan.steps?.length ?? 1 })
     if (withOptions && plan.action.options) setToolOptions(plan.action.tool, plan.action.options)
     const open = plan.entry.actions?.[0]
+    // Varios pasos (W-151.8): el plan se guarda y cada paso se abre en la app, donde «Continuar» lleva al siguiente.
+    if (withOptions && plan.steps && open?.kind === 'tool') {
+      startChain(plan.steps.map((s) => ({ tool: s.action.tool, route: s.entry.actions?.[0]?.kind === 'tool' ? s.entry.actions[0].app : '', ...(s.action.options ? { options: s.action.options } : {}) })))
+      if (inApp) return onAction(open)
+      location.href = `/app/#/${open.app}`
+      return
+    }
     // Ya en la herramienta: las opciones le llegan con un evento; basta con cerrar el panel.
     if (context === plan.action.tool || !open) return onClose()
     if (inApp && open.kind === 'tool') return onAction(open)
@@ -317,13 +325,29 @@ function PlanCard({ plan, ui, lang, onRun }: { plan: Plan; ui: Record<string, st
   return (
     <div className="assistant-bot">
       <div className="assistant-bubble bot assistant-plan">
-        <span>{ui.planIntro}</span>
-        <b>{plan.entry.q[0]}</b>
-        <ul>
-          {planLines(plan.action, ui, lang).map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ul>
+        {plan.steps ? (
+          <>
+            <span>{ui.planSteps.replace('{n}', String(plan.steps.length))}</span>
+            <ol>
+              {plan.steps.map((s) => (
+                <li key={s.action.tool}>
+                  <b>{s.entry.q[0]}</b>
+                  {planLines(s.action, ui, lang).length > 0 && <small> · {planLines(s.action, ui, lang).join(' · ')}</small>}
+                </li>
+              ))}
+            </ol>
+          </>
+        ) : (
+          <>
+            <span>{ui.planIntro}</span>
+            <b>{plan.entry.q[0]}</b>
+            <ul>
+              {planLines(plan.action, ui, lang).map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          </>
+        )}
         {plan.action.useCurrentFile && <small>{ui.planCurrentFile}</small>}
       </div>
       <small className="assistant-ai-badge">{ui.sourcePlan}</small>
@@ -342,7 +366,7 @@ function PlanCard({ plan, ui, lang, onRun }: { plan: Plan; ui: Record<string, st
 }
 
 /** Aviso del error de la pantalla: con solución (`screenError`) o sin una específica (`screenErrorGeneric`). */
-type ScreenLead = { key: 'screenError' | 'screenErrorGeneric'; error: string }
+type ScreenLead = { key: 'screenError' | 'screenErrorGeneric'; error: string; chainStopped?: boolean }
 
 /** El último error de esta pantalla, explicado con la respuesta de la base que lo resuelve (W-151.6). */
 function errorReply(index: Index): { reply: Extract<Reply, { kind: 'answer' }>; lead: ScreenLead } | null {
@@ -350,7 +374,7 @@ function errorReply(index: Index): { reply: Extract<Reply, { kind: 'answer' }>; 
   if (!error) return null
   const entry = index.byId.get(error.entry ?? 'contacto')
   if (!entry) return null
-  return { reply: { kind: 'answer', entry, related: [] }, lead: { key: error.entry ? 'screenError' : 'screenErrorGeneric', error: error.message } }
+  return { reply: { kind: 'answer', entry, related: [] }, lead: { key: error.entry ? 'screenError' : 'screenErrorGeneric', error: error.message, ...(error.chainStopped ? { chainStopped: true } : {}) } }
 }
 
 function Typing() {
@@ -405,7 +429,7 @@ function BotMessage({
     )
   }
   // Aviso del error de la pantalla (W-151.6): «Vi que salió este aviso: …».
-  const lead = msg.lead ? ui[msg.lead.key].replace('{error}', msg.lead.error) : null
+  const lead = msg.lead ? ui[msg.lead.key].replace('{error}', msg.lead.error) + (msg.lead.chainStopped ? ` ${ui.chainStopped}` : '') : null
   return (
     <div className="assistant-bot">
       {lead && <p className="assistant-bubble bot assistant-screen-error">{lead}</p>}
