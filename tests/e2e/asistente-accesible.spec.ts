@@ -58,7 +58,9 @@ test('aviso de error y siguiente paso: sin problemas de accesibilidad y caben en
   expect(await fitsWidth(page)).toEqual({ inside: true, overflowing: 0 })
 })
 
-test('solo con el teclado: «comprime este pdf a 1 mega» termina con el PDF comprimido @movil', async ({ page }) => {
+test('solo con el teclado: «comprime este pdf a 1 mega» termina con el PDF comprimido @movil', async ({ page, browserName }) => {
+  // En Safari, Tab solo recorre los campos de formulario; para llegar a los botones se usa Opción+Tab (como en una Mac).
+  const TAB = browserName === 'webkit' ? 'Alt+Tab' : 'Tab'
   await page.goto('/app/')
   await page.getByRole('button', { name: 'Asistente de DocuSmart' }).focus()
   await page.keyboard.press('Enter')
@@ -69,7 +71,7 @@ test('solo con el teclado: «comprime este pdf a 1 mega» termina con el PDF com
   const doIt = page.getByRole('button', { name: 'Hacer' })
   await expect(doIt).toBeVisible()
   // Con Tab se llega a «Hacer» sin salir del panel (el foco queda atrapado en el diálogo).
-  for (let i = 0; i < 12 && !(await doIt.evaluate((el) => el === document.activeElement)); i++) await page.keyboard.press('Tab')
+  for (let i = 0; i < 12 && !(await doIt.evaluate((el) => el === document.activeElement)); i++) await page.keyboard.press(TAB)
   await expect(doIt).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL(/#\/pdf\/comprimir$/)
