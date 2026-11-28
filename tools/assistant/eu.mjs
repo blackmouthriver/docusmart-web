@@ -26,6 +26,9 @@ export default {
     screenErrorGeneric: 'Ohar hau agertu dela ikusi dut: «{error}». Berriro gertatzen bada, idatzi iezaguzu:',
     // Siguiente paso (W-151.7).
     nextTitle: 'Normalean ondoren datorrena:',
+    // Varios pasos (W-151.8).
+    planSteps: '{n} urratsetan egin dezaket:',
+    chainStopped: 'Plana urrats honetan gelditu da.',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: 'DocuSmart-en oinarriko erantzuna',
     sourcePlan: 'Zure eskaera ulertu dut: berrikusi «Egin» sakatu aurretik',

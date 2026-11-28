@@ -26,6 +26,9 @@ export default {
     screenErrorGeneric: 'He vist aquest avís: «{error}». Si torna a passar, escriu-nos:',
     // Siguiente paso (W-151.7).
     nextTitle: 'El que sol venir després:',
+    // Varios pasos (W-151.8).
+    planSteps: 'Ho puc fer en {n} passos:',
+    chainStopped: 'El pla s’ha aturat en aquest pas.',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: 'Resposta de la base de DocuSmart',
     sourcePlan: 'He entès la teva petició: revisa-la abans de tocar «Fes-ho»',

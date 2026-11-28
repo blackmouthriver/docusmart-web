@@ -60,6 +60,9 @@ export default {
     screenErrorGeneric: 'Vi que salió este aviso: «{error}». Si vuelve a pasar, escríbenos:',
     // Siguiente paso (W-151.7).
     nextTitle: 'Lo que suele venir después:',
+    // Varios pasos (W-151.8).
+    planSteps: 'Puedo hacerlo en {n} pasos:',
+    chainStopped: 'El plan se detuvo en este paso.',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: 'Respuesta de la base de DocuSmart',
     sourcePlan: 'Entendí tu pedido: revisa antes de tocar «Hacer»',
