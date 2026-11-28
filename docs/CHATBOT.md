@@ -275,3 +275,12 @@ archivo (el archivo no se copia: es la misma acción de W-110). Al abrir el asis
 después:» con esos botones; si hubo un error reciente, primero se explica el error. Sin ventanas emergentes:
 solo dentro del panel. Se apaga en Ajustes → «Sugerencias del asistente».
 
+## Varios pasos (W-151.8)
+
+«Une estos pdf y luego gíralos 90 grados»: el analizador devuelve un encadenado y la tarjeta muestra el plan
+numerado, con las opciones de cada paso. Se confirma una sola vez con «Hacer». `src/shared/files/assistantChain.ts`
+guarda el plan en `sessionStorage` (30 minutos, sin contraseñas ni URL). Al terminar cada paso, «¿Y ahora?» muestra
+«Plan del asistente: paso 1 de 2 listo. Sigue: Rotar páginas.» con **Continuar**, que abre el siguiente paso con el
+resultado ya cargado y sus opciones puestas; no avanza solo. Si un paso falla, el plan se detiene y el asistente lo
+dice al explicar el error.
+

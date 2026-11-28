@@ -26,6 +26,9 @@ export default {
     screenErrorGeneric: 'Я вижу это сообщение: «{error}». Если повторится, напишите нам:',
     // Siguiente paso (W-151.7).
     nextTitle: 'Что обычно делают дальше:',
+    // Varios pasos (W-151.8).
+    planSteps: 'Могу сделать это за {n} шага:',
+    chainStopped: 'План остановился на этом шаге.',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: 'Ответ из базы знаний DocuSmart',
     sourcePlan: 'Я понял запрос: проверьте, прежде чем нажать «Сделать»',

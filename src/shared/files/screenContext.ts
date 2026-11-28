@@ -7,10 +7,14 @@
  * memoria de la pestaña (no se guarda ni se envía, tampoco a la analítica) y vale solo para la pantalla
  * donde ocurrió.
  */
+import { chainActive, stopChain } from './assistantChain'
 
 export type ScreenFile = { name: string; type: string; size: number }
-/** `entry`: respuesta de la base que explica y resuelve el error (null si no hay una específica). */
-export type ScreenError = { entry: string | null; message: string }
+/**
+ * `entry`: respuesta de la base que explica y resuelve el error (null si no hay una específica).
+ * `chainStopped`: había un plan de varios pasos en marcha y este error lo detuvo (W-151.8).
+ */
+export type ScreenError = { entry: string | null; message: string; chainStopped?: boolean }
 /**
  * Resultado listo en la pantalla (W-151.7): de qué herramienta salió y cómo abrir la siguiente con él. El
  * archivo no se guarda aquí: `open` es la misma acción de «¿Y ahora?» (W-110), que ya lo tiene.
@@ -34,14 +38,18 @@ export function reportFiles(files: readonly File[]): void {
 /** Error que se le mostró a la persona en esta pantalla. */
 export function reportError(entry: string | null, message: string, now = Date.now()): void {
   const where = here()
-  state = { where, files: state.where === where ? state.files : [], error: { entry, message, at: now }, result: null }
+  // Si un paso de un plan del asistente falla, el plan se detiene (W-151.8).
+  const chainStopped = chainActive(now)
+  if (chainStopped) stopChain()
+  state = { where, files: state.where === where ? state.files : [], error: { entry, message, at: now, ...(chainStopped ? { chainStopped } : {}) }, result: null }
 }
 
 /** Lo que se sabe de la pantalla actual (vacío si cambió de pantalla). */
 export function screenSnapshot(now = Date.now()): ScreenSnapshot {
   if (state.where !== here()) return { files: [], error: null, result: null }
   const fresh = state.error && now - state.error.at <= SCREEN_ERROR_MAX_AGE_MS
-  return { files: state.files, error: fresh ? { entry: state.error!.entry, message: state.error!.message } : null, result: state.result }
+  const e = state.error!
+  return { files: state.files, error: fresh ? { entry: e.entry, message: e.message, ...(e.chainStopped ? { chainStopped: true } : {}) } : null, result: state.result }
 }
 
 /** Una herramienta terminó y su resultado está a la vista (W-151.7). null: ya no lo está. */

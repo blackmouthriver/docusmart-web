@@ -5,8 +5,12 @@ import { useT } from '../../../shared/i18n/I18n'
 import { track } from '../../../shared/platform/analytics'
 import { Icon } from '../../../shared/ui/Icon'
 import type { CatalogTool } from '../core/catalog'
-import { resultKind, suggestNextSteps } from '../core/nextSteps'
+import { resultKind, routeForTool, suggestNextSteps } from '../core/nextSteps'
 import { reportResult } from '../../../shared/files/screenContext'
+import { advanceChain, chainStepFor } from '../../../shared/files/assistantChain'
+import { setToolOptions } from '../../../shared/files/toolOptions'
+import { Notice } from '../../../shared/ui/ui'
+import { CATALOG } from '../core/catalog'
 
 /**
  * "¿Y ahora?" (W-110): al terminar una herramienta, hasta 3 sugerencias para seguir con el resultado. El archivo pasa
@@ -29,9 +33,35 @@ export function NextSteps({ file, toolName }: { file: File; toolName: string }) 
     } })
     return () => reportResult(null)
   }, [steps, file, toolName])
-  if (!steps.length) return null
+  // W-151.8: plan de varios pasos del asistente. Si el paso actual era el de esta herramienta, se ofrece seguir.
+  const chain = useMemo(() => chainStepFor(routeForTool(toolName) ?? ''), [toolName, file])
+  const nextTool = chain?.next ? CATALOG.find((c) => c.key === chain.next!.route) : undefined
+  useEffect(() => {
+    if (chain && !chain.next) advanceChain() // era el último paso: el plan termina
+  }, [chain])
+  const continueChain = () => {
+    const next = advanceChain()
+    if (!next || !nextTool) return
+    if (next.options) setToolOptions(next.tool, next.options)
+    open(nextTool, 'assistant_chain_continue')
+  }
+  const plan = chain && (
+    <Notice kind={chain.next ? 'info' : 'success'}>
+      {t('chain.progress', { i: chain.index + 1, n: chain.total })} {nextTool ? t('chain.next', { tool: t(nextTool.name) }) : t('chain.done')}
+      {nextTool && (
+        <div className="row" style={{ marginTop: 8 }}>
+          <button type="button" className="btn btn-primary btn-sm" onClick={continueChain}>
+            <Icon name={nextTool.icon} />
+            {t('chain.continue')}
+          </button>
+        </div>
+      )}
+    </Notice>
+  )
+  if (!steps.length) return plan || null
   return (
     <section className="next-steps" aria-label={t('next.title')}>
+      {plan}
       <h3>{t('next.title')}</h3>
       <p className="faint">{t('next.hint')}</p>
       <div className="next-steps-list">

@@ -26,6 +26,9 @@ export default {
     screenErrorGeneric: '我看到出现了这个提示：“{error}”。如果再次出现，请联系我们：',
     // Siguiente paso (W-151.7).
     nextTitle: '接下来常用的：',
+    // Varios pasos (W-151.8).
+    planSteps: '我可以分 {n} 步完成：',
+    chainStopped: '计划在这一步停止了。',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: '来自 DocuSmart 知识库的回答',
     sourcePlan: '我理解了你的请求：点“执行”前请先确认',

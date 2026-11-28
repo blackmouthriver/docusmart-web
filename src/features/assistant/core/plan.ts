@@ -9,11 +9,19 @@ import type { Index, Kb, KbEntry } from './engine'
 import { parseRequest, type Lexicon } from './parser'
 
 /** Pedido que se puede dejar listo: una herramienta que ya recibe opciones, con al menos una opción. */
-export type Plan = { action: OpenToolAction; entry: KbEntry }
+/** `steps`: pedido de varios pasos (W-151.8); `action` y `entry` son entonces los del primero. */
+export type Plan = { action: OpenToolAction; entry: KbEntry; steps?: Array<{ action: OpenToolAction; entry: KbEntry }> }
 
 export function planFor(index: Index, kb: Kb & { parse?: Lexicon }, text: string): Plan | null {
   const r = parseRequest(index, kb.parse, text)
-  if (!r || r.action.kind !== 'openTool') return null
+  if (!r) return null
+  if (r.action.kind === 'chain') {
+    const steps = r.action.steps.map((action) => ({ action, entry: index.byId.get(`tool:${action.tool}`) }))
+    if (steps.some((s) => !s.entry)) return null
+    const ok = steps as Array<{ action: OpenToolAction; entry: KbEntry }>
+    return { action: ok[0].action, entry: ok[0].entry, steps: ok }
+  }
+  if (r.action.kind !== 'openTool') return null
   const a = r.action
   if (!TOOLS_RECEIVING_OPTIONS.has(a.tool) || !a.options || !Object.keys(a.options).length) return null
   const entry = index.byId.get(`tool:${a.tool}`)

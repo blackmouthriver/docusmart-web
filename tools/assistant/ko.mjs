@@ -26,6 +26,9 @@ export default {
     screenErrorGeneric: '“{error}” 안내가 나왔네요. 다시 생기면 알려 주세요:',
     // Siguiente paso (W-151.7).
     nextTitle: '다음에 자주 하는 작업:',
+    // Varios pasos (W-151.8).
+    planSteps: '{n}단계로 할 수 있어요:',
+    chainStopped: '이 단계에서 계획이 멈췄어요.',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: 'DocuSmart 지식 베이스의 답변',
     sourcePlan: '요청을 이해했어요. ‘실행’을 누르기 전에 확인해 주세요',

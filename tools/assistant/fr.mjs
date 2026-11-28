@@ -26,6 +26,9 @@ export default {
     screenErrorGeneric: 'J’ai vu ce message : « {error} ». Si ça se reproduit, écris-nous :',
     // Siguiente paso (W-151.7).
     nextTitle: 'Ce qui vient souvent ensuite :',
+    // Varios pasos (W-151.8).
+    planSteps: 'Je peux le faire en {n} étapes :',
+    chainStopped: 'Le plan s’est arrêté à cette étape.',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: 'Réponse de la base DocuSmart',
     sourcePlan: 'J’ai compris ta demande : vérifie avant de toucher « Faire »',

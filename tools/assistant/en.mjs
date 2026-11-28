@@ -54,6 +54,9 @@ export default {
     screenErrorGeneric: 'I saw this message come up: "{error}". If it happens again, write to us:',
     // Siguiente paso (W-151.7).
     nextTitle: 'What usually comes next:',
+    // Varios pasos (W-151.8).
+    planSteps: 'I can do it in {n} steps:',
+    chainStopped: 'The plan stopped at this step.',
     // De dónde salió la respuesta (W-151.16).
     sourceKb: 'Answer from the DocuSmart knowledge base',
     sourcePlan: 'I understood your request: check it before tapping “Do it”',

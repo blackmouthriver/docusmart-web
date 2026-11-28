@@ -52,6 +52,9 @@ const isDocumentTool = (toolName: string) => !NO_NEXT.has(toolName) && !/^(qr|st
 const PDF_DEFAULT = ['pdf/comprimir', 'pdf/firmar', 'pdf/proteger', 'pdf/unir', 'pdf/ocr', 'pdf/numerar', 'pdf/marca', 'pdf/rotar', 'convertir/pdf-word']
 
 /** Lo que más se hace después de cada herramienta (unir → comprimir → firmar → proteger). */
+/** Pantalla de la app de una herramienta por su nombre de analítica («compress» → «pdf/comprimir»). */
+export const routeForTool = (toolName: string): string | undefined => TOOL_KEY[toolName]
+
 const PDF_FLOWS: Record<string, string[]> = {
   merge: ['pdf/comprimir', 'pdf/firmar', 'pdf/proteger'],
   compress: ['pdf/firmar', 'pdf/proteger', 'pdf/unir'],

@@ -77,6 +77,14 @@ describe('tarjeta «Hacer / Cambiar»', () => {
     expect(lines('numerar las paginas del pdf en el centro')).toBeNull()
   })
 
+  it('pedido de varios pasos (W-151.8): cada paso con su herramienta y sus opciones', () => {
+    const { kb, index } = load('es')
+    const plan = planFor(index, kb, 'une estos pdf y luego comprimelos a 1 mega')
+    expect(plan?.steps?.map((s) => s.action.tool)).toEqual(['unir-pdf', 'comprimir-pdf'])
+    expect(plan?.action.tool).toBe('unir-pdf')
+    expect(planLines(plan!.steps![1].action, kb.ui, 'es')).toEqual(['Tamaño máximo: 1 MB'])
+  })
+
   it('en inglés también, con el formato de números del idioma', () => {
     const { kb, index } = load('en')
     const plan = planFor(index, kb, 'resize the image to 1920x1080')

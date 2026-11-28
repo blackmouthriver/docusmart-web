@@ -141,3 +141,29 @@ test('aviso honesto (W-151.16): cada respuesta dice de dónde salió', async ({ 
   // Y la nota de privacidad sigue en la cabecera del panel.
   await expect(page.locator('.assistant-head')).toContainText('Todo ocurre en tu navegador')
 })
+
+test('varios pasos (W-151.8): «une estos pdf y luego giralos 90 grados» se hace paso a paso con «Continuar»', async ({ page }) => {
+  const pdf = (name: string) => ({ name, mimeType: 'application/pdf', buffer: makePdf(1) })
+  await page.goto('/app/')
+  await ask(page, 'une estos pdf y luego giralos 90 grados')
+  const card = page.locator('.assistant-plan')
+  await expect(card).toContainText('Puedo hacerlo en 2 pasos:')
+  await expect(card.locator('ol > li')).toHaveCount(2)
+  await expect(card.locator('ol > li').nth(1)).toContainText('Giro: 90°')
+  await page.getByRole('button', { name: 'Hacer' }).click()
+  // Paso 1: Unir.
+  await expect(page).toHaveURL(/#\/pdf\/unir$/)
+  await page.locator('input[type=file][multiple]').first().waitFor({ state: 'attached' })
+  await upload(page, [pdf('a.pdf'), pdf('b.pdf')])
+  await page.getByRole('button', { name: 'Unir 2 PDFs' }).click()
+  await expect(page.getByText('Plan del asistente: paso 1 de 2 listo. Sigue: Rotar páginas.')).toBeVisible({ timeout: 30_000 })
+  await page.getByRole('button', { name: 'Continuar' }).click()
+  // Paso 2: Rotar, con el PDF unido ya cargado y las páginas giradas 90°.
+  await expect(page).toHaveURL(/#\/pdf\/rotar$/)
+  await expect(page.locator('main')).toContainText('unido.pdf')
+  await expect(page.locator('main')).toContainText('1 · 90°')
+  const go = page.getByRole('button', { name: 'Rotar PDF', exact: true })
+  await go.scrollIntoViewIfNeeded()
+  await go.click()
+  await expect(page.getByText('Plan del asistente: paso 2 de 2 listo. Plan terminado.')).toBeVisible({ timeout: 60_000 })
+})
