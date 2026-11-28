@@ -10,11 +10,18 @@ import { tr } from '../../../shared/i18n/translate'
 import type { OcrLang, OcrProgress, OcrResult } from '../core/ocr'
 import { OcrLangPicker, useDefaultOcrLang } from './OcrLangPicker'
 import { track } from '../../../shared/platform/analytics'
+import { useAssistantOptions } from '../../../shared/files/toolOptions'
+import { ocrBaseForIso } from '../core/ocrLangs'
 
 export function OcrTool() {
   const { toast } = useApp()
   const [file, setFile] = useState<File | null>(null)
   const [lang, setLang] = useState<OcrLang>(useDefaultOcrLang())
+  // Desde el asistente (W-151.5): «reconoce el texto de este pdf en inglés».
+  useAssistantOptions('ocr-pdf', (o) => {
+    const base = typeof o.language === 'string' ? ocrBaseForIso(o.language) : undefined
+    if (base) setLang(base)
+  })
   const [wantPdf, setWantPdf] = useState(true)
   /** Reconocer también las páginas que ya tienen texto (por defecto se respetan, W-146.6). */
   const [force, setForce] = useState(false)

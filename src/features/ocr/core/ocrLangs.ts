@@ -26,3 +26,8 @@ export function ocrLangName(base: OcrBase, uiLang: string): string {
   }
   return OCR_ISO[base]
 }
+
+/** El modelo de un idioma por su código («en» → «eng»), o undefined si no hay (W-151.5). */
+export function ocrBaseForIso(iso: string): OcrBase | undefined {
+  return OCR_LANGS.find((b) => OCR_ISO[b] === iso)
+}

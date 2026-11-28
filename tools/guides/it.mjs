@@ -1428,7 +1428,7 @@ export default {
             'Apri [Curriculum vitae](/hoja-de-vida). In alto scegli come apparirà:',
             { ul: [
               "**Classico (ATS)**: una colonna e senza foto. È quello che leggono meglio i sistemi che filtrano i curriculum sui siti di lavoro; usalo per candidarti online.",
-              '**Compatta**: altrettanto chiara, con caratteri e margini più piccoli perché ci stia di più in una pagina.',
+              '**Compatto**: altrettanto chiaro, con caratteri e margini più piccoli perché ci stia di più in una pagina.',
               '**Con foto**: la tua foto in alto, come la chiedono molte aziende in America Latina.',
             ] },
             'Scegli anche il formato del foglio (Lettera o A4), il carattere (moderno o classico) e il colore dei titoli.',
@@ -1465,7 +1465,7 @@ export default {
         },
       ],
       steps: [
-        { name: 'Scegli il modello', text: 'Vai su docusmart.online/it/curriculum-vitae e scegli Classico (ATS), Compatta o Con foto.' },
+        { name: 'Scegli il modello', text: 'Vai su docusmart.online/it/curriculum-vitae e scegli Classico (ATS), Compatto o Con foto.' },
         { name: 'Compila le sezioni', text: "Scrivi i tuoi dati, il profilo, l'esperienza, l'istruzione e le competenze." },
         { name: "Confrontalo con l'offerta", text: "Incolla l'annuncio per vedere quali parole chiave ti mancano." },
         { name: 'Scaricalo', text: 'Premi Crea PDF o Crea Word e scarica il tuo curriculum.' },

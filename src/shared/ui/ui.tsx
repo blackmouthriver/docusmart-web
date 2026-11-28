@@ -7,6 +7,7 @@ import { useT } from '../i18n/I18n'
 import { tr } from '../i18n/translate'
 import { PrivacySeal } from './PrivacySeal'
 import { takeChainedFiles } from '../files/handoff'
+import { reportError, reportFiles } from '../files/screenContext'
 
 /** `privacySeal` (por defecto sí): sello "tu archivo no sale de tu dispositivo"; se apaga en el inicio y el menú de herramientas. */
 export function HeroCard({ title, subtitle, privacySeal = true }: { title: string; subtitle: string; privacySeal?: boolean }) {
@@ -63,10 +64,14 @@ export function DropZone({
   const expect = check ? expectFromAccept(accept) : null
   /** Entrega los archivos que sirven y anota los que no. */
   const deliver = async (files: File[]) => {
-    if (!expect) return onFiles(files)
+    if (!expect) return (reportFiles(files), onFiles(files))
     const problems = await Promise.all(files.map((f) => checkFile(f, expect)))
-    setRejected(files.flatMap((f, i) => (problems[i] ? [`${f.name}: ${problemMessage(problems[i])}`] : [])))
+    const bad = files.flatMap((f, i) => (problems[i] ? [`${f.name}: ${problemMessage(problems[i])}`] : []))
+    setRejected(bad)
     const ok = files.filter((_, i) => !problems[i])
+    reportFiles(ok)
+    // Un archivo rechazado (vacío o dañado): si es un PDF, el asistente sugiere repararlo (W-151.6).
+    if (bad.length) reportError(expect === 'pdf' ? 'pdf-danado' : null, bad[0])
     if (ok.length) onFiles(ok)
   }
   // W-110: si la herramienta anterior dejó un archivo para esta, se recibe como si el usuario lo hubiera elegido.
@@ -249,10 +254,11 @@ export function Progress({ value }: { value: number }) {
 
 export function errorMessage(e: unknown): string {
   const msg = e instanceof Error ? e.message : String(e)
+  // El asistente lo recuerda para explicar el error y su solución (W-151.6): solo el tipo y el texto mostrado.
+  const shown = (entry: string | null, text: string) => (reportError(entry, text), text)
   // pdf.js: "The PDF file is empty, i.e. its size is zero bytes."
-  if (/file is empty|zero bytes/i.test(msg)) return tr('err.emptyFile')
-  if (/encrypt/i.test(msg) || /password/i.test(msg))
-    return tr('err.lockedPdf')
-  if (/Invalid PDF|No PDF header|InvalidPDF/i.test(msg)) return tr('err.invalidPdf')
-  return tr('err.generic')
+  if (/file is empty|zero bytes/i.test(msg)) return shown('pdf-danado', tr('err.emptyFile'))
+  if (/encrypt/i.test(msg) || /password/i.test(msg)) return shown('pdf-protegido', tr('err.lockedPdf'))
+  if (/Invalid PDF|No PDF header|InvalidPDF/i.test(msg)) return shown('pdf-danado', tr('err.invalidPdf'))
+  return shown(null, tr('err.generic'))
 }

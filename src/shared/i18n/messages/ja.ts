@@ -96,6 +96,8 @@ const ja: Messages = {
   'settings.sidebar.accent': "アクセントカラー",
   'settings.animatedBg': "アニメーション背景",
   'settings.animatedBg.sub': "アクセントカラーの図形が動きます",
+  'settings.assistantNext': "アシスタントの提案",
+  'settings.assistantNext.sub': "ツールが終わると、圧縮や署名など次の手順をアシスタントが提案します。",
   'settings.font': "文字の大きさ",
   'settings.font.normal': "標準",
   'settings.font.large': "大",

@@ -12,6 +12,8 @@ import { tr } from '../../../shared/i18n/translate'
 import type { OcrImage, OcrLang, OcrProgress } from '../core/ocr'
 import { OcrLangPicker, useDefaultOcrLang } from './OcrLangPicker'
 import { IMAGE_OCR_ACCEPT, combineTexts, pastedName, textFileBase, type ImageText } from '../core/imageText'
+import { useAssistantOptions } from '../../../shared/files/toolOptions'
+import { ocrBaseForIso } from '../core/ocrLangs'
 
 const isImage = (f: File) => f.type.startsWith('image/') || looksSpecial(f.name, f.type)
 
@@ -19,6 +21,11 @@ export function ImageToTextTool() {
   const { toast } = useApp()
   const [files, setFiles] = useState<File[]>([])
   const [lang, setLang] = useState<OcrLang>(useDefaultOcrLang())
+  // Desde el asistente (W-151.5): «copia el texto de esta foto en alemán».
+  useAssistantOptions('imagen-a-texto', (o) => {
+    const base = typeof o.language === 'string' ? ocrBaseForIso(o.language) : undefined
+    if (base) setLang(base)
+  })
   const [busy, setBusy] = useState(false)
   const [progress, setProgress] = useState<OcrProgress | null>(null)
   const [items, setItems] = useState<ImageText[] | null>(null)

@@ -18,7 +18,11 @@ const STOPWORDS: Record<string, ReadonlySet<string>> = {
   de: new Set('der die das den dem des ein eine einen einem einer und oder zu zum zur in im mit ohne fur von auf an ist sind wie was ich du kann will muss mein meine mich mir es sich nicht auch zwei drei mehrere'.split(' ')),
   ca: new Set('el la els les l un una uns unes de del dels d i o en a al als per amb sense que com es son puc pots vull he fer meu meva meus meves aquest aquesta no dos tres diversos'.split(' ')),
   eu: new Set('eta edo da dira bat ere nola zer nire nik dut ditut du ahal nahi behar egin hau hori ez bai bi hiru'.split(' ')),
-  ru: new Set('и в во не что как на с со а но или по к ко у о об от для из за мой моя мои я ты это этот эта мне меня можно нужно хочу могу ли два три несколько'.split(' ')),
+  // Chino, japonés y coreano: pares de caracteres de relleno (cómo, qué, puedo, quiero…), tras partir en pares.
+  zh: new Set('怎么 怎样 么样 什么 如何 可以 一个 我的 我想 想要 需要 能不 不能 吗 呢 的话 一下'.split(' ')),
+  ja: new Set('です すか ます した たい たいで ですか でき きる 方法 どう うす すれ れば ください'.split(' ')),
+  ko: new Set('하고 싶어 어요 해요 있나 나요 습니 니다 방법 어떻 떻게 하는 는법'.split(' ')),
+  ru: new Set('который которая которое какой какая и в во не что как на с со а но или по к ко у о об от для из за мой моя мои я ты это этот эта мне меня можно нужно хочу могу ли два три несколько'.split(' ')),
 }
 /** Idiomas sin espacios entre palabras (o con partículas pegadas): se indexan por pares de caracteres. */
 const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+|[^\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+/gu
@@ -33,12 +37,14 @@ export function cjkBigrams(run: string): string[] {
 /** Sinónimos → palabra de la base (después de normalizar y quitar plurales). */
 const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
   es: {
+    // Imperativos de los pedidos (W-151.4): «une», «comprime», «gira», «separa»…
+    une: 'unir', unan: 'unir', comprime: 'comprimir', comprima: 'comprimir', gira: 'rotar', gire: 'rotar', separa: 'dividir', divide: 'dividir', rota: 'rotar', convierte: 'convertir', pasa: 'pasar', pasame: 'pasar',
     juntar: 'unir', junto: 'unir', junta: 'unir', combinar: 'unir', combino: 'unir', fusionar: 'unir', pegar: 'unir', unificar: 'unir', uno: 'unir',
     separar: 'dividir', separo: 'dividir', partir: 'dividir', parto: 'dividir', cortar: 'dividir',
     girar: 'rotar', giro: 'rotar', voltear: 'rotar', enderezar: 'rotar',
     reducir: 'comprimir', reduzco: 'comprimir', achicar: 'comprimir', aligerar: 'comprimir', peso: 'comprimir', pesa: 'comprimir', liviano: 'comprimir', comprimo: 'comprimir',
     clave: 'contrasena', password: 'contrasena', bloquear: 'proteger', protejo: 'proteger', candado: 'proteger',
-    quitar: 'desbloquear', sacar: 'extraer', extrae: 'extraer', extraigo: 'extraer',
+    quitar: 'desbloquear', quito: 'desbloquear', sacar: 'extraer', extrae: 'extraer', extraigo: 'extraer',
     cambia: 'cambiar', cambio: 'cambiar', cambiarlo: 'cambiar', ponerle: 'proteger',
     firma: 'firmar', firmo: 'firmar',
     foto: 'imagen', fotografia: 'imagen', jpeg: 'jpg', imagenes: 'imagen',
@@ -55,6 +61,13 @@ const SYNONYMS: Record<string, Readonly<Record<string, string>>> = {
     suscripcion: 'premium', plan: 'premium',
     seguro: 'privacidad', segura: 'privacidad', servidor: 'privacidad', suben: 'privacidad', subir: 'privacidad', sube: 'privacidad',
     ayudame: 'ayuda', ayudar: 'ayuda',
+  },
+  // Ruso: los nombres de formatos se escriben también en cirílico (W-151.2).
+  ru: {
+    пдф: 'pdf', пдфка: 'pdf', ворд: 'word', ворде: 'word', эксель: 'excel', ексель: 'excel', джпг: 'jpg', жпг: 'jpg', джипег: 'jpg', пнг: 'png', зип: 'zip', рар: 'rar', гиф: 'gif', гифк: 'gif', мп3: 'mp3', мп4: 'mp4',
+  },
+  pt: {
+    graca: 'gratis', gratuito: 'gratis', gratuita: 'gratis', zap: 'whatsapp', zapzap: 'whatsapp', pdfs: 'pdf',
   },
   en: {
     combine: 'merge', join: 'merge', joining: 'merge', unite: 'merge', glue: 'merge',
@@ -83,8 +96,17 @@ const EMPTY: ReadonlySet<string> = new Set()
 /** Idiomas con plural en -s (los demás se dejan como están). */
 const PLURAL_S = new Set(['es', 'en', 'pt', 'fr', 'it', 'ca'])
 
-/** Quita plurales simples (pdfs → pdf, imagenes → imagen, archivos → archivo, files → file). */
+/** Terminaciones frecuentes del ruso (verbos, sustantivos y adjetivos), de la más larga a la más corta. */
+const RU_ENDINGS = ['иться', 'ыться', 'ться', 'ение', 'ения', 'ению', 'ением', 'ами', 'ями', 'ого', 'его', 'ому', 'ему', 'ыми', 'ими', 'ать', 'ять', 'ить', 'еть', 'уть', 'ешь', 'ует', 'ют', 'ет', 'ит', 'ах', 'ях', 'ов', 'ев', 'ой', 'ей', 'ий', 'ый', 'ая', 'яя', 'ое', 'ее', 'ые', 'ие', 'ую', 'юю', 'ом', 'ем', 'ам', 'ям', 'ть', 'а', 'я', 'ы', 'и', 'у', 'ю', 'е', 'о', 'ь']
+
+/** Quita plurales simples (pdfs → pdf, imagenes → imagen, archivos → archivo, files → file) y, en ruso,
+ *  las terminaciones (объединить, объединение → объедин): igual en la pregunta y en la base. */
 export function stem(word: string, lang: string): string {
+  if (lang === 'ru') {
+    if (word.length <= 4) return word
+    const end = RU_ENDINGS.find((e) => word.endsWith(e) && word.length - e.length >= 4)
+    return end ? word.slice(0, -end.length) : word
+  }
   if (word.length <= MIN_STEM || !PLURAL_S.has(lang)) return word
   if ((lang === 'es' || lang === 'ca') && word.endsWith('es') && word.length > 5 && !/[aeiou]es$/.test(word)) return word.slice(0, -2)
   if (word.endsWith('s') && !word.endsWith('ss')) return word.slice(0, -1)

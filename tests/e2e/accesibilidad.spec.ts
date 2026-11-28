@@ -8,6 +8,11 @@ import { expect, test } from './helpers'
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa']
 
 async function audit(page: Page) {
+  // Se mide el estado final: con las fuentes cargadas y sin transiciones a medias (en la Mac del CI, más
+  // lenta, axe medía el contraste del menú mientras su opacidad todavía cambiaba).
+  await page.evaluate(() => document.fonts.ready)
+  await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; animation: none !important; }' })
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
   const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze()
   return violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.length}× ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)
 }

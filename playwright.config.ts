@@ -32,7 +32,8 @@ export default defineConfig({
     // En el celular solo las pruebas marcadas @movil (portada, menú y herramientas).
     { name: 'movil', grep: /@movil/, use: { ...devices['Pixel 7'], ...(CI ? {} : { channel: 'chrome' }) } },
     // W-150.3: el motor de Safari (WebKit), para DocuSmart Desktop en Mac. Solo si se pide: WEBKIT=1.
-    ...(process.env.WEBKIT ? [{ name: 'safari', use: { ...devices['Desktop Safari'] } }] : []),
+    // En la Mac del CI todo va más lento (modelos de IA, video, PDF grandes): más tiempo y un reintento más.
+    ...(process.env.WEBKIT ? [{ name: 'safari', timeout: 90_000, retries: CI ? 2 : 0, use: { ...devices['Desktop Safari'] } }] : []),
   ],
   webServer: {
     command: `npx vite preview --port ${PORT} --strictPort`,

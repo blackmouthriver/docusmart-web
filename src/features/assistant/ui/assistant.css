@@ -55,7 +55,7 @@ body:has(.ds-consent) .assistant-root { display: none; }
 .assistant-fab.is-open .fab-halo, .assistant-fab.is-open .fab-spark { display: none; }
 
 /* ── Burbuja de bienvenida ── */
-.assistant-teaser { position: absolute; right: 70px; bottom: 8px; display: flex; align-items: center; gap: 2px; max-width: min(280px, calc(100vw - 110px)); padding: 4px 4px 4px 14px; border-radius: 18px 18px 6px 18px; background: var(--as-surface); color: var(--as-ink); box-shadow: 0 0 0 1px var(--as-line), 0 16px 32px -14px rgba(11, 16, 32, .45); transform-origin: bottom right; animation: teaser-in 420ms var(--as-spring); }
+.assistant-teaser { position: absolute; right: 70px; bottom: 8px; display: flex; width: max-content; align-items: center; gap: 2px; max-width: min(280px, calc(100vw - 110px)); padding: 4px 4px 4px 14px; border-radius: 18px 18px 6px 18px; background: var(--as-surface); color: var(--as-ink); box-shadow: 0 0 0 1px var(--as-line), 0 16px 32px -14px rgba(11, 16, 32, .45); transform-origin: bottom right; animation: teaser-in 420ms var(--as-spring); }
 .assistant-teaser[hidden] { display: none; }
 .assistant-teaser.is-leaving { animation: teaser-out 240ms ease forwards; }
 @keyframes teaser-in { from { opacity: 0; transform: translateX(12px) scale(.85); } }
@@ -109,9 +109,16 @@ body:has(.ds-consent) .assistant-root { display: none; }
 .assistant-send-note { margin-top: -2px; color: var(--as-faint); font-size: 11.5px; }
 .assistant-ai-badge { margin-top: -2px; color: var(--as-faint); font-size: 11.5px; }
 .assistant-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Tarjeta «Hacer / Cambiar» (W-151.5). */
+.assistant-plan { display: grid; gap: 4px; white-space: normal; }
+.assistant-plan ul { margin: 2px 0 0; padding-left: 18px; }
+.assistant-plan small { color: var(--as-faint); }
+button.as-action { border: 0; font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
 .as-action { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 12px; background: var(--as-soft); color: var(--as-ink); font-size: 13.5px; font-weight: 600; text-decoration: none; box-shadow: 0 0 0 1px var(--as-line) inset; transition: transform 150ms var(--as-ease), background-color 150ms ease; }
 .as-action svg { width: 14px; height: 14px; }
 .as-action:not(:has(svg[class])) svg { transform: rotate(180deg); }
+/* Los botones de la tarjeta usan íconos propios (check, lápiz): sin el giro de la flecha. */
+.assistant-actions button.as-action svg { transform: none; }
 .as-action.is-primary { background: var(--as-accent); color: #fff; box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--as-accent) 90%, transparent); }
 .as-action:active { transform: scale(.96); }
 @media (hover: hover) and (pointer: fine) { .as-action:hover { transform: translateY(-1px); } }

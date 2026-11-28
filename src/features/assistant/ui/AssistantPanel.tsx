@@ -15,6 +15,14 @@ import { kbLangFor } from '../core/reply'
 import { localAiFor, type LocalAi } from '../infra/browserAi'
 import { questionMail } from '../core/sendQuestion'
 import { FEEDBACK_EMAIL } from '../../../shared/files/share'
+import { setToolOptions } from '../../../shared/files/toolOptions'
+import { planFor, planLines, type Plan } from '../core/plan'
+import { asksWhy, type Lexicon } from '../core/parser'
+import { screenSnapshot } from '../../../shared/files/screenContext'
+import { suggestNextSteps, type ResultKind } from '../../tools/core/nextSteps'
+import type { CatalogTool } from '../../tools/core/catalog'
+import { nextStepsEnabled } from '../core/prefs'
+import { tr } from '../../../shared/i18n/translate'
 
 /** Primera letra en mayúscula (las preguntas de la base se escriben como las escribe la gente). */
 const capitalize = (s: string) => s.charAt(0).toLocaleUpperCase() + s.slice(1)
@@ -24,7 +32,8 @@ const CLOSE_MS = 200
 /** text/ai: respuesta redactada por la IA del navegador (W-70f), mientras se escribe ('writing') y al terminar ('done'). */
 type Msg =
   | { id: number; role: 'user'; text: string }
-  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done'; question?: string }
+  | { id: number; role: 'bot'; reply: Reply | { kind: 'greeting' }; feedback?: 'up' | 'down'; text?: string; ai?: 'writing' | 'done'; question?: string; plan?: Plan; lead?: ScreenLead }
+  | { id: number; role: 'next'; tools: CatalogTool[] }
 
 export type PanelProps = {
   lang: string
@@ -73,6 +82,16 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
   }, [lang, screen])
 
   useEffect(() => input.current?.focus(), [data])
+  // W-151.6: si en esta pantalla acaba de salir un error, el asistente lo explica primero, con la solución.
+  useEffect(() => {
+    if (!data) return
+    const r = errorReply(data.index)
+    if (r) return setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', ...r }])
+    // W-151.7: con un resultado a la vista, lo que suele venir después (se puede apagar en Ajustes).
+    const { result } = screenSnapshot()
+    const tools = result && nextStepsEnabled() ? suggestNextSteps(result.kind as ResultKind, result.toolName) : []
+    if (tools.length) setMsgs((m) => [...m, { id: nextId.current++, role: 'next', tools }])
+  }, [data])
   useEffect(() => {
     let alive = true
     void localAiFor(kbLangFor(lang)).then((a) => alive && setAi(a))
@@ -129,11 +148,42 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
       prefersReducedMotion() ? 0 : typingDelay(length),
     )
   }
+  /** Pedido que se puede dejar listo (W-151.5): tarjeta con la herramienta, sus opciones y «Hacer / Cambiar». */
+  const pushPlan = (user: string, plan: Plan) => {
+    setMsgs((m) => [...m, { id: nextId.current++, role: 'user', text: user }])
+    track('assistant_plan', { tool: plan.action.tool })
+    setTyping(true)
+    window.setTimeout(
+      () => {
+        setTyping(false)
+        setMsgs((m) => [...m, { id: nextId.current++, role: 'bot', reply: { kind: 'answer', entry: plan.entry, related: [] }, plan }])
+      },
+      prefersReducedMotion() ? 0 : typingDelay(80),
+    )
+  }
   const ask = () => {
     const q = text.trim()
     if (!q || !data || typing || writing) return
     setText('')
-    push(q, reply(data.index, q, context))
+    const plan = planFor(data.index, data.kb, q)
+    if (plan) return pushPlan(q, plan)
+    const r = reply(data.index, q, context)
+    // «¿Por qué no me deja?» (o algo que el buscador no sabe) con un error reciente en esta pantalla: se explica ese error.
+    const err = r.kind === 'fallback' || asksWhy((data.kb as { parse?: Lexicon }).parse, q) ? errorReply(data.index) : null
+    if (err) {
+      setMsgs((m) => [...m, { id: nextId.current++, role: 'user', text: q }, { id: nextId.current++, role: 'bot', ...err }])
+      track('assistant_screen_error', { answer_id: err.reply.entry.id })
+    } else push(q, r)
+  }
+  /** «Hacer» deja las opciones puestas; «Cambiar» abre la herramienta sin ellas, para elegirlas a mano. */
+  const runPlan = (plan: Plan, withOptions: boolean) => {
+    track(withOptions ? 'assistant_plan_do' : 'assistant_plan_change', { tool: plan.action.tool })
+    if (withOptions && plan.action.options) setToolOptions(plan.action.tool, plan.action.options)
+    const open = plan.entry.actions?.[0]
+    // Ya en la herramienta: las opciones le llegan con un evento; basta con cerrar el panel.
+    if (context === plan.action.tool || !open) return onClose()
+    if (inApp && open.kind === 'tool') return onAction(open)
+    location.href = open.href
   }
   const choose = (e: KbEntry) => data && !typing && !writing && push(capitalize(e.q[0]), answerFor(data.index, e))
   const feedback = (id: number, answerId: string, value: 'up' | 'down') => {
@@ -200,12 +250,18 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
         {failed && <p className="assistant-bubble bot">⚠️ {lang === 'es' ? 'Sin conexión: no se pudo cargar el asistente.' : 'Offline: the assistant could not load.'}</p>}
         {data &&
           msgs.map((m) =>
-            m.role === 'user' ? (
+            m.role === 'next' ? (
+              <NextCard key={m.id} tools={m.tools} title={data.kb.ui.nextTitle} onPick={(key) => (screenSnapshot().result?.open(key), onClose())} />
+            ) : m.role === 'user' ? (
               <p key={m.id} className="assistant-bubble user">
                 {m.text}
               </p>
             ) : (
-              <BotMessage key={m.id} msg={m} kb={data.kb} index={data.index} context={context} onChoose={choose} onAction={onAction} onFeedback={feedback} />
+              m.plan ? (
+                <PlanCard key={m.id} plan={m.plan} ui={data.kb.ui} lang={data.kb.lang} onRun={runPlan} />
+              ) : (
+                <BotMessage key={m.id} msg={m} kb={data.kb} index={data.index} context={context} onChoose={choose} onAction={onAction} onFeedback={feedback} />
+              )
             ),
           )}
         {typing && <Typing />}
@@ -237,6 +293,64 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
       </form>
     </div>
   )
+}
+
+/** Lo que suele venir después de la herramienta que acaba de terminar (W-151.7). */
+function NextCard({ tools, title, onPick }: { tools: CatalogTool[]; title: string; onPick: (key: string) => void }) {
+  return (
+    <div className="assistant-bot">
+      <p className="assistant-bubble bot">{title}</p>
+      <div className="assistant-actions">
+        {tools.map((tool, i) => (
+          <button key={tool.key} type="button" className={'as-action' + (i === 0 ? ' is-primary' : '')} onClick={() => onPick(tool.key)}>
+            {tr(tool.name)}
+            <Icon name={tool.icon} />
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/** Tarjeta de un pedido listo para hacer (W-151.5). */
+function PlanCard({ plan, ui, lang, onRun }: { plan: Plan; ui: Record<string, string>; lang: string; onRun: (p: Plan, withOptions: boolean) => void }) {
+  return (
+    <div className="assistant-bot">
+      <div className="assistant-bubble bot assistant-plan">
+        <span>{ui.planIntro}</span>
+        <b>{plan.entry.q[0]}</b>
+        <ul>
+          {planLines(plan.action, ui, lang).map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+        {plan.action.useCurrentFile && <small>{ui.planCurrentFile}</small>}
+      </div>
+      <small className="assistant-ai-badge">{ui.sourcePlan}</small>
+      <div className="assistant-actions">
+        <button type="button" className="as-action is-primary" onClick={() => onRun(plan, true)}>
+          {ui.planDo}
+          <Icon name="check" />
+        </button>
+        <button type="button" className="as-action" onClick={() => onRun(plan, false)}>
+          {ui.planChange}
+          <Icon name="edit" />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/** Aviso del error de la pantalla: con solución (`screenError`) o sin una específica (`screenErrorGeneric`). */
+type ScreenLead = { key: 'screenError' | 'screenErrorGeneric'; error: string }
+
+/** El último error de esta pantalla, explicado con la respuesta de la base que lo resuelve (W-151.6). */
+function errorReply(index: Index): { reply: Extract<Reply, { kind: 'answer' }>; lead: ScreenLead } | null {
+  const { error } = screenSnapshot()
+  if (!error) return null
+  const entry = index.byId.get(error.entry ?? 'contacto')
+  if (!entry) return null
+  return { reply: { kind: 'answer', entry, related: [] }, lead: { key: error.entry ? 'screenError' : 'screenErrorGeneric', error: error.message } }
 }
 
 function Typing() {
@@ -290,10 +404,16 @@ function BotMessage({
       </div>
     )
   }
+  // Aviso del error de la pantalla (W-151.6): «Vi que salió este aviso: …».
+  const lead = msg.lead ? ui[msg.lead.key].replace('{error}', msg.lead.error) : null
   return (
     <div className="assistant-bot">
+      {lead && <p className="assistant-bubble bot assistant-screen-error">{lead}</p>}
       <p className={'assistant-bubble bot' + (msg.ai === 'writing' ? ' is-writing' : '')}>{msg.text ?? r.entry.a}</p>
-      {msg.ai === 'done' && <small className="assistant-ai-badge">{ui.aiBadge}</small>}
+      {/* De dónde salió la respuesta (W-151.16): la IA del navegador, el error de la pantalla o la base. */}
+      {msg.ai !== 'writing' && r.entry.id !== 'gracias' && r.entry.id !== 'hola' && (
+        <small className="assistant-ai-badge">{msg.ai === 'done' ? ui.aiBadge : lead ? ui.sourceScreen : ui.sourceKb}</small>
+      )}
       {msg.ai === 'writing' ? null : (
         <>
       {r.entry.actions && <Actions actions={r.entry.actions} onAction={onAction} />}

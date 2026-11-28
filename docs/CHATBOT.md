@@ -134,3 +134,144 @@ que **cada arreglo deja una pregunta de prueba**, así una mejora nunca rompe ot
 5. **Más adelante (W-70f):** con la IA local del navegador, las respuestas se redactan con más naturalidad, pero
    siempre a partir de esta misma base: mejorarla sigue siendo el camino.
 
+## Medición del asistente (W-151.1)
+
+Línea base contra la que se comparan las capas nuevas (W-151). Sale de `tests/unit/features/assistant/eval`:
+preguntas como las escribe la gente (con errores, sin tildes, describiendo el problema en vez de nombrar la
+herramienta), en seis categorías. **Acierto** = la primera respuesta es correcta y el motor está seguro;
+**sin respuesta** = no está seguro (ofrece sugerencias y «Enviar esta pregunta»); **equivocada** = responde
+con seguridad algo que no es. El CI falla si el acierto de un idioma baja de `baseline.json`. Para actualizar
+esta tabla y la línea base después de mejorar el asistente:
+
+    UPDATE_ASSISTANT_BASELINE=1 npx vitest run tests/unit/features/assistant/eval
+
+Las preguntas reales que llegan por «Enviar esta pregunta» (W-70g) se suman a `cases.ts` a mano, sin el correo
+de quien la mandó (W-151.13).
+
+Historial (acierto total de los 12 idiomas · grupo de control es / en):
+
+- 2026-11-27, W-151.1, línea base: **70,8 %** · control 45 % / 40 %.
+- 2026-11-27, W-151.2, `toolQ` (formas de pedir cada herramienta, en los 12 idiomas) y sinónimos: **85,3 %** · control 75 % / 73,3 %.
+- 2026-11-27, W-151.2 (segunda parte): `toolQ` de las 66 herramientas en los 12 idiomas; en ruso, formatos en cirílico (пдф, ворд) y terminaciones; en chino, japonés y coreano, palabras vacías y cobertura que no castiga los pares de relleno: **89,3 %** · control es 75 %, en 73,3 %, pt 70 %, ru 100 %, zh 100 %, de 100 %.
+- 2026-11-27, W-151.2 (tercera parte): errores frecuentes y preguntas generales (sitio lento, no descarga, cuenta, app, sin conexión, voz, tamaño, PDF dañado o con clave, iPhone) en los 12 idiomas: **91,2 %** · control de errores es 37,5 % → 75 %, en 37,5 % → 50 %.
+
+<!-- medicion:inicio -->
+
+| Idioma | Preguntas | Acierto | Entre las 3 primeras | Sin respuesta | Equivocada |
+|---|---:|---:|---:|---:|---:|
+| es | 90 | 97.8 % | 98.9 % | 0 % | 2.2 % |
+| en | 66 | 93.9 % | 95.5 % | 3 % | 3 % |
+| pt | 30 | 76.7 % | 93.3 % | 10 % | 13.3 % |
+| fr | 30 | 96.7 % | 100 % | 0 % | 3.3 % |
+| it | 30 | 93.3 % | 100 % | 0 % | 6.7 % |
+| de | 30 | 90 % | 96.7 % | 0 % | 10 % |
+| ca | 30 | 96.7 % | 100 % | 0 % | 3.3 % |
+| eu | 30 | 86.7 % | 100 % | 3.3 % | 10 % |
+| ru | 30 | 86.7 % | 96.7 % | 3.3 % | 10 % |
+| ja | 30 | 86.7 % | 100 % | 3.3 % | 10 % |
+| ko | 30 | 90 % | 100 % | 6.7 % | 3.3 % |
+| zh | 30 | 83.3 % | 96.7 % | 10 % | 6.7 % |
+| control-es | 20 | 75 % | 95 % | 15 % | 10 % |
+| control-en | 15 | 80 % | 80 % | 6.7 % | 13.3 % |
+| control-pt | 10 | 70 % | 80 % | 10 % | 20 % |
+| control-ru | 10 | 100 % | 100 % | 0 % | 0 % |
+| control-zh | 10 | 100 % | 100 % | 0 % | 0 % |
+| control-de | 10 | 100 % | 100 % | 0 % | 0 % |
+| control-errores-es | 8 | 75 % | 87.5 % | 12.5 % | 12.5 % |
+| control-errores-en | 8 | 50 % | 62.5 % | 12.5 % | 37.5 % |
+| **Total** | 456 | **91.2 %** | 98 % | 2.8 % | 5.9 % |
+
+Acierto por categoría (español e inglés):
+
+| Categoría | es | en |
+|---|---:|---:|
+| Herramientas | 97.5 % | 90 % |
+| Trámites | 91.7 % | 87.5 % |
+| Errores | 100 % | 100 % |
+| Herramientas nuevas | 100 % | 100 % |
+| Sobre DocuSmart | 100 % | 100 % |
+| Fuera de tema | 100 % | 100 % |
+
+<details><summary>Preguntas que hoy fallan (español e inglés)</summary>
+
+**es**
+
+- [herramienta] achicar el tamaño de una foto → tool:comprimir-video
+- [tramite] subir la foto al portal de empleo y dice que es muy grande → tool:comprimir-pdf
+
+**en**
+
+- [herramienta] stick two pdfs together → lento (sin confianza)
+- [herramienta] make a pdf file smaller → tool:comprimir-video
+- [herramienta] change a word in a pdf → tool:comparar-pdf
+- [tramite] they want both sides of my id card in a single pdf → tool:foto-tamano-documento (sin confianza)
+
+</details>
+
+<!-- medicion:fin -->
+
+## Catálogo de acciones (W-151.3)
+
+`src/features/assistant/core/actions.ts` define lo que el asistente puede **proponer** hacer, para las capas
+siguientes: el analizador de pedidos (W-151.4), la tarjeta «Hacer / Cambiar» (W-151.5), el encadenado (W-151.8)
+y la IA del navegador con salida estructurada (W-151.14).
+
+- `openTool`: abre una herramienta con opciones ya puestas (`TOOL_OPTIONS` dice cuáles acepta cada una) y,
+  si se pide, con el archivo que la persona tiene abierto.
+- `chain`: de 2 a 5 pasos; el resultado de cada uno pasa al siguiente, y solo el primero usa el archivo abierto.
+- `explain`: muestra una respuesta de la base.
+
+Toda acción pasa por `validateAction` venga de donde venga; lo que no cumple se rechaza entero, nunca se
+ejecuta a medias. La contraseña nunca se guarda ni se registra (`redactAction`), y el esquema para la IA no la
+incluye: la persona la escribe en la herramienta.
+
+## Analizador de pedidos (W-151.4)
+
+`src/features/assistant/core/parser.ts` convierte un pedido («comprime este pdf a menos de 2 megas y luego
+fírmalo») en una acción del catálogo, ya validada:
+
+1. Reconoce los datos con el **léxico `parse`** del idioma (en `tools/assistant/<idioma>.mjs`, en minúsculas y
+   sin tildes): números en letras, tamaños, páginas, giro, ppp, ancho/alto, calidad o porcentaje, blanco y
+   negro, idioma, posición, texto de la marca de agua (entre comillas o tras «que diga»), «este archivo» y los
+   conectores de pasos encadenados («y luego»).
+2. Busca la herramienta con el buscador del asistente usando el pedido **sin** esos datos («gira el pdf 90
+   grados» → «gira el pdf»). Si un dato es justamente lo que indica la herramienta («pon la foto en blanco y
+   negro»), gana la búsqueda con el dato cuando saca al menos 1,5 veces el puntaje.
+3. Se queda con las opciones que esa herramienta acepta (`TOOL_OPTIONS`); las demás se informan en `dropped`.
+
+La contraseña nunca se toma del chat. Pruebas: 50 pedidos en español y 50 en inglés (49 y 49 entendidos) y 20
+en cada uno de los otros 10 idiomas (`tests/unit/features/assistant/parser*.ts`).
+
+## Tarjeta «Hacer / Cambiar» (W-151.5)
+
+Cuando un pedido trae opciones para una herramienta que ya sabe recibirlas, el panel muestra una tarjeta con
+la herramienta y sus opciones («Tamaño máximo: 2 MB») en vez de la respuesta de texto:
+
+- **Hacer** deja las opciones con `setToolOptions` (`src/shared/files/toolOptions.ts`) y abre la herramienta.
+  Si ya está abierta en esa página, le llegan por un evento y el archivo elegido sigue ahí.
+- **Cambiar** abre la herramienta sin opciones, para elegirlas a mano.
+
+Las opciones nunca van en la URL (no quedan en el historial): se guardan en `sessionStorage` por 60 segundos,
+se toman una sola vez y nunca incluyen la contraseña. Cada herramienta las aplica con `useAssistantOptions`;
+las que ya lo hacen están en `TOOLS_RECEIVING_OPTIONS`, y el asistente no promete opciones a las demás.
+
+## Contexto de la pantalla (W-151.6)
+
+`src/shared/files/screenContext.ts` recuerda, para la pantalla actual y solo en la memoria de la pestaña, los
+archivos elegidos (nombre, tipo y tamaño, nunca el contenido) y el último error mostrado (vale 10 minutos).
+`DropZone` informa los archivos (y los rechazados por vacíos o dañados) y `errorMessage` el error ya
+clasificado: contraseña → respuesta `pdf-protegido` (Desbloquear PDF), dañado o vacío → `pdf-danado` (Reparar
+PDF), otro → `contacto`.
+
+El panel lo usa al abrirse («Vi que salió este aviso: «…». Esto lo resuelve:» + la respuesta y su botón) y cuando
+la persona pregunta por el problema («¿por qué no me deja?», «no funciona»: lista `why` del léxico de cada
+idioma) o el buscador no encuentra respuesta. Nada de esto se guarda ni se envía, tampoco a la analítica.
+
+## Siguiente paso sugerido (W-151.7)
+
+Se apoya en «¿Y ahora?» (W-110), que ya sugiere herramientas debajo de cada resultado. `NextSteps` le avisa al
+contexto de la pantalla que hay un resultado a la vista y le pasa cómo abrir cada siguiente herramienta con ese
+archivo (el archivo no se copia: es la misma acción de W-110). Al abrir el asistente aparece «Lo que suele venir
+después:» con esos botones; si hubo un error reciente, primero se explica el error. Sin ventanas emergentes:
+solo dentro del panel. Se apaga en Ajustes → «Sugerencias del asistente».
+
