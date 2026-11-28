@@ -24,6 +24,7 @@ import { suggestNextSteps, type ResultKind } from '../../tools/core/nextSteps'
 import type { CatalogTool } from '../../tools/core/catalog'
 import { nextStepsEnabled } from '../core/prefs'
 import { tr } from '../../../shared/i18n/translate'
+import { FLASH_MS, TALK_STEP_MS, panelPose, smarthySrc, talkDuration } from '../core/smarthy'
 
 /** Primera letra en mayúscula (las preguntas de la base se escriben como las escribe la gente). */
 const capitalize = (s: string) => s.charAt(0).toLocaleUpperCase() + s.slice(1)
@@ -69,6 +70,7 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
   const input = useRef<HTMLInputElement>(null)
   const nextId = useRef(1)
   const screen = inApp ? section || 'home' : location.pathname
+  const smarthy = useSmarthyPose(msgs, { thinking: typing, streaming: writing, listening: text.trim().length > 0 })
 
   useEffect(() => {
     let alive = true
@@ -235,8 +237,9 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
   return (
     <div ref={panel} className={'assistant-panel' + (closing ? ' is-closing' : '')} role="dialog" aria-modal="false" aria-labelledby="assistant-title" onKeyDown={onKeyDown}>
       <header className="assistant-head">
-        <span className="assistant-avatar" aria-hidden="true">
-          <Icon name="chat" />
+        <span className="assistant-avatar has-smarthy" aria-hidden="true">
+          {/* W-153: Smarthy saluda, escucha mientras escribes, piensa y «habla» cuando llega la respuesta. */}
+          <img key={smarthy} className="assistant-smarthy" src={smarthySrc(smarthy)} alt="" width={256} height={256} decoding="async" draggable={false} />
           <span className="assistant-online" />
         </span>
         <div className="assistant-head-text">
@@ -301,6 +304,48 @@ export function AssistantPanel({ lang, onClose: close, inApp = false, section = 
       </form>
     </div>
   )
+}
+
+/** Largo de un mensaje del asistente, para saber cuánto «habla» Smarthy. */
+function botLength(m: Msg): number {
+  if (m.role !== 'bot') return 0
+  if (m.text) return m.text.length
+  return m.reply.kind === 'answer' ? m.reply.entry.a.length : 80
+}
+
+/**
+ * Pose de Smarthy en el panel (W-153): saluda al abrir, escucha mientras la persona escribe, piensa con el
+ * «escribiendo…» y alterna gestos de hablar cuando llega una respuesta (o mientras la IA la va escribiendo).
+ */
+function useSmarthyPose(msgs: Msg[], opts: { thinking: boolean; streaming: boolean; listening: boolean }) {
+  const [now, setNow] = useState(() => Date.now())
+  const [greetUntil] = useState(() => Date.now() + FLASH_MS.wave)
+  const [talk, setTalk] = useState<{ from: number; until: number } | null>(null)
+  const seen = useRef(msgs.length)
+  // Respuesta nueva: habla un rato según su largo.
+  useEffect(() => {
+    if (msgs.length <= seen.current) return void (seen.current = msgs.length)
+    seen.current = msgs.length
+    const last = msgs[msgs.length - 1]
+    if (last.role !== 'bot' || prefersReducedMotion()) return
+    const t = Date.now()
+    setTalk({ from: t, until: t + talkDuration(botLength(last)) })
+  }, [msgs])
+  const talking = opts.streaming || (talk !== null && now < talk.until)
+  // Mientras saluda o habla, se vuelve a calcular la pose a cada paso del gesto.
+  useEffect(() => {
+    if (!talking && now >= greetUntil) return
+    const id = window.setInterval(() => setNow(Date.now()), TALK_STEP_MS)
+    return () => window.clearInterval(id)
+  }, [talking, now, greetUntil])
+  const from = talk?.from ?? now
+  return panelPose({
+    now,
+    talk: talking ? { from, until: opts.streaming ? now + 1 : talk!.until } : null,
+    thinking: opts.thinking,
+    listening: opts.listening,
+    greeting: now < greetUntil,
+  })
 }
 
 /** Lo que suele venir después de la herramienta que acaba de terminar (W-151.7). */

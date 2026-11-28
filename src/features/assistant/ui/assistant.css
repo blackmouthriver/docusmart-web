@@ -151,9 +151,36 @@ button.as-action { border: 0; font: inherit; font-size: 13.5px; font-weight: 600
 .assistant-send:not(:disabled):hover { transform: scale(1.06) rotate(-8deg); }
 .assistant-send:not(:disabled):active { transform: scale(.9); }
 
+/* ── Smarthy en el botón (W-153) ──
+   Sin el círculo de color: Smarthy flota sobre una sombra suave y sobresale por arriba del botón.
+   Al abrir el panel vuelve el círculo con la ✕. Solo transform/opacity. */
+.assistant-fab.has-smarthy:not(.is-open) { background: transparent; box-shadow: none; }
+.assistant-fab.has-smarthy .fab-chat, .assistant-fab.has-smarthy .fab-halo { display: none; }
+.fab-smarthy { position: absolute; left: 50%; bottom: -8px; width: 86px; height: 86px; margin-left: -43px; pointer-events: none; transition: opacity 200ms ease, transform 320ms var(--as-spring); }
+.assistant-fab:not(.has-smarthy) .fab-smarthy { opacity: 0; }
+.assistant-fab.is-open .fab-smarthy { opacity: 0; transform: translateY(12px) scale(.5); }
+.smarthy-body { position: absolute; inset: 0; animation: smarthy-float 3.4s ease-in-out infinite; }
+.smarthy-body.is-pop .smarthy-img.is-front { animation: smarthy-pop 300ms var(--as-spring); }
+.smarthy-img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 160ms ease; -webkit-user-select: none; user-select: none; }
+.smarthy-img.is-front { opacity: 1; }
+.smarthy-shadow { position: absolute; left: 26%; right: 26%; bottom: 6px; height: 9px; border-radius: 50%; background: radial-gradient(closest-side, rgba(30, 27, 75, .32), transparent); animation: smarthy-shadow 3.4s ease-in-out infinite; }
+@keyframes smarthy-float { 50% { transform: translateY(-5px) rotate(-1.5deg); } }
+@keyframes smarthy-shadow { 50% { transform: scaleX(.8); opacity: .65; } }
+@keyframes smarthy-pop { 0% { transform: scale(.92) translateY(3px); } 100% { transform: none; } }
+@media (hover: hover) and (pointer: fine) {
+  .assistant-fab.has-smarthy:not(.is-open):hover { transform: translateY(-3px); }
+}
+@media (max-width: 560px) { .fab-smarthy { width: 80px; height: 80px; margin-left: -40px; } }
+
+/* Avatar del panel: Smarthy asoma del recuadro y cambia de gesto con una entrada corta. */
+.assistant-avatar.has-smarthy { overflow: visible; width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, .92); box-shadow: 0 6px 16px -8px rgba(15, 23, 42, .5); }
+.assistant-smarthy { position: absolute; left: 50%; bottom: -5px; width: 60px; height: 60px; margin-left: -30px; animation: smarthy-pop 260ms var(--as-spring); pointer-events: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .assistant-fab, .fab-halo, .fab-spark, .assistant-teaser, .assistant-teaser.is-leaving, .assistant-panel, .assistant-panel.is-closing,
-  .assistant-panel > *, .assistant-bot > *, .assistant-bubble.user, .assistant-typing, .assistant-typing i, .assistant-online, .fab-chat, .assistant-bubble.is-writing::after { animation: none !important; }
+  .assistant-panel > *, .assistant-bot > *, .assistant-bubble.user, .assistant-typing, .assistant-typing i, .assistant-online, .fab-chat, .assistant-bubble.is-writing::after,
+  .smarthy-body, .smarthy-body.is-pop .smarthy-img.is-front, .smarthy-shadow, .assistant-smarthy { animation: none !important; }
+  .smarthy-img, .fab-smarthy { transition: none; }
   .fab-halo, .fab-spark { display: none; }
   .fab-icon { transition: none; }
 }
